@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <script src="https://unpkg.com/lucide@latest" defer></script>
+ <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
+ <script src="https://cdn.tailwindcss.com"></script>
+ <meta charset="UTF-8">
+  <!-- SEO: CORE -->
+  <meta name="description" content="Manage your STEMulus tutoring sessions, student notes and earnings from the tutor dashboard.">
+  <meta name="keywords" content="STEMulus tutor portal, tutor dashboard">
+  <meta name="author" content="STEMulus Kids Tech">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://stemuluskidstech.com/tutor-dashboard.html">
+  <!-- SEO: OPEN GRAPH -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Tutor Dashboard | STEMulus">
+  <meta property="og:description" content="Manage your STEMulus tutoring sessions, student notes and earnings from the tutor dashboard.">
+  <meta property="og:url" content="https://stemuluskidstech.com/tutor-dashboard.html">
+  <meta property="og:site_name" content="STEMulus">
+  <meta property="og:image" content="https://stemuluskidstech.com/logo.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
+  <!-- SEO: TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tutor Dashboard | STEMulus">
+  <meta name="twitter:description" content="Manage your STEMulus tutoring sessions, student notes and earnings from the tutor dashboard.">
+  <meta name="twitter:image" content="https://stemuluskidstech.com/logo.png">
+  <meta name="twitter:site" content="@stemuluskids">
+  <!-- SEO: GEO -->
+  <meta name="geo.region" content="NG">
+  <meta name="geo.placename" content="Lagos, Nigeria">
+  <!-- SEO: CORE -->
+  <!-- SEO: OPEN GRAPH -->
+  <!-- SEO: TWITTER CARD -->
+  <!-- SEO: GEO -->
+  <!-- SEO: CORE -->
+  <!-- SEO: OPEN GRAPH -->
+  <!-- SEO: TWITTER CARD -->
+  <!-- SEO: GEO -->
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Tutor Dashboard | STEMulus</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css 2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+ <!-- Fonts -->
+ 
+ <!-- Lucide Icons -->
+
+ <!-- Tailwind CSS -->
+
+ <!-- Supabase SDK -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+ <link rel="stylesheet" href="preai-overhaul.css">
+
+<link rel="stylesheet" href="responsive.css">
+
+ <!-- Standard Favicon -->
+ <script>
+ if (window.tailwind) {
+ tailwind.config = {
+ theme: {
+ extend: {
+ colors: {
+ admin: {
+ dark: '#f8fafc',
+ border: '#e2e8f0',
+ card: '#ffffff',
+ accent: '#3b82f6',
+ danger: '#ef4444',
+ success: '#22c55e',
+ warning: '#f59e0b',
+ }
+ }
+ }
+ }
+ };
+ }
+</script>
+<style>
+ /* Global Dashboard Brightening Overrides */
+ body, html {
+ background-color: #f8fafc!important;
+ background-image: none !important;
+ color: #0f172a!important;
+ }
+ .bg-white, .bg-gray-50 {
+  background-color: #FAFBFC!important;
+  color: #1f2937!important;
+}
+ .glass-card, .bg-white, .stat-card {
+  background-color: #ffffff!important;
+  color: #1f2937!important;
+  border-color: #e5e7eb!important;
+}
+ .text-white, .text-white\/90, h 1, h 2, h 3, h 4, h 5, h 6, th, td, label, span:not(.text-white) {
+ color: #0f172a!important;
+ }
+ .text-white\/60, .text-white\/55, .text-white\/50, .text-white\/45, .text-white\/40, .text-white\/30, .text-white\/20, .text-slate-400 {
+ color: #64748b!important;
+ }
+ input, select, textarea {
+ background-color: #ffffff!important;
+ border-color: #cbd5e1!important;
+ color: #0f172a!important;
+ }
+ input::placeholder {
+ color: #94a3b8!important;
+ }
+ /* Action Buttons (Keep text white) */
+ button, button *, .btn-pill-solid, .bg-admin-accent, .bg-supernova-orange, .bg-blue-600, .bg-orange-500, button span {
+ color: #ffffff!important;
+ }
+ /* Sidebar styling overrides */
+ aside, aside * {
+ color: #0f172a!important;
+ background-color: #ffffff!important;
+ }
+ aside a:hover {
+ background-color: #f1f5f9!important;
+ }
+ aside .border-r {
+ border-right-color: #e2e8f0!important;
+ }
+ aside .border-b {
+ border-bottom-color: #e2e8f0!important;
+ }
+ aside .border-t {
+ border-top-color: #e2e8f0!important;
+ }
+ .nav-link.active, .nav-link.active i, .nav-link.active span {
+ background: linear-gradient(90deg, rgba(59,130,246,0.08)0%, transparent 100%) !important;
+ border-left:3px solid #3b82f6!important;
+ color: #2563eb!important;
+ }
+ /* Table borders */
+ table, tr, td, th {
+ border-color: #e2e8f0!important;
+ }
+ th {
+ background-color: #f1f5f9!important;
+ color: #475569!important;
+ }
+ /* Logo in sidebar needs to invert to be visible */
+ aside img {
+ filter: invert(1) !important;
+ }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+  {
+ "@type": "EducationalOrganization",
+ "@id": "https://stemuluskidstech.com/#organization",
+ "name": "STEMulus Kids Tech",
+ "alternateName": "STEMulus",
+ "url": "https://stemuluskidstech.com",
+ "logo": "https://stemuluskidstech.com/logo.png",
+ "description": "STEMulus is a global online coding academy offering private 1-on-1 programming classes for children aged 5 - 17 in Python, Scratch, robotics, web development and AI.",
+ "email": "stemulusclubs@gmail.com",
+ "telephone": "+2347052466716",
+ "sameAs": [
+ "https://wa.me/2347052466716"
+ ],
+ "contactPoint": {
+ "@type": "ContactPoint",
+ "contactType": "customer support",
+ "email": "stemulusclubs@gmail.com",
+ "availableLanguage": "English"
+ }
+  },
+  {
+ "@type": "WebSite",
+ "@id": "https://stemuluskidstech.com/#website",
+ "url": "https://stemuluskidstech.com",
+ "name": "STEMulus",
+ "publisher": {
+ "@id": "https://stemuluskidstech.com/#organization"
+ },
+ "potentialAction": {
+ "@type": "SearchAction",
+ "target": "https://stemuluskidstech.com/?s={search_term_string}",
+ "query-input": "required name=search_term_string"
+ }
+  },
+  {
+ "@type": "BreadcrumbList",
+ "@id": "https://stemuluskidstech.com/tutor-dashboard.html#breadcrumb",
+ "itemListElement": [
+ {
+ "@type": "ListItem",
+ "position":1,
+ "name": "Home",
+ "item": "https://stemuluskidstech.com/"
+ },
+ {
+ "@type": "ListItem",
+ "position":2,
+ "name": "Page",
+ "item": "https://stemuluskidstech.com/tutor-dashboard.html"
+ }
+ ]
+  }
+]
+}
+</script>
+
+ <!-- Standard Favicon -->
+ <link rel="icon" type="image/png" href="logo.png">
+ <link rel="apple-touch-icon" href="logo.png">
+</head>
+<body class="bg-gray-50 min-h-screen font-inter text-gray-700 dashboard-page">
+<div id="cursor-ring" aria-hidden="true"></div>
+<div id="cursor-dot"  aria-hidden="true"></div>
+
+ <!-- Loading State -->
+ <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center transition-opacity duration-500">
+ <div class="text-center">
+ <!-- From Uiverse.io by anand_495-7 --> 
+ <div class="loader mx-auto mb-8 relative" style="height:30px;">
+ <span><span></span><span></span><span></span><span></span></span>
+ <div class="base">
+ <span></span>
+ <div class="face"></div>
+ </div>
+ </div>
+ <div class="longfazers absolute inset-0 overflow-hidden">
+ <span></span><span></span><span></span><span></span>
+ </div>
+ <p class="text-white/55 font-medium mt-8 relative z-50">Loading tutor portal...</p>
+ </div>
+ </div>
+
+ <!-- Sidebar -->
+ <div class="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 hidden lg:flex flex-col z-10" id="tutor-sidebar">
+ <div class="p-6 border-b border-gray-200 flex items-center gap-2">
+ <div class="w-8 h-8 bg-brand-purple rounded-lg flex items-center justify-center text-white font-bold">T</div>
+ <span class="font-nunito font-bold text-xl text-brand-dark">Tutor<span class="text-brand-purple">Portal</span></span>
+ </div>
+ 
+ <nav class="flex-1 p-4 space-y-1">
+ <a href="#" class="flex items-center gap-3 px-4 py-3 bg-brand-purple/10 text-brand-purple rounded-lg font-medium">
+ <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
+ </a>
+ <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-800/65 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+ <i data-lucide="calendar" class="w-5 h-5"></i> My Schedule
+ </a>
+ <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-800/65 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+ <i data-lucide="users" class="w-5 h-5"></i> Students
+ </a>
+ <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-800/65 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+ <i data-lucide="file-text" class="w-5 h-5"></i> Resources
+ </a>
+ <a href="index.html" class="flex items-center gap-3 px-4 py-3 text-gray-800/65 hover:bg-gray-50 rounded-lg transition-colors font-medium">
+ <i data-lucide="home" class="w-5 h-5"></i> Main Website
+ </a>
+ </nav>
+
+ <div class="p-4 border-t border-gray-200">
+ <div class="flex items-center gap-3 mb-4 px-2">
+ <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-white/55 font-bold text-xs" id="avatar-initials">T</div>
+ <div class="flex-1 min-w-0">
+ <p class="text-sm font-bold text-white truncate" id="tutor-name">Tutor Name</p>
+ <p class="text-xs text-white/55 truncate">Instructor</p>
+ </div>
+ </div>
+ <button id="logout-btn" class="w-full flex items-center justify-center gap-2 text-white/55 hover:text-red-500 transition-colors text-sm py-2">
+ <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+ </button>
+ </div>
+ </div>
+
+ <!-- Main Content -->
+ <main class="lg:ml-64 p-8">
+ <header class="flex items-center justify-between mb-8">
+ <div class="flex items-center gap-3">
+ <button id="tutor-menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-slate-800 focus:outline-none" aria-label="Toggle menu">
+ <i data-lucide="menu" class="w-6 h-6"></i>
+ </button>
+ <div>
+ <h1 class="text-2xl font-bold font-nunito text-white">Dashboard</h1>
+ <p class="text-white/55">Overview of your classes and tasks.</p>
+ </div>
+ </div>
+ </header>
+
+ <!-- Stats Row -->
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+ <div class="bg-white p-6 rounded-none border border-gray-200">
+ <div class="flex items-center justify-between mb-4">
+ <span class="text-white/55 text-sm font-medium">Upcoming Classes</span>
+ <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+ <i data-lucide="calendar-clock" class="w-5 h-5 text-blue-500"></i>
+ </div>
+ </div>
+ <p class="text-3xl font-bold text-white">0</p>
+ </div>
+ 
+ <div class="bg-white p-6 rounded-none border border-gray-200">
+ <div class="flex items-center justify-between mb-4">
+ <span class="text-white/55 text-sm font-medium">Active Students</span>
+ <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center">
+ <i data-lucide="users" class="w-5 h-5 text-green-500"></i>
+ </div>
+ </div>
+ <p class="text-3xl font-bold text-white">0</p>
+ </div>
+
+ <div class="bg-white p-6 rounded-none border border-gray-200">
+ <div class="flex items-center justify-between mb-4">
+ <span class="text-white/55 text-sm font-medium">Teaching Hours</span>
+ <div class="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center">
+ <i data-lucide="clock" class="w-5 h-5 text-purple-500"></i>
+ </div>
+ </div>
+ <p class="text-3xl font-bold text-white">0</p>
+ </div>
+ </div>
+
+ <!-- Schedule Section -->
+ <div class="bg-white rounded-none border border-gray-200 overflow-hidden">
+ <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+ <h2 class="font-bold text-white">Today's Schedule</h2>
+ <button class="text-sm text-brand-purple font-medium hover:underline">View Calendar</button>
+ </div>
+ <div class="divide-y divide-gray-50" id="schedule-list">
+ <div class="p-8 text-center text-slate-400">
+ <p>No classes scheduled for today.</p>
+ </div>
+ </div>
+ </div>
+ </main>
+
+<!-- FOOTER  |  NEWSPAPER EDITORIAL -->
+
+<footer class="footer-editorial" role="contentinfo">
+  <!-- Model Viewer Script Loaded Dynamically inside the footer -->
+  <div class="footer-grid">
+    <!-- Brand column with 3D model logo -->
+    <div class="footer-brand-col">
+      <div class="footer-3d-wrapper">
+    <div class="footer-hologram-coin">
+      <div class="coin-glow"></div>
+      <div class="coin-inner">
+        <div class="coin-front">
+          <img src="logo.png" alt="STEMulus Logo">
+        </div>
+        <div class="coin-back">
+          <img src="logo.png" alt="STEMulus Logo">
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+
+    <!-- Website Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Website</p>
+      <a href="index.html">Home</a>
+      <a href="programs.html">Roadmap</a>
+      <a href="for-parents.html">For Parents</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Social Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Social</p>
+      <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <a href="mailto:admin@stemuluskidstech.com">Email Us</a>
+      <a href="join-as-tutor.html">Join as Tutor</a>
+</div>
+
+    <!-- Legal Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Legal</p>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="privacy-policy.html#terms">Terms of Service</a>
+      <a href="parent-dashboard.html">Parent Login</a>
+      <a href="enroll.html">Enroll Now</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-legal-left">©2026 STEMulus Innovations LTD. All rights reserved.</p>
+    <p class="footer-legal-right">
+      Built with craft, not algorithms
+      <i data-lucide="heart" style="width:12px;height:12px;fill:currentColor;color:currentColor;display:inline-block;vertical-align:middle;margin:0 2px;"></i>
+      <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:inline-flex;align-items:center;">
+        <i data-lucide="mail" style="width:18px;height:18px;"></i>
+      </a>
+      <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:inline-flex;align-items:center;">
+        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
+      </a>
+    </p>
+  </div>
+  
+  <!-- Background Text "STEMULUS" stylized bottom watermark -->
+  <div class="footer-bg-text">STEMulus</div>
+</footer>
+<script>
+(function(){var ring=document.getElementById('cursor-ring'),dot=document.getElementById('cursor-dot');if(!ring||!dot)return;var mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();document.querySelectorAll('a,button').forEach(function(el){el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-link');});el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-link');});});})();
+window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.editorial-heading,.prog-card,.feature-item,.stat-num').forEach(function(el,i){gsap.from(el,{y:50,opacity:0,duration:0.9,ease:'power 3.out',delay:(i% 4)*.1,scrollTrigger:{trigger:el,start:'top 88%'}});});});
+
+// Mobile Sidebar Toggle
+document.addEventListener('DOMContentLoaded', function() {
+ var menuBtn = document.getElementById('tutor-menu-btn');
+ var sidebar = document.getElementById('tutor-sidebar');
+ var mainContent = document.querySelector('main');
+ 
+ if (menuBtn && sidebar) {
+ menuBtn.addEventListener('click', function(e) {
+ e.stopPropagation();
+ sidebar.classList.toggle('open');
+ });
+ 
+ if (mainContent) {
+ mainContent.addEventListener('click', function() {
+ if (sidebar.classList.contains('open')) {
+ sidebar.classList.remove('open');
+ }
+ });
+ }
+ 
+ sidebar.querySelectorAll('a').forEach(function(link) {
+ link.addEventListener('click', function() {
+ sidebar.classList.remove('open');
+ });
+ });
+ }
+});
+</script>
+
+<script src="assets/js/dashboard-engine.js"></script>
+<script src="assets/js/tutor-engine.js"></script>
+<script src="mobile-nav.js"></script>
+
+<!-- Floating WhatsApp CTA Button -->
+<a href="https://wa.me/2347052466716?text=Hello% 20STEMulus% 2C% 20I'm% 20interested% 20in% 20a% 20coding% 20class% 20for% 20my% 20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp">
+  <svg viewBox="0 0 448 512" aria-hidden="true">
+  <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+</svg>
+</a>
+
+</body>
+</html>
+

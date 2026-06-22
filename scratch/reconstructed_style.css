@@ -1,0 +1,5135 @@
+Tracing style.css history...
+[Line 4] Step 3: Type=LIST_DIRECTORY, Status=DONE
+[Line 21] Step 22: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: write_to_file
+[Line 29] Step 22: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: write_to_file
+[Line 62] Step 59: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: invoke_subagent
+[Line 72] Step 73: Type=CHECKPOINT, Status=DONE
+[Line 75] Step 76: Type=LIST_DIRECTORY, Status=DONE
+[Line 85] Step 86: Type=VIEW_FILE, Status=DONE
+[Line 89] Step 90: Type=VIEW_FILE, Status=DONE
+[Line 97] Step 98: Type=GENERIC, Status=DONE
+[Line 181] Step 73: Type=CHECKPOINT, Status=DONE
+[Line 184] Step 76: Type=LIST_DIRECTORY, Status=DONE
+[Line 194] Step 86: Type=VIEW_FILE, Status=DONE
+[Line 198] Step 90: Type=VIEW_FILE, Status=DONE
+[Line 206] Step 98: Type=GENERIC, Status=DONE
+[Line 302] Step 195: Type=CHECKPOINT, Status=DONE
+[Line 304] Step 197: Type=LIST_DIRECTORY, Status=DONE
+[Line 554] Step 362: Type=LIST_DIRECTORY, Status=DONE
+[Line 602] Step 434: Type=VIEW_FILE, Status=DONE
+[Line 603] Step 435: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: write_to_file
+[Line 623] Step 469: Type=VIEW_FILE, Status=DONE
+[Line 642] Step 509: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: view_file
+[Line 643] Step 510: Type=VIEW_FILE, Status=DONE
+[Line 687] Step 577: Type=CHECKPOINT, Status=DONE
+[Line 698] Step 588: Type=LIST_DIRECTORY, Status=DONE
+[Line 753] Step 643: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: write_t
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="preai-overhaul.css" />
+  <script defer>window.addEventListener('DOMContentLoaded', function () { if (window.lucide) lucide.createIcons(); });</script>
+
+  <!-- Global Unified CSS -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="preai-overhaul.css" />
+  <link rel="stylesheet" href="responsive.css" />
+
+  <style>
+    /* ── Design Tokens ──────────────────────────────────── */
+    :root {
+      --orange: #f4600c;
+      --orange-light: #fff3ed;
+      --navy: #0d1b2a;
+  assert(content.includes('class="py-16 -mt-10 relative z-20 bg-white" style="background:#ffffff;"'), "contact.html form section is not set to bg-white with explicit style background!");
+  assert(content.includes('class="form-label"'), "contact.html is missing class='form-label' for form labels!");
+  assert(!content.includes('peer-placeholder-shown:text-base'), "contact.html still contains floating label peer styling!");
+  console.log("✓ contact.html background and form structure verified.");
+} catch (e) {
+  assert(false, `Failed to check contact.html: ${e.message}`);
+}
+
+// 4. Enroll page checks
+try {
+  const content = fs.readFileSync(path.join(ROOT_DIR, 'enroll.html'), 'utf8');
+  assert(content.includes('grid-template-columns: 1.25fr 1fr;'), "enroll.html CSS is missing updated layout ratio!");
+  assert(content.includes('class="enroll-visual-card"'), "enroll.html is missing Visual Card container!");
+  assert(content.includes('id="three-js-canvas-container"'), "enroll.html is missing Three.js canvas container!");
+  assert(content.includes('assets/js/3d-canvas.js'), "enroll.html is missing 3d-canvas.js script import!");
+  assert(content.includes('background: #F8FAFC;'), "enroll.html CSS does not have modern input box backgrounds!");
+  assert(content.includes('border: 1px solid var(--border);'), "enroll.html CSS does not have modern input box borders!");
+  console.log("✓ enroll.html layout columns, visual card, and input styles verified.");
+} catch (e) {
+  assert(false, `Failed to check enroll.html: ${e.message}`);
+}
+
+if (errors.length === 0) {
+  console.log("\n★★★ ALL PHASE 3 VERIFICATIONS PASSED SUCCESSFULLY! ★★★");
+} else {
+  console.log("\n✗ VERIFICATION CHECKS FAILED:");
+  errors.forEach((err, idx) => console.log(`${idx+1}. ${err}`));
+  process.exit(1);
+}
+
+      margin-bottom: 1rem;
+    }
+    .fp-step h4 {
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="section-dividers.css">
+  <link rel="stylesheet" href="assets/css/visual-enhancements.css">
+  <link rel="stylesheet" href="preai-overhaul.css">
+  <link rel="stylesheet" href="hero-parallax.css">
+  <link rel="stylesheet" href="responsive.css">
+
+
+
+  <!-- Standard Favicon -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+  {
+ "@type": "EducationalOrganization",
+ "@id": "https://stemuluskidstech.com/#organization",
+ "name": "STEMulus Kids Tech",
+ "alternateName": "STEMulus",
+ "url": "https://stemuluskidstech.com",
+ "logo": "https://stemuluskidstech.com/logo.png",
+ "description": "STEMulus is a global online coding academy offering private 1-on-1 programming classes for children aged 5 - 17 in Python, Scratch, robotics, web development and AI.",
+ "email": "stemulusclubs@gmail.com",
+ "telephone": "+2347052466716",
+ "sameAs": [
+ "https://wa.me/2347052466716"
+ ],
+ "contactPoint": {
+ "@type": "ContactPoint",
+ "contactType": "customer support",
+ "email": "stemulusclubs@gmail.com",
+ "availableLanguage": "English"
+ }
+  },
+  {
+ "@type": "WebSite",
+ "@id": "https://stemuluskidstech.com/#website",
+  Tool Call: write_to_file
+[Line 1495] Step 1199: Type=RUN_COMMAND, Status=DONE
+[Line 1496] Step 1200: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: view_file
+[Line 1497] Step 1201: Type=VIEW_FILE, Status=DONE
+[Line 1498] Step 1202: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: run_command
+[Line 1499] Step 1203: Type=RUN_COMMAND, Status=RUNNING
+[Line 1502] Step 1206: Type=SYSTEM_MESSAGE, Status=DONE
+[Line 1505] Step 1209: Type=SYSTEM_MESSAGE, Status=DONE
+[Line 1506] Step 1210: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: run_command
+[Line 1511] Step 1215: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: run_command
+[Line 1512] Step 1216: Type=RUN_COMMAND, Status=RUNNING
+[Line 1514] Step 1218: Type=GENERIC, Status=DONE
+[Line 1515] Step 1219: Type=SYSTEM_MESSAGE, Status=DONE
+[Line 1516] Step 1220: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: run_command
+[Line 1519] Step 1224: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: list_dir
+[Line 1520] Step 1225: Type=LIST_DIRECTORY, Status=DONE
+[Line 1521] Step 1226: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: run_command
+[Line 1523] Step 1228: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: list_dir
+[Line 1529] Step 1234: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: run_command
+[Line 1530] Step 1235: Type=RUN_COMMAND, Status=RUNNING
+[Line 1535] Step 1240: Type=SYSTEM_MESSAGE, Status=DONE
+[Line 1536] Step 1241: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: grep_search
+[Line 1538] Step 1243: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: write_to_file
+[Line 1540] Step 1245: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: run_command
+[Line 1543] Step 1248: Type=VIEW_FILE, Status=DONE
+[Line 1549] Step 1254: Type=PLANNER_RESPONSE, Status=DONE
+  Tool Call: write_to_file
+
+
+ 10% {
+ opacity: 0.3;
+ }
+
+ 90% {
+ opacity: 0.3;
+ }
+
+ 100% {
+ transform: translateY(-100vh) rotate(360deg);
+ opacity: 0;
+ }
+}
+
+/* Firefly Animation for Hero */
+@keyframes fireflyFloat {
+
+ 0%,
+ 100% {
+ transform: translate(0, 0) scale(1);
+ opacity: 0.3;
+ }
+
+ 25% {
+ transform: translate(20px, -30px) scale(1.2);
+ opacity: 0.7;
+ }
+
+ 50% {
+ transform: translate(-10px, -50px) scale(0.8);
+ opacity: 0.5;
+ }
+
+ 75% {
+ transform: translate(30px, -20px) scale(1.1);
+ opacity: 0.8;
+ }
+}
+
+/* ========================================
+ SCROLL PROGRESS BAR
+======================================== */
+.scroll-progress {
+ position: fixed;
+ top: 0;
+ left: 0;
+ height: 3px;
+ background: linear-gradient(90deg, #FF9B7A, #A78BFA);
+ z-index: 9998;
+ transition: width 0.1s linear;
+}
+
+/* ========================================
+ CURSOR GLOW EFFECT
+======================================== */
+.cursor-glow {
+ position: fixed;
+ width: 300px;
+ height: 300px;
+ background: radial-gradient(circle, rgba(255, 155, 122, 0.15) 0%, transparent 70%);
+ border-radius: 50%;
+ pointer-events: none;
+ z-index: 0;
+ transform: translate(-50%, -50%);
+ transition: opacity 0.3s ease;
+}
+- Add CSS: `#scroll-hint { transition: opacity 0.5s ease; }` + JS: `window.addEventListener('scroll', () => { hint.style.opacity='0'; }, { once: true });`
+
+---
+
+## Verification Plan
+
+### Automated
+- Run `node scratch/verify-parents.js` pattern — create `scratch/verify-homepage.js` to check:
+  - `body.homepage` class present
+  - No `color: #1A237E` on `.hero-headline` (should now be `#ffffff`)  
+  - `.nav-scrolled` class referenced in CSS
+  - Broken HTML entity `&#x219-2;` removed
+  - No `border-radius:1rem` on mentor image (if we flatten it)
+  - `logo-white.png` referenced in nav (if white logo is available)
+
+### Visual / Manual
+1. Load `index.html` — nav should be fully transparent over the robot video, white links visible
+2. Scroll 10% into the page — nav should still be transparent
+3. Scroll to ~85vh — nav should smoothly solidify to dark
+4. Hero text — headline, body, stats should all be clearly legible on robot video at all video frames
+5. Continue scrolling — skill bar, showcase, timeline, mentors, testimonials should all look consistently editorial
+6. No background colour clashes at section boundaries
+7. Mobile (< 768px): nav hamburger menu should work; hero text should be readable on video
+
+---
+
+## Files Changed Summary
+
+| File | Change |
+|------|--------|
+| `index.html` | Add `homepage` body class; nav JS scroll listener; hero text colour fixes; broken entity fix; scroll-hint JS |
+| `hero-parallax.css` | Scope all hero text colours under `body.homepage` selector |
+| `preai-overhaul.css` or `style.css` | Add transparent nav + `.nav-scrolled` styles scoped to `body.homepage` |
+
+> [!NOTE]
+> No new files are created. All changes are targeted edits to 3 existing files.
+
+input[type="email"],
+input[type="tel"],
+textarea,
+[contenteditable="true"] {
+ cursor: text;
+}
+
+/* Custom cursor dot effect (lightweight) */
+.custom-cursor {
+ position: fixed;
+ width: 12px;
+ height: 12px;
+ background: linear-gradient(135deg, #FF6D00 0%, #fbbf24 100%);
+ border-radius: 50%;
+ pointer-events: none;
+ z-index: 9999;
+ transform: translate(-50%, -50%);
+ /* mix-blend-mode: difference removed — caused button hover flicker */
+ mix-blend-mode: normal;
+ transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+ opacity: 0.9;
+ -webkit-backface-visibility: hidden;
+ backface-visibility: hidden;
+}
+
+.custom-cursor.cursor-hover {
+ width: 40px;
+ height: 40px;
+ background: rgba(255, 109, 0, 0.2);
+ border: 2px solid #FF6D00;
+ mix-blend-mode: normal;
+}
+
+.custom-cursor.cursor-click {
+ transform: translate(-50%, -50%) scale(0.8);
+}
+
+/* Cursor ring follower */
+.cursor-ring {
+ position: fixed;
+ width: 40px;
+ height: 40px;
+ border: 1px solid rgba(255, 109, 0, 0.4);
+ border-radius: 50%;
+ pointer-events: none;
+ z-index: 9998;
+ transform: translate(-50%, -50%);
+ transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+}
+
+.cursor-ring.cursor-hover {
+ width: 60px;
+ height: 60px;
+ border-color: rgba(255, 109, 0, 0.6);
+}
+
+/* Hide custom cursors on touch devices */
+@media (hover: none) and (pointer: coarse) {
+
+ .custom-cursor,
+ .cursor-ring {
+ display: none !important;
+ }
+}
+
+/* ========================================
+ TILT EFFECT FOR CARDS
+======================================== */
+.tilt-card {
+ transform-style: preserve-3d;
+ transition: transform 0.5s ease;
+}
+
+.tilt-card:hover {
+ transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) scale(1.02);
+}
+
+.tilt-card-inner {
+ transform: translateZ(20px);
+}
+
+/* ========================================
+ MAGNETIC BUTTON EFFECT
+======================================== */
+.magnetic-btn {
+ transition: transform 0.3s ease;
+}
+
+/* ========================================
+ SCROLL REVEAL ANIMATIONS
+ Buttery smooth, GPU-accelerated animations
+======================================== */
+
+/* Global smooth scrolling */
+html {
+ scroll-behavior: smooth;
+}
+
+/* Hidden state - applied by scroll-reveal.js */
+.sr-hidden {
+ opacity: 0;
+ transform: translateY(30px) scale(0.98);
+ will-change: opacity, transform;
+}
+
+/* Visible state - ultra-smooth reveal with spring-like easing */
+.sr-visible {
+ opacity: 1;
+ transform: translateY(0) scale(1);
+ transition:
+ opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+ transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Add subtle micro-interaction on cards */
+.sr-visible.glass-panel-light,
+.sr-visible.glass-card,
+.sr-visible.glass-card-dark {
+ transition:
+ opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+ transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+ box-shadow 0.4s ease;
+}
+
+/* Legacy reveal classes (backwards compatibility) */
+.reveal-hidden {
+ opacity: 0;
+ transform: translateY(50px);
+}
+
+.reveal-visible {
+ opacity: 1;
+ transform: translateY(0);
+ transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal-left-hidden {
+ opacity: 0;
+ transform: translateX(-50px);
+}
+
+.reveal-right-hidden {
+ opacity: 0;
+ transform: translateX(50px);
+}
+
+.reveal-scale-hidden {
+ opacity: 0;
+ transform: scale(0.9);
+}
+
+/* Counter animation glow effect */
+[data-count-to] {
+ transition: color 0.3s ease;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+ html {
+ scroll-behavior: auto;
+ }
+
+ .sr-hidden,
+ .sr-visible,
+ .reveal-hidden,
+ .reveal-visible {
+ transition: none !important;
+ transform: none !important;
+ opacity: 1 !important;
+ }
+}
+
+/* ========================================
+ SHIMMER EFFECT
+======================================== */
+@keyframes shimmer {
+ 0% {
+ background-position: -200% 0;
+ }
+
+ 100% {
+ background-position: 200% 0;
+ }
+}
+
+.shimmer-text {
+ background: linear-gradient(90deg, #fff0%, #FF6D0025%, #fff 50%, #673AB775%, #fff100%);
+ background-size: 200% 100%;
+ -webkit-background-clip: text;
+ background-clip: text;
+ -webkit-text-fill-color: transparent;
+ animation: shimmer 3s linear infinite;
+}
+
+/* ========================================
+ NEW ENGAGING ANIMATIONS
+======================================== */
+@keyframes float-y {
+
+ 0%,
+ 100% {
+ transform: translateY(0);
+ }
+
+ 50% {
+ transform: translateY(-10px);
+ }
+}
+
+.animate-float-y {
+ animation: float-y 4s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+ 0% {
+ box-shadow: 0 0 0 0 rgba(255, 109, 0, 0.4);
+ }
+
+ 70% {
+ box-shadow: 0 0 0 20px rgba(255, 109, 0, 0);
+ }
+
+ 100% {
+ box-shadow: 0 0 0 0 rgba(255, 109, 0, 0);
+ }
+}
+
+.animate-pulse-ring {
+ animation: pulse-ring 2s infinite;
+}
+
+@keyframes bounce-slow {
+
+ 0%,
+ 100% {
+ transform: translateY(0);
+ }
+
+ 50% {
+ transform: translateY(-15px);
+ }
+}
+
+.animate-bounce-slow {
+ animation: bounce-slow 3s infinite;
+}
+
+/* Card Hover Effects */
+.card-hover-pop {
+ transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-hover-pop:hover {
+ transform: translateY(-10px) scale(1.02);
+ box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.hover-rotate-icon {
+ transition: transform 0.5s ease;
+}
+
+.group:hover .hover-rotate-icon {
+ transform: rotate(15deg) scale(1.1);
+}
+
+/* Timeline specific styles */
+.timeline-connector {
+ display: block !important;
+ position: absolute;
+ width: 6px;
+ background: linear-gradient(180deg, #d 4a 574 0%, #a3826b50%, #8b7355 100%);
+ left: 50%;
+ transform: translateX(-50%);
+ top: 0;
+ bottom: 0;
+ z-index: 1;
+ border-radius: 6px;
+ overflow: hidden;
+ box-shadow: 0 0 8px rgba(139, 115, 85, 0.3);
+}
+
+.timeline-progress {
+ position: absolute;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 0%;
+ background: linear-gradient(to bottom,
+ #fcd34d 0%,
+ #84cc1620%,
+ #22c55e50%,
+ #16a34a80%,
+ #15803d 100%);
+ border-radius: 6px;
+ box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
+}
+
+@media (max-width: 768px) {
+ .timeline-connector {
+ display: block !important;
+ left: 50%;
+ width: 6px;
+ }
+}
+
+/* ========================================
+ SMOOTH HOVER LIFT
+======================================== */
+.hover-lift {
+ transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ========================================
+ STAGGER ANIMATION DELAYS
+======================================== */
+.stagger-1 {
+ animation-delay: 0.1s;
+}
+
+.stagger-2 {
+ animation-delay: 0.2s;
+}
+
+.stagger-3 {
+ animation-delay: 0.3s;
+}
+
+.stagger-4 {
+ animation-delay: 0.4s;
+}
+
+.stagger-5 {
+ animation-delay: 0.5s;
+}
+
+/* ========================================
+ NAVBAR SCROLL EFFECT
+======================================== */
+.navbar-scrolled {
+ background: rgba(255, 255, 255, 0.95) !important;
+ box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+body {
+ font-family: 'DM Sans', sans-serif;
+ background-color: #FAFBFC;
+ color: #4A5568;
+ overflow-x: hidden;
+}
+
+/* ========================================
+ WORLD-CLASS VIBRANT PALETTE
+ High-energy, kid-friendly colors
+======================================== */
+
+/* ========================================
+ LIGHT THEME SYSTEM (Default)
+ Explicit light mode variables for clarity
+======================================== */
+
+:root,
+[data-theme="light"] {
+ /* Primary Brand Colors */
+ --cosmic-blue: #1A237E;
+ --supernova-orange: #FF6D00;
+ --galaxy-purple: #673AB7;
+ --circuit-green: #00C853;
+ --rocket-yellow: #FFD600;
+
+ /* Vibrant Additions */
+ --candy-pink: #FF4081;
+ --electric-blue: #00B0FF;
+ --lime-green: #76FF03;
+ --sunny-yellow: #FFEA00;
+ --grape-purple: #D500F9;
+ --coral-orange: #FF5722;
+ --cyan-teal: #00E5FF;
+
+ /* Gradients */
+ --grad-cosmic: linear-gradient(135deg, #1A237E 0%, #3949AB 100%);
+ --grad-supernova: linear-gradient(135deg, #FF6D00 0%, #FF9100 100%);
+ --grad-purple: linear-gradient(135deg, #673AB7 0%, #9575CD 100%);
+ --grad-green: linear-gradient(135deg, #00C853 0%, #69F0AE 100%);
+ --grad-pink: linear-gradient(135deg, #FF4081 0%, #FF80AB 100%);
+ --grad-blue: linear-gradient(135deg, #00B0FF 0%, #80D8FF 100%);
+
+ /* Light Mode Backgrounds */
+ --bg-primary: #FAFBFC;
+ --bg-secondary: #ffffff;
+ --bg-tertiary: #f3f4f6;
+ --bg-accent: #f8fafc;
+
+ /* Light Mode Text */
+ --text-primary: #1A237E;
+ --text-secondary: #4A5568;
+ --text-muted: #6B7280;
+ --text-on-dark: #ffffff;
+
+ /* Light Mode Cards & Borders */
+ --card-bg: rgba(255, 255, 255, 0.95);
+ --card-bg-solid: #ffffff;
+ --card-border: rgba(0, 0, 0, 0.08);
+ --border-color: rgba(0, 0, 0, 0.1);
+
+ /* Light Mode Shadows */
+ --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+ --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+ --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+ --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
+
+ /* ── v 2.0 Warm Surface Palette ────────────────────────────
+ Hugo-inspired cream & pastel section backgrounds.
+ These are BACKGROUND tokens only — never use for text or buttons.
+ Orange (--tertiary) remains the sole interactive accent on all surfaces.
+ ──────────────────────────────────────────────────────── */
+ --cream-base:  #F9F9F7;  /* Default light bg — warmer than #fff*/
+ --cream-warm:  #FFF8EE;  /* Amber tint — stats band, step accordion */
+ --cream-sage:  #F2F6F2;  /* Sage wash — testimonials, social proof */
+ --cream-sky:  #F0F6FF;  /* Airy blue — curriculum, learning paths */
+ --cream-lilac:  #F5F2FA;  /* Purple wash — academy, partners */
+ --gold-accent:  #E5B22A;  /* Gold — connector paths, orbits, underlines */
+ --teal-soft:  #A2DCE0;  /* Teal — testimonial card backgrounds */
+ --lilac-soft:  #D9D2E9;  /* Lilac — pulsing orbit stroke */
+ --border-cream: rgba(229, 178, 42, 0.25); /* Gold-tinted border */
+
+ /* ── v 2.0 Radius Tokens ── */
+ --radius-xl:  24px;
+ --radius-pill: 9999px;
+
+ /* ── v 2.0 Animation Timing ── */
+ --ease-spring:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
+ --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+ --rotate-interval: 4500ms;
+
+ /* ── v 2.0 Brand Identity Tokens (DESIGN.md canonical) ── */
+ --primary:  #1A237E;  /* Deep Navy — used for text only */
+ --secondary:  #1f2937;  /* Dark Gray — used for text only */
+ --tertiary:  #f4600c;  /* Supernova Orange — the ONE accent */
+ --neutral:  #faf9f7;  /* Warm White */
+ --on-primary: #f5f0e8;  /* Chalk */
+ --chalk:  #f5f0e8;
+ --violet:  #5b2d8e;
+ --acid-green: #b5ff45;
+ --surface:  #F3F4F6;  /* Light surface */
+ --muted:  #6B7280;
+}
+
+/* ========================================
+ DARK THEME SYSTEM
+ Activated via data-theme="dark" on <html>
+======================================== */
+
+[data-theme="dark"] {
+ /* Dark Mode Backgrounds */
+ --bg-primary: #0f172a;
+ --bg-secondary: #1e293b;
+ --bg-tertiary: #334155;
+ --bg-accent: #1e293b;
+
+ /* Dark Mode Text */
+ --text-primary: #f1f5f9;
+ --text-secondary: #cbd5e1;
+ --text-muted: #94a3b8;
+ --text-on-dark: #ffffff;
+
+ /* Dark Mode Cards & Borders */
+    .wa-float:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.6)}
+    .wa-float svg{width:30px;height:30px}
+    @media(max-width:768px){.wa-float{bottom:16px;right:16px;width:52px;height:52px}.wa-float svg{width:26px;height:26px}}
+  </style>
+
+  <!-- Scripts -->
+  <script>
+    (function(){
+      // Cursor FX
+      var ring=document.getElementById('cursor-ring'),dot=document.getElementById('cursor-dot');if(!ring||!dot)return;var mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();document.querySelectorAll('a,button').forEach(function(el){el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-link');});el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-link');});});
+    })();
+
+    // Accordion handler
+    document.querySelectorAll('.accordion__trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const expanded = trigger.getAttribute('aria-expanded') === 'true';
+        
+        // Toggle current
+        trigger.setAttribute('aria-expanded', !expanded);
+        const body = trigger.nextElementSibling;
+        if (body) {
+          if (!expanded) {
+            body.style.maxHeight = body.scrollHeight + 'px';
+            body.style.opacity = '1';
+          } else {
+            body.style.maxHeight = '0px';
+            body.style.opacity = '0';
+          }
+        }
+      });
+    });
+  </script>
+  <script src="mobile-nav.js"></script>
+</body>
+</html>
+
+[data-theme="dark"] .text-gray-500,
+[data-theme="dark"] .text-gray-700 {
+ color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .text-gray-400 {
+ color: var(--text-muted) !important;
+}
+
+/* Dark theme navbar */
+[data-theme="dark"] .glass-nav {
+ background: rgba(15, 23, 42, 0.9);
+ border-color: var(--border-color);
+}
+
+[data-theme="dark"] .navbar-scrolled {
+ background: rgba(15, 23, 42, 0.98) !important;
+}
+
+[data-theme="dark"] #mobile-menu {
+ background: rgba(15, 23, 42, 0.98);
+}
+
+/* Dark theme cards */
+[data-theme="dark"] .glass-card,
+[data-theme="dark"] .bg-white\/90,
+[data-theme="dark"] .bg-white\/40 {
+ background: var(--card-bg) !important;
+ border-color: var(--card-border) !important;
+}
+
+[data-theme="dark"] .glass-card-premium {
+ background: rgba(30, 41, 59, 0.8) !important;
+ border-color: var(--card-border) !important;
+}
+
+/* Dark theme form elements */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+ background-color: var(--bg-tertiary);
+ color: var(--text-primary);
+ border-color: var(--border-color);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+ color: var(--text-muted);
+}
+
+/* Dark theme STEM-Bot finder */
+[data-theme="dark"] #finder-form .bg-gradient-to-r {
+ background: var(--bg-tertiary) !important;
+}
+
+[data-theme="dark"] .interest-btn,
+[data-theme="dark"] .exp-btn {
+ background: var(--bg-tertiary) !important;
+ border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .interest-btn span,
+[data-theme="dark"] .exp-btn p {
+ color: var(--text-primary) !important;
+}
+
+/* Dark theme project cards */
+[data-theme="dark"] .bg-white.rounded-2xl {
+ background: var(--bg-secondary) !important;
+ border-color: var(--border-color) !important;
+}
+
+/* Dark theme footer */
+[data-theme="dark"] footer {
+ background: var(--bg-primary) !important;
+}
+
+[data-theme="dark"] .border-gray-100 {
+ border-color: var(--border-color) !important;
+}
+
+/* ========================================
+ SPEEDER LOADER (User Provided)
+======================================== */
+.loader {
+ position: absolute;
+ top: 50%;
+ margin-left: -50px;
+ left: 50%;
+ animation: speeder 0.4s linear infinite;
+ z-index: 50;
+ transform: translateZ(0);
+ /* Force GPU */
+ backface-visibility: hidden;
+}
+
+.loader>span {
+ height: 5px;
+ width: 35px;
+ background: #000;
+ position: absolute;
+ top: -19px;
+ left: 60px;
+ border-radius: 2px 10px 1px 0;
+}
+
+.base span {
+ position: absolute;
+ width: 0;
+ height: 0;
+ border-top: 6px solid transparent;
+ border-right: 100px solid #000;
+ border-bottom: 6px solid transparent;
+}
+
+.base span:before {
+ content: "";
+ height: 22px;
+ width: 22px;
+ border-radius: 50%;
+ background: #000;
+ position: absolute;
+ right: -110px;
+ top: -16px;
+}
+
+.base span:after {
+ content: "";
+ position: absolute;
+ width: 0;
+ height: 0;
+ border-top: 0 solid transparent;
+ border-right: 55px solid #000;
+ border-bottom: 16px solid transparent;
+ top: -16px;
+ right: -98px;
+}
+
+.face {
+ position: absolute;
+ height: 12px;
+ width: 20px;
+ background: #000;
+ border-radius: 20px 20px 0 0;
+ transform: rotate(-40deg);
+ right: -125px;
+ top: -15px;
+}
+
+.face:after {
+ content: "";
+ height: 12px;
+ width: 12px;
+ background: #000;
+ right: 4px;
+ top: 7px;
+ position: absolute;
+ transform: rotate(40deg);
+ transform-origin: 50% 50%;
+ border-radius: 0 0 0 2px;
+}
+
+.loader>span>span:nth-child(1),
+.loader>span>span:nth-child(2),
+.loader>span>span:nth-child(3),
+.loader>span>span:nth-child(4) {
+ width: 30px;
+ height: 1px;
+ background: #000;
+ position: absolute;
+ animation: fazer 1 0.2s linear infinite;
+}
+
+.loader>span>span:nth-child(2) {
+ top: 3px;
+ animation: fazer 2 0.4s linear infinite;
+}
+
+.loader>span>span:nth-child(3) {
+ top: 1px;
+ animation: fazer 3 0.4s linear infinite;
+ animation-delay: -1s;
+}
+
+.loader>span>span:nth-child(4) {
+ top: 4px;
+ animation: fazer 4 1s linear infinite;
+ animation-delay: -1s;
+}
+
+@keyframes fazer 1 {
+ 0% {
+ left: 0;
+ }
+
+ 100% {
+ left: -80px;
+ opacity: 0;
+ }
+}
+
+@keyframes fazer 2 {
+ 0% {
+ left: 0;
+ }
+
+ 100% {
+ left: -100px;
+ opacity: 0;
+ }
+}
+
+@keyframes fazer 3 {
+ 0% {
+ left: 0;
+ }
+
+ 100% {
+ left: -50px;
+ opacity: 0;
+ }
+}
+
+@keyframes fazer 4 {
+ 0% {
+ left: 0;
+ }
+
+ 100% {
+ left: -150px;
+ opacity: 0;
+ }
+}
+
+@keyframes speeder {
+ 0% {
+ transform: translate(2px, 1px) rotate(0deg);
+ }
+
+ 10% {
+ transform: translate(-1px, -3px) rotate(-1deg);
+ }
+
+ 20% {
+ transform: translate(-2px, 0px) rotate(1deg);
+ }
+
+ 30% {
+ transform: translate(1px, 2px) rotate(0deg);
+ }
+
+ 40% {
+ transform: translate(1px, -1px) rotate(1deg);
+ }
+
+ 50% {
+ transform: translate(-1px, 3px) rotate(-1deg);
+ }
+
+ 60% {
+ transform: translate(-1px, 1px) rotate(0deg);
+ }
+
+ 70% {
+ transform: translate(3px, 1px) rotate(-1deg);
+ }
+
+ 80% {
+ transform: translate(-2px, -1px) rotate(1deg);
+ }
+
+ 90% {
+ transform: translate(2px, 1px) rotate(0deg);
+ }
+
+ 100% {
+ transform: translate(1px, -2px) rotate(-1deg);
+ }
+}
+
+.longfazers {
+ position: absolute;
+ width: 100%;
+ height: 100%;
+}
+
+.longfazers span {
+ position: absolute;
+ height: 2px;
+ width: 20%;
+ background: #000;
+}
+
+.longfazers span:nth-child(1) {
+ top: 20%;
+ animation: lf 0.6s linear infinite;
+ animation-delay: -5s;
+}
+
+.longfazers span:nth-child(2) {
+ top: 40%;
+ animation: lf 2 0.8s linear infinite;
+ animation-delay: -1s;
+}
+
+.longfazers span:nth-child(3) {
+ top: 60%;
+ animation: lf 3 0.6s linear infinite;
+}
+
+.longfazers span:nth-child(4) {
+ top: 80%;
+ animation: lf 4 0.5s linear infinite;
+ animation-delay: -3s;
+}
+
+@keyframes lf {
+ 0% {
+ left: 200%;
+ }
+
+ 100% {
+ left: -200%;
+ opacity: 0;
+ }
+}
+
+@keyframes lf 2 {
+ 0% {
+ left: 200%;
+ }
+
+ 100% {
+ left: -200%;
+ opacity: 0;
+ }
+}
+
+@keyframes lf 3 {
+ 0% {
+ left: 200%;
+ }
+
+ 100% {
+ left: -100%;
+ opacity: 0;
+ }
+}
+
+@keyframes lf 4 {
+ 0% {
+ left: 200%;
+ }
+
+ 100% {
+ left: -100%;
+ opacity: 0;
+ }
+}
+
+[data-theme="dark"] .border-gray-200 {
+ border-color: var(--border-color) !important;
+}
+
+/* =========================================
+ DARK MODE - STEMulus Difference Section
+ ========================================= */
+
+/* Fix cosmic-blue headings to be visible in dark mode */
+[data-theme="dark"] .text-cosmic-blue,
+[data-theme="dark"] h2.text-cosmic-blue,
+[data-theme="dark"] h3.text-cosmic-blue {
+ color: #e2e8f0!important;
+ /* Light slate color for readability */
+}
+
+/* Glass panel light - make visible in dark mode */
+[data-theme="dark"] .glass-panel-light {
+ background: rgba(30, 41, 59, 0.8) !important;
+ border: 1px solid rgba(255, 255, 255, 0.1) !important;
+ box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Stats numbers - ensure visibility */
+[data-theme="dark"] .glass-panel-light .text-cosmic-blue,
+[data-theme="dark"] .glass-panel-light p.text-cosmic-blue,
+[data-theme="dark"] #difference .text-cosmic-blue {
+ color: #ffffff!important;
+}
+
+/* Stats labels - ensure visibility */
+[data-theme="dark"] .glass-panel-light .text-gray-500,
+[data-theme="dark"] #difference .text-gray-500 {
+ color: #94a3b8!important;
+}
+
+/* Section backgrounds in dark mode */
+[data-theme="dark"] #difference,
+[data-theme="dark"] section.bg-gradient-to-br.from-gray-50 {
+ background: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] #difference .bg-gradient-to-br.from-gray-50,
+[data-theme="dark"] #difference>div:first-child {
+ background: transparent !important;
+}
+
+/* Badge in dark mode - simplified selector */
+[data-theme="dark"] #difference span[class*="bg-gradient"] {
+ background: rgba(107, 125, 179, 0.3) !important;
+ border-color: rgba(107, 125, 179, 0.4) !important;
+ color: #93c5fd!important;
+}
+
+/* =========================================
+ DARK MODE - Testimonial Carousel Section
+ ========================================= */
+
+/* Section background */
+[data-theme="dark"] #testimonial-carousel,
+[data-theme="dark"] section.bg-gradient-to-b.from-gray-50 {
+ background: var(--bg-secondary) !important;
+}
+
+/* Headings - text-blue-900 to white */
+[data-theme="dark"] #testimonial-carousel .text-blue-900,
+[data-theme="dark"] #testimonial-carousel h2.text-blue-900,
+[data-theme="dark"] #testimonial-carousel h4.text-blue-900 {
+ color: #f1f5f9!important;
+}
+
+/* Badge */
+[data-theme="dark"] #testimonial-carousel .bg-orange-100 {
+ background: rgba(255, 155, 122, 0.2) !important;
+}
+
+/* Testimonial cards - bg-white to dark */
+[data-theme="dark"] #testimonial-carousel .bg-white,
+[data-theme="dark"] #testimonial-carousel .arch-card>div {
+ background: var(--card-bg) !important;
+ border-color: var(--border-color) !important;
+}
+
+/* Card with gradient background */
+[data-theme="dark"] #testimonial-carousel .bg-gradient-to-br.from-white {
+ background: var(--card-bg) !important;
+}
+
+/* Gray text visibility */
+[data-theme="dark"] #testimonial-carousel .text-gray-600,
+[data-theme="dark"] #testimonial-carousel .text-gray-400 {
+ color: #94a3b8!important;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ width: 40px;
+ height: 40px;
+ border-radius: 50%;
+ background: transparent;
+ border: 1px solid rgba(0, 0, 0, 0.1);
+ cursor: pointer;
+ transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+ background: rgba(255, 109, 0, 0.1);
+ border-color: var(--supernova-orange);
+}
+
+[data-theme="dark"] .theme-toggle {
+ border-color: var(--border-color);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+ background: rgba(255, 109, 0, 0.2);
+}
+
+.theme-toggle .sun-icon {
+ display: block;
+}
+
+.theme-toggle .moon-icon {
+ display: none;
+}
+
+[data-theme="dark"] .theme-toggle .sun-icon {
+ display: none;
+}
+
+[data-theme="dark"] .theme-toggle .moon-icon {
+ display: block;
+}
+
+/* Smooth theme transitions */
+body,
+section,
+.glass-nav,
+.glass-card,
+input,
+textarea,
+.theme-toggle {
+ transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Cosmic Blue -> Deep & Rich */
+.bg-cosmic-blue {
+ background-color: var(--cosmic-blue);
+}
+
+.text-cosmic-blue {
+ color: var(--cosmic-blue);
+}
+
+/* Supernova Orange -> Energetic */
+.bg-supernova-orange {
+ background-color: var(--supernova-orange);
+}
+
+.text-supernova-orange {
+ color: var(--supernova-orange);
+}
+
+.hover\:bg-orange-700:hover {
+ background-color: #E65100;
+}
+
+/* Galaxy Purple -> Magical */
+.bg-galaxy-purple {
+ background-color: var(--galaxy-purple);
+}
+
+.text-galaxy-purple {
+ color: var(--galaxy-purple);
+}
+
+/* Circuit Green -> Fresh */
+.bg-circuit-green {
+ background-color: var(--circuit-green);
+}
+
+.text-circuit-green {
+ color: var(--circuit-green);
+}
+
+/* Rocket Yellow -> Bright */
+.bg-rocket-yellow {
+ background-color: var(--rocket-yellow);
+}
+
+.text-rocket-yellow {
+ color: #F57F17;
+ /* Darker for text readability */
+}
+
+/* New Vibrant Utilities */
+.bg-grad-cosmic {
+ background: var(--grad-cosmic);
+}
+
+.bg-grad-supernova {
+ background: var(--grad-supernova);
+}
+
+.bg-grad-purple {
+ background: var(--grad-purple);
+}
+
+.bg-grad-green {
+ background: var(--grad-green);
+}
+
+.bg-grad-pink {
+ background: var(--grad-pink);
+}
+
+.bg-grad-blue {
+ background: var(--grad-blue);
+}
+
+.text-candy-pink {
+ color: var(--candy-pink);
+}
+
+.bg-candy-pink {
+ background-color: var(--candy-pink);
+}
+
+.text-electric-blue {
+ color: var(--electric-blue);
+}
+
+.bg-electric-blue {
+ background-color: var(--electric-blue);
+}
+
+.text-lime-green {
+ color: var(--lime-green);
+}
+
+.bg-lime-green {
+ background-color: var(--lime-green);
+}
+
+.text-grape-purple {
+ color: var(--grape-purple);
+}
+
+.bg-grape-purple {
+ background-color: var(--grape-purple);
+}
+
+/* Additional Pastel Utilities */
+.bg-pastel-pink {
+ background-color: #FBB6CE;
+}
+
+.text-pastel-pink {
+ color: #F687B3;
+}
+
+.bg-pastel-sky {
+ background-color: #7DD3FC;
+}
+
+.text-pastel-sky {
+ color: #6BCBF5;
+}
+
+/* Gradients - Updated for Pastel */
+.hero-gradient {
+ background: radial-gradient(circle at 10% 20%, #6B7DB3 0%, #4A5A8A90%);
+}
+
+/* Glassmorphism - Floating Pill Navbar */
+.glass-nav {
+ background: rgba(255, 255, 255, 0.82);
+ backdrop-filter: blur(20px);
+ -webkit-backdrop-filter: blur(20px);
+ border: 1px solid rgba(255, 255, 255, 0.4);
+ border-radius: 9999px !important;
+ margin-top: 0;
+ box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+ min-height: 70px;
+ height: auto;
+ display: flex;
+ flex-direction: column;
+ transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dropdown Menu Styles */
+.nav-dropdown-wrapper {
+ position: relative;
+ padding: 1rem 0;
+}
+
+.nav-dropdown-content {
+ position: absolute;
+ top: 100%;
+ left: 50%;
+ transform: translateX(-50%) translateY(10px);
+ background: rgba(255, 255, 255, 0.95);
+ backdrop-filter: blur(15px);
+ -webkit-backdrop-filter: blur(15px);
+ border: 1px solid rgba(255, 255, 255, 0.5);
+ border-radius: 1rem;
+ box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+ min-width: 260px;
+ opacity: 0;
+ visibility: hidden;
+ transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+ z-index: 100;
+ padding: 1rem;
+}
+
+.nav-dropdown-wrapper:hover .nav-dropdown-content {
+ opacity: 1;
+ visibility: visible;
+ transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-item {
+ display: flex;
+ align-items: center;
+ padding: 0.75rem 1rem;
+ border-radius: 0.75rem;
+ color: #1A237E;
+ transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+ background: rgba(255, 109, 0, 0.1);
+ color: #FF6D00;
+}
+
+.dropdown-icon {
+ width: 1.5rem;
+ height: 1.5rem;
+ margin-right: 0.75rem;
+ color: #FF6D00;
+}
+
+.glass-nav nav {
+ width: 100%;
+ display: flex;
+ align-items: center;
+ min-height: 70px;
+}
+
+/* Mobile Menu Dropdown Styling */
+#mobile-menu {
+ background: rgba(255, 255, 255, 0.98);
+ backdrop-filter: blur(20px);
+ -webkit-backdrop-filter: blur(20px);
+ border-top: 1px solid rgba(0, 0, 0, 0.1);
+ margin-left: -1.5rem;
+ margin-right: -1.5rem;
+ padding-left: 1.5rem !important;
+ padding-right: 1.5rem !important;
+ padding-bottom: 1.5rem !important;
+ padding-top: 1rem !important;
+}
+
+#mobile-menu:not(.hidden) {
+ display: flex;
+ flex-direction: column;
+ gap: 0.5rem;
+}
+
+#mobile-menu a {
+ display: block;
+ padding: 0.75rem 1rem;
+ border-radius: 0.75rem;
+ transition: background-color 0.2s ease, color 0.2s ease;
+ font-weight: 500;
+}
+
+#mobile-menu a:hover {
+ background: rgba(255, 155, 122, 0.1);
+}
+
+#mobile-menu .border-t {
+ border-color: rgba(0, 0, 0, 0.1);
+ margin-top: 0.75rem;
+ padding-top: 0.75rem;
+}
+
+/* Mobile Menu Button - Enroll Now */
+#mobile-menu a[href*="forms.gle"] {
+ margin-top: 0.5rem;
+ padding: 1rem 1.5rem;
+ text-align: center;
+ display: block;
+ width: 100%;
+ box-sizing: border-box;
+}
+
+/* Navbar Logo - Larger, more conspicuous logo that overflows navbar */
+.nav-logo {
+ height: 100px;
+ width: auto;
+ object-fit: contain;
+ margin-top: -15px;
+ margin-bottom: -15px;
+ filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+ transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+ transform: scale(1.08);
+}
+
+.glass-card {
+ background: rgba(255, 255, 255, 0.6);
+ backdrop-filter: blur(20px);
+ -webkit-backdrop-filter: blur(20px);
+ border: 1px solid rgba(255, 255, 255, 0.4);
+ box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+}
+
+.glass-card-dark {
+ background: rgba(255, 255, 255, 0.05);
+ backdrop-filter: blur(16px);
+ -webkit-backdrop-filter: blur(16px);
+ border: 1px solid rgba(255, 255, 255, 0.1);
+ box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Background Patterns */
+.bg-pattern-circuit {
+ background-image: radial-gradient(rgba(26, 35, 126, 0.1) 1px, transparent 1px);
+ background-size: 30px 30px;
+}
+
+.bg-pattern-grid {
+ background-size: 50px 50px;
+ background-image:
+ linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+ linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+.bg-pattern-dots-white {
+ background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+ background-size: 20px 20px;
+}
+
+/* Additional Pastel Utilities */
+.bg-pastel-pink {
+ background-color: #FBB6CE;
+}
+
+.text-pastel-pink {
+ color: #F687B3;
+}
+
+.bg-pastel-sky {
+ background-color: #7DD3FC;
+}
+
+.text-pastel-sky {
+ color: #6BCBF5;
+}
+
+/* Gradients - Updated for Pastel */
+.hero-gradient {
+ background: radial-gradient(circle at 10% 20%, #6B7DB3 0%, #4A5A8A90%);
+}
+
+/* Glassmorphism - Floating Pill Navbar */
+.glass-nav {
+ background: rgba(255, 255, 255, 0.82);
+ backdrop-filter: blur(20px);
+ -webkit-backdrop-filter: blur(20px);
+ border: 1px solid rgba(255, 255, 255, 0.4);
+ border-radius: 9999px !important;
+ margin-top: 0;
+ box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+ min-height: 70px;
+ height: auto;
+ display: flex;
+ flex-direction: column;
+ transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dropdown Menu Styles */
+.nav-dropdown-wrapper {
+ position: relative;
+ padding: 1rem 0;
+}
+
+.nav-dropdown-content {
+ position: absolute;
+ top: 100%;
+ left: 50%;
+ transform: translateX(-50%) translateY(10px);
+ background: rgba(255, 255, 255, 0.95);
+ backdrop-filter: blur(15px);
+ -webkit-backdrop-filter: blur(15px);
+ border: 1px solid rgba(255, 255, 255, 0.5);
+ border-radius: 1rem;
+ box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+ min-width: 260px;
+ opacity: 0;
+ visibility: hidden;
+ transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+ z-index: 100;
+ padding: 1rem;
+}
+
+.nav-dropdown-wrapper:hover .nav-dropdown-content {
+ opacity: 1;
+ visibility: visible;
+ transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-item {
+ display: flex;
+ align-items: center;
+ padding: 0.75rem 1rem;
+ border-radius: 0.75rem;
+ color: #1A237E;
+ transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+ background: rgba(255, 109, 0, 0.1);
+ color: #FF6D00;
+}
+
+.dropdown-icon {
+ width: 1.5rem;
+ height: 1.5rem;
+ margin-right: 0.75rem;
+ color: #FF6D00;
+}
+
+.glass-nav nav {
+ width: 100%;
+ display: flex;
+ align-items: center;
+ min-height: 70px;
+}
+
+/* Mobile Menu Dropdown Styling */
+#mobile-menu {
+ background: rgba(255, 255, 255, 0.98);
+ backdrop-filter: blur(20px);
+ -webkit-backdrop-filter: blur(20px);
+ border-top: 1px solid rgba(0, 0, 0, 0.1);
+ margin-left: -1.5rem;
+ margin-right: -1.5rem;
+ padding-left: 1.5rem !important;
+ padding-right: 1.5rem !important;
+ padding-bottom: 1.5rem !important;
+ padding-top: 1rem !important;
+}
+
+#mobile-menu:not(.hidden) {
+ display: flex;
+ flex-direction: column;
+ gap: 0.5rem;
+}
+
+#mobile-menu a {
+ display: block;
+ padding: 0.75rem 1rem;
+ border-radius: 0.75rem;
+ transition: background-color 0.2s ease, color 0.2s ease;
+ font-weight: 500;
+}
+
+#mobile-menu a:hover {
+ background: rgba(255, 155, 122, 0.1);
+}
+
+#mobile-menu .border-t {
+ border-color: rgba(0, 0, 0, 0.1);
+ margin-top: 0.75rem;
+ padding-top: 0.75rem;
+}
+
+/* Mobile Menu Button - Enroll Now */
+#mobile-menu a[href*="forms.gle"] {
+ margin-top: 0.5rem;
+ padding: 1rem 1.5rem;
+ text-align: center;
+ display: block;
+ width: 100%;
+ box-sizing: border-box;
+}
+
+/* Navbar Logo - Larger, more conspicuous logo that overflows navbar */
+.nav-logo {
+ height: 100px;
+ width: auto;
+ object-fit: contain;
+ margin-top: -15px;
+ margin-bottom: -15px;
+ filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+ transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+ transform: scale(1.08);
+}
+
+.glass-card {
+ background: rgba(255, 255, 255, 0.6);
+ backdrop-filter: blur(20px);
+ -webkit-backdrop-filter: blur(20px);
+ border: 1px solid rgba(255, 255, 255, 0.4);
+ box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+}
+
+.glass-card-dark {
+ background: rgba(255, 255, 255, 0.05);
+ backdrop-filter: blur(16px);
+ -webkit-backdrop-filter: blur(16px);
+ border: 1px solid rgba(255, 255, 255, 0.1);
+ box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Background Patterns */
+.bg-pattern-circuit {
+ background-image: radial-gradient(rgba(26, 35, 126, 0.1) 1px, transparent 1px);
+ background-size: 30px 30px;
+}
+
+.bg-pattern-grid {
+ background-size: 50px 50px;
+ background-image:
+ linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+ linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+.bg-pattern-dots-white {
+ background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+ background-size: 20px 20px;
+}
+
+/* Animations */
+.btn-glow {
+ transition: all 0.3s ease;
+}
+
+.btn-glow:hover {
+ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+ transform: translateY(-2px);
+}
+
+.floating-card {
+ animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+ 0% {
+ transform: translateY(0px);
+ }
+
+ 50% {
+ transform: translateY(-20px);
+ }
+
+ 100% {
+ transform: translateY(0px);
+ }
+}
+
+/* Happy Jump Animation for Hero Image */
+@keyframes happy-jump {
+
+ 0%,
+ 100% {
+ transform: translateY(0) rotate(0deg) scale(1);
+ }
+
+ 15% {
+ transform: translateY(-15px) rotate(-2deg) scale(1.02);
+ }
+
+ 30% {
+ transform: translateY(0) rotate(0deg) scale(1);
+ }
+
+ 45% {
+ transform: translateY(-10px) rotate(1deg) scale(1.01);
+ }
+
+ 60% {
+ transform: translateY(0) rotate(0deg) scale(1);
+ }
+}
+
+.hero-image-jump {
+ transition: all 0.3s ease;
+}
+
+.hero-image-jump:hover {
+ animation: happy-jump 0.8s ease-in-out;
+ box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.4);
+}
+
+.hero-glow {
+ position: absolute;
+ width: 600px;
+ height: 600px;
+ background: radial-gradient(circle, rgba(255, 109, 0, 0.15) 0%, rgba(255, 109, 0, 0) 70%);
+ border-radius: 50%;
+ pointer-events: none;
+}
+
+/* Hide Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+ display: none;
+}
+
+.no-scrollbar {
+ -ms-overflow-style: none;
+ scrollbar-width: none;
+}
+
+/* Program Card Hover */
+.program-card {
+ transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hero Sections with Background Images */
+.hero-with-bg {
+ background-size: cover;
+ background-position: center;
+ background-repeat: no-repeat;
+ position: relative;
+ background-attachment: scroll;
+ /* Parallax effect for premium feel */
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ min-height: 60vh;
+}
+
+@media (max-width: 768px) {
+ .hero-with-bg {
+ background-attachment: scroll;
+ /* Disable parallax on mobile for performance */
+ min-height: 70vh;
+ padding-top: 6rem;
+ }
+}
+
+.hero-with-bg::before {
+ content: '';
+ position: absolute;
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ background: linear-gradient(to bottom, rgba(107, 125, 179, 0.75) 0%, rgba(167, 139, 250, 0.8) 100%);
+ z-index: 1;
+}
+
+.hero-with-bg>* {
+ position: relative;
+ z-index: 2;
+}
+
+/* Ensure hero content container is properly centered */
+.hero-with-bg .container {
+ position: relative;
+ z-index: 10;
+}
+
+/* Hero text classes for proper visibility */
+.hero-title {
+ color: #ffffff;
+ text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 2px 10px rgba(0, 0, 0, 0.5);
+ font-weight: 700;
+ line-height: 1.1;
+}
+
+.hero-subtitle {
+ color: #e2e8f0;
+ text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.hero-badge {
+ text-shadow: none;
+}
+
+/* Premium Design Utilities */
+.glass-card-premium {
+ background: rgba(255, 255, 255, 0.7) !important;
+ backdrop-filter: blur(20px) saturate(180%);
+ -webkit-backdrop-filter: blur(20px) saturate(180%);
+ border: 1px solid rgba(255, 255, 255, 0.5);
+ border-radius: 2rem;
+ box-shadow: 0 25px 50px -12px rgba(13, 22, 66, 0.1);
+}
+
+.float-animation {
+ animation: floating 6s ease-in-out infinite;
+}
+
+@keyframes floating {
+ 0% {
+ transform: translateY(0px);
+ }
+
+ 50% {
+ transform: translateY(-20px);
+ }
+
+ 100% {
+ transform: translateY(0px);
+ }
+}
+
+@keyframes shimmer {
+ 0% {
+ transform: translateX(-100%);
+ }
+
+ 100% {
+ transform: translateX(100%);
+ }
+}
+
+.stagger-grid>div:nth-child(even) {
+ transform: translateY(40px);
+}
+
+@media (max-width: 768px) {
+ .stagger-grid>div:nth-child(even) {
+ transform: translateY(0);
+ }
+}
+
+.comparison-card {
+ background: linear-gradient(135deg, #ffffff 0%, #f 1f 4ff 100%);
+ position: relative;
+ overflow: hidden;
+}
+
+.comparison-card::after {
+ content: '';
+ position: absolute;
+ top: -50%;
+ left: -50%;
+ width: 200%;
+ height: 200%;
+ background: radial-gradient(circle, rgba(255, 109, 0, 0.05) 0%, transparent 70%);
+ pointer-events: none;
+}
+
+/* ========================================
+ TEXT READABILITY & CONTRAST UTILITIES
+ ======================================== */
+
+/* Text Shadows for Dark Backgrounds */
+.text-shadow-sm {
+ text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.text-shadow-md {
+ text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.text-shadow-lg {
+ text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.text-shadow-xl {
+ text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Glow shadows for light text on dark backgrounds */
+.text-glow-orange {
+ text-shadow: 0 0 20px rgba(255, 109, 0, 0.5), 0 0 40px rgba(255, 109, 0, 0.3);
+}
+
+.text-glow-white {
+ text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced readable text colors */
+.text-white-readable {
+ color: #ffffff;
+ text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.text-gray-light-readable {
+ color: #e5e5e5;
+ text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* High contrast text for light backgrounds */
+.text-dark-readable {
+ color: #1e293b;
+}
+
+.text-muted-readable {
+ color: #64748b;
+}
+
+/* Hero section text enhancements */
+.hero-text-primary {
+ color: #ffffff;
+ text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.4);
+ font-weight: 700;
+}
+
+.hero-text-secondary {
+ color: #e2e8f0;
+ text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.hero-text-accent {
+ color: #FF6D00;
+ text-shadow: 0 0 20px rgba(255, 109, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+ HERO TEXT ANIMATIONS
+======================================== */
+@keyframes heroFadeUp {
+ 0% {
+ opacity: 0;
+ transform: translateY(40px);
+ }
+
+ 100% {
+ opacity: 1;
+ transform: translateY(0);
+ }
+}
+
+@keyframes heroTitleReveal {
+ 0% {
+ opacity: 0;
+ transform: translateY(50px) scale(0.95);
+ filter: blur(5px);
+ }
+
+ 100% {
+ opacity: 1;
+ transform: translateY(0) scale(1);
+ filter: blur(0);
+ }
+}
+
+@keyframes heroTextGlow {
+
+ 0%,
+ 100% {
+ text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.4);
+ }
+
+ 50% {
+ text-shadow: 0 4px 20px rgba(255, 109, 0, 0.3), 0 6px 16px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
+ }
+}
+
+.hero-title {
+ animation: heroTitleReveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-subtitle {
+ opacity: 0;
+ animation: heroFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+
+.hero-badge {
+ opacity: 0;
+ animation: heroFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+.hero-cta {
+ opacity: 0;
+ animation: heroFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+}
+
+/* Important text emphasis with subtle glow pulse */
+.hero-emphasis {
+ animation: heroTextGlow 3s ease-in-out infinite;
+}
+
+/* Hero content container for left-aligned layout */
+.hero-content-left {
+ text-align: left;
+ max-width: 800px;
+}
+
+/* Card text readability */
+.card-title {
+ color: #1A237E;
+ font-weight: 700;
+ line-height: 1.3;
+}
+
+.card-text {
+ color: #4b5563;
+ line-height: 1.6;
+}
+
+.card-text-light {
+ color: #9ca3af;
+ line-height: 1.5;
+}
+
+/* Badge text on colored backgrounds */
+.badge-text {
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+ font-size: 0.75rem;
+}
+
+/* Link readability enhancements */
+a.link-readable {
+ text-decoration: underline;
+ text-underline-offset: 2px;
+}
+
+/* Footer text contrast */
+.footer-text {
+ color: #cbd5e1;
+}
+
+.footer-text-muted {
+ color: #94a3b8;
+}
+
+/* Form label readability */
+.label-readable {
+ color: #374151;
+ font-weight: 600;
+}
+
+/* Testimonial text styling */
+.testimonial-text {
+ color: #4b5563;
+ font-style: italic;
+ line-height: 1.7;
+}
+
+/* Stats section text */
+.stats-number {
+ color: #1A237E;
+ font-weight: 800;
+ letter-spacing: -0.02em;
+}
+
+.stats-label {
+ color: #6b7280;
+ font-weight: 500;
+}
+
+/* CTA section text on dark backgrounds */
+.cta-heading {
+ color: #ffffff;
+ text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+ font-weight: 700;
+}
+
+.cta-text {
+ color: #d1d5db;
+ text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Overlay text protection */
+.overlay-text-protection {
+ position: relative;
+}
+
+.overlay-text-protection::before {
+ content: '';
+ position: absolute;
+ inset: 0;
+ background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+ pointer-events: none;
+ z-index: 1;
+}
+
+.overlay-text-protection>* {
+ position: relative;
+ z-index: 2;
+}
+
+/* Improved color contrast utilities */
+.bg-readable-dark {
+ background-color: rgba(0, 0, 0, 0.7);
+}
+
+.bg-readable-light {
+ background-color: rgba(255, 255, 255, 0.95);
+}
+
+/* Button text readability */
+.btn-text-white {
+ color: #ffffff;
+ text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn-text-dark {
+ color: #1A237E;
+}
+
+/* Gradient text with fallback for readability */
+.gradient-text-readable {
+ background: linear-gradient(135deg, #FF6D00 0%, #FFD600 100%);
+ -webkit-background-clip: text;
+ background-clip: text;
+ color: transparent;
+ /* Fallback for browsers that don't support background-clip */
+ -webkit-text-fill-color: transparent;
+}
+
+/* Section heading styles */
+.section-heading {
+ color: #1A237E;
+ font-weight: 700;
+ line-height: 1.2;
+ letter-spacing: -0.02em;
+}
+
+.section-subheading {
+ color: #4b5563;
+ line-height: 1.6;
+}
+
+/* Pill/tag text */
+.pill-text {
+ font-size: 0.75rem;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.1em;
+}
+
+/* Navigation text improvements */
+.nav-link-text {
+ font-weight: 500;
+ transition: color 0.2s ease;
+}
+
+.nav-link-text:hover {
+ color: #FF6D00;
+}
+
+/* Improved input placeholder contrast */
+input::placeholder,
+textarea::placeholder {
+ color: #9ca3af;
+ opacity: 1;
+}
+
+/* Selection styling for better readability */
+::selection {
+ background-color: #FF6D00;
+ color: #ffffff;
+}
+
+::-moz-selection {
+ background-color: #FF6D00;
+ color: #ffffff;
+}
+
+/* ========================================
+ RESPONSIVE DESIGN
+======================================== */
+
+/* Mobile First Base (xs screens < 640px) */
+@media (max-width: 639px) {
+
+ /* Hero Section */
+ .hero-with-bg {
+ min-height: 100vh;
+ padding-top: 5rem;
+ }
+
+ /* Ensure hero glow doesn't push content on mobile */
+ .hero-glow {
+ position: absolute !important;
+ }
+
+ /* Reduce heading sizes on mobile */
+ h1,
+ .text-5xl,
+ .text-6xl,
+ .text-7xl {
+ font-size: 2rem !important;
+ line-height: 1.3 !important;
+ }
+
+ h2,
+ .text-4xl {
+ font-size: 1.75rem !important;
+ }
+
+ h3,
+ .text-3xl {
+ font-size: 1.5rem !important;
+ }
+
+ /* Mobile Hero Section Text - More spread out and readable */
+ /* Targets hero sections on program pages (not Index which uses .hero-content) */
+ .hero-with-bg .container {
+ padding-left: 1rem !important;
+ padding-right: 1rem !important;
+ max-width: 100% !important;
+ width: 100% !important;
+ display: flex !important;
+ flex-direction: column !important;
+ align-items: center !important;
+ justify-content: center !important;
+ text-align: center !important;
+ margin-left: 0 !important;
+ margin-right: 0 !important;
+ left: 0 !important;
+ right: 0 !important;
+ position: relative !important;
+ }
+
+ /* Mobile hero text container with background for better readability */
+ .hero-with-bg .container>* {
+ text-align: center !important;
+ display: block !important;
+ margin-left: auto !important;
+ margin-right: auto !important;
+ }
+
+ .hero-title {
+ font-size: 1.875rem !important;
+ line-height: 1.3 !important;
+ margin-bottom: 1.25rem !important;
+ margin-left: auto !important;
+ margin-right: auto !important;
+ letter-spacing: -0.02em;
+ max-width: calc(100% - 0.5rem) !important;
+ width: auto !important;
+ text-align: center !important;
+ padding: 0.75rem 1rem;
+ background: rgba(0, 0, 0, 0.3);
+ border-radius: 0.75rem;
+ backdrop-filter: blur(4px);
+ -webkit-backdrop-filter: blur(4px);
+ box-sizing: border-box;
+ display: block !important;
+ }
+
+ .hero-subtitle {
+ font-size: 1rem !important;
+ line-height: 1.75 !important;
+ margin-bottom: 1.5rem !important;
+ margin-left: auto !important;
+ margin-right: auto !important;
+ max-width: calc(100% - 0.5rem) !important;
+ width: auto !important;
+ padding: 0.75rem 1rem;
+ text-align: center !important;
+ background: rgba(0, 0, 0, 0.25);
+ border-radius: 0.75rem;
+ backdrop-filter: blur(4px);
+ -webkit-backdrop-filter: blur(4px);
+ box-sizing: border-box;
+ display: block !important;
+ }
+
+ .hero-badge {
+ font-size: 0.75rem !important;
+ padding: 0.5rem 1rem !important;
+ margin-bottom: 1rem !important;
+ }
+
+ .hero-cta {
+ gap: 1rem !important;
+ margin-top: 1.5rem !important;
+ width: 100% !important;
+ justify-content: center;
+ }
+
+ .hero-cta a {
+ padding: 0.875rem 1.5rem !important;
+ font-size: 0.9rem !important;
+ width: 100%;
+ text-align: center;
+ }
+
+ /* Hero layout */
+ .lg\:grid-cols-2 {
+ grid-template-columns: 1fr !important;
+ }
+
+ /* Button sizing */
+ .btn-glow,
+ a.btn-glow {
+ padding: 0.75rem 1.5rem !important;
+ font-size: 0.875rem !important;
+ }
+
+ /* Card spacing */
+ .glass-card,
+ .glass-card-dark {
+ padding: 1.25rem !important;
+ }
+
+ /* Navbar */
+ .glass-nav {
+ margin: 0.5rem;
+ border-radius: 1rem;
+ }
+
+ /* Footer grid */
+ footer .grid {
+ grid-template-columns: 1fr !important;
+ gap: 2rem;
+ }
+
+ /* Hide cursor glow on mobile */
+ .cursor-glow {
+ display: none;
+ }
+
+ /* STEM-Bot section */
+ .lg\:flex-row {
+ flex-direction: column !important;
+ }
+
+ /* Interest buttons grid */
+ #interests {
+ grid-template-columns: repeat(2, 1fr) !important;
+ gap: 0.75rem;
+ }
+
+ #interests button {
+ padding: 0.75rem !important;
+ }
+
+ #interests .w-14 {
+ width: 2.5rem !important;
+ height: 2.5rem !important;
+ }
+
+ /* Stats grid */
+ .grid {
+ gap: 1rem;
+ }
+
+ /* Section padding */
+ section {
+ padding-top: 3rem;
+ padding-bottom: 3rem;
+ }
+
+ /* Container padding */
+ .container {
+ padding-left: 1rem;
+ padding-right: 1rem;
+ }
+}
+
+/* Tablet (sm to md: 640px - 1023px) */
+@media (min-width: 640px) and (max-width: 1023px) {
+
+ h1,
+ .text-5xl,
+ .text-6xl {
+ font-size: 2.5rem !important;
+ }
+
+ h2,
+ .text-4xl {
+ font-size: 2rem !important;
+ }
+
+ /* Two column grids on tablet */
+ .md\:grid-cols-4 {
+ grid-template-columns: repeat(2, 1fr) !important;
+ }
+
+ /* Hero visual section */
+ .lg\:w-1\/2 {
+ width: 100% !important;
+ }
+
+ /* Feature cards */
+ #interests {
+ grid-template-columns: repeat(4, 1fr);
+ }
+
+ /* Section padding */
+ section {
+ padding-top: 4rem;
+ padding-bottom: 4rem;
+ }
+}
+
+/* Desktop (lg: 1024px and up) */
+@media (min-width: 1024px) {
+
+ /* Ensure proper spacing on large screens */
+ .container {
+ max-width: 1280px;
+ }
+
+ /* Hero section enhancements */
+ .hero-with-bg {
+ min-height: 100vh;
+ }
+
+ /* Proper grid layouts */
+ .lg\:grid-cols-2 {
+ grid-template-columns: repeat(2, 1fr);
+ }
+
+ .lg\:grid-cols-4 {
+ grid-template-columns: repeat(4, 1fr);
+ }
+}
+
+/* Extra Large Desktop (xl: 1280px+) */
+@media (min-width: 1280px) {
+ .container {
+ max-width: 1400px;
+ }
+
+ /* Larger headings on big screens */
+ h1 {
+ font-size: 4rem;
+ }
+
+ h2 {
+ font-size: 3rem;
+ }
+}
+
+/* Touch device improvements */
+@media (hover: none) {
+
+ /* Remove hover effects on touch devices */
+ .hover\:scale-105:hover,
+ .hover\:-translate-y-2:hover {
+ transform: none;
+ }
+
+ /* Larger touch targets */
+ button,
+ a,
+ .interest-btn,
+ .exp-btn {
+ min-height: 44px;
+ }
+}
+
+/* Print styles */
+@media print {
+
+ .page-loader,
+ .scroll-progress,
+ .cursor-glow,
+ .hero-glow,
+ nav {
+ display: none !important;
+ }
+
+ body {
+ background: white;
+ color: black;
+ }
+}
+
+/* ========================================
+ FLOATING WHATSAPP CTA BUTTON
+======================================== */
+.whatsapp-float {
+ position: fixed;
+ bottom: 30px;
+ right: 30px;
+ width: 60px;
+ height: 60px;
+ background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ box-shadow:
+ 0 4px 20px rgba(37, 211, 102, 0.4),
+ 0 8px 32px rgba(0, 0, 0, 0.2);
+ z-index: 9000;
+ cursor: pointer;
+ transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+ animation: whatsappPulse 2s ease-in-out infinite;
+}
+
+.whatsapp-float:hover {
+ transform: scale(1.1) translateY(-5px);
+ box-shadow:
+ 0 8px 30px rgba(37, 211, 102, 0.5),
+ 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.whatsapp-float:active {
+ transform: scale(0.95);
+}
+
+.whatsapp-float svg {
+ width: 32px;
+ height: 32px;
+ fill: white;
+}
+
+.whatsapp-float .tooltip {
+ position: absolute;
+ right: 75px;
+ background: #1A237E;
+ color: white;
+ padding: 10px 16px;
+ border-radius: 8px;
+ font-size: 14px;
+ font-weight: 600;
+ white-space: nowrap;
+ opacity: 0;
+ visibility: hidden;
+ transition: all 0.3s ease;
+ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.whatsapp-float .tooltip::after {
+ content: '';
+ position: absolute;
+ right: -8px;
+ top: 50%;
+ transform: translateY(-50%);
+ border-left: 8px solid #1A237E;
+ border-top: 6px solid transparent;
+ border-bottom: 6px solid transparent;
+}
+
+.whatsapp-float:hover .tooltip {
+ opacity: 1;
+ visibility: visible;
+ right: 80px;
+}
+
+@keyframes whatsappPulse {
+
+ 0%,
+ 100% {
+ box-shadow:
+ 0 4px 20px rgba(37, 211, 102, 0.4),
+ 0 8px 32px rgba(0, 0, 0, 0.2),
+ 0 0 0 0 rgba(37, 211, 102, 0.4);
+ }
+
+ 50% {
+ box-shadow:
+ 0 4px 20px rgba(37, 211, 102, 0.4),
+ 0 8px 32px rgba(0, 0, 0, 0.2),
+ 0 0 0 15px rgba(37, 211, 102, 0);
+ }
+}
+
+/* Mobile adjustments for WhatsApp button */
+@media (max-width: 768px) {
+ .whatsapp-float {
+ bottom: 20px;
+ right: 20px;
+ width: 55px;
+ height: 55px;
+ }
+
+ .whatsapp-float svg {
+ width: 28px;
+ height: 28px;
+ }
+
+ .whatsapp-float .tooltip {
+ display: none;
+ }
+}
+
+/* =========================================
+ Modal Styles
+ ========================================= */
+.modal-backdrop {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: rgba(15, 23, 42, 0.9);
+ backdrop-filter: blur(8px);
+ z-index: 1000;
+ opacity: 0;
+ visibility: hidden;
+ transition: all 0.3s ease;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ padding: 1rem;
+}
+
+.modal-backdrop.active {
+ opacity: 1;
+ visibility: visible;
+}
+
+.modal-content {
+ background: white;
+ border-radius: 1.5rem;
+ width: 100%;
+ max-width: 800px;
+ max-height: 90vh;
+ overflow-y: auto;
+ position: relative;
+ transform: scale(0.9);
+ opacity: 0;
+ transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+ box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.modal-backdrop.active .modal-content {
+ transform: scale(1);
+ opacity: 1;
+}
+
+.modal-close {
+ position: absolute;
+ top: 1rem;
+ right: 1rem;
+ background: white;
+ border-radius: 50%;
+ width: 2.5rem;
+ height: 2.5rem;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ cursor: pointer;
+ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+ transition: transform 0.2s ease;
+ z-index: 10;
+}
+
+.modal-close:hover {
+ transform: rotate(90deg);
+ color: #FF6D00;
+}
+
+.modal-body {
+ padding: 0;
+}
+
+.modal-image-container {
+ height: 400px;
+ width: 100%;
+ overflow: hidden;
+ position: relative;
+ background: #f1f5f9;
+}
+
+.modal-image {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+}
+
+.modal-details {
+ padding: 2.5rem;
+}
+
+.modal-header {
+ margin-bottom: 1.5rem;
+ padding-bottom: 1.5rem;
+ border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-title {
+ font-size: 2rem;
+ font-weight: 700;
+ color: #1A237E;
+ margin-bottom: 0.5rem;
+ line-height: 1.2;
+}
+
+.modal-meta {
+ display: flex;
+ align-items: center;
+ gap: 1rem;
+ color: #64748b;
+ font-size: 0.875rem;
+ font-weight: 500;
+}
+
+.modal-description {
+ font-size: 1.125rem;
+ line-height: 1.7;
+ color: #475569;
+ margin-bottom: 2rem;
+}
+
+.modal-tags {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 0.5rem;
+ margin-bottom: 2rem;
+}
+
+.modal-tag {
+ background: #f1f5f9;
+ color: #475569;
+ padding: 0.5rem 1rem;
+ border-radius: 9999px;
+ font-size: 0.875rem;
+ font-weight: 600;
+}
+
+.modal-footer {
+ display: flex;
+ justify-content: flex-end;
+}
+
+.modal-btn {
+ background: #FF6D00;
+ color: white;
+ padding: 0.75rem 2rem;
+ border-radius: 9999px;
+ font-weight: 700;
+ transition: all 0.3s ease;
+}
+
+.modal-btn:hover {
+ background: #E65100;
+ transform: translateY(-2px);
+ box-shadow: 0 10px 15px -3px rgba(255, 109, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+ .modal-image-container {
+ height: 250px;
+ }
+
+ .modal-details {
+ padding: 1.5rem;
+ }
+
+ .modal-title {
+ font-size: 1.5rem;
+ }
+}
+
+/* =========================================
+ Index.html Hero Helpers
+ ========================================= */
+.hero-content-overlap {
+ margin-left: -149%;
+}
+
+/* Mobile adjustments for WhatsApp button */
+@media (max-width: 768px) {
+ .whatsapp-float {
+ bottom: 20px;
+ right: 20px;
+ width: 55px;
+ height: 55px;
+ }
+
+ .whatsapp-float svg {
+ width: 28px;
+ height: 28px;
+ }
+
+ .whatsapp-float .tooltip {
+ display: none;
+ }
+}
+
+/* =========================================
+ Modal Styles
+ ========================================= */
+.modal-backdrop {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: rgba(15, 23, 42, 0.9);
+ backdrop-filter: blur(8px);
+ z-index: 1000;
+ opacity: 0;
+ visibility: hidden;
+ transition: all 0.3s ease;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ padding: 1rem;
+}
+
+.modal-backdrop.active {
+ opacity: 1;
+ visibility: visible;
+}
+
+.modal-content {
+ background: white;
+ border-radius: 1.5rem;
+ width: 100%;
+ max-width: 800px;
+ max-height: 90vh;
+ overflow-y: auto;
+ position: relative;
+ transform: scale(0.9);
+ opacity: 0;
+ transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+ box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.modal-backdrop.active .modal-content {
+ transform: scale(1);
+ opacity: 1;
+}
+
+.modal-close {
+ position: absolute;
+ top: 1rem;
+ right: 1rem;
+ background: white;
+ border-radius: 50%;
+ width: 2.5rem;
+ height: 2.5rem;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ cursor: pointer;
+ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+ transition: transform 0.2s ease;
+ z-index: 10;
+}
+
+.modal-close:hover {
+ transform: rotate(90deg);
+ color: #FF6D00;
+}
+
+.modal-body {
+ padding: 0;
+}
+
+.modal-image-container {
+ height: 400px;
+ width: 100%;
+ overflow: hidden;
+ position: relative;
+ background: #f1f5f9;
+}
+
+.modal-image {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+}
+
+.modal-details {
+ padding: 2.5rem;
+}
+
+.modal-header {
+ margin-bottom: 1.5rem;
+ padding-bottom: 1.5rem;
+ border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-title {
+ font-size: 2rem;
+ font-weight: 700;
+ color: #1A237E;
+ margin-bottom: 0.5rem;
+ line-height: 1.2;
+}
+
+.modal-meta {
+ display: flex;
+ align-items: center;
+ gap: 1rem;
+ color: #64748b;
+ font-size: 0.875rem;
+ font-weight: 500;
+}
+
+.modal-description {
+ font-size: 1.125rem;
+ line-height: 1.7;
+ color: #475569;
+ margin-bottom: 2rem;
+}
+
+.modal-tags {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 0.5rem;
+ margin-bottom: 2rem;
+}
+
+.modal-tag {
+ background: #f1f5f9;
+ color: #475569;
+ padding: 0.5rem 1rem;
+ border-radius: 9999px;
+ font-size: 0.875rem;
+ font-weight: 600;
+}
+
+.modal-footer {
+ display: flex;
+ justify-content: flex-end;
+}
+
+.modal-btn {
+ background: #FF6D00;
+ color: white;
+ padding: 0.75rem 2rem;
+ border-radius: 9999px;
+ font-weight: 700;
+ transition: all 0.3s ease;
+}
+
+.modal-btn:hover {
+ background: #E65100;
+ transform: translateY(-2px);
+ box-shadow: 0 10px 15px -3px rgba(255, 109, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+ .modal-image-container {
+ height: 250px;
+ }
+
+ .modal-details {
+ padding: 1.5rem;
+ }
+
+ .modal-title {
+ font-size: 1.5rem;
+ }
+}
+
+/* =========================================
+ Index.html Hero Helpers
+ ========================================= */
+.hero-content-overlap {
+ margin-left: -149%;
+ margin-top: 10%;
+ width: 200%;
+}
+
+.hero-visual-overlap {
+ margin-left: -70%;
+}
+
+@media (max-width: 1024px) {
+ .hero-content-overlap {
+ margin-left: 0;
+ margin-top: 0;
+ width: 100%;
+ }
+
+ .hero-visual-overlap {
+ margin-left: 0;
+ }
+}
+
+/* =========================================
+ Glassmorphism UI Utilities (Light Theme)
+ ========================================= */
+:root {
+ --glass-bg-dark: rgba(255, 255, 255, 0.75);
+ --glass-bg-light: rgba(255, 255, 255, 0.65);
+ --glass-border: rgba(26, 35, 50, 0.1);
+ --glass-shadow: 0 8px 32px 0 rgba(26, 35, 50, 0.12);
+ --glass-blur: 14px;
+}
+
+.glass-panel {
+ background: rgba(255, 255, 255, 0.82);
+ backdrop-filter: blur(var(--glass-blur));
+ -webkit-backdrop-filter: blur(var(--glass-blur));
+ border: 1px solid rgba(26, 35, 50, 0.1);
+ box-shadow: 0 4px 24px 0 rgba(26, 35, 50, 0.08), 0 1px 4px rgba(26, 35, 50, 0.06);
+ border-radius: 1rem;
+}
+
+.glass-panel-light {
+ background: rgba(255, 255, 255, 0.6);
+ backdrop-filter: blur(var(--glass-blur));
+ -webkit-backdrop-filter: blur(var(--glass-blur));
+ border: 1px solid rgba(26, 35, 50, 0.08);
+ box-shadow: 0 4px 24px 0 rgba(26, 35, 50, 0.06);
+ border-radius: 1rem;
+}
+
+.glass-panel-hover {
+ transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-panel-hover:hover {
+ transform: translateY(-4px);
+ box-shadow: 0 12px 40px 0 rgba(26, 35, 50, 0.14);
+ border-color: rgba(244, 96, 12, 0.25);
+ background: #d4520a;
+ color: white;
+ transform: translateY(-3px) translateZ(0);
+ box-shadow: 0 8px 28px rgba(244, 96, 12, 0.42);
+}
+
+.btn-pill-outline {
+ background: transparent;
+ color: #1A237E;
+ border: 2px solid #1A237E;
+ border-radius: var(--radius-pill, 9999px);
+ padding: 1rem 2.5rem;
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.7rem;
+ font-weight: 600;
+ letter-spacing: 0.12em;
+ text-transform: uppercase;
+ cursor: pointer;
+ text-decoration: none;
+ display: inline-block;
+ /* Prevent flicker: composite-only properties */
+ -webkit-backface-visibility: hidden;
+ backface-visibility: hidden;
+ transform: translateZ(0);
+ transition: border-color 0.22s ease, background 0.22s ease, color 0.22s ease, transform 0.22s ease;
+}
+.btn-pill-outline:hover {
+ border-color: #1A237E;
+ background: #1A237E;
+ color: white;
+ transform: translateY(-3px) translateZ(0);
+}
+
+/* ── TAG CHIPS ─────────────────────────────────────────────────── */
+.tag-chip {
+ display: inline-block;
+ background: rgba(7, 13, 31, 0.07);
+ border-radius: 9999px;
+ padding: 4px 10px;
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.6rem;
+ font-weight: 500;
+ letter-spacing: 0.15em;
+ text-transform: uppercase;
+ color: var(--secondary, #0a0a0a);
+ white-space: nowrap;
+}
+.tag-chip--dark {
+ background: rgba(245, 240, 232, 0.1);
+ color: #1f2937;
+}
+.tag-chips-row {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 6px;
+ margin-top: 1rem;
+}
+
+/* ── WARM FEATURE CARD ─────────────────────────────────────────── */
+.card-warm {
+ background: #ffffff;
+ border-radius: var(--radius-xl, 24px);
+ border: 1px solid rgba(0, 0, 0, 0.07);
+ padding: 2rem 1.75rem;
+ box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+ transition:
+ box-shadow 0.4s var(--ease-spring, ease),
+ transform 0.4s var(--ease-spring, ease);
+ position: relative;
+}
+.card-warm:hover {
+ box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+ transform: translateY(-6px);
+}
+.card-warm__icon {
+ width: 44px;
+ height: 44px;
+ border-right: 3px solid var(--tertiary, #f4600c);
+ border-bottom: 3px solid var(--tertiary, #f4600c);
+ border-radius: 0 0 6px 0;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ margin-bottom: 1.25rem;
+ font-size: 1.3rem;
+}
+.card-warm__title {
+ font-family: 'Nunito', sans-serif;
+ font-size: clamp(18px, 2vw, 24px);
+ font-weight: 700;
+ color: var(--secondary, #0a0a0a);
+ letter-spacing: -0.02em;
+ margin-bottom: 0.6rem;
+ line-height: 1.15;
+}
+.card-warm__text {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.82rem;
+ line-height: 1.7;
+ color: var(--muted, #6B7280);
+}
+
+/* ── METADATA CARD ─────────────────────────────────────────────── */
+.card-metadata {
+ background: #ffffff;
+ border-radius: 8px;
+ border: 1.5px solid var(--secondary, #0a0a0a);
+ padding: 2rem;
+}
+.card-metadata__quote {
+ font-family: 'Nunito', sans-serif;
+ font-size: clamp(16px, 1.5vw, 22px);
+ font-weight: 700;
+ color: var(--secondary, #0a0a0a);
+ letter-spacing: -0.02em;
+ margin-bottom: 0.75rem;
+ line-height: 1.2;
+}
+.card-metadata__text {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.82rem;
+ line-height: 1.65;
+ color: var(--muted, #6B7280);
+ margin-bottom: 1rem;
+}
+.card-metadata__divider {
+ border: none;
+ border-top: 1px solid rgba(0, 0, 0, 0.1);
+ margin: 1rem 0;
+}
+.card-metadata__footer {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ margin-top: 1rem;
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.65rem;
+ letter-spacing: 0.12em;
+ text-transform: uppercase;
+ color: var(--muted, #6B7280);
+}
+
+/* ── ORBIT AVATAR GROUP ────────────────────────────────────────── */
+.orbit-group {
+ position: relative;
+ width: 320px;
+ height: 320px;
+ flex-shrink: 0;
+}
+.orbit-ring {
+ position: absolute;
+ border-radius: 50%;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ animation: orbit-spin linear infinite;
+}
+.orbit-ring--lg {
+ width: 100%;
+ height: 100%;
+ border: 1.5px solid var(--lilac-soft, #D9D2E9);
+ animation-duration: 30s;
+}
+.orbit-ring--md {
+ width: 72%;
+ height: 72%;
+ border: 1.5px dashed rgba(229, 178, 42, 0.35);
+ animation-duration: 22s;
+ animation-direction: reverse;
+}
+.orbit-ring--sm {
+ width: 46%;
+ height: 46%;
+ border: 1.5px solid var(--gold-accent, #E5B22A);
+ animation-duration: 16s;
+}
+@keyframes orbit-spin {
+ from { transform: translate(-50%, -50%) rotate(0deg); }
+ to  { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.orbit-avatar {
+ position: absolute;
+ width: 52px;
+ height: 52px;
+ border-radius: 50%;
+ border: 2.5px solid #ffffff;
+ overflow: hidden;
+ box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+ object-fit: cover;
+ z-index: 2;
+}
+.orbit-avatar--1 { top: 10%; left: 5%; }
+.orbit-avatar--2 { top: 55%; left: 80%; }
+.orbit-avatar--3 { top: 80%; left: 25%; }
+.orbit-center-dot {
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ width: 14px;
+ height: 14px;
+ background: var(--tertiary, #f4600c);
+ border-radius: 50%;
+ z-index: 3;
+ animation: pulse-ring 2.5s ease-in-out infinite;
+}
+@media (max-width: 768px) {
+ .orbit-group { display: none; }
+}
+
+/* ── CTA BAND ──────────────────────────────────────────────────── */
+.cta-band {
+ background: var(--primary, #070d1f);
+ padding: 7rem 5vw;
+ text-align: center;
+ position: relative;
+ overflow: hidden;
+}
+.cta-band::before {
+ /* Subtle radial glow behind the CTA text */
+ content: '';
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ width: 600px;
+ height: 600px;
+ background: radial-gradient(circle, rgba(229,178,42,0.08) 0%, transparent 70%);
+ pointer-events: none;
+}
+.cta-band__eyebrow {
+ display: block;
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.7rem;
+ font-weight: 500;
+ letter-spacing: 0.22em;
+ text-transform: uppercase;
+ color: var(--gold-accent, #E5B22A);
+ margin-bottom: 1.5rem;
+}
+.cta-band__heading {
+ font-family: 'Nunito', sans-serif;
+ font-size: clamp(40px, 6vw, 88px);
+ font-weight: 700;
+ letter-spacing: -0.03em;
+ line-height: 0.95;
+ color: #1f2937;
+ margin-bottom: 1.25rem;
+}
+.cta-band__subtext {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.9rem;
+ line-height: 1.7;
+ color: rgba(245, 240, 232, 0.60);
+ max-width: 520px;
+ margin: 0 auto 2.75rem;
+}
+.cta-band__actions {
+ display: flex;
+ gap: 1.25rem;
+ justify-content: center;
+ flex-wrap: wrap;
+ position: relative;
+ z-index: 1;
+}
+
+/* ── PROGRESS BAR (Testimonial Rotator) ────────────────────────── */
+.progress-bar-row {
+ display: flex;
+ gap: 6px;
+ margin-top: 1.75rem;
+}
+.progress-bar-item {
+ height: 3px;
+ flex: 1;
+ background: rgba(0, 0, 0, 0.12);
+ border-radius: 9999px;
+ overflow: hidden;
+ position: relative;
+ cursor: pointer;
+}
+.progress-bar-item::after {
+ content: '';
+ position: absolute;
+ inset: 0;
+ background: var(--gold-accent, #E5B22A);
+ width: 0%;
+ border-radius: 9999px;
+ transition: none;
+}
+.progress-bar-item.is-active::after {
+ animation: bar-fill var(--rotate-interval, 4500ms) linear forwards;
+}
+.progress-bar-item.is-done::after {
+ width: 100%;
+}
+.testimonial-rotator.is-paused .progress-bar-item.is-active::after {
+ animation-play-state: paused;
+}
+@keyframes bar-fill {
+ from { width: 0%; }
+ to  { width: 100%; }
+}
+
+/* ── TESTIMONIAL ROTATOR ───────────────────────────────────────── */
+.testimonial-rotator {
+ overflow: hidden;
+ position: relative;
+ border-radius: 16px;
+}
+.testimonial-track {
+ display: flex;
+ transition: transform 0.55s var(--ease-out-expo, ease);
+ will-change: transform;
+}
+.testimonial-card {
+ min-width: 100%;
+ background: var(--teal-soft, #A2DCE0);
+ border-radius: 16px;
+ padding: 2.5rem 2rem;
+ box-sizing: border-box;
+}
+.testimonial-card--alt {
+ background: var(--cream-warm, #FFF8EE);
+}
+.testimonial-card--alt 2 {
+ background: var(--cream-lilac, #F5F2FA);
+}
+.testimonial-header {
+ display: flex;
+ align-items: center;
+ gap: 1rem;
+ margin-bottom: 1.25rem;
+}
+.testimonial-avatar {
+ width: 52px;
+ height: 52px;
+ border-radius: 50%;
+ object-fit: cover;
+ border: 2px solid rgba(7,13,31,0.15);
+ flex-shrink: 0;
+ background: var(--primary, #070d1f);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-family: 'Nunito', sans-serif;
+ font-weight: 700;
+ font-size: 1.1rem;
+ color: #1f2937;
+}
+.testimonial-name {
+ font-family: 'Nunito', sans-serif;
+ font-size: 1.1rem;
+ font-weight: 700;
+ color: var(--secondary, #0a0a0a);
+ letter-spacing: -0.02em;
+ margin: 0;
+}
+.testimonial-role {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.65rem;
+ letter-spacing: 0.12em;
+ text-transform: uppercase;
+ color: var(--muted, #6B7280);
+ margin: 2px 0 0;
+}
+.testimonial-quote {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.88rem;
+ line-height: 1.75;
+ color: var(--secondary, #0a0a0a);
+ font-style: italic;
+ margin-bottom: 1.25rem;
+ border-left: 3px solid var(--tertiary, #f4600c);
+ padding-left: 1rem;
+}
+
+/* ── EDITORIAL HIGHLIGHT UNDERLINE ─────────────────────────────── */
+.editorial-highlight {
+ position: relative;
+ display: inline-block;
+ white-space: nowrap;
+}
+.editorial-highlight svg {
+ position: absolute;
+ bottom: -10px;
+ left: 0;
+ width: 100%;
+ height: 16px;
+ overflow: visible;
+ pointer-events: none;
+ aria-hidden: true;
+}
+.editorial-highlight svg path {
+ stroke: var(--gold-accent, #E5B22A);
+ stroke-width: 3;
+ fill: none;
+ stroke-linecap: round;
+ stroke-dasharray: 400;
+ stroke-dashoffset: 400;
+ transition: stroke-dashoffset 0.9s var(--ease-out-expo, ease) 0.4s;
+}
+.editorial-highlight.sr-visible svg path,
+.editorial-highlight.is-visible svg path {
+ stroke-dashoffset: 0;
+}
+
+/* ── CONNECTOR PATH SVG ────────────────────────────────────────── */
+.connector-path-wrap {
+ position: relative;
+ z-index: 0;
+}
+.connector-svg {
+ position: absolute;
+ inset: 0;
+ width: 100%;
+ height: 100%;
+ pointer-events: none;
+ z-index: 0;
+ overflow: visible;
+}
+.connector-svg path {
+ stroke: var(--gold-accent, #E5B22A);
+ stroke-width: 2;
+ stroke-dasharray: 6 8;
+ fill: none;
+ filter: drop-shadow(0 2px 6px rgba(229,178,42,0.2));
+ stroke-dashoffset: 1200;
+ transition: stroke-dashoffset 1.6s var(--ease-out-expo, ease) 0.3s;
+}
+.connector-svg.is-visible path {
+ stroke-dashoffset: 0;
+}
+.connector-path-wrap > * {
+ position: relative;
+ z-index: 1;
+}
+@media (max-width: 1024px) {
+ .connector-svg { display: none; }
+}
+
+/* ── STEP ACCORDION SECTION ────────────────────────────────────── */
+.step-accordion-section {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 4rem;
+ align-items: start;
+}
+@media (max-width: 1024px) {
+ .step-accordion-section {
+ grid-template-columns: 1fr;
+ }
+ .step-canvas-wrap { display: none; }
+}
+.step-accordion {
+ display: flex;
+ flex-direction: column;
+ gap: 0.25rem;
+}
+.step-item {
+ border-left: 3px solid transparent;
+ padding: 1.25rem 1.5rem;
+ cursor: pointer;
+ border-radius: 0 8px 8px 0;
+ transition: background 0.3s ease, border-color 0.3s ease;
+ user-select: none;
+}
+.step-item:hover {
+ background: rgba(229, 178, 42, 0.06);
+}
+.step-item.is-active {
+ background: var(--cream-warm, #FFF8EE);
+ border-left-color: var(--gold-accent, #E5B22A);
+}
+.step-item__number {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.62rem;
+ letter-spacing: 0.22em;
+ text-transform: uppercase;
+ color: var(--muted, #6B7280);
+ margin-bottom: 0.3rem;
+ display: block;
+}
+.step-item__title {
+ font-family: 'Nunito', sans-serif;
+ font-size: clamp(17px, 2vw, 26px);
+ font-weight: 700;
+ color: var(--secondary, #0a0a0a);
+ letter-spacing: -0.02em;
+ line-height: 1.15;
+ margin: 0;
+}
+.step-item__body {
+ max-height: 0;
+ overflow: hidden;
+ opacity: 0;
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.82rem;
+ line-height: 1.7;
+ color: var(--muted, #6B7280);
+ transition: max-height 0.45s ease-out, opacity 0.35s ease, padding-top 0.3s ease;
+ padding-top: 0;
+}
+.step-item.is-active .step-item__body {
+ max-height: 240px;
+ opacity: 1;
+ padding-top: 0.7rem;
+}
+.step-canvas-wrap {
+ position: sticky;
+ top: 120px;
+}
+.step-canvas {
+ width: 100%;
+ max-width: 460px;
+ aspect-ratio: 1 / 1;
+ border-radius: 20px;
+ background: var(--cream-warm, #FFF8EE);
+ display: block;
+ border: 1px solid rgba(229, 178, 42, 0.2);
+}
+
+/* ── ANIMATED WAVE DIVIDER ─────────────────────────────────────── */
+.divider-wave--animated {
+ overflow: hidden;
+ line-height: 0;
+ height: 80px;
+ position: relative;
+}
+.divider-wave--animated svg {
+ display: block;
+ width: 200%;
+ height: 100%;
+ animation: wave-drift 22s linear infinite;
+ position: absolute;
+ bottom: 0;
+ left: 0;
+}
+@keyframes wave-drift {
+ from { transform: translateX(0); }
+ to  { transform: translateX(-50%); }
+}
+
+/* ── SECTION SURFACE BACKGROUNDS ──────────────────────────────── */
+.section--dark  { background: var(--primary, #070d1f); }
+.section--cream  { background: var(--cream-base, #F9F9F7); }
+.section--cream-warm { background: var(--cream-warm, #FFF8EE); }
+.section--cream-sage { background: var(--cream-sage, #F2F6F2); }
+.section--cream-sky  { background: var(--cream-sky, #F0F6FF); }
+.section--cream-lilac{ background: var(--cream-lilac, #F5F2FA); }
+.section--neutral  { background: var(--neutral, #faf9f7); }
+
+/* Dark mode — all cream surfaces map to dark equivalents */
+[data-theme="dark"] .section--cream,
+[data-theme="dark"] .section--cream-warm,
+[data-theme="dark"] .section--cream-sage,
+[data-theme="dark"] .section--cream-sky,
+[data-theme="dark"] .section--cream-lilac,
+[data-theme="dark"] .section--neutral {
+ background: var(--bg-secondary, #1e293b);
+}
+[data-theme="dark"] .card-warm {
+ background: var(--bg-tertiary, #334155);
+ border-color: var(--border-color, rgba(255,255,255,0.1));
+ box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+[data-theme="dark"] .card-warm__title {
+ color: var(--text-primary, #f1f5f9);
+}
+[data-theme="dark"] .testimonial-card {
+ background: var(--bg-tertiary, #334155);
+}
+[data-theme="dark"] .testimonial-name,
+[data-theme="dark"] .testimonial-quote {
+ color: var(--text-primary, #f1f5f9);
+}
+[data-theme="dark"] .step-item.is-active {
+ background: rgba(229, 178, 42, 0.08);
+}
+[data-theme="dark"] .step-item__title {
+ color: var(--text-primary, #f1f5f9);
+}
+[data-theme="dark"] .step-canvas {
+ background: var(--bg-secondary, #1e293b);
+}
+[data-theme="dark"] .card-metadata {
+ background: var(--bg-secondary, #1e293b);
+ border-color: var(--border-color, rgba(255,255,255,0.1));
+}
+[data-theme="dark"] .card-metadata__quote,
+[data-theme="dark"] .card-metadata__text {
+ color: var(--text-primary, #f1f5f9);
+}
+[data-theme="dark"] .tag-chip {
+ background: rgba(245,240,232,0.08);
+ color: var(--text-primary, #f1f5f9);
+}
+
+/* ── STATS BAND ────────────────────────────────────────────────── */
+.stats-band {
+ background: var(--cream-warm, #FFF8EE);
+ padding: 5rem 5vw;
+}
+.stats-band__grid {
+ display: grid;
+ grid-template-columns: repeat(4, 1fr);
+ gap: 2rem;
+ text-align: center;
+}
+@media (max-width: 768px) {
+ .stats-band__grid {
+ grid-template-columns: repeat(2, 1fr);
+ }
+}
+.stats-band__num {
+ font-family: 'Nunito', sans-serif;
+ font-size: clamp(48px, 7vw, 100px);
+ font-weight: 700;
+ letter-spacing: -0.04em;
+ line-height: 1;
+ color: var(--primary, #070d1f);
+ margin-bottom: 0.4rem;
+}
+.stats-band__num span {
+ color: var(--tertiary, #f4600c);
+}
+.stats-band__label {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.7rem;
+ letter-spacing: 0.18em;
+ text-transform: uppercase;
+ color: var(--muted, #6B7280);
+}
+
+/* ── HOW IT WORKS SECTION ──────────────────────────────────────── */
+.how-it-works {
+ background: var(--neutral, #faf9f7);
+ padding: 8rem 5vw;
+}
+.how-it-works__header {
+ margin-bottom: 4rem;
+}
+.how-it-works__eyebrow {
+ display: block;
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.68rem;
+ font-weight: 500;
+ letter-spacing: 0.22em;
+ text-transform: uppercase;
+ color: var(--tertiary, #f4600c);
+ margin-bottom: 1rem;
+}
+.how-it-works__title {
+ font-family: 'Nunito', sans-serif;
+ font-size: clamp(36px, 5vw, 72px);
+ font-weight: 700;
+ letter-spacing: -0.03em;
+ line-height: 0.95;
+ color: var(--secondary, #0a0a0a);
+ max-width: 680px;
+}
+
+/* ── TESTIMONIALS SECTION ──────────────────────────────────────── */
+.testimonials-section {
+ background: var(--cream-sage, #F2F6F2);
+ padding: 8rem 5vw;
+}
+.testimonials-section__header {
+ margin-bottom: 3rem;
+}
+.testimonials-section__eyebrow {
+ display: block;
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.68rem;
+ font-weight: 500;
+ letter-spacing: 0.22em;
+ text-transform: uppercase;
+ color: var(--tertiary, #f4600c);
+ margin-bottom: 0.75rem;
+}
+.testimonials-section__title {
+ font-family: 'Nunito', sans-serif;
+ font-size: clamp(28px, 4vw, 54px);
+ font-weight: 700;
+ letter-spacing: -0.03em;
+ line-height: 1;
+ color: var(--secondary, #0a0a0a);
+}
+
+/* ── FLOW GRID (Connector Path section) ────────────────────────── */
+.flow-grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 2rem;
+ position: relative;
+}
+@media (max-width: 768px) {
+ .flow-grid {
+ grid-template-columns: 1fr;
+ }
+}
+.flow-card {
+ /* Inherits .card-warm styles — add class="card-warm flow-card" */
+ z-index: 1;
+ position: relative;
+}
+/* =================================================================
+ LIGHT THEME & DARK MODE REMOVAL OVERRIDES (Nunito/DM Sans edition)
+ ================================================================= */
+
+/* Global Footer */
+.footer-editorial {
+  background: var(--chalk, #f5f0e8) !important;
+  color: var(--slate, #1a2332) !important;
+  border-top: 1px solid rgba(10, 10, 10, 0.1) !important;
+}
+
+.footer-brand-name {
+  color: var(--slate, #1a2332) !important;
+}
+
+.footer-brand-tag {
+  color: rgba(10, 10, 10, 0.6) !important;
+}
+
+.footer-col a {
+  color: rgba(10, 10, 10, 0.65) !important;
+}
+
+.footer-col a:hover {
+  color: var(--orange, #f4600c) !important;
+}
+
+.footer-legal {
+  color: rgba(10, 10, 10, 0.5) !important;
+}
+
+.footer-bottom a, .footer-bottom p {
+  color: var(--slate, #1a2332) !important;
+}
+
+.footer-bottom svg {
+  color: var(--slate, #1a2332) !important;
+}
+
+/* Final CTA Band */
+.cta-band {
+  background: var(--chalk, #f5f0e8) !important;
+  border-top: 1px solid rgba(10, 10, 10, 0.08) !important;
+}
+
+.cta-band__heading {
+  color: var(--slate, #1a2332) !important;
+}
+
+.cta-band__subtext {
+  color: rgba(10, 10, 10, 0.7) !important;
+}
+
+/* Global Navigation Strip Override */
+.nav-editorial {
+  mix-blend-mode: normal !important;
+  background: rgba(250, 249, 247, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(10, 10, 10, 0.06) !important;
+}
+
+.nav-editorial a,
+#main-nav a,
+#main-nav[style*="background"] a {
+  color: var(--slate, #1a2332) !important;
+}
+
+.nav-logo-editorial img,
+#main-nav img {
+  filter: none !important;
+}
+
+/* Custom Cursor Overrides */
+#cursor-ring {
+  border-color: var(--slate, #1a2332) !important;
+}
+#cursor-dot {
+  background-color: var(--orange, #f4600c) !important;
+}
+
+/* ── GLOBAL BRIGHT THEME OVERRIDES ─────────────────────────── */
+
+/* Force all dark sections to light cream/warm white */
+.section--dark,
+.showcase-directory,
+.timeline-section,
+.cta-section,
+[class*="bg-slate-900"],
+[class*="bg-slate-950"],
+[class*="bg-cosmic-blue"],
+[class*="bg-[#070d1f]"],
+[class*="bg-[#070D1F]"],
+[class*="bg-[#0a0a0a]"],
+[class*="bg-[#050508]"],
+section[class*="bg-slate-900"],
+section[class*="bg-cosmic-blue"],
+section[style*="background: #050508"],
+section[style*="background:#050508"],
+div[style*="background: #F3F4F6"],
+div[style*="background: #F3F4F6"] {
+  background-color: var(--warm-white, #faf9f7) !important;
+  background: var(--warm-white, #faf9f7) !important;
+  color: var(--slate, #1a2332) !important;
+  border-color: rgba(10, 10, 10, 0.08) !important;
+}
+
+/* Force all child text elements of overridden dark sections to be readable dark slate */
+[class*="bg-slate-9"] h1, [class*="bg-slate-9"] h2, [class*="bg-slate-9"] h3, [class*="bg-slate-9"] h4, [class*="bg-slate-9"] h5, [class*="bg-slate-9"] h6,
+[class*="bg-cosmic-blue"] h1, [class*="bg-cosmic-blue"] h2, [class*="bg-cosmic-blue"] h3, [class*="bg-cosmic-blue"] h4, [class*="bg-cosmic-blue"] h5, [class*="bg-cosmic-blue"] h6,
+.section--dark h1, .section--dark h2, .section--dark h3, .section--dark h4, .section--dark h5, .section--dark h6,
+.showcase-directory h1, .showcase-directory h2, .showcase-directory h3, .showcase-directory h4,
+.timeline-section h1, .timeline-section h2, .timeline-section h3, .timeline-section h4,
+.cta-section h1, .cta-section h2, .cta-section h3, .cta-section h4,
+[class*="bg-slate-9"] p, [class*="bg-cosmic-blue"] p, .section--dark p, .showcase-directory p, .timeline-section p, .cta-section p,
+[class*="bg-slate-9"] span, [class*="bg-cosmic-blue"] span, .section--dark span, .showcase-directory span, .timeline-section span, .cta-section span,
+[class*="bg-slate-9"] li, [class*="bg-cosmic-blue"] li, .section--dark li, .showcase-directory li, .timeline-section li, .cta-section li,
+[class*="bg-slate-9"] a, [class*="bg-cosmic-blue"] a, .section--dark a, .showcase-directory a, .timeline-section a, .cta-section a,
+[class*="bg-slate-9"] div, [class*="bg-cosmic-blue"] div, .section--dark div, .showcase-directory div, .timeline-section div, .cta-section div,
+[class*="bg-slate-9"] i, [class*="bg-cosmic-blue"] i, .section--dark i, .showcase-directory i, .timeline-section i, .cta-section i {
+  color: var(--slate, #1a2332) !important;
+}
+
+/* Handle opacity-based text classes — but NOT on buttons or colored-bg elements */
+section:not([class*="bg-indigo"]):not([class*="bg-orange"]):not([class*="bg-purple"]) > .text-white,
+div.bg-white .text-white,
+div.bg-gray-50 .text-white {
+  color: #1f2937!important;
+}
+
+/* Keep button/CTA white text intact */
+a[class*="bg-indigo"],
+a[class*="bg-orange"],
+a[class*="bg-purple"],
+button[class*="bg-indigo"],
+button[class*="bg-orange"],
+button[class*="bg-purple"],
+.btn-primary-raw,
+.mnav-enroll,
+a[style*="background:var(--orange)"],
+a[style*="background: var(--orange)"] {
+  color: white !important;
+}
+
+
+/* Force details lists and grid texts to be dark slate */
+.timeline-step-title,
+.timeline-step-desc,
+.showcase-author,
+.showcase-date,
+.cta-contact-line,
+.cta-band__heading,
+.cta-band__subtext {
+  color: var(--slate, #1a2332) !important;
+}
+
+.timeline-step-num {
+  color: rgba(10, 10, 10, 0.04) !important;
+}
+
+/* Ensure secondary details on cards are slightly lighter dark slate */
+.timeline-step-desc,
+.showcase-date,
+.cta-contact-line,
+.cta-band__subtext {
+  color: rgba(26, 35, 50, 0.65) !important;
+}
+
+/* Keep Orange CTA elements readable (white text on orange background) */
+a[class*="bg-supernova-orange"],
+a[class*="bg-orange"],
+button[class*="bg-supernova-orange"],
+button[class*="bg-orange"],
+.btn-primary-raw,
+.mnav-enroll {
+  color: white !important;
+}
+
+/* Overrides for opacity cards and dark borders inside sections */
+[class*="bg-slate-800"],
+[class*="bg-white/5"],
+[class*="bg-black/20"],
+[class*="bg-black/30"],
+[class*="bg-black/40"],
+.showcase-item {
+  background-color: rgba(10, 10, 10, 0.03) !important;
+  border-color: rgba(10, 10, 10, 0.08) !important;
+}
+
+[class*="border-white/"],
+[class*="border-slate-800"],
+[class*="border-white/5"],
+[class*="border-white/20"],
+.showcase-wrapper,
+.timeline-step {
+  border-color: rgba(10, 10, 10, 0.08) !important;
+}
+
+/* Section Wave / SVG Divider path overrides */
+.divider svg path,
+.divider svg polygon,
+.divider-wave--animated svg path,
+.divider-wave--animated svg polygon,
+svg[viewBox="0 0 1200 120"] path {
+  fill: var(--warm-white, #faf9f7) !important;
+  stroke: none !important;
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+ GLOBAL BRIGHT THEME NUCLEAR OVERRIDE (v 3.0)
+ This block ensures NO dark backgrounds survive.
+ Applied at highest specificity with !important.
+ ═══════════════════════════════════════════════════════════════ */
+
+/* Reset all Tailwind dark bg utilities */
+.bg-slate-900, .bg-slate-950, .bg-slate-800,
+[class*="bg-slate-9"], [class*="bg-slate-8"] {
+  background-color: #ffffff!important;
+}
+
+.bg-cosmic-blue {
+  background-color: #EEF2FF!important;
+}
+
+/* All sections should be bright */
+section {
+  color: #1f2937;
+}
+
+/* Force text readability on bright backgrounds */
+.text-white:not(button .text-white):not(.btn-primary .text-white):not(a[class*="bg-indigo"] .text-white):not(a[class*="bg-orange"] .text-white) {
+  color: #1f2937!important;
+}
+
+/* Footer overrides */
+footer, .footer-editorial, [class*="footer"] {
+  background-color: #F3F4F6!important;
+  color: #1f2937!important;
+}
+
+footer a, .footer-editorial a, [class*="footer"] a {
+  color: #4A5568!important;
+}
+
+footer a:hover, .footer-editorial a:hover {
+  color: var(--orange) !important;
+}
+
+/* Stats section text */
+.stats-section * {
+  color: inherit;
+}
+
+/* Card backgrounds on bright theme */
+.glass-card, .stat-card {
+  background-color: #ffffff!important;
+  border-color: #e5e7eb!important;
+  color: #1f2937!important;
+}
+
+/* Fix any remaining dark text on dark bg issues */
+.hero-preai, .hero-preai * {
+  /* Ensure hero section text is readable on bright bg */
+}
+
+.hero-line-1, .hero-line-3 {
+  color: #1A237E!important;
+}
+
+.hero-sub {
+  color: #4A5568!important;
+}
+
+/* Program card text on bright curriculum section */
+.curriculum-section .editorial-heading,
+.curriculum-section h2, .curriculum-section h3 {
+  color: #1A237E!important;
+}
+
+.prog-card {
+  background: #ffffff!important;
+  border-color: #e5e7eb!important;
+}
+
+.prog-card:hover {
+  border-color: var(--orange) !important;
+  box-shadow: 0 4px 20px rgba(244, 96, 12, 0.1) !important;
+}
+
+.prog-card-num {
+  color: #1A237E!important;
+}
+
+.prog-card-title {
+  color: #1f2937!important;
+}
+
+.prog-card-desc {
+  color: #4A5568!important;
+}
+
+/* Timeline on bright */
+.timeline-section {
+  background: #F5F2FA!important;
+}
+
+.timeline-step-title {
+  color: #1f2937!important;
+}
+
+.timeline-step-desc {
+  color: #6B7280!important;
+}
+
+/* CTA section on bright */
+.cta-section {
+  background: #FFF8EE!important;
+  color: #1f2937!important;
+}
+
+.cta-section .editorial-heading {
+  color: #1A237E!important;
+}
+
+.cta-contact-line {
+  color: #6B7280!important;
+}
+
+/* Trust section */
+.trust-text {
+  color: #6B7280!important;
+}
+
+/* -----------------------------------------------------------
+ GLOBAL ANTI-FLICKER PATCH � All pages
+ Eliminates hover glitches on all interactive elements.
+ Root causes fixed:
+ 1. mix-blend-mode: difference on cursors (now normal)
+ 2. Non-composited transitions causing CPU repaints
+ ----------------------------------------------------------- */
+
+/* Force GPU composition for all interactive elements site-wide */
+a, button,
+.btn-pill-solid, .btn-pill-outline,
+.btn-primary-raw, .btn-ghost-raw,
+.btn-glow, .btn-hero-primary, .btn-hero-secondary,
+[class*="btn-"], [class*="-btn"],
+.glass-card, .stat-card, .prog-card,
+.floating-card, .tilt-card {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  /* Baseline GPU layer � prevents repaints on transition start */
+  transform: translateZ(0);
+}
+
+/* Buttons: only transition GPU-composited properties (transform + opacity) */
+/* Avoid transitioning width/height/border-width which cause layout thrashing */
+a:not([class*="nav"]):not(.floating-badge),
+button,
+[class*="btn-"] {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* Ensure no mix-blend-mode on any interactive element */
+a, button, [class*="btn-"] {
+  mix-blend-mode: normal !important;
+}
+
+/* -- Hero parallax image smooth rendering -- */
+.parallax-hero-img {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  image-rendering: auto;
+}
+
+/* -- Smooth page transitions: prevent flicker on page load -- */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* -- Remove btn-glow box-shadow glow that causes repaint flicker -- */
+.btn-glow:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px) translateZ(0);
+}
+
+/* MISSING LINE 4228 */
+/* MISSING LINE 4229 */
+/* MISSING LINE 4230 */
+/* MISSING LINE 4231 */
+/* MISSING LINE 4232 */
+/* MISSING LINE 4233 */
+/* MISSING LINE 4234 */
+/* MISSING LINE 4235 */
+/* MISSING LINE 4236 */
+/* MISSING LINE 4237 */
+/* MISSING LINE 4238 */
+/* MISSING LINE 4239 */
+/* MISSING LINE 4240 */
+/* MISSING LINE 4241 */
+/* MISSING LINE 4242 */
+/* MISSING LINE 4243 */
+/* MISSING LINE 4244 */
+/* MISSING LINE 4245 */
+/* MISSING LINE 4246 */
+/* MISSING LINE 4247 */
+/* MISSING LINE 4248 */
+/* MISSING LINE 4249 */
+/* MISSING LINE 4250 */
+/* MISSING LINE 4251 */
+/* MISSING LINE 4252 */
+/* MISSING LINE 4253 */
+/* MISSING LINE 4254 */
+/* MISSING LINE 4255 */
+/* MISSING LINE 4256 */
+/* MISSING LINE 4257 */
+/* MISSING LINE 4258 */
+/* MISSING LINE 4259 */
+/* MISSING LINE 4260 */
+/* MISSING LINE 4261 */
+/* MISSING LINE 4262 */
+/* MISSING LINE 4263 */
+/* MISSING LINE 4264 */
+/* MISSING LINE 4265 */
+/* MISSING LINE 4266 */
+/* MISSING LINE 4267 */
+/* MISSING LINE 4268 */
+/* MISSING LINE 4269 */
+/* MISSING LINE 4270 */
+/* MISSING LINE 4271 */
+/* MISSING LINE 4272 */
+/* MISSING LINE 4273 */
+/* MISSING LINE 4274 */
+/* MISSING LINE 4275 */
+/* MISSING LINE 4276 */
+/* MISSING LINE 4277 */
+/* MISSING LINE 4278 */
+/* MISSING LINE 4279 */
+/* MISSING LINE 4280 */
+/* MISSING LINE 4281 */
+/* MISSING LINE 4282 */
+/* MISSING LINE 4283 */
+/* MISSING LINE 4284 */
+/* MISSING LINE 4285 */
+/* MISSING LINE 4286 */
+/* MISSING LINE 4287 */
+/* MISSING LINE 4288 */
+/* MISSING LINE 4289 */
+/* MISSING LINE 4290 */
+/* MISSING LINE 4291 */
+/* MISSING LINE 4292 */
+/* MISSING LINE 4293 */
+/* MISSING LINE 4294 */
+/* MISSING LINE 4295 */
+/* MISSING LINE 4296 */
+/* MISSING LINE 4297 */
+/* MISSING LINE 4298 */
+/* MISSING LINE 4299 */
+/* MISSING LINE 4300 */
+/* MISSING LINE 4301 */
+/* MISSING LINE 4302 */
+/* MISSING LINE 4303 */
+/* MISSING LINE 4304 */
+/* MISSING LINE 4305 */
+/* MISSING LINE 4306 */
+/* MISSING LINE 4307 */
+/* MISSING LINE 4308 */
+/* MISSING LINE 4309 */
+/* MISSING LINE 4310 */
+/* MISSING LINE 4311 */
+/* MISSING LINE 4312 */
+/* MISSING LINE 4313 */
+/* MISSING LINE 4314 */
+/* MISSING LINE 4315 */
+/* MISSING LINE 4316 */
+/* MISSING LINE 4317 */
+/* MISSING LINE 4318 */
+/* MISSING LINE 4319 */
+/* MISSING LINE 4320 */
+/* MISSING LINE 4321 */
+/* MISSING LINE 4322 */
+/* MISSING LINE 4323 */
+/* MISSING LINE 4324 */
+/* MISSING LINE 4325 */
+/* MISSING LINE 4326 */
+/* MISSING LINE 4327 */
+/* MISSING LINE 4328 */
+/* MISSING LINE 4329 */
+/* MISSING LINE 4330 */
+/* MISSING LINE 4331 */
+/* MISSING LINE 4332 */
+/* MISSING LINE 4333 */
+/* MISSING LINE 4334 */
+/* MISSING LINE 4335 */
+/* MISSING LINE 4336 */
+/* MISSING LINE 4337 */
+/* MISSING LINE 4338 */
+/* MISSING LINE 4339 */
+/* MISSING LINE 4340 */
+/* MISSING LINE 4341 */
+/* MISSING LINE 4342 */
+/* MISSING LINE 4343 */
+/* MISSING LINE 4344 */
+/* MISSING LINE 4345 */
+/* MISSING LINE 4346 */
+/* MISSING LINE 4347 */
+/* MISSING LINE 4348 */
+/* MISSING LINE 4349 */
+/* MISSING LINE 4350 */
+/* MISSING LINE 4351 */
+/* MISSING LINE 4352 */
+/* MISSING LINE 4353 */
+/* MISSING LINE 4354 */
+/* MISSING LINE 4355 */
+/* MISSING LINE 4356 */
+/* MISSING LINE 4357 */
+/* MISSING LINE 4358 */
+/* MISSING LINE 4359 */
+/* MISSING LINE 4360 */
+/* MISSING LINE 4361 */
+/* MISSING LINE 4362 */
+/* MISSING LINE 4363 */
+/* MISSING LINE 4364 */
+/* MISSING LINE 4365 */
+/* MISSING LINE 4366 */
+/* MISSING LINE 4367 */
+/* MISSING LINE 4368 */
+/* MISSING LINE 4369 */
+/* MISSING LINE 4370 */
+/* MISSING LINE 4371 */
+/* MISSING LINE 4372 */
+/* MISSING LINE 4373 */
+/* MISSING LINE 4374 */
+/* MISSING LINE 4375 */
+/* MISSING LINE 4376 */
+/* MISSING LINE 4377 */
+/* MISSING LINE 4378 */
+/* MISSING LINE 4379 */
+/* MISSING LINE 4380 */
+/* MISSING LINE 4381 */
+/* MISSING LINE 4382 */
+/* MISSING LINE 4383 */
+/* MISSING LINE 4384 */
+/* MISSING LINE 4385 */
+/* MISSING LINE 4386 */
+/* MISSING LINE 4387 */
+/* MISSING LINE 4388 */
+/* MISSING LINE 4389 */
+/* MISSING LINE 4390 */
+/* MISSING LINE 4391 */
+/* MISSING LINE 4392 */
+/* MISSING LINE 4393 */
+/* MISSING LINE 4394 */
+/* MISSING LINE 4395 */
+/* MISSING LINE 4396 */
+/* MISSING LINE 4397 */
+/* MISSING LINE 4398 */
+/* MISSING LINE 4399 */
+/* MISSING LINE 4400 */
+/* MISSING LINE 4401 */
+/* MISSING LINE 4402 */
+/* MISSING LINE 4403 */
+/* MISSING LINE 4404 */
+/* MISSING LINE 4405 */
+/* MISSING LINE 4406 */
+/* MISSING LINE 4407 */
+/* MISSING LINE 4408 */
+/* MISSING LINE 4409 */
+/* MISSING LINE 4410 */
+/* MISSING LINE 4411 */
+/* MISSING LINE 4412 */
+/* MISSING LINE 4413 */
+/* MISSING LINE 4414 */
+/* MISSING LINE 4415 */
+/* MISSING LINE 4416 */
+/* MISSING LINE 4417 */
+/* MISSING LINE 4418 */
+/* MISSING LINE 4419 */
+/* MISSING LINE 4420 */
+/* MISSING LINE 4421 */
+/* MISSING LINE 4422 */
+/* MISSING LINE 4423 */
+/* MISSING LINE 4424 */
+/* MISSING LINE 4425 */
+/* MISSING LINE 4426 */
+/* MISSING LINE 4427 */
+/* MISSING LINE 4428 */
+/* MISSING LINE 4429 */
+/* MISSING LINE 4430 */
+/* MISSING LINE 4431 */
+/* MISSING LINE 4432 */
+/* MISSING LINE 4433 */
+/* MISSING LINE 4434 */
+/* MISSING LINE 4435 */
+/* MISSING LINE 4436 */
+/* MISSING LINE 4437 */
+/* MISSING LINE 4438 */
+/* MISSING LINE 4439 */
+/* MISSING LINE 4440 */
+/* MISSING LINE 4441 */
+/* MISSING LINE 4442 */
+/* MISSING LINE 4443 */
+/* MISSING LINE 4444 */
+/* MISSING LINE 4445 */
+/* MISSING LINE 4446 */
+/* MISSING LINE 4447 */
+/* MISSING LINE 4448 */
+/* MISSING LINE 4449 */
+/* MISSING LINE 4450 */
+/* MISSING LINE 4451 */
+/* MISSING LINE 4452 */
+/* MISSING LINE 4453 */
+/* MISSING LINE 4454 */
+/* MISSING LINE 4455 */
+/* MISSING LINE 4456 */
+/* MISSING LINE 4457 */
+/* MISSING LINE 4458 */
+/* MISSING LINE 4459 */
+/* MISSING LINE 4460 */
+/* MISSING LINE 4461 */
+/* MISSING LINE 4462 */
+/* MISSING LINE 4463 */
+/* MISSING LINE 4464 */
+/* MISSING LINE 4465 */
+/* MISSING LINE 4466 */
+/* MISSING LINE 4467 */
+/* MISSING LINE 4468 */
+/* MISSING LINE 4469 */
+/* MISSING LINE 4470 */
+/* MISSING LINE 4471 */
+/* MISSING LINE 4472 */
+/* MISSING LINE 4473 */
+/* MISSING LINE 4474 */
+/* MISSING LINE 4475 */
+/* MISSING LINE 4476 */
+/* MISSING LINE 4477 */
+/* MISSING LINE 4478 */
+/* MISSING LINE 4479 */
+/* MISSING LINE 4480 */
+/* MISSING LINE 4481 */
+/* MISSING LINE 4482 */
+/* MISSING LINE 4483 */
+/* MISSING LINE 4484 */
+/* MISSING LINE 4485 */
+/* MISSING LINE 4486 */
+/* MISSING LINE 4487 */
+/* MISSING LINE 4488 */
+/* MISSING LINE 4489 */
+/* MISSING LINE 4490 */
+/* MISSING LINE 4491 */
+/* MISSING LINE 4492 */
+/* MISSING LINE 4493 */
+/* MISSING LINE 4494 */
+/* MISSING LINE 4495 */
+/* MISSING LINE 4496 */
+/* MISSING LINE 4497 */
+/* MISSING LINE 4498 */
+/* MISSING LINE 4499 */
+/* MISSING LINE 4500 */
+/* MISSING LINE 4501 */
+/* MISSING LINE 4502 */
+/* MISSING LINE 4503 */
+/* MISSING LINE 4504 */
+/* MISSING LINE 4505 */
+/* MISSING LINE 4506 */
+/* MISSING LINE 4507 */
+/* MISSING LINE 4508 */
+/* MISSING LINE 4509 */
+/* MISSING LINE 4510 */
+/* MISSING LINE 4511 */
+/* MISSING LINE 4512 */
+/* MISSING LINE 4513 */
+/* MISSING LINE 4514 */
+/* MISSING LINE 4515 */
+/* MISSING LINE 4516 */
+/* MISSING LINE 4517 */
+/* MISSING LINE 4518 */
+/* MISSING LINE 4519 */
+/* MISSING LINE 4520 */
+/* MISSING LINE 4521 */
+/* MISSING LINE 4522 */
+/* MISSING LINE 4523 */
+/* MISSING LINE 4524 */
+/* MISSING LINE 4525 */
+/* MISSING LINE 4526 */
+/* MISSING LINE 4527 */
+/* MISSING LINE 4528 */
+/* MISSING LINE 4529 */
+/* MISSING LINE 4530 */
+/* MISSING LINE 4531 */
+/* MISSING LINE 4532 */
+/* MISSING LINE 4533 */
+/* MISSING LINE 4534 */
+/* MISSING LINE 4535 */
+/* MISSING LINE 4536 */
+/* MISSING LINE 4537 */
+/* MISSING LINE 4538 */
+/* MISSING LINE 4539 */
+/* MISSING LINE 4540 */
+/* MISSING LINE 4541 */
+/* MISSING LINE 4542 */
+/* MISSING LINE 4543 */
+/* MISSING LINE 4544 */
+/* MISSING LINE 4545 */
+/* MISSING LINE 4546 */
+/* MISSING LINE 4547 */
+/* MISSING LINE 4548 */
+/* MISSING LINE 4549 */
+/* MISSING LINE 4550 */
+/* MISSING LINE 4551 */
+/* MISSING LINE 4552 */
+/* MISSING LINE 4553 */
+/* MISSING LINE 4554 */
+/* MISSING LINE 4555 */
+/* MISSING LINE 4556 */
+/* MISSING LINE 4557 */
+/* MISSING LINE 4558 */
+/* MISSING LINE 4559 */
+/* MISSING LINE 4560 */
+/* MISSING LINE 4561 */
+/* MISSING LINE 4562 */
+/* MISSING LINE 4563 */
+/* MISSING LINE 4564 */
+/* MISSING LINE 4565 */
+/* MISSING LINE 4566 */
+/* MISSING LINE 4567 */
+/* MISSING LINE 4568 */
+/* MISSING LINE 4569 */
+/* MISSING LINE 4570 */
+/* MISSING LINE 4571 */
+/* MISSING LINE 4572 */
+/* MISSING LINE 4573 */
+/* MISSING LINE 4574 */
+/* MISSING LINE 4575 */
+/* MISSING LINE 4576 */
+/* MISSING LINE 4577 */
+/* MISSING LINE 4578 */
+/* MISSING LINE 4579 */
+/* MISSING LINE 4580 */
+/* MISSING LINE 4581 */
+/* MISSING LINE 4582 */
+/* MISSING LINE 4583 */
+/* MISSING LINE 4584 */
+/* MISSING LINE 4585 */
+/* MISSING LINE 4586 */
+/* MISSING LINE 4587 */
+/* MISSING LINE 4588 */
+/* MISSING LINE 4589 */
+/* MISSING LINE 4590 */
+/* MISSING LINE 4591 */
+/* MISSING LINE 4592 */
+/* MISSING LINE 4593 */
+/* MISSING LINE 4594 */
+/* MISSING LINE 4595 */
+/* MISSING LINE 4596 */
+/* MISSING LINE 4597 */
+/* MISSING LINE 4598 */
+/* MISSING LINE 4599 */
+/* MISSING LINE 4600 */
+/* MISSING LINE 4601 */
+/* MISSING LINE 4602 */
+/* MISSING LINE 4603 */
+/* MISSING LINE 4604 */
+/* MISSING LINE 4605 */
+/* MISSING LINE 4606 */
+/* MISSING LINE 4607 */
+/* MISSING LINE 4608 */
+/* MISSING LINE 4609 */
+/* MISSING LINE 4610 */
+/* MISSING LINE 4611 */
+/* MISSING LINE 4612 */
+/* MISSING LINE 4613 */
+/* MISSING LINE 4614 */
+/* MISSING LINE 4615 */
+/* MISSING LINE 4616 */
+/* MISSING LINE 4617 */
+/* MISSING LINE 4618 */
+/* MISSING LINE 4619 */
+/* MISSING LINE 4620 */
+/* MISSING LINE 4621 */
+/* MISSING LINE 4622 */
+/* MISSING LINE 4623 */
+/* MISSING LINE 4624 */
+/* MISSING LINE 4625 */
+/* MISSING LINE 4626 */
+/* MISSING LINE 4627 */
+/* MISSING LINE 4628 */
+/* MISSING LINE 4629 */
+/* MISSING LINE 4630 */
+/* MISSING LINE 4631 */
+/* MISSING LINE 4632 */
+/* MISSING LINE 4633 */
+/* MISSING LINE 4634 */
+/* MISSING LINE 4635 */
+/* MISSING LINE 4636 */
+/* MISSING LINE 4637 */
+/* MISSING LINE 4638 */
+/* MISSING LINE 4639 */
+/* MISSING LINE 4640 */
+/* MISSING LINE 4641 */
+/* MISSING LINE 4642 */
+/* MISSING LINE 4643 */
+/* MISSING LINE 4644 */
+/* MISSING LINE 4645 */
+/* MISSING LINE 4646 */
+/* MISSING LINE 4647 */
+/* MISSING LINE 4648 */
+/* MISSING LINE 4649 */
+/* MISSING LINE 4650 */
+/* MISSING LINE 4651 */
+/* MISSING LINE 4652 */
+/* MISSING LINE 4653 */
+/* MISSING LINE 4654 */
+/* MISSING LINE 4655 */
+/* MISSING LINE 4656 */
+/* MISSING LINE 4657 */
+/* MISSING LINE 4658 */
+/* MISSING LINE 4659 */
+/* MISSING LINE 4660 */
+/* MISSING LINE 4661 */
+/* MISSING LINE 4662 */
+/* MISSING LINE 4663 */
+/* MISSING LINE 4664 */
+/* MISSING LINE 4665 */
+/* MISSING LINE 4666 */
+/* MISSING LINE 4667 */
+/* MISSING LINE 4668 */
+/* MISSING LINE 4669 */
+/* MISSING LINE 4670 */
+/* MISSING LINE 4671 */
+/* MISSING LINE 4672 */
+/* MISSING LINE 4673 */
+/* MISSING LINE 4674 */
+/* MISSING LINE 4675 */
+/* MISSING LINE 4676 */
+/* MISSING LINE 4677 */
+/* MISSING LINE 4678 */
+/* MISSING LINE 4679 */
+/* MISSING LINE 4680 */
+/* MISSING LINE 4681 */
+/* MISSING LINE 4682 */
+/* MISSING LINE 4683 */
+/* MISSING LINE 4684 */
+/* MISSING LINE 4685 */
+/* MISSING LINE 4686 */
+/* MISSING LINE 4687 */
+/* MISSING LINE 4688 */
+/* MISSING LINE 4689 */
+/* MISSING LINE 4690 */
+/* MISSING LINE 4691 */
+/* MISSING LINE 4692 */
+/* MISSING LINE 4693 */
+/* MISSING LINE 4694 */
+/* MISSING LINE 4695 */
+/* MISSING LINE 4696 */
+/* MISSING LINE 4697 */
+/* MISSING LINE 4698 */
+/* MISSING LINE 4699 */
+/* MISSING LINE 4700 */
+/* MISSING LINE 4701 */
+/* MISSING LINE 4702 */
+/* MISSING LINE 4703 */
+/* MISSING LINE 4704 */
+/* MISSING LINE 4705 */
+/* MISSING LINE 4706 */
+/* MISSING LINE 4707 */
+/* MISSING LINE 4708 */
+/* MISSING LINE 4709 */
+/* MISSING LINE 4710 */
+/* MISSING LINE 4711 */
+/* MISSING LINE 4712 */
+/* MISSING LINE 4713 */
+/* MISSING LINE 4714 */
+/* MISSING LINE 4715 */
+/* MISSING LINE 4716 */
+/* MISSING LINE 4717 */
+/* MISSING LINE 4718 */
+/* MISSING LINE 4719 */
+/* MISSING LINE 4720 */
+/* MISSING LINE 4721 */
+/* MISSING LINE 4722 */
+/* MISSING LINE 4723 */
+/* MISSING LINE 4724 */
+/* MISSING LINE 4725 */
+/* MISSING LINE 4726 */
+/* MISSING LINE 4727 */
+/* MISSING LINE 4728 */
+/* MISSING LINE 4729 */
+/* MISSING LINE 4730 */
+/* MISSING LINE 4731 */
+/* MISSING LINE 4732 */
+/* MISSING LINE 4733 */
+/* MISSING LINE 4734 */
+/* MISSING LINE 4735 */
+/* MISSING LINE 4736 */
+/* MISSING LINE 4737 */
+/* MISSING LINE 4738 */
+/* MISSING LINE 4739 */
+/* MISSING LINE 4740 */
+/* MISSING LINE 4741 */
+/* MISSING LINE 4742 */
+/* MISSING LINE 4743 */
+/* MISSING LINE 4744 */
+/* MISSING LINE 4745 */
+/* MISSING LINE 4746 */
+/* MISSING LINE 4747 */
+/* MISSING LINE 4748 */
+/* MISSING LINE 4749 */
+/* MISSING LINE 4750 */
+/* MISSING LINE 4751 */
+/* MISSING LINE 4752 */
+/* MISSING LINE 4753 */
+/* MISSING LINE 4754 */
+/* MISSING LINE 4755 */
+/* MISSING LINE 4756 */
+/* MISSING LINE 4757 */
+/* MISSING LINE 4758 */
+/* MISSING LINE 4759 */
+/* MISSING LINE 4760 */
+/* MISSING LINE 4761 */
+/* MISSING LINE 4762 */
+/* MISSING LINE 4763 */
+/* MISSING LINE 4764 */
+/* MISSING LINE 4765 */
+/* MISSING LINE 4766 */
+/* MISSING LINE 4767 */
+/* MISSING LINE 4768 */
+/* MISSING LINE 4769 */
+/* MISSING LINE 4770 */
+/* MISSING LINE 4771 */
+/* MISSING LINE 4772 */
+/* MISSING LINE 4773 */
+/* MISSING LINE 4774 */
+/* MISSING LINE 4775 */
+/* MISSING LINE 4776 */
+/* MISSING LINE 4777 */
+/* MISSING LINE 4778 */
+/* MISSING LINE 4779 */
+/* MISSING LINE 4780 */
+/* MISSING LINE 4781 */
+/* MISSING LINE 4782 */
+/* MISSING LINE 4783 */
+/* MISSING LINE 4784 */
+/* MISSING LINE 4785 */
+/* MISSING LINE 4786 */
+/* MISSING LINE 4787 */
+/* MISSING LINE 4788 */
+/* MISSING LINE 4789 */
+/* MISSING LINE 4790 */
+/* MISSING LINE 4791 */
+/* MISSING LINE 4792 */
+/* MISSING LINE 4793 */
+/* MISSING LINE 4794 */
+/* MISSING LINE 4795 */
+/* MISSING LINE 4796 */
+/* MISSING LINE 4797 */
+/* MISSING LINE 4798 */
+/* MISSING LINE 4799 */
+/* MISSING LINE 4800 */
+/* MISSING LINE 4801 */
+/* MISSING LINE 4802 */
+/* MISSING LINE 4803 */
+/* MISSING LINE 4804 */
+/* MISSING LINE 4805 */
+/* MISSING LINE 4806 */
+/* MISSING LINE 4807 */
+/* MISSING LINE 4808 */
+/* MISSING LINE 4809 */
+/* MISSING LINE 4810 */
+/* MISSING LINE 4811 */
+/* MISSING LINE 4812 */
+/* MISSING LINE 4813 */
+/* MISSING LINE 4814 */
+/* MISSING LINE 4815 */
+/* MISSING LINE 4816 */
+/* MISSING LINE 4817 */
+/* MISSING LINE 4818 */
+/* MISSING LINE 4819 */
+/* MISSING LINE 4820 */
+/* MISSING LINE 4821 */
+/* MISSING LINE 4822 */
+/* MISSING LINE 4823 */
+/* MISSING LINE 4824 */
+/* MISSING LINE 4825 */
+/* MISSING LINE 4826 */
+/* MISSING LINE 4827 */
+/* MISSING LINE 4828 */
+/* MISSING LINE 4829 */
+/* MISSING LINE 4830 */
+/* MISSING LINE 4831 */
+/* MISSING LINE 4832 */
+/* MISSING LINE 4833 */
+/* MISSING LINE 4834 */
+/* MISSING LINE 4835 */
+/* MISSING LINE 4836 */
+/* MISSING LINE 4837 */
+/* MISSING LINE 4838 */
+/* MISSING LINE 4839 */
+/* MISSING LINE 4840 */
+/* MISSING LINE 4841 */
+/* MISSING LINE 4842 */
+/* MISSING LINE 4843 */
+/* MISSING LINE 4844 */
+/* MISSING LINE 4845 */
+/* MISSING LINE 4846 */
+/* MISSING LINE 4847 */
+/* MISSING LINE 4848 */
+/* MISSING LINE 4849 */
+/* MISSING LINE 4850 */
+/* MISSING LINE 4851 */
+/* MISSING LINE 4852 */
+/* MISSING LINE 4853 */
+/* MISSING LINE 4854 */
+/* MISSING LINE 4855 */
+/* MISSING LINE 4856 */
+/* MISSING LINE 4857 */
+/* MISSING LINE 4858 */
+/* MISSING LINE 4859 */
+/* MISSING LINE 4860 */
+/* MISSING LINE 4861 */
+/* MISSING LINE 4862 */
+/* MISSING LINE 4863 */
+/* MISSING LINE 4864 */
+/* MISSING LINE 4865 */
+/* MISSING LINE 4866 */
+/* MISSING LINE 4867 */
+/* MISSING LINE 4868 */
+/* MISSING LINE 4869 */
+/* MISSING LINE 4870 */
+/* MISSING LINE 4871 */
+/* MISSING LINE 4872 */
+/* MISSING LINE 4873 */
+/* MISSING LINE 4874 */
+/* MISSING LINE 4875 */
+/* MISSING LINE 4876 */
+/* MISSING LINE 4877 */
+/* MISSING LINE 4878 */
+/* MISSING LINE 4879 */
+/* MISSING LINE 4880 */
+/* MISSING LINE 4881 */
+/* MISSING LINE 4882 */
+/* MISSING LINE 4883 */
+/* MISSING LINE 4884 */
+/* MISSING LINE 4885 */
+/* MISSING LINE 4886 */
+/* MISSING LINE 4887 */
+/* MISSING LINE 4888 */
+/* MISSING LINE 4889 */
+/* MISSING LINE 4890 */
+/* MISSING LINE 4891 */
+/* MISSING LINE 4892 */
+/* MISSING LINE 4893 */
+/* MISSING LINE 4894 */
+/* MISSING LINE 4895 */
+/* MISSING LINE 4896 */
+/* MISSING LINE 4897 */
+/* MISSING LINE 4898 */
+/* MISSING LINE 4899 */
+/* MISSING LINE 4900 */
+/* MISSING LINE 4901 */
+/* MISSING LINE 4902 */
+/* MISSING LINE 4903 */
+/* MISSING LINE 4904 */
+/* MISSING LINE 4905 */
+/* MISSING LINE 4906 */
+/* MISSING LINE 4907 */
+/* MISSING LINE 4908 */
+/* MISSING LINE 4909 */
+/* MISSING LINE 4910 */
+/* MISSING LINE 4911 */
+/* MISSING LINE 4912 */
+/* MISSING LINE 4913 */
+/* MISSING LINE 4914 */
+/* MISSING LINE 4915 */
+/* MISSING LINE 4916 */
+/* MISSING LINE 4917 */
+/* MISSING LINE 4918 */
+/* MISSING LINE 4919 */
+/* MISSING LINE 4920 */
+/* MISSING LINE 4921 */
+/* MISSING LINE 4922 */
+/* MISSING LINE 4923 */
+/* MISSING LINE 4924 */
+/* MISSING LINE 4925 */
+/* MISSING LINE 4926 */
+/* MISSING LINE 4927 */
+/* MISSING LINE 4928 */
+/* MISSING LINE 4929 */
+/* MISSING LINE 4930 */
+/* MISSING LINE 4931 */
+/* MISSING LINE 4932 */
+/* MISSING LINE 4933 */
+/* MISSING LINE 4934 */
+/* MISSING LINE 4935 */
+/* MISSING LINE 4936 */
+/* MISSING LINE 4937 */
+/* MISSING LINE 4938 */
+/* MISSING LINE 4939 */
+/* MISSING LINE 4940 */
+/* MISSING LINE 4941 */
+/* MISSING LINE 4942 */
+/* MISSING LINE 4943 */
+/* MISSING LINE 4944 */
+/* MISSING LINE 4945 */
+/* MISSING LINE 4946 */
+/* MISSING LINE 4947 */
+/* MISSING LINE 4948 */
+/* MISSING LINE 4949 */
+/* MISSING LINE 4950 */
+/* MISSING LINE 4951 */
+/* MISSING LINE 4952 */
+/* MISSING LINE 4953 */
+/* MISSING LINE 4954 */
+/* MISSING LINE 4955 */
+/* MISSING LINE 4956 */
+/* MISSING LINE 4957 */
+/* MISSING LINE 4958 */
+/* MISSING LINE 4959 */
+/* MISSING LINE 4960 */
+/* MISSING LINE 4961 */
+/* MISSING LINE 4962 */
+/* MISSING LINE 4963 */
+/* MISSING LINE 4964 */
+/* MISSING LINE 4965 */
+/* MISSING LINE 4966 */
+/* MISSING LINE 4967 */
+/* MISSING LINE 4968 */
+/* MISSING LINE 4969 */
+/* MISSING LINE 4970 */
+/* MISSING LINE 4971 */
+/* MISSING LINE 4972 */
+/* MISSING LINE 4973 */
+/* MISSING LINE 4974 */
+/* MISSING LINE 4975 */
+/* MISSING LINE 4976 */
+/* MISSING LINE 4977 */
+/* MISSING LINE 4978 */
+/* MISSING LINE 4979 */
+/* MISSING LINE 4980 */
+/* MISSING LINE 4981 */
+/* MISSING LINE 4982 */
+/* MISSING LINE 4983 */
+/* MISSING LINE 4984 */
+/* MISSING LINE 4985 */
+/* MISSING LINE 4986 */
+/* MISSING LINE 4987 */
+/* MISSING LINE 4988 */
+/* MISSING LINE 4989 */
+/* MISSING LINE 4990 */
+/* MISSING LINE 4991 */
+/* MISSING LINE 4992 */
+/* MISSING LINE 4993 */
+/* MISSING LINE 4994 */
+/* MISSING LINE 4995 */
+/* MISSING LINE 4996 */
+/* MISSING LINE 4997 */
+/* MISSING LINE 4998 */
+/* MISSING LINE 4999 */
+/* MISSING LINE 5000 */
+/* MISSING LINE 5001 */
+/* MISSING LINE 5002 */
+/* MISSING LINE 5003 */
+/* MISSING LINE 5004 */
+/* MISSING LINE 5005 */
+/* MISSING LINE 5006 */
+/* MISSING LINE 5007 */
+/* MISSING LINE 5008 */
+/* MISSING LINE 5009 */
+/* MISSING LINE 5010 */
+/* MISSING LINE 5011 */
+/* MISSING LINE 5012 */
+/* MISSING LINE 5013 */
+/* MISSING LINE 5014 */
+/* MISSING LINE 5015 */
+/* MISSING LINE 5016 */
+/* MISSING LINE 5017 */
+/* MISSING LINE 5018 */
+/* MISSING LINE 5019 */
+/* MISSING LINE 5020 */
+/* MISSING LINE 5021 */
+/* MISSING LINE 5022 */
+/* MISSING LINE 5023 */
+/* MISSING LINE 5024 */
+/* MISSING LINE 5025 */
+/* MISSING LINE 5026 */
+/* MISSING LINE 5027 */
+/* MISSING LINE 5028 */
+/* MISSING LINE 5029 */
+/* MISSING LINE 5030 */
+/* MISSING LINE 5031 */
+/* MISSING LINE 5032 */
+/* MISSING LINE 5033 */
+/* MISSING LINE 5034 */
+/* MISSING LINE 5035 */
+/* MISSING LINE 5036 */
+/* MISSING LINE 5037 */
+/* MISSING LINE 5038 */
+/* MISSING LINE 5039 */
+/* MISSING LINE 5040 */
+/* MISSING LINE 5041 */
+/* MISSING LINE 5042 */
+/* MISSING LINE 5043 */
+/* MISSING LINE 5044 */
+/* MISSING LINE 5045 */
+/* MISSING LINE 5046 */
+/* MISSING LINE 5047 */
+/* MISSING LINE 5048 */
+/* MISSING LINE 5049 */
+/* MISSING LINE 5050 */
+/* MISSING LINE 5051 */
+/* MISSING LINE 5052 */
+/* MISSING LINE 5053 */
+/* MISSING LINE 5054 */
+/* MISSING LINE 5055 */
+/* MISSING LINE 5056 */
+/* MISSING LINE 5057 */
+/* MISSING LINE 5058 */
+/* MISSING LINE 5059 */
+/* MISSING LINE 5060 */
+/* MISSING LINE 5061 */
+/* MISSING LINE 5062 */
+/* MISSING LINE 5063 */
+/* MISSING LINE 5064 */
+/* MISSING LINE 5065 */
+/* MISSING LINE 5066 */
+/* MISSING LINE 5067 */
+/* MISSING LINE 5068 */
+/* MISSING LINE 5069 */
+/* MISSING LINE 5070 */
+/* MISSING LINE 5071 */
+/* MISSING LINE 5072 */
+/* MISSING LINE 5073 */
+/* MISSING LINE 5074 */
+/* MISSING LINE 5075 */
+/* MISSING LINE 5076 */
+/* MISSING LINE 5077 */
+/* MISSING LINE 5078 */
+/* MISSING LINE 5079 */
+/* MISSING LINE 5080 */
+/* MISSING LINE 5081 */
+/* MISSING LINE 5082 */
+/* MISSING LINE 5083 */
+/* MISSING LINE 5084 */
+/* MISSING LINE 5085 */
+/* MISSING LINE 5086 */
+/* MISSING LINE 5087 */
+/* MISSING LINE 5088 */
+/* MISSING LINE 5089 */
+/* MISSING LINE 5090 */
+/* MISSING LINE 5091 */
+/* MISSING LINE 5092 */
+/* MISSING LINE 5093 */
+/* MISSING LINE 5094 */
+/* MISSING LINE 5095 */
+/* MISSING LINE 5096 */
+/* MISSING LINE 5097 */
+/* MISSING LINE 5098 */
+/* MISSING LINE 5099 */
+  transform: translateZ(0);
+}
+
+/* Buttons: only transition GPU-composited properties (transform + opacity) */
+/* Avoid transitioning width/height/border-width which cause layout thrashing */
+a:not([class*="nav"]):not(.floating-badge),
+button,
+[class*="btn-"] {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* Ensure no mix-blend-mode on any interactive element */
+a, button, [class*="btn-"] {
+  mix-blend-mode: normal !important;
+}
+
+/* -- Hero parallax image smooth rendering -- */
+.parallax-hero-img {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  image-rendering: auto;
+}
+
+/* -- Smooth page transitions: prevent flicker on page load -- */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* -- Remove btn-glow box-shadow glow that causes repaint flicker -- */
+.btn-glow:hover {
+  box-shadow: 0 0 20px rgba(244, 96, 12, 0.4);
+  transform: translateY(-2px) translateZ(0);
+/* MISSING LINE 5135 */

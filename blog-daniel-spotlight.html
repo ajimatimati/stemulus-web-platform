@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+ <script src="https://unpkg.com/lucide@latest" defer></script>
+ <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
+ <script src="https://cdn.tailwindcss.com"></script>
+ <meta charset="UTF-8">
+  <meta name="theme-color" content="#F4600C">
+ <meta name="description" content="Daniel was nine years old and had never written a line of code. Eight STEMulus sessions later, he'd built a fully playable Scratch platformer. Here's the story and what it tells us about how kids really learn.">
+ <meta name="keywords" content="kids coding success story, Scratch game student project, child learns coding, STEMulus student spotlight, learn to code age 9">
+ <meta name="author" content="STEMulus Kids Tech">
+ <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+ <link rel="canonical" href="https://stemuluskidstech.com/blog-daniel-spotlight.html">
+ <meta property="og:type" content="article">
+ <meta property="og:title" content="Daniel, Age 9, Built a Platformer After 8 Sessions | STEMulus Blog">
+ <meta property="og:description" content="No template. No copy-paste. Just a nine-year-old, a mentor, and a project brief. Here's what happened.">
+ <meta property="og:url" content="https://stemuluskidstech.com/blog-daniel-spotlight.html">
+ <meta property="og:site_name" content="STEMulus">
+ <meta property="og:image" content="https://stemuluskidstech.com/scratch_game_program.png">
+  <meta property="og:image:alt" content="STEMulus Kids Tech — Online Coding Academy Logo">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="geo.region" content="NG">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Daniel, Age 9, Built a Platformer After 8 Sessions | STEMulus Blog</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css 2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+ <link rel="stylesheet" href="style.css">
+ <link rel="stylesheet" href="preai-overhaul.css">
+ <link rel="stylesheet" href="responsive.css">
+ <style>
+ .article-body { font-family: 'DM Sans', sans-serif; font-size:0.92rem; line-height:2; color: rgba(245,240,232,0.75); max-width:760px; margin:0 auto; }
+ .article-body p { margin-bottom:1.75rem; }
+ .article-body h 2 { font-family: 'Nunito', sans-serif; font-weight:700; font-size:1.6rem; color: #f5f0e8; margin-top:3rem; margin-bottom:1.25rem; letter-spacing: -0.02em; }
+ .article-body blockquote { border-left:3px solid #f4600c; padding-left:1.5rem; margin:2.5rem 0; color: rgba(245,240,232,0.5); font-style: italic; }
+ .article-body strong { color: #f5f0e8; font-weight:600; }
+ .article-body a { color: #f4600c; border-bottom:1px solid rgba(244,96,12,0.3); text-decoration: none; }
+ .article-meta { font-family: 'DM Sans', sans-serif; font-size:0.72rem; letter-spacing:0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+ .tag-pill { display: inline-block; border:1px solid rgba(244,96,12,0.4); color: #f4600c; font-family: 'DM Sans', sans-serif; font-size:0.68rem; letter-spacing:0.12em; text-transform: uppercase; padding:0.3rem 0.8rem; margin-bottom:1.5rem; }
+ .session-log { background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); padding:1.5rem 2rem; margin:2rem 0; }
+ .session-log .session-id { font-family: 'DM Sans', sans-serif; font-size:0.68rem; color: #f4600c; letter-spacing:0.15em; text-transform: uppercase; margin-bottom:0.5rem; }
+ .session-log .session-title { font-family: 'Nunito', sans-serif; font-size:1rem; font-weight:600; color: #f5f0e8; margin-bottom:0.5rem; }
+ .session-log .session-body { font-family: 'DM Sans', sans-serif; font-size:0.82rem; color: rgba(245,240,232,0.5); line-height:1.8; }
+ .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap:1px; background: rgba(255,255,255,0.06); margin:3rem 0; }
+ .stat-cell { background: var(--ink); padding:1.5rem 1.25rem; }
+ .stat-cell .stat-val { font-family: 'Nunito', sans-serif; font-weight:700; font-size:2rem; color: var(--chalk); }
+ .stat-cell .stat-lbl { font-family: 'DM Sans', sans-serif; font-size:0.68rem; color: rgba(255,255,255,0.3); letter-spacing:0.1em; text-transform: uppercase; margin-top:0.3rem; }
+ </style>
+
+ <!-- Standard Favicon -->
+ <link rel="icon" type="image/png" href="logo.png">
+ <link rel="apple-touch-icon" href="logo.png">
+</head>
+<body class="antialiased" style="background:var(--ink);">
+<div id="cursor-ring" aria-hidden="true"></div>
+<div id="cursor-dot" aria-hidden="true"></div>
+<nav class="nav-editorial" role="navigation" aria-label="Main Navigation" id="main-nav">
+ <a href="index.html" class="nav-logo-editorial">
+ <img src="logo.png" alt="STEMulus Logo" width="44" height="44">
+ </a>
+ <div style="display:flex; align-items:center; gap:2.5rem;">
+ <a href="programs.html">Roadmap</a>
+ <a href="for-parents.html">Parents</a>
+ <a href="blog.html">Blog</a>
+ <a href="contact.html">Contact</a>
+ </div>
+ <div style="display:flex; align-items:center; gap:1.5rem;">
+ <a href="enroll.html" class="nav-cta-btn">
+ Enroll Free
+ </a>
+ </div>
+</nav>
+
+<main style="padding-top:9rem;padding-bottom:6rem;">
+ <div style="max-width:820px;margin:0 auto;padding:0 2rem;">
+
+ <a href="blog.html" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);text-decoration:none;display:flex;align-items:center;gap:0.5rem;margin-bottom:3rem;">&#8592; Back to Journal</a>
+
+ <div class="tag-pill">Student Spotlight &middot;3 Min Read</div>
+ <h1 style="font-family:'Nunito',sans-serif;font-weight:700;font-size:clamp(2rem,5vw,3.5rem);color:var(--chalk);line-height:1.05;letter-spacing:-0.03em;margin-bottom:1.5rem;">Daniel, Age 9, Built a Fully Playable Platformer in Scratch. He'd Never Coded Before.</h1>
+ <p class="article-meta" style="margin-bottom:3rem;">14-JAN-2026 &nbsp;&bull;&nbsp; Written by STEMulus Team</p>
+
+ <!-- Stats row -->
+ <div class="stats-row">
+ <div class="stat-cell"><div class="stat-val">8</div><div class="stat-lbl">Sessions</div></div>
+ <div class="stat-cell"><div class="stat-val">0</div><div class="stat-lbl">Lines copied</div></div>
+ <div class="stat-cell"><div class="stat-val">1</div><div class="stat-lbl">Working game</div></div>
+ </div>
+
+ <!-- Hero image -->
+ <div style="width:100%;height:360px;overflow:hidden;margin-bottom:3.5rem;border:1px solid rgba(255,255,255,0.06);">
+ <img src="scratch_game_program.png" alt="Daniel's Scratch platformer game  |  built by a 9-year-old STEMulus student" loading="eager" style="width:100%;height:100%;object-fit:cover;">
+ </div>
+
+ <div class="article-body">
+
+ <p>Daniel came in on a Tuesday with his mum. He was nine  |  small for his age, very serious about Minecraft, and entirely convinced that making his own game was something that grown-up programmers did in dark offices after many years of suffering. He was about to become one fewer person who believed that.</p>
+
+ <p>He'd never written a line of code. The closest he'd come was following a YouTube tutorial for a Roblox game mod, which had worked  |  sort of  |  until an update broke it and he couldn't figure out why. That experience had left him suspicious of code. It felt like a thing that worked until it didn't, and he didn't yet know how to tell the difference.</p>
+
+ <p>His first session was disarmingly simple. His mentor, Tunde, didn't load up any tutorials or start explaining syntax. He asked Daniel one question: <strong>"If you were going to make the best game you could imagine, what would happen in the first ten seconds?"</strong></p>
+
+ <p>Daniel thought about it. "You'd jump off a platform," he said. "And there'd be spikes. And if you hit the spikes, you'd restart."</p>
+
+ <p>"Okay," said Tunde. "Let's build that."</p>
+
+ <h2>Session by Session: How It Actually Happened</h2>
+
+ <div class="session-log">
+ <div class="session-id">Session0-1  |  Week 1</div>
+ <div class="session-title">The Sprite Moves. The World Begins.</div>
+ <div class="session-body">Daniel built his first sprite  |  a white square he named "Guy"  |  and made it move left and right with arrow keys. Just that. At the end of the session, he pressed the right arrow key and Guy slid smoothly across the screen. Daniel stared at it for a moment, then quietly said: "That's sick." That's the moment. Every STEMulus mentor knows that moment.</div>
+ </div>
+
+ <div class="session-log">
+ <div class="session-id">Session0-203  |  Week 2</div>
+ <div class="session-title">Gravity Is a Bug Until You Write It.</div>
+ <div class="session-body">Guy could move side to side. But he floated in the air like he'd never heard of physics. Daniel needed to understand that gravity is not automatic  |  it's a rule you write. His mentor introduced the concept of a variable: "y_velocity." Every frame, y_velocity increases by a small number (gravity), and Guy falls by that amount  |  until he lands on a platform. Daniel's face when he ran the code and Guy actually fell and landed  |  and stayed landed  |  was something else entirely.</div>
+ </div>
+
+ <div class="session-log">
+ <div class="session-id">Session0-405  |  Week 3</div>
+ <div class="session-title">Spikes. Logic. The Conditional.</div>
+ <div class="session-body">Daniel wanted the spikes. So his mentor introduced conditionals  |  the if/then structure that is the backbone of all decision-making in code. If Guy touches a spike, then reset his position. Daniel immediately wanted the spikes to also play a sound, change the score, and flash the screen red. His mentor let him build every single one of those features. Debugging the reset position took most of session 5. Daniel didn't give up once.</div>
+ </div>
+
+ <div class="session-log">
+ <div class="session-id">Session0-607  |  Week 4</div>
+ <div class="session-title">Levels. Loops. The Game Becomes a Game.</div>
+ <div class="session-body">They introduced a second level, then a third. Daniel designed the layout of each level himself  |  sketching it on paper first ("old school architecture," his mentor called it) and then building it block by block. He built a score counter, a timer, and a "You Win" screen with animated confetti. The confetti was his idea. He found a way to make 30 copies of a small dot sprite and randomise their direction. He'd discovered cloning.</div>
+ </div>
+
+ <div class="session-log">
+ <div class="session-id">Session0-8  |  Week 5</div>
+ <div class="session-title">He Tests. He Ships.</div>
+ <div class="session-body">The final session was spent testing and polishing. Daniel played through his own game seventeen times  |  not to enjoy it (though he clearly did), but to find every bug. He adjusted the spike hitboxes. He tweaked the jump height. He added a pause menu because "the player might need a break." At 5:47pm, he pressed the green flag one final time, played through all three levels without dying, and looked up at his mentor. "It's done," he said. "It actually works."</div>
+ </div>
+
+ <h2>What This Proves</h2>
+
+ <p>Daniel is not exceptional in the way people mean when they say "exceptional." He's not a child prodigy with a parent who codes. He's a nine-year-old who likes Minecraft, gets bored in double maths, and is very particular about which biscuits are worth eating. What he is  |  and what most children are if given the right conditions  |  is <em>capable</em>.</p>
+
+ <p>What made the difference wasn't the platform (though Scratch is excellent). It wasn't the number of sessions (though 8 sessions are a true learning adventure). It was the structure of the learning. A single mentor. A single project goal defined by the student. No templates to copy. No answers handed over. Just questions  |  <em>"what do you want to happen next?"</em>  |  and the space to figure it out.</p>
+
+ <blockquote>When you give a child ownership of what they're building, something changes. It's not a school project anymore. It's theirs. They care about it in the same way you care about something you've made with your own hands. That's when the magic learning happens  |  fast, deep, and lasting.</blockquote>
+
+ <h2>Where Is Daniel Now?</h2>
+
+ <p>Three months after that first session, Daniel is building his second game  |  this time in Python, using Pygame. He's twelve sessions in. The game involves procedurally-generated dungeons and an enemy that "actually thinks," which turns out to be a very enthusiastic way of describing a basic pathfinding algorithm. His mum says he now explains his code to the family at dinner.</p>
+
+ <p>His younger sister, who is seven, has asked if she can start too. She starts next month.</p>
+
+ </div>
+
+ <div style="margin-top:4rem;border-top:1px solid rgba(255,255,255,0.08);padding-top:3rem;">
+ <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.35);margin-bottom:1rem;">Ready for your child to build their own creations?</p>
+ <a href="enroll.html" target="_blank" rel="noopener" class="btn-pill-solid">Start with a Free First Class &#8594;</a>
+ </div>
+
+ <div style="margin-top:3rem;">
+ <a href="blog.html" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);text-decoration:none;">&#8592; Back to Journal</a>
+ </div>
+ </div>
+</main>
+
+<footer class="footer-editorial" role="contentinfo">
+  <!-- Model Viewer Script Loaded Dynamically inside the footer -->
+  <div class="footer-grid">
+    <!-- Brand column with 3D model logo -->
+    <div class="footer-brand-col">
+      <div class="footer-3d-wrapper">
+    <div class="footer-hologram-coin">
+      <div class="coin-glow"></div>
+      <div class="coin-inner">
+        <div class="coin-front">
+          <img src="logo.png" alt="STEMulus Logo">
+        </div>
+        <div class="coin-back">
+          <img src="logo.png" alt="STEMulus Logo">
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+
+    <!-- Website Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Website</p>
+      <a href="index.html">Home</a>
+      <a href="programs.html">Roadmap</a>
+      <a href="for-parents.html">For Parents</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Social Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Social</p>
+      <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <a href="mailto:admin@stemuluskidstech.com">Email Us</a>
+      <a href="join-as-tutor.html">Join as Tutor</a>
+</div>
+
+    <!-- Legal Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Legal</p>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="privacy-policy.html#terms">Terms of Service</a>
+      <a href="parent-dashboard.html">Parent Login</a>
+      <a href="enroll.html">Enroll Now</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-legal-left">©2026 STEMulus Innovations LTD. All rights reserved.</p>
+    <p class="footer-legal-right">
+      Built with craft, not algorithms
+      <i data-lucide="heart" style="width:12px;height:12px;fill:currentColor;color:currentColor;display:inline-block;vertical-align:middle;margin:0 2px;"></i>
+      <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:inline-flex;align-items:center;">
+        <i data-lucide="mail" style="width:18px;height:18px;"></i>
+      </a>
+      <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:inline-flex;align-items:center;">
+        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
+      </a>
+    </p>
+  </div>
+  
+  <!-- Background Text "STEMULUS" stylized bottom watermark -->
+  <div class="footer-bg-text">STEMulus</div>
+</footer>
+<script>(function(){var ring=document.getElementById('cursor-ring'),dot=document.getElementById('cursor-dot');if(!ring||!dot)return;var mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();document.querySelectorAll('a,button').forEach(function(el){el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-link');});el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-link');});});})();</script>
+<script src="mobile-nav.js"></script>
+<a href="https://wa.me/2347052466716?text=Hello% 20STEMulus% 2C% 20I'm% 20interested% 20in% 20a% 20coding% 20class% 20for% 20my% 20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp">
+  <svg viewBox="0 0 448 512" aria-hidden="true">
+  <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+</svg>
+</a>
+<style>.wa-float{position:fixed;bottom:24px;right:24px;z-index:9999;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 4px 20px rgba(37,211,102,.45);transition:transform .2s,box-shadow .2s}.wa-float:hover{transform:scale(1.1)}.wa-float svg{width:30px;height:30px}@media(max-width:768px){.wa-float{width:52px;height:52px}}</style>
+
+<!-- Floating WhatsApp CTA Button -->
+<a href="https://wa.me/2347052466716?text=Hello% 20STEMulus% 2C% 20I'm% 20interested% 20in% 20a% 20coding% 20class% 20for% 20my% 20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp">
+  <svg viewBox="0 0 448 512" aria-hidden="true">
+  <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+</svg>
+</a>
+
+</body>
+</html>

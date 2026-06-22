@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <script src="https://unpkg.com/lucide@latest" defer></script>
+ <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
+ <script src="https://cdn.tailwindcss.com"></script>
+ <meta charset="UTF-8">
+  <!-- SEO: CORE -->
+  <meta name="description" content="STEMulus internal admin dashboard.">
+  <meta name="keywords" content="STEMulus admin">
+  <meta name="author" content="STEMulus Kids Tech">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://stemuluskidstech.com/admin-dashboard.html">
+  <!-- SEO: OPEN GRAPH -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Admin Dashboard | STEMulus">
+  <meta property="og:description" content="STEMulus internal admin dashboard.">
+  <meta property="og:url" content="https://stemuluskidstech.com/admin-dashboard.html">
+  <meta property="og:site_name" content="STEMulus">
+  <meta property="og:image" content="https://stemuluskidstech.com/logo.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
+  <!-- SEO: TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Admin Dashboard | STEMulus">
+  <meta name="twitter:description" content="STEMulus internal admin dashboard.">
+  <meta name="twitter:image" content="https://stemuluskidstech.com/logo.png">
+  <meta name="twitter:site" content="@stemuluskids">
+  <!-- SEO: GEO -->
+  <meta name="geo.region" content="NG">
+  <meta name="geo.placename" content="Lagos, Nigeria">
+  <!-- SEO: CORE -->
+  <!-- SEO: OPEN GRAPH -->
+  <!-- SEO: TWITTER CARD -->
+  <!-- SEO: GEO -->
+  <!-- SEO: CORE -->
+  <!-- SEO: OPEN GRAPH -->
+  <!-- SEO: TWITTER CARD -->
+  <!-- SEO: GEO -->
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Admin Dashboard | STEMulus</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css 2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+ <!-- Fonts -->
+ 
+ <style>
+ * { box-sizing: border-box; }
+ body { font-family: 'DM Sans', sans-serif; }
+ 
+ /* Glassmorphism */
+ .glass-card {
+ background: rgba(30,41,59,0.8);
+ backdrop-filter: blur(12px);
+ border:1px solid rgba(255,255,255,0.1);
+ }
+ 
+ /* Sidebar Active State */
+ .nav-link.active {
+ background: linear-gradient(90deg, rgba(59,130,246,0.2)0%, transparent 100%);
+ border-left:3px solid #3b82f6;
+ }
+ 
+ /* Custom Scrollbar */
+ ::-webkit-scrollbar { width:6px; height:6px; }
+ ::-webkit-scrollbar-track { background: #1e293b; }
+ ::-webkit-scrollbar-thumb { background: #475569; border-radius:3px; }
+ ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+ 
+ /* Table Styles */
+ .data-table th { 
+ background: rgba(51,65,85,0.5);
+ position: sticky;
+ top:0;
+ }
+ .data-table tr:hover { background: rgba(59,130,246,0.1); }
+ 
+ /* Modal */
+ .modal-overlay {
+ background: rgba(0,0,0,0.7);
+ backdrop-filter: blur(4px);
+ }
+ 
+ /* Animations */
+ @keyframes fadeIn {
+ from { opacity:0; transform: translateY(10px); }
+ to { opacity:1; transform: translateY(0); }
+ }
+ .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+ 
+ @keyframes pulse-dot {0%,100% { opacity:1; }50% { opacity:0.5; }
+ }
+ .pulse-dot { animation: pulse-dot 2s infinite; }
+ 
+ /* Login Screen */
+ .login-bg {
+ background: linear-gradient(135deg, #0f172a 0%, #1e293b50%, #0f172a 100%);
+ }
+ 
+ /* Hide sections by default */
+ .admin-section { display: none; }
+ .admin-section.active { display: block; }
+ </style>
+
+<script>
+ if (window.tailwind) {
+ tailwind.config = {
+ theme: {
+ extend: {
+ colors: {
+ admin: {
+ dark: '#f8fafc',
+ border: '#e2e8f0',
+ card: '#ffffff',
+ accent: '#3b82f6',
+ danger: '#ef4444',
+ success: '#22c55e',
+ warning: '#f59e0b',
+ }
+ }
+ }
+ }
+ };
+ }
+</script>
+<style>
+ /* Global Dashboard Brightening Overrides */
+ body, html {
+ background-color: #f8fafc!important;
+ background-image: none !important;
+ color: #0f172a!important;
+ }
+ .bg-white, .bg-gray-50 {
+  background-color: #FAFBFC!important;
+  color: #1f2937!important;
+}
+ .glass-card, .bg-white, .stat-card {
+  background-color: #ffffff!important;
+  color: #1f2937!important;
+  border-color: #e5e7eb!important;
+}
+ .text-white, .text-white\/90, h 1, h 2, h 3, h 4, h 5, h 6, th, td, label, span:not(.text-white) {
+ color: #0f172a!important;
+ }
+ .text-white\/60, .text-white\/55, .text-white\/50, .text-white\/45, .text-white\/40, .text-white\/30, .text-white\/20, .text-slate-400 {
+ color: #64748b!important;
+ }
+ input, select, textarea {
+ background-color: #ffffff!important;
+ border-color: #cbd5e1!important;
+ color: #0f172a!important;
+ }
+ input::placeholder {
+ color: #94a3b8!important;
+ }
+ /* Action Buttons (Keep text white) */
+ button, button *, .btn-pill-solid, .bg-admin-accent, .bg-supernova-orange, .bg-blue-600, .bg-orange-500, button span {
+ color: #ffffff!important;
+ }
+ /* Sidebar styling overrides */
+ aside, aside * {
+ color: #0f172a!important;
+ background-color: #ffffff!important;
+ }
+ aside a:hover {
+ background-color: #f1f5f9!important;
+ }
+ aside .border-r {
+ border-right-color: #e2e8f0!important;
+ }
+ aside .border-b {
+ border-bottom-color: #e2e8f0!important;
+ }
+ aside .border-t {
+ border-top-color: #e2e8f0!important;
+ }
+ .nav-link.active, .nav-link.active i, .nav-link.active span {
+ background: linear-gradient(90deg, rgba(59,130,246,0.08)0%, transparent 100%) !important;
+ border-left:3px solid #3b82f6!important;
+ color: #2563eb!important;
+ }
+ /* Table borders */
+ table, tr, td, th {
+ border-color: #e2e8f0!important;
+ }
+ th {
+ background-color: #f1f5f9!important;
+ color: #475569!important;
+ }
+ /* Logo in sidebar needs to invert to be visible */
+ aside img {
+ filter: invert(1) !important;
+ }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+  {
+ "@type": "EducationalOrganization",
+ "@id": "https://stemuluskidstech.com/#organization",
+ "name": "STEMulus Kids Tech",
+ "alternateName": "STEMulus",
+ "url": "https://stemuluskidstech.com",
+ "logo": "https://stemuluskidstech.com/logo.png",
+ "description": "STEMulus is a global online coding academy offering private 1-on-1 programming classes for children aged 5 - 17 in Python, Scratch, robotics, web development and AI.",
+ "email": "stemulusclubs@gmail.com",
+ "telephone": "+2347052466716",
+ "sameAs": [
+ "https://wa.me/2347052466716"
+ ],
+ "contactPoint": {
+ "@type": "ContactPoint",
+ "contactType": "customer support",
+ "email": "stemulusclubs@gmail.com",
+ "availableLanguage": "English"
+ }
+  },
+  {
+ "@type": "WebSite",
+ "@id": "https://stemuluskidstech.com/#website",
+ "url": "https://stemuluskidstech.com",
+ "name": "STEMulus",
+ "publisher": {
+ "@id": "https://stemuluskidstech.com/#organization"
+ },
+ "potentialAction": {
+ "@type": "SearchAction",
+ "target": "https://stemuluskidstech.com/?s={search_term_string}",
+ "query-input": "required name=search_term_string"
+ }
+  },
+  {
+ "@type": "BreadcrumbList",
+ "@id": "https://stemuluskidstech.com/admin-dashboard.html#breadcrumb",
+ "itemListElement": [
+ {
+ "@type": "ListItem",
+ "position":1,
+ "name": "Home",
+ "item": "https://stemuluskidstech.com/"
+ },
+ {
+ "@type": "ListItem",
+ "position":2,
+ "name": "Page",
+ "item": "https://stemuluskidstech.com/admin-dashboard.html"
+ }
+ ]
+  }
+]
+}
+</script>
+
+ <!-- Standard Favicon -->
+ <link rel="icon" type="image/png" href="logo.png">
+ <link rel="apple-touch-icon" href="logo.png">
+</head>
+<body class="antialiased bg-slate-50 text-slate-800 dashboard-page">
+<!-- ===================== LOGIN SCREEN ===================== -->
+ <div id="login-screen" class="login-bg min-h-screen flex items-center justify-center p-6">
+ <div class="glass-card rounded-none p-8 w-full max-w-md animate-fadeIn">
+ <div class="text-center mb-8">
+  <img src="logo.png" alt="STEMulus" class="h-12 mx-auto mb-4">
+ <h1 class="text-2xl font-nunito font-bold text-slate-800">Admin Portal</h1>
+ <p class="text-gray-500 text-sm mt-2">Sign in to manage your students</p>
+ </div>
+ 
+ <form id="login-form" class="space-y-5">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Email Address</label>
+ <div class="relative">
+ <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/55"></i>
+ <input type="email" id="login-email" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-3 pl-11 pr-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="admin@stemuluskidstech.com">
+ </div>
+ </div>
+ 
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Password</label>
+ <div class="relative">
+ <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/55"></i>
+ <input type="password" id="login-password" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-3 pl-11 pr-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="••••••••">
+ </div>
+ </div>
+ 
+ <div id="login-error" class="hidden text-admin-danger text-sm text-center py-2 bg-admin-danger/10 rounded-lg"></div>
+ 
+ <button type="submit" id="login-btn"
+ class="w-full bg-admin-accent hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+ <span>Sign In</span>
+ <i data-lucide="arrow-right" class="w-5 h-5"></i>
+ </button>
+ </form>
+ 
+ <p class="text-center text-white/55 text-xs mt-6">Protected area. Unauthorized access is prohibited.</p>
+ </div>
+ </div>
+
+ <!-- ===================== MAIN DASHBOARD ===================== -->
+ <div id="dashboard-container" class="hidden">
+ <!-- Sidebar -->
+ <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-white border-r border-admin-border z-50 flex flex-col">
+ <!-- Logo -->
+ <div class="p-6 border-b border-admin-border">
+ <div class="flex items-center gap-3">
+ <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-admin-accent to-supernova-orange flex items-center justify-center">
+ <i data-lucide="rocket" class="w-5 h-5 text-white"></i>
+ </div>
+ <div>
+ <h2 class="font-nunito font-bold text-slate-800">STEMulus</h2>
+ <p class="text-xs text-slate-500">Admin Portal</p>
+ </div>
+ </div>
+ </div>
+ 
+ <!-- Navigation -->
+ <nav class="flex-1 py-6 overflow-y-auto">
+ <div class="px-4 mb-2 text-xs font-semibold text-gray-800/55 uppercase tracking-wider">Main</div>
+ <ul class="space-y-1 px-3">
+ <li>
+ <a href="#" data-section="dashboard" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+ <span>Dashboard</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="students" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <i data-lucide="users" class="w-5 h-5"></i>
+ <span>Students</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="schedules" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <i data-lucide="calendar" class="w-5 h-5"></i>
+ <span>Schedules</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="courses" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <i data-lucide="book-open" class="w-5 h-5"></i>
+ <span>Courses</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="projects" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <i data-lucide="folder-kanban" class="w-5 h-5"></i>
+ <span>Projects</span>
+ <span class="ml-auto bg-supernova-orange/20 text-supernova-orange text-xs font-bold px-2 py-0.5 rounded-xl">New</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="certificates" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <i data-lucide="award" class="w-5 h-5"></i>
+ <span>Certificates</span>
+ <span class="ml-auto bg-emerald-500/20 text-emerald-600 text-xs font-bold px-2 py-0.5 rounded-xl">New</span>
+ </a>
+ </li>
+ </ul>
+ 
+ <div class="px-4 mb-2 mt-6 text-xs font-semibold text-gray-800/55 uppercase tracking-wider">Communications</div>
+ <ul class="space-y-1 px-3">
+ <li>
+ <a href="#" data-section="emails" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <i data-lucide="mail" class="w-5 h-5"></i>
+ <span>Email Center</span>
+ <span class="ml-auto bg-admin-accent/20 text-admin-accent text-xs font-bold px-2 py-0.5 rounded-xl">New</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="logs" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <i data-lucide="file-text" class="w-5 h-5"></i>
+ <span>Email Logs</span>
+ </a>
+ </li>
+ </ul>
+ </nav>
+ 
+ <!-- User Section -->
+ <div class="p-4 border-t border-admin-border">
+ <div class="flex items-center gap-3">
+ <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm" id="user-avatar">A</div>
+ <div class="flex-1 min-w-0">
+ <p class="text-sm font-medium text-slate-800 truncate" id="user-name">Admin</p>
+ <p class="text-xs text-slate-500 truncate" id="user-email">admin@stemuluskidstech.com</p>
+ </div>
+ <button id="logout-btn" class="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Sign Out">
+ <i data-lucide="log-out" class="w-5 h-5"></i>
+ </button>
+ </div>
+ </div>
+ </aside>
+
+ <!-- Main Content Area -->
+ <main class="ml-64 min-h-screen">
+ <!-- Top Bar -->
+ <header class="sticky top-0 z-40 bg-gray-50/80 backdrop-blur-md border-b border-admin-border px-8 py-4">
+ <div class="flex items-center justify-between">
+ <div class="flex items-center gap-3">
+ <button id="admin-menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-slate-800 focus:outline-none" aria-label="Toggle menu">
+ <i data-lucide="menu" class="w-6 h-6"></i>
+ </button>
+ <div>
+ <h1 id="page-title" class="text-xl font-nunito font-bold text-slate-800">Dashboard</h1>
+ <p class="text-sm text-slate-500">Welcome back! Here's what's happening today.</p>
+ </div>
+ </div>
+ <div class="flex items-center gap-4">
+ <!-- Search -->
+ <div class="relative">
+ <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/55"></i>
+ <input type="text" id="global-search" placeholder="Search students..."
+ class="bg-white border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent w-64 transition-colors">
+ </div>
+ <!-- Quick Actions -->
+ <button id="quick-add-student" class="bg-admin-accent hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
+ <i data-lucide="plus" class="w-4 h-4"></i>
+ <span>Add Student</span>
+ </button>
+ </div>
+ </div>
+ </header>
+
+ <!-- Content Sections -->
+ <div class="p-8">
+ 
+ <!-- ===== DASHBOARD SECTION ===== -->
+ <section id="section-dashboard" class="admin-section active animate-fadeIn">
+ <!-- Stats Cards -->
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+ <div class="glass-card rounded-none p-6">
+ <div class="flex items-center justify-between mb-4">
+ <div class="w-12 h-12 rounded-lg bg-admin-accent/20 flex items-center justify-center">
+ <i data-lucide="users" class="w-6 h-6 text-admin-accent"></i>
+ </div>
+ <span class="text-admin-success text-sm font-medium flex items-center gap-1">
+ <i data-lucide="trending-up" class="w-4 h-4"></i> +12%
+ </span>
+ </div>
+ <h3 class="text-3xl font-bold text-slate-800" id="stat-total-students">0</h3>
+ <p class="text-slate-500 text-sm">Total Students</p>
+ </div>
+ 
+ <div class="glass-card rounded-none p-6">
+ <div class="flex items-center justify-between mb-4">
+ <div class="w-12 h-12 rounded-lg bg-admin-success/20 flex items-center justify-center">
+ <i data-lucide="calendar-check" class="w-6 h-6 text-admin-success"></i>
+ </div>
+ <span class="pulse-dot w-3 h-3 bg-admin-success rounded-full"></span>
+ </div>
+ <h3 class="text-3xl font-bold text-slate-800" id="stat-upcoming-classes">0</h3>
+ <p class="text-slate-500 text-sm">Upcoming Classes</p>
+ </div>
+ 
+ <div class="glass-card rounded-none p-6">
+ <div class="flex items-center justify-between mb-4">
+ <div class="w-12 h-12 rounded-lg bg-admin-warning/20 flex items-center justify-center">
+ <i data-lucide="mail" class="w-6 h-6 text-admin-warning"></i>
+ </div>
+ </div>
+ <h3 class="text-3xl font-bold text-slate-800" id="stat-pending-emails">0</h3>
+ <p class="text-slate-500 text-sm">Pending Emails</p>
+ </div>
+ 
+ <div class="glass-card rounded-none p-6">
+ <div class="flex items-center justify-between mb-4">
+ <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center">
+ <i data-lucide="book-open" class="w-6 h-6 text-purple-400"></i>
+ </div>
+ </div>
+ <h3 class="text-3xl font-bold text-slate-800" id="stat-active-courses">0</h3>
+ <p class="text-slate-500 text-sm">Active Courses</p>
+ </div>
+ </div>
+ 
+ <!-- Recent Activity & Quick Actions -->
+ <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+ <!-- Recent Students -->
+ <div class="lg:col-span-2 glass-card rounded-none p-6">
+ <div class="flex items-center justify-between mb-6">
+ <h3 class="text-lg font-semibold text-slate-800">Recent Students</h3>
+ <a href="#" data-section="students" class="text-admin-accent text-sm hover:underline">View All</a>
+ </div>
+ <div id="recent-students-list" class="space-y-4">
+ <p class="text-slate-400 text-center py-8">No students yet. Add your first student!</p>
+ </div>
+ </div>
+ 
+ <!-- Today's Schedule -->
+ <div class="glass-card rounded-none p-6">
+ <div class="flex items-center justify-between mb-6">
+ <h3 class="text-lg font-semibold text-slate-800">Today's Classes</h3>
+ <a href="#" data-section="schedules" class="text-admin-accent text-sm hover:underline">Full Calendar</a>
+ </div>
+ <div id="today-schedule-list" class="space-y-3">
+ <p class="text-slate-400 text-center py-8">No classes scheduled for today.</p>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- ===== STUDENTS SECTION ===== -->
+ <section id="section-students" class="admin-section animate-fadeIn">
+ <!-- Header -->
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Student Management</h2>
+ <p class="text-slate-500">Manage all enrolled students</p>
+ </div>
+ <div class="flex items-center gap-3">
+ <button id="export-csv-btn" class="bg-white border border-admin-border hover:bg-gray-50 text-slate-700 px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
+ <i data-lucide="download" class="w-4 h-4"></i>
+ <span>Export CSV</span>
+ </button>
+ <button id="add-student-btn" class="bg-admin-accent hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
+ <i data-lucide="plus" class="w-4 h-4"></i>
+ <span>Add Student</span>
+ </button>
+ </div>
+ </div>
+ 
+ <!-- Filters -->
+ <div class="glass-card rounded-none p-4 mb-6 flex flex-wrap items-center gap-4">
+ <div class="flex-1 min-w-[200px]">
+ <div class="relative">
+ <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/55"></i>
+ <input type="text" id="student-search" placeholder="Search by name or email..."
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors">
+ </div>
+ </div>
+ <select id="filter-course" class="bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-sm text-gray-800 focus:outline-none focus:border-admin-accent">
+ <option value="">All Courses</option>
+ <option value="junior-robotics">Junior Robotics</option>
+ <option value="python-programming">Python Programming</option>
+ <option value="web-design">Web Design</option>
+ <option value="scratch-creators">Scratch Creators</option>
+ </select>
+ <select id="filter-status" class="bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-sm text-gray-800 focus:outline-none focus:border-admin-accent">
+ <option value="">All Status</option>
+ <option value="active">Active</option>
+ <option value="inactive">Inactive</option>
+ <option value="pending">Pending</option>
+ </select>
+ </div>
+ 
+ <!-- Students Table -->
+ <div class="glass-card rounded-none overflow-hidden">
+ <div class="overflow-x-auto max-h-[60vh] overflow-y-auto">
+ <table class="data-table w-full text-sm">
+ <thead>
+ <tr class="text-left text-gray-500 uppercase text-xs">
+ <th class="px-6 py-4 font-semibold">Student</th>
+ <th class="px-6 py-4 font-semibold">Parent</th>
+ <th class="px-6 py-4 font-semibold">Course</th>
+ <th class="px-6 py-4 font-semibold">Status</th>
+ <th class="px-6 py-4 font-semibold">Enrolled</th>
+ <th class="px-6 py-4 font-semibold text-right">Actions</th>
+ </tr>
+ </thead>
+ <tbody id="students-table-body" class="divide-y divide-admin-border">
+ <tr>
+ <td colspan="6" class="px-6 py-12 text-center text-gray-800/55">
+ <i data-lucide="users" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+ <p>No students found. Click "Add Student" to get started.</p>
+ </td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </section>
+
+ <!-- ===== SCHEDULES SECTION ===== -->
+ <section id="section-schedules" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Schedule Management</h2>
+ <p class="text-slate-500">Manage class sessions and timetables</p>
+ </div>
+ <button id="add-schedule-btn" class="bg-admin-accent hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
+ <i data-lucide="plus" class="w-4 h-4"></i>
+ <span>Add Session</span>
+ </button>
+ </div>
+ 
+ <!-- Calendar Placeholder -->
+ <div class="glass-card rounded-none p-6">
+ <div id="schedule-calendar" class="min-h-[500px]">
+ <p class="text-slate-400 text-center py-20">Loading calendar...</p>
+ </div>
+ </div>
+ </section>
+
+ <!-- ===== COURSES SECTION ===== -->
+ <section id="section-courses" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Course Management</h2>
+ <p class="text-slate-500">View and manage available courses</p>
+ </div>
+ </div>
+ 
+ <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <!-- Courses will be loaded here -->
+ </div>
+ </section>
+
+ <!-- ===== PROJECTS SECTION ===== -->
+ <section id="section-projects" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Student Projects</h2>
+ <p class="text-slate-500">Manage the "Built by our students" showcase on the homepage</p>
+ </div>
+ <button id="add-project-btn" class="bg-supernova-orange hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
+ <i data-lucide="plus" class="w-4 h-4"></i>
+ <span>Add Project</span>
+ </button>
+ </div>
+ 
+ <!-- Projects Grid -->
+ <div id="admin-projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div class="col-span-full glass-card rounded-none p-12 text-center">
+ <i data-lucide="folder-kanban" class="w-12 h-12 mx-auto mb-4 text-slate-400"></i>
+ <p class="text-slate-500">Loading projects...</p>
+ </div>
+ </div>
+ </section>
+
+ <!-- ===== CERTIFICATES SECTION ===== -->
+ <section id="section-certificates" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Certificate Registry</h2>
+ <p class="text-slate-500">Issue and manage secure student verification credentials</p>
+ </div>
+ </div>
+ 
+ <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+ <!-- Issue Certificate Form -->
+ <div class="glass-card rounded-none p-6">
+ <h3 class="text-lg font-semibold text-slate-800 mb-4">Issue New Certificate</h3>
+ <form id="issue-cert-form" class="space-y-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Student Name *</label>
+ <input type="text" id="cert-student-name" required class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent" placeholder="e.g. Tunde Bakare">
+ </div>
+ 
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Program Name *</label>
+ <select id="cert-program-name" required class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 focus:outline-none focus:border-admin-accent">
+ <option value="">-- Select Program --</option>
+ <option value="Scratch Game Creators">Scratch Game Creators</option>
+ <option value="Python Programming Power">Python Programming Power</option>
+ <option value="Web Wizards Academy">Web Wizards Academy</option>
+ <option value="Arduino Robotics Lab">Arduino Robotics Lab</option>
+ <option value="Creative Coding Essentials">Creative Coding Essentials</option>
+ <option value="AI & Machine Learning Explorers">AI & Machine Learning Explorers</option>
+ <option value="Fullstack Web Development">Fullstack Web Development</option>
+ </select>
+ </div>
+
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Grade Level</label>
+ <select id="cert-grade" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 focus:outline-none focus:border-admin-accent">
+ <option value="Distinction">Distinction</option>
+ <option value="Honors">Honors</option>
+ <option value="Pass">Pass</option>
+ </select>
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Issue Date</label>
+ <input type="date" id="cert-issue-date" required class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 focus:outline-none focus:border-admin-accent">
+ </div>
+ </div>
+ 
+ <div class="pt-4">
+ <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+ <i data-lucide="award" class="w-5 h-5"></i>
+ <span>Issue Certificate</span>
+ </button>
+ </div>
+ </form>
+ </div>
+ 
+ <!-- Registry List Table -->
+ <div class="lg:col-span-2 glass-card rounded-none p-6">
+ <div class="flex items-center justify-between mb-4">
+ <h3 class="text-lg font-semibold text-slate-800">Registry Ledger</h3>
+ <div class="relative">
+ <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/55"></i>
+ <input type="text" id="cert-search" placeholder="Search ledger..." class="bg-gray-50 border border-admin-border rounded-lg py-1.5 pl-9 pr-4 text-xs text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent w-48 transition-colors">
+ </div>
+ </div>
+ 
+ <div class="overflow-x-auto max-h-[45vh] overflow-y-auto">
+ <table class="data-table w-full text-sm">
+ <thead>
+ <tr class="text-left text-gray-500 uppercase text-xs">
+ <th class="px-4 py-3 font-semibold">Student</th>
+ <th class="px-4 py-3 font-semibold">Program</th>
+ <th class="px-4 py-3 font-semibold">Credential ID</th>
+ <th class="px-4 py-3 font-semibold text-right">Actions</th>
+ </tr>
+ </thead>
+ <tbody id="certs-table-body" class="divide-y divide-admin-border">
+ <tr>
+ <td colspan="4" class="px-4 py-8 text-center text-gray-800/55">
+ <i data-lucide="award" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+ <p>Loading certificate ledger...</p>
+ </td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- ===== EMAIL CENTER SECTION ===== -->
+ <section id="section-emails" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Email Center</h2>
+ <p class="text-slate-500">Send emails and manage automation</p>
+ </div>
+ </div>
+ 
+ <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+ <!-- Email Templates -->
+ <div class="lg:col-span-2 glass-card rounded-none p-6">
+ <h3 class="text-lg font-semibold text-slate-800 mb-4">Compose Email</h3>
+ <form id="compose-email-form" class="space-y-4">
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Recipient Type</label>
+ <select id="email-recipient-type" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 focus:outline-none focus:border-admin-accent">
+ <option value="individual">Individual Student</option>
+ <option value="course">Entire Course</option>
+ <option value="all">All Students</option>
+ </select>
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Template</label>
+ <select id="email-template" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 focus:outline-none focus:border-admin-accent">
+ <option value="custom">Custom Message</option>
+ <option value="welcome">Welcome Email</option>
+ <option value="reminder-24h">Class Reminder (24h)</option>
+ <option value="reminder-1h">Class Reminder (1h)</option>
+ <option value="schedule-change">Schedule Change</option>
+ <option value="certificate">Certificate of Completion</option>
+ </select>
+ </div>
+ </div>
+ 
+ <div id="individual-recipient" class="">
+ <label class="block text-sm font-medium text-gray-500 mb-2">Select Student</label>
+ <select id="email-student" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 focus:outline-none focus:border-admin-accent">
+ <option value="">-- Select Student --</option>
+ </select>
+ </div>
+ 
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Subject</label>
+ <input type="text" id="email-subject" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent" placeholder="Email subject...">
+ </div>
+ 
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Message</label>
+ <textarea id="email-body" rows="6" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent resize-none" placeholder="Write your message here..."></textarea>
+ </div>
+ 
+ <div class="flex items-center gap-4">
+ <label class="flex items-center gap-2 text-sm text-gray-500 cursor-pointer">
+ <input type="checkbox" id="cc-parent" class="w-4 h-4 rounded border-admin-border bg-gray-50 text-admin-accent focus:ring-admin-accent">
+ <span>CC Parent Email</span>
+ </label>
+ </div>
+ 
+ <div class="flex items-center gap-3 pt-4">
+ <button type="submit" class="bg-admin-accent hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg transition-colors flex items-center gap-2">
+ <i data-lucide="send" class="w-4 h-4"></i>
+ <span>Send Now</span>
+ </button>
+ <button type="button" id="schedule-email-btn" class="bg-white border border-admin-border hover:bg-gray-50 text-slate-700 px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+ <i data-lucide="clock" class="w-4 h-4"></i>
+ <span>Schedule</span>
+ </button>
+ </div>
+ </form>
+ </div>
+ 
+ <!-- Automation Settings -->
+ <div class="glass-card rounded-none p-6">
+ <h3 class="text-lg font-semibold text-slate-800 mb-4">Automation Settings</h3>
+ <div class="space-y-4">
+ <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+ <div>
+ <p class="text-slate-800 font-medium">Welcome Emails</p>
+ <p class="text-xs text-slate-500">Auto-send on enrollment</p>
+ </div>
+ <label class="relative inline-flex items-center cursor-pointer">
+ <input type="checkbox" id="auto-welcome" class="sr-only peer" checked>
+ <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-admin-accent"></div>
+ </label>
+ </div>
+ 
+ <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+ <div>
+ <p class="text-slate-800 font-medium">24h Reminders</p>
+ <p class="text-xs text-slate-500">Before each class</p>
+ </div>
+ <label class="relative inline-flex items-center cursor-pointer">
+ <input type="checkbox" id="auto-reminder-24h" class="sr-only peer" checked>
+ <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-admin-accent"></div>
+ </label>
+ </div>
+ 
+ <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+ <div>
+ <p class="text-slate-800 font-medium">1h Reminders</p>
+ <p class="text-xs text-slate-500">Before each class</p>
+ </div>
+ <label class="relative inline-flex items-center cursor-pointer">
+ <input type="checkbox" id="auto-reminder-1h" class="sr-only peer">
+ <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-admin-accent"></div>
+ </label>
+ </div>
+ 
+ <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+ <div>
+ <p class="text-slate-800 font-medium">Completion Certificates</p>
+ <p class="text-xs text-slate-500">After course ends</p>
+ </div>
+ <label class="relative inline-flex items-center cursor-pointer">
+ <input type="checkbox" id="auto-certificates" class="sr-only peer">
+ <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-admin-accent"></div>
+ </label>
+ </div>
+ 
+ <button id="save-automation-btn" class="w-full mt-4 bg-admin-success/20 text-admin-success font-medium py-2 rounded-lg hover:bg-admin-success/30 transition-colors">
+ Save Settings
+ </button>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- ===== EMAIL LOGS SECTION ===== -->
+ <section id="section-logs" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Email Logs</h2>
+ <p class="text-slate-500">Track all sent communications</p>
+ </div>
+ </div>
+ 
+ <div class="glass-card rounded-none overflow-hidden">
+ <div class="overflow-x-auto max-h-[60vh] overflow-y-auto">
+ <table class="data-table w-full text-sm">
+ <thead>
+ <tr class="text-left text-gray-500 uppercase text-xs">
+ <th class="px-6 py-4 font-semibold">Recipient</th>
+ <th class="px-6 py-4 font-semibold">Subject</th>
+ <th class="px-6 py-4 font-semibold">Type</th>
+ <th class="px-6 py-4 font-semibold">Status</th>
+ <th class="px-6 py-4 font-semibold">Sent At</th>
+ </tr>
+ </thead>
+ <tbody id="email-logs-body" class="divide-y divide-admin-border">
+ <tr>
+ <td colspan="5" class="px-6 py-12 text-center text-gray-800/55">
+ <i data-lucide="mail" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+ <p>No emails sent yet.</p>
+ </td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </section>
+
+ </div>
+ </main>
+ </div>
+
+ <!-- ===================== MODALS ===================== -->
+ 
+ <!-- Add/Edit Student Modal -->
+ <div id="student-modal" class="fixed inset-0 z-50 hidden">
+ <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('student-modal')"></div>
+ <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+ <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <h3 id="student-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Student</h3>
+ <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('student-modal')">
+ <i data-lucide="x" class="w-6 h-6"></i>
+ </button>
+ </div>
+ 
+ <form id="student-form" class="space-y-5">
+ <input type="hidden" id="student-id">
+ 
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Student Name *</label>
+ <input type="text" id="student-name" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="Full name">
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Age *</label>
+ <input type="number" id="student-age" required min="5" max="18"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="e.g.12">
+ </div>
+ </div>
+ 
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Student Email</label>
+ <input type="email" id="student-email"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="student@stemuluskidstech.com">
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Phone</label>
+ <input type="tel" id="student-phone"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="+234...">
+ </div>
+ </div>
+ 
+ <div class="border-t border-admin-border pt-5 mt-5">
+ <h4 class="text-sm font-semibold text-gray-500 mb-4">Parent/Guardian Information</h4>
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Parent Name *</label>
+ <input type="text" id="parent-name" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="Parent's full name">
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Parent Email *</label>
+ <input type="email" id="parent-email" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="parent@stemuluskidstech.com">
+ </div>
+ </div>
+ <div class="mt-4">
+ <label class="block text-sm font-medium text-gray-500 mb-2">Parent Phone</label>
+ <input type="tel" id="parent-phone"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="+234...">
+ </div>
+ </div>
+ 
+ <div class="border-t border-admin-border pt-5 mt-5">
+ <h4 class="text-sm font-semibold text-gray-500 mb-4">Enrollment Details</h4>
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Course *</label>
+ <select id="student-course" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+ <option value="">-- Select Course --</option>
+ <option value="junior-robotics">Junior Robotics</option>
+ <option value="python-programming">Python Programming</option>
+ <option value="web-design">Web Design & Development</option>
+ <option value="scratch-coding">Scratch Coding</option>
+ <option value="ai-explorers">AI Explorers</option>
+ </select>
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Status</label>
+ <select id="student-status"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+ <option value="active">Active</option>
+ <option value="inactive">Inactive</option>
+ <option value="pending">Pending</option>
+ </select>
+ </div>
+ </div>
+ </div>
+ 
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Notes</label>
+ <textarea id="student-notes" rows="3"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors resize-none"
+ placeholder="Any additional notes about the student..."></textarea>
+ </div>
+ 
+ <div class="flex items-center gap-3 pt-4">
+ <button type="submit" class="flex-1 bg-admin-accent hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-colors">
+ Save Student
+ </button>
+ <button type="button" class="px-6 py-3 text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('student-modal')">
+ Cancel
+ </button>
+ </div>
+ </form>
+ </div>
+ </div>
+ </div>
+
+ <!-- Add/Edit Schedule Modal -->
+ <div id="schedule-modal" class="fixed inset-0 z-50 hidden">
+ <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('schedule-modal')"></div>
+ <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl max-h-[90vh] overflow-y-auto">
+ <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <h3 id="schedule-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Session</h3>
+ <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('schedule-modal')">
+ <i data-lucide="x" class="w-6 h-6"></i>
+ </button>
+ </div>
+ 
+ <form id="schedule-form" class="space-y-5">
+ <input type="hidden" id="schedule-id">
+ 
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Course *</label>
+ <select id="schedule-course" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+ <option value="">-- Select Course --</option>
+ <option value="junior-robotics">Junior Robotics</option>
+ <option value="python-programming">Python Programming</option>
+ <option value="web-design">Web Design & Development</option>
+ <option value="scratch-coding">Scratch Coding</option>
+ </select>
+ </div>
+ 
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Date *</label>
+ <input type="date" id="schedule-date" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Time *</label>
+ <input type="time" id="schedule-time" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+ </div>
+ </div>
+ 
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Duration (mins)</label>
+ <select id="schedule-duration"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+ <option value="60">60 minutes</option>
+ <option value="90">90 minutes</option>
+ <option value="120">120 minutes</option>
+ </select>
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Mentor</label>
+ <input type="text" id="schedule-mentor"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="Instructor name">
+ </div>
+ </div>
+ 
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Zoom/Meeting Link</label>
+ <input type="url" id="schedule-link"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="https://zoom.us/j/...">
+ </div>
+ 
+ <div class="flex items-center gap-3 pt-4">
+ <button type="submit" class="flex-1 bg-admin-accent hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-colors">
+ Save Session
+ </button>
+ <button type="button" class="px-6 py-3 text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('schedule-modal')">
+ Cancel
+ </button>
+ </div>
+ </form>
+ </div>
+ </div>
+ </div>
+
+ <!-- Add/Edit Project Modal -->
+ <div id="project-modal" class="fixed inset-0 z-50 hidden">
+ <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('project-modal')"></div>
+ <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+ <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <h3 id="project-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Project</h3>
+ <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('project-modal')">
+ <i data-lucide="x" class="w-6 h-6"></i>
+ </button>
+ </div>
+ 
+ <form id="project-form" class="space-y-5">
+ <input type="hidden" id="project-id">
+ 
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Project Title *</label>
+ <input type="text" id="project-title" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="e.g. Space Raiders">
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Category *</label>
+ <select id="project-category" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+ <option value="">-- Select Category --</option>
+ <option value="Game Dev">Game Dev</option>
+ <option value="Web Dev">Web Dev</option>
+ <option value="Robotics">Robotics</option>
+ <option value="Python">Python</option>
+ <option value="Mobile App">Mobile App</option>
+ <option value="Animation">Animation</option>
+ <option value="AI / ML">AI / ML</option>
+ </select>
+ </div>
+ </div>
+ 
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Student Name *</label>
+ <input type="text" id="project-student-name" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="e.g. Tunde">
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Student Age *</label>
+ <input type="number" id="project-student-age" required min="5" max="18"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="e.g.11">
+ </div>
+ </div>
+ 
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Description *</label>
+ <textarea id="project-description" required rows="3"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors resize-none"
+ placeholder="A short, fun description of the project..."></textarea>
+ </div>
+ 
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Image URL *</label>
+ <input type="text" id="project-image" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="assets/images/project.png">
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Link URL</label>
+ <input type="text" id="project-view-url"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="hall-of-fame.html" value="hall-of-fame.html">
+ </div>
+ </div>
+ 
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Button Text</label>
+ <input type="text" id="project-cta-text"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="View Project" value="View Project">
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Tags (comma-separated)</label>
+ <input type="text" id="project-tags"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="Scratch, Game Logic, Physics">
+ </div>
+ </div>
+ 
+ <div class="flex items-center gap-3 pt-4">
+ <button type="submit" class="flex-1 bg-supernova-orange hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-colors">
+ Save Project
+ </button>
+ <button type="button" class="px-6 py-3 text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('project-modal')">
+ Cancel
+ </button>
+ </div>
+ </form>
+ </div>
+ </div>
+ </div>
+
+ <!-- QR Code Modal -->
+ <div id="qrcode-modal" class="fixed inset-0 z-50 hidden">
+ <div class="modal-overlay absolute inset-0 bg-black/75" onclick="document.getElementById('qrcode-modal').classList.add('hidden')"></div>
+ <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm">
+ <div class="bg-white border border-[#e2e8f0] p-6 shadow-xl text-center space-y-6 animate-fadeIn rounded-xl">
+ <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+ <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+ <i data-lucide="qr-code" class="w-5 h-5 text-emerald-500"></i>
+ Certificate QR Code
+ </h3>
+ <button type="button" onclick="document.getElementById('qrcode-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+ <i data-lucide="x" class="w-5 h-5"></i>
+ </button>
+ </div>
+ 
+ <div class="bg-gray-50 p-4 flex justify-center items-center rounded-lg border border-gray-100">
+ <div id="qrcode-canvas" class="p-2 bg-white border border-gray-200"></div>
+ </div>
+
+ <div class="space-y-2">
+ <p class="text-xs text-gray-400 uppercase tracking-wider">Credential ID</p>
+ <p class="font-mono text-sm font-semibold text-gray-800" id="qrcode-credential-id">-</p>
+ <p class="text-xs text-gray-500" id="qrcode-student-name">-</p>
+ </div>
+
+ <div class="flex gap-2">
+ <button id="download-qr-btn" class="flex-grow bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 rounded-lg text-sm transition-colors flex items-center justify-center gap-2">
+ <i data-lucide="download" class="w-4 h-4"></i> Download PNG
+ </button>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Toast Notification Container -->
+ <div id="toast-container" class="fixed bottom-6 right-6 z-50 space-y-3"></div>
+
+  <!-- Firebase SDK (Compat) - for Firestore certificate cloud sync -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="assets/js/firebase-config.js"></script>
+ 
+ <!-- QRCode Generator Library -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+ 
+ <!-- Dashboard Engine -->
+ <script src="assets/js/dashboard-engine.js"></script>
+ 
+ <!-- Admin Engine -->
+ <script src="assets/js/admin-engine.js"></script>
+ 
+ <!-- Email Service -->
+ <script src="assets/js/email-service.js"></script>
+ 
+ <!-- Initialize Lucide Icons -->
+ 
+<!-- FOOTER  |  NEWSPAPER EDITORIAL -->
+
+<footer class="footer-editorial" role="contentinfo">
+  <!-- Model Viewer Script Loaded Dynamically inside the footer -->
+  <div class="footer-grid">
+    <!-- Brand column with 3D model logo -->
+    <div class="footer-brand-col">
+      <div class="footer-3d-wrapper">
+    <div class="footer-hologram-coin">
+      <div class="coin-glow"></div>
+      <div class="coin-inner">
+        <div class="coin-front">
+          <img src="logo.png" alt="STEMulus Logo">
+        </div>
+        <div class="coin-back">
+          <img src="logo.png" alt="STEMulus Logo">
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+
+    <!-- Website Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Website</p>
+      <a href="index.html">Home</a>
+      <a href="programs.html">Roadmap</a>
+      <a href="for-parents.html">For Parents</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Social Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Social</p>
+      <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <a href="mailto:admin@stemuluskidstech.com">Email Us</a>
+      <a href="join-as-tutor.html">Join as Tutor</a>
+      <a href="hall-of-fame.html">Hall of Fame</a>
+    </div>
+
+    <!-- Legal Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Legal</p>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="privacy-policy.html#terms">Terms of Service</a>
+      <a href="parent-dashboard.html">Parent Login</a>
+      <a href="enroll.html">Enroll Now</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-legal-left">©2026 STEMulus Innovations LTD. All rights reserved.</p>
+    <p class="footer-legal-right">
+      Built with craft, not algorithms
+      <i data-lucide="heart" style="width:12px;height:12px;fill:currentColor;color:currentColor;display:inline-block;vertical-align:middle;margin:0 2px;"></i>
+      <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:inline-flex;align-items:center;">
+        <i data-lucide="mail" style="width:18px;height:18px;"></i>
+      </a>
+      <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:inline-flex;align-items:center;">
+        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
+      </a>
+    </p>
+  </div>
+  
+  <!-- Background Text "STEMULUS" stylized bottom watermark -->
+  <div class="footer-bg-text">STEMulus</div>
+</footer>
+<script>
+(function(){var ring=document.getElementById('cursor-ring'),dot=document.getElementById('cursor-dot');if(!ring||!dot)return;var mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();document.querySelectorAll('a,button').forEach(function(el){el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-link');});el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-link');});});})();
+window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.editorial-heading,.prog-card,.feature-item,.stat-num').forEach(function(el,i){gsap.from(el,{y:50,opacity:0,duration:0.9,ease:'power 3.out',delay:(i% 4)*.1,scrollTrigger:{trigger:el,start:'top 88%'}});});});
+
+// Mobile Sidebar Toggle
+document.addEventListener('DOMContentLoaded', function() {
+ var menuBtn = document.getElementById('admin-menu-btn');
+ var sidebar = document.getElementById('sidebar');
+ var mainContent = document.querySelector('main');
+ 
+ if (menuBtn && sidebar) {
+ menuBtn.addEventListener('click', function(e) {
+ e.stopPropagation();
+ sidebar.classList.toggle('open');
+ });
+ 
+ if (mainContent) {
+ mainContent.addEventListener('click', function() {
+ if (sidebar.classList.contains('open')) {
+ sidebar.classList.remove('open');
+ }
+ });
+ }
+ 
+ sidebar.querySelectorAll('a').forEach(function(link) {
+ link.addEventListener('click', function() {
+ sidebar.classList.remove('open');
+ });
+ });
+ }
+});
+</script>
+
+<script src="mobile-nav.js"></script>
+
+<!-- Floating WhatsApp CTA Button -->
+<a href="https://wa.me/2347052466716?text=Hello% 20STEMulus% 2C% 20I'm% 20interested% 20in% 20a% 20coding% 20class% 20for% 20my% 20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp">
+  <svg viewBox="0 0 448 512" aria-hidden="true">
+  <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+</svg>
+</a>
+
+</body>
+</html>

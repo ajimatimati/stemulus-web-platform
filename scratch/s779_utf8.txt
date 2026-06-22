@@ -1,0 +1,222 @@
+﻿Created At: 2026-06-18T01:36:44Z
+Completed At: 2026-06-18T01:36:48Z
+File Path: `file:///c:/Users/USER/OneDrive/Desktop/HTMLCSSJS%20GEM%20STEMulus/index.html`
+Total Lines: 1850
+Total Bytes: 116344
+Showing lines 388 to 600
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+388:         border-radius: 12px;
+389:         transition: background 0.2s, border-color 0.2s, color 0.2s;
+390:         white-space: nowrap;
+391:       }
+392:       .skill-pill:hover {
+393:         background: #fff3ed;
+394:         border-color: rgba(244,96,12,0.35);
+395:         color: #f4600c;
+396:       }
+397: 
+398:       /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+399:          STATS BAND
+400:       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+401:       .stats-band-new {
+402:         background: #ffffff;
+403:         border-bottom: 1px solid rgba(10,10,10,0.07);
+404:         padding: 0;
+405:       }
+406:       .stats-band-new__grid {
+407:         max-width: 1160px;
+408:         margin: 0 auto;
+409:         display: grid;
+410:         grid-template-columns: repeat(4,1fr);
+411:       }
+412:       .stats-item {
+413:         padding: 2.25rem 1.5rem;
+414:         text-align: center;
+415:         border-right: 1px solid rgba(10,10,10,0.07);
+416:       }
+417:       .stats-item:last-child { border-right: none; }
+418:       .stats-item__num {
+419:         font-family: 'Nunito', sans-serif;
+420:         font-size: 2.6rem;
+421:         font-weight: 900;
+422:         color: #0d1b2a;
+423:         line-height: 1;
+424:         margin-bottom: 0.4rem;
+425:       }
+426:       .stats-item__num span { color: #f4600c; }
+427:       .stats-item__lbl {
+428:         font-family: 'DM Sans', sans-serif;
+429:         font-size: 0.78rem;
+430:         color: #64748b;
+431:         font-weight: 500;
+432:       }
+433: 
+434:       /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+435:          WHY STEMULUS CARDS
+436:       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+437:       .why-grid {
+438:         display: grid;
+439:         grid-template-columns: repeat(2,1fr);
+440:         gap: 1.25rem;
+441:         margin-top: 3rem;
+442:       }
+443:       .why-card {
+444:         background: #ffffff;
+445:         border: 1.5px solid rgba(10,10,10,0.09);
+446:         border-radius: 16px;
+447:         padding: 2rem 1.75rem;
+448:         transition: box-shadow 0.2s, transform 0.2s;
+449:       }
+450:       .why-card:hover {
+451:         box-shadow: 0 8px 32px rgba(244,96,12,0.09);
+452:         transform: translateY(-2px);
+453:       }
+454:       .why-card__num {
+455:         width: 42px;
+456:         height: 42px;
+457:         border-radius: 50%;
+458:         background: #f4600c;
+459:         color: #fff;
+460:         font-family: 'Nunito', sans-serif;
+461:         font-weight: 900;
+462:         font-size: 1rem;
+463:         display: flex;
+464:         align-items: center;
+465:         justify-content: center;
+466:         margin-bottom: 1.25rem;
+467:       }
+468:       .why-card h3 {
+469:         font-family: 'Nunito', sans-serif;
+470:         font-size: 1.05rem;
+471:         font-weight: 800;
+472:         color: #0d1b2a;
+473:         margin-bottom: 0.5rem;
+474:       }
+475:       .why-card p {
+476:         font-family: 'DM Sans', sans-serif;
+477:         font-size: 0.85rem;
+478:         line-height: 1.65;
+479:         color: #64748b;
+480:       }
+481: 
+482:       /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+483:          STUDENT SHOWCASE
+484:       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+485:       .showcase-new-grid {
+486:         display: grid;
+487:         grid-template-columns: repeat(4,1fr);
+488:         gap: 1rem;
+489:         margin-top: 2.5rem;
+490:       }
+491:       .showcase-new-card {
+492:         border-radius: 12px;
+493:         overflow: hidden;
+494:         border: 1.5px solid rgba(10,10,10,0.08);
+495:         background: #fff;
+496:         transition: transform 0.2s, box-shadow 0.2s;
+497:       }
+498:       .showcase-new-card:hover {
+499:         transform: translateY(-3px);
+500:         box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+501:       }
+502:       .showcase-new-card img {
+503:         width: 100%;
+504:         height: 180px;
+505:         object-fit: cover;
+506:         display: block;
+507:       }
+508:       .showcase-new-meta {
+509:         padding: 1rem;
+510:         border-top: 1px solid rgba(10,10,10,0.07);
+511:       }
+512:       .showcase-new-meta__author {
+513:         font-family: 'Nunito', sans-serif;
+514:         font-size: 0.82rem;
+515:         font-weight: 800;
+516:         color: #0d1b2a;
+517:         display: block;
+518:         margin-bottom: 0.25rem;
+519:       }
+520:       .showcase-new-meta__stack {
+521:         font-family: 'DM Sans', sans-serif;
+522:         font-size: 0.72rem;
+523:         color: #64748b;
+524:         display: block;
+525:         margin-bottom: 0.6rem;
+526:       }
+527:       .showcase-new-meta__tag {
+528:         display: inline-flex;
+529:         align-items: center;
+530:         gap: 0.3rem;
+531:         font-family: 'DM Sans', sans-serif;
+532:         font-size: 0.65rem;
+533:         font-weight: 600;
+534:         color: #f4600c;
+535:         background: #fff3ed;
+536:         border: 1px solid rgba(244,96,12,0.2);
+537:         padding: 0.2rem 0.6rem;
+538:         border-radius: 12px;
+539:       }
+540: 
+541:       /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+542:          PROGRAMS GRID
+543:       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+544:       .programs-grid {
+545:         display: grid;
+546:         grid-template-columns: repeat(3,1fr);
+547:         gap: 1px;
+548:         background: rgba(10,10,10,0.07);
+549:         border: 1px solid rgba(10,10,10,0.07);
+550:         border-radius: 16px;
+551:         overflow: hidden;
+552:         margin-top: 2.5rem;
+553:       }
+554:       .prog-cell {
+555:         background: #ffffff;
+556:         padding: 1.75rem 1.5rem;
+557:         transition: background 0.2s;
+558:       }
+559:       .prog-cell:hover { background: #fffbf7; }
+560:       .prog-cell__age {
+561:         font-family: 'DM Sans', sans-serif;
+562:         font-size: 0.65rem;
+563:         font-weight: 700;
+564:         letter-spacing: 0.12em;
+565:         text-transform: uppercase;
+566:         color: #f4600c;
+567:         border: 1px solid rgba(244,96,12,0.25);
+568:         display: inline-block;
+569:         padding: 0.15rem 0.55rem;
+570:         border-radius: 12px;
+571:         margin-bottom: 0.85rem;
+572:       }
+573:       .prog-cell h3 {
+574:         font-family: 'Nunito', sans-serif;
+575:         font-size: 1rem;
+576:         font-weight: 800;
+577:         color: #0d1b2a;
+578:         margin-bottom: 0.4rem;
+579:       }
+580:       .prog-cell p {
+581:         font-family: 'DM Sans', sans-serif;
+582:         font-size: 0.8rem;
+583:         line-height: 1.6;
+584:         color: #64748b;
+585:       }
+586: 
+587:       /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+588:          LEARNING TIMELINE (horizontal scroll)
+589:       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+590:       #timeline-section {
+591:         background: #0d1b2a;
+592:         padding: 5rem 0 0;
+593:         overflow: hidden;
+594:         position: relative;
+595:       }
+596:       .timeline-header-new {
+597:         max-width: 1160px;
+598:         margin: 0 auto;
+599:         padding: 0 1.5rem 3rem;
+600:       }
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+

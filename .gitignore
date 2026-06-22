@@ -1,0 +1,25 @@
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.backup
+*.bak
+style.css.backup
+
+# Development / Secrets
+node_modules/
+package-lock.json
+.cache/
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+*.zip
+*.tar.gz

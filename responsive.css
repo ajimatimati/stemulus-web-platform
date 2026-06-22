@@ -1,0 +1,1346 @@
+/* ================================================================
+ STEMULUS — GLOBAL RESPONSIVE STYLESHEET
+ Mobile-first overrides for all 27 pages
+ Breakpoints: 480px (phone) | 768px (tablet) | 1024px (desktop+)
+ ================================================================ */
+
+/* ----------------------------------------------------------------
+ 0. BASE — prevent horizontal overflow site-wide
+ ---------------------------------------------------------------- */
+html,
+body {
+ overflow-x: hidden;
+ max-width: 100vw;
+}
+
+img,
+video,
+iframe,
+embed,
+object,
+canvas {
+ max-width: 100%;
+}
+
+/* ----------------------------------------------------------------
+ 1. CUSTOM CURSOR — disable completely on touch devices
+ ---------------------------------------------------------------- */
+@media (hover: none) and (pointer: coarse) {
+ body {
+ cursor: auto !important;
+ }
+
+ #cursor-ring,
+ #cursor-dot,
+ .custom-cursor,
+ .cursor-ring,
+ .cursor-glow {
+ display: none !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 2. HAMBURGER BUTTON STYLES
+ (button element is injected by mobile-nav.js)
+ ---------------------------------------------------------------- */
+#nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  padding: 6px;
+  z-index: 100003 !important; /* Positioned above drawer */
+  flex-shrink: 0;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+#nav-hamburger:hover {
+  background: rgba(10, 10, 10, 0.06);
+}
+
+#nav-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--slate, #1a2332);
+  border-radius: 2px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.3s ease;
+  transform-origin: center;
+}
+
+/* Animate to ✕ when open */
+#nav-hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+#nav-hamburger.open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+#nav-hamburger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ----------------------------------------------------------------
+ 3. MOBILE FULL-SCREEN NAV DRAWER (GLASSMORPHIC & MINIMALIST)
+ ---------------------------------------------------------------- */
+#mobile-nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(250, 249, 247, 0.85) !important;
+  backdrop-filter: blur(25px) !important;
+  -webkit-backdrop-filter: blur(25px) !important;
+  z-index: 100001 !important; /* Below the nav bar / hamburger */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 6rem 2rem 4rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  
+  /* Modern fade & slight scale-down animation */
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.03);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#mobile-nav-drawer.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+#mobile-nav-drawer a {
+  color: var(--slate, #1a2332) !important;
+  text-decoration: none;
+  font-family: var(--heading, 'Outfit'), sans-serif;
+  font-size: clamp(1.25rem, 5vw, 1.6rem);
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: -0.01em;
+  padding: 0.8rem 2.2rem;
+  border-radius: 30px;
+  border: none !important;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.25s ease,
+              background-color 0.25s ease;
+  display: inline-block;
+  text-align: center;
+  width: auto;
+  max-width: 90%;
+  -webkit-tap-highlight-color: transparent;
+  
+  /* Stagger animation starting point */
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Slide up links in sequence when open */
+#mobile-nav-drawer.open a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#mobile-nav-drawer.open a:nth-child(1) { transition-delay: 0.05s; }
+#mobile-nav-drawer.open a:nth-child(2) { transition-delay: 0.10s; }
+#mobile-nav-drawer.open a:nth-child(3) { transition-delay: 0.15s; }
+#mobile-nav-drawer.open a:nth-child(4) { transition-delay: 0.20s; }
+#mobile-nav-drawer.open a:nth-child(5) { transition-delay: 0.25s; }
+#mobile-nav-drawer.open a:nth-child(6) { transition-delay: 0.30s; }
+#mobile-nav-drawer.open a:nth-child(7) { transition-delay: 0.35s; }
+
+#mobile-nav-drawer a:hover,
+#mobile-nav-drawer a:focus {
+  background: rgba(244, 96, 12, 0.08) !important;
+  color: var(--orange, #f4600c) !important;
+}
+
+#mobile-nav-drawer .mnav-enroll {
+  margin-top: 1.5rem;
+  background: var(--orange, #f4600c) !important;
+  color: #fff !important;
+  text-align: center;
+  padding: 0.9rem 2.5rem !important;
+  border: none !important;
+  border-radius: 50px !important;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  width: auto;
+  min-width: 200px;
+  box-shadow: 0 4px 15px rgba(244, 96, 12, 0.2);
+}
+
+#mobile-nav-drawer .mnav-enroll:hover,
+#mobile-nav-drawer .mnav-enroll:focus {
+  background: #d4520a !important;
+  color: #fff !important;
+  box-shadow: 0 6px 20px rgba(244, 96, 12, 0.35);
+}
+
+/* Hide the old close button - hamburger handles it now */
+#mnav-close-btn {
+  display: none !important;
+}
+
+/* Style active body state nav bar overlay */
+body.mobile-nav-open .nav-editorial {
+  background: rgba(250, 249, 247, 0.85) !important;
+  backdrop-filter: blur(25px) !important;
+  -webkit-backdrop-filter: blur(25px) !important;
+  border-bottom: 1px solid rgba(10, 10, 10, 0.08) !important;
+}
+
+body.mobile-nav-open .nav-editorial #nav-hamburger span {
+  background: var(--slate, #1a2332) !important;
+}
+
+
+/* ----------------------------------------------------------------
+ 4. NAV — COLLAPSE LINKS ON MOBILE, SHOW HAMBURGER
+ ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+ #nav-hamburger {
+ display: flex !important;
+ }
+
+ /* Hide the two flex children (links + buttons) of nav-editorial,
+ but NOT the logo anchor and NOT our injected hamburger */
+ .nav-editorial>div {
+ display: none !important;
+ }
+
+ .nav-editorial {
+ padding: 0 1.2rem !important;
+ height: 60px !important;
+ display: flex !important;
+ align-items: center !important;
+ justify-content: space-between !important;
+ mix-blend-mode: normal !important;
+ z-index: 100002 !important; /* Ensure nav sits above the drawer */
+ }
+
+ body:not(.borderless-homepage) .nav-editorial,
+ body.borderless-homepage .nav-editorial.nav-light {
+ background: rgba(250, 249, 247, 0.95) !important;
+ backdrop-filter: blur(12px) !important;
+ -webkit-backdrop-filter: blur(12px) !important;
+ border-bottom: 1px solid rgba(10, 10, 10, 0.06) !important;
+ }
+
+ body.borderless-homepage .nav-editorial:not(.nav-light) {
+ background: transparent !important;
+ backdrop-filter: none !important;
+ -webkit-backdrop-filter: none !important;
+ border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+ box-shadow: none !important;
+ }
+
+ /* White hamburger lines on transparent home nav */
+ body.borderless-homepage .nav-editorial:not(.nav-light) #nav-hamburger span {
+ background: #ffffff!important;
+ }
+
+ /* Logo: don't over-filter */
+ .nav-logo-editorial img {
+ width: 32px !important;
+ height: 32px !important;
+ filter: none !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 5. TYPOGRAPHY — tighten minimum sizes for small screens
+ ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+ .editorial-heading {
+ font-size: clamp(26px, 8vw, 72px) !important;
+ line-height: 1 !important;
+ letter-spacing: -0.02em !important;
+ margin-inline: 0 !important;
+ /* kill negative margin bleed-out */
+ }
+
+ .editorial-heading.break-out {
+ margin-inline: 0 !important;
+ }
+
+ /* Hero headline: force each span to its own block line */
+ #hero-section h1 {
+ line-height: 1.05 !important;
+ margin: 0 !important;
+ }
+
+ .hero-word {
+ display: block !important;
+ overflow: visible !important;
+ line-height: 1.05 !important;
+ }
+
+ .reveal-inner {
+ display: block !important;
+ }
+
+ .hero-line-1 {
+ font-size: clamp(28px, 9vw, 100px) !important;
+ }
+
+ .hero-line-2 {
+ font-size: clamp(32px, 11vw, 130px) !important;
+ }
+
+ .hero-line-3 {
+ font-size: clamp(26px, 7.5vw, 85px) !important;
+ }
+
+ .stat-num {
+ font-size: clamp(38px, 10vw, 80px) !important;
+ }
+
+ .skill-tag {
+ font-size: clamp(18px, 5vw, 36px) !important;
+ }
+
+ .prog-card-title {
+ font-size: clamp(18px, 4.5vw, 30px) !important;
+ }
+
+ h1,
+ h2,
+ h3 {
+ word-break: break-word;
+ overflow-wrap: break-word;
+ }
+}
+
+@media (max-width: 480px) {
+ .editorial-heading {
+ font-size: clamp(22px, 8.5vw, 46px) !important;
+ }
+
+ .hero-word {
+ line-height: 1.1 !important;
+ overflow: visible !important;
+ }
+
+ .hero-line-1 {
+ font-size: clamp(26px, 10vw, 56px) !important;
+ }
+
+ .hero-line-2 {
+ font-size: clamp(30px, 12vw, 72px) !important;
+ }
+
+ .hero-line-3 {
+ font-size: clamp(22px, 9vw, 50px) !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 6. ASYMMETRIC EDITORIAL GRIDS → STACK
+ ---------------------------------------------------------------- */
+@media (max-width: 1024px) {
+
+ .editorial-grid,
+ .editorial-grid-reverse,
+ .difference-grid {
+ grid-template-columns: 1fr !important;
+ gap: 2.5rem !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 7. CURRICULUM GRID
+ ---------------------------------------------------------------- */
+@media (max-width: 1024px) {
+ .curriculum-grid {
+ grid-template-columns: 1fr 1fr !important;
+ }
+
+ /* Kill the stagger transforms on tablet */
+ .curriculum-grid .card-offset {
+ transform: none !important;
+ }
+
+ .curriculum-grid .card-bleed {
+ margin-top: 0 !important;
+ }
+
+ .curriculum-grid .card-tall {
+ grid-row: auto !important;
+ }
+}
+
+@media (max-width: 600px) {
+ .curriculum-grid {
+ grid-template-columns: 1fr !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 8. STATS ROW
+ ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+ .stats-raw {
+ grid-template-columns: 1fr 1fr !important;
+ overflow-x: hidden;
+ }
+
+ .stat-block {
+ padding: 2rem 1rem !important;
+ border-right: none !important;
+ border-bottom: 1px solid currentColor;
+ }
+
+ .stat-block:nth-child(even) {
+ border-right: none !important;
+ }
+
+ .stat-block:nth-last-child(-n+2) {
+ border-bottom: none;
+ }
+}
+
+@media (max-width: 480px) {
+ .stats-raw {
+ grid-template-columns: 1fr !important;
+ }
+
+ .stat-block:last-child {
+ border-bottom: none;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 9. SKILL STATEMENT
+ ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+ .skill-statement {
+ flex-direction: column !important;
+ gap: 2rem !important;
+ padding: 3rem 1.2rem !important;
+ }
+
+ .skill-label-col {
+ width: 100% !important;
+ flex-shrink: unset !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 10. SECTIONS — reduce excessive padding on mobile
+ ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+ .curriculum-section {
+ padding: 4rem 1.2rem !important;
+ }
+
+ .difference-section {
+ padding: 4rem 1.2rem !important;
+ }
+
+ .stats-section {
+ padding: 0 1.2rem !important;
+ }
+
+ .hero-preai {
+ padding-left: 1.2rem !important;
+ padding-right: 1.2rem !important;
+ }
+
+ .cta-section {
+ padding: 4rem 1.2rem !important;
+ }
+
+ /* Section header inside curriculum */
+ .curriculum-section .section-header {
+ flex-direction: column !important;
+ align-items: flex-start !important;
+ gap: 1.5rem !important;
+ margin-bottom: 3rem !important;
+ }
+
+ /* Remove negative margin bleed patterns */
+ .full-bleed {
+ width: 100% !important;
+ margin-inline: 0 !important;
+ }
+}
+
+@media (max-width: 480px) {
+ .curriculum-section {
+ padding: 2.5rem 1rem !important;
+ }
+
+ .difference-section {
+ padding: 2.5rem 1rem !important;
+ }
+
+ .hero-preai {
+ padding-left: 1rem !important;
+ padding-right: 1rem !important;
+ }
+
+ .hero-text-container {
+ padding-top: 14vh !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 11. HERO CTA ROW
+ ---------------------------------------------------------------- */
+@media (max-width: 640px) {
+ .hero-cta-row {
+ flex-direction: column !important;
+ align-items: stretch !important;
+ gap: 1rem !important;
+ margin-top: 3vh !important;
+ }
+
+ .btn-primary-raw {
+ display: block !important;
+ text-align: center !important;
+ width: 100% !important;
+ padding: 1.1rem 1rem !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 12. FOOTER
+ ---------------------------------------------------------------- */
+@media (max-width: 1024px) {
+ .footer-grid {
+ grid-template-columns: 1fr 1fr !important;
+ gap: 2rem !important;
+ }
+}
+
+@media (max-width: 640px) {
+ .footer-grid {
+ grid-template-columns: 1fr 1fr !important;
+ gap: 2rem 1.2rem !important;
+ }
+
+ .footer-grid > :first-child {
+ grid-column: span 2 !important;
+ margin-bottom: 0.5rem !important;
+ }
+
+ .footer-editorial {
+ padding: 3rem 1.2rem 2rem !important;
+ }
+
+ .footer-bottom {
+ flex-direction: column !important;
+ gap: 0.4rem !important;
+ text-align: center !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 13. PROGRAM CARDS
+ ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+ .prog-card {
+ padding: 1.5rem !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 14. ENROLL PAGE — sidebar + form stack on tablet/mobile
+ ---------------------------------------------------------------- */
+@media (max-width: 1024px) {
+
+ /* Override the lg:grid-cols-5 Tailwind grid on the main enroll layout */
+ .lg\:grid-cols-5 {
+ grid-template-columns: 1fr !important;
+ }
+}
+
+@media (max-width: 768px) {
+ .glass-form {
+ padding: 1.5rem !important;
+ margin: 0 !important;
+ border-radius: 1.2rem !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 15. TAILWIND GRID PATTERN OVERRIDES
+ Handles common grid-cols-2/3/4 used across all pages
+ ---------------------------------------------------------------- */
+@media (max-width: 640px) {
+
+ /* Force single column */
+ .grid-cols-2:not([class*="lg\:grid-cols"]),
+ .sm\:grid-cols-2,
+ .md\:grid-cols-2 {
+ grid-template-columns: 1fr !important;
+ }
+
+ .grid-cols-3,
+ .sm\:grid-cols-3,
+ .md\:grid-cols-3 {
+ grid-template-columns: 1fr !important;
+ }
+
+ .grid-cols-4,
+ .sm\:grid-cols-4,
+ .md\:grid-cols-4 {
+ grid-template-columns: 1fr !important;
+ }
+
+ .grid-cols-5 {
+ grid-template-columns: 1fr !important;
+ }
+
+ .grid-cols-6 {
+ grid-template-columns: 1fr !important;
+ }
+}
+
+@media (max-width: 768px) {
+ .lg\:grid-cols-2 {
+ grid-template-columns: 1fr !important;
+ }
+
+ .lg\:grid-cols-3 {
+ grid-template-columns: 1fr !important;
+ }
+
+ .lg\:grid-cols-4 {
+ grid-template-columns: 1fr !important;
+ }
+
+ .lg\:grid-cols-5 {
+ grid-template-columns: 1fr !important;
+ }
+
+ .lg\:grid-cols-6 {
+ grid-template-columns: 1fr 1fr !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 16. TAILWIND FLEX DIRECTION OVERRIDES
+ ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+ .lg\:flex-row {
+ flex-direction: column !important;
+ }
+
+ /* Keep children from shrinking to nothing */
+ .lg\:w-1\/2 {
+ width: 100% !important;
+ }
+
+ .lg\:w-1\/3 {
+ width: 100% !important;
+ }
+
+ .lg\:w-2\/3 {
+ width: 100% !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 17. BUTTONS & TAP TARGETS
+ ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+
+ button,
+ input[type="submit"],
+ input[type="button"],
+ a.btn,
+ .btn-primary-raw {
+ min-height: 44px;
+ }
+
+ /* Full-width the main enroll CTA on small screens */
+ a[href*="enroll"][class*="rounded"],
+ a[href*="enroll.html"][class*="rounded"] {
+ display: block !important;
+ text-align: center !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 18. TABLES — prevent horizontal blowout
+ ---------------------------------------------------------------- */
+table {
+ display: block;
+ width: 100%;
+ overflow-x: auto;
+ -webkit-overflow-scrolling: touch;
+}
+
+/* ----------------------------------------------------------------
+ 19. SCROLL HINT — hide on mobile (saves space)
+ ---------------------------------------------------------------- */
+@media (max-width: 640px) {
+ .hero-scroll-hint {
+ display: none !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 20. GRAIN ANIMATION — lower frequency on mobile
+ ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+ #grain {
+ animation-duration: 4s !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 21. PROGRAMS / PRICING / BLOG GRID OVERRIDES (Tailwind pages)
+ ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+
+ /* Programs page grid */
+ #programs-grid,
+ .programs-grid {
+ grid-template-columns: 1fr !important;
+ }
+
+ /* Pricing cards */
+ .pricing-grid {
+ grid-template-columns: 1fr !important;
+ }
+
+ /* Blog grid */
+ #blog-grid-container,
+ .blog-grid {
+ grid-template-columns: 1fr !important;
+ }
+
+ /* Contact two-col layout */
+ .contact-grid {
+ grid-template-columns: 1fr !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 22. MOBILE UTILITIES
+ ---------------------------------------------------------------- */
+@media (max-width: 640px) {
+
+ /* Remove large negative margins that can cause overflow */
+ [style*="margin-left: -"] {
+ margin-left: 0 !important;
+ }
+
+ [style*="margin-right: -"] {
+ margin-right: 0 !important;
+ }
+
+ /* Ensure paddings don't overflow */
+ [class*="px-"] {
+ max-width: 100% !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 23. PREAI-HERO SPLIT — already has responsive CSS in preai-overhaul.css
+ but add extra phone-specific touch
+ ---------------------------------------------------------------- */
+@media (max-width: 480px) {
+ .preai-hero-text {
+ padding: 6rem 1.2rem 3rem !important;
+ }
+
+ .preai-hero-ctas {
+ flex-direction: column !important;
+ align-items: stretch !important;
+ }
+
+ .preai-hero-cta-primary {
+ text-align: center !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 24. MISC COMPONENT FIXES
+ ---------------------------------------------------------------- */
+/* Ensure inline-block badges don't wrap mid-word */
+.badge,
+[class*="rounded-full"][class*="px-"] {
+ white-space: nowrap;
+}
+
+/* Dashboard / admin table scrolling */
+.overflow-x-auto {
+ overflow-x: auto !important;
+ -webkit-overflow-scrolling: touch;
+}
+
+/* Sidebar layouts in dashboard pages */
+@media (max-width: 768px) {
+ .sidebar {
+ display: none !important;
+ }
+
+ .main-content {
+ width: 100% !important;
+ margin-left: 0 !important;
+ }
+}
+
+/* Remove horizontal scroll risk from fixed wide elements */
+@media (max-width: 640px) {
+ .w-screen {
+ width: 100% !important;
+ }
+
+ .min-w-\[600px\] {
+ min-width: 0 !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ INDEX PAGE — inline-style element overrides
+ ---------------------------------------------------------------- */
+
+/* Hero stats strip: 3-col → stack on very small screens */
+@media (max-width: 500px) {
+ .hero-stats-strip-new {
+ flex-direction: column !important;
+ gap: 1.5rem !important;
+ align-items: flex-start !important;
+ border-top: 1px solid rgba(0,0,0,0.08) !important;
+ padding-top: 1.5rem !important;
+ }
+
+ .hero-stat-item {
+ border-bottom: 1px dashed rgba(10, 10, 10, 0.08) !important;
+ width: 100% !important;
+ padding-bottom: 0.8rem !important;
+ }
+
+ .hero-stat-item:last-child {
+ border-bottom: none !important;
+ padding-bottom: 0 !important;
+ }
+}
+
+@media (min-width: 501px) and (max-width: 768px) {
+ .hero-stats-strip-new {
+ flex-wrap: wrap !important;
+ gap: 1.5rem !important;
+ }
+}
+
+/* CTA buttons in the "Ready to Start?" section — stack on phone */
+@media (max-width: 640px) {
+ .hero-cta-stacked {
+ flex-direction: column !important;
+ align-items: stretch !important;
+ gap: 1rem !important;
+ }
+
+ .hero-cta-stacked .btn-primary-raw,
+ .hero-cta-stacked .btn-ghost-raw {
+ display: block !important;
+ text-align: center !important;
+ width: 100% !important;
+ }
+}
+
+/* ── Timeline section: horizontal GSAP-driven on ALL screen sizes ── */
+.timeline-section {
+ padding: 4rem 0 !important;
+}
+
+/* Horizontal flex row for GSAP to translate */
+.timeline-scroll-track {
+ display: flex;
+ flex-wrap: nowrap;
+ width: max-content !important;
+ gap: 0;
+ will-change: transform;
+}
+
+.timeline-step {
+ flex: 0 0 380px !important;
+ min-width: 380px !important;
+ width: 380px !important;
+ padding: 2.5rem 2rem;
+ border-left: 1px solid #e5e7eb;
+ box-sizing: border-box;
+}
+
+.timeline-step:first-child {
+ border-left: none;
+}
+
+.timeline-step-num {
+ font-family: 'Nunito', sans-serif;
+ font-size: 3rem;
+ font-weight: 700;
+ color: rgba(10, 10, 10, 0.6);
+ letter-spacing: -0.04em;
+ line-height: 1;
+ margin-bottom: 1rem;
+}
+
+.timeline-step-age {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.72rem;
+ text-transform: uppercase;
+ letter-spacing: 0.12em;
+ color: var(--orange, #f4600c);
+ margin-bottom: 0.5rem;
+}
+
+.timeline-step-title {
+ font-family: 'Nunito', sans-serif;
+ font-size: 1.4rem;
+ font-weight: 700;
+ color: rgba(10, 10, 10, 0.6);
+ letter-spacing: -0.02em;
+ margin-bottom: 0.75rem;
+}
+
+.timeline-step-desc {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.8rem;
+ line-height: 1.7;
+ color: rgba(10, 10, 10, 0.6);
+ max-width: 320px;
+}
+
+.timeline-header {
+ padding: 5rem 5vw 3rem;
+}
+
+/* ── Tablet: slightly narrower cards ── */
+@media (max-width: 1024px) {
+ .timeline-section {
+ padding: 3rem 0 !important;
+ }
+
+ .timeline-step {
+ flex: 0 0 320px !important;
+ min-width: 320px !important;
+ width: 320px !important;
+ padding: 2rem 1.5rem;
+ }
+
+ .timeline-step-num {
+ font-size: 2.5rem;
+ }
+}
+
+/* ── Mobile: cards sized to ~80vw so one fills most of the screen ── */
+@media (max-width: 768px) {
+ .timeline-section {
+ padding: 2rem 0 !important;
+ }
+
+ .timeline-step {
+ flex: 0 0 85vw !important;
+ min-width: 85vw !important;
+ width: 85vw !important;
+ padding: 2rem 1.5rem;
+ }
+
+ /* Mobile Swipe Hint */
+ .mobile-swipe-hint {
+ display: flex !important;
+ align-items: center;
+ justify-content: flex-end;
+ gap: 0.5rem;
+ padding: 0 1.2rem 1rem;
+ color: var(--ink);
+ opacity: 0.5;
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.65rem;
+ letter-spacing: 0.1em;
+ animation: hintPulse 2s ease-in-out infinite;
+ }
+
+ .mobile-swipe-hint svg {
+ width: 16px;
+ height: 16px;
+ stroke: var(--orange);
+ animation: hintSlide 2s ease-in-out infinite;
+ }
+
+ @keyframes hintPulse {
+
+ 0%,
+ 100% {
+ opacity: 0.3;
+ }
+
+ 50% {
+ opacity: 0.7;
+ }
+ }
+
+ @keyframes hintSlide {
+
+ 0%,
+ 100% {
+ transform: translateX(0);
+ }
+
+ 50% {
+ transform: translateX(4px);
+ }
+ }
+
+ /* Reset scroll track container for GSAP Pinning */
+ .timeline-scroll-track {
+ display: flex;
+ flex-wrap: nowrap;
+ width: max-content;
+ gap: 1.5rem;
+ /* Ensure consistent gap between cards on mobile */
+ padding-bottom: 2rem;
+ }
+
+ .timeline-step-num {
+ font-size: 2rem;
+ }
+
+ .timeline-step-title {
+ font-size: 1.15rem;
+ }
+
+ .timeline-step-desc {
+ max-width: 100%;
+ }
+
+ /* Padding for the new Mobile Filter Trigger Bar */
+ main {
+ padding-bottom: 80px;
+ }
+
+ .timeline-header {
+ padding: 3rem 1.2rem 2rem;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 16b. STUDENT SHOWCASE — BASE STYLES (DESKTOP FIRST)
+ ---------------------------------------------------------------- */
+
+/* Section wrapper */
+.showcase-directory {
+ padding: 6rem 5vw;
+ background: #F3F4F6;
+ border-top: 1px solid #e5e7eb;
+}
+
+/* Header: 2-column on desktop, stacked on mobile (pure CSS, no Tailwind) */
+.showcase-header-grid {
+ display: grid;
+ grid-template-columns: 1fr 380px;
+ gap: 3rem;
+ align-items: flex-end;
+ margin-bottom: 4rem;
+ border-bottom: 1px solid #e5e7eb;
+ padding-bottom: 2rem;
+}
+
+/* Project card grid */
+.showcase-grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 2px;
+ background: rgba(255, 255, 255, 0.04);
+ border: 1px solid #e5e7eb;
+}
+
+/* Individual project card */
+.showcase-item {
+ background: #F3F4F6;
+ display: flex;
+ flex-direction: column;
+ transition: background 0.25s ease;
+ position: relative;
+ overflow: hidden;
+}
+
+.showcase-item:hover {
+ background: rgba(255, 255, 255, 0.03);
+}
+
+/* Image wrapper — fixed aspect ratio */
+.showcase-wrapper {
+ width: 100%;
+ aspect-ratio: 16 / 9;
+ overflow: hidden;
+ background-color: #FAFBFC;
+ border-bottom: 1px solid #e5e7eb;
+ flex-shrink: 0;
+}
+
+.showcase-img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ display: block;
+ filter: grayscale(30%) contrast(1.05);
+ transition: filter 0.4s ease, transform 0.5s ease;
+}
+
+.showcase-item:hover .showcase-img {
+ filter: grayscale(0%) contrast(1.1);
+ transform: scale(1.03);
+}
+
+/* Metadata panel underneath image */
+.showcase-meta {
+ padding: 1.2rem 1.4rem 1.6rem;
+ display: flex;
+ flex-direction: column;
+ gap: 0.35rem;
+ flex: 1;
+ position: relative;
+}
+
+.showcase-author {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.72rem;
+ font-weight: 700;
+ color: var(--ink);
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+}
+
+.showcase-stack {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.7rem;
+ color: rgba(10, 10, 10, 0.6);
+ letter-spacing: 0.05em;
+}
+
+.showcase-date {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.65rem;
+ color: rgba(10, 10, 10, 0.6);
+ letter-spacing: 0.05em;
+ margin-top: 0.25rem;
+}
+
+/* CTA run button */
+.showcase-run {
+ font-family: 'DM Sans', sans-serif;
+ font-size: 0.72rem;
+ font-weight: 700;
+ color: var(--orange);
+ letter-spacing: 0.12em;
+ text-transform: uppercase;
+ margin-top: 1rem;
+ padding: 0.6rem 0;
+ border-top: 1px dashed rgba(244, 96, 12, 0.25);
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
+ cursor: pointer;
+ opacity: 0.7;
+ transition: opacity 0.2s ease;
+}
+
+/* .showcase-run::before removed to prevent duplicate play icon */
+
+.showcase-item:hover .showcase-run {
+ opacity: 1;
+}
+
+/* ----------------------------------------------------------------
+ TABLET (max-width: 1024px) — 2-column grid but header stacks
+ ---------------------------------------------------------------- */
+@media (max-width: 1024px) {
+ .showcase-header-grid {
+ grid-template-columns: 1fr;
+ gap: 2rem;
+ }
+}
+
+/* ----------------------------------------------------------------
+ TABLET SMALL (max-width: 768px) — Handled in Section 17 below
+ ---------------------------------------------------------------- */
+
+/* ----------------------------------------------------------------
+ 17. LIVE SERVER DIRECTORY (STUDENT SHOWCASE) MOBILE
+ ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+ .showcase-directory {
+ padding: 4rem 1.2rem;
+ }
+
+ .showcase-grid {
+ grid-template-columns: 1fr;
+ gap: 2.5rem;
+ margin-top: 2rem;
+ }
+
+ .showcase-item {
+ margin: 0 -1.2rem;
+ /* Edge-to-edge on mobile */
+ border-left: none;
+ border-right: none;
+ }
+
+ /* Keep the image in full color on mobile since hover isn't reliable */
+ .showcase-img {
+ filter: grayscale(0%) contrast(1.1);
+ }
+
+ .showcase-meta {
+ padding: 1.2rem;
+ }
+
+ .showcase-author {
+ font-size: 1.1rem;
+ /* Larger for tap targets */
+ }
+
+ .showcase-stack {
+ font-size: 0.85rem;
+ }
+
+ .showcase-date {
+ font-size: 0.8rem;
+ }
+
+ /* Always show the CTA on mobile */
+ .showcase-run {
+ opacity: 1;
+ transform: translateY(0);
+ margin-top: 1.5rem;
+ padding: 0.8rem;
+ border: 1px dashed rgba(255, 255, 255, 0.2);
+ justify-content: center;
+ width: 100%;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 18. MOBILE BUTTON ACCESSIBILITY (Touch Targets)
+ ---------------------------------------------------------------- */
+@media (max-width: 480px) {
+
+ .btn-primary-raw,
+ .btn-ghost-raw {
+ width: 100%;
+ min-height: 56px;
+ /* Fat touch target for mobile */
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ text-align: center;
+ padding-left: 1rem;
+ padding-right: 1rem;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 19. DASHBOARDS (ADMIN & TUTOR) MOBILE RESPONSIVENESS OVERRIDES
+ ---------------------------------------------------------------- */
+@media (max-width: 1023px) {
+ /* Hide admin sidebar by default & add slide transition */
+ #sidebar,
+ #tutor-sidebar {
+ transform: translateX(-100%) !important;
+ transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+ z-index: 100002 !important;
+ display: flex !important; /* Force flex so it displays when sliding in */
+ }
+
+ #sidebar.open,
+ #tutor-sidebar.open {
+ transform: translateX(0) !important;
+ box-shadow: 0 0 40px rgba(0, 0, 0, 0.15) !important;
+ }
+
+ /* Collapse main content margins */
+ main,
+ #dashboard-container main,
+ body:not(.borderless-homepage) main {
+ margin-left: 0 !important;
+ width: 100% !important;
+ padding-left: 1.5rem !important;
+ padding-right: 1.5rem !important;
+ }
+
+ /* Ensure table containers scroll instead of stretching parent */
+ .overflow-x-auto {
+ max-width: 100% !important;
+ overflow-x: auto !important;
+ display: block !important;
+ }
+
+ header {
+ padding-left: 1.5rem !important;
+ padding-right: 1.5rem !important;
+ }
+
+ /* Strengthen overlay on mobile for robot silhouette */
+ #video-overlay {
+ background: rgba(250, 248, 242, 0.6) !important;
+ }
+}
+
+/* ----------------------------------------------------------------
+ 20. FLOATING WHATSAPP BUTTON (GLOBAL)
+ ---------------------------------------------------------------- */
+.wa-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  width: 56px;
+  height: 56px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.wa-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(37, 211, 102, 0.6);
+}
+.wa-float svg {
+  width: 30px;
+  height: 30px;
+  fill: #fff;
+  display: block;
+}
+@media (max-width: 768px) {
+  .wa-float {
+    bottom: 16px;
+    right: 16px;
+    width: 52px;
+    height: 52px;
+  }
+  .wa-float svg {
+    width: 26px;
+    height: 26px;
+  }
+}

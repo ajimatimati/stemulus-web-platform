@@ -1,0 +1,38 @@
+[
+  {
+    "id": "welcome",
+    "name": "Welcome Email",
+    "subject": "Welcome to STEMulus, {{student_name}}! 🚀",
+    "body": "<h1>Welcome to the STEMulus Family!</h1><p>Dear {{parent_name}},</p><p>We're thrilled to have <strong>{{student_name}}</strong> join our {{course_name}} program! Get ready for an exciting journey of learning, creativity, and innovation.</p><h2>What's Next?</h2><ul><li>You'll receive a class schedule and Zoom link before your first session</li><li>Make sure your child has a computer or tablet ready</li><li>Questions? Reply to this email anytime!</li></ul><p>Let's ignite the spark of coding! 🌟</p><p>Warm regards,<br><strong>The STEMulus Team</strong></p>"
+  },
+  {
+    "id": "reminder-24h",
+    "name": "24-Hour Class Reminder",
+    "subject": "Reminder: {{student_name}}'s class is tomorrow! 📅",
+    "body": "<h1>Class Reminder</h1><p>Hi {{parent_name}},</p><p>Just a friendly reminder that <strong>{{student_name}}</strong> has a <strong>{{course_name}}</strong> class tomorrow!</p><h2>Class Details:</h2><ul><li><strong>Date:</strong> {{class_date}}</li><li><strong>Time:</strong> {{class_time}}</li><li><strong>Duration:</strong> {{class_duration}} minutes</li><li><strong>Join Link:</strong> <a href=\"{{zoom_link}}\">Click here to join</a></li></ul><p>Please ensure your child is ready 5 minutes before the class starts.</p><p>See you there! 🎓</p><p>— The STEMulus Team</p>"
+  },
+  {
+    "id": "reminder-1h",
+    "name": "1-Hour Class Reminder",
+    "subject": "Starting soon: {{student_name}}'s class in 1 hour! ⏰",
+    "body": "<h1>Class Starting Soon!</h1><p>Hi {{parent_name}},</p><p><strong>{{student_name}}</strong>'s <strong>{{course_name}}</strong> class starts in just <strong>1 hour</strong>!</p><h2>Quick Checklist:</h2><ul><li>✅ Computer or tablet ready</li><li>✅ Quiet workspace</li><li>✅ Join link: <a href=\"{{zoom_link}}\">Click here</a></li></ul><p>Let's make it a great session! 🚀</p><p>— The STEMulus Team</p>"
+  },
+  {
+    "id": "schedule-change",
+    "name": "Schedule Change Notification",
+    "subject": "Important: Schedule Update for {{student_name}}'s class",
+    "body": "<h1>Schedule Update</h1><p>Dear {{parent_name}},</p><p>We're writing to inform you of a change to <strong>{{student_name}}</strong>'s upcoming <strong>{{course_name}}</strong> class.</p><h2>Previous Schedule:</h2><p>{{old_date}} at {{old_time}}</p><h2>New Schedule:</h2><p><strong>{{new_date}} at {{new_time}}</strong></p><p>{{change_message}}</p><p>We apologize for any inconvenience. If you have questions, please reply to this email.</p><p>Best regards,<br><strong>The STEMulus Team</strong></p>"
+  },
+  {
+    "id": "certificate",
+    "name": "Certificate of Completion",
+    "subject": "🎉 Congratulations {{student_name}}! You've completed {{course_name}}!",
+    "body": "<h1>🎓 Certificate of Achievement!</h1><p>Dear {{parent_name}},</p><p>We are delighted to announce that <strong>{{student_name}}</strong> has successfully completed the <strong>{{course_name}}</strong> program at STEMulus!</p><p><strong>Completion Date:</strong> {{completion_date}}</p><p>This is a significant accomplishment, and we're incredibly proud of {{student_name}}'s dedication and hard work. Your child has developed valuable skills that will serve them well in the future.</p><h2>What's Next?</h2><p>Explore our other exciting programs to continue the learning journey! Check out:</p><ul><li>Junior Robotics</li><li>Python Game Development</li><li>Web Design & Development</li><li>AI Explorers</li></ul><p>Congratulations once again! 🌟</p><p>With pride,<br><strong>The STEMulus Team</strong></p>"
+  },
+  {
+    "id": "custom",
+    "name": "Custom Message",
+    "subject": "{{subject}}",
+    "body": "{{message}}"
+  }
+]

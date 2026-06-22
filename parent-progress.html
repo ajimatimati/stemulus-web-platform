@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Child Progress Monitoring | STEMulus Parent Portal</title>
+  
+  <!-- SEO: CORE -->
+  <meta name="description" content="Track your child's coding progress, mastery radar charts, curriculum milestones, and historical tutor feedback logs on STEMulus.">
+  <meta name="keywords" content="STEMulus progress monitoring, child coding reports, student progress dashboard">
+  <meta name="author" content="STEMulus Kids Tech">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://stemuluskidstech.com/parent-progress.html">
+  
+  <!-- SEO: OPEN GRAPH -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Child Progress Monitoring | STEMulus">
+  <meta property="og:description" content="Track your child's coding progress, mastery radar charts, curriculum milestones, and historical tutor feedback logs on STEMulus.">
+  <meta property="og:url" content="https://stemuluskidstech.com/parent-progress.html">
+  <meta property="og:site_name" content="STEMulus">
+  <meta property="og:image" content="https://stemuluskidstech.com/logo.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
+  
+  <!-- SEO: TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Child Progress Monitoring | STEMulus">
+  <meta name="twitter:description" content="Track your child's coding progress, mastery radar charts, curriculum milestones, and historical tutor feedback logs on STEMulus.">
+  <meta name="twitter:image" content="https://stemuluskidstech.com/logo.png">
+  <meta name="twitter:site" content="@focuskidstech">
+  
+  <!-- SEO: GEO -->
+  <meta name="geo.region" content="NG">
+  <meta name="geo.placename" content="Lagos, Nigeria">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <link rel="stylesheet" href="preai-overhaul.css">
+  <link rel="stylesheet" href="responsive.css">
+  
+  <!-- Standard Favicon -->
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  
+  <script>
+    if (window.tailwind) {
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                orange: '#F4600C',
+                blue: '#1e293b',
+              }
+            }
+          }
+        }
+      };
+    }
+  </script>
+  
+  <style>
+    /* Premium visual defaults matching homepage light/beige feel */
+    body, html {
+      background-color: #fcfbfa!important;
+      color: #0f172a!important;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .text-outfit {
+      font-family: 'Outfit', sans-serif;
+    }
+    .text-nunito {
+      font-family: 'Nunito', sans-serif;
+    }
+    /* Rounded corners overrides - No Pills */
+    .rounded-btn {
+      border-radius: 12px !important;
+    }
+    /* Timeline styling */
+    .timeline-line::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      background-color: #e2e8f0;
+      top: 0;
+      bottom: 0;
+      left: 15px;
+      margin-left: -1px;
+    }
+    .timeline-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 12px; /* 12px round rect instead of pill */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    /* Custom select style */
+    select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+
+    /* STEMulus Project Canvas Styles (Railway-inspired) */
+    .canvas-container {
+      background-color: #f8fafc;
+      background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
+      background-size: 20px 20px;
+      position: relative;
+      border-radius: 16px;
+      min-height: 400px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+    .canvas-node {
+      position: absolute;
+      width: 210px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+    }
+    .canvas-node:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.08);
+      border-color: #cbd5e1;
+    }
+    .canvas-node.active-node {
+      border-color: #4F46E5 !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12), 0 8px 20px rgba(79, 70, 229, 0.08);
+    }
+    .connector-line {
+      stroke: #e2e8f0;
+      stroke-width: 2;
+      fill: none;
+      transition: stroke 0.3s, stroke-width 0.3s;
+    }
+    .connector-line.active-flow {
+      stroke: #818cf8;
+      stroke-width: 2.5;
+      stroke-dasharray: 6 4;
+      animation: flowParticles 30s linear infinite;
+    }
+    @keyframes flowParticles {
+      to {
+        stroke-dashoffset: -1000;
+      }
+    }
+    .gauge-circle {
+      transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="bg-[#fcfbfa] min-h-screen text-slate-900">
+  
+  <!-- Top Navigation Header -->
+  <nav class="bg-[#101726] text-white border-b border-gray-800 sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="logo.png" alt="STEMulus Logo" class="h-10 w-auto bg-white rounded-xl p-1">
+        <div>
+          <span class="text-xs text-brand-orange font-bold uppercase tracking-widest text-outfit">Parent Portal</span>
+          <h1 class="font-outfit font-extrabold text-lg leading-tight">Child Progress Monitor</h1>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <a href="parent-dashboard.html" id="back-dashboard-btn" class="flex items-center gap-2 border border-gray-700 hover:bg-gray-800 text-gray-200 text-sm font-semibold px-4 py-2 rounded-xl transition-all">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Portal Home</span>
+        </a>
+        <button id="logout-btn" class="p-2 text-gray-400 hover:text-white transition-colors" title="Log Out">
+          <i data-lucide="log-out" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Progress Content -->
+  <main class="container mx-auto px-4 py-8 max-w-6xl">
+    
+    <!-- Top Selector Bar -->
+    <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div>
+        <h2 class="text-2xl font-outfit font-bold text-slate-800 flex items-center gap-2">
+          <span id="active-student-title">Loading Student...</span>
+          <span id="active-student-badge" class="bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-xl uppercase tracking-wider">Active</span>
+        </h2>
+        <p class="text-sm text-gray-500 mt-1">Review core metrics, curriculum path milestones, and detailed lesson-by-lesson feedback logs.</p>
+      </div>
+      
+      <!-- Student Switcher Dropdown -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <label for="student-selector" class="text-xs font-bold text-gray-400 uppercase tracking-wider">Select Child:</label>
+        <select id="student-selector" class="bg-gray-50 border border-gray-300 text-gray-800 font-semibold text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-brand-orange w-full sm:w-56 transition-colors shadow-sm">
+          <!-- Populated dynamically -->
+        </select>
+      </div>
+    </div>
+
+    <!-- Error state container if no access -->
+    <div id="error-container" class="hidden text-center py-20 bg-white border border-gray-200 rounded-2xl shadow-sm">
+      <i data-lucide="alert-circle" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
+      <h3 class="text-xl font-bold text-gray-800">Access Denied / Student Not Found</h3>
+      <p class="text-gray-500 max-w-md mx-auto mt-2">Please return to the dashboard or log in with your parent account credentials.</p>
+      <a href="parent-dashboard.html" class="inline-block mt-6 bg-brand-orange hover:bg-orange-600 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md">
+        Back to Parent Dashboard
+      </a>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div id="dashboard-grid" class="space-y-8">
+      
+      <!-- Four Metric KPI Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Card 1: Syllabus Completion -->
+        <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6 hover:shadow-md transition-shadow">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Syllabus Completion</span>
+            <div class="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
+              <i data-lucide="check-square" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="text-3xl font-outfit font-extrabold text-slate-800" id="metric-progress">0%</h3>
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-100 h-2.5 rounded-xl overflow-hidden">
+              <div id="metric-progress-bar" class="bg-indigo-600 h-full rounded-xl transition-all duration-700" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Classes Attended -->
+        <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6 hover:shadow-md transition-shadow">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Session Attendance</span>
+            <div class="p-2 bg-emerald-50 text-emerald-600 rounded-xl">
+              <i data-lucide="calendar" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-3xl font-outfit font-extrabold text-slate-800" id="metric-attended">0 / 0</h3>
+            <p class="text-xs text-gray-500">Scheduled hours completed</p>
+          </div>
+        </div>
+
+        <!-- Card 3: Projects Published -->
+        <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6 hover:shadow-md transition-shadow">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Capstone Projects</span>
+            <div class="p-2 bg-orange-50 text-brand-orange rounded-xl">
+              <i data-lucide="folder-git" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-3xl font-outfit font-extrabold text-slate-800" id="metric-projects">0</h3>
+            <p class="text-xs text-gray-500">Live games & applications built</p>
+          </div>
+        </div>
+
+        <!-- Card 4: Code Volumetrics -->
+        <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6 hover:shadow-md transition-shadow">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Lines of Code</span>
+            <div class="p-2 bg-purple-50 text-purple-600 rounded-xl">
+              <i data-lucide="code-2" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-3xl font-outfit font-extrabold text-slate-800" id="metric-lines">0</h3>
+            <p class="text-xs text-gray-500">Lines written during tutorials</p>
+          </div>
+        </div>
+        
+      </div>
+
+      <!-- Graph & Spotlight section -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left: Radar Chart for Concept Mastery -->
+        <div class="lg:col-span-2 bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6 flex flex-col justify-between">
+          <div>
+            <h3 class="text-lg font-outfit font-bold text-slate-800 flex items-center gap-2">
+              <i data-lucide="radar" class="w-5 h-5 text-indigo-600"></i> Concept Mastery Breakdown
+            </h3>
+            <p class="text-xs text-gray-500 mt-1">Real-time assessment of programming capabilities across 5 core criteria.</p>
+          </div>
+          
+          <div class="my-6 relative flex items-center justify-center" style="min-height: 320px;">
+            <canvas id="concept-chart" class="max-w-[400px] md:max-w-[450px] mx-auto"></canvas>
+          </div>
+          
+          <div class="border-t border-gray-100 pt-4 flex flex-wrap justify-between gap-4 text-xs text-gray-500">
+            <span class="flex items-center gap-1"><i data-lucide="award" class="w-3.5 h-3.5 text-brand-orange"></i> Targets aligned with global STEM standards</span>
+            <span class="font-semibold text-indigo-700">Updated weekly by mentors</span>
+          </div>
+        </div>
+
+        <!-- Right: Mentor Focus Card -->
+        <div class="bg-gradient-to-br from-indigo-900 to-[#101726] border border-gray-800 shadow-xl rounded-2xl p-6 text-white flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute -right-16 -bottom-16 opacity-5 pointer-events-none">
+            <i data-lucide="cpu" class="w-64 h-64"></i>
+          </div>
+          
+          <div class="space-y-6 relative z-10">
+            <div class="flex items-center justify-between">
+              <span class="bg-indigo-500/25 border border-indigo-400/25 text-indigo-300 text-[10px] font-extrabold px-3 py-1 rounded-xl uppercase tracking-wider">Assigned Mentor</span>
+              <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/10">
+                <i data-lucide="user-check" class="w-5 h-5 text-indigo-300"></i>
+              </div>
+            </div>
+            
+            <div class="space-y-1">
+              <h4 class="text-xl font-outfit font-bold" id="mentor-name">Sarah Jane</h4>
+              <p class="text-xs text-indigo-200">Senior Curriculum Engineer & Tutor</p>
+            </div>
+            
+            <div class="border-t border-white/10 pt-4 space-y-4">
+              <h5 class="text-xs font-bold text-indigo-300 uppercase tracking-wider">Tutor Focus Area</h5>
+              <p class="text-sm text-gray-300 leading-relaxed" id="mentor-focus-comment">
+                "Daniel is showing solid intuition for nested loop variables. Our primary focus is getting him comfortable with indexing elements inside lists."
+              </p>
+            </div>
+          </div>
+          
+          <div class="pt-6 relative z-10">
+            <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer" class="w-full bg-[#25D366] hover:bg-emerald-600 text-white font-bold text-sm py-3 rounded-xl transition-all shadow-lg shadow-emerald-950/20 flex items-center justify-center gap-2">
+              <i data-lucide="message-square" class="w-4 h-4"></i>
+              <span>Message STEMulus Support</span>
+            </a>
+          </div>
+        </div>
+        
+      </div>
+
+      <!-- Roadmap Timeline Section -->
+      <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6">
+        <div class="mb-6">
+          <h3 class="text-lg font-outfit font-bold text-slate-800 flex items-center gap-2">
+            <i data-lucide="milestone" class="w-5 h-5 text-brand-orange"></i> Curriculum Milestone Roadmap
+          </h3>
+          <p class="text-xs text-gray-500 mt-1">Timeline of curriculum modules, completed achievements, and upcoming subjects.</p>
+        </div>
+        
+        <!-- Timeline Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-6 gap-6 relative" id="roadmap-container">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+      <!-- STEMULUS PROJECT CANVAS (RAILWAY-INSPIRED) -->
+      <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h3 class="text-lg font-outfit font-bold text-slate-800 flex items-center gap-2">
+              <i data-lucide="git-branch" class="w-5 h-5 text-indigo-600"></i> STEMulus Project Canvas
+            </h3>
+            <p class="text-xs text-gray-500 mt-1">Interactive developer architecture showing how your child's games and services connect and deploy.</p>
+          </div>
+          <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
+            <button id="tab-btn-vars" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-white text-indigo-700 shadow-sm transition-all" onclick="ProjectCanvasController.switchTab('vars')">Variables</button>
+            <button id="tab-btn-terminal" class="px-4 py-1.5 rounded-lg text-xs font-bold text-gray-500 hover:text-gray-900 transition-all" onclick="ProjectCanvasController.switchTab('terminal')">Build Terminal</button>
+            <button id="tab-btn-resources" class="px-4 py-1.5 rounded-lg text-xs font-bold text-gray-500 hover:text-gray-900 transition-all" onclick="ProjectCanvasController.switchTab('resources')">Resources</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Canvas graph column (spans 2) -->
+          <div class="lg:col-span-2 canvas-container" style="min-height: 400px;">
+            <!-- Dotted Background Grid is in CSS background-image -->
+            
+            <!-- Nodes Connection SVGs -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1;">
+              <!-- Line from Frontend to Database -->
+              <path id="line-front-db" class="connector-line active-flow" d="M 0 0" />
+              <!-- Line from AI API to Database -->
+              <path id="line-api-db" class="connector-line active-flow" d="M 0 0" />
+              <!-- Line from Frontend to AI API -->
+              <path id="line-front-api" class="connector-line active-flow" d="M 0 0" />
+            </svg>
+
+            <!-- Frontend Node -->
+            <div id="node-front" class="canvas-node active-node" style="left: 30px; top: 60px;" onclick="ProjectCanvasController.selectNode('front')">
+              <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-100">
+                <span class="text-[9px] font-mono font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">frontend-app</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="text-[9px] font-bold text-emerald-600">Running</span></span>
+              </div>
+              <h4 class="text-xs font-bold text-slate-800 truncate" id="canvas-front-title">Daniel's Space Raider</h4>
+              <p class="text-[10px] text-slate-500 mt-1">Pygame & Web Canvas UI</p>
+              <div class="mt-2.5 flex items-center justify-between text-[9px] text-slate-400 font-medium">
+                <span>Branch: main</span>
+                <span>Port: 3000</span>
+              </div>
+            </div>
+
+            <!-- AI API Node -->
+            <div id="node-api" class="canvas-node" style="right: 30px; top: 60px;" onclick="ProjectCanvasController.selectNode('api')">
+              <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-100">
+                <span class="text-[9px] font-mono font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-md">python-api</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="text-[9px] font-bold text-emerald-600">Active</span></span>
+              </div>
+              <h4 class="text-xs font-bold text-slate-800 truncate">STEMbot Helper API</h4>
+              <p class="text-[10px] text-slate-500 mt-1">Tutor Helper AI Microservice</p>
+              <div class="mt-2.5 flex items-center justify-between text-[9px] text-slate-400 font-medium">
+                <span>Branch: main</span>
+                <span>Port: 8080</span>
+              </div>
+            </div>
+
+            <!-- Database Node -->
+            <div id="node-db" class="canvas-node" style="left: calc(50% - 105px); top: 220px;" onclick="ProjectCanvasController.selectNode('db')">
+              <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-100">
+                <span class="text-[9px] font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">postgresql-db</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="text-[9px] font-bold text-emerald-600">Connected</span></span>
+              </div>
+              <h4 class="text-xs font-bold text-slate-800 truncate">Leaderboard Database</h4>
+              <p class="text-[10px] text-slate-500 mt-1">Highscores & State Storage</p>
+              <div class="mt-2.5 flex items-center justify-between text-[9px] text-slate-400 font-medium">
+                <span>Type: Relational DB</span>
+                <span>Size: 12.4 MB</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Variables/Terminal/Resources configuration column (spans 1) -->
+          <div class="border border-slate-200 rounded-2xl p-5 bg-slate-50/50 flex flex-col justify-between" style="min-height: 400px;">
+            <!-- 2.1 Tab View: Environment Variables -->
+            <div id="canvas-tab-vars" class="flex-grow flex flex-col justify-between">
+              <div class="space-y-4">
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800 flex items-center gap-1"><i data-lucide="sliders" class="w-4 h-4 text-indigo-600"></i> Environment Variables</h4>
+                  <p class="text-[10px] text-slate-500 mt-0.5">Parameters that configure your child's application environment.</p>
+                </div>
+                <div class="divide-y divide-slate-150 border border-slate-200 rounded-xl bg-white overflow-hidden shadow-sm" id="variables-list-container">
+                  <!-- Generated dynamically -->
+                </div>
+              </div>
+              <div class="pt-4 mt-4 border-t border-slate-200 flex flex-col gap-3">
+                <button class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm" onclick="ProjectCanvasController.addVariable()">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Variable
+                </button>
+                <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md shadow-indigo-950/10 flex items-center justify-center gap-1.5" onclick="ProjectCanvasController.deployProject()">
+                  <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="deploy-btn-spinner"></i> Save & Deploy Project
+                </button>
+              </div>
+            </div>
+
+            <!-- 2.2 Tab View: Terminal Console (Initially Hidden) -->
+            <div id="canvas-tab-terminal" class="hidden flex-grow flex flex-col justify-between">
+              <div class="space-y-4 flex-grow flex flex-col">
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800 flex items-center gap-1"><i data-lucide="terminal" class="w-4 h-4 text-indigo-600"></i> Deployment Console</h4>
+                  <p class="text-[10px] text-slate-500 mt-0.5">Real-time log compiler stream showing deployment triggers.</p>
+                </div>
+                <div id="terminal-console" class="flex-grow bg-slate-900 border border-slate-800 rounded-xl p-4 font-mono text-[10px] text-indigo-300 h-64 overflow-y-auto leading-relaxed shadow-inner">
+                  <span class="text-gray-500">[SYSTEM] Terminal initialized. Waiting for build trigger...</span>
+                </div>
+              </div>
+              <div class="pt-4 mt-4 border-t border-slate-200">
+                <button class="w-full bg-slate-200 text-slate-500 font-bold text-xs py-3 rounded-xl cursor-not-allowed flex items-center justify-center gap-1.5" disabled>
+                  <i data-lucide="activity" class="w-3.5 h-3.5"></i> Stream Connected
+                </button>
+              </div>
+            </div>
+
+            <!-- 2.3 Tab View: Resource Metrics (Initially Hidden) -->
+            <div id="canvas-tab-resources" class="hidden flex-grow flex flex-col justify-between">
+              <div class="space-y-4">
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800 flex items-center gap-1"><i data-lucide="bar-chart-3" class="w-4 h-4 text-indigo-600"></i> Gamified Analytics</h4>
+                  <p class="text-[10px] text-slate-500 mt-0.5">Under the hood metric allocation representing developmental growth.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <!-- CPU -->
+                  <div class="bg-white border border-slate-200 rounded-xl p-3 text-center space-y-2">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Logic CPU</span>
+                    <div class="relative w-16 h-16 mx-auto flex items-center justify-center">
+                      <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="32" cy="32" r="28" stroke="#f1f5f9" stroke-width="4" fill="transparent" />
+                        <circle id="gauge-logic" cx="32" cy="32" r="28" stroke="#4F46E5" stroke-width="4" fill="transparent" stroke-dasharray="176" stroke-dashoffset="176" class="gauge-circle" />
+                      </svg>
+                      <span class="absolute text-[10px] font-extrabold text-slate-800" id="gauge-logic-txt">0%</span>
+                    </div>
+                    <span class="text-[9px] text-slate-500 font-semibold block">Loops Ratio</span>
+                  </div>
+
+                  <!-- RAM -->
+                  <div class="bg-white border border-slate-200 rounded-xl p-3 text-center space-y-2">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Creative RAM</span>
+                    <div class="relative w-16 h-16 mx-auto flex items-center justify-center">
+                      <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="32" cy="32" r="28" stroke="#f1f5f9" stroke-width="4" fill="transparent" />
+                        <circle id="gauge-creative" cx="32" cy="32" r="28" stroke="#F4600C" stroke-width="4" fill="transparent" stroke-dasharray="176" stroke-dashoffset="176" class="gauge-circle" />
+                      </svg>
+                      <span class="absolute text-[10px] font-extrabold text-slate-800" id="gauge-creative-txt">0%</span>
+                    </div>
+                    <span class="text-[9px] text-slate-500 font-semibold block">Assets load</span>
+                  </div>
+
+                  <!-- Debug Disk -->
+                  <div class="bg-white border border-slate-200 rounded-xl p-3 text-center space-y-2">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Resilience Disk</span>
+                    <div class="relative w-16 h-16 mx-auto flex items-center justify-center">
+                      <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="32" cy="32" r="28" stroke="#f1f5f9" stroke-width="4" fill="transparent" />
+                        <circle id="gauge-debug" cx="32" cy="32" r="28" stroke="#10b981" stroke-width="4" fill="transparent" stroke-dasharray="176" stroke-dashoffset="176" class="gauge-circle" />
+                      </svg>
+                      <span class="absolute text-[10px] font-extrabold text-slate-800" id="gauge-debug-txt">0%</span>
+                    </div>
+                    <span class="text-[9px] text-slate-500 font-semibold block">Bugs Resolved</span>
+                  </div>
+
+                  <!-- Coding Bandwidth -->
+                  <div class="bg-white border border-slate-200 rounded-xl p-3 text-center space-y-2">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Bandwidth</span>
+                    <div class="relative w-16 h-16 mx-auto flex items-center justify-center">
+                      <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="32" cy="32" r="28" stroke="#f1f5f9" stroke-width="4" fill="transparent" />
+                        <circle id="gauge-lines" cx="32" cy="32" r="28" stroke="#8b5cf6" stroke-width="4" fill="transparent" stroke-dasharray="176" stroke-dashoffset="176" class="gauge-circle" />
+                      </svg>
+                      <span class="absolute text-[10px] font-extrabold text-slate-800" id="gauge-lines-txt">0%</span>
+                    </div>
+                    <span class="text-[9px] text-slate-500 font-semibold block">Lines/Sec</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pt-4 mt-4 border-t border-slate-200">
+                <p class="text-[9px] text-slate-400 text-center leading-normal">Benchmarks calculated based on average performance of students in the same age group.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Session Reports Log -->
+      <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h3 class="text-lg font-outfit font-bold text-slate-800 flex items-center gap-2">
+              <i data-lucide="clipboard-list" class="w-5 h-5 text-indigo-600"></i> Detailed Session Reports
+            </h3>
+            <p class="text-xs text-gray-500 mt-1">Review feedback comments and grades submitted by mentors for every lesson.</p>
+          </div>
+          
+          <div class="text-xs text-gray-400 font-semibold" id="reports-count">
+            Showing 0 reports
+          </div>
+        </div>
+
+        <!-- Feedback Log List -->
+        <div class="space-y-4" id="feedback-logs-list">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Premium Editorial Footer -->
+  <footer class="footer-editorial" role="contentinfo">
+  <!-- Model Viewer Script Loaded Dynamically inside the footer -->
+  <div class="footer-grid">
+    <!-- Brand column with 3D model logo -->
+    <div class="footer-brand-col">
+      <div class="footer-3d-wrapper">
+    <div class="footer-hologram-coin">
+      <div class="coin-glow"></div>
+      <div class="coin-inner">
+        <div class="coin-front">
+          <img src="logo.png" alt="STEMulus Logo">
+        </div>
+        <div class="coin-back">
+          <img src="logo.png" alt="STEMulus Logo">
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+
+    <!-- Website Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Website</p>
+      <a href="index.html">Home</a>
+      <a href="programs.html">Roadmap</a>
+      <a href="for-parents.html">For Parents</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Social Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Social</p>
+      <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <a href="mailto:admin@stemuluskidstech.com">Email Us</a>
+      <a href="join-as-tutor.html">Join as Tutor</a>
+</div>
+
+    <!-- Legal Links -->
+    <div class="footer-col">
+      <p class="footer-col-title">Legal</p>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="privacy-policy.html#terms">Terms of Service</a>
+      <a href="parent-dashboard.html">Parent Login</a>
+      <a href="enroll.html">Enroll Now</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-legal-left">©2026 STEMulus Innovations LTD. All rights reserved.</p>
+    <p class="footer-legal-right">
+      Built with craft, not algorithms
+      <i data-lucide="heart" style="width:12px;height:12px;fill:currentColor;color:currentColor;display:inline-block;vertical-align:middle;margin:0 2px;"></i>
+      <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:inline-flex;align-items:center;">
+        <i data-lucide="mail" style="width:18px;height:18px;"></i>
+      </a>
+      <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:inline-flex;align-items:center;">
+        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
+      </a>
+    </p>
+  </div>
+  
+  <!-- Background Text "STEMULUS" stylized bottom watermark -->
+  <div class="footer-bg-text">STEMulus</div>
+</footer>
+
+  <!-- State & Controller Scripts -->
+  <script src="assets/js/dashboard-engine.js"></script>
+  <script>
+    // Self-contained page engine for parent-progress
+    const ProgressPageController = (function() {
+      let currentParent = null;
+      let parentStudents = [];
+      let activeStudentId = null;
+      let conceptChartInstance = null;
+
+      // Roadmap timeline presets
+      const TIMELINE_MODULES = {
+        "Python Programming": [
+          { title: "Intro to Python & Print", desc: "Print statements, basic strings, variables" },
+          { title: "Variables & Calculations", desc: "Data types, math operators, modulo" },
+          { title: "Conditional Logic", desc: "If / elif / else statements & nested gates" },
+          { title: "Loops & Flow Control", desc: "For loops, while gates, lists indexation" },
+          { title: "Functions & Code Reuse", desc: "Defining methods, parameters, scoping" },
+          { title: "Final Capstone Project", desc: "Independent application or text game build" }
+        ],
+        "Scratch Creators": [
+          { title: "Scratch Stage & Motion", desc: "Motion blocks, coordinates, click events" },
+          { title: "Events & Costumes", desc: "Animations, sprite transitions, key inputs" },
+          { title: "Sound & Broadcasting", desc: "Sending signals, audio effects, dialog" },
+          { title: "Repeat Loops & Animations", desc: "Continuous animations, moving obstacles" },
+          { title: "Variables & Scores", desc: "Creating variable scores, game states" },
+          { title: "Final Game Capstone", desc: "Publishing a complete interactive build" }
+        ],
+        "default": [
+          { title: "Foundations Intro", desc: "Core commands, workspace layout" },
+          { title: "Control & Input", desc: "Trigger events, conditionals" },
+          { title: "Loops & Variables", desc: "Simple repeats, storing variables" },
+          { title: "Core Architecture", desc: "Code modularity, simple lists" },
+          { title: "Complex Structures", desc: "Custom objects, nested loops" },
+          { title: "Independent Capstone", desc: "Original project publication" }
+        ]
+      };
+
+      function init() {
+        // 1. Verify parent authentication
+        currentParent = DashboardEngine.getSession();
+        if (!currentParent || currentParent.role !== 'parent') {
+          // Send back to dashboard for login redirection
+          window.location.href = 'parent-dashboard.html';
+          return;
+        }
+
+        // 2. Fetch children list
+        parentStudents = DashboardEngine.getStudents(currentParent.email);
+        if (parentStudents.length === 0) {
+          showErrorState();
+          return;
+        }
+
+        // 3. Setup dropdown selector options
+        populateDropdown();
+
+        // 4. Resolve active student ID from query string or select first child
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlStudentId = urlParams.get('studentId');
+        
+        if (urlStudentId && parentStudents.some(s => s.id === urlStudentId)) {
+          activeStudentId = urlStudentId;
+        } else {
+          activeStudentId = parentStudents[0].id;
+        }
+
+        // Sync selector element state
+        document.getElementById('student-selector').value = activeStudentId;
+
+        // 5. Render dashboard data for selected child
+        renderActiveStudentData();
+
+        // 6. Bind events
+        document.getElementById('student-selector').addEventListener('change', handleStudentSelectionChange);
+        
+        // Log out handler
+        document.getElementById('logout-btn').addEventListener('click', function() {
+          DashboardEngine.logout();
+          window.location.href = 'parent-dashboard.html';
+        });
+      }
+
+      function showErrorState() {
+        document.getElementById('dashboard-grid').classList.add('hidden');
+        document.getElementById('error-container').classList.remove('hidden');
+      }
+
+      function populateDropdown() {
+        const selector = document.getElementById('student-selector');
+        selector.innerHTML = parentStudents.map(s => `
+          <option value="${s.id}">${s.firstName} ${s.lastName}</option>
+        `).join('');
+      }
+
+      function handleStudentSelectionChange(e) {
+        activeStudentId = e.target.value;
+        // Update URL query parameters silently
+        const newUrl = `${window.location.pathname}?studentId=${activeStudentId}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+        
+        // Re-render
+        renderActiveStudentData();
+      }
+
+      function renderActiveStudentData() {
+        const student = parentStudents.find(s => s.id === activeStudentId);
+        if (!student) {
+          showErrorState();
+          return;
+        }
+
+        // Toggle visibility
+        document.getElementById('dashboard-grid').classList.remove('hidden');
+        document.getElementById('error-container').classList.add('hidden');
+
+        // Header name
+        document.getElementById('active-student-title').textContent = `${student.firstName} ${student.lastName}'s Progress`;
+        document.getElementById('active-student-badge').textContent = student.status;
+        
+        // Render metrics cards
+        document.getElementById('metric-progress').textContent = `${student.progress}%`;
+        document.getElementById('metric-progress-bar').style.width = `${student.progress}%`;
+        
+        const attended = student.metrics ? student.metrics.attended : 0;
+        const total = student.metrics ? student.metrics.total : 0;
+        document.getElementById('metric-attended').textContent = `${attended} / ${total}`;
+        document.getElementById('metric-projects').textContent = student.metrics ? student.metrics.projects : 0;
+        document.getElementById('metric-lines').textContent = (student.metrics && student.metrics.lines) ? student.metrics.lines.toLocaleString() : '0';
+
+        // Render Spotlight focus area
+        document.getElementById('mentor-name').textContent = student.tutorName || "Assigned Mentor";
+
+        // Render chart
+        renderMasteryChart(student);
+
+        // Render Timeline roadmap
+        renderRoadmapTimeline(student);
+
+        // Render logs
+        renderSessionLogs(student);
+
+        // Update Project Canvas Title dynamically
+        const projectTitleEl = document.getElementById('canvas-front-title');
+        if (projectTitleEl) {
+          if (student.program.includes("Python")) {
+            projectTitleEl.textContent = `${student.firstName}'s Pygame Arcade`;
+          } else if (student.program.includes("Scratch")) {
+            projectTitleEl.textContent = `${student.firstName}'s Scratch World`;
+          } else {
+            projectTitleEl.textContent = `${student.firstName}'s Web Portal`;
+          }
+        }
+
+        // Redraw SVG path links to adapt to changed project details size
+        setTimeout(() => {
+          if (window.ProjectCanvasController) {
+            window.ProjectCanvasController.drawConnectionPaths();
+          }
+        }, 150);
+      }
+
+      function renderMasteryChart(student) {
+        const skills = student.skills || { logic: 50, loops: 50, variables: 50, syntax: 50, projects: 50 };
+        
+        const labels = ['Logic & Strategy', 'Control Loops', 'Variables & Storage', 'Code Syntax', 'Capstone Projects'];
+        const dataValues = [
+          skills.logic || 0,
+          skills.loops || 0,
+          skills.variables || 0,
+          skills.syntax || 0,
+          skills.projects || 0
+        ];
+
+        // Reset chart instance if exists
+        if (conceptChartInstance) {
+          conceptChartInstance.destroy();
+        }
+
+        const ctx = document.getElementById('concept-chart').getContext('2d');
+        conceptChartInstance = new Chart(ctx, {
+          type: 'radar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: `${student.firstName}'s Score`,
+              data: dataValues,
+              backgroundColor: 'rgba(79, 70, 229, 0.15)', // transparent indigo
+              borderColor: '#4F46E5', // indigo-600
+              borderWidth: 2.5,
+              pointBackgroundColor: '#F4600C', // orange-500
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: '#F4600C',
+              pointRadius: 4,
+              pointHitRadius: 10
+            }, {
+              label: 'Age Average Benchmark',
+              data: [65, 60, 55, 60, 60],
+              backgroundColor: 'rgba(148, 163, 184, 0.05)',
+              borderColor: 'rgba(148, 163, 184, 0.4)',
+              borderWidth: 1.5,
+              pointRadius: 0,
+              borderDash: [5, 5],
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              r: {
+                angleLines: {
+                  color: 'rgba(148, 163, 184, 0.15)'
+                },
+                grid: {
+                  color: 'rgba(148, 163, 184, 0.15)'
+                },
+                pointLabels: {
+                  font: {
+                    family: 'Outfit',
+                    size: 11,
+                    weight: 'bold'
+                  },
+                  color: '#475569'
+                },
+                ticks: {
+                  backdropColor: 'transparent',
+                  color: '#94a3b8',
+                  font: {
+                    size: 9
+                  },
+                  stepSize: 20
+                },
+                suggestedMin: 0,
+                suggestedMax: 100
+              }
+            },
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  font: {
+                    family: 'DM Sans',
+                    size: 11
+                  },
+                  color: '#64748b',
+                  boxWidth: 12,
+                  padding: 15
+                }
+              },
+              tooltip: {
+                backgroundColor: '#1e293b',
+                titleFont: { family: 'Outfit', size: 12, weight: 'bold' },
+                bodyFont: { family: 'DM Sans', size: 12 },
+                cornerRadius: 8,
+                padding: 10
+              }
+            }
+          }
+        });
+      }
+
+      function renderRoadmapTimeline(student) {
+        const roadmapContainer = document.getElementById('roadmap-container');
+        if (!roadmapContainer) return;
+
+        // Resolve module structure based on student's program
+        let programName = "default";
+        if (student.program.includes("Python")) {
+          programName = "Python Programming";
+        } else if (student.program.includes("Scratch")) {
+          programName = "Scratch Creators";
+        }
+        
+        const modules = TIMELINE_MODULES[programName] || TIMELINE_MODULES["default"];
+        
+        // Calculate status dynamically based on progress percentage
+        // 6 modules: each represents ~16.6% progress
+        const completedCount = Math.floor(student.progress / 16.6);
+
+        roadmapContainer.innerHTML = modules.map((mod, index) => {
+          let status = "locked"; // locked, active, completed
+          let icon = "lock";
+          let colorClass = "bg-gray-100 border border-gray-200 text-gray-400";
+          let badgeClass = "bg-gray-100 text-gray-400 border border-gray-200";
+
+          if (index < completedCount) {
+            status = "completed";
+            icon = "check-circle-2";
+            colorClass = "bg-emerald-50 border border-emerald-100 text-emerald-600";
+            badgeClass = "bg-emerald-50 text-emerald-700 border border-emerald-100";
+          } else if (index === completedCount) {
+            status = "active";
+            icon = "play-circle";
+            colorClass = "bg-orange-50 border border-brand-orange/20 text-brand-orange";
+            badgeClass = "bg-orange-50 text-brand-orange border border-brand-orange/20";
+          }
+
+          return `
+            <div class="bg-white border border-gray-200/50 shadow-sm rounded-2xl p-5 flex flex-col justify-between hover:shadow transition-shadow relative">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Level 0${index + 1}</span>
+                  <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-xl uppercase tracking-wider ${badgeClass}">${status}</span>
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800 line-clamp-1">${mod.title}</h4>
+                  <p class="text-xs text-gray-500 mt-1 line-clamp-2">${mod.desc}</p>
+                </div>
+              </div>
+              
+              <div class="mt-4 pt-3 border-t border-gray-50 flex items-center gap-2">
+                <div class="w-8 h-8 rounded-xl ${colorClass} flex items-center justify-center shrink-0">
+                  <i data-lucide="${icon}" class="w-4 h-4"></i>
+                </div>
+                <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                  ${status === 'completed' ? 'Completed' : status === 'active' ? 'Active Unit' : 'Locked'}
+                </span>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        if (window.lucide) lucide.createIcons();
+      }
+
+      function renderSessionLogs(student) {
+        const container = document.getElementById('feedback-logs-list');
+        const countEl = document.getElementById('reports-count');
+        if (!container) return;
+
+        // Fetch reports for this specific child
+        const reports = DashboardEngine.getReports(student.id);
+        
+        countEl.textContent = `Showing ${reports.length} report${reports.length !== 1 ? 's' : ''}`;
+
+        if (reports.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-10 bg-gray-50 border border-gray-100 rounded-2xl p-6">
+              <i data-lucide="clipboard" class="w-10 h-10 text-gray-300 mx-auto mb-2"></i>
+              <p class="text-sm text-gray-500">No session reports recorded for this student yet.</p>
+            </div>
+          `;
+          if (window.lucide) lucide.createIcons();
+          return;
+        }
+
+        // Let's populate the dynamic focus area in the sidebar from the most recent report feedback summary
+        if (reports[0]) {
+          const summaryStr = reports[0].feedback;
+          // Crop it slightly for sidebar if long
+          const snippet = summaryStr.length > 180 ? `${summaryStr.slice(0, 180)}...` : summaryStr;
+          document.getElementById('mentor-focus-comment').textContent = `"${snippet}"`;
+        }
+
+        // Sort reports in reverse chronological order
+        const sortedReports = [...reports].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        container.innerHTML = sortedReports.map(rep => {
+          const dateFormatted = new Date(rep.date).toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          });
+
+          // Determine grade color badge classes
+          let gradeColorClass = "bg-indigo-50 text-indigo-700 border border-indigo-100";
+          if (rep.grade.startsWith('A')) {
+            gradeColorClass = "bg-emerald-50 text-emerald-700 border border-emerald-100";
+          } else if (rep.grade.startsWith('B')) {
+            gradeColorClass = "bg-yellow-50 text-yellow-700 border border-yellow-100";
+          }
+
+          return `
+            <div class="bg-[#faf9f6]/40 border border-gray-200/50 hover:border-indigo-100 rounded-2xl p-5 md:p-6 transition-all hover:bg-white flex flex-col md:flex-row gap-5 items-start">
+              
+              <!-- Date / Module Left Sidebar -->
+              <div class="w-full md:w-48 shrink-0 space-y-1.5 md:border-r md:border-gray-100 md:pr-4">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">${dateFormatted}</span>
+                <h4 class="text-sm font-bold text-slate-800 line-clamp-2">${rep.module}</h4>
+                <p class="text-xs text-gray-400">Mentor: ${rep.tutorName}</p>
+              </div>
+
+              <!-- Main Feedback Area -->
+              <div class="flex-1 space-y-3 w-full">
+                <div class="flex items-center justify-between gap-4">
+                  <span class="text-xs text-indigo-600 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="book-open" class="w-3.5 h-3.5"></i> ${rep.program}
+                  </span>
+                  <span class="text-xs font-bold px-3 py-1 rounded-xl tracking-wide ${gradeColorClass}">
+                    Grade: ${rep.grade}
+                  </span>
+                </div>
+                
+                <p class="text-sm text-slate-700 leading-relaxed italic">
+                  "${rep.feedback}"
+                </p>
+              </div>
+
+            </div>
+          `;
+        }).join('');
+
+        if (window.lucide) lucide.createIcons();
+      }
+
+      return {
+        init
+      };
+    })();
+
+    // Initialize on DOM load
+    document.addEventListener('DOMContentLoaded', ProgressPageController.init);
+
+    // STEMulus Project Canvas controller (Railway-inspired)
+    const ProjectCanvasController = (function() {
+      let activeNode = 'front';
+      let currentTab = 'vars';
+
+      const nodeVariables = {
+        front: [
+          { key: "GAME_GRAVITY", value: "9.8" },
+          { key: "PLAYER_SPEED", value: "15" },
+          { key: "THEME", value: "NeonArcade" },
+          { key: "SOUND_EFFECTS", value: "ON" }
+        ],
+        api: [
+          { key: "AI_MODEL", value: "STEMbot-v3" },
+          { key: "HINT_FREQUENCY", value: "Adaptive" },
+          { key: "MAX_TOKENS", value: "120" }
+        ],
+        db: [
+          { key: "MAX_HIGHSCORES", value: "100" },
+          { key: "DB_NAME", value: "arcade_leaderboard" },
+          { key: "SSL_MODE", value: "Require" }
+        ]
+      };
+
+      const mockLogs = [
+        { type: 'SYSTEM', text: 'Initiating full redeployment request for STEMulus Project Canvas...' },
+        { type: 'BUILD', text: 'Checking service status: frontend-app, python-api, postgresql-db... Healthy.' },
+        { type: 'BUILD', text: 'Packing assets for Space Raider Front-end...' },
+        { type: 'BUILD', text: 'Applying environment overrides...' },
+        { type: 'DB', text: 'Connecting to database "arcade_leaderboard" on port 5432...' },
+        { type: 'DB', text: 'Verifying tables: highscores, player_sessions, coding_milestones... OK.' },
+        { type: 'AI', text: 'Connecting to STEMbot LLM microservice...' },
+        { type: 'AI', text: 'Pre-caching programming hints database. 148 vectors updated.' },
+        { type: 'DEPLOY', text: 'Pushing containers to STEMulus Kids Cloud cluster...' },
+        { type: 'DEPLOY', text: 'Spinning up container interfaces. Service port 3000 mapping...' },
+        { type: 'SUCCESS', text: 'Redeployment complete! Applications updated.' },
+        { type: 'SUCCESS', text: 'Live URL: https://daniel-arcade.stemulus.kids' }
+      ];
+
+      function init() {
+        renderVariables();
+        updateGauges();
+        setTimeout(drawConnectionPaths, 300);
+        window.addEventListener('resize', drawConnectionPaths);
+        
+        window.ProjectCanvasController = this;
+      }
+
+      function drawConnectionPaths() {
+        const frontNode = document.getElementById('node-front');
+        const apiNode = document.getElementById('node-api');
+        const dbNode = document.getElementById('node-db');
+        const container = frontNode ? frontNode.parentElement : null;
+        if (!frontNode || !apiNode || !dbNode || !container) return;
+
+        const rectCont = container.getBoundingClientRect();
+        const rFront = frontNode.getBoundingClientRect();
+        const rApi = apiNode.getBoundingClientRect();
+        const rDb = dbNode.getBoundingClientRect();
+
+        const xFront = (rFront.left - rectCont.left) + rFront.width / 2;
+        const yFront = (rFront.top - rectCont.top) + rFront.height / 2;
+
+        const xApi = (rApi.left - rectCont.left) + rApi.width / 2;
+        const yApi = (rApi.top - rectCont.top) + rApi.height / 2;
+
+        const xDb = (rDb.left - rectCont.left) + rDb.width / 2;
+        const yDb = (rDb.top - rectCont.top) + rDb.height / 2;
+
+        const frontDbEl = document.getElementById('line-front-db');
+        const apiDbEl = document.getElementById('line-api-db');
+        const frontApiEl = document.getElementById('line-front-api');
+
+        if (frontDbEl) frontDbEl.setAttribute('d', `M ${xFront} ${yFront} C ${xFront + 40} ${yFront + 40}, ${xDb - 40} ${yDb - 40}, ${xDb} ${yDb}`);
+        if (apiDbEl) apiDbEl.setAttribute('d', `M ${xApi} ${yApi} C ${xApi - 40} ${yApi + 40}, ${xDb + 40} ${yDb - 40}, ${xDb} ${yDb}`);
+        if (frontApiEl) frontApiEl.setAttribute('d', `M ${xFront} ${yFront} L ${xApi} ${yApi}`);
+      }
+
+      function switchTab(tab) {
+        currentTab = tab;
+        ['vars', 'terminal', 'resources'].forEach(t => {
+          const btn = document.getElementById(`tab-btn-${t}`);
+          const pane = document.getElementById(`canvas-tab-${t}`);
+          if (!btn || !pane) return;
+          if (t === tab) {
+            btn.className = "px-4 py-1.5 rounded-lg text-xs font-bold bg-white text-indigo-700 shadow-sm transition-all";
+            pane.classList.remove('hidden');
+          } else {
+            btn.className = "px-4 py-1.5 rounded-lg text-xs font-bold text-gray-500 hover:text-gray-900 transition-all";
+            pane.classList.add('hidden');
+          }
+        });
+        if (tab === 'resources') {
+          updateGauges();
+        }
+      }
+
+      function selectNode(nodeId) {
+        activeNode = nodeId;
+        ['front', 'api', 'db'].forEach(n => {
+          const el = document.getElementById(`node-${n}`);
+          if (!el) return;
+          if (n === nodeId) {
+            el.classList.add('active-node');
+          } else {
+            el.classList.remove('active-node');
+          }
+        });
+        renderVariables();
+      }
+
+      function renderVariables() {
+        const container = document.getElementById('variables-list-container');
+        if (!container) return;
+        const list = nodeVariables[activeNode];
+        container.innerHTML = list.map((v, i) => `
+          <div class="flex items-center justify-between p-3.5 gap-4">
+            <span class="text-xs font-mono font-bold text-slate-600 truncate max-w-[120px]">${v.key}</span>
+            <input type="text" value="${v.value}" onchange="ProjectCanvasController.updateVariable('${activeNode}', ${i}, this.value)" class="bg-slate-50 border border-slate-200 text-xs font-semibold rounded-lg px-2.5 py-1.5 text-slate-800 text-right focus:outline-none focus:bg-white focus:border-indigo-500 w-36 transition-colors">
+          </div>
+        `).join('');
+      }
+
+      function updateVariable(node, index, val) {
+        nodeVariables[node][index].value = val;
+      }
+
+      function addVariable() {
+        nodeVariables[activeNode].push({ key: "NEW_VARIABLE", value: "VALUE" });
+        renderVariables();
+      }
+
+      function deployProject() {
+        switchTab('terminal');
+        const consoleEl = document.getElementById('terminal-console');
+        const spinner = document.getElementById('deploy-btn-spinner');
+        if (!consoleEl) return;
+
+        consoleEl.innerHTML = '';
+        if (spinner) spinner.classList.add('animate-spin');
+
+        let logIndex = 0;
+
+        function printNextLog() {
+          if (logIndex < mockLogs.length) {
+            const log = mockLogs[logIndex];
+            let colorClass = 'text-slate-400';
+            if (log.type === 'SYSTEM') colorClass = 'text-indigo-400 font-bold';
+            if (log.type === 'SUCCESS') colorClass = 'text-emerald-400 font-bold';
+            if (log.type === 'DB') colorClass = 'text-emerald-300';
+            if (log.type === 'AI') colorClass = 'text-orange-300';
+
+            const timestamp = new Date().toLocaleTimeString();
+            consoleEl.innerHTML += `<div><span class="text-slate-500">[${timestamp}]</span> <span class="font-bold text-slate-400">[${log.type}]</span> <span class="${colorClass}">${log.text}</span></div>`;
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+
+            logIndex++;
+            setTimeout(printNextLog, 200 + Math.random() * 200);
+          } else {
+            if (spinner) spinner.classList.remove('animate-spin');
+            setTimeout(() => {
+              switchTab('resources');
+              animateGauges();
+              updateParentDashboardMetrics();
+            }, 800);
+          }
+        }
+
+        printNextLog();
+      }
+
+      function updateParentDashboardMetrics() {
+        const metricLines = document.getElementById('metric-lines');
+        if (metricLines) {
+          let current = parseInt(metricLines.textContent.replace(/,/g, ''));
+          if (!isNaN(current)) {
+            current += Math.floor(Math.random() * 100) + 50;
+            metricLines.textContent = current.toLocaleString();
+          }
+        }
+      }
+
+      function updateGauges() {
+        setGauge('logic', 87);
+        setGauge('creative', 92);
+        setGauge('debug', 95);
+        setGauge('lines', 76);
+      }
+
+      function animateGauges() {
+        setGauge('logic', 0);
+        setGauge('creative', 0);
+        setGauge('debug', 0);
+        setGauge('lines', 0);
+
+        setTimeout(() => {
+          setGauge('logic', 87);
+          setGauge('creative', 92);
+          setGauge('debug', 95);
+          setGauge('lines', 76);
+        }, 200);
+      }
+
+      function setGauge(id, percent) {
+        const circle = document.getElementById(`gauge-${id}`);
+        const txt = document.getElementById(`gauge-${id}-txt`);
+        if (!circle) return;
+
+        const circumference = 176;
+        const offset = circumference - (percent / 100) * circumference;
+        circle.style.strokeDashoffset = offset;
+
+        if (txt) {
+          if (id === 'lines') {
+            txt.textContent = `${(percent * 18).toLocaleString()}`;
+          } else {
+            txt.textContent = `${percent}%`;
+          }
+        }
+      }
+
+      return {
+        init,
+        switchTab,
+        selectNode,
+        updateVariable,
+        addVariable,
+        deployProject,
+        drawConnectionPaths
+      };
+    })();
+
+    // Initialize on DOM load
+    document.addEventListener('DOMContentLoaded', function() {
+      ProjectCanvasController.init();
+    });
+  </script>
+</body>
+</html>

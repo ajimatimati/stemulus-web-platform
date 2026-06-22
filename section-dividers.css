@@ -1,0 +1,117 @@
+/* ============================================================
+ STEMulus Section Dividers
+ 8 unique SVG-based transition shapes for section boundaries.
+ Usage: <div class="divider divider-wave"></div>
+ Each divider is ~6080px tall, responsive, and GPU-accelerated.
+ ============================================================ */
+
+/* Base divider */
+.divider {
+ position: relative;
+ width: 100%;
+ overflow: hidden;
+ line-height: 0;
+ pointer-events: none;
+}
+
+.divider svg {
+ display: block;
+ width: 100%;
+ height: 100%;
+}
+
+/* ── 1. Wave ─────────────────────────────────────────────────
+ Smooth sine wave — great for hero → next section
+ ──────────────────────────────────────────────────────────── */
+.divider-wave {
+ height: 70px;
+ background: transparent;
+}
+
+.divider-wave svg {
+ position: absolute;
+ bottom: 0;
+}
+
+/* ── 2. Tilt ─────────────────────────────────────────────────
+ Diagonal angled cut — modern and sharp
+ ──────────────────────────────────────────────────────────── */
+.divider-tilt {
+ height: 60px;
+ background: transparent;
+}
+
+/* ── 3. Peaks ────────────────────────────────────────────────
+ Mountain peaks — dynamic, energetic
+ ──────────────────────────────────────────────────────────── */
+.divider-peaks {
+ height: 70px;
+ background: transparent;
+}
+
+/* ── 4. Drip ─────────────────────────────────────────────────
+ Organic blob drip — playful, friendly
+ ──────────────────────────────────────────────────────────── */
+.divider-drip {
+ height: 80px;
+ background: transparent;
+}
+
+/* ── 5. Zigzag ───────────────────────────────────────────────
+ Zigzag teeth — technical, circuit-board feel
+ ──────────────────────────────────────────────────────────── */
+.divider-zigzag {
+ height: 50px;
+ background: transparent;
+}
+
+/* ── 6. Curves ───────────────────────────────────────────────
+ Multi-layered curves — elegant, premium
+ ──────────────────────────────────────────────────────────── */
+.divider-curves {
+ height: 70px;
+ background: transparent;
+}
+
+/* ── 7. Arrow ────────────────────────────────────────────────
+ Centered chevron arrow — directional, purposeful
+ ──────────────────────────────────────────────────────────── */
+.divider-arrow {
+ height: 60px;
+ background: transparent;
+}
+
+/* ── 8. Fade ─────────────────────────────────────────────────
+ Gradient mist dissolve — subtle, soft
+ ──────────────────────────────────────────────────────────── */
+.divider-fade {
+ height: 60px;
+ background: transparent;
+}
+
+/* ── Dark mode adjustments ───────────────────────────────── */
+.dark .divider svg path,
+.dark .divider svg polygon {
+ transition: fill 0.3s ease;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+ .divider-wave,
+ .divider-peaks,
+ .divider-curves {
+ height: 45px;
+ }
+
+ .divider-drip {
+ height: 55px;
+ }
+
+ .divider-tilt,
+ .divider-arrow,
+ .divider-zigzag,
+ .divider-fade {
+ height: 35px;
+ }
+}

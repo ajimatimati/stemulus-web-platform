@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Disallow private/internal pages
+Disallow: /admin-dashboard.html
+Disallow: /tutor-dashboard.html
+Disallow: /parent-dashboard.html
+Disallow: /referral-dashboard.html
+
+# Disallow archived/dev content
+Disallow: /_archive/
+Disallow: /scratch/
+Disallow: /tools/
+Disallow: /nitter_net.html
+Disallow: /verifyforzoho.html
+
+# Sitemap
+Sitemap: https://stemuluskidstech.com/sitemap.xml
+
+# Crawl-delay (polite crawling)
+Crawl-delay: 1

@@ -1,0 +1,385 @@
+[
+  {
+    "path": "assets/images/after_stemulus.png",
+    "filename": "after_stemulus.png",
+    "size_bytes": 863018,
+    "referenced_in": []
+  },
+  {
+    "path": "assets/images/ai_machine_learning.png",
+    "filename": "ai_machine_learning.png",
+    "size_bytes": 792055,
+    "referenced_in": [
+      "ai-machine-learning.html",
+      "programs.html",
+      "refactor.js",
+      "seo-update.js"
+    ]
+  },
+  {
+    "path": "assets/images/anansi_story_scratch.png",
+    "filename": "anansi_story_scratch.png",
+    "size_bytes": 1124383,
+    "referenced_in": [
+      "creative-coding.html",
+      "programs.html",
+      "scratch-creators.html"
+    ]
+  },
+  {
+    "path": "assets/images/arduino_robotics_lab.png",
+    "filename": "arduino_robotics_lab.png",
+    "size_bytes": 778057,
+    "referenced_in": [
+      "arduino-robotics.html",
+      "programs.html",
+      "refactor.js",
+      "seo-update.js"
+    ]
+  },
+  {
+    "path": "assets/images/before_traditional.png",
+    "filename": "before_traditional.png",
+    "size_bytes": 751274,
+    "referenced_in": []
+  },
+  {
+    "path": "assets/images/footer_student_1.png",
+    "filename": "footer_student_1.png",
+    "size_bytes": 522408,
+    "referenced_in": []
+  },
+  {
+    "path": "assets/images/footer_student_2.png",
+    "filename": "footer_student_2.png",
+    "size_bytes": 787459,
+    "referenced_in": []
+  },
+  {
+    "path": "assets/images/footer_student_3.png",
+    "filename": "footer_student_3.png",
+    "size_bytes": 629979,
+    "referenced_in": []
+  },
+  {
+    "path": "assets/images/footer_student_4.png",
+    "filename": "footer_student_4.png",
+    "size_bytes": 660468,
+    "referenced_in": []
+  },
+  {
+    "path": "assets/images/hero_background_blur.png",
+    "filename": "hero_background_blur.png",
+    "size_bytes": 505719,
+    "referenced_in": [
+      "digital-art.html",
+      "programs.html"
+    ]
+  },
+  {
+    "path": "assets/images/hero_coding_girl_futuristic.png",
+    "filename": "hero_coding_girl_futuristic.png",
+    "size_bytes": 805631,
+    "referenced_in": [
+      "assets/js/schema-markup.js",
+      "creative-coding.html",
+      "programs.html"
+    ]
+  },
+  {
+    "path": "assets/images/junior_robotics_playful.png",
+    "filename": "junior_robotics_playful.png",
+    "size_bytes": 917574,
+    "referenced_in": [
+      "junior-robotics.html",
+      "programs.html",
+      "seo-update.js"
+    ]
+  },
+  {
+    "path": "assets/images/line_following_robot.png",
+    "filename": "line_following_robot.png",
+    "size_bytes": 671674,
+    "referenced_in": [
+      "arduino-robotics.html",
+      "assets/data/projects.json"
+    ]
+  },
+  {
+    "path": "assets/images/parallax-bg.png",
+    "filename": "parallax-bg.png",
+    "size_bytes": 817106,
+    "referenced_in": [
+      "apply-parallax.js"
+    ]
+  },
+  {
+    "path": "assets/images/pet_portfolio_website.png",
+    "filename": "pet_portfolio_website.png",
+    "size_bytes": 666763,
+    "referenced_in": [
+      "assets/data/projects.json",
+      "digital-art.html",
+      "fullstack-web-dev.html",
+      "programs.html",
+      "seo-update.js",
+      "web-wizards.html"
+    ]
+  },
+  {
+    "path": "assets/images/python_game_dev.png",
+    "filename": "python_game_dev.png",
+    "size_bytes": 678691,
+    "referenced_in": [
+      "assets/data/projects.json",
+      "programs.html",
+      "python-programming.html",
+      "refactor.js",
+      "seo-update.js"
+    ]
+  },
+  {
+    "path": "assets/images/quiz_app_interface.png",
+    "filename": "quiz_app_interface.png",
+    "size_bytes": 566572,
+    "referenced_in": [
+      "assets/data/projects.json",
+      "programs.html",
+      "python-programming.html"
+    ]
+  },
+  {
+    "path": "assets/images/scratch_game_creators.png",
+    "filename": "scratch_game_creators.png",
+    "size_bytes": 741511,
+    "referenced_in": [
+      "assets/data/projects.json",
+      "assets/js/course-schema.js",
+      "creative-coding.html",
+      "digital-art.html",
+      "programs.html",
+      "refactor.js",
+      "scratch-creators.html",
+      "seo-update.js"
+    ]
+  },
+  {
+    "path": "assets/images/space_raiders_game.png",
+    "filename": "space_raiders_game.png",
+    "size_bytes": 773539,
+    "referenced_in": [
+      "assets/data/projects.json",
+      "digital-art.html",
+      "programs.html",
+      "refactor.js"
+    ]
+  },
+  {
+    "path": "assets/images/stats-parallax-bg.png",
+    "filename": "stats-parallax-bg.png",
+    "size_bytes": 670077,
+    "referenced_in": [
+      "apply-parallax.js"
+    ]
+  },
+  {
+    "path": "assets/images/stemulus_mastery_kids.png",
+    "filename": "stemulus_mastery_kids.png",
+    "size_bytes": 833245,
+    "referenced_in": [
+      "ai-machine-learning.html",
+      "programs.html"
+    ]
+  },
+  {
+    "path": "assets/images/student_ai_dashboard.png",
+    "filename": "student_ai_dashboard.png",
+    "size_bytes": 497599,
+    "referenced_in": [
+      "index.html"
+    ]
+  },
+  {
+    "path": "assets/images/weather_app_ui.png",
+    "filename": "weather_app_ui.png",
+    "size_bytes": 426462,
+    "referenced_in": [
+      "fullstack-web-dev.html",
+      "programs.html",
+      "refactor.js",
+      "web-wizards.html"
+    ]
+  },
+  {
+    "path": "Favicon.png",
+    "filename": "Favicon.png",
+    "size_bytes": 56524,
+    "referenced_in": [
+      "assets/js/sw-seo.js",
+      "service-worker.js"
+    ]
+  },
+  {
+    "path": "images/become-a-mentor.jpg",
+    "filename": "become-a-mentor.jpg",
+    "size_bytes": 840802,
+    "referenced_in": [
+      "join-as-tutor.html"
+    ]
+  },
+  {
+    "path": "images/become-a-mentor.png",
+    "filename": "become-a-mentor.png",
+    "size_bytes": 840802,
+    "referenced_in": []
+  },
+  {
+    "path": "images/girl_coding_hero.png",
+    "filename": "girl_coding_hero.png",
+    "size_bytes": 715827,
+    "referenced_in": []
+  },
+  {
+    "path": "images/kid_robot_proud.png",
+    "filename": "kid_robot_proud.png",
+    "size_bytes": 763179,
+    "referenced_in": [
+      "junior-robotics.html"
+    ]
+  },
+  {
+    "path": "images/mentor_session_girl.png",
+    "filename": "mentor_session_girl.png",
+    "size_bytes": 682375,
+    "referenced_in": [
+      "blog-scratch-first-language.html",
+      "blog.html"
+    ]
+  },
+  {
+    "path": "images/mentor_student_session.png",
+    "filename": "mentor_student_session.png",
+    "size_bytes": 767044,
+    "referenced_in": [
+      "blog-coding-readiness.html",
+      "blog-template.html",
+      "blog.html",
+      "for-parents.html",
+      "index.html"
+    ]
+  },
+  {
+    "path": "loader-logo.png",
+    "filename": "loader-logo.png",
+    "size_bytes": 189361,
+    "referenced_in": [
+      "tools/sitemap-generator.js"
+    ]
+  },
+  {
+    "path": "logo-dark.jpg",
+    "filename": "logo-dark.jpg",
+    "size_bytes": 33633,
+    "referenced_in": []
+  },
+  {
+    "path": "logo-light.jpg",
+    "filename": "logo-light.jpg",
+    "size_bytes": 34070,
+    "referenced_in": []
+  },
+  {
+    "path": "logo.png",
+    "filename": "logo.png",
+    "size_bytes": 56524,
+    "referenced_in": [
+      "404.html",
+      "admin-dashboard.html",
+      "ai-machine-learning.html",
+      "arduino-robotics.html",
+      "assets/js/organization-schema.js",
+      "assets/js/schema-markup.js",
+      "assets/js/schema-markup.min.js",
+      "assets/js/sw-seo.js",
+      "blog-coding-readiness.html",
+      "blog-daniel-spotlight.html",
+      "blog-scratch-first-language.html",
+      "blog-template.html",
+      "blog.html",
+      "contact.html",
+      "creative-coding.html",
+      "digital-art.html",
+      "enroll.html",
+      "fix-favicon.js",
+      "for-parents.html",
+      "fullstack-web-dev.html",
+      "hall-of-fame.html",
+      "index.html",
+      "issue-certificate.html",
+      "join-as-tutor.html",
+      "junior-robotics.html",
+      "parent-dashboard.html",
+      "privacy-policy.html",
+      "programs.html",
+      "python-programming.html",
+      "referral-dashboard.html",
+      "scratch-creators.html",
+      "seo-update.js",
+      "service-worker.js",
+      "tools/sitemap-generator.js",
+      "tutor-dashboard.html",
+      "verify-certificate.html",
+      "web-wizards.html"
+    ]
+  },
+  {
+    "path": "new-logo.jpg",
+    "filename": "new-logo.jpg",
+    "size_bytes": 82711,
+    "referenced_in": []
+  },
+  {
+    "path": "scratch_game_program.png",
+    "filename": "scratch_game_program.png",
+    "size_bytes": 935484,
+    "referenced_in": [
+      "blog-daniel-spotlight.html",
+      "blog.html",
+      "hall-of-fame.html",
+      "index.html"
+    ]
+  },
+  {
+    "path": "stembotbg.png",
+    "filename": "stembotbg.png",
+    "size_bytes": 8943736,
+    "referenced_in": []
+  },
+  {
+    "path": "student_robot.png",
+    "filename": "student_robot.png",
+    "size_bytes": 765039,
+    "referenced_in": [
+      "assets/js/admin-engine.js",
+      "hall-of-fame.html",
+      "index.html"
+    ]
+  },
+  {
+    "path": "student_scratch_game.png",
+    "filename": "student_scratch_game.png",
+    "size_bytes": 783314,
+    "referenced_in": [
+      "assets/js/admin-engine.js"
+    ]
+  },
+  {
+    "path": "student_website.png",
+    "filename": "student_website.png",
+    "size_bytes": 561193,
+    "referenced_in": [
+      "hall-of-fame.html",
+      "index.html"
+    ]
+  }
+]

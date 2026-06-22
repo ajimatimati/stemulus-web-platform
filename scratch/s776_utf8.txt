@@ -1,0 +1,129 @@
+﻿Created At: 2026-06-18T01:36:33Z
+Completed At: 2026-06-18T01:36:33Z
+File Path: `file:///c:/Users/USER/OneDrive/Desktop/HTMLCSSJS%20GEM%20STEMulus/for-parents.html`
+Total Lines: 1013
+Total Bytes: 48917
+Showing lines 1 to 120
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: <!DOCTYPE html>
+2: <html lang="en">
+3: <head>
+4:   <meta charset="UTF-8" />
+5:   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+6:   <title>For Parents | STEMulus Coding Academy</title>
+7:   <meta name="description" content="Everything parents need to know about STEMulus â€” how sessions work, parent dashboard, progress reports, safety, and how to support your child's coding journey." />
+8:   <link rel="canonical" href="https://stemuluskidstech.com/for-parents" />
+9:   <link rel="preconnect" href="https://fonts.googleapis.com" />
+10:   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+11:   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:ital,wght@0,600;0,700;0,800;0,900;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+12: 
+13:   <!-- Tailwind CSS -->
+14:   <script src="https://cdn.tailwindcss.com"></script>
+15:   <script>
+16:     tailwind.config = {
+17:       theme: {
+18:         extend: {
+19:           colors: {
+20:             'supernova-orange': '#f4600c',
+21:             'cosmic-blue': '#070d1f',
+22:           },
+23:           fontFamily: {
+24:             nunito: ['Nunito', 'sans-serif'],
+25:             dm: ['"DM Sans"', 'sans-serif'],
+26:             baloo: ['"Baloo 2"', 'sans-serif'],
+27:           }
+28:         }
+29:       }
+30:     }
+31:   </script>
+32: 
+33:   <!-- Lucide icons -->
+34:   <script src="https://unpkg.com/lucide@latest" defer></script>
+35:   <script defer>window.addEventListener('DOMContentLoaded', function () { if (window.lucide) lucide.createIcons(); });</script>
+36: 
+37:   <!-- Global Unified CSS -->
+38:   <link rel="stylesheet" href="style.css" />
+39:   <link rel="stylesheet" href="preai-overhaul.css" />
+40:   <link rel="stylesheet" href="responsive.css" />
+41: 
+42:   <style>
+43:     /* â”€â”€ Design Tokens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+44:     :root {
+45:       --orange: #f4600c;
+46:       --orange-light: #fff3ed;
+47:       --navy: #0d1b2a;
+48:       --slate: #1a2332;
+49:       --chalk: #faf9f7;
+50:       --mid: #64748b;
+51:       --border: rgba(10,10,10,0.09);
+52:     }
+53: 
+54:     /* â”€â”€ How It Works â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+55:     .fp-steps {
+56:       display: grid;
+57:       grid-template-columns: repeat(4, 1fr);
+58:       gap: 1.5rem;
+59:       border: none;
+60:     }
+61:     .fp-step {
+62:       background: white;
+63:       padding: 2.5rem 2rem;
+64:       border: 1px solid rgba(15, 23, 42, 0.08);
+65:       border-radius: 16px;
+66:       position: relative;
+67:       transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+68:       box-shadow: 0 4px 20px rgba(15, 23, 42, 0.015);
+69:     }
+70:     .fp-step:hover {
+71:       transform: translateY(-5px);
+72:       box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+73:       border-color: rgba(15, 23, 42, 0.15);
+74:     }
+75:     .fp-step__num {
+76:       font-family: 'Nunito', sans-serif;
+77:       font-size: 3.5rem;
+78:       font-weight: 900;
+79:       line-height: 1;
+80:       color: rgba(15, 23, 42, 0.06);
+81:       margin-bottom: 1rem;
+82:     }
+83:     .fp-step__icon {
+84:       width: 44px; height: 44px;
+85:       display: flex; align-items: center; justify-content: center;
+86:       margin-bottom: 1.25rem;
+87:       background: #0d1b2a !important;
+88:       color: #ffffff !important;
+89:       border-radius: 10px !important;
+90:       box-shadow: 0 4px 10px rgba(13, 27, 42, 0.1);
+91:     }
+92:     .fp-step h4 {
+93:       font-family: 'Nunito', sans-serif;
+94:       font-size: 1rem;
+95:       font-weight: 800;
+96:       color: var(--navy);
+97:       margin-bottom: 0.6rem;
+98:     }
+99:     .fp-step p {
+100:       font-family: 'DM Sans', sans-serif;
+101:       font-size: 0.85rem;
+102:       line-height: 1.65;
+103:       color: var(--mid);
+104:     }
+105:     .fp-step__arrow {
+106:       display: none !important;
+107:     }
+108: 
+109:     /* â”€â”€ Feature Split â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+110:     .fp-split {
+111:       display: grid;
+112:       grid-template-columns: 55fr 45fr;
+113:       gap: 5rem;
+114:       align-items: center;
+115:     }
+116:     .fp-split--reverse { grid-template-columns: 45fr 55fr; }
+117:     .fp-split--reverse .fp-split__visual { order: -1; }
+118: 
+119:     .fp-checklist { display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1.75rem; }
+120:     .fp-checklist li {
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+

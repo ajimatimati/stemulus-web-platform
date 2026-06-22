@@ -1,0 +1,193 @@
+[
+  {
+    "src": "logo.png",
+    "referenced_in": [
+      "404.html (HTML <img> Tag)",
+      "admin-dashboard.html (HTML <img> Tag)",
+      "ai-machine-learning.html (HTML <img> Tag)",
+      "arduino-robotics.html (HTML <img> Tag)",
+      "blog-coding-readiness.html (HTML <img> Tag)",
+      "blog-daniel-spotlight.html (HTML <img> Tag)",
+      "blog-scratch-first-language.html (HTML <img> Tag)",
+      "blog-template.html (HTML <img> Tag)",
+      "blog.html (HTML <img> Tag)",
+      "contact.html (HTML <img> Tag)",
+      "creative-coding.html (HTML <img> Tag)",
+      "digital-art.html (HTML <img> Tag)",
+      "enroll.html (HTML <img> Tag)",
+      "for-parents.html (HTML <img> Tag)",
+      "fullstack-web-dev.html (HTML <img> Tag)",
+      "hall-of-fame.html (HTML <img> Tag)",
+      "index.html (HTML <img> Tag)",
+      "issue-certificate.html (HTML <img> Tag)",
+      "join-as-tutor.html (HTML <img> Tag)",
+      "junior-robotics.html (HTML <img> Tag)",
+      "parent-dashboard.html (HTML <img> Tag)",
+      "privacy-policy.html (HTML <img> Tag)",
+      "programs.html (HTML <img> Tag)",
+      "python-programming.html (HTML <img> Tag)",
+      "referral-dashboard.html (HTML <img> Tag)",
+      "scratch-creators.html (HTML <img> Tag)",
+      "verify-certificate.html (HTML <img> Tag)",
+      "web-wizards.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/ai_machine_learning.png",
+    "referenced_in": [
+      "ai-machine-learning.html (HTML <img> Tag)",
+      "programs.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/stemulus_mastery_kids.png",
+    "referenced_in": [
+      "ai-machine-learning.html (HTML <img> Tag)",
+      "programs.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/arduino_robotics_lab.png",
+    "referenced_in": [
+      "arduino-robotics.html (HTML <img> Tag)",
+      "programs.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/line_following_robot.png",
+    "referenced_in": [
+      "arduino-robotics.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "images/mentor_student_session.png",
+    "referenced_in": [
+      "blog-coding-readiness.html (HTML <img> Tag)",
+      "blog-template.html (HTML <img> Tag)",
+      "blog.html (HTML <img> Tag)",
+      "for-parents.html (HTML <img> Tag)",
+      "index.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "scratch_game_program.png",
+    "referenced_in": [
+      "blog-daniel-spotlight.html (HTML <img> Tag)",
+      "blog.html (HTML <img> Tag)",
+      "hall-of-fame.html (HTML <img> Tag)",
+      "index.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "images/mentor_session_girl.png",
+    "referenced_in": [
+      "blog-scratch-first-language.html (HTML <img> Tag)",
+      "blog.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/anansi_story_scratch.png",
+    "referenced_in": [
+      "creative-coding.html (HTML <img> Tag)",
+      "programs.html (HTML <img> Tag)",
+      "scratch-creators.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/hero_coding_girl_futuristic.png",
+    "referenced_in": [
+      "creative-coding.html (HTML <img> Tag)",
+      "programs.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/hero_background_blur.png",
+    "referenced_in": [
+      "digital-art.html (HTML <img> Tag)",
+      "programs.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/space_raiders_game.png",
+    "referenced_in": [
+      "digital-art.html (HTML <img> Tag)",
+      "programs.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/pet_portfolio_website.png",
+    "referenced_in": [
+      "fullstack-web-dev.html (HTML <img> Tag)",
+      "programs.html (HTML <img> Tag)",
+      "web-wizards.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/weather_app_ui.png",
+    "referenced_in": [
+      "fullstack-web-dev.html (HTML <img> Tag)",
+      "programs.html (HTML <img> Tag)",
+      "web-wizards.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "student_robot.png",
+    "referenced_in": [
+      "hall-of-fame.html (HTML <img> Tag)",
+      "index.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "student_website.png",
+    "referenced_in": [
+      "hall-of-fame.html (HTML <img> Tag)",
+      "index.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/student_ai_dashboard.png",
+    "referenced_in": [
+      "index.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "images/become-a-mentor.jpg",
+    "referenced_in": [
+      "join-as-tutor.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/junior_robotics_playful.png",
+    "referenced_in": [
+      "junior-robotics.html (HTML <img> Tag)",
+      "programs.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "images/kid_robot_proud.png",
+    "referenced_in": [
+      "junior-robotics.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/scratch_game_creators.png",
+    "referenced_in": [
+      "programs.html (HTML <img> Tag)",
+      "scratch-creators.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/python_game_dev.png",
+    "referenced_in": [
+      "programs.html (HTML <img> Tag)",
+      "python-programming.html (HTML <img> Tag)"
+    ]
+  },
+  {
+    "src": "assets/images/quiz_app_interface.png",
+    "referenced_in": [
+      "programs.html (HTML <img> Tag)",
+      "python-programming.html (HTML <img> Tag)"
+    ]
+  }
+]

@@ -1,0 +1,317 @@
+/**
+ * STEMulus Visual Enhancements CSS
+ * Styles for: Before/After Slider, 3D Cards, Animated Growth, Odometer Counters
+ */
+
+/* ============================================================
+   ENHANCEMENT 1: Before/After Image Comparison Slider
+   ============================================================ */
+.before-after-slider {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    border-radius: 1rem;
+    cursor: col-resize;
+    user-select: none;
+}
+
+.before-after-slider img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.before-after-slider .before-image {
+    z-index: 2;
+    clip-path: inset(0 50% 0 0);
+}
+
+.before-after-slider .after-image {
+    z-index: 1;
+}
+
+.slider-handle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #f97316, #8b5cf6);
+    z-index: 10;
+    transform: translateX(-50%);
+    cursor: col-resize;
+}
+
+.slider-handle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #f97316 0%, #8b5cf6 100%);
+    border-radius: 50%;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-handle::after {
+    content: '⟷';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.25rem;
+    font-weight: bold;
+    z-index: 11;
+}
+
+.slider-label {
+    position: absolute;
+    bottom: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 12px;
+    z-index: 5;
+}
+
+.slider-label.before-label {
+    left: 1rem;
+}
+
+.slider-label.after-label {
+    right: 1rem;
+}
+
+/* ============================================================
+   ENHANCEMENT 2: 3D Tilt Cards with Holographic Shine
+   ============================================================ */
+.card-3d-tilt {
+    position: relative;
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.card-3d-tilt:hover {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.card-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: inherit;
+    z-index: 10;
+}
+
+/* Floating icons for parallax effect */
+.parallax-icon {
+    position: absolute;
+    opacity: 0.15;
+    font-size: 2rem;
+    pointer-events: none;
+    z-index: 0;
+    transition: transform 0.1s ease-out;
+}
+
+/* ============================================================
+   ENHANCEMENT 3: Animated Growth Journey
+   ============================================================ */
+.growth-animate {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.growth-animate.growth-visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+/* Animated SVG paths */
+.growth-animate svg path,
+.growth-animate svg circle,
+.growth-animate svg ellipse {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    transition: stroke-dashoffset 1.5s ease-in-out;
+}
+
+.growth-visible svg path,
+.growth-visible svg circle,
+.growth-visible svg ellipse {
+    stroke-dashoffset: 0;
+}
+
+/* Pulsing ring for growth icons */
+.growth-ring {
+    position: relative;
+}
+
+.growth-ring::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    opacity: 0;
+    animation: growthPulse 2s ease-out infinite;
+}
+
+@keyframes growthPulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}
+
+/* Tree growing animation */
+.tree-grow-trunk {
+    transform-origin: bottom center;
+    animation: trunkGrow 1s ease-out forwards;
+}
+
+@keyframes trunkGrow {
+    from {
+        transform: scaleY(0);
+    }
+
+    to {
+        transform: scaleY(1);
+    }
+}
+
+.tree-grow-leaf {
+    transform-origin: center;
+    opacity: 0;
+    animation: leafGrow 0.5s ease-out forwards;
+}
+
+@keyframes leafGrow {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ============================================================
+   ENHANCEMENT 4: Odometer-style Counter Animation
+   ============================================================ */
+.odometer-counter {
+    display: inline-flex;
+    align-items: center;
+    overflow: visible;
+    font-variant-numeric: tabular-nums;
+}
+
+.odometer-digit-wrap {
+    display: inline-block;
+    height: 1em;
+    overflow: hidden;
+    position: relative;
+}
+
+.odometer-digit-roll {
+    display: block;
+    line-height: 1;
+    transform: translateY(0);
+    transition: none;
+}
+
+.odometer-separator {
+    display: inline-block;
+}
+
+.odometer-suffix {
+    margin-left: 0.1em;
+}
+
+.odometer-complete {
+    text-shadow: 0 0 20px currentColor;
+}
+
+.odometer-glow {
+    animation: counterGlow 0.5s ease-out;
+}
+
+@keyframes counterGlow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 0 transparent);
+    }
+
+    50% {
+        filter: drop-shadow(0 0 20px currentColor);
+    }
+}
+
+/* ============================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================ */
+@media (max-width: 768px) {
+    .before-after-slider {
+        aspect-ratio: 4/3;
+    }
+
+    .slider-handle::before {
+        width: 36px;
+        height: 36px;
+    }
+
+    .slider-handle::after {
+        font-size: 1rem;
+    }
+
+    .card-3d-tilt {
+        /* Disable 3D effect on touch devices */
+        transform: none !important;
+    }
+
+    .card-shine {
+        display: none;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+
+    .growth-animate,
+    .odometer-digit-roll,
+    .growth-ring::before {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .growth-animate {
+        opacity: 1;
+        transform: none;
+    }
+}
