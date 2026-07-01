@@ -137,6 +137,117 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-page:      #0f172a;
+        --bg-card:      #1e293b;
+        --bg-subtle:    #1f2937;
+        --bg-field:     #1f2937;
+        --border:       #374151;
+        --border-mid:   #4b5563;
+        --text-heading: #f9fafb;
+        --text-body:    #e5e7eb;
+        --text-muted:   #9ca3af;
+        --text-faint:   #6b7280;
+      }
+      
+      body {
+        background: #0f172a !important;
+        color: #e5e7eb !important;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="number"],
+      select,
+      textarea {
+        background: rgba(255, 255, 255, 0.07) !important;
+        color: #e5e7eb !important;
+        -webkit-text-fill-color: #e5e7eb !important;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: #6b7280 !important;
+      }
+
+      .form-card {
+        background: #1e293b !important;
+        border-color: #374151 !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+      }
+
+      .step-circle {
+        background: #1e293b !important;
+        border-color: #4b5563 !important;
+        color: #9ca3af !important;
+      }
+
+      .step-icon-wrap.orange { background: rgba(244, 96, 12, 0.1) !important; border-color: rgba(244, 96, 12, 0.2) !important; }
+      .step-icon-wrap.purple { background: rgba(124, 58, 237, 0.1) !important; border-color: rgba(124, 58, 237, 0.2) !important; }
+      .step-icon-wrap.green  { background: rgba(22, 163, 74, 0.1) !important; border-color: rgba(22, 163, 74, 0.2) !important; }
+      .step-icon-wrap.teal   { background: rgba(13, 148, 136, 0.1) !important; border-color: rgba(13, 148, 136, 0.2) !important; }
+
+      .hero-stat.orange-stat { background: rgba(37, 99, 235, 0.08) !important; border-color: rgba(37, 99, 235, 0.2) !important; }
+      .hero-stat.purple-stat { background: rgba(124, 58, 237, 0.08) !important; border-color: rgba(124, 58, 237, 0.2) !important; }
+      .hero-stat.green-stat  { background: rgba(22, 163, 74, 0.08) !important; border-color: rgba(22, 163, 74, 0.2) !important; }
+
+      .testimonial-card.t-orange { background: rgba(37, 99, 235, 0.05) !important; border-color: rgba(37, 99, 235, 0.15) !important; }
+      .testimonial-card.t-purple { background: rgba(124, 58, 237, 0.05) !important; border-color: rgba(124, 58, 237, 0.15) !important; }
+      .testimonial-quote { color: #cbd5e1 !important; }
+
+      label.field-label { color: #cbd5e1 !important; }
+      .radio-card {
+        background: #1e293b !important;
+        border-color: #374151 !important;
+        color: #e5e7eb !important;
+      }
+      .radio-card:hover {
+        background: #273549 !important;
+        border-color: #4b5563 !important;
+      }
+      .radio-title { color: #f9fafb !important; }
+      .radio-desc { color: #9ca3af !important; }
+
+      .program-card {
+        background: #1e293b !important;
+        border-color: #374151 !important;
+        color: #e5e7eb !important;
+      }
+      .program-card:hover {
+        border-color: #4b5563 !important;
+      }
+      .prog-title { color: #f9fafb !important; }
+      .prog-desc { color: #9ca3af !important; }
+      
+      .prog-tab {
+        background: #1e293b !important;
+        border-color: #374151 !important;
+        color: #9ca3af !important;
+      }
+      .prog-tab:hover {
+        color: #e5e7eb !important;
+      }
+
+      .review-card {
+        background: #1e293b !important;
+        border-color: #374151 !important;
+      }
+      .review-child-item {
+        border-color: #374151 !important;
+      }
+      .review-child-name { color: #f9fafb !important; }
+      .review-child-prog { color: #9ca3af !important; }
+
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0 100px #1e293b inset !important;
+        -webkit-text-fill-color: #e5e7eb !important;
+      }
+    }
+
     @keyframes pageEnter {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
