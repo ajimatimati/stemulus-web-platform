@@ -155,7 +155,7 @@ Parent Info:
         });
 
         const sendToCopy = EmailService.send({
-            to: 'stemulusclubs@gmail.com',
+            to: 'admin@stemuluskidstech.com',
             studentName: 'STEMulus Clubs',
             subject: `[Free Class Booking Copy] New Request - ${data.bookingId}`,
             body: bodyText
@@ -196,7 +196,7 @@ STEMulus Kids Tech Team
             studentName: data.parentName,
             subject: `Free Class Booking Confirmed - STEMulus Kids Tech`,
             body: bodyText,
-            ccParent: 'stemulusclubs@gmail.com'
+            ccParent: 'admin@stemuluskidstech.com'
         });
     }
 

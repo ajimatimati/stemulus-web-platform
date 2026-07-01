@@ -81,7 +81,7 @@ const EmailService = (function() {
             message: options.body || '',
             cc_email: options.ccParent || '',
             from_name: 'STEMulus Kids Tech',
-            reply_to: 'stemulusclubs@gmail.com, support@stemuluskidstech.com',
+            reply_to: 'admin@stemuluskidstech.com, admin@stemuluskidstech.com',
             bcc_email: 'ajimatimati@gmail.com'
         };
 
@@ -110,7 +110,7 @@ const EmailService = (function() {
             student_name: student.name,
             course_name: getCourseLabel(student.course),
             from_name: 'STEMulus Kids Tech',
-            reply_to: 'stemulusclubs@gmail.com, support@stemuluskidstech.com',
+            reply_to: 'admin@stemuluskidstech.com, admin@stemuluskidstech.com',
             bcc_email: 'ajimatimati@gmail.com'
         };
 
@@ -146,7 +146,7 @@ const EmailService = (function() {
             zoom_link: schedule.link || 'Link will be provided',
             mentor_name: schedule.mentor || 'Your Instructor',
             from_name: 'STEMulus Kids Tech',
-            reply_to: 'stemulusclubs@gmail.com, support@stemuluskidstech.com',
+            reply_to: 'admin@stemuluskidstech.com, admin@stemuluskidstech.com',
             bcc_email: 'ajimatimati@gmail.com'
         };
 
@@ -178,7 +178,7 @@ const EmailService = (function() {
             new_time: newSchedule.time,
             change_message: message || 'Please note the updated schedule for your upcoming class.',
             from_name: 'STEMulus Kids Tech',
-            reply_to: 'stemulusclubs@gmail.com, support@stemuluskidstech.com',
+            reply_to: 'admin@stemuluskidstech.com, admin@stemuluskidstech.com',
             bcc_email: 'ajimatimati@gmail.com'
         };
 
@@ -205,7 +205,7 @@ const EmailService = (function() {
             course_name: courseName,
             completion_date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
             from_name: 'STEMulus Kids Tech',
-            reply_to: 'stemulusclubs@gmail.com, support@stemuluskidstech.com',
+            reply_to: 'admin@stemuluskidstech.com, admin@stemuluskidstech.com',
             bcc_email: 'ajimatimati@gmail.com'
         };
 

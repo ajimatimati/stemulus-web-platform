@@ -650,9 +650,9 @@ Parent Info:
             body: bodyText
         });
 
-        // Copy alert to stemulusclubs@gmail.com
+        // Copy alert to admin@stemuluskidstech.com
         const sendToCopy = EmailService.send({
-            to: 'stemulusclubs@gmail.com',
+            to: 'admin@stemuluskidstech.com',
             studentName: 'STEMulus Clubs',
             subject: `[Quick Booking Copy] New Trial Request - ${data.bookingId}`,
             body: bodyText
@@ -692,7 +692,7 @@ STEMulus Kids Tech Team
             studentName: data.parentName,
             subject: `Free Trial Booking Requested - STEMulus Kids Tech`,
             body: bodyText,
-            ccParent: 'stemulusclubs@gmail.com'
+            ccParent: 'admin@stemuluskidstech.com'
         });
     }
 

@@ -23,3 +23,6 @@ package-lock.json
 .env.staging
 *.zip
 *.tar.gz
+
+# Local Netlify folder
+.netlify

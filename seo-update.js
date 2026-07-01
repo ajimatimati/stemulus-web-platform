@@ -13,7 +13,7 @@ const path = require('path');
 const DIR = __dirname;
 const BASE_URL = 'https://stemuluskidstech.com';
 const WA_NUM   = '2347052466716';
-const EMAIL_PRIMARY   = 'stemulusclubs@gmail.com';
+const EMAIL_PRIMARY   = 'admin@stemuluskidstech.com';
 const EMAIL_SECONDARY = 'admin@stemuluskidstech.com';
 
 /* ─────────────────────────────────────

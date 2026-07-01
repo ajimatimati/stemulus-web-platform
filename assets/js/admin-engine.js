@@ -12,7 +12,7 @@ const AdminEngine = (function() {
 
     // Category → badge color auto-mapping
     const CATEGORY_COLORS = {
-        'Game Dev': 'bg-purple-600/90',
+        'Game Dev': 'bg-sky-650/90',
         'Web Dev': 'bg-orange-500/90',
         'Robotics': 'bg-green-600/90',
         'Python': 'bg-blue-900/90',
@@ -44,9 +44,7 @@ const AdminEngine = (function() {
             loadDashboardData();
             bindEvents();
         } else {
-            if (loginScreen) loginScreen.classList.remove('hidden');
-            if (dashboardContainer) dashboardContainer.classList.add('hidden');
-            bindLoginForm();
+            window.location.href = 'parent-login.html?role=admin';
         }
     }
 
@@ -131,10 +129,51 @@ const AdminEngine = (function() {
             studentForm.onsubmit = saveStudent;
         }
 
+        // Add Student Buttons
+        const addStudentBtn = document.getElementById('add-student-btn');
+        if (addStudentBtn) {
+            addStudentBtn.onclick = function() {
+                openStudentModal();
+            };
+        }
+
+        const quickAddStudentBtn = document.getElementById('quick-add-student');
+        if (quickAddStudentBtn) {
+            quickAddStudentBtn.onclick = function() {
+                openStudentModal();
+            };
+        }
+
+        // Schedule Form & Button
+        const scheduleForm = document.getElementById('schedule-form');
+        if (scheduleForm) {
+            scheduleForm.onsubmit = saveSchedule;
+        }
+
+        const addScheduleBtn = document.getElementById('add-schedule-btn');
+        if (addScheduleBtn) {
+            addScheduleBtn.onclick = function() {
+                openScheduleModal();
+            };
+        }
+
         // Project Form
         const projectForm = document.getElementById('project-form');
         if (projectForm) {
             projectForm.onsubmit = saveProject;
+        }
+
+        const addProjectBtn = document.getElementById('add-project-btn');
+        if (addProjectBtn) {
+            addProjectBtn.onclick = function() {
+                openProjectModal();
+            };
+        }
+
+        // Notification Form
+        const notificationForm = document.getElementById('compose-notification-form');
+        if (notificationForm) {
+            notificationForm.onsubmit = sendPortalNotification;
         }
 
         // Certificate Form
@@ -195,11 +234,13 @@ const AdminEngine = (function() {
     function loadDashboardData() {
         loadStats();
         loadStudents();
+        loadSchedules();
         loadProjects();
         loadCertificates();
         renderPendingRegistrations();
         renderRescheduleRequests();
         checkBirthdays();
+        populateNotificationRecipients();
     }
 
     function loadStats() {
@@ -428,11 +469,11 @@ const AdminEngine = (function() {
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <span class="text-xs bg-indigo-50 text-indigo-700 font-semibold px-2.5 py-0.5 rounded-full border border-indigo-100">${s.program}</span>
-                </td>
-                <td class="px-6 py-4">
                     <p class="text-xs font-bold text-gray-800">${s.parentName}</p>
                     <p class="text-[10px] text-gray-400">${s.parentPhone || ''}</p>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="text-xs bg-indigo-50 text-indigo-700 font-semibold px-2.5 py-0.5 rounded-full border border-indigo-100">${s.program}</span>
                 </td>
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-1.5 text-xs text-gray-500">
@@ -445,19 +486,139 @@ const AdminEngine = (function() {
                     </span>
                 </td>
                 <td class="px-6 py-4 text-right">
-                    <button class="text-gray-400 hover:text-red-500 transition-colors p-1" onclick="AdminEngine.deleteStudent('${s.id}')">
-                        <i data-lucide="trash-2" class="w-4.5 h-4.5"></i>
-                    </button>
+                    <div class="flex items-center justify-end gap-2">
+                        <button class="text-gray-400 hover:text-admin-accent transition-colors p-1" onclick="AdminEngine.editStudent('${s.id}')" title="Edit Student">
+                            <i data-lucide="edit-3" class="w-4 h-4"></i>
+                        </button>
+                        <button class="text-gray-400 hover:text-red-500 transition-colors p-1" onclick="AdminEngine.deleteStudent('${s.id}')" title="Delete Student">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>
         `).join('');
         if (window.lucide) lucide.createIcons();
     }
 
+    function populateTutorsDropdown() {
+        const select = document.getElementById('student-tutor');
+        if (!select) return;
+        const tutors = DashboardEngine.getTutors();
+        select.innerHTML = '<option value="">-- Select Tutor --</option>' + 
+            tutors.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+    }
+
+    function openStudentModal(studentId = null) {
+        populateTutorsDropdown();
+        const modal = document.getElementById('student-modal');
+        const title = document.getElementById('student-modal-title');
+        const form = document.getElementById('student-form');
+        if (form) form.reset();
+
+        const idInput = document.getElementById('student-id');
+        if (idInput) idInput.value = studentId || '';
+
+        if (studentId) {
+            if (title) title.textContent = 'Edit Student';
+            const student = studentsCache.find(s => s.id === studentId);
+            if (student) {
+                if (document.getElementById('student-name')) {
+                    document.getElementById('student-name').value = `${student.firstName} ${student.lastName}`.trim();
+                }
+                if (document.getElementById('student-age')) document.getElementById('student-age').value = student.age || '';
+                if (document.getElementById('student-email')) document.getElementById('student-email').value = student.email || '';
+                if (document.getElementById('student-phone')) document.getElementById('student-phone').value = student.phone || '';
+                if (document.getElementById('parent-name')) document.getElementById('parent-name').value = student.parentName || '';
+                if (document.getElementById('parent-email')) document.getElementById('parent-email').value = student.parentEmail || '';
+                if (document.getElementById('parent-phone')) document.getElementById('parent-phone').value = student.parentPhone || '';
+                if (document.getElementById('student-course')) document.getElementById('student-course').value = student.program || '';
+                if (document.getElementById('student-status')) document.getElementById('student-status').value = student.status || 'active';
+                if (document.getElementById('student-tutor')) document.getElementById('student-tutor').value = student.tutorName || '';
+                if (document.getElementById('student-notes')) document.getElementById('student-notes').value = student.notes || '';
+            }
+        } else {
+            if (title) title.textContent = 'Add New Student';
+        }
+
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function editStudent(id) {
+        openStudentModal(id);
+    }
+
     function saveStudent(e) {
         e.preventDefault();
-        showToast('Adding manual students is restricted. Please register via Enroll Form or registrations list.', 'warning');
+
+        const id = document.getElementById('student-id').value;
+        const nameVal = document.getElementById('student-name').value.trim();
+        const nameParts = nameVal.split(/\s+/);
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+
+        const age = parseInt(document.getElementById('student-age').value) || 0;
+        const email = document.getElementById('student-email') ? document.getElementById('student-email').value.trim() : '';
+        const phone = document.getElementById('student-phone') ? document.getElementById('student-phone').value.trim() : '';
+        
+        const parentName = document.getElementById('parent-name').value.trim();
+        const parentEmail = document.getElementById('parent-email').value.trim();
+        const parentPhone = document.getElementById('parent-phone').value.trim();
+        
+        const program = document.getElementById('student-course').value;
+        const status = document.getElementById('student-status').value;
+        const tutorName = document.getElementById('student-tutor').value;
+        const notes = document.getElementById('student-notes') ? document.getElementById('student-notes').value.trim() : '';
+
+        if (!firstName || !parentName || !parentEmail || !program || !tutorName) {
+            showToast('Please fill out all required fields.', 'warning');
+            return;
+        }
+
+        const studentData = {
+            firstName,
+            lastName,
+            age,
+            email,
+            phone,
+            parentName,
+            parentEmail,
+            parentPhone,
+            program,
+            status,
+            tutorName,
+            notes
+        };
+
+        if (id) {
+            studentData.id = id;
+            const updated = DashboardEngine.updateStudent(studentData);
+            if (updated) {
+                showToast('Student updated successfully!', 'success');
+            } else {
+                showToast('Failed to update student.', 'error');
+            }
+        } else {
+            studentData.progress = 0;
+            studentData.avatarColor = getRandomAvatarColor();
+            studentData.birthday = new Date(Date.now() - age * 365.25 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            studentData.skills = { logic: 50, loops: 50, variables: 50, syntax: 50, projects: 50 };
+            studentData.metrics = { attended: 0, total: 12, projects: 0, lines: 0 };
+            
+            const added = DashboardEngine.addStudent(studentData);
+            if (added) {
+                showToast('Student registered successfully!', 'success');
+            } else {
+                showToast('Failed to add student.', 'error');
+            }
+        }
+
         closeModal('student-modal');
+        loadDashboardData();
+    }
+
+    function getRandomAvatarColor() {
+        const colors = ['bg-blue-500', 'bg-sky-500', 'bg-orange-500', 'bg-emerald-500', 'bg-rose-500', 'bg-pink-500', 'bg-amber-500', 'bg-indigo-500'];
+        return colors[Math.floor(Math.random() * colors.length)];
     }
 
     function deleteStudent(id) {
@@ -477,43 +638,263 @@ const AdminEngine = (function() {
         renderStudentsTable(filtered);
     }
 
-    // ==================== PROJECTS CRUD ====================
+    // ==================== SCHEDULES CRUD ====================
+
+    function loadSchedules() {
+        const schedules = DashboardEngine.getSchedules();
+        const calendar = document.getElementById('schedule-calendar');
+        if (!calendar) return;
+
+        if (schedules.length === 0) {
+            calendar.innerHTML = `
+                <div class="text-center py-20">
+                    <i data-lucide="calendar" class="w-12 h-12 mx-auto text-gray-300 mb-4"></i>
+                    <p class="text-gray-400">No scheduled sessions. Click "Add Session" to set one up!</p>
+                </div>
+            `;
+            if (window.lucide) lucide.createIcons();
+            return;
+        }
+
+        const grouped = {};
+        schedules.forEach(s => {
+            if (!grouped[s.date]) grouped[s.date] = [];
+            grouped[s.date].push(s);
+        });
+
+        const sortedDates = Object.keys(grouped).sort();
+
+        calendar.innerHTML = sortedDates.map(dateStr => {
+            const dateObj = new Date(dateStr);
+            const formattedDate = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+            
+            const sessionsHTML = grouped[dateStr].map(s => {
+                let badgeClass = 'bg-gray-100 text-gray-800';
+                if (s.attendanceStatus === 'present') badgeClass = 'bg-emerald-100 text-emerald-800';
+                if (s.attendanceStatus === 'absent') badgeClass = 'bg-rose-100 text-rose-800';
+
+                return `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border border-gray-100 bg-white hover:border-admin-accent/30 transition-colors group">
+                        <div class="flex items-start gap-3">
+                            <div class="w-1.5 h-12 bg-admin-accent rounded-full shrink-0"></div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">${s.course}</p>
+                                <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-400 mt-0.5">
+                                    <span class="font-semibold text-slate-600">Student: ${s.studentName}</span>
+                                    <span>•</span>
+                                    <span>${s.time} (${s.duration} mins)</span>
+                                    <span>•</span>
+                                    <span>Mentor: ${s.mentor}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 self-end sm:self-center">
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${badgeClass}">
+                                ${s.attendanceStatus || 'pending'}
+                            </span>
+                            ${s.link ? `
+                                <a href="${s.link}" target="_blank" class="text-xs text-admin-accent hover:underline flex items-center gap-1">
+                                    <i data-lucide="external-link" class="w-3.5 h-3.5 flex-shrink-0"></i> Meeting
+                                </a>
+                            ` : ''}
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
+                                <button onclick="AdminEngine.openScheduleModal('${s.id}')" class="text-gray-400 hover:text-admin-accent p-1 transition-colors" title="Edit Session">
+                                    <i data-lucide="edit-2" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="AdminEngine.deleteSchedule('${s.id}')" class="text-gray-400 hover:text-red-500 p-1 transition-colors" title="Delete Session">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="mb-6 last:mb-0">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">${formattedDate}</h4>
+                    <div class="space-y-2.5">
+                        ${sessionsHTML}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function populateScheduleModalFields() {
+        const studentSelect = document.getElementById('schedule-student');
+        const mentorSelect = document.getElementById('schedule-mentor');
+
+        if (studentSelect) {
+            const students = DashboardEngine.getStudents();
+            studentSelect.innerHTML = '<option value="">-- Select Student --</option>' + 
+                students.map(s => `<option value="${s.id}">${s.firstName} ${s.lastName}</option>`).join('');
+        }
+
+        if (mentorSelect) {
+            const tutors = DashboardEngine.getTutors();
+            mentorSelect.innerHTML = '<option value="">-- Select Tutor --</option>' + 
+                tutors.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+        }
+    }
+
+    function openScheduleModal(scheduleId = null) {
+        populateScheduleModalFields();
+
+        const modal = document.getElementById('schedule-modal');
+        const title = document.getElementById('schedule-modal-title');
+        const form = document.getElementById('schedule-form');
+        
+        if (form) form.reset();
+
+        const idInput = document.getElementById('schedule-id');
+        if (idInput) idInput.value = scheduleId || '';
+
+        if (scheduleId) {
+            if (title) title.textContent = 'Edit Session';
+            const schedules = DashboardEngine.getSchedules();
+            const session = schedules.find(s => s.id === scheduleId);
+            if (session) {
+                if (document.getElementById('schedule-student')) document.getElementById('schedule-student').value = session.studentId || '';
+                if (document.getElementById('schedule-course')) document.getElementById('schedule-course').value = session.course || '';
+                if (document.getElementById('schedule-date')) document.getElementById('schedule-date').value = session.date || '';
+                if (document.getElementById('schedule-time')) document.getElementById('schedule-time').value = session.time || '';
+                if (document.getElementById('schedule-duration')) document.getElementById('schedule-duration').value = session.duration || '60';
+                if (document.getElementById('schedule-mentor')) document.getElementById('schedule-mentor').value = session.mentor || '';
+                if (document.getElementById('schedule-link')) document.getElementById('schedule-link').value = session.link || '';
+            }
+        } else {
+            if (title) title.textContent = 'Add New Session';
+            const dateInput = document.getElementById('schedule-date');
+            if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+        }
+
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function handleScheduleStudentChange(studentId) {
+        if (!studentId) return;
+        const students = DashboardEngine.getStudents();
+        const student = students.find(s => s.id === studentId);
+        if (student) {
+            const courseSelect = document.getElementById('schedule-course');
+            if (courseSelect) {
+                const options = Array.from(courseSelect.options);
+                const matching = options.find(o => o.text.toLowerCase().includes(student.program.toLowerCase()) || student.program.toLowerCase().includes(o.value.toLowerCase()));
+                if (matching) courseSelect.value = matching.value;
+            }
+
+            const mentorSelect = document.getElementById('schedule-mentor');
+            if (mentorSelect && student.tutorName) {
+                mentorSelect.value = student.tutorName;
+            }
+        }
+    }
+
+    function saveSchedule(e) {
+        e.preventDefault();
+
+        const id = document.getElementById('schedule-id').value;
+        const studentId = document.getElementById('schedule-student').value;
+        const studentSelect = document.getElementById('schedule-student');
+        const studentName = studentSelect.options[studentSelect.selectedIndex].text;
+
+        const courseSelect = document.getElementById('schedule-course');
+        const course = courseSelect.options[courseSelect.selectedIndex].text;
+
+        const date = document.getElementById('schedule-date').value;
+        const time = document.getElementById('schedule-time').value;
+        const duration = document.getElementById('schedule-duration').value;
+        const mentor = document.getElementById('schedule-mentor').value;
+        const link = document.getElementById('schedule-link').value.trim();
+
+        if (!studentId || !course || !date || !time || !mentor) {
+            showToast('Please fill out all required fields.', 'warning');
+            return;
+        }
+
+        const sessionData = {
+            studentId,
+            studentName,
+            course,
+            date,
+            time,
+            duration,
+            mentor,
+            link
+        };
+
+        if (id) {
+            const updated = DashboardEngine.updateSchedule(id, sessionData);
+            if (updated) {
+                showToast('Session updated successfully!', 'success');
+            } else {
+                showToast('Failed to update session.', 'error');
+            }
+        } else {
+            sessionData.attendanceStatus = 'pending';
+            const added = DashboardEngine.addSchedule(sessionData);
+            if (added) {
+                showToast('Session scheduled successfully!', 'success');
+            } else {
+                showToast('Failed to schedule session.', 'error');
+            }
+        }
+
+        closeModal('schedule-modal');
+        loadDashboardData();
+    }
+
+    function deleteSchedule(id) {
+        if (!confirm('Are you sure you want to cancel this scheduled session?')) return;
+        DashboardEngine.deleteSchedule(id);
+        showToast('Session cancelled.', 'success');
+        loadDashboardData();
+    }
+
+    // ==================== PROJECTS (WooHooMents) CRUD ====================
 
     function loadProjects() {
-        projectsCache = DashboardEngine.getCertificates(); // Mock projects mapping to certs or locally
-        // Seed default local projects if empty
-        const grid = document.getElementById('admin-projects-grid');
-        if (!grid) return;
-
-        // Fetch mock projects
-        const mockProjects = [
-            { id: "p1", title: "Alien Invader", category: "Game Dev", studentName: "Daniel M.", studentAge: 11, description: "A classic retro arcade game built with Scratch.", image: "student_scratch_game.png", tags: ["Scratch", "Gaming"] },
-            { id: "p2", title: "IoT Plant Waterer", category: "Robotics", studentName: "Sarah M.", studentAge: 8, description: "An automated watering system coded on Arduino.", image: "student_robot.png", tags: ["Arduino", "Hardware"] }
-        ];
-
-        projectsCache = mockProjects;
-        renderProjectCards(mockProjects);
+        const milestones = DashboardEngine.getMilestones();
+        projectsCache = milestones;
+        renderProjectCards(milestones);
     }
 
     function renderProjectCards(projects) {
         const grid = document.getElementById('admin-projects-grid');
         if (!grid) return;
 
+        if (projects.length === 0) {
+            grid.innerHTML = `
+                <div class="col-span-full glass-card rounded-3xl p-12 text-center border border-slate-100 bg-white">
+                    <i data-lucide="video" class="w-12 h-12 mx-auto mb-4 text-slate-400"></i>
+                    <p class="text-slate-500">No video highlights added yet.</p>
+                </div>
+            `;
+            if (window.lucide) lucide.createIcons();
+            return;
+        }
+
         grid.innerHTML = projects.map(p => `
-            <div class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-200 flex flex-col">
-                <div class="h-40 overflow-hidden relative bg-gray-100 flex items-center justify-center">
-                    <span class="absolute top-3 left-3 px-2.5 py-0.5 bg-indigo-600 text-white text-[10px] font-bold rounded-full uppercase tracking-wider z-10">${p.category}</span>
-                    <i data-lucide="image" class="w-12 h-12 text-gray-300"></i>
+            <div class="glass-card rounded-3xl overflow-hidden shadow-sm border border-slate-100 bg-white flex flex-col hover:shadow-md transition-shadow">
+                <div class="h-40 overflow-hidden relative bg-slate-900 flex items-center justify-center group">
+                    <span class="absolute top-3 left-3 px-2.5 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded-full uppercase tracking-wider z-10">${p.category}</span>
+                    <video src="${p.image}" class="w-full h-full object-cover" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause()"></video>
+                    <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span class="text-white text-xs bg-blue-600/90 px-3 py-1.5 rounded-full font-semibold">Hover to Preview</span>
+                    </div>
                 </div>
                 <div class="p-5 flex-grow flex flex-col justify-between">
                     <div>
                         <h4 class="font-bold text-gray-800 text-base mb-1">${p.title}</h4>
                         <p class="text-xs text-gray-400 mb-2"><i data-lucide="user" class="w-3 h-3 inline mr-1"></i>${p.studentName}, Age ${p.studentAge}</p>
-                        <p class="text-xs text-gray-600 leading-relaxed">${p.description}</p>
+                        <p class="text-xs text-gray-650 leading-relaxed">${p.description}</p>
                     </div>
                     <div class="flex gap-2 pt-4 border-t border-gray-100 mt-4">
-                        <button onclick="AdminEngine.editProject('${p.id}')" class="flex-1 border text-xs font-semibold py-2 rounded-xl hover:bg-gray-50 transition-colors">Edit</button>
-                        <button onclick="AdminEngine.deleteProject('${p.id}')" class="flex-1 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold py-2 rounded-xl transition-colors">Delete</button>
+                        <button onclick="AdminEngine.editProject('${p.id}')" class="flex-1 border border-slate-200 text-xs font-semibold py-2 rounded-xl hover:bg-gray-50 transition-colors">Edit</button>
+                        <button onclick="AdminEngine.deleteProject('${p.id}')" class="flex-1 bg-red-50 hover:bg-red-100 text-red-650 text-xs font-bold py-2 rounded-xl transition-colors">Delete</button>
                     </div>
                 </div>
             </div>
@@ -523,23 +904,159 @@ const AdminEngine = (function() {
 
     function openProjectModal(projectData) {
         const modal = document.getElementById('project-modal');
-        if (modal) modal.classList.remove('hidden');
+        if (!modal) return;
+
+        document.getElementById('project-form').reset();
+
+        if (projectData) {
+            document.getElementById('project-id').value = projectData.id;
+            document.getElementById('project-title').value = projectData.title;
+            document.getElementById('project-category').value = projectData.category;
+            document.getElementById('project-student-name').value = projectData.studentName;
+            document.getElementById('project-student-age').value = projectData.studentAge;
+            document.getElementById('project-description').value = projectData.description;
+            document.getElementById('project-image').value = projectData.image;
+            document.getElementById('project-tags').value = projectData.tags;
+            document.getElementById('project-modal-title').textContent = "Edit Video Highlight";
+        } else {
+            document.getElementById('project-id').value = "";
+            document.getElementById('project-modal-title').textContent = "Add Video Highlight";
+        }
+
+        modal.classList.remove('hidden');
     }
 
     function saveProject(e) {
         e.preventDefault();
-        showToast('Project details successfully saved.', 'success');
+        const id = document.getElementById('project-id').value;
+        const projectData = {
+            title: document.getElementById('project-title').value,
+            category: document.getElementById('project-category').value,
+            studentName: document.getElementById('project-student-name').value,
+            studentAge: parseInt(document.getElementById('project-student-age').value),
+            description: document.getElementById('project-description').value,
+            image: document.getElementById('project-image').value,
+            tags: document.getElementById('project-tags').value
+        };
+
+        if (id) {
+            DashboardEngine.updateMilestone(id, projectData);
+            showToast('Video highlight updated successfully.', 'success');
+        } else {
+            DashboardEngine.addMilestone(projectData);
+            showToast('Video highlight added successfully.', 'success');
+        }
+
         closeModal('project-modal');
+        loadProjects();
+        window.dispatchEvent(new Event('stemulusDbUpdated'));
     }
 
     function editProject(id) {
-        openProjectModal();
+        const project = projectsCache.find(p => p.id === id);
+        if (project) {
+            openProjectModal(project);
+        }
     }
 
     function deleteProject(id) {
-        if (confirm('Delete this project?')) {
-            showToast('Project deleted successfully.');
+        if (confirm('Are you sure you want to delete this video highlight?')) {
+            const success = DashboardEngine.deleteMilestone(id);
+            if (success) {
+                showToast('Video highlight deleted.', 'success');
+                loadProjects();
+                window.dispatchEvent(new Event('stemulusDbUpdated'));
+            } else {
+                showToast('Failed to delete video highlight.', 'error');
+            }
         }
+    }
+
+    // ==================== NOTIFICATIONS BROADCAST ====================
+
+    function populateNotificationRecipients() {
+        const select = document.getElementById('notification-recipient');
+        if (!select) return;
+
+        select.innerHTML = `
+            <option value="everyone">Everyone (All Parents & Tutors)</option>
+            <option value="parents">All Parents</option>
+            <option value="tutors">All Tutors</option>
+        `;
+
+        const students = DashboardEngine.getStudents();
+        const parentsEmails = [...new Set(students.map(s => s.parentEmail).filter(Boolean))];
+        const tutors = DashboardEngine.getTutors();
+
+        if (parentsEmails.length > 0) {
+            const parentOptGroup = document.createElement('optgroup');
+            parentOptGroup.label = "Individual Parents";
+            parentsEmails.forEach(email => {
+                const opt = document.createElement('option');
+                opt.value = `parent:${email}`;
+                opt.textContent = `Parent: ${email}`;
+                parentOptGroup.appendChild(opt);
+            });
+            select.appendChild(parentOptGroup);
+        }
+
+        if (tutors.length > 0) {
+            const tutorOptGroup = document.createElement('optgroup');
+            tutorOptGroup.label = "Individual Tutors";
+            tutors.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = `tutor:${t.email}`;
+                opt.textContent = `Tutor: ${t.name} (${t.email})`;
+                tutorOptGroup.appendChild(opt);
+            });
+            select.appendChild(tutorOptGroup);
+        }
+    }
+
+    function sendPortalNotification(e) {
+        e.preventDefault();
+        const recipientVal = document.getElementById('notification-recipient').value;
+        const title = document.getElementById('notification-title').value;
+        const message = document.getElementById('notification-message').value;
+
+        if (!title || !message) {
+            showToast('Please fill out all fields.', 'error');
+            return;
+        }
+
+        const students = DashboardEngine.getStudents();
+        const parentsEmails = [...new Set(students.map(s => s.parentEmail).filter(Boolean))];
+        const tutors = DashboardEngine.getTutors();
+
+        let targetEmails = [];
+        if (recipientVal === 'everyone') {
+            targetEmails = [...parentsEmails, ...tutors.map(t => t.email)];
+        } else if (recipientVal === 'parents') {
+            targetEmails = parentsEmails;
+        } else if (recipientVal === 'tutors') {
+            targetEmails = tutors.map(t => t.email);
+        } else if (recipientVal.startsWith('parent:')) {
+            targetEmails = [recipientVal.split('parent:')[1]];
+        } else if (recipientVal.startsWith('tutor:')) {
+            targetEmails = [recipientVal.split('tutor:')[1]];
+        }
+
+        if (targetEmails.length === 0) {
+            showToast('No recipients found for selection.', 'error');
+            return;
+        }
+
+        targetEmails.forEach(email => {
+            DashboardEngine.addNotification({
+                userEmail: email,
+                title: title,
+                message: message
+            });
+        });
+
+        showToast(`Broadcasted notification to ${targetEmails.length} user(s).`, 'success');
+        document.getElementById('compose-notification-form').reset();
+        window.dispatchEvent(new Event('stemulusDbUpdated'));
     }
 
     // ==================== CERTIFICATES CRUD ====================
@@ -703,14 +1220,19 @@ const AdminEngine = (function() {
 
     return {
         init,
+        reloadData: loadDashboardData,
         approveRegistration,
         approveScheduleAdjust,
         declineScheduleAdjust,
         sendBirthdayNotification,
         deleteStudent,
-        openStudentModal: () => openModal('student-modal'),
+        openStudentModal,
+        editStudent,
+        openScheduleModal,
+        deleteSchedule,
+        handleScheduleStudentChange,
         closeModal,
-        openProjectModal: () => openModal('project-modal'),
+        openProjectModal,
         editProject,
         deleteProject,
         deleteCertificate,
@@ -720,4 +1242,9 @@ const AdminEngine = (function() {
 })();
 
 document.addEventListener('DOMContentLoaded', AdminEngine.init);
-window.addEventListener('stemulusDbUpdated', AdminEngine.init);
+// On cloud sync: only reload data, don't re-run full auth check
+window.addEventListener('stemulusDbUpdated', function() {
+    if (document.getElementById('dashboard-container') && !document.getElementById('dashboard-container').classList.contains('hidden')) {
+        AdminEngine.reloadData();
+    }
+});

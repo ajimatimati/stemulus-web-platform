@@ -48,7 +48,7 @@ const restoredContent = `        <div class="stat-block" id="stat-1">
             </p>
             <div style="margin-top:3rem;padding:2rem;background:var(--ink);display:inline-block;max-width:100%;overflow-wrap:break-word;">
                 <p class="mono-label" style="color:var(--orange);margin-bottom:0.5rem;">Contact</p>
-                <a href="mailto:stemulusclubs@gmail.com" style="font-family:'Nunito',sans-serif;font-size:clamp(1rem,3vw,1.4rem);font-weight:700;color:white;text-decoration:none;letter-spacing:-0.02em;word-break:break-all;">
+                <a href="mailto:admin@stemuluskidstech.com" style="font-family:'Nunito',sans-serif;font-size:clamp(1rem,3vw,1.4rem);font-weight:700;color:white;text-decoration:none;letter-spacing:-0.02em;word-break:break-all;">
                     admin@stemuluskidstech.com
                 </a>
             </div>

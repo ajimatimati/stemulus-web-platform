@@ -24,63 +24,7 @@ const ParentEngine = (function() {
     }
 
     function showLoginOverlay() {
-        let loginOverlay = document.getElementById('parent-login-overlay');
-        if (!loginOverlay) {
-            loginOverlay = document.createElement('div');
-            loginOverlay.id = 'parent-login-overlay';
-            loginOverlay.className = 'fixed inset-0 bg-[#0c1322] z-50 flex items-center justify-center p-4';
-            loginOverlay.innerHTML = `
-                <div class="bg-white rounded-2xl p-8 max-w-md w-full border border-gray-200 shadow-2xl text-center space-y-6">
-                    <div>
-                        <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i data-lucide="shield-check" class="w-8 h-8 text-orange-600"></i>
-                        </div>
-                        <h2 class="text-2xl font-nunito font-bold text-gray-800">Parent Portal Login</h2>
-                        <p class="text-sm text-gray-500 mt-1">Access your child's coding schedule and achievements</p>
-                    </div>
-
-                    <form id="portal-login-form" class="space-y-4 text-left">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Email Address</label>
-                            <input type="email" id="portal-email" required value="parent@stemulus.com"
-                                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-orange-500 transition-colors">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Password</label>
-                            <input type="password" id="portal-password" required value="parent123"
-                                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-orange-500 transition-colors">
-                        </div>
-                        <div id="portal-login-err" class="hidden text-red-500 text-xs py-2 bg-red-50 rounded-lg text-center font-medium"></div>
-                        
-                        <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-orange-500/25">
-                            Login as Parent
-                        </button>
-                    </form>
-
-                    <div class="border-t border-gray-100 pt-4 text-xs text-gray-400">
-                        Demo Account Email: <span class="font-mono text-gray-600">parent@stemulus.com</span><br>Password: <span class="font-mono text-gray-600">parent123</span>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(loginOverlay);
-            if (window.lucide) lucide.createIcons();
-
-            document.getElementById('portal-login-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const email = document.getElementById('portal-email').value;
-                const password = document.getElementById('portal-password').value;
-                const res = DashboardEngine.login(email, password);
-                if (res.success && res.user.role === 'parent') {
-                    loginOverlay.remove();
-                    currentParent = res.user;
-                    renderDashboard();
-                } else {
-                    const errEl = document.getElementById('portal-login-err');
-                    errEl.textContent = res.message || "Access denied. Not a parent account.";
-                    errEl.classList.remove('hidden');
-                }
-            });
-        }
+        window.location.href = 'parent-login.html?role=parent';
     }
 
     function hideLoginOverlay() {
@@ -323,7 +267,7 @@ const ParentEngine = (function() {
     }
 
     function renderNotifications() {
-        const container = document.querySelector('section.bg-white.p-6 div.space-y-4');
+        const container = document.getElementById('parent-notifications-list');
         if (!container) return;
 
         const notifs = DashboardEngine.getNotifications(currentParent.email);
@@ -390,7 +334,13 @@ const ParentEngine = (function() {
             parentEmail: currentParent.email
         });
 
-        alert("Reschedule request submitted to administrator successfully!");
+        // Show success feedback
+        const successMsg = document.createElement('div');
+        successMsg.className = 'fixed top-4 right-4 z-[9999] bg-emerald-600 text-white px-6 py-3.5 rounded-xl shadow-xl text-sm font-semibold animate-fadeIn flex items-center gap-2';
+        successMsg.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Reschedule request submitted!';
+        document.body.appendChild(successMsg);
+        setTimeout(() => successMsg.remove(), 3500);
+
         closeRescheduleModal();
         renderNotifications();
     }
@@ -424,10 +374,10 @@ const ParentEngine = (function() {
             resModal.id = 'parent-reschedule-modal';
             resModal.className = 'fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm';
             resModal.innerHTML = `
-                <div class="bg-white rounded-2xl p-6 max-w-md w-full border border-gray-200 shadow-2xl space-y-5 animate-fadeIn">
-                    <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                <div class="bg-white rounded-3xl p-6 max-w-md w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn">
+                    <div class="flex justify-between items-center pb-2 border-b border-slate-100">
                         <h3 class="text-lg font-nunito font-bold text-gray-800">Reschedule Session</h3>
-                        <button onclick="ParentEngine.closeRescheduleModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <button type="button" onclick="ParentEngine.closeRescheduleModal()" class="text-gray-400 hover:text-gray-650 transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
@@ -442,15 +392,15 @@ const ParentEngine = (function() {
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Requested Date</label>
+                            <label class="block text-xs font-semibold text-gray-650 uppercase tracking-wider mb-2">Requested Date</label>
                             <input type="date" id="resch-new-date" required
-                                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-orange-500 transition-colors">
+                                class="w-full bg-gray-50 border border-slate-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-orange-500 transition-colors">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Requested Time</label>
+                            <label class="block text-xs font-semibold text-gray-650 uppercase tracking-wider mb-2">Requested Time</label>
                             <input type="time" id="resch-new-time" required
-                                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-orange-500 transition-colors">
+                                class="w-full bg-gray-50 border border-slate-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-orange-500 transition-colors">
                         </div>
 
                         <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-all">
@@ -469,10 +419,10 @@ const ParentEngine = (function() {
             certModal.id = 'parent-cert-modal';
             certModal.className = 'fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm';
             certModal.innerHTML = `
-                <div class="bg-[#faf8f5] rounded-2xl p-8 max-w-3xl w-full border border-amber-200/50 shadow-2xl relative animate-fadeIn flex flex-col items-center">
+                <div class="bg-[#faf8f5] rounded-3xl p-8 max-w-3xl w-full border border-amber-100 shadow-2xl relative animate-fadeIn flex flex-col items-center">
                     
                     <!-- Close button -->
-                    <button onclick="ParentEngine.closeCertModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                    <button type="button" onclick="ParentEngine.closeCertModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-650 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
 
@@ -540,6 +490,7 @@ const ParentEngine = (function() {
 
     return {
         init,
+        renderDashboard,
         completeStep,
         openRescheduleModal,
         closeRescheduleModal,
@@ -549,5 +500,9 @@ const ParentEngine = (function() {
 })();
 
 document.addEventListener('DOMContentLoaded', ParentEngine.init);
-// Render on database updates
-window.addEventListener('stemulusDbUpdated', ParentEngine.init);
+// On cloud sync: re-render data without re-running auth redirect
+window.addEventListener('stemulusDbUpdated', function() {
+    if (ParentEngine && typeof ParentEngine.renderDashboard === 'function') {
+        ParentEngine.renderDashboard();
+    }
+});

@@ -19,9 +19,9 @@ htmlFiles.forEach(file => {
   // Let's globally ensure that ANY loose "admin@stemuluskidstech.com" that is just text, or inside a generic <a href="some-wrong-link">, is forced to a proper mailto.
   
   // Case 1: The index.html / why-stemulus.html has a block with:
-  // <a href="mailto:stemulusclubs@gmail.com" ...>admin@stemuluskidstech.com</a>
+  // <a href="mailto:admin@stemuluskidstech.com" ...>admin@stemuluskidstech.com</a>
   // We need to fix the href to match the text.
-  html = html.replace(/href="mailto:stemulusclubs@gmail.com"([^>]*)>\s*admin@stemuluskidstech.com/gi, 'href="mailto:admin@stemuluskidstech.com"$1>admin@stemuluskidstech.com');
+  html = html.replace(/href="mailto:admin@stemuluskidstech.com"([^>]*)>\s*admin@stemuluskidstech.com/gi, 'href="mailto:admin@stemuluskidstech.com"$1>admin@stemuluskidstech.com');
   
   // Case 2: In index.html line 456 (and similar) where it's just raw text or the cta block
   // <p class="cta-contact-line">Direct Line</p> ...

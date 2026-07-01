@@ -206,7 +206,7 @@
  "url": "https://stemuluskidstech.com",
  "logo": "https://stemuluskidstech.com/logo.png",
  "description": "STEMulus is a global online coding academy offering private 1-on-1 programming classes for children aged 5 - 17 in Python, Scratch, robotics, web development and AI.",
- "email": "stemulusclubs@gmail.com",
+ "email": "admin@stemuluskidstech.com",
  "telephone": "+2347052466716",
  "sameAs": [
  "https://wa.me/2347052466716"
@@ -214,7 +214,7 @@
  "contactPoint": {
  "@type": "ContactPoint",
  "contactType": "customer support",
- "email": "stemulusclubs@gmail.com",
+ "email": "admin@stemuluskidstech.com",
  "availableLanguage": "English"
  }
   },
@@ -384,7 +384,7 @@
  <!-- User Section -->
  <div class="p-4 border-t border-admin-border">
  <div class="flex items-center gap-3">
- <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm" id="user-avatar">A</div>
+ <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-sm" id="user-avatar">A</div>
  <div class="flex-1 min-w-0">
  <p class="text-sm font-medium text-slate-800 truncate" id="user-name">Admin</p>
  <p class="text-xs text-slate-500 truncate" id="user-email">admin@stemuluskidstech.com</p>
@@ -467,10 +467,10 @@
  <p class="text-slate-500 text-sm">Pending Emails</p>
  </div>
  
- <div class="glass-card rounded-none p-6">
+ <div class="glass-card rounded-3xl p-6 border border-slate-100 shadow-sm bg-white">
  <div class="flex items-center justify-between mb-4">
- <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center">
- <i data-lucide="book-open" class="w-6 h-6 text-purple-400"></i>
+ <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
+ <i data-lucide="book-open" class="w-6 h-6 text-blue-600"></i>
  </div>
  </div>
  <h3 class="text-3xl font-bold text-slate-800" id="stat-active-courses">0</h3>
@@ -723,19 +723,22 @@
  </div>
  </section>
 
- <!-- ===== EMAIL CENTER SECTION ===== -->
+ <!-- ===== COMMUNICATIONS PORTAL SECTION ===== -->
  <section id="section-emails" class="admin-section animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <div>
- <h2 class="text-2xl font-nunito font-bold text-slate-800">Email Center</h2>
- <p class="text-slate-500">Send emails and manage automation</p>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Communications Portal</h2>
+ <p class="text-slate-500">Send emails, broadcast portal notifications, and manage automation settings</p>
  </div>
  </div>
  
  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
  <!-- Email Templates -->
- <div class="lg:col-span-2 glass-card rounded-none p-6">
- <h3 class="text-lg font-semibold text-slate-800 mb-4">Compose Email</h3>
+ <div class="lg:col-span-2 glass-card rounded-3xl p-6 border border-slate-100 shadow-sm bg-white">
+ <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+ <i data-lucide="mail" class="w-5 h-5 text-blue-600"></i>
+ <span>Compose Email</span>
+ </h3>
  <form id="compose-email-form" class="space-y-4">
  <div class="grid grid-cols-2 gap-4">
  <div>
@@ -784,7 +787,7 @@
  </div>
  
  <div class="flex items-center gap-3 pt-4">
- <button type="submit" class="bg-admin-accent hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg transition-colors flex items-center gap-2">
+ <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors flex items-center gap-2">
  <i data-lucide="send" class="w-4 h-4"></i>
  <span>Send Now</span>
  </button>
@@ -796,9 +799,46 @@
  </form>
  </div>
  
+ <!-- Send Portal Notification -->
+ <div class="lg:col-span-2 glass-card rounded-3xl p-6 mt-6 border border-slate-100 shadow-sm bg-white">
+ <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+ <i data-lucide="bell" class="w-5 h-5 text-blue-600"></i>
+ <span>Send Portal Notification</span>
+ </h3>
+ <form id="compose-notification-form" class="space-y-4">
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Recipient</label>
+ <select id="notification-recipient" required class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 focus:outline-none focus:border-admin-accent">
+ <option value="everyone">Everyone (All Parents & Tutors)</option>
+ <option value="parents">All Parents</option>
+ <option value="tutors">All Tutors</option>
+ </select>
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Notification Title *</label>
+ <input type="text" id="notification-title" required class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent" placeholder="e.g. Schedule Maintenance, Holiday notice...">
+ </div>
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Message *</label>
+ <textarea id="notification-message" required rows="4" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent resize-none" placeholder="Write the portal notification message here..."></textarea>
+ </div>
+ <div class="flex items-center gap-3 pt-2">
+ <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-lg transition-colors flex items-center gap-2">
+ <i data-lucide="bell-ring" class="w-4 h-4"></i>
+ <span>Broadcast Notification</span>
+ </button>
+ </div>
+ </form>
+ </div>
+ 
  <!-- Automation Settings -->
- <div class="glass-card rounded-none p-6">
- <h3 class="text-lg font-semibold text-slate-800 mb-4">Automation Settings</h3>
+ <div class="glass-card rounded-3xl p-6 border border-slate-100 shadow-sm bg-white">
+ <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+ <i data-lucide="settings" class="w-5 h-5 text-blue-600"></i>
+ <span>Automation Settings</span>
+ </h3>
  <div class="space-y-4">
  <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
  <div>
@@ -844,7 +884,7 @@
  </label>
  </div>
  
- <button id="save-automation-btn" class="w-full mt-4 bg-admin-success/20 text-admin-success font-medium py-2 rounded-lg hover:bg-admin-success/30 transition-colors">
+ <button id="save-automation-btn" class="w-full mt-4 bg-blue-50 text-blue-600 font-semibold py-2 rounded-lg hover:bg-blue-100 transition-colors">
  Save Settings
  </button>
  </div>
@@ -1130,55 +1170,44 @@
  <input type="text" id="project-student-name" required
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="e.g. Tunde">
+ placeholder="e.g. Daniel M.">
  </div>
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Student Age *</label>
  <input type="number" id="project-student-age" required min="5" max="18"
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="e.g.11">
+ placeholder="e.g. 11">
  </div>
  </div>
  
  <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Description *</label>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Milestone Description *</label>
  <textarea id="project-description" required rows="3"
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors resize-none"
- placeholder="A short, fun description of the project..."></textarea>
+ placeholder="Daniel explains his conditional branch checks, variable tracking, and loops..."></textarea>
  </div>
  
  <div class="grid grid-cols-2 gap-4">
  <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Image URL *</label>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Video File Name *</label>
  <input type="text" id="project-image" required
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="assets/images/project.png">
+ placeholder="e.g. Robot.mp4">
  </div>
  <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Link URL</label>
- <input type="text" id="project-view-url"
+ <label class="block text-sm font-medium text-gray-500 mb-2">Badge Overlay Text *</label>
+ <input type="text" id="project-tags" required
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="hall-of-fame.html" value="hall-of-fame.html">
+ placeholder="e.g. Daniel's SpaceX Flight Simulator">
  </div>
  </div>
  
- <div class="grid grid-cols-2 gap-4">
- <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Button Text</label>
- <input type="text" id="project-cta-text"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="View Project" value="View Project">
- </div>
- <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Tags (comma-separated)</label>
- <input type="text" id="project-tags"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="Scratch, Game Logic, Physics">
- </div>
- </div>
+ <input type="hidden" id="project-view-url" value="landing">
+ <input type="hidden" id="project-cta-text" value="Watch">
  
  <div class="flex items-center gap-3 pt-4">
- <button type="submit" class="flex-1 bg-supernova-orange hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-colors">
- Save Project
+ <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors">
+ Save Video Highlight
  </button>
  <button type="button" class="px-6 py-3 text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('project-modal')">
  Cancel
@@ -1188,7 +1217,29 @@
  </div>
  </div>
  </div>
-
+ 
+ <!-- Notification Composer Modal -->
+ <div id="notification-modal" class="fixed inset-0 z-50 hidden">
+ <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('notification-modal')"></div>
+ <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+ <div class="glass-card rounded-3xl p-8 m-4 animate-fadeIn border border-slate-100 shadow-2xl bg-white">
+ <div class="flex items-center justify-between mb-6">
+ <h3 class="text-xl font-nunito font-bold text-slate-800">Send Portal Notification</h3>
+ <button type="button" class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('notification-modal')">
+ <i data-lucide="x" class="w-6 h-6"></i>
+ </button>
+ </div>
+ <form id="notification-form" class="space-y-5">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Message Content *</label>
+ <textarea id="notification-text" required rows="4" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors" placeholder="Type notification for parents..."></textarea>
+ </div>
+ <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors">Send Notification</button>
+ </form>
+ </div>
+ </div>
+ </div>
+ 
  <!-- QR Code Modal -->
  <div id="qrcode-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="document.getElementById('qrcode-modal').classList.add('hidden')"></div>

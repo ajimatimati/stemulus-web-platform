@@ -207,8 +207,8 @@ const EnrollmentHandler = (function() {
             templateParams
         );
 
-        // Always send a copy to stemulusclubs@gmail.com as well
-        const copyParams = { ...templateParams, to_email: 'stemulusclubs@gmail.com' };
+        // Always send a copy to admin@stemuluskidstech.com as well
+        const copyParams = { ...templateParams, to_email: 'admin@stemuluskidstech.com' };
         const sendToCopy = emailjs.send(
             CONFIG.EMAILJS_SERVICE_ID,
             CONFIG.EMAILJS_TEMPLATE_ID,

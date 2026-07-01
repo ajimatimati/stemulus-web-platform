@@ -237,6 +237,38 @@ const DashboardEngine = (function() {
                 userEmail: "parent@stemulus.com"
             }
         ],
+        milestones: [
+            {
+                id: "mil-1",
+                studentName: "Daniel M.",
+                studentAge: 11,
+                category: "Python Programming",
+                image: "Robot.mp4",
+                title: "Daniel explaining his SpaceX trajectory simulator",
+                description: "Daniel explains his conditional branch checks, variable tracking, and loops that calculate orbital escape velocity for a SpaceX Falcon 9 simulator.",
+                tags: "Daniel's SpaceX Flight Simulator"
+            },
+            {
+                id: "mil-2",
+                studentName: "Sarah M.",
+                studentAge: 8,
+                category: "Scratch Creators",
+                image: "Robot_scrub.mp4",
+                title: "Sarah showing her animated dialogue scenes",
+                description: "Sarah demonstrates message broadcasting and costume change events to synchronize a visual scene between a dragon sprite and a wizard.",
+                tags: "Sarah's Scratch Adventure Dialog"
+            },
+            {
+                id: "mil-3",
+                studentName: "Chidi A.",
+                studentAge: 10,
+                category: "Robotics & Arduino",
+                image: "Robot.mp4",
+                title: "Chidi demonstrating his self-steering sonar logic",
+                description: "Chidi reviews his C++ loop logic that calculates distance coordinates using an ultrasonic sensor and steers two servo motors to avoid grid barriers.",
+                tags: "Chidi's Autonomous Sonar Rover"
+            }
+        ],
         ntfyTopic: "stemulus-birthday-alerts-2026"
     };
 
@@ -269,11 +301,21 @@ const DashboardEngine = (function() {
         }
     }
 
-    // Helper to save data to localStorage
+    // Helper to save data to localStorage & Cloud
     function saveDB(db) {
         localStorage.setItem("stemulus_db", JSON.stringify(db));
-        // Dispatch custom event to notify other scripts of database change
         window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+
+        // ☁️ Broadcast updates to Firebase Firestore for cloud persistence
+        if (typeof firebase !== 'undefined' && firebase.apps.length) {
+            try {
+                firebase.firestore().collection('state').doc('current').set(db)
+                    .then(() => console.log('[STEMulus Cloud] ✅ Database state synced to Firestore'))
+                    .catch(err => console.warn('[STEMulus Cloud] Firestore sync failed:', err));
+            } catch (e) {
+                console.error('[STEMulus Cloud] Firestore sync error:', e);
+            }
+        }
     }
 
     // Get currently logged-in user from session
@@ -318,10 +360,41 @@ const DashboardEngine = (function() {
         return student;
     }
 
+    function updateStudent(studentData) {
+        const db = getDB();
+        const idx = db.students.findIndex(s => s.id === studentData.id);
+        if (idx !== -1) {
+            db.students[idx] = { ...db.students[idx], ...studentData };
+            saveDB(db);
+            return db.students[idx];
+        }
+        return null;
+    }
+
     function deleteStudent(id) {
         const db = getDB();
         db.students = db.students.filter(s => s.id !== id);
         saveDB(db);
+    }
+
+    // --- Tutors Controller ---
+    function getTutors() {
+        const db = getDB();
+        // Derive tutors from users + student assignments
+        const tutorUsers = Object.values(db.users).filter(u => u.role === 'tutor');
+        // Also add tutors inferred from student records (for legacy seed data)
+        const tutorNamesFromStudents = [...new Set(db.students.map(s => s.tutorName).filter(Boolean))];
+        const tutorMap = {};
+        tutorUsers.forEach(u => {
+            tutorMap[u.name || u.email] = { name: u.name || u.email, email: u.email };
+        });
+        tutorNamesFromStudents.forEach(name => {
+            if (!tutorMap[name]) {
+                const matchedUser = tutorUsers.find(u => u.name === name);
+                tutorMap[name] = { name, email: matchedUser ? matchedUser.email : (name.toLowerCase().replace(/\s+/g,'') + '@stemulus.com') };
+            }
+        });
+        return Object.values(tutorMap);
     }
 
     // --- Schedules Controller ---
@@ -350,6 +423,12 @@ const DashboardEngine = (function() {
             return db.schedules[idx];
         }
         return null;
+    }
+
+    function deleteSchedule(id) {
+        const db = getDB();
+        db.schedules = db.schedules.filter(s => s.id !== id);
+        saveDB(db);
     }
 
     // --- Reschedule Requests ---
@@ -716,8 +795,82 @@ const DashboardEngine = (function() {
         saveDB(db);
     }
 
+    // --- Milestones Controller ---
+    function getMilestones() {
+        const db = getDB();
+        return db.milestones || [];
+    }
+
+    function addMilestone(m) {
+        const db = getDB();
+        if (!db.milestones) db.milestones = [];
+        m.id = "mil-" + Date.now();
+        db.milestones.push(m);
+        saveDB(db);
+        return m;
+    }
+
+    function updateMilestone(id, updatedFields) {
+        const db = getDB();
+        if (!db.milestones) db.milestones = [];
+        const idx = db.milestones.findIndex(m => m.id === id);
+        if (idx !== -1) {
+            db.milestones[idx] = { ...db.milestones[idx], ...updatedFields };
+            saveDB(db);
+            return db.milestones[idx];
+        }
+        return null;
+    }
+
+    function deleteMilestone(id) {
+        const db = getDB();
+        if (!db.milestones) db.milestones = [];
+        const idx = db.milestones.findIndex(m => m.id === id);
+        if (idx !== -1) {
+            db.milestones.splice(idx, 1);
+            saveDB(db);
+            return true;
+        }
+        return false;
+    }
+
     // Initialize DB on script load
     getDB();
+
+    // ☁️ Firebase Cloud Sync real-time snapshot subscription
+    if (typeof firebase !== 'undefined' && firebase.apps.length) {
+        try {
+            firebase.firestore().collection('state').doc('current').onSnapshot(doc => {
+                if (doc.exists()) {
+                    const cloudData = doc.data();
+                    
+                    // Proactively ensure STEM-2026-QWHF is in the certificates list
+                    if (cloudData.certificates && !cloudData.certificates.some(c => c.credential_id === "STEM-2026-QWHF")) {
+                        if (!cloudData.certificates) cloudData.certificates = [];
+                        cloudData.certificates.push({
+                            id: "cert-6002",
+                            credential_id: "STEM-2026-QWHF",
+                            student_name: "Modesire Abdusalam Shittu",
+                            program_name: "Python Data App Academy: Building Web Apps with Streamlit",
+                            grade_level: "Distinction",
+                            issue_date: "2026-05-31"
+                        });
+                    }
+                    
+                    localStorage.setItem("stemulus_db", JSON.stringify(cloudData));
+                    window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+                    console.log('[STEMulus Cloud] 🔄 Local state synchronized with Firestore cloud');
+                } else {
+                    console.log('[STEMulus Cloud] Seeding initial state to Firestore...');
+                    firebase.firestore().collection('state').doc('current').set(getDB());
+                }
+            }, err => {
+                console.warn('[STEMulus Cloud] Snapshot listener subscription failed:', err);
+            });
+        } catch (e) {
+            console.error('[STEMulus Cloud] Snapshot listener error:', e);
+        }
+    }
 
     return {
         login,
@@ -725,10 +878,13 @@ const DashboardEngine = (function() {
         getSession,
         getStudents,
         addStudent,
+        updateStudent,
         deleteStudent,
+        getTutors,
         getSchedules,
         addSchedule,
         updateSchedule,
+        deleteSchedule,
         getRescheduleRequests,
         submitReschedule,
         approveReschedule,
@@ -747,6 +903,10 @@ const DashboardEngine = (function() {
         getNotifications,
         addNotification,
         markNotificationsRead,
+        getMilestones,
+        addMilestone,
+        updateMilestone,
+        deleteMilestone,
         getNtfyTopic: () => getDB().ntfyTopic
     };
 })();
