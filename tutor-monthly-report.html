@@ -78,13 +78,13 @@
     <img src="favicon.png" alt="STEMulus" width="36" height="36" style="border-radius:10px;object-fit:contain;">
     <div>
       <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;color:#fff;">STEMulus</div>
-      <div style="font-size:0.65rem;color:rgba(255,255,255,0.4);letter-spacing:0.08em;text-transform:uppercase;font-weight:700;">Tutor Portal</div>
+      <div style="font-size:0.65rem;color:rgba(255,255,255,0.75);letter-spacing:0.08em;text-transform:uppercase;font-weight:700;">Tutor Portal</div>
     </div>
   </div>
 
   <!-- Nav -->
   <nav style="flex:1;padding:16px 12px;overflow-y:auto;">
-    <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0 8px;margin-bottom:8px;">Menu</div>
+    <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);padding:0 8px;margin-bottom:8px;">Menu</div>
     <a href="tutor-dashboard.html" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:16px;color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.18s;margin-bottom:3px;" onmouseover="this.style.background='rgba(244,96,12,0.12)';this.style.color='#f97316';" onmouseout="this.style.background='';this.style.color='rgba(255,255,255,0.6)';">
       <i data-lucide="layout-dashboard" style="width:17px;height:17px;flex-shrink:0;"></i> Dashboard
     </a>
@@ -111,7 +111,7 @@
       <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f4600c,#f97316);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:0.85rem;flex-shrink:0;" id="avatar-initials">T</div>
       <div style="flex:1;min-width:0;">
         <p style="font-size:0.82rem;font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" id="tutor-name">Tutor</p>
-        <p style="font-size:0.65rem;color:rgba(255,255,255,0.4);">Instructor</p>
+        <p style="font-size:0.65rem;color:rgba(255,255,255,0.75);">Instructor</p>
       </div>
     </div>
     <button id="logout-btn" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,0.35);background:none;border:none;cursor:pointer;font-size:0.8rem;padding:8px;border-radius:12px;transition:all 0.18s;" onmouseover="this.style.background='rgba(239,68,68,0.12)';this.style.color='#ef4444';" onmouseout="this.style.background='';this.style.color='rgba(255,255,255,0.35)';">
@@ -375,7 +375,7 @@
           <div>
             <label class="field-label">How confident did you feel teaching this month's content? (1-10)</label>
             <input type="range" min="1" max="10" value="7" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" id="confidence-slider" oninput="document.getElementById('confidence-val').textContent = this.value">
-            <div class="flex justify-between text-xs text-gray-400 mt-1">
+            <div class="flex justify-between text-xs text-slate-600 mt-1">
               <span>1 — Not confident</span>
               <span class="font-bold text-indigo-600" id="confidence-val">7</span>
               <span>10 — Very confident</span>
@@ -402,7 +402,7 @@
         <button type="submit" class="btn-3d orange px-8 py-4 text-base mt-4">
           <i data-lucide="send" class="w-5 h-5"></i> Submit Monthly Report
         </button>
-        <p class="text-xs text-gray-400 mt-3">Your report is saved on this device and sent to the admin team immediately upon submission.</p>
+        <p class="text-xs text-slate-600 mt-3">Your report is saved on this device and sent to the admin team immediately upon submission.</p>
       </div>
 
     </form>
@@ -756,7 +756,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (!list.length) {
-      container.innerHTML = '<div class="bg-white border border-gray-200 rounded-2xl p-12 text-center text-slate-400">' +
+      container.innerHTML = '<div class="bg-white border border-gray-200 rounded-2xl p-12 text-center text-slate-600">' +
         '<i data-lucide="file-text" class="w-10 h-10 mx-auto mb-2 opacity-40"></i>' +
         '<p class="text-sm font-semibold">No reports matching this filter.</p>' +
       '</div>';
@@ -810,10 +810,10 @@ document.addEventListener('DOMContentLoaded', function() {
           '</div>' +
         '</div>' +
         '<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 text-xs">' +
-          '<div><span class="text-gray-400 font-bold uppercase text-[10px]">Sessions:</span> <span class="font-bold text-slate-700">' + (r.sessionsAttended !== undefined ? r.sessionsAttended : (r.totalSessions || 0)) + ' attended</span></div>' +
-          '<div><span class="text-gray-400 font-bold uppercase text-[10px]">Module:</span> <span class="font-bold text-slate-700 truncate block">' + (r.module || 'Module Progress') + '</span></div>' +
-          '<div><span class="text-gray-400 font-bold uppercase text-[10px]">Engagement:</span> <span class="font-bold text-slate-700 capitalize">' + (r.engagementLevel || 'engaged') + '</span></div>' +
-          '<div><span class="text-gray-400 font-bold uppercase text-[10px]">Submitted:</span> <span class="text-slate-500">' + (r.submittedAt ? new Date(r.submittedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—') + '</span></div>' +
+          '<div><span class="text-slate-600 font-bold uppercase text-[10px]">Sessions:</span> <span class="font-bold text-slate-700">' + (r.sessionsAttended !== undefined ? r.sessionsAttended : (r.totalSessions || 0)) + ' attended</span></div>' +
+          '<div><span class="text-slate-600 font-bold uppercase text-[10px]">Module:</span> <span class="font-bold text-slate-700 truncate block">' + (r.module || 'Module Progress') + '</span></div>' +
+          '<div><span class="text-slate-600 font-bold uppercase text-[10px]">Engagement:</span> <span class="font-bold text-slate-700 capitalize">' + (r.engagementLevel || 'engaged') + '</span></div>' +
+          '<div><span class="text-slate-600 font-bold uppercase text-[10px]">Submitted:</span> <span class="text-slate-500">' + (r.submittedAt ? new Date(r.submittedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—') + '</span></div>' +
         '</div>' +
         (r.strengths ? '<div class="text-xs text-slate-600 line-clamp-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100"><strong>Strengths:</strong> ' + r.strengths + '</div>' : '') +
         feedbackBox +

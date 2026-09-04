@@ -519,13 +519,13 @@
   <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
     <div style="display:flex;align-items:center;gap:10px;">
       <img src="favicon.png" alt="STEMulus" style="height:32px;">
-      <span style="font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,0.35);border-left:1px solid rgba(255,255,255,0.1);padding-left:12px;">Certificate Dashboard</span>
+      <span style="font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,0.75);border-left:1px solid rgba(255,255,255,0.1);padding-left:12px;">Certificate Dashboard</span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;">
-      <a href="verify-certificate.html" style="font-size:0.75rem;color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+      <a href="verify-certificate.html" style="font-size:0.75rem;color:rgba(255,255,255,0.85);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
         <i data-lucide="shield-check" style="width:14px;height:14px;"></i> Public Verify Page
       </a>
-      <a href="index.html" style="font-size:0.75rem;font-weight:700;color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+      <a href="index.html" style="font-size:0.75rem;font-weight:700;color:rgba(255,255,255,0.85);text-decoration:none;display:flex;align-items:center;gap:5px;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
         <i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Back to Website
       </a>
     </div>
@@ -539,15 +539,15 @@
   <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.06);">
     <div>
       <h1 style="font-size:1.6rem;font-weight:800;color:#fff;margin:0 0 4px;">Credential Manager</h1>
-      <p style="font-size:0.78rem;color:rgba(255,255,255,0.35);margin:0;">Issue, review, approve and manage STEMulus graduation certificates</p>
+      <p style="font-size:0.78rem;color:rgba(255,255,255,0.75);margin:0;">Issue, review, approve and manage STEMulus graduation certificates</p>
     </div>
     <div class="glass-card" style="padding:10px 16px;display:flex;align-items:center;gap:10px;">
       <i data-lucide="lock" style="width:15px;height:15px;color:var(--orange);flex-shrink:0;"></i>
       <div>
-        <span style="font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-weight:700;display:block;">Admin Passcode</span>
+        <span style="font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;display:block;">Admin Passcode</span>
         <input type="password" id="admin-passcode" class="admin-input" style="background:transparent;border:none;padding:0;width:160px;font-size:0.82rem;font-family:monospace;">
       </div>
-      <button onclick="togglePasscode()" style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.4);" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+      <button onclick="togglePasscode()" style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.80);" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">
         <i id="passcode-eye" data-lucide="eye" style="width:15px;height:15px;"></i>
       </button>
     </div>
@@ -556,15 +556,15 @@
   <!-- STATS ROW -->
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:28px;" id="stats-row">
     <div class="glass-card" style="padding:18px 20px;">
-      <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-weight:700;">Total Issued</span>
+      <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;">Total Issued</span>
       <div style="font-size:2rem;font-weight:800;color:#fff;margin-top:4px;" id="stat-total">—</div>
     </div>
     <div class="glass-card" style="padding:18px 20px;">
-      <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-weight:700;">Pending Review</span>
+      <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;">Pending Review</span>
       <div style="font-size:2rem;font-weight:800;color:#fbbf24;margin-top:4px;" id="stat-pending">—</div>
     </div>
     <div class="glass-card" style="padding:18px 20px;">
-      <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-weight:700;">Active Certs</span>
+      <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;">Active Certs</span>
       <div style="font-size:2rem;font-weight:800;color:#34d399;margin-top:4px;" id="stat-active">—</div>
     </div>
   </div>
@@ -648,7 +648,7 @@
           Credential Ledger
         </div>
         <div style="position:relative;">
-          <i data-lucide="search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:rgba(255,255,255,0.3);"></i>
+          <i data-lucide="search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:rgba(255,255,255,0.75);"></i>
           <input type="text" id="search-input" placeholder="Search graduates…" class="admin-input" style="padding-left:32px;width:200px;">
         </div>
       </div>
@@ -660,26 +660,26 @@
         <button class="filter-tab" data-filter="issued" onclick="filterBy('issued',this)">Issued</button>
       </div>
       <style>
-        .filter-tab { background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);border-radius:8px;padding:5px 12px;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.2s; }
+        .filter-tab { background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);border-radius:8px;padding:5px 12px;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.2s; }
         .filter-tab:hover { background:rgba(255,255,255,0.1);color:#fff; }
         .active-tab { background:rgba(244,96,12,0.15);border-color:rgba(244,96,12,0.35);color:var(--orange); }
       </style>
 
       <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;">
+        <div class="table-scroll-wrapper overflow-x-auto w-full"><table style="width:100%;border-collapse:collapse;">
           <thead>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.07);">
-              <th style="padding:10px 8px;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-weight:700;text-align:left;">Student</th>
-              <th style="padding:10px 8px;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-weight:700;text-align:left;">Program</th>
-              <th style="padding:10px 8px;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-weight:700;text-align:left;">ID</th>
-              <th style="padding:10px 8px;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-weight:700;text-align:left;">Status</th>
-              <th style="padding:10px 8px;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-weight:700;text-align:right;">Actions</th>
+              <th style="padding:10px 8px;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;text-align:left;">Student</th>
+              <th style="padding:10px 8px;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;text-align:left;">Program</th>
+              <th style="padding:10px 8px;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;text-align:left;">ID</th>
+              <th style="padding:10px 8px;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;text-align:left;">Status</th>
+              <th style="padding:10px 8px;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;text-align:right;">Actions</th>
             </tr>
           </thead>
           <tbody id="ledger-body">
-            <tr><td colspan="5" style="text-align:center;padding:32px;color:rgba(255,255,255,0.25);font-size:0.85rem;">Loading ledger…</td></tr>
+            <tr><td colspan="5" style="text-align:center;padding:32px;color:rgba(255,255,255,0.70);font-size:0.85rem;">Loading ledger…</td></tr>
           </tbody>
-        </table>
+        </table></div>
       </div>
     </div>
   </div>
@@ -702,16 +702,16 @@
       <div class="step-dot future" id="step3-dot">3</div>
     </div>
     <div style="display:flex;gap:0;margin-bottom:28px;margin-top:-16px;">
-      <div style="flex:1;font-size:0.65rem;text-align:left;color:rgba(255,255,255,0.4);letter-spacing:0.1em;text-transform:uppercase;">Form</div>
+      <div style="flex:1;font-size:0.65rem;text-align:left;color:rgba(255,255,255,0.80);letter-spacing:0.1em;text-transform:uppercase;">Form</div>
       <div style="flex:1;font-size:0.65rem;text-align:center;color:var(--orange);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;">Director Review</div>
-      <div style="flex:1;font-size:0.65rem;text-align:right;color:rgba(255,255,255,0.4);letter-spacing:0.1em;text-transform:uppercase;">Send to Parent</div>
+      <div style="flex:1;font-size:0.65rem;text-align:right;color:rgba(255,255,255,0.80);letter-spacing:0.1em;text-transform:uppercase;">Send to Parent</div>
     </div>
 
     <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;">
 
       <!-- CERTIFICATE PREVIEW -->
       <div style="flex:1;min-width:280px;">
-        <p style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-weight:700;margin-bottom:10px;">Certificate Preview</p>
+        <p style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;margin-bottom:10px;">Certificate Preview</p>
         <div id="cert-preview-paper" class="cert-paper" style="box-shadow:0 16px 60px rgba(0,0,0,0.5);">
 
           <!-- Corner ornaments -->
@@ -804,11 +804,11 @@
 
       <!-- RIGHT: Review actions -->
       <div style="width:240px;flex-shrink:0;">
-        <p style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-weight:700;margin-bottom:12px;">Director Actions</p>
+        <p style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;margin-bottom:12px;">Director Actions</p>
 
         <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:14px;margin-bottom:16px;">
           <p style="font-size:0.75rem;color:#fbbf24;font-weight:700;margin-bottom:6px;">Awaiting Your Review</p>
-          <p style="font-size:0.72rem;color:rgba(255,255,255,0.5);line-height:1.5;">Review the certificate preview. Make any edits to the fields on the left, then approve to generate and send.</p>
+          <p style="font-size:0.72rem;color:rgba(255,255,255,0.85);line-height:1.5;">Review the certificate preview. Make any edits to the fields on the left, then approve to generate and send.</p>
         </div>
 
         <!-- Edit fields inline -->
@@ -863,7 +863,7 @@
     </div>
 
     <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;margin-bottom:20px;">
-      <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-weight:700;display:block;margin-bottom:4px;">Credential ID</span>
+      <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;display:block;margin-bottom:4px;">Credential ID</span>
       <span style="font-family:monospace;font-size:0.95rem;font-weight:700;color:var(--orange);" id="qr-cred-id">—</span>
     </div>
 
@@ -875,7 +875,7 @@
         <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy Link
       </button>
     </div>
-    <p style="font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:12px;">Share the QR or link with the parent to access and verify the certificate.</p>
+    <p style="font-size:0.72rem;color:rgba(255,255,255,0.75);margin-top:12px;">Share the QR or link with the parent to access and verify the certificate.</p>
   </div>
 </div>
 

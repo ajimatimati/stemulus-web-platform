@@ -251,7 +251,7 @@
  <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/55"></i>
  <div class="relative"><input type="password" id="login-password" required
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-3 pl-11 pr-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="••••••••"><button type="button" onclick="var i=document.getElementById('login-password');i.type=i.type==='password'?'text':'password';this.querySelector('svg').classList.toggle('hidden')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button></div>
+ placeholder="••••••••"><button type="button" onclick="var i=document.getElementById('login-password');i.type=i.type==='password'?'text':'password';this.querySelector('svg').classList.toggle('hidden')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 font-semibold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button></div>
  </div>
  </div>
  
@@ -278,14 +278,14 @@
  <img src="favicon.png" width="36" height="36" style="border-radius:10px;object-fit:contain;" alt="STEMulus">
  <div>
  <h2 class="font-nunito font-bold" style="color:#ffffff;">STEMulus</h2>
- <p class="text-xs" style="color:rgba(255,255,255,0.45);">Admin Portal</p>
+ <p class="text-xs" style="color:rgba(255,255,255,0.85);">Admin Portal</p>
  </div>
  </div>
  </div>
  
  <!-- Navigation -->
  <nav class="flex-1 py-6 overflow-y-auto">
- <div class="px-4 mb-2 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.35);">Main</div>
+ <div class="px-4 mb-2 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.70);">Main</div>
  <ul class="space-y-1 px-3">
  <li>
  <a href="#" data-section="dashboard" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-2xl transition-colors" style="background:rgba(244,96,12,0.18);color:#f4600c;">
@@ -340,7 +340,7 @@
  </li>
  </ul>
 
- <div class="px-4 mb-2 mt-6 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.35);">Workflows</div>
+ <div class="px-4 mb-2 mt-6 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.70);">Workflows</div>
  <ul class="space-y-1 px-3">
  <li>
  <a href="#" data-section="onboarding" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
@@ -374,7 +374,7 @@
  </li>
  </ul>
 
- <div class="px-4 mb-2 mt-6 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.35);">Communications</div>
+ <div class="px-4 mb-2 mt-6 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.70);">Communications</div>
  <ul class="space-y-1 px-3">
  <li>
  <a href="#" data-section="emails" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
@@ -432,9 +432,9 @@
  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-sm" style="border-radius:50%;" id="user-avatar">A</div>
  <div class="flex-1 min-w-0">
  <p class="text-sm font-medium truncate" style="color:rgba(255,255,255,0.9);" id="user-name">Admin</p>
- <p class="text-xs truncate" style="color:rgba(255,255,255,0.4);" id="user-email">admin@stemuluskidstech.com</p>
+ <p class="text-xs truncate" style="color:rgba(255,255,255,0.75);" id="user-email">admin@stemuluskidstech.com</p>
  </div>
- <button id="logout-btn" class="p-2 transition-colors" style="color:rgba(255,255,255,0.4);" title="Sign Out">
+ <button id="logout-btn" class="p-2 transition-colors" style="color:rgba(255,255,255,0.75);" title="Sign Out">
  <i data-lucide="log-out" class="w-5 h-5"></i>
  </button>
  </div>
@@ -547,7 +547,7 @@
   <div class="glass-card rounded-none p-5">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-base font-nunito font-bold text-slate-800">This Week</h3>
-      <span id="week-range-label" class="text-xs text-gray-400 font-medium"></span>
+      <span id="week-range-label" class="text-xs text-slate-600 font-semibold"></span>
     </div>
     <div id="this-week-summary" class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="bg-indigo-50 rounded-xl p-4 text-center">
@@ -575,10 +575,10 @@
   <div class="glass-card rounded-none p-5">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-base font-nunito font-bold text-slate-800">Today's Classes</h3>
-      <span id="today-classes-date" class="text-xs text-gray-400 font-medium"></span>
+      <span id="today-classes-date" class="text-xs text-slate-600 font-semibold"></span>
     </div>
     <div id="todays-classes-list" class="space-y-2 max-h-64 overflow-y-auto">
-      <p class="text-gray-400 text-sm text-center py-4">No classes scheduled today.</p>
+      <p class="text-slate-500 font-medium text-sm text-center py-4">No classes scheduled today.</p>
     </div>
   </div>
  </div>
@@ -591,7 +591,7 @@
       <button id="create-notice-btn" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 px-3 py-1.5 border border-indigo-200 rounded-lg transition-colors">+ Create</button>
     </div>
     <div id="notice-board-list" class="space-y-2 max-h-48 overflow-y-auto">
-      <p class="text-gray-400 text-sm">No notices yet.</p>
+      <p class="text-slate-500 font-medium text-sm">No notices yet.</p>
     </div>
     <!-- Create notice form (hidden by default) -->
     <div id="create-notice-form" class="hidden mt-4 pt-4 border-t border-gray-100 space-y-3">
@@ -614,7 +614,7 @@
  <a href="#" data-section="students" class="nav-link text-admin-accent text-sm hover:underline">View All</a>
  </div>
  <div id="recent-students-list" class="space-y-4">
- <p class="text-slate-400 text-center py-8">No students yet. Add your first student!</p>
+ <p class="text-slate-500 font-medium text-center py-8">No students yet. Add your first student!</p>
  </div>
  </div>
 
@@ -625,7 +625,7 @@
  <a href="#" data-section="schedules" class="nav-link text-admin-accent text-sm hover:underline">Full Calendar</a>
  </div>
  <div id="today-schedule-list" class="space-y-3">
- <p class="text-slate-400 text-center py-8">No classes scheduled for today.</p>
+ <p class="text-slate-500 font-medium text-center py-8">No classes scheduled for today.</p>
  </div>
  </div>
  </div>
@@ -638,7 +638,7 @@
  </div>
  <div>
  <h3 class="text-lg font-semibold text-slate-800">Manual Onboarding</h3>
- <p class="text-slate-400 text-sm">Add users directly to the portal</p>
+ <p class="text-slate-600 text-sm">Add users directly to the portal</p>
  </div>
  </div>
  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -649,7 +649,7 @@
  </div>
  <div>
  <p class="font-semibold text-slate-800 text-sm">Add Student</p>
- <p class="text-slate-400 text-xs">Enroll a new student</p>
+ <p class="text-slate-500 font-medium text-xs">Enroll a new student</p>
  </div>
  </button>
  <button id="add-tutor-btn"
@@ -659,7 +659,7 @@
  </div>
  <div>
  <p class="font-semibold text-slate-800 text-sm">Add Tutor</p>
- <p class="text-slate-400 text-xs">Onboard a new tutor</p>
+ <p class="text-slate-500 font-medium text-xs">Onboard a new tutor</p>
  </div>
  </button>
  <button id="add-parent-btn"
@@ -669,7 +669,7 @@
  </div>
  <div>
  <p class="font-semibold text-slate-800 text-sm">Add Parent</p>
- <p class="text-slate-400 text-xs">Register a parent account</p>
+ <p class="text-slate-500 font-medium text-xs">Register a parent account</p>
  </div>
  </button>
  </div>
@@ -763,7 +763,7 @@
  <!-- Calendar Placeholder -->
  <div class="glass-card rounded-none p-6">
  <div id="schedule-calendar" class="min-h-[500px]">
- <p class="text-slate-400 text-center py-20">Loading calendar...</p>
+ <p class="text-slate-500 font-medium text-center py-20">Loading calendar...</p>
  </div>
  </div>
  </section>
@@ -781,19 +781,19 @@
  <table class="w-full text-left border-collapse data-table">
  <thead>
  <tr>
- <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Date/Time</th>
- <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Tutor</th>
- <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Student</th>
- <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Topic & Course</th>
- <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Duration</th>
- <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Type</th>
- <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Status</th>
- <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400 text-right">Actions</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-600 font-bold">Date/Time</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-600 font-bold">Tutor</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-600 font-bold">Student</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-600 font-bold">Topic & Course</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-600 font-bold">Duration</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-600 font-bold">Type</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-600 font-bold">Status</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-600 font-bold text-right">Actions</th>
  </tr>
  </thead>
  <tbody id="admin-attendance-list">
  <tr>
- <td colspan="8" class="p-8 text-center text-slate-400">Loading logs...</td>
+ <td colspan="8" class="p-8 text-center text-slate-500 font-medium">Loading logs...</td>
  </tr>
  </tbody>
  </table>
@@ -830,7 +830,7 @@
  <!-- Projects Grid -->
  <div id="admin-projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
  <div class="col-span-full glass-card rounded-none p-12 text-center">
- <i data-lucide="folder-kanban" class="w-12 h-12 mx-auto mb-4 text-slate-400"></i>
+ <i data-lucide="folder-kanban" class="w-12 h-12 mx-auto mb-4 text-slate-500"></i>
  <p class="text-slate-500">Loading projects...</p>
  </div>
  </div>
@@ -890,13 +890,13 @@
  </div>
  
  <div class="mb-4">
-  <label class="block text-sm font-medium text-gray-500 mb-2">Certificate File <span class="text-gray-400 font-normal">(PDF, PNG, JPG — optional)</span></label>
+  <label class="block text-sm font-medium text-gray-500 mb-2">Certificate File <span class="text-slate-500 font-normal">(PDF, PNG, JPG — optional)</span></label>
   <div class="flex items-center gap-3">
     <label for="cert-file-input" class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-gray-50 border border-admin-border rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
       Choose File
     </label>
-    <span id="cert-file-name" class="text-sm text-gray-400">No file chosen</span>
+    <span id="cert-file-name" class="text-sm text-slate-500 font-medium">No file chosen</span>
     <input type="file" id="cert-file-input" accept=".pdf,.png,.jpg,.jpeg" class="hidden">
   </div>
   <div id="cert-file-preview" class="mt-3 hidden">
@@ -1127,12 +1127,12 @@
     <span id="queue-count-badge" class="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full hidden">0 pending</span>
   </div>
   <div id="email-queue-list" class="space-y-3">
-    <p class="text-gray-400 text-sm text-center py-8">No emails pending review.</p>
+    <p class="text-slate-600 text-sm font-medium text-center py-8">No emails pending review.</p>
   </div>
   <div class="mt-8">
     <h3 class="text-base font-semibold text-gray-700 mb-3">Sent History</h3>
     <div id="email-history-list" class="space-y-2">
-      <p class="text-gray-400 text-sm">No emails sent yet.</p>
+      <p class="text-slate-500 font-medium text-sm">No emails sent yet.</p>
     </div>
   </div>
  </section>
@@ -1144,7 +1144,7 @@
     <p class="text-sm text-gray-500 mt-1">Users who have requested a password reset. Generate a new password and send it to them.</p>
   </div>
   <div id="password-resets-list" class="space-y-3">
-    <p class="text-gray-400 text-sm text-center py-8">No pending password reset requests.</p>
+    <p class="text-slate-600 text-sm font-medium text-center py-8">No pending password reset requests.</p>
   </div>
  </section>
 
@@ -1165,14 +1165,14 @@
         <label class="block text-sm font-semibold text-gray-600 mb-1.5">Current Password</label>
         <div class="relative">
           <input type="password" id="current-password" placeholder="Enter current password" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors pr-10">
-          <button type="button" onclick="var i=document.getElementById('current-password');i.type=i.type==='password'?'text':'password'" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+          <button type="button" onclick="var i=document.getElementById('current-password');i.type=i.type==='password'?'text':'password'" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 font-semibold"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
         </div>
       </div>
       <div>
         <label class="block text-sm font-semibold text-gray-600 mb-1.5">New Password</label>
         <div class="relative">
           <input type="password" id="new-password" placeholder="Enter new password (min 8 chars)" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors pr-10">
-          <button type="button" onclick="var i=document.getElementById('new-password');i.type=i.type==='password'?'text':'password'" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+          <button type="button" onclick="var i=document.getElementById('new-password');i.type=i.type==='password'?'text':'password'" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 font-semibold"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
         </div>
       </div>
       <div>
@@ -1195,7 +1195,7 @@
       <div>
         <label class="block text-sm font-semibold text-gray-600 mb-1.5">Email</label>
         <input type="email" id="profile-email" disabled class="w-full bg-gray-100 border border-gray-200 rounded-lg py-2.5 px-4 text-gray-500 cursor-not-allowed">
-        <p class="text-xs text-gray-400 mt-1">Email cannot be changed. Contact support if needed.</p>
+        <p class="text-xs text-slate-500 mt-1">Email cannot be changed. Contact support if needed.</p>
       </div>
       <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-2.5 rounded-lg transition-colors">Save Profile</button>
     </form>
@@ -1225,9 +1225,9 @@
   <div class="glass-card rounded-none p-6">
     <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Account Information</h3>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-lg">
-      <div><p class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Role</p><p id="acct-role" class="font-semibold text-gray-800 mt-0.5">Admin</p></div>
-      <div><p class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Member Since</p><p id="acct-since" class="font-semibold text-gray-800 mt-0.5">—</p></div>
-      <div><p class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Last Login</p><p id="acct-last-login" class="font-semibold text-gray-800 mt-0.5">Now</p></div>
+      <div><p class="text-xs text-slate-600 font-bold uppercase tracking-wide">Role</p><p id="acct-role" class="font-semibold text-gray-800 mt-0.5">Admin</p></div>
+      <div><p class="text-xs text-slate-600 font-bold uppercase tracking-wide">Member Since</p><p id="acct-since" class="font-semibold text-gray-800 mt-0.5">—</p></div>
+      <div><p class="text-xs text-slate-600 font-bold uppercase tracking-wide">Last Login</p><p id="acct-last-login" class="font-semibold text-gray-800 mt-0.5">Now</p></div>
     </div>
   </div>
  </section>
@@ -1304,7 +1304,7 @@
   </div>
 
   <div id="monthly-reports-list" class="space-y-4">
-    <div class="glass-card rounded-none p-12 text-center text-gray-400">
+    <div class="glass-card rounded-none p-12 text-center text-slate-500 font-medium">
       <svg class="w-12 h-12 mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
       <p class="font-medium">No monthly reports submitted yet.</p>
       <p class="text-sm mt-1">Reports submitted by tutors will appear here.</p>
@@ -1345,7 +1345,7 @@
        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
          Connected
        </span>
-       <span class="text-xs text-slate-400">Meta Cloud API</span>
+       <span class="text-xs text-slate-500 font-medium">Meta Cloud API</span>
      </div>
    </div>
 
@@ -1375,7 +1375,7 @@
        </thead>
        <tbody id="whatsapp-active-takeovers" class="divide-y divide-admin-border">
          <tr>
-           <td colspan="3" class="py-4 text-center text-slate-400 text-xs">No active conversation takeovers. Bot is responding globally.</td>
+           <td colspan="3" class="py-4 text-center text-slate-500 font-medium text-xs">No active conversation takeovers. Bot is responding globally.</td>
          </tr>
        </tbody>
      </table>
@@ -1481,12 +1481,12 @@
    <div class="flex items-center justify-between mb-3">
      <div>
        <h3 class="text-base font-nunito font-bold text-gray-700">Website Enrollment Submissions</h3>
-       <p class="text-xs text-gray-400 mt-0.5">Students who filled in the online enroll form. Approve to create student record and parent account.</p>
+       <p class="text-xs text-slate-500 mt-0.5">Students who filled in the online enroll form. Approve to create student record and parent account.</p>
      </div>
      <button onclick="if(typeof loadNetlifyEnrollments==='function')loadNetlifyEnrollments()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 px-3 py-1.5 border border-indigo-200 rounded-lg transition-colors">Refresh</button>
    </div>
    <div id="netlify-enrollments-list" class="space-y-3">
-     <p class="text-gray-400 text-sm text-center py-4">Click Refresh to load pending online enrollments.</p>
+     <p class="text-slate-500 font-medium text-sm text-center py-4">Click Refresh to load pending online enrollments.</p>
    </div>
  </div>
 
@@ -1523,7 +1523,7 @@
  <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="tutor-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Tutor</h3>
- <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('tutor-modal')">
+ <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('tutor-modal')">
  <i data-lucide="x" class="w-6 h-6"></i>
  </button>
  </div>
@@ -1565,14 +1565,14 @@
  <input type="password" id="tutor-password" minlength="8"
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="Min. 8 characters">
- <p class="text-xs text-slate-400 mt-1">Share this with the tutor so they can log in.</p>
+ <p class="text-xs text-slate-500 mt-1">Share this with the tutor so they can log in.</p>
  </div>
 
  <div class="flex items-center gap-3 pt-2">
  <button type="submit" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 rounded-lg transition-colors">
  Save Tutor
  </button>
- <button type="button" class="px-6 py-3 text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('tutor-modal')">
+ <button type="button" class="px-6 py-3 text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('tutor-modal')">
  Cancel
  </button>
  </div>
@@ -1588,7 +1588,7 @@
  <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-xl font-nunito font-bold text-slate-800">Add Parent Account</h3>
- <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('parent-modal')">
+ <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('parent-modal')">
  <i data-lucide="x" class="w-6 h-6"></i>
  </button>
  </div>
@@ -1620,14 +1620,14 @@
  <input type="password" id="new-parent-password" required minlength="6"
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="Min. 6 characters">
- <p class="text-xs text-slate-400 mt-1">Share this with the parent so they can access their portal.</p>
+ <p class="text-xs text-slate-500 mt-1">Share this with the parent so they can access their portal.</p>
  </div>
 
  <div class="flex items-center gap-3 pt-2">
  <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors">
  Create Parent Account
  </button>
- <button type="button" class="px-6 py-3 text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('parent-modal')">
+ <button type="button" class="px-6 py-3 text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('parent-modal')">
  Cancel
  </button>
  </div>
@@ -1643,7 +1643,7 @@
  <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="student-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Student</h3>
- <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('student-modal')">
+ <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('student-modal')">
  <i data-lucide="x" class="w-6 h-6"></i>
  </button>
  </div>
@@ -1756,7 +1756,7 @@
  <button type="submit" class="flex-1 bg-admin-accent hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-colors">
  Save Student
  </button>
- <button type="button" class="px-6 py-3 text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('student-modal')">
+ <button type="button" class="px-6 py-3 text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('student-modal')">
  Cancel
  </button>
  </div>
@@ -1772,7 +1772,7 @@
  <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="schedule-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Session</h3>
- <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('schedule-modal')">
+ <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('schedule-modal')">
  <i data-lucide="x" class="w-6 h-6"></i>
  </button>
  </div>
@@ -1844,7 +1844,7 @@
  <button type="submit" class="flex-1 bg-admin-accent hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-colors">
  Save Session
  </button>
- <button type="button" class="px-6 py-3 text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('schedule-modal')">
+ <button type="button" class="px-6 py-3 text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('schedule-modal')">
  Cancel
  </button>
  </div>
@@ -1860,7 +1860,7 @@
  <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="project-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Project</h3>
- <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('project-modal')">
+ <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('project-modal')">
  <i data-lucide="x" class="w-6 h-6"></i>
  </button>
  </div>
@@ -1935,7 +1935,7 @@
  <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors">
  Save Video Highlight
  </button>
- <button type="button" class="px-6 py-3 text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('project-modal')">
+ <button type="button" class="px-6 py-3 text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('project-modal')">
  Cancel
  </button>
  </div>
@@ -1951,7 +1951,7 @@
  <div class="glass-card rounded-3xl p-8 m-4 animate-fadeIn border border-slate-100 shadow-2xl bg-white">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-xl font-nunito font-bold text-slate-800">Send Portal Notification</h3>
- <button type="button" class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('notification-modal')">
+ <button type="button" class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('notification-modal')">
  <i data-lucide="x" class="w-6 h-6"></i>
  </button>
  </div>
@@ -1976,7 +1976,7 @@
  <i data-lucide="qr-code" class="w-5 h-5 text-emerald-500"></i>
  Certificate QR Code
  </h3>
- <button type="button" onclick="document.getElementById('qrcode-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+ <button type="button" onclick="document.getElementById('qrcode-modal').classList.add('hidden')" class="text-slate-500 hover:text-slate-800 font-semibold">
  <i data-lucide="x" class="w-5 h-5"></i>
  </button>
  </div>
@@ -1986,7 +1986,7 @@
  </div>
 
  <div class="space-y-2">
- <p class="text-xs text-gray-400 uppercase tracking-wider">Credential ID</p>
+ <p class="text-xs text-slate-600 font-bold uppercase tracking-wider">Credential ID</p>
  <p class="font-mono text-sm font-semibold text-gray-800" id="qrcode-credential-id">-</p>
  <p class="text-xs text-gray-500" id="qrcode-student-name">-</p>
  </div>
@@ -2012,7 +2012,7 @@
            <h3 class="text-xl font-nunito font-extrabold text-slate-800" id="rev-modal-title">Review Monthly Report</h3>
            <p class="text-xs text-slate-500" id="rev-modal-subtitle">Tutor: Sarah Jane &middot; Period: June 2026</p>
          </div>
-         <button type="button" onclick="AdminEngine.closeModal('admin-report-review-modal')" class="text-gray-400 hover:text-gray-600 p-2">
+         <button type="button" onclick="AdminEngine.closeModal('admin-report-review-modal')" class="text-slate-500 hover:text-slate-800 font-semibold p-2">
            <i data-lucide="x" class="w-5 h-5"></i>
          </button>
        </div>
@@ -2023,19 +2023,19 @@
          <!-- Student & Session Snapshot -->
          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-100 text-xs">
            <div>
-             <span class="text-gray-400 font-bold uppercase text-[10px] block">Student</span>
+             <span class="text-slate-600 font-bold uppercase text-[10px] block">Student</span>
              <span class="font-bold text-slate-800 truncate block" id="rev-student-name">—</span>
            </div>
            <div>
-             <span class="text-gray-400 font-bold uppercase text-[10px] block">Course</span>
+             <span class="text-slate-600 font-bold uppercase text-[10px] block">Course</span>
              <span class="font-bold text-slate-800 truncate block" id="rev-course-name">—</span>
            </div>
            <div>
-             <span class="text-gray-400 font-bold uppercase text-[10px] block">Sessions</span>
+             <span class="text-slate-600 font-bold uppercase text-[10px] block">Sessions</span>
              <span class="font-bold text-slate-800" id="rev-attendance-count">—</span>
            </div>
            <div>
-             <span class="text-gray-400 font-bold uppercase text-[10px] block">Hours</span>
+             <span class="text-slate-600 font-bold uppercase text-[10px] block">Hours</span>
              <span class="font-bold text-slate-800" id="rev-total-hours">—</span>
            </div>
          </div>
@@ -2139,7 +2139,7 @@
              <p class="text-xs text-slate-500">Automate password, roster linking, and welcome dispatches</p>
            </div>
          </div>
-         <button type="button" onclick="AdminEngine.closeModal('admin-quick-onboard-modal')" class="text-gray-400 hover:text-gray-600 p-2">
+         <button type="button" onclick="AdminEngine.closeModal('admin-quick-onboard-modal')" class="text-slate-500 hover:text-slate-800 font-semibold p-2">
            <i data-lucide="x" class="w-5 h-5"></i>
          </button>
        </div>
@@ -2281,7 +2281,7 @@
          if (takeoverBody) {
            takeoverBody.innerHTML = '';
            if (pausedChats.length === 0) {
-             takeoverBody.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-slate-400 text-xs">No active conversation takeovers. Bot is responding globally.</td></tr>`;
+             takeoverBody.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-slate-500 font-medium text-xs">No active conversation takeovers. Bot is responding globally.</td></tr>`;
              return;
            }
            

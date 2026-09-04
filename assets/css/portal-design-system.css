@@ -20,13 +20,15 @@
     --bg-page: #ECECEC;
     --surface-white: #FFFFFF;
     --text-main: #1A2332;
-    --text-muted: #64748B;
-    --text-light: #94A3B8;
+    --text-muted: #475569;
+    --text-light: #64748B;
+    --text-meta: #475569;
+    --text-label: #334155;
     --border-soft: #E2E8F0;
 
-    --status-green: #48BB78;
-    --status-amber: #ECC94B;
-    --status-red: #F56565;
+    --status-green: #15803D;
+    --status-amber: #B45309;
+    --status-red: #B91C1C;
 
     --shadow-shell: 0 25px 60px -15px rgba(0, 0, 0, 0.12),
                     0 10px 20px -5px rgba(0, 0, 0, 0.06);
@@ -38,6 +40,15 @@
     --radius-card: 20px;
     --radius-pill: 40px;
     --radius-btn: 16px;
+}
+
+/* Responsive Table Wrapper Utility */
+.table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+    border-radius: 12px;
 }
 
 /* ==========================================================================

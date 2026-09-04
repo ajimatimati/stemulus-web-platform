@@ -28,25 +28,29 @@
 }
 
 .dark .glass-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: #1E293B;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #F8FAFC;
 }
 
-/* Status Badges */
+/* Status Badges with WCAG AA/AAA Contrast */
 .badge-approved {
-    background-color: rgba(16, 185, 129, 0.1) !important;
-    color: rgb(16, 185, 129) !important;
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    background-color: rgba(5, 150, 105, 0.12) !important;
+    color: rgb(4, 120, 87) !important;
+    border: 1px solid rgba(5, 150, 105, 0.25);
+    font-weight: 700;
 }
 .badge-pending {
-    background-color: rgba(245, 158, 11, 0.1) !important;
-    color: rgb(245, 158, 11) !important;
-    border: 1px solid rgba(245, 158, 11, 0.2);
+    background-color: rgba(217, 119, 6, 0.12) !important;
+    color: rgb(180, 83, 9) !important;
+    border: 1px solid rgba(217, 119, 6, 0.25);
+    font-weight: 700;
 }
 .badge-rejected {
-    background-color: rgba(239, 68, 68, 0.1) !important;
-    color: rgb(239, 68, 68) !important;
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background-color: rgba(220, 38, 38, 0.12) !important;
+    color: rgb(185, 28, 28) !important;
+    border: 1px solid rgba(220, 38, 38, 0.25);
+    font-weight: 700;
 }
 
 /* Floating Animations */

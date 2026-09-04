@@ -58,7 +58,7 @@
               <h1 class="text-2xl font-bold tracking-tight text-white m-0" style="font-family:'Outfit', sans-serif;">STEMulus WebMCP</h1>
               <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">v1.0.0 Online</span>
             </div>
-            <p class="text-xs text-slate-400 m-0 mt-0.5">Model Context Protocol for External AI Agents & Developers</p>
+            <p class="text-xs text-slate-200 m-0 mt-0.5">Model Context Protocol for External AI Agents & Developers</p>
           </div>
         </a>
       </div>
@@ -80,19 +80,19 @@
         <div class="md:col-span-2">
           <span class="text-orange-400 text-xs font-bold uppercase tracking-widest block mb-1">Standardized Agent Connectivity</span>
           <h2 class="text-xl md:text-2xl font-bold text-white mb-2" style="font-family:'Outfit', sans-serif;">Empower Any AI Agent to Book Classes & Enroll Students</h2>
-          <p class="text-slate-300 text-xs leading-relaxed mb-4">
+          <p class="text-slate-200 text-xs leading-relaxed mb-4">
             Connect Claude Desktop, Cursor, OpenAI Agents, or custom autonomous assistants directly to the STEMulus platform using standards-compliant JSON-RPC 2.0. Agents can autonomously answer curriculum questions, check 1-on-1 schedule availability, book free trials, and enroll new students.
           </p>
           <div class="flex flex-wrap gap-2 text-xs font-mono">
-            <span class="bg-slate-800/90 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700">Endpoint: /api/mcp</span>
-            <span class="bg-slate-800/90 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700">Transport: JSON-RPC 2.0 / HTTP POST</span>
-            <span class="bg-slate-800/90 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700">Auth: Public Agent Sandbox</span>
+            <span class="bg-slate-800/90 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700">Endpoint: /api/mcp</span>
+            <span class="bg-slate-800/90 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700">Transport: JSON-RPC 2.0 / HTTP POST</span>
+            <span class="bg-slate-800/90 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700">Auth: Public Agent Sandbox</span>
           </div>
         </div>
 
         <div class="glass-panel p-4 bg-slate-900/60 border-slate-800">
-          <span class="text-slate-400 text-[11px] font-bold uppercase tracking-wider block mb-2">Automated Dual Reminders</span>
-          <div class="space-y-2 text-xs text-slate-300">
+          <span class="text-slate-200 text-[11px] font-bold uppercase tracking-wider block mb-2">Automated Dual Reminders</span>
+          <div class="space-y-2 text-xs text-slate-200">
             <div class="flex items-center gap-2">
               <span data-icon-3d="clock" data-icon-size="16"></span>
               <span><strong>6 Hours Before:</strong> Syllabus prep brief</span>
@@ -119,7 +119,7 @@
               <span data-icon-3d="target" data-icon-size="20"></span>
               Select MCP Tool to Execute
             </h3>
-            <span class="text-xs text-slate-400 font-mono">POST /api/mcp</span>
+            <span class="text-xs text-slate-200 font-mono">POST /api/mcp</span>
           </div>
 
           <!-- Tool Selector Buttons -->
@@ -163,7 +163,7 @@
           </div>
 
           <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
-            <span class="text-xs text-slate-400" id="tool-desc"></span>
+            <span class="text-xs text-slate-200" id="tool-desc"></span>
             <button id="btn-execute" onclick="executeCurrentTool()" class="bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-orange-600/30">
               <span data-icon-3d="lightning" data-icon-size="16"></span>
               Execute Tool Call
@@ -180,7 +180,7 @@
 
           <div class="space-y-3">
             <div>
-              <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <div class="flex items-center justify-between text-xs text-slate-200 mb-1">
                 <span>Claude Desktop Config (claude_desktop_config.json)</span>
                 <button onclick="copySnippet('claude-snippet')" class="text-orange-400 hover:underline">Copy</button>
               </div>
@@ -195,7 +195,7 @@
             </div>
 
             <div>
-              <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <div class="flex items-center justify-between text-xs text-slate-200 mb-1">
                 <span>Cursor / Remote Agent Config (.cursor/mcp.json)</span>
                 <button onclick="copySnippet('cursor-snippet')" class="text-orange-400 hover:underline">Copy</button>
               </div>
@@ -219,7 +219,7 @@
               <span data-icon-3d="laptop" data-icon-size="18"></span>
               JSON-RPC 2.0 Request
             </h3>
-            <span class="text-[11px] text-slate-400 font-mono" id="req-method">tools/call</span>
+            <span class="text-[11px] text-slate-200 font-mono" id="req-method">tools/call</span>
           </div>
           <pre id="req-display" class="bg-slate-950 p-3 rounded-xl text-[11px] font-mono text-emerald-400 overflow-x-auto border border-slate-800 max-h-48"></pre>
         </div>
@@ -230,7 +230,7 @@
               <span data-icon-3d="check" data-icon-size="18"></span>
               Server Response Payload
             </h3>
-            <span class="text-[11px] text-slate-400 font-mono" id="resp-status">Status: Ready</span>
+            <span class="text-[11px] text-slate-200 font-mono" id="resp-status">Status: Ready</span>
           </div>
           <pre id="resp-display" class="bg-slate-950 p-4 rounded-xl text-[11px] font-mono text-cyan-300 overflow-x-auto border border-slate-800 min-h-[260px] max-h-[460px] whitespace-pre-wrap">// Select a tool and click 'Execute Tool Call' to see live JSON-RPC 2.0 response here.</pre>
         </div>
@@ -305,7 +305,7 @@
       const container = document.getElementById('tool-form');
       container.innerHTML = tool.fields.map(f => `
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">${f.label}</label>
+          <label class="block text-xs font-semibold text-slate-200 mb-1">${f.label}</label>
           <input type="${f.type}" id="arg-${f.id}" value="${f.value}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono" oninput="updateRequestPreview()">
         </div>
       `).join('');
