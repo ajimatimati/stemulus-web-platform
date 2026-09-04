@@ -627,52 +627,6 @@
 
   <script>
     /* ══════════════════════════════════════════════
-       CONTENT PROTECTION
-    ══════════════════════════════════════════════ */
-    (function () {
-      // Block right-click
-      document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-
-      // Block common DevTools keyboard shortcuts
-      document.addEventListener('keydown', function (e) {
-        const key = e.key || '';
-        if (
-          e.keyCode === 123 ||                          // F12
-          (e.ctrlKey && e.shiftKey && key === 'I') ||  // Ctrl+Shift+I
-          (e.ctrlKey && e.shiftKey && key === 'J') ||  // Ctrl+Shift+J
-          (e.ctrlKey && e.shiftKey && key === 'C') ||  // Ctrl+Shift+C
-          (e.ctrlKey && key === 'U')                    // Ctrl+U
-        ) {
-          e.preventDefault();
-          return false;
-        }
-      });
-
-      // Basic DevTools open detection (size-based)
-      var _devToolsOpen = false;
-      var _threshold = 160;
-      function _checkDevTools() {
-        if (
-          window.outerWidth - window.innerWidth > _threshold ||
-          window.outerHeight - window.innerHeight > _threshold
-        ) {
-          if (!_devToolsOpen) {
-            _devToolsOpen = true;
-            document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Inter,sans-serif;color:#fff;background:#0f0f1a;font-size:15px;">Access denied.</div>';
-          }
-        } else {
-          _devToolsOpen = false;
-        }
-      }
-      setInterval(_checkDevTools, 800);
-
-      // Disable text selection on sensitive elements
-      document.addEventListener('selectstart', function (e) {
-        if (e.target.tagName !== 'INPUT') e.preventDefault();
-      });
-    })();
-
-    /* ══════════════════════════════════════════════
        EYE TOGGLE
     ══════════════════════════════════════════════ */
     (function () {

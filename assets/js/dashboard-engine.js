@@ -1687,17 +1687,53 @@ const DashboardEngine = (function() {
         return reports;
     }
 
-    // Creates default admin/tutor/parent seed accounts on first run (only when users:{} is empty)
+    // Ensures default admin/tutor/parent accounts exist with valid credentials
     async function initDefaultAccounts() {
         var db = getDB();
-        if (db.users && Object.keys(db.users).length === 0) {
-            var tutorHash  = await hashPassword('Tutor2026!');
+        if (!db.users) db.users = {};
+        var adminKey = 'admin@stemuluskidstech.com';
+        var changed = false;
+
+        // Ensure admin account exists and has role 'admin'
+        if (!db.users[adminKey] || db.users[adminKey].role !== 'admin') {
+            var adminHash = await hashPassword('Admin2026!');
+            db.users[adminKey] = {
+                email: adminKey,
+                name: 'STEMulus Admin',
+                role: 'admin',
+                password: adminHash,
+                createdAt: new Date().toISOString()
+            };
+            changed = true;
+        }
+
+        if (!db.users['tutor@stemuluskidstech.com']) {
+            var tutorHash = await hashPassword('Tutor2026!');
+            db.users['tutor@stemuluskidstech.com'] = {
+                email: 'tutor@stemuluskidstech.com',
+                name: 'Demo Tutor',
+                role: 'tutor',
+                password: tutorHash,
+                createdAt: new Date().toISOString()
+            };
+            changed = true;
+        }
+
+        if (!db.users['parent@stemuluskidstech.com']) {
             var parentHash = await hashPassword('Parent2026!');
-            db.users['admin@stemuluskidstech.com'] = { email:'admin@stemuluskidstech.com', name:'STEMulus Admin', role:'admin', password:'eb0567a3ba892aba637c82bb25518215b94917f52d2cd68d5807bbc7bd8d0a2a', createdAt:new Date().toISOString() };
-            db.users['tutor@stemuluskidstech.com']  = { email: 'tutor@stemuluskidstech.com',  name: 'Demo Tutor',    role: 'tutor',  password: tutorHash,  createdAt: new Date().toISOString() };
-            db.users['parent@stemuluskidstech.com'] = { email: 'parent@stemuluskidstech.com', name: 'Demo Parent',   role: 'parent', password: parentHash, createdAt: new Date().toISOString() };
+            db.users['parent@stemuluskidstech.com'] = {
+                email: 'parent@stemuluskidstech.com',
+                name: 'Demo Parent',
+                role: 'parent',
+                password: parentHash,
+                createdAt: new Date().toISOString()
+            };
+            changed = true;
+        }
+
+        if (changed) {
             saveDB(db);
-            console.log('[STEMulus] Default seed accounts created.');
+            console.log('[STEMulus] Default accounts verified and initialized.');
             return true;
         }
         return false;
