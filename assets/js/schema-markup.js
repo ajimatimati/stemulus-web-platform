@@ -32,7 +32,7 @@ const SchemaMarkup = (function() {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "name": "STEMulus Nigeria",
-        "image": "https://stemuluskidstech.com/assets/images/hero_coding_girl_futuristic.png",
+        "image": "https://stemuluskidstech.com/assets/images/hero_coding_girl_futuristic.webp",
         "@id": "https://stemuluskidstech.com",
         "url": "https://stemuluskidstech.com",
         "telephone": "+2347052466716",

@@ -1,21 +1,77 @@
 User-agent: *
 Allow: /
 
-# Disallow private/internal pages
+# Portal — authenticated pages (not for public indexing)
 Disallow: /admin-dashboard.html
-Disallow: /tutor-dashboard.html
+Disallow: /admin-login.html
 Disallow: /parent-dashboard.html
+Disallow: /parent-progress.html
+Disallow: /parent-login.html
+Disallow: /tutor-dashboard.html
+Disallow: /tutor-login.html
+Disallow: /tutor-evaluation.html
+Disallow: /tutor-monthly-report.html
+Disallow: /tutor-attendance.html
+Disallow: /tutor-attendance-create.html
+Disallow: /issue-certificate.html
 Disallow: /referral-dashboard.html
+Disallow: /tutor-assessment-preview.html
+Disallow: /student-roadmap-frontend.html
+Disallow: /student-roadmap-fullstack.html
 
-# Disallow archived/dev content
+# Dev / archive / verification
 Disallow: /_archive/
 Disallow: /scratch/
 Disallow: /tools/
+Disallow: /dist/
 Disallow: /nitter_net.html
 Disallow: /verifyforzoho.html
+Disallow: /zoho-domain-verification.html
+Disallow: /zohoverify.html
+Disallow: /blog-template.html
+
+# AI Search & Generative Engine Crawlers (ChatGPT, Perplexity, Gemini, Claude, Copilot)
+User-agent: GPTBot
+Allow: /
+Disallow: /admin-*
+Disallow: /parent-*
+Disallow: /tutor-*
+Disallow: /issue-certificate.html
+Disallow: /referral-dashboard.html
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin-*
+Disallow: /parent-*
+Disallow: /tutor-*
+Disallow: /issue-certificate.html
+Disallow: /referral-dashboard.html
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin-*
+Disallow: /parent-*
+Disallow: /tutor-*
+Disallow: /issue-certificate.html
+Disallow: /referral-dashboard.html
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin-*
+Disallow: /parent-*
+Disallow: /tutor-*
+Disallow: /issue-certificate.html
+Disallow: /referral-dashboard.html
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin-*
+Disallow: /parent-*
+Disallow: /tutor-*
+Disallow: /issue-certificate.html
+Disallow: /referral-dashboard.html
 
 # Sitemap
 Sitemap: https://stemuluskidstech.com/sitemap.xml
 
-# Crawl-delay (polite crawling)
 Crawl-delay: 1

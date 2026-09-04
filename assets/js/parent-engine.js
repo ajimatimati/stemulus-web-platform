@@ -12,14 +12,81 @@ const ParentEngine = (function() {
     }
 
     function checkAuth() {
-        currentParent = DashboardEngine.getSession();
-        
-        // For local development, if no session, show a beautiful login panel
-        if (!currentParent || currentParent.role !== 'parent') {
-            showLoginOverlay();
+        const hasFirebase = (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore);
+
+        if (hasFirebase) {
+            // Use Firebase Auth's real-time state listener
+            firebase.auth().onAuthStateChanged(async (user) => {
+                if (user) {
+                    const session = DashboardEngine.getSession();
+                    if (session && (session.role === 'parent' || session.role === 'admin') && session.email.toLowerCase() === user.email.toLowerCase()) {
+                        currentParent = session;
+                        hideLoginOverlay();
+                        renderDashboard();
+                    } else {
+                        // Fetch role from Firestore
+                        try {
+                            const userDoc = await firebase.firestore().collection('users').doc(user.email.toLowerCase()).get();
+                            if (userDoc.exists) {
+                                const userData = userDoc.data();
+                                if (userData.role === 'parent' || userData.role === 'admin') {
+                                    sessionStorage.setItem("stemulus_session", JSON.stringify(userData));
+                                    currentParent = userData;
+                                    hideLoginOverlay();
+                                    renderDashboard();
+                                } else {
+                                    console.warn("[Parent Engine] User is logged in but role is:", userData.role);
+                                    showLoginOverlay();
+                                }
+                            } else {
+                                // User exists in Firebase Auth but no Firestore record — create one and prompt password reset
+                                await firebase.firestore().collection('users').doc(user.email.toLowerCase()).set({
+                                    email: user.email,
+                                    role: 'parent',
+                                    name: user.displayName || 'Parent'
+                                });
+                                const seedData = await DashboardEngine.login(user.email, null);
+                                if (seedData && seedData.success && (seedData.user.role === 'parent' || seedData.user.role === 'admin')) {
+                                    currentParent = seedData.user;
+                                    hideLoginOverlay();
+                                    renderDashboard();
+                                } else {
+                                    showLoginOverlay();
+                                }
+                            }
+                        } catch (e) {
+                            console.error("[Parent Engine] Firestore check failed:", e);
+                            // Fallback to local session if network failed
+                            if (session && (session.role === 'parent' || session.role === 'admin')) {
+                                currentParent = session;
+                                hideLoginOverlay();
+                                renderDashboard();
+                            } else {
+                                showLoginOverlay();
+                            }
+                        }
+                    }
+                } else {
+                    // No Firebase Auth user - check if local mock session exists
+                    const localSession = DashboardEngine.getSession();
+                    if (localSession && (localSession.role === 'parent' || localSession.role === 'admin')) {
+                        currentParent = localSession;
+                        hideLoginOverlay();
+                        renderDashboard();
+                    } else {
+                        showLoginOverlay();
+                    }
+                }
+            });
         } else {
-            hideLoginOverlay();
-            renderDashboard();
+            // Local fallback
+            currentParent = DashboardEngine.getSession();
+            if (!currentParent || (currentParent.role !== 'parent' && currentParent.role !== 'admin')) {
+                showLoginOverlay();
+            } else {
+                hideLoginOverlay();
+                renderDashboard();
+            }
         }
     }
 
@@ -33,6 +100,8 @@ const ParentEngine = (function() {
     }
 
     function renderDashboard() {
+        if (!currentParent) return;
+        document.documentElement.style.visibility = 'visible';
         // Remove loading screen
         const loader = document.getElementById('loading-screen');
         if (loader) {
@@ -44,13 +113,20 @@ const ParentEngine = (function() {
         const nameEl = document.getElementById('user-name');
         if (nameEl) nameEl.textContent = currentParent.name || "Parent";
 
+        var sidebarName = document.getElementById('sidebar-user-name');
+        if (sidebarName && currentParent && currentParent.name) sidebarName.textContent = currentParent.name;
+
+        var heroName = document.getElementById('hero-user-name');
+        if (heroName && currentParent && currentParent.name) heroName.textContent = currentParent.name.split(' ')[0];
+
         // Wire logout
         const logoutBtn = document.getElementById('logout-btn');
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', function() {
+            logoutBtn.onclick = function() {
                 DashboardEngine.logout();
-                window.location.reload();
-            });
+                if (typeof firebase !== 'undefined' && firebase.auth) { firebase.auth().signOut().catch(function(){}).then(function(){ window.location.href = 'parent-login.html'; }); }
+                else { window.location.href = 'parent-login.html'; }
+            };
         }
 
         // Load content
@@ -63,7 +139,7 @@ const ParentEngine = (function() {
 
     function renderOnboardingPanel() {
         const onboarding = DashboardEngine.getOnboarding(currentParent.email);
-        const main = document.querySelector('main');
+        const main = document.querySelector('[id="main-content"]') || document.querySelector('.content-area') || document.querySelector('.lg\\:ml-64') || document.body;
         
         // Remove existing onboarding section if any
         const existing = document.getElementById('onboarding-panel');
@@ -104,7 +180,7 @@ const ParentEngine = (function() {
             </div>
         `;
         
-        main.insertBefore(panel, main.firstChild);
+        if (main) { main.insertBefore(panel, main.firstChild); } else { document.body.insertBefore(panel, document.body.firstChild); }
     }
 
     function completeStep(stepId) {
@@ -113,18 +189,48 @@ const ParentEngine = (function() {
         renderNotifications();
     }
 
+    function renderLatestSessionData(student) {
+        var schedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
+        var studentSessions = schedules.filter(function(s) {
+            return (s.studentId === student.id || s.studentName === (student.firstName + ' ' + student.lastName)) && s.attendanceStatus === 'present' && s.tutorComment;
+        }).sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+
+        if (!studentSessions.length) return '';
+        var latest = studentSessions[0];
+
+        var stars = '';
+        for (var i = 1; i <= 5; i++) {
+            stars += '<span style="color:' + (i <= (latest.conceptGrasp || 0) ? '#f59e0b' : '#d1d5db') + '">&#9733;</span>';
+        }
+
+        return '<div style="background:linear-gradient(135deg,#f0f4ff,#e8f4fd);border-radius:12px;padding:1rem;margin-top:0.75rem;border-left:3px solid #6366F1;">' +
+            '<p style="font-size:0.7rem;font-weight:700;color:#6366F1;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 0.5rem;">Latest Session — ' + (latest.date || '') + '</p>' +
+            (latest.topic ? '<p style="font-size:0.82rem;font-weight:600;color:#1e293b;margin:0 0 0.25rem;">Topic: ' + latest.topic + '</p>' : '') +
+            (latest.conceptGrasp ? '<p style="font-size:0.8rem;margin:0.25rem 0;">Concept Grasp: ' + stars + '</p>' : '') +
+            (latest.tutorComment ? '<p style="font-size:0.8rem;color:#374151;margin:0.25rem 0;font-style:italic;">&ldquo;' + latest.tutorComment + '&rdquo;</p>' : '') +
+            (latest.homeworkAssigned ? '<div style="background:#fff7ed;border-radius:8px;padding:0.5rem 0.75rem;margin-top:0.5rem;"><p style="font-size:0.72rem;font-weight:700;color:#ea580c;margin:0 0 0.2rem;">Homework</p><p style="font-size:0.8rem;color:#374151;margin:0;">' + latest.homeworkAssigned + '</p></div>' : '') +
+            '</div>';
+    }
+
     function renderChildren() {
         const childrenContainer = document.getElementById('children-container');
         if (!childrenContainer) return;
 
-        const students = DashboardEngine.getStudents(currentParent.email);
+        const students = (currentParent.role === 'admin' && DashboardEngine.getStudents(currentParent.email).length === 0)
+            ? DashboardEngine.getStudents()
+            : DashboardEngine.getStudents(currentParent.email);
 
         if (students.length === 0) {
             childrenContainer.innerHTML = `
-                <div class="col-span-1 md:col-span-2 text-center py-10 bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                    <i data-lucide="smile" class="w-12 h-12 text-gray-500 mx-auto mb-3"></i>
-                    <p class="text-gray-500 font-semibold">No children enrolled yet.</p>
-                    <a href="enroll.html" class="inline-block mt-3 text-orange-500 hover:underline font-bold">Enroll your first child</a>
+                <div class="col-span-1 md:col-span-2 text-center py-12 bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                    <div class="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="rocket" class="w-8 h-8 text-orange-500"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 font-nunito mb-1">Ready to begin?</h3>
+                    <p class="text-gray-500 font-medium text-sm mb-5 max-w-sm mx-auto">Enroll your child to start tracking their coding journey, curriculum milestones, and interactive projects.</p>
+                    <a href="enroll.html" class="btn-3d">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Enroll your first child
+                    </a>
                 </div>
             `;
             if (window.lucide) lucide.createIcons();
@@ -145,6 +251,48 @@ const ParentEngine = (function() {
                    </div>`
                 : `<p class="text-xs text-gray-400 italic mt-4">No progress reports available yet.</p>`;
 
+            // Check for official monthly academic evaluations (approved by admin & sent to parent)
+            let monthlyReports = [];
+            if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getMonthlyReports) {
+                const allMR = DashboardEngine.getMonthlyReports();
+                const sNameLower = ((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim();
+                monthlyReports = allMR.filter(mr => {
+                    if (mr.status !== 'sent_to_parent') return false;
+                    if (mr.studentId && mr.studentId === s.id) return true;
+                    if (mr.studentName && mr.studentName.toLowerCase().trim() === sNameLower) return true;
+                    if (mr.studentName && mr.studentName.toLowerCase().trim() === (s.firstName || '').toLowerCase().trim()) return true;
+                    return false;
+                });
+            }
+
+            const officialReportHTML = monthlyReports.length > 0 ? (function() {
+                const latestMR = monthlyReports[monthlyReports.length - 1];
+                const periodLabel = latestMR.month 
+                    ? new Date(latestMR.month + '-01').toLocaleDateString('en-GB', {month:'long', year:'numeric'}) 
+                    : 'Official Evaluation';
+                const gradeBadge = latestMR.overallGrade || 'A';
+                return `
+                    <div class="bg-gradient-to-r from-indigo-50/90 to-blue-50/80 border-2 border-indigo-200 rounded-2xl p-4 mt-4 shadow-sm space-y-3">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm shrink-0">
+                                    <i data-lucide="award" class="w-4 h-4"></i>
+                                </span>
+                                <div>
+                                    <span class="text-[10px] font-extrabold text-indigo-700 uppercase tracking-wider block">Official Academic Evaluation</span>
+                                    <h4 class="font-bold text-slate-800 text-xs font-nunito">${periodLabel} Evaluation</h4>
+                                </div>
+                            </div>
+                            <span class="bg-emerald-600 text-white text-xs font-black px-2.5 py-1 rounded-lg shadow-sm">Grade: ${gradeBadge}</span>
+                        </div>
+                        ${latestMR.topics ? `<p class="text-xs text-slate-600 line-clamp-2 bg-white/80 p-2.5 rounded-xl border border-indigo-100/60 leading-relaxed"><strong>Topics:</strong> ${latestMR.topics}</p>` : ''}
+                        <button type="button" onclick="ParentEngine.viewMonthlyReport('${latestMR.id}')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-md">
+                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i> View / Download Official PDF Report
+                        </button>
+                    </div>
+                `;
+            })() : '';
+
             // Get certificates
             const certs = DashboardEngine.getCertificates(s.firstName);
             const certsHTML = certs.length > 0
@@ -155,11 +303,12 @@ const ParentEngine = (function() {
                                 <div class="flex items-center justify-between bg-emerald-50/50 border border-emerald-100 rounded-xl p-3">
                                     <div>
                                         <p class="text-xs font-bold text-emerald-800">${c.program_name}</p>
-                                        <p class="text-[10px] text-emerald-600">ID: ${c.credential_id} • Issued: ${c.issue_date}</p>
+                                        <p class="text-[10px] text-emerald-600">ID: ${c.credential_id} • Issued: ${new Date(c.issue_date).toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'})}</p>
                                     </div>
                                     <button onclick="ParentEngine.viewCertificate('${c.credential_id}')" 
-                                        class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1">
-                                        <i data-lucide="eye" class="w-3 h-3"></i> View
+                                        style="background-color: #059669; color: #ffffff !important; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;"
+                                        class="hover:bg-emerald-700 transition-colors">
+                                        <i data-lucide="eye" class="w-3.5 h-3.5"></i> View
                                     </button>
                                 </div>
                             `).join('')}
@@ -169,17 +318,17 @@ const ParentEngine = (function() {
 
             return `
                 <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm flex flex-col space-y-4 hover:shadow-md transition-shadow">
-                    <div class="flex items-start justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full ${s.avatarColor || 'bg-indigo-500'} flex items-center justify-center text-white font-bold text-lg">
-                                ${s.firstName[0]}
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3.5">
+                            <div style="width: 44px; height: 44px; border-radius: 50%; background-color: #4F46E5; color: #ffffff !important; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.125rem; flex-shrink: 0;" class="shadow-sm">
+                                ${(s.firstName || 'C')[0].toUpperCase()}
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold font-nunito text-gray-800">${s.firstName} ${s.lastName}</h3>
-                                <p class="text-xs text-gray-500">${s.program} • Age ${s.age}</p>
+                                <h3 class="text-lg font-bold font-nunito text-gray-800 leading-snug">${s.firstName} ${s.lastName}</h3>
+                                <p class="text-xs text-gray-500 font-medium">${s.program} • Stage ${s.stage || 'N/A'} • Age ${s.age}</p>
                             </div>
                         </div>
-                        <span class="bg-green-100 text-green-700 text-xs font-bold px-2.5 py-1 rounded-xl uppercase tracking-wider">${s.status}</span>
+                        <span class="bg-green-100 text-green-700 text-xs font-bold px-2.5 py-1 rounded-xl uppercase tracking-wider">${s.status || 'Active'}</span>
                     </div>
 
                     <!-- Progress Tracking -->
@@ -194,12 +343,14 @@ const ParentEngine = (function() {
                     </div>
 
                     <div class="pt-2">
-                        <a href="parent-progress.html?studentId=${s.id}" class="w-full text-center block bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs py-2.5 rounded-xl transition-all border border-indigo-100/50">
+                        <a href="parent-progress.html?studentId=${s.id}" class="btn-3d btn-3d-secondary w-full border border-indigo-100">
                             View Detailed Progress Dashboard
                         </a>
                     </div>
 
+                    ${officialReportHTML}
                     ${reportHTML}
+                    ${renderLatestSessionData(s)}
                     ${certsHTML}
                 </div>
             `;
@@ -208,19 +359,24 @@ const ParentEngine = (function() {
     }
 
     function renderUpcomingClasses() {
-        const scheduleContainer = document.getElementById('schedule-container');
+        const scheduleContainer = document.getElementById('sessions-container') || document.getElementById('schedule-container');
         if (!scheduleContainer) return;
 
         // Get schedules for all children of this parent
-        const students = DashboardEngine.getStudents(currentParent.email);
+        const students = (currentParent.role === 'admin' && DashboardEngine.getStudents(currentParent.email).length === 0)
+            ? DashboardEngine.getStudents()
+            : DashboardEngine.getStudents(currentParent.email);
         const studentIds = students.map(s => s.id);
-        const schedules = DashboardEngine.getSchedules().filter(s => studentIds.includes(s.studentId));
+        const schedules = DashboardEngine.getSchedules().filter(function(s) { return studentIds.includes(s.studentId) && new Date(s.date) >= new Date(new Date().toDateString()); });
 
         if (schedules.length === 0) {
             scheduleContainer.innerHTML = `
                 <div class="p-8 text-center" id="no-schedule-msg">
-                    <i data-lucide="calendar" class="w-10 h-10 text-gray-500 mx-auto mb-3"></i>
-                    <p class="text-gray-500 font-semibold">No upcoming classes scheduled.</p>
+                    <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i data-lucide="calendar-off" class="w-6 h-6 text-gray-400"></i>
+                    </div>
+                    <p class="text-gray-500 font-semibold text-sm">No upcoming classes scheduled.</p>
+                    <p class="text-xs text-gray-400 mt-1">Assignments will appear here once confirmed by a tutor.</p>
                 </div>
             `;
             if (window.lucide) lucide.createIcons();
@@ -252,11 +408,11 @@ const ParentEngine = (function() {
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
                         <a href="${s.link}" target="_blank" rel="noopener noreferrer" 
-                            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-1.5">
+                            class="btn-3d btn-3d-blue px-3 py-1.5 text-[11px] rounded-lg">
                             <i data-lucide="video" class="w-3.5 h-3.5"></i> Join Session
                         </a>
                         <button onclick="ParentEngine.openRescheduleModal('${s.id}')"
-                            class="border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold text-xs px-4 py-2.5 rounded-xl transition-colors">
+                            class="btn-3d btn-3d-secondary px-3 py-1.5 text-[11px] rounded-lg border border-gray-200">
                             Reschedule
                         </button>
                     </div>
@@ -285,7 +441,7 @@ const ParentEngine = (function() {
                 <div class="flex-1 min-w-0">
                     <p class="text-sm text-gray-800 font-bold leading-tight">${n.title}</p>
                     <p class="text-xs text-gray-500 leading-normal mt-0.5">${n.message}</p>
-                    <p class="text-[9px] text-gray-400 mt-1">${new Date(n.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                    <p class="text-[9px] text-gray-400 mt-1">${new Date(n.timestamp).toLocaleString('en-GB', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})}</p>
                 </div>
             </div>
         `).join('');
@@ -304,13 +460,13 @@ const ParentEngine = (function() {
             document.getElementById('resch-schedule-id').value = session.id;
             document.getElementById('resch-title-course').textContent = session.course;
             document.getElementById('resch-current-details').textContent = `${session.date} at ${session.time}`;
-            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
         }
     }
 
     function closeRescheduleModal() {
         const modal = document.getElementById('parent-reschedule-modal');
-        if (modal) modal.classList.add('hidden');
+        if (modal) modal.style.display = 'none';
     }
 
     function submitRescheduleForm(e) {
@@ -355,16 +511,16 @@ const ParentEngine = (function() {
             document.getElementById('modal-cert-student').textContent = cert.student_name;
             document.getElementById('modal-cert-program').textContent = cert.program_name;
             document.getElementById('modal-cert-grade').textContent = cert.grade_level;
-            document.getElementById('modal-cert-date').textContent = cert.issue_date;
+            document.getElementById('modal-cert-date').textContent = new Date(cert.issue_date).toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
             document.getElementById('modal-cert-id').textContent = cert.credential_id;
 
-            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
         }
     }
 
     function closeCertModal() {
         const modal = document.getElementById('parent-cert-modal');
-        if (modal) modal.classList.add('hidden');
+        if (modal) modal.style.display = 'none';
     }
 
     function injectModals() {
@@ -372,7 +528,8 @@ const ParentEngine = (function() {
         if (!document.getElementById('parent-reschedule-modal')) {
             const resModal = document.createElement('div');
             resModal.id = 'parent-reschedule-modal';
-            resModal.className = 'fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm';
+            resModal.style.display = 'none';
+            resModal.className = 'fixed inset-0 z-50 items-center justify-center p-4 bg-black/75 backdrop-blur-sm';
             resModal.innerHTML = `
                 <div class="bg-white rounded-3xl p-6 max-w-md w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn">
                     <div class="flex justify-between items-center pb-2 border-b border-slate-100">
@@ -417,7 +574,8 @@ const ParentEngine = (function() {
         if (!document.getElementById('parent-cert-modal')) {
             const certModal = document.createElement('div');
             certModal.id = 'parent-cert-modal';
-            certModal.className = 'fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm';
+            certModal.style.display = 'none';
+            certModal.className = 'fixed inset-0 z-50 items-center justify-center p-4 bg-black/85 backdrop-blur-sm';
             certModal.innerHTML = `
                 <div class="bg-[#faf8f5] rounded-3xl p-8 max-w-3xl w-full border border-amber-100 shadow-2xl relative animate-fadeIn flex flex-col items-center">
                     
@@ -488,6 +646,18 @@ const ParentEngine = (function() {
         }
     }
 
+    function viewMonthlyReport(reportId) {
+        if (typeof StemulusReportPDF !== 'undefined') {
+            const reports = DashboardEngine.getMonthlyReports ? DashboardEngine.getMonthlyReports() : [];
+            const r = reports.find(item => item.id === reportId);
+            if (r) {
+                StemulusReportPDF.open(r);
+                return;
+            }
+        }
+        alert('Evaluation document is loading or could not be found.');
+    }
+
     return {
         init,
         renderDashboard,
@@ -495,7 +665,8 @@ const ParentEngine = (function() {
         openRescheduleModal,
         closeRescheduleModal,
         viewCertificate,
-        closeCertModal
+        closeCertModal,
+        viewMonthlyReport
     };
 })();
 

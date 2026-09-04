@@ -1,0 +1,529 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   STEMulus — Premium Card Enhancement Layer
+   Adds depth, tilt, shine, and motion to all card surfaces across the site.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Shared card premium base ─────────────────────────────────────────────── */
+.card-premium {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.03),
+    0 12px 40px rgba(15, 23, 42, 0.02);
+  transition:
+    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.4s ease;
+  will-change: transform;
+  transform-style: preserve-3d;
+  transform: perspective(1200px) rotateX(0deg) rotateY(0deg);
+}
+
+.card-premium:hover {
+  box-shadow:
+    0 4px 8px rgba(15, 23, 42, 0.04),
+    0 12px 28px rgba(15, 23, 42, 0.06),
+    0 32px 64px rgba(244, 96, 12, 0.04);
+  transform: perspective(1200px) translateY(-6px) rotateX(2deg);
+}
+
+/* ── Holographic shine overlay ────────────────────────────────────────────── */
+.card-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.4) 45%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  border-radius: inherit;
+}
+
+.card-premium:hover::before {
+  opacity: 1;
+}
+
+/* ── For-Parents: Steps ───────────────────────────────────────────────────── */
+.fp-step {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.03),
+    0 12px 40px rgba(15, 23, 42, 0.02) !important;
+  transition:
+    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.4s ease !important;
+  transform-style: preserve-3d;
+}
+
+.fp-step:hover {
+  transform: perspective(1000px) translateY(-8px) rotateX(2deg) rotateY(-1deg) !important;
+  box-shadow:
+    0 8px 16px rgba(15, 23, 42, 0.04),
+    0 20px 48px rgba(15, 23, 42, 0.06) !important;
+}
+
+.fp-step::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    transparent 30%,
+    rgba(244, 96, 12, 0.02) 60%,
+    rgba(250, 204, 21, 0.03) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  border-radius: inherit;
+}
+
+.fp-step:hover::before {
+  opacity: 1;
+}
+
+/* Step number glow on hover */
+.fp-step:hover .fp-step__num {
+  color: rgba(244, 96, 12, 0.12);
+  transition: color 0.4s ease;
+}
+
+/* ── For-Parents: Safety Cards ────────────────────────────────────────────── */
+.fp-safety-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.03),
+    0 12px 40px rgba(15, 23, 42, 0.02) !important;
+  transition:
+    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.4s ease !important;
+  transform-style: preserve-3d;
+}
+
+.fp-safety-card:hover {
+  transform: perspective(1000px) translateY(-8px) rotateX(2deg) rotateY(-1deg) !important;
+  box-shadow:
+    0 8px 16px rgba(15, 23, 42, 0.04),
+    0 20px 48px rgba(15, 23, 42, 0.06) !important;
+}
+
+.fp-safety-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent,
+    rgba(244, 96, 12, 0.02),
+    transparent,
+    rgba(250, 204, 21, 0.02),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  animation: card-rotate-bg 8s linear infinite paused;
+}
+
+.fp-safety-card:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@keyframes card-rotate-bg {
+  to { transform: rotate(360deg); }
+}
+
+/* ── For-Parents: Chat Cards ──────────────────────────────────────────────── */
+.fp-chat-card {
+  border-radius: 20px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.03),
+    0 12px 40px rgba(15, 23, 42, 0.02) !important;
+  transition:
+    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.4s ease !important;
+  transform-style: preserve-3d;
+}
+
+.fp-chat-card:hover {
+  transform: perspective(1000px) translateY(-6px) rotateX(1.5deg) !important;
+  box-shadow:
+    0 8px 16px rgba(15, 23, 42, 0.04),
+    0 20px 48px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* ── Blog: Article Cards ──────────────────────────────────────────────────── */
+#blog-grid-container > article {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.03),
+    0 12px 40px rgba(15, 23, 42, 0.02);
+  transition:
+    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.4s ease;
+  transform-style: preserve-3d;
+}
+
+#blog-grid-container > article:hover {
+  transform: perspective(1000px) translateY(-8px) rotateX(2deg) rotateY(-1deg);
+  box-shadow:
+    0 8px 16px rgba(15, 23, 42, 0.04),
+    0 24px 52px rgba(15, 23, 42, 0.07);
+}
+
+#blog-grid-container > article::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.35) 45%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+#blog-grid-container > article:hover::before {
+  opacity: 1;
+}
+
+/* Blog article image zoom on hover */
+#blog-grid-container > article > div:first-child img {
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+#blog-grid-container > article:hover > div:first-child img {
+  transform: scale(1.06);
+}
+
+/* ── Contact: Info Cards ──────────────────────────────────────────────────── */
+[data-stagger] > div > .rounded-xl {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  background: #ffffff !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.03),
+    0 12px 40px rgba(15, 23, 42, 0.02) !important;
+  transition:
+    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.4s ease !important;
+  transform-style: preserve-3d;
+}
+
+[data-stagger] > div > .rounded-xl:hover {
+  transform: perspective(1000px) translateY(-8px) rotateX(2deg) !important;
+  box-shadow:
+    0 8px 16px rgba(15, 23, 42, 0.04),
+    0 20px 48px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Icon bounce on card hover */
+[data-stagger] > div > .rounded-xl:hover .rounded-full {
+  transform: scale(1.1);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Homepage: Why Cards ──────────────────────────────────────────────────── */
+.why-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.03),
+    0 12px 40px rgba(15, 23, 42, 0.02) !important;
+  transition:
+    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.4s ease !important;
+  transform-style: preserve-3d;
+}
+
+.why-card:hover {
+  transform: perspective(1000px) translateY(-8px) rotateX(2deg) rotateY(-1deg) !important;
+  box-shadow:
+    0 8px 16px rgba(15, 23, 42, 0.04),
+    0 20px 48px rgba(15, 23, 42, 0.06) !important;
+}
+
+.why-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.35) 45%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  border-radius: inherit;
+}
+
+.why-card:hover::before {
+  opacity: 1;
+}
+
+/* Homepage: Why-card number pulse on hover */
+.why-card:hover .why-card__num {
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(244, 96, 12, 0.3);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+/* ── Homepage: Showcase Cards ─────────────────────────────────────────────── */
+.showcase-new-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.03),
+    0 12px 40px rgba(15, 23, 42, 0.02) !important;
+  transition:
+    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.4s ease !important;
+  transform-style: preserve-3d;
+}
+
+.showcase-new-card:hover {
+  transform: perspective(1000px) translateY(-8px) rotateX(2deg) !important;
+  box-shadow:
+    0 8px 16px rgba(15, 23, 42, 0.04),
+    0 24px 52px rgba(15, 23, 42, 0.07) !important;
+}
+
+.showcase-new-card img {
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+.showcase-new-card:hover img {
+  transform: scale(1.06);
+}
+
+/* ── Homepage: Testimonial Cards ──────────────────────────────────────────── */
+.testi-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.03),
+    0 12px 40px rgba(15, 23, 42, 0.02) !important;
+  transition:
+    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.4s ease !important;
+  transform-style: preserve-3d;
+}
+
+.testi-card:hover {
+  transform: perspective(1000px) translateY(-6px) rotateX(1.5deg) !important;
+  box-shadow:
+    0 8px 16px rgba(15, 23, 42, 0.04),
+    0 20px 48px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* ── Programs: Roadmap Cards ──────────────────────────────────────────────── */
+.roadmap-card-outer.card-3d-tilt {
+  border-radius: 20px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.03),
+    0 12px 40px rgba(15, 23, 42, 0.02);
+  overflow: hidden;
+  transition:
+    box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.4s ease;
+}
+
+.roadmap-card-outer.card-3d-tilt:hover {
+  box-shadow:
+    0 8px 16px rgba(15, 23, 42, 0.04),
+    0 24px 52px rgba(15, 23, 42, 0.07);
+}
+
+/* ── Section reveal ([data-reveal] containers) ───────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.75s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.75s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cards INSIDE [data-reveal]: stagger with animation, triggered when parent becomes visible */
+[data-reveal].is-visible .fp-step,
+[data-reveal].is-visible .fp-safety-card,
+[data-reveal].is-visible .fp-chat-card {
+  animation: cardRiseIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+[data-reveal].is-visible .fp-step:nth-child(2),
+[data-reveal].is-visible .fp-safety-card:nth-child(2),
+[data-reveal].is-visible .fp-chat-card:nth-child(2) { animation-delay: 0.07s; }
+
+[data-reveal].is-visible .fp-step:nth-child(3),
+[data-reveal].is-visible .fp-safety-card:nth-child(3),
+[data-reveal].is-visible .fp-chat-card:nth-child(3) { animation-delay: 0.14s; }
+
+[data-reveal].is-visible .fp-step:nth-child(4),
+[data-reveal].is-visible .fp-safety-card:nth-child(4) { animation-delay: 0.21s; }
+
+[data-reveal].is-visible .fp-step:nth-child(5),
+[data-reveal].is-visible .fp-safety-card:nth-child(5) { animation-delay: 0.28s; }
+
+[data-reveal].is-visible .fp-step:nth-child(6),
+[data-reveal].is-visible .fp-safety-card:nth-child(6) { animation-delay: 0.35s; }
+
+@keyframes cardRiseIn {
+  from { opacity: 0; transform: translateY(22px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+/* ── Standalone card reveal (cards NOT inside [data-reveal]) ─────────────── */
+.card-reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  transition:
+    opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.card-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Stagger standalone cards by sibling position */
+.card-reveal:nth-child(2) { transition-delay: 0.07s; }
+.card-reveal:nth-child(3) { transition-delay: 0.14s; }
+.card-reveal:nth-child(4) { transition-delay: 0.21s; }
+.card-reveal:nth-child(5) { transition-delay: 0.28s; }
+.card-reveal:nth-child(6) { transition-delay: 0.35s; }
+
+/* ── Dashboard mockup enhancement ─────────────────────────────────────────── */
+.fp-dash-mock {
+  border-radius: 16px !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow:
+    0 4px 12px rgba(15, 23, 42, 0.06),
+    0 20px 50px rgba(15, 23, 42, 0.08),
+    12px 12px 0 rgba(13, 27, 42, 0.04) !important;
+  overflow: hidden;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s ease;
+}
+
+.fp-dash-mock:hover {
+  transform: translateY(-4px) rotate(-0.5deg);
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.08),
+    0 32px 64px rgba(15, 23, 42, 0.10),
+    16px 16px 0 rgba(13, 27, 42, 0.05) !important;
+}
+
+/* ── Checklist enhancement ─────────────────────────────────────────────────── */
+.fp-checklist li {
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.fp-checklist li:hover {
+  background: rgba(244, 96, 12, 0.03);
+  transform: translateX(4px);
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  .card-reveal,
+  .card-premium,
+  .fp-step,
+  .fp-safety-card,
+  .fp-chat-card,
+  .why-card,
+  .showcase-new-card,
+  .testi-card,
+  #blog-grid-container > article,
+  [data-stagger] > div > .rounded-xl,
+  .roadmap-card-outer.card-3d-tilt,
+  .fp-dash-mock {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+  }
+  .fp-safety-card::before {
+    animation: none !important;
+  }
+}
+
+/* ── Mobile: Reduce intensity ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .fp-step:hover,
+  .fp-safety-card:hover,
+  .fp-chat-card:hover,
+  #blog-grid-container > article:hover,
+  [data-stagger] > div > .rounded-xl:hover {
+    transform: translateY(-4px) !important;
+  }
+}

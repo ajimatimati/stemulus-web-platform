@@ -3,7 +3,7 @@
  * Enables offline access and faster repeat visits
  */
 
-const CACHE_NAME = 'stemulus-v1';
+const CACHE_NAME = 'stemulus-v2';
 const OFFLINE_URL = '/404.html';
 
 // Assets to cache immediately on install

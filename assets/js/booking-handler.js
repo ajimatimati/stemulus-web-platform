@@ -8,13 +8,19 @@ const BookingHandler = (function() {
     // ============ CONFIGURATION ============
     const CONFIG = {
         // NTFY Push Notification Topic
-        NTFY_TOPIC: 'stemulus-enrollments-admin2026',
+        NTFY_TOPIC: 'stm-enr-lx7k9w2mq8vp4tz',
         
         // Admin contact details
         ADMIN_EMAIL: 'admin@stemuluskidstech.com',
         ADMIN_WHATSAPP: '+2347052466716'
     };
     // =======================================
+
+    function sanitize(str) {
+        const d = document.createElement('div');
+        d.textContent = String(str || '');
+        return d.innerHTML;
+    }
 
     let isSubmitting = false;
 
@@ -147,21 +153,12 @@ Parent Info:
 - Time of Request: ${new Date(data.timestamp).toLocaleString('en-GB')}
         `;
 
-        const sendToAdmin = EmailService.send({
+        return EmailService.send({
             to: CONFIG.ADMIN_EMAIL,
             studentName: 'Admin',
             subject: `[Free Class Booking] New Request - ${data.bookingId}`,
             body: bodyText
         });
-
-        const sendToCopy = EmailService.send({
-            to: 'admin@stemuluskidstech.com',
-            studentName: 'STEMulus Clubs',
-            subject: `[Free Class Booking Copy] New Request - ${data.bookingId}`,
-            body: bodyText
-        });
-
-        return Promise.all([sendToAdmin, sendToCopy]);
     }
 
     /**
@@ -218,17 +215,19 @@ ID: ${data.bookingId}
         `.trim();
 
         try {
-            const response = await fetch(`https://ntfy.sh/${CONFIG.NTFY_TOPIC}`, {
+            const response = await fetch('/.netlify/functions/notify', {
                 method: 'POST',
-                headers: {
-                    'Title': title,
-                    'Priority': 'high',
-                    'Tags': 'gift,student,calendar',
-                    'Click': `https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(`Hi! Following up on booking for ${data.studentFirstName}`)}`
-                },
-                body: message
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    channel: 'enroll',
+                    title,
+                    message,
+                    priority: 'high',
+                    tags: 'gift,student,calendar',
+                    click: `https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(`Hi! Following up on booking for ${data.studentFirstName}`)}`
+                })
             });
-            
+
             if (!response.ok) throw new Error('NTFY request failed');
             return { success: true };
         } catch (error) {
@@ -271,16 +270,16 @@ ID: ${data.bookingId}
 
                 <!-- Success Message -->
                 <h2 class="text-3xl font-bold font-poppins text-slate-800 mb-3" style="font-size: 1.875rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem;">
-                    🎉 Free Class Booked!
+                    [Confirmed] Free Class Booked!
                 </h2>
                 <p class="text-slate-600 mb-6 max-w-md mx-auto leading-relaxed" style="color: #475569; margin-bottom: 1.5rem; line-height: 1.625;">
-                    Thank you, <strong style="color: #0f172a;">${data.parentName}</strong>! We have received your trial booking for <strong style="color: #0f172a;">${data.studentFirstName}</strong>.
+                    Thank you, <strong style="color: #0f172a;">${sanitize(data.parentName)}</strong>! We have received your trial booking for <strong style="color: #0f172a;">${sanitize(data.studentFirstName)}</strong>.
                 </p>
 
                 <!-- Booking ID -->
                 <div class="inline-flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-xl px-6 py-3 mb-8" style="display: inline-flex; align-items: center; gap: 0.5rem; background-color: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 12px; padding: 0.75rem 1.5rem; margin-bottom: 2rem;">
                     <span style="font-size: 0.875rem; color: #64748b;">Booking ID:</span>
-                    <span style="font-family: monospace; font-weight: 700; color: #2563eb;">${data.bookingId}</span>
+                    <span style="font-family: monospace; font-weight: 700; color: #2563eb;">${sanitize(data.bookingId)}</span>
                 </div>
 
                 <!-- Next Steps -->
@@ -293,8 +292,8 @@ ID: ${data.bookingId}
                     </h3>
                     <ol class="space-y-3 text-slate-600 text-sm" style="list-style-type: decimal; padding-left: 1.25rem; color: #475569; font-size: 0.875rem; line-height: 1.5;">
                         <li style="margin-bottom: 0.5rem;">We'll review your preferred schedule and match you with a mentor.</li>
-                        <li style="margin-bottom: 0.5rem;">You'll receive a confirmation email and Zoom link at <strong style="color: #2563eb;">${data.email}</strong> within <strong style="color: #0f172a;">24 hours</strong>.</li>
-                        <li style="margin-bottom: 0.5rem;">We will reach out to you via phone/WhatsApp at <strong style="color: #0f172a;">${data.phone}</strong> to confirm the exact details.</li>
+                        <li style="margin-bottom: 0.5rem;">You'll receive a confirmation email and Zoom link at <strong style="color: #2563eb;">${sanitize(data.email)}</strong> within <strong style="color: #0f172a;">24 hours</strong>.</li>
+                        <li style="margin-bottom: 0.5rem;">We will reach out to you via phone/WhatsApp at <strong style="color: #0f172a;">${sanitize(data.phone)}</strong> to confirm the exact details.</li>
                     </ol>
                 </div>
 

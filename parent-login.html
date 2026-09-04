@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>STEMulus Portal | Sign In</title>
+  <meta name="description" content="Sign in to the STEMulus learning portal. Parents, tutors, and admins can access their dashboards.">
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/portal-animations.css">
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+
+  <style>
+    /* Login-specific adjustments */
+    .role-tabs { display: flex; position: relative; background: #f1f5f9; padding: 4px; border-radius: 12px; margin-bottom: 2rem; }
+    .role-pill { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 5px); background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .role-btn { flex: 1; text-align: center; padding: 10px 0; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px; color: var(--text-muted); cursor: pointer; z-index: 2; transition: color 0.3s; background: none; border: none; display: flex; align-items: center; justify-content: center; gap: 5px; }
+    .role-btn.active { color: var(--brand-orange); }
+    .role-btn.active.tutor-active { color: var(--brand-indigo); }
+
+
+    .input-group { margin-bottom: 1.5rem; position: relative; }
+    .input-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.5px; }
+    .input-field { width: 100%; box-sizing: border-box; padding: 14px 14px 14px 42px; border-radius: 12px; border: 1px solid var(--border-soft); background: #f8fafc; font-family: 'Nunito', sans-serif; font-size: 14px; color: var(--text-main); outline: none; transition: all 0.2s; }
+    .input-field:focus { background: white; border-color: var(--brand-orange); box-shadow: 0 0 0 4px rgba(244, 96, 12, 0.08); }
+    .input-icon { position: absolute; left: 14px; top: 36px; width: 18px; height: 18px; color: var(--text-light); transition: all 0.2s; }
+
+    .error-box { display: none; padding: 12px; background: #FEF2F2; color: #EF4444; border-radius: 12px; font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 1.5rem; border: 1px solid #FCA5A5; align-items: center; justify-content: center; gap: 8px; }
+
+    .form-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 26px; margin: 0 0 6px 0; color: var(--text-main); }
+    .form-sub { font-size: 14px; color: var(--text-muted); margin: 0 0 28px 0; }
+
+    .portal-badge { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+    .portal-badge img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #f1f5f9; }
+    .portal-badge span { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--brand-indigo); }
+  </style>
+</head>
+<body class="portal-container">
+
+  <!-- THE SHELL (Videotemp layout) -->
+  <div class="portal-shell animate-shell-enter">
+
+    <!-- LEFT: BLOB PANEL -->
+    <div class="blob-panel">
+      <div class="blob-bg animate-blob" id="blob-bg"></div>
+
+      <!-- Headline on blob -->
+      <h1 class="blob-headline" id="blob-headline" style="transition: opacity 0.3s;">Welcome to<br>STEMulus</h1>
+      <p class="blob-subtitle" id="blob-subtitle" style="transition: opacity 0.3s;">Track your child's coding journey</p>
+
+      <!-- HERO 3D OBJECT (breaks boundary into data panel) -->
+      <img
+        src="images/portal/standalone/rocket-3d.png"
+        alt="Portal Hero"
+        class="hero-3d-object animate-float"
+        id="hero-3d-img"
+      >
+
+      <!-- FLOATING ACCENTS — Lissajous orbits with depth layers -->
+      <img src="images/portal/standalone/key-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift" style="bottom: 18%; left: 12%;">
+      <img src="images/portal/standalone/notification-orb-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift-reverse motion-delay-2" style="top: 15%; right: 25%;">
+      <img src="images/portal/standalone/planet-3d.png" alt="" class="float-accent float-accent--sm float-accent--soft animate-orbit motion-delay-3" style="top: 40%; left: 5%;">
+      <img src="images/portal/standalone/code-brackets-3d.png" alt="" class="float-accent float-accent--sm float-accent--soft animate-accent-far motion-delay-5" style="bottom: 35%; right: 20%;">
+      <div class="accent-sphere animate-drift motion-delay-4" style="bottom: 30%; right: 35%;"></div>
+      <div class="accent-sphere--pink accent-sphere animate-drift-reverse" style="top: 55%; left: 8%;"></div>
+
+      <!-- PILL TOOLBAR (inside bottom of blob panel) -->
+      <div class="pill-toolbar blob-pill-nav">
+        <button class="toolbar-btn active" title="Home" onclick="window.location.href='index.html'">
+          <i data-lucide="home" style="width:18px;height:18px;"></i>
+        </button>
+        <button class="toolbar-btn" title="Help" onclick="window.location.href='contact.html'">
+          <i data-lucide="help-circle" style="width:18px;height:18px;"></i>
+        </button>
+        <button class="toolbar-btn" title="WhatsApp" onclick="window.open('https://wa.me/2347052466716','_blank')">
+          <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
+        </button>
+        <button class="toolbar-btn" title="About" onclick="window.location.href='index.html'">
+          <i data-lucide="info" style="width:18px;height:18px;"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT: DATA PANEL (Login Form) -->
+    <div class="data-panel">
+      <div style="max-width: 400px; width: 100%; margin: 0 auto;">
+
+        <!-- Logo Badge -->
+        <div class="portal-badge">
+          <img src="favicon.png" alt="STEMulus">
+          <span>Portal Access</span>
+        </div>
+
+        <h2 class="form-title">Sign In</h2>
+        <p class="form-sub">Select your role to continue</p>
+
+        <!-- Role Tabs -->
+        <div class="role-tabs">
+          <div class="role-pill" id="role-pill"></div>
+          <button class="role-btn active" id="btn-parent" onclick="switchRole('parent', 0)">
+            <i data-lucide="shield" style="width:14px;height:14px;"></i> Parent
+          </button>
+          <button class="role-btn" id="btn-tutor" onclick="switchRole('tutor', 1)">
+            <i data-lucide="graduation-cap" style="width:14px;height:14px;"></i> Tutor
+          </button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" onsubmit="handleLogin(event)">
+          <input type="hidden" id="login-role" value="parent">
+
+          <div class="input-group">
+            <label class="input-label" for="email">Email Address</label>
+            <i data-lucide="mail" class="input-icon"></i>
+            <input type="email" id="email" class="input-field" placeholder="your@email.com" autocomplete="email" required>
+          </div>
+
+          <div class="input-group">
+            <div style="display: flex; justify-content: space-between;">
+              <label class="input-label" for="password">Password</label>
+              <button type="button" id="forgot-btn" onclick="document.getElementById('forgot-modal').style.display='flex'" style="font-size:0.82rem;color:var(--brand-orange,#f4600c);background:none;border:none;cursor:pointer;padding:0;font-weight:600;">Forgot?</button>
+            </div>
+            <i data-lucide="key-round" class="input-icon"></i>
+            <div style="position:relative;">
+              <input type="password" id="password" class="input-field" placeholder="••••••••" autocomplete="current-password" required style="padding-right:2.5rem">
+              <button type="button" id="toggle-password" onclick="var i=document.getElementById('password');var isText=i.type==='text';i.type=isText?'password':'text';document.getElementById('eye-icon').style.display=isText?'block':'none';document.getElementById('eye-slash-icon').style.display=isText?'none':'block';" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#94a3b8;padding:4px;" aria-label="Toggle password visibility">
+                <svg id="eye-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg id="eye-slash-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="error-box" id="error-box">
+            <i data-lucide="alert-circle" style="width: 14px;"></i>
+            <span id="error-text">Incorrect credentials</span>
+          </div>
+
+          <button type="submit" class="btn-3d orange" id="submit-btn" style="width: 100%; gap: 8px;">
+            Sign In to Parent Portal <i data-lucide="arrow-right" style="width: 16px;"></i>
+          </button>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgot-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99999;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+    <div style="background:#fff;border-radius:16px;padding:2rem;max-width:380px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+      <h3 style="font-family:Fredoka,sans-serif;font-size:1.3rem;color:#1e293b;margin:0 0 0.5rem;">Request Password Reset</h3>
+      <p style="font-size:0.875rem;color:#64748b;margin:0 0 1.25rem;">Enter your email address. The admin will be notified and send you new login details.</p>
+      <input type="email" id="forgot-email" placeholder="your@email.com" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e2e8f0;border-radius:10px;font-size:0.9rem;box-sizing:border-box;margin-bottom:1rem;outline:none;" oninput="this.style.borderColor='#6366F1'">
+      <div style="display:flex;gap:0.75rem;">
+        <button type="button" onclick="document.getElementById('forgot-modal').style.display='none'" style="flex:1;padding:0.75rem;border:1.5px solid #e2e8f0;border-radius:10px;font-weight:600;font-size:0.875rem;cursor:pointer;background:#fff;">Cancel</button>
+        <button type="button" onclick="submitForgotPassword()" style="flex:1;padding:0.75rem;background:#f4600c;color:#fff;border:none;border-radius:10px;font-weight:700;font-size:0.875rem;cursor:pointer;">Send Request</button>
+      </div>
+      <p id="forgot-success" style="display:none;margin-top:1rem;font-size:0.85rem;color:#22c55e;text-align:center;font-weight:600;">Request sent. The admin will contact you within 1 hour.</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/dashboard-engine.min.js" defer></script>
+  <script src="assets/js/portal-scene-engine.min.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof DashboardEngine !== 'undefined') {
+        var existingSession = DashboardEngine.getSession ? DashboardEngine.getSession() : null;
+        if (existingSession && existingSession.role) {
+          var redirectMap = { admin: 'admin-login.html', tutor: 'tutor-dashboard.html', parent: 'parent-dashboard.html' };
+          if (redirectMap[existingSession.role]) { window.location.href = redirectMap[existingSession.role]; return; }
+        }
+      }
+      if (typeof DashboardEngine !== 'undefined' && DashboardEngine.initDefaultAccounts) {
+        DashboardEngine.initDefaultAccounts().catch(function(e) { console.warn('Account init failed:', e); });
+      }
+      if (window.lucide) lucide.createIcons();
+
+      // Auto-switch tab based on ?role= URL param
+      const urlRole = new URLSearchParams(window.location.search).get('role');
+      if (urlRole === 'tutor') switchRole('tutor', 1);
+
+      // GSAP intro animations
+      gsap.from(".data-panel > div > *", {
+        y: 16, opacity: 0, duration: 0.5, stagger: 0.06, delay: 0.3,
+        ease: "power3.out"
+      });
+    });
+
+    function switchRole(role, index) {
+      document.getElementById('login-role').value = role;
+      document.getElementById('role-pill').style.transform = `translateX(calc(${index * 100}% + ${index * 5}px))`;
+
+      // Reset tab active states
+      document.querySelectorAll('.role-btn').forEach(btn => {
+        btn.classList.remove('active', 'tutor-active');
+      });
+      const activeBtn = document.getElementById(`btn-${role}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        if (role === 'tutor') activeBtn.classList.add('tutor-active');
+      }
+
+      // Role Configuration Map
+      const roleConfigs = {
+        parent: {
+          gradient: 'linear-gradient(135deg, #4FC3F7, #66BB6A)',
+          object: 'images/portal/standalone/rocket-3d.png',
+          headline: 'Welcome to<br>STEMulus',
+          subtitle: 'Track your child\'s coding journey',
+          btnText: 'Sign In to Parent Portal <i data-lucide="arrow-right" style="width:16px;"></i>',
+          emailPlaceholder: 'parent@stemuluskidstech.com',
+          forgotColor: '#F4600C',
+          brandColor: '#F4600C',
+          btnClass: 'btn-3d orange'
+        },
+        tutor: {
+          gradient: 'linear-gradient(135deg, #AB47BC, #5C6BC0)',
+          object: 'images/portal/standalone/laptop-3d.png',
+          headline: 'Ready to<br>Teach',
+          subtitle: 'Inspire the next generation',
+          btnText: 'Sign In as Mentor <i data-lucide="arrow-right" style="width:16px;"></i>',
+          emailPlaceholder: 'tutor@stemuluskidstech.com',
+          forgotColor: '#4B49AC',
+          brandColor: '#4B49AC',
+          btnClass: 'btn-3d brand'
+        },
+      };
+
+      const cfg = roleConfigs[role];
+      if (cfg) {
+        // Update Submit Button
+        const submitBtn = document.getElementById('submit-btn');
+        if (submitBtn) {
+          submitBtn.className = cfg.btnClass;
+          submitBtn.innerHTML = cfg.btnText;
+        }
+
+        // Update Email Placeholder & Links
+        const emailInput = document.getElementById('email');
+        if (emailInput) emailInput.placeholder = cfg.emailPlaceholder;
+
+        const forgotBtn = document.getElementById('forgot-btn');
+        if (forgotBtn) forgotBtn.style.color = cfg.forgotColor;
+
+        document.documentElement.style.setProperty('--brand-orange', cfg.brandColor);
+
+        // Fallback DOM update only if PortalSceneEngine is not available
+        if (!window.PortalSceneEngine) {
+          const blobBg = document.getElementById('blob-bg');
+          if (blobBg) blobBg.style.background = cfg.gradient;
+          const headline = document.getElementById('blob-headline');
+          if (headline) headline.innerHTML = cfg.headline;
+          const subtitle = document.getElementById('blob-subtitle');
+          if (subtitle) subtitle.innerHTML = cfg.subtitle;
+          const heroImg = document.getElementById('hero-3d-img');
+          if (heroImg) heroImg.src = cfg.object;
+        }
+      }
+
+      // Smooth scene engine transition
+      if (window.PortalSceneEngine && typeof PortalSceneEngine.switchRole === 'function') {
+        try { PortalSceneEngine.switchRole(role); } catch(e) {}
+      }
+
+      const errorBox = document.getElementById('error-box');
+      if (errorBox) errorBox.style.display = 'none';
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function showError(msg) {
+      var errorBox = document.getElementById('error-box');
+      if (errorBox) {
+        errorBox.style.display = 'flex';
+        document.getElementById('error-text').innerText = msg;
+        gsap.fromTo(errorBox, { x: -4 }, { x: 4, duration: 0.08, yoyo: true, repeat: 3, onComplete: () => gsap.set(errorBox, { x: 0 }) });
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      var submitBtn = document.querySelector('#login-form button[type="submit"]') || document.querySelector('.btn-login');
+      var originalText = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Signing in...'; }
+      const email = document.getElementById('email').value;
+      const pwd = document.getElementById('password').value;
+      const role = document.getElementById('login-role').value;
+      const errorBox = document.getElementById('error-box');
+
+      try {
+        if (typeof DashboardEngine === 'undefined') {
+          errorBox.style.display = 'flex';
+          document.getElementById('error-text').innerText = 'System engine offline.';
+          return;
+        }
+
+        const res = await DashboardEngine.login(email, pwd);
+        if (res.success && res.user.role === role) {
+          if (role === 'parent') window.location.href = 'parent-dashboard.html';
+          if (role === 'tutor') window.location.href = 'tutor-dashboard.html';
+        } else if (res.success && res.user && res.user.role !== role) {
+          showError('Your credentials are correct but you selected the ' + role + ' tab. Please switch to the ' + res.user.role + ' tab and try again.');
+        } else {
+          errorBox.style.display = 'flex';
+          document.getElementById('error-text').innerText = res.message || 'Incorrect credentials for this role.';
+          gsap.fromTo(errorBox, { x: -4 }, { x: 4, duration: 0.08, yoyo: true, repeat: 3, onComplete: () => gsap.set(errorBox, { x: 0 }) });
+        }
+      } finally {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+      }
+    }
+  </script>
+
+  <script>
+  function submitForgotPassword() {
+    var email = (document.getElementById('forgot-email')||{}).value || '';
+    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    if (typeof DashboardEngine !== 'undefined' && DashboardEngine.addPasswordResetRequest) {
+      DashboardEngine.addPasswordResetRequest(email);
+    }
+    var success = document.getElementById('forgot-success');
+    if (success) success.style.display = 'block';
+    setTimeout(function(){ document.getElementById('forgot-modal').style.display='none'; if(success) success.style.display='none'; document.getElementById('forgot-email').value=''; }, 3000);
+  }
+  </script>
+</body>
+</html>

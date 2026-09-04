@@ -9,6 +9,7 @@
   document.addEventListener('DOMContentLoaded', initCardTilt);
 
   function initCardTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const cards = document.querySelectorAll('.card-tilt-3d');
     if (!cards.length) return;
 

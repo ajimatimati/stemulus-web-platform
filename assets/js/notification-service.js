@@ -26,11 +26,11 @@ const NotificationService = (function() {
         // Check if configured
         if (config.pushover.userKey === 'YOUR_PUSHOVER_USER_KEY' && 
             config.telegram.botToken === 'YOUR_TELEGRAM_BOT_TOKEN') {
-            console.warn('[Notifications] ⚠️ Not configured. Update notification-config.js with your credentials.');
+            console.warn('[Notifications] [Warning] Not configured. Update notification-config.js with your credentials.');
             return;
         }
         
-        console.log('[Notifications] ✅ Service initialized with provider:', config.provider);
+        console.log('[Notifications] [Ready] Service initialized with provider:', config.provider);
         
         // Process any queued notifications
         processQueue();
@@ -89,7 +89,7 @@ const NotificationService = (function() {
             }
             
             if (success) {
-                console.log('[Notifications] ✅ Sent:', options.title);
+                console.log('[Notifications] [Sent] Sent:', options.title);
             }
         } catch (error) {
             console.error('[Notifications] Failed to send:', error.message);
@@ -216,7 +216,7 @@ const NotificationService = (function() {
     function notifyNewLead(leadData) {
         const message = formatLeadMessage(leadData);
         return send({
-            title: '🎉 NEW LEAD CAPTURED!',
+            title: '[NEW LEAD CAPTURED]',
             message: message,
             priority: config?.preferences?.highPriorityLeads ? 'high' : 'normal',
             url: leadData.pageUrl
@@ -229,7 +229,7 @@ const NotificationService = (function() {
     function notifyEngagedVisitor(visitorData) {
         const message = formatVisitorMessage(visitorData);
         return send({
-            title: '👀 Engaged Visitor',
+            title: '[Engaged Visitor]',
             message: message,
             priority: config?.preferences?.silentAnalytics ? 'silent' : 'normal'
         });
@@ -241,7 +241,7 @@ const NotificationService = (function() {
     function sendDailyDigest(stats) {
         const message = formatDigestMessage(stats);
         return send({
-            title: `📊 STEMulus Daily Report - ${new Date().toLocaleDateString()}`,
+            title: `[Report] STEMulus Daily Report - ${new Date().toLocaleDateString()}`,
             message: message,
             priority: 'normal'
         });
@@ -253,7 +253,7 @@ const NotificationService = (function() {
     function notifyFormSubmission(formData) {
         const message = formatFormMessage(formData);
         return send({
-            title: `📝 ${formData.formType || 'Form'} Submission`,
+            title: `[Submission] ${formData.formType || 'Form'}`,
             message: message,
             priority: 'high'
         });
@@ -263,38 +263,38 @@ const NotificationService = (function() {
 
     function formatLeadMessage(data) {
         const lines = [];
-        if (data.email) lines.push(`📧 Email: ${data.email}`);
-        if (data.name) lines.push(`👤 Name: ${data.name}`);
-        if (data.location) lines.push(`📍 Location: ${data.location}`);
-        if (data.device) lines.push(`📱 Device: ${data.device}`);
-        if (data.timeOnSite) lines.push(`⏱️ Time on site: ${data.timeOnSite}`);
-        if (data.pagesVisited) lines.push(`📄 Pages: ${data.pagesVisited}`);
-        if (data.referrer) lines.push(`🔗 Referrer: ${data.referrer}`);
+        if (data.email) lines.push(`Email: ${data.email}`);
+        if (data.name) lines.push(`Name: ${data.name}`);
+        if (data.location) lines.push(`Location: ${data.location}`);
+        if (data.device) lines.push(`Device: ${data.device}`);
+        if (data.timeOnSite) lines.push(`Time on site: ${data.timeOnSite}`);
+        if (data.pagesVisited) lines.push(`Pages: ${data.pagesVisited}`);
+        if (data.referrer) lines.push(`Referrer: ${data.referrer}`);
         lines.push(`\n⏰ Captured: ${new Date().toLocaleTimeString()}`);
         return lines.join('\n');
     }
 
     function formatVisitorMessage(data) {
         const lines = [];
-        if (data.location) lines.push(`📍 ${data.location}`);
-        if (data.device) lines.push(`📱 ${data.device}`);
-        if (data.currentPage) lines.push(`📄 Viewing: ${data.currentPage}`);
-        if (data.timeOnSite) lines.push(`⏱️ ${data.timeOnSite} on site`);
-        if (data.referrer) lines.push(`🔗 From: ${data.referrer}`);
+        if (data.location) lines.push(`Location: ${data.location}`);
+        if (data.device) lines.push(`Device: ${data.device}`);
+        if (data.currentPage) lines.push(`Viewing: ${data.currentPage}`);
+        if (data.timeOnSite) lines.push(`Time: ${data.timeOnSite}`);
+        if (data.referrer) lines.push(`From: ${data.referrer}`);
         return lines.join('\n');
     }
 
     function formatDigestMessage(stats) {
         const lines = [
-            `👥 Total Visitors: ${stats.totalVisitors || 0}`,
+            `Total Visitors: ${stats.totalVisitors || 0}`,
             `🆕 New Visitors: ${stats.newVisitors || 0}`,
-            `🔄 Returning: ${stats.returningVisitors || 0}`,
-            `⏱️ Avg Time: ${stats.avgTimeOnSite || '0m'}`,
+            `Returning: ${stats.returningVisitors || 0}`,
+            `Avg Time: ${stats.avgTimeOnSite || '0m'}`,
             ''
         ];
 
         if (stats.leadsCount > 0) {
-            lines.push(`📧 Leads Captured: ${stats.leadsCount}`);
+            lines.push(`Leads Captured: ${stats.leadsCount}`);
             if (stats.leads && stats.leads.length > 0) {
                 stats.leads.slice(0, 5).forEach(lead => {
                     lines.push(`  • ${lead.email}${lead.location ? ` (${lead.location})` : ''}`);
@@ -304,7 +304,7 @@ const NotificationService = (function() {
         }
 
         if (stats.topPages && stats.topPages.length > 0) {
-            lines.push('🔝 Top Pages:');
+            lines.push('Top Pages:');
             stats.topPages.slice(0, 3).forEach((page, i) => {
                 lines.push(`  ${i + 1}. ${page.name} (${page.views} views)`);
             });
@@ -312,7 +312,7 @@ const NotificationService = (function() {
         }
 
         if (stats.topLocations && stats.topLocations.length > 0) {
-            lines.push('📍 Top Locations:');
+            lines.push('Top Locations:');
             lines.push(`  ${stats.topLocations.slice(0, 3).map(l => `${l.name} (${l.percent}%)`).join(', ')}`);
         }
 
@@ -321,12 +321,12 @@ const NotificationService = (function() {
 
     function formatFormMessage(data) {
         const lines = [];
-        if (data.formType) lines.push(`📋 Form: ${data.formType}`);
-        if (data.name) lines.push(`👤 Name: ${data.name}`);
-        if (data.email) lines.push(`📧 Email: ${data.email}`);
-        if (data.phone) lines.push(`📱 Phone: ${data.phone}`);
-        if (data.message) lines.push(`💬 Message: ${data.message.substring(0, 100)}${data.message.length > 100 ? '...' : ''}`);
-        if (data.program) lines.push(`🎓 Program: ${data.program}`);
+        if (data.formType) lines.push(`Form: ${data.formType}`);
+        if (data.name) lines.push(`Name: ${data.name}`);
+        if (data.email) lines.push(`Email: ${data.email}`);
+        if (data.phone) lines.push(`Phone: ${data.phone}`);
+        if (data.message) lines.push(`Message: ${data.message.substring(0, 100)}${data.message.length > 100 ? '...' : ''}`);
+        if (data.program) lines.push(`Program: ${data.program}`);
         lines.push(`\n⏰ Submitted: ${new Date().toLocaleTimeString()}`);
         return lines.join('\n');
     }
@@ -339,8 +339,8 @@ const NotificationService = (function() {
     function test() {
         console.log('[Notifications] Sending test notification...');
         return send({
-            title: '🧪 Test Notification',
-            message: 'If you see this on your phone, notifications are working!\n\n✅ STEMulus notification system is configured correctly.',
+            title: '[Test] Notification',
+            message: 'If you see this on your phone, notifications are working!\n\n[Verified] STEMulus notification system is configured correctly.',
             priority: 'high'
         });
     }

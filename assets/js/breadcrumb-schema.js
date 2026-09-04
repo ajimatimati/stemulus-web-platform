@@ -5,7 +5,7 @@
  */
 const BreadcrumbSchema = (function() {
     
-    const baseUrl = 'https://stemulus.com';
+    const baseUrl = 'https://stemuluskidstech.com';
     const pathname = window.location.pathname.replace(/^\//, '').replace(/\/$/, '') || 'index.html';
     const filename = pathname.split('/').pop();
     

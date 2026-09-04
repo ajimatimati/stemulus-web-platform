@@ -11,13 +11,65 @@ const TutorEngine = (function() {
     }
 
     function checkAuth() {
-        currentTutor = DashboardEngine.getSession();
-        
-        if (!currentTutor || currentTutor.role !== 'tutor') {
-            showLoginOverlay();
+        const hasFirebase = (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore);
+
+        if (hasFirebase) {
+            // Use Firebase Auth's real-time state listener
+            firebase.auth().onAuthStateChanged(async (user) => {
+                if (user) {
+                    const session = DashboardEngine.getSession();
+                    if (session && (session.role === 'tutor' || session.role === 'admin') && session.email.toLowerCase() === user.email.toLowerCase()) {
+                        currentTutor = session;
+                        hideLoginOverlay();
+                        renderDashboard();
+                    } else {
+                        // Fetch role from Firestore
+                        try {
+                            const userDoc = await firebase.firestore().collection('users').doc(user.email.toLowerCase()).get();
+                            if (userDoc.exists) {
+                                const userData = userDoc.data();
+                                if (userData.role === 'tutor' || userData.role === 'admin') {
+                                    sessionStorage.setItem("stemulus_session", JSON.stringify(userData));
+                                    currentTutor = userData;
+                                    hideLoginOverlay();
+                                    renderDashboard();
+                                } else {
+                                    console.warn("[Tutor Engine] User is logged in but role is:", userData.role);
+                                    showLoginOverlay();
+                                }
+                            } else {
+                                window.location.href = 'parent-login.html?role=tutor&error=account_not_found';
+                            }
+                        } catch (e) {
+                            console.error("[Tutor Engine] Firestore check failed:", e);
+                            if (session && (session.role === 'tutor' || session.role === 'admin')) {
+                                currentTutor = session;
+                                hideLoginOverlay();
+                                renderDashboard();
+                            } else {
+                                showLoginOverlay();
+                            }
+                        }
+                    }
+                } else {
+                    const localSession = DashboardEngine.getSession();
+                    if (localSession && (localSession.role === 'tutor' || localSession.role === 'admin')) {
+                        currentTutor = localSession;
+                        hideLoginOverlay();
+                        renderDashboard();
+                    } else {
+                        showLoginOverlay();
+                    }
+                }
+            });
         } else {
-            hideLoginOverlay();
-            renderDashboard();
+            currentTutor = DashboardEngine.getSession();
+            if (!currentTutor || (currentTutor.role !== 'tutor' && currentTutor.role !== 'admin')) {
+                showLoginOverlay();
+            } else {
+                hideLoginOverlay();
+                renderDashboard();
+            }
         }
     }
 
@@ -31,6 +83,8 @@ const TutorEngine = (function() {
     }
 
     function renderDashboard() {
+        if (!currentTutor) return;
+        document.documentElement.style.visibility = 'visible';
         // Remove loading screen
         const loader = document.getElementById('loading-screen');
         if (loader) {
@@ -45,13 +99,22 @@ const TutorEngine = (function() {
         const avatarEl = document.getElementById('avatar-initials');
         if (avatarEl) avatarEl.textContent = (currentTutor.name || "T")[0].toUpperCase();
 
+        var sidebarName = document.getElementById('sidebar-tutor-name');
+        if (sidebarName) sidebarName.textContent = currentTutor.name || 'Tutor';
+        var sidebarAvatar = document.getElementById('sidebar-avatar');
+        if (sidebarAvatar) sidebarAvatar.textContent = ((currentTutor.name || 'T').charAt(0)).toUpperCase();
+        var heroName = document.getElementById('hero-tutor-name');
+        if (heroName) heroName.textContent = (currentTutor.name || 'Mentor').split(' ')[0];
+
         // Wire logout
         const logoutBtn = document.getElementById('logout-btn');
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', function() {
+            logoutBtn.onclick = function() {
                 DashboardEngine.logout();
-                window.location.reload();
-            });
+                if (typeof firebase !== 'undefined' && firebase.auth) {
+                    firebase.auth().signOut().catch(function(){}).then(function(){ window.location.href = 'parent-login.html'; });
+                } else { window.location.href = 'parent-login.html'; }
+            };
         }
 
         // Load content
@@ -62,18 +125,25 @@ const TutorEngine = (function() {
     }
 
     function renderStats() {
+        if (!currentTutor) return;
         const schedules = DashboardEngine.getSchedules().filter(s => s.mentor === currentTutor.name && s.attendanceStatus === 'pending');
-        const students = DashboardEngine.getStudents().filter(s => s.tutorName === currentTutor.name);
-        
+        const students = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(currentTutor.email) : DashboardEngine.getStudents().filter(s => s.tutorName === currentTutor.name);
+
         const upcomingEl = document.getElementById('stat-upcoming');
         const studentsEl = document.getElementById('stat-students');
-        const hoursEl = document.getElementById('stat-hours');
         if (upcomingEl) upcomingEl.textContent = schedules.length;
         if (studentsEl) studentsEl.textContent = students.length;
-        if (hoursEl) hoursEl.textContent = (students.length * 8) + "h";
+        var allSchedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
+        var completedSessions = allSchedules.filter(function(s) { return (s.mentor === currentTutor.name || s.tutorEmail === currentTutor.email) && s.attendanceStatus === 'present'; });
+        var totalMins = completedSessions.reduce(function(sum, s) { return sum + (parseInt(s.duration) || 60); }, 0);
+        var hoursVal = Math.round(totalMins / 60);
+        var hoursEl = document.getElementById('stat-hours'); if (hoursEl) hoursEl.textContent = hoursVal + 'h';
+        var kh = document.getElementById('kpi-hours');
+        if (kh && hoursEl) kh.textContent = hoursEl.textContent.replace('h','');
     }
 
     function renderSchedule() {
+        if (!currentTutor) return;
         const listContainer = document.getElementById('schedule-list');
         if (!listContainer) return;
 
@@ -149,13 +219,13 @@ const TutorEngine = (function() {
             document.getElementById('tutor-student-id').value = session.studentId;
             document.getElementById('tutor-student-name').textContent = session.studentName;
             document.getElementById('tutor-course-name').textContent = session.course;
-            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
         }
     }
 
     function closeReportModal() {
         const modal = document.getElementById('tutor-report-modal');
-        if (modal) modal.classList.add('hidden');
+        if (modal) modal.style.display = 'none';
     }
 
     function submitReportForm(e) {
@@ -174,7 +244,7 @@ const TutorEngine = (function() {
         if (status === 'present') {
             const schedules = DashboardEngine.getSchedules();
             const session = schedules.find(s => s.id === scheduleId);
-            
+
             DashboardEngine.addReport({
                 studentId,
                 studentName: session.studentName,
@@ -185,6 +255,15 @@ const TutorEngine = (function() {
                 grade,
                 feedback
             });
+        } else if (status === 'absent') {
+            var absSessions = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
+            var absSession = absSessions.find(function(s) { return s.id === scheduleId; });
+            var sessionDate = absSession ? absSession.date : '';
+            var studentName = absSession ? absSession.studentName : '';
+            var absStudent = (DashboardEngine.getStudents ? DashboardEngine.getStudents() : []).find(function(s) { return s.id === scheduleId || s.firstName === studentName; });
+            if (absStudent && absStudent.parentEmail && DashboardEngine.addNotification) {
+                DashboardEngine.addNotification({ userEmail: absStudent.parentEmail, title: 'Class Missed', message: (absStudent.firstName || 'Your child') + ' missed their ' + (sessionDate || 'recent') + ' session. Please contact the admin to reschedule.', timestamp: new Date().toISOString(), read: false });
+            }
         }
 
         // Show success feedback
@@ -199,6 +278,7 @@ const TutorEngine = (function() {
     }
 
     function renderNotifications() {
+        if (!currentTutor) return;
         const container = document.getElementById('tutor-notifications-container');
         if (!container) return;
 
@@ -237,7 +317,8 @@ const TutorEngine = (function() {
 
         const modal = document.createElement('div');
         modal.id = 'tutor-report-modal';
-        modal.className = 'fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm';
+        modal.style.display = 'none';
+        modal.className = 'fixed inset-0 z-50 items-center justify-center p-4 bg-black/75 backdrop-blur-sm';
         modal.innerHTML = `
             <div class="bg-white rounded-3xl p-6 max-w-lg w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn max-h-[90vh] overflow-y-auto">
                 <div class="flex justify-between items-center pb-2 border-b border-slate-100">
@@ -264,7 +345,7 @@ const TutorEngine = (function() {
 
                     <div>
                         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Attendance Status *</label>
-                        <select id="tutor-attendance-status" required onchange="const fields=document.getElementById('tutor-academic-fields'); if(this.value==='present') fields.classList.remove('hidden'); else fields.classList.add('hidden');"
+                        <select id="tutor-attendance-status" required onchange="const fields=document.getElementById('tutor-academic-fields'); if(this.value==='present') fields.classList.remove('hidden'); else fields.classList.add('hidden'); var acFields = document.getElementById('tutor-academic-fields'); if (acFields) { var isAbsent = this.value !== 'present'; acFields.querySelectorAll('input,select,textarea').forEach(function(el) { el.disabled = isAbsent; }); }"
                             class="w-full bg-gray-50 border border-slate-200 rounded-xl px-4 py-2 text-gray-800 focus:outline-none focus:border-blue-500 transition-colors">
                             <option value="present">Present (Write Report)</option>
                             <option value="absent">Absent</option>
@@ -275,7 +356,7 @@ const TutorEngine = (function() {
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Module / Topic *</label>
-                                <input type="text" id="tutor-module" value="Loops & Logic" required
+                                <input type="text" id="tutor-module" required
                                     class="w-full bg-gray-50 border border-slate-200 rounded-xl px-4 py-2.5 text-gray-800 focus:outline-none focus:border-blue-500 transition-colors">
                             </div>
                             <div>

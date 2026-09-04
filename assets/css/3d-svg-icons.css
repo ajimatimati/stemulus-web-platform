@@ -1,0 +1,217 @@
+/**
+ * STEMulus Kids Tech — 3D SVG Motion System & Lighting Engine
+ * Agency-grade depth, specular highlights, and fluid micro-animations.
+ */
+
+:root {
+  --icon-3d-shadow-color: rgba(15, 23, 42, 0.18);
+  --icon-3d-shadow-ambient: 0 10px 25px -5px var(--icon-3d-shadow-color), 0 8px 10px -6px var(--icon-3d-shadow-color);
+  --icon-3d-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --icon-3d-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base 3D SVG Icon Container */
+.icon-3d {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  position: relative;
+  line-height: 1;
+  flex-shrink: 0;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.35s var(--icon-3d-ease-spring), filter 0.35s var(--icon-3d-ease-smooth);
+}
+
+.icon-3d svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.08));
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+/* Sizes */
+.icon-3d-xs { width: 14px; height: 14px; }
+.icon-3d-sm { width: 18px; height: 18px; }
+.icon-3d-md { width: 24px; height: 24px; }
+.icon-3d-lg { width: 32px; height: 32px; }
+.icon-3d-xl { width: 48px; height: 48px; }
+.icon-3d-2xl { width: 64px; height: 64px; }
+.icon-3d-hero { width: 88px; height: 88px; }
+
+/* Micro-Interactions on Hover */
+.icon-3d:hover {
+  transform: translateY(-2px) scale(1.06) rotateX(4deg);
+}
+.icon-3d:hover svg {
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.16));
+}
+
+/* Animation Keyframes */
+
+/* 1. Fluid Levitation (Z-axis float) */
+@keyframes iconFloat3D {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(1.5deg);
+  }
+}
+
+/* 2. Radial Pulse Glow */
+@keyframes iconPulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 4px 10px rgba(244, 96, 12, 0.25));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 8px 20px rgba(244, 96, 12, 0.45));
+  }
+}
+
+/* 3. Rocket Thruster Flame flicker */
+@keyframes rocketThrustFlame {
+  0%, 100% {
+    transform: scaleY(1) translateY(0);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scaleY(1.3) translateY(2px);
+    opacity: 1;
+  }
+}
+
+/* 4. Clock Hands Ticking */
+@keyframes clockTickSec {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 5. Faceted Star Twinkle & Specular Sweep */
+@keyframes starTwinkle {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+    filter: brightness(1);
+  }
+  25% {
+    transform: rotate(3deg) scale(1.08);
+    filter: brightness(1.2) drop-shadow(0 0 10px rgba(251, 191, 36, 0.7));
+  }
+  75% {
+    transform: rotate(-3deg) scale(0.96);
+    filter: brightness(0.95);
+  }
+}
+
+/* 6. Graduation Tassel Gentle Sway */
+@keyframes capTasselSway {
+  0%, 100% {
+    transform: rotate(0deg);
+    transform-origin: top center;
+  }
+  50% {
+    transform: rotate(12deg);
+    transform-origin: top center;
+  }
+}
+
+/* 7. Checkmark / Success Pop */
+@keyframes checkBadgePop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 8. Orbital Loop Spin (Sync / Refresh) */
+@keyframes orbitalSpin3D {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 9. High Voltage Electric Flicker */
+@keyframes boltVoltage {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 4px #fbbf24); }
+  30% { opacity: 0.82; }
+  35% { opacity: 1; filter: drop-shadow(0 0 12px #f59e0b); }
+  70% { opacity: 0.9; }
+  75% { opacity: 1; filter: drop-shadow(0 0 14px #fbbf24); }
+}
+
+/* 10. Candle Flame Flicker */
+@keyframes candleFlicker {
+  0%, 100% { transform: scale(1) skewX(0deg); }
+  25% { transform: scale(1.1, 0.95) skewX(2deg); }
+  75% { transform: scale(0.95, 1.1) skewX(-2deg); }
+}
+
+/* Motion Activation Classes */
+.motion-float {
+  animation: iconFloat3D 3.6s ease-in-out infinite;
+}
+.motion-pulse {
+  animation: iconPulseGlow 2.8s ease-in-out infinite;
+}
+.motion-spin {
+  animation: orbitalSpin3D 2.5s linear infinite;
+}
+.motion-twinkle {
+  animation: starTwinkle 3s ease-in-out infinite;
+}
+.motion-pop {
+  animation: checkBadgePop 0.5s var(--icon-3d-ease-spring) forwards;
+}
+.motion-voltage {
+  animation: boltVoltage 2s ease-in-out infinite;
+}
+
+/* Internal SVG Animated Sub-elements */
+.icon-3d svg .anim-flame {
+  transform-origin: center top;
+  animation: rocketThrustFlame 0.8s ease-in-out infinite;
+}
+.icon-3d svg .anim-tassel {
+  transform-origin: 32px 18px;
+  animation: capTasselSway 2.5s ease-in-out infinite;
+}
+.icon-3d svg .anim-second-hand {
+  transform-origin: 32px 32px;
+  animation: clockTickSec 12s linear infinite;
+}
+.icon-3d svg .anim-candle {
+  transform-origin: 32px 16px;
+  animation: candleFlicker 1.2s ease-in-out infinite;
+}
+.icon-3d svg .anim-spin-part {
+  transform-origin: 32px 32px;
+  animation: orbitalSpin3D 3s linear infinite;
+}
+
+/* Badge Wrappers */
+.icon-3d-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(241, 245, 249, 0.8));
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+.icon-3d-badge-dark {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.8));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}

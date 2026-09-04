@@ -1,467 +1,416 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <script src="https://unpkg.com/lucide@latest" defer></script>
- <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
- <script src="https://cdn.tailwindcss.com"></script>
- <meta charset="UTF-8">
-  <!-- SEO: CORE -->
+  <meta charset="UTF-8">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Tutor Dashboard | STEMulus Portal</title>
   <meta name="description" content="Manage your STEMulus tutoring sessions, student notes and earnings from the tutor dashboard.">
-  <meta name="keywords" content="STEMulus tutor portal, tutor dashboard">
-  <meta name="author" content="STEMulus Kids Tech">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <link rel="canonical" href="https://stemuluskidstech.com/tutor-dashboard.html">
-  <!-- SEO: OPEN GRAPH -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Tutor Dashboard | STEMulus">
-  <meta property="og:description" content="Manage your STEMulus tutoring sessions, student notes and earnings from the tutor dashboard.">
-  <meta property="og:url" content="https://stemuluskidstech.com/tutor-dashboard.html">
-  <meta property="og:site_name" content="STEMulus">
-  <meta property="og:image" content="https://stemuluskidstech.com/logo.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="en_US">
-  <!-- SEO: TWITTER CARD -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tutor Dashboard | STEMulus">
-  <meta name="twitter:description" content="Manage your STEMulus tutoring sessions, student notes and earnings from the tutor dashboard.">
-  <meta name="twitter:image" content="https://stemuluskidstech.com/logo.png">
-  <meta name="twitter:site" content="@stemuluskids">
-  <!-- SEO: GEO -->
-  <meta name="geo.region" content="NG">
-  <meta name="geo.placename" content="Lagos, Nigeria">
-  <!-- SEO: CORE -->
-  <!-- SEO: OPEN GRAPH -->
-  <!-- SEO: TWITTER CARD -->
-  <!-- SEO: GEO -->
-  <!-- SEO: CORE -->
-  <!-- SEO: OPEN GRAPH -->
-  <!-- SEO: TWITTER CARD -->
-  <!-- SEO: GEO -->
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Tutor Dashboard | STEMulus</title>
- <link rel="preconnect" href="https://fonts.googleapis.com">
- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
- <link href="https://fonts.googleapis.com/css 2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
- <!-- Fonts -->
- 
- <!-- Lucide Icons -->
+  <link rel="icon" type="image/png" href="favicon.png">
 
- <!-- Tailwind CSS -->
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
- <!-- Supabase SDK -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
- <link rel="stylesheet" href="preai-overhaul.css">
+  <!-- Tailwind utilities (required for sidebar positioning: fixed, w-64, h-full, etc.) -->
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
+  <!-- STEMulus Portal Design System -->
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/portal-animations.css">
+  <link rel="stylesheet" href="assets/css/3d-svg-icons.css">
+  <script src="assets/js/3d-icons.js" defer></script>
 
-<link rel="stylesheet" href="responsive.css">
+  <style>
+    body { background-color: var(--bg-page); min-height: 100vh; font-family: 'Nunito', sans-serif; margin: 0; padding-bottom: 5rem; }
 
- <!-- Standard Favicon -->
- <script>
- if (window.tailwind) {
- tailwind.config = {
- theme: {
- extend: {
- colors: {
- admin: {
- dark: '#f8fafc',
- border: '#e2e8f0',
- card: '#ffffff',
- accent: '#3b82f6',
- danger: '#ef4444',
- success: '#22c55e',
- warning: '#f59e0b',
- }
- }
- }
- }
- };
- }
+    .tutor-nav { background: white; border-bottom: 1px solid var(--border-soft); position: sticky; top: 0; z-index: 40; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+
+    .tutor-hero { background: linear-gradient(135deg, var(--stage-tutor-1), var(--stage-tutor-2)); border-radius: 28px; padding: 2.5rem; color: white; position: relative; overflow: hidden; margin-bottom: 2rem; box-shadow: var(--shadow-shell); }
+    .hero-title { font-family: 'Fredoka One', cursive; font-size: 32px; margin: 0 0 8px 0; font-weight: normal; }
+    .hero-sub { font-size: 15px; opacity: 0.95; margin: 0 0 20px 0; max-width: 500px; }
+
+    .kpi-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .kpi-chip { background: rgba(255,255,255,0.22); backdrop-filter: blur(8px); padding: 8px 16px; border-radius: 16px; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.3); }
+
+    .hero-3d { position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); width: 180px; height: auto; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15)); }
+    .hero-accent { position: absolute; pointer-events: none; }
+
+    .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    @media (max-width: 960px) { .dash-grid { grid-template-columns: 1fr; } .hero-3d { display: none; } }
+
+    .dash-card { background: white; border-radius: 24px; padding: 1.5rem; border: 1px solid var(--border-soft); box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 1.5rem; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+    .card-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 10px; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: #F8FAFC; border-radius: 20px; padding: 1.25rem; border: 1px solid var(--border-soft); text-align: center; transition: all 0.2s; }
+    .stat-card:hover { background: white; box-shadow: var(--shadow-float); transform: translateY(-2px); }
+    .stat-number { font-size: 28px; font-weight: 800; color: var(--text-main); margin: 0; }
+    .stat-label { font-size: 12px; font-weight: 700; color: var(--text-muted); margin: 4px 0 0; }
+    .stat-icon { width: 36px; height: 36px; object-fit: contain; margin: 0 auto 8px; }
+
+    .action-btn-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #F8FAFC; border-radius: 16px; border: 1px solid var(--border-soft); text-decoration: none; color: var(--text-main); font-weight: 700; font-size: 14px; transition: all 0.2s; }
+    .action-btn-item:hover { background: #F3E8FF; border-color: var(--stage-tutor-1); color: var(--stage-tutor-1); }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #sidebar { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
+    #sidebar.open { transform: translateX(0); }
+    @media(max-width:1023px){ #sidebar:not(.open) { visibility: hidden; } }
+    @media(min-width:1024px){ #sidebar { transform: translateX(0) !important; visibility: visible !important; } }
+    #sidebar-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:40;display:none; }
+    #sidebar-overlay.show { display:block; }
+    #sidebar nav a:hover { background:rgba(244,96,12,0.12) !important; color:#f4600c !important; }
+
+    /* ===== MOBILE RESPONSIVE OVERRIDES ===== */
+
+    /* Main content: no left margin on mobile; desktop gets 256px via JS + this rule */
+    @media (max-width: 1023px) {
+      .lg\:ml-64 { margin-left: 0 !important; }
+      .lg\:ml-64 { padding-bottom: 5rem; }
+    }
+
+    /* dash-grid horizontal padding shrinks on small phones */
+    @media (max-width: 480px) {
+      .dash-grid { padding: 0 0.75rem; }
+      .stat-grid { grid-template-columns: 1fr; }
+    }
+
+    /* stat-grid: 2 columns on tablets (481–768px) */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Hero section: smaller text on phones */
+    @media (max-width: 480px) {
+      .hero-title { font-size: 24px; }
+      .hero-sub  { font-size: 13px; }
+      .kpi-chip  { font-size: 11px; padding: 6px 10px; }
+      .tutor-hero { padding: 1.5rem 1.25rem; border-radius: 20px; }
+    }
+
+    /* Nav bar: tighter padding on phones */
+    @media (max-width: 480px) {
+      .nav-inner { padding: 0.5rem 0.75rem; }
+      .tutor-nav { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    }
+
+    /* Bottom dock / pill toolbar: iOS safe-area inset */
+    .pill-toolbar { padding-bottom: env(safe-area-inset-bottom, 0); }
+
+    /* Full-width tutor-nav on all mobile breakpoints */
+    @media (max-width: 1023px) {
+      .tutor-nav { width: 100%; box-sizing: border-box; }
+    }
+  </style>
+<script>
+(function(){
+  try {
+    var s=JSON.parse(sessionStorage.getItem('stemulus_session')||'null');
+    var ttl=8*60*60*1000;
+    if(!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
+      // Not logged in as tutor or admin - redirect to login
+      window.location.replace('parent-login.html?role=tutor');
+    }
+  } catch(e){}
+})();
 </script>
-<style>
- /* Global Dashboard Brightening Overrides */
- body, html {
- background-color: #f8fafc!important;
- background-image: none !important;
- color: #0f172a!important;
- }
- .bg-white, .bg-gray-50 {
-  background-color: #FAFBFC!important;
-  color: #1f2937!important;
-}
- .glass-card, .bg-white, .stat-card {
-  background-color: #ffffff!important;
-  color: #1f2937!important;
-  border-color: #e5e7eb!important;
-}
- .text-white, .text-white\/90, h 1, h 2, h 3, h 4, h 5, h 6, th, td, label, span:not(.text-white) {
- color: #0f172a!important;
- }
- .text-white\/60, .text-white\/55, .text-white\/50, .text-white\/45, .text-white\/40, .text-white\/30, .text-white\/20, .text-slate-400 {
- color: #64748b!important;
- }
- input, select, textarea {
- background-color: #ffffff!important;
- border-color: #cbd5e1!important;
- color: #0f172a!important;
- }
- input::placeholder {
- color: #94a3b8!important;
- }
- /* Action Buttons (Keep text white) */
- button, button *, .btn-pill-solid, .bg-admin-accent, .bg-supernova-orange, .bg-blue-600, .bg-orange-500, button span {
- color: #ffffff!important;
- }
- /* Sidebar styling overrides */
- aside, aside * {
- color: #0f172a!important;
- background-color: #ffffff!important;
- }
- aside a:hover {
- background-color: #f1f5f9!important;
- }
- aside .border-r {
- border-right-color: #e2e8f0!important;
- }
- aside .border-b {
- border-bottom-color: #e2e8f0!important;
- }
- aside .border-t {
- border-top-color: #e2e8f0!important;
- }
- .nav-link.active, .nav-link.active i, .nav-link.active span {
- background: linear-gradient(90deg, rgba(59,130,246,0.08)0%, transparent 100%) !important;
- border-left:3px solid #3b82f6!important;
- color: #2563eb!important;
- }
- /* Table borders */
- table, tr, td, th {
- border-color: #e2e8f0!important;
- }
- th {
- background-color: #f1f5f9!important;
- color: #475569!important;
- }
- /* Logo in sidebar needs to invert to be visible */
- aside img {
- filter: invert(1) !important;
- }
-</style>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-  {
- "@type": "EducationalOrganization",
- "@id": "https://stemuluskidstech.com/#organization",
- "name": "STEMulus Kids Tech",
- "alternateName": "STEMulus",
- "url": "https://stemuluskidstech.com",
- "logo": "https://stemuluskidstech.com/logo.png",
- "description": "STEMulus is a global online coding academy offering private 1-on-1 programming classes for children aged 5 - 17 in Python, Scratch, robotics, web development and AI.",
- "email": "admin@stemuluskidstech.com",
- "telephone": "+2347052466716",
- "sameAs": [
- "https://wa.me/2347052466716"
- ],
- "contactPoint": {
- "@type": "ContactPoint",
- "contactType": "customer support",
- "email": "admin@stemuluskidstech.com",
- "availableLanguage": "English"
- }
-  },
-  {
- "@type": "WebSite",
- "@id": "https://stemuluskidstech.com/#website",
- "url": "https://stemuluskidstech.com",
- "name": "STEMulus",
- "publisher": {
- "@id": "https://stemuluskidstech.com/#organization"
- },
- "potentialAction": {
- "@type": "SearchAction",
- "target": "https://stemuluskidstech.com/?s={search_term_string}",
- "query-input": "required name=search_term_string"
- }
-  },
-  {
- "@type": "BreadcrumbList",
- "@id": "https://stemuluskidstech.com/tutor-dashboard.html#breadcrumb",
- "itemListElement": [
- {
- "@type": "ListItem",
- "position":1,
- "name": "Home",
- "item": "https://stemuluskidstech.com/"
- },
- {
- "@type": "ListItem",
- "position":2,
- "name": "Page",
- "item": "https://stemuluskidstech.com/tutor-dashboard.html"
- }
- ]
-  }
-]
-}
-</script>
-
- <!-- Standard Favicon -->
- <link rel="icon" type="image/png" href="logo.png">
- <link rel="apple-touch-icon" href="logo.png">
 </head>
-<body class="bg-gray-50 min-h-screen font-inter text-gray-700 dashboard-page">
-<div id="cursor-ring" aria-hidden="true"></div>
-<div id="cursor-dot"  aria-hidden="true"></div>
+<body>
 
- <!-- Loading State -->
- <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center transition-opacity duration-500">
- <div class="text-center">
- <!-- From Uiverse.io by anand_495-7 --> 
- <div class="loader mx-auto mb-8 relative" style="height:30px;">
- <span><span></span><span></span><span></span><span></span></span>
- <div class="base">
- <span></span>
- <div class="face"></div>
- </div>
- </div>
- <div class="longfazers absolute inset-0 overflow-hidden">
- <span></span><span></span><span></span><span></span>
- </div>
- <p class="text-white/55 font-medium mt-8 relative z-50">Loading tutor portal...</p>
- </div>
- </div>
+  <div id="sidebar-overlay"></div>
+  <!-- Tutor Sidebar -->
+  <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 flex flex-col z-50" style="position:fixed;width:256px;height:100%;top:0;left:0;z-index:50;background:#0f1117;border-right:1px solid rgba(255,255,255,0.07);border-radius:0 24px 24px 0;">
+    <div class="p-6 flex items-center gap-3" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+      <img src="favicon.png" width="36" height="36" style="border-radius:10px;object-fit:contain;" alt="STEMulus">
+      <div>
+        <span class="font-nunito font-bold text-lg" style="color:#ffffff;">STEMulus</span>
+        <p class="text-xs" style="color:rgba(255,255,255,0.45);">Tutor Portal</p>
+      </div>
+    </div>
+    <nav class="flex-1 p-4 space-y-1" style="overflow-y:auto;">
+      <a href="tutor-dashboard.html" class="flex items-center gap-3 px-4 py-3 font-semibold" style="border-radius:16px;background:rgba(244,96,12,0.18);color:#f4600c;">
+        <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
+      </a>
+      <a href="tutor-attendance.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="users" class="w-5 h-5"></i> My Students
+      </a>
+      <a href="tutor-attendance-create.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="clipboard-check" class="w-5 h-5"></i> Class Log
+      </a>
+      <a href="tutor-monthly-report.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="file-bar-chart" class="w-5 h-5"></i> My Reports
+      </a>
+      <a href="#schedule-list" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="calendar" class="w-5 h-5"></i> My Schedule
+      </a>
+    </nav>
+    <div class="p-4" style="border-top:1px solid rgba(255,255,255,0.07);">
+      <div class="flex items-center gap-3 mb-3 px-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs" style="background:rgba(244,96,12,0.25);color:#f4600c;" id="sidebar-avatar">T</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-bold truncate" style="color:rgba(255,255,255,0.9);" id="sidebar-tutor-name">Tutor Name</p>
+          <p class="text-xs truncate" style="color:rgba(255,255,255,0.4);">Instructor</p>
+        </div>
+      </div>
+      <button id="sidebar-logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=tutor';" class="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors" style="border:none;background:rgba(255,255,255,0.05);cursor:pointer;">
+        <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+      </button>
+    </div>
+  </aside>
 
-  <!-- Sidebar -->
-  <div class="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 hidden lg:flex flex-col z-10" id="tutor-sidebar">
-  <div class="p-6 border-b border-gray-200 flex items-center gap-2">
-  <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">T</div>
-  <span class="font-nunito font-bold text-xl text-brand-dark">Tutor<span class="text-blue-600">Portal</span></span>
+  <!-- Loading Screen -->
+  <div id="loading-screen" style="position:fixed; inset:0; background:white; z-index:200; display:flex; align-items:center; justify-content:center; transition:opacity 0.4s;">
+    <div style="text-align:center;">
+      <div style="width:40px; height:40px; border:4px solid #E2E8F0; border-top-color:var(--stage-tutor-1); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 12px;"></div>
+      <p style="font-weight:700; color:var(--text-muted);">Loading Tutor Portal...</p>
+    </div>
   </div>
-  
-  <nav class="flex-1 p-4 space-y-1">
-  <a href="#" class="flex items-center gap-3 px-4 py-3 bg-blue-50 text-blue-600 rounded-lg font-medium">
-  <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
-  </a>
-  <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-800/65 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-  <i data-lucide="calendar" class="w-5 h-5"></i> My Schedule
-  </a>
-  <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-800/65 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-  <i data-lucide="users" class="w-5 h-5"></i> Students
-  </a>
-  <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-800/65 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-  <i data-lucide="file-text" class="w-5 h-5"></i> Resources
-  </a>
-  <a href="index.html" class="flex items-center gap-3 px-4 py-3 text-gray-800/65 hover:bg-gray-50 rounded-lg transition-colors font-medium">
-  <i data-lucide="home" class="w-5 h-5"></i> Main Website
-  </a>
+
+  <!-- Navbar -->
+  <nav class="tutor-nav" style="padding-left:0;">
+    <div class="nav-inner" style="padding-left:1rem;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button id="menu-btn" class="lg:hidden" style="background:none;border:none;cursor:pointer;padding:8px;color:#64748b;" aria-label="Toggle sidebar">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div id="avatar-initials" style="width:36px; height:36px; border-radius:50%; background:var(--stage-tutor-1); color:white; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">T</div>
+        <div>
+          <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--stage-tutor-1); display:block;">Mentor Center</span>
+          <span style="font-weight:800; font-size:16px; color:var(--text-main);" id="tutor-name">Tutor Account</span>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="tutor-attendance.html" class="btn-3d" style="background:#f1f5f9; color:var(--text-main); font-size:13px; padding:8px 16px;">
+          <i data-lucide="clipboard-check" style="width:16px;"></i> Attendance
+        </a>
+        <a href="tutor-attendance-create.html" class="btn-3d brand" style="font-size:13px; padding:8px 16px; background:var(--stage-tutor-1);">
+          <i data-lucide="plus-circle" style="width:16px;"></i> Log Session
+        </a>
+        <button id="logout-btn" style="background:none; border:none; color:#94a3b8; cursor:pointer; padding:8px;" title="Sign Out">
+          <i data-lucide="log-out" style="width:20px;"></i>
+        </button>
+      </div>
+    </div>
   </nav>
 
-  <div class="p-4 border-t border-gray-200">
-  <div class="flex items-center gap-3 mb-4 px-2">
-  <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-white/55 font-bold text-xs" id="avatar-initials">T</div>
-  <div class="flex-1 min-w-0">
-  <p class="text-sm font-bold text-white truncate" id="tutor-name">Tutor Name</p>
-  <p class="text-xs text-white/55 truncate">Instructor</p>
-  </div>
-  </div>
-  <button id="logout-btn" class="w-full flex items-center justify-center gap-2 text-white/55 hover:text-red-500 transition-colors text-sm py-2">
-  <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
-  </button>
-  </div>
-  </div>
+  <!-- Hero Banner -->
+  <div class="lg:ml-64" style="transition:margin-left 0.3s;">
+  <div style="max-width:1200px; margin:2rem auto 0; padding:0 1.5rem;">
+    <div class="tutor-hero" id="hero-banner">
+      <!-- Floating 3D accents -->
+      <img src="images/portal/standalone/lightbulb-3d.png" alt="" class="hero-accent float-accent--sm animate-drift motion-delay-2" style="top:14%; left:7%; width:32px; opacity:0.6; filter:blur(1.5px);">
+      <img src="images/portal/standalone/medal-3d.png" alt="" class="hero-accent float-accent--sm animate-orbit motion-delay-4" style="bottom:18%; left:22%; width:28px; opacity:0.5; filter:blur(2px);">
+      <div class="accent-sphere--teal accent-sphere animate-drift-reverse motion-delay-3" style="top:22%; right:38%;"></div>
 
-  <!-- Main Content -->
-  <main class="lg:ml-64 p-8">
-  <header class="flex items-center justify-between mb-8">
-  <div class="flex items-center gap-3">
-  <button id="tutor-menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-slate-800 focus:outline-none" aria-label="Toggle menu">
-  <i data-lucide="menu" class="w-6 h-6"></i>
-  </button>
-  <div>
-  <h1 class="text-2xl font-bold font-nunito text-gray-800">Dashboard</h1>
-  <p class="text-gray-500">Overview of your classes and tasks.</p>
-  </div>
-  </div>
-  </header>
+      <div style="max-width:600px; position:relative; z-index:2;">
+        <h1 class="hero-title">Ready to teach, <span id="hero-tutor-name">Mentor</span></h1>
+        <p class="hero-sub">Manage your active coding students, upcoming private sessions, and submitted feedback logs.</p>
 
-  <!-- Stats Row -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-  <div class="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm">
-  <div class="flex items-center justify-between mb-4">
-  <span class="text-gray-500 text-sm font-medium">Upcoming Classes</span>
-  <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
-  <i data-lucide="calendar-clock" class="w-5 h-5 text-blue-500"></i>
-  </div>
-  </div>
-  <p id="stat-upcoming" class="text-3xl font-bold text-gray-800">0</p>
-  </div>
-  
-  <div class="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm">
-  <div class="flex items-center justify-between mb-4">
-  <span class="text-gray-500 text-sm font-medium">Active Students</span>
-  <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center">
-  <i data-lucide="users" class="w-5 h-5 text-green-500"></i>
-  </div>
-  </div>
-  <p id="stat-students" class="text-3xl font-bold text-gray-800">0</p>
-  </div>
-
-  <div class="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm">
-  <div class="flex items-center justify-between mb-4">
-  <span class="text-gray-500 text-sm font-medium">Teaching Hours</span>
-  <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
-  <i data-lucide="clock" class="w-5 h-5 text-blue-500"></i>
-  </div>
-  </div>
-  <p id="stat-hours" class="text-3xl font-bold text-gray-800">0</p>
-  </div>
-  </div>
-
-  <!-- Schedule & Notifications Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <!-- Schedule Section -->
-      <div class="lg:col-span-2 bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm">
-      <div class="p-6 border-b border-gray-200 flex items-center justify-between">
-          <h2 class="font-bold text-gray-800">Today's Schedule</h2>
-          <button class="text-sm text-blue-600 font-medium hover:underline">View Calendar</button>
-      </div>
-          <div class="divide-y divide-gray-50" id="schedule-list">
-              <div class="p-8 text-center text-slate-400">
-                  <p>No classes scheduled for today.</p>
-              </div>
+        <div class="kpi-row">
+          <div class="kpi-chip">
+            <i data-lucide="calendar" style="width:16px; color:#F3E8FF;"></i>
+            <span id="kpi-upcoming">0</span> Upcoming
           </div>
+          <div class="kpi-chip">
+            <i data-lucide="users" style="width:16px; color:#F3E8FF;"></i>
+            <span id="kpi-students">0</span> Students
+          </div>
+          <div class="kpi-chip">
+            <i data-lucide="clock" style="width:16px; color:#F3E8FF;"></i>
+            <span id="kpi-hours">0</span> Hours
+          </div>
+        </div>
       </div>
 
-      <!-- Notifications Column -->
-      <div class="bg-white rounded-3xl border border-gray-200 p-6 shadow-sm">
-      <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <i data-lucide="bell" class="w-5 h-5 text-blue-500"></i> Notifications
+      <!-- Hero 3D Object -->
+      <img src="images/portal/standalone/calendar-3d.png" alt="Calendar" class="hero-3d animate-float-band magnetic-repel">
+    </div>
+  </div>
+
+  <!-- STATS ROW -->
+  <div style="max-width:1200px; margin:0 auto; padding:0 1.5rem;">
+    <div class="stat-grid">
+      <div class="stat-card">
+        <img src="images/portal/standalone/hourglass-3d.png" alt="Upcoming classes" class="stat-icon">
+        <p class="stat-number" id="stat-upcoming">0</p>
+        <p class="stat-label">Upcoming Classes</p>
+      </div>
+      <div class="stat-card">
+        <img src="images/portal/standalone/backpack-3d.png" alt="Active students" class="stat-icon">
+        <p class="stat-number" id="stat-students">0</p>
+        <p class="stat-label">Active Students</p>
+      </div>
+      <div class="stat-card">
+        <img src="images/portal/standalone/clock-3d.png" alt="Teaching hours" class="stat-icon">
+        <p class="stat-number" id="stat-hours">0</p>
+        <p class="stat-label">Teaching Hours</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD GRID -->
+  <div class="dash-grid">
+
+    <!-- LEFT MAIN COLUMN -->
+    <div>
+      <!-- Schedule -->
+      <div class="dash-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <img src="images/portal/standalone/pencil-3d.png" alt="" width="28" height="28" style="object-fit:contain;">
+            Today's Schedule
           </h2>
-          <div id="tutor-notifications-container" class="space-y-4 max-h-[300px] overflow-y-auto">
-              <p class="text-sm text-slate-400 text-center py-4">No notifications yet.</p>
-          </div>
-      </div>
-  </div>
-  </main>
-
-<!-- FOOTER  |  NEWSPAPER EDITORIAL -->
-
-<footer class="footer-editorial" role="contentinfo">
-  <!-- Model Viewer Script Loaded Dynamically inside the footer -->
-  <div class="footer-grid">
-    <!-- Brand column with 3D model logo -->
-    <div class="footer-brand-col">
-      <div class="footer-3d-wrapper">
-    <div class="footer-hologram-coin">
-      <div class="coin-glow"></div>
-      <div class="coin-inner">
-        <div class="coin-front">
-          <img src="logo.png" alt="STEMulus Logo">
+          <a href="tutor-attendance-create.html" style="font-size:13px; font-weight:700; color:var(--stage-tutor-1); text-decoration:none;">+ Log Attendance</a>
         </div>
-        <div class="coin-back">
-          <img src="logo.png" alt="STEMulus Logo">
+        <div id="schedule-list" style="display:flex; flex-direction:column; gap:0;">
+          <!-- Rendered by tutor-engine.js -->
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- RIGHT SIDEBAR COLUMN -->
+    <div>
+      <!-- Notifications -->
+      <div class="dash-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <img src="images/portal/standalone/notification-orb-3d.png" alt="" width="24" height="24" style="object-fit:contain;">
+            Notifications
+          </h2>
+        </div>
+        <div id="tutor-notifications-container" style="max-height:280px; overflow-y:auto;">
+          <p style="text-align:center; color:var(--text-muted); font-size:13px; padding:1rem 0;">No notifications yet.</p>
+        </div>
+      </div>
+
+      <!-- Mentor Tools -->
+      <div class="dash-card">
+        <div class="card-header">
+          <h2 class="card-title">Mentor Tools</h2>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <a href="tutor-attendance-create.html" class="action-btn-item">
+            <i data-lucide="plus-circle" style="color:var(--stage-tutor-1);"></i>
+            Log New Session
+          </a>
+          <a href="tutor-attendance.html" class="action-btn-item">
+            <i data-lucide="clipboard-list" style="color:var(--brand-orange);"></i>
+            Attendance History
+          </a>
+          <a href="tutor-monthly-report.html" class="action-btn-item">
+            <i data-lucide="file-bar-chart" style="color:var(--stage-parent-1);"></i>
+            Monthly Report
+          </a>
+          <a href="tutor-monthly-report.html?tab=history" class="action-btn-item">
+            <i data-lucide="history" style="color:#F4600C;"></i>
+            Past Reports & Revisions
+          </a>
+          <a href="index.html" class="action-btn-item">
+            <i data-lucide="home" style="color:var(--text-muted);"></i>
+            Main Website
+          </a>
+        </div>
+      </div>
+
+      <!-- Pro Tip -->
+      <div class="dash-card" style="background:linear-gradient(145deg, #F8FAFC, #F3E8FF); border-color:#E9D5FF;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <img src="images/portal/standalone/lightbulb-3d.png" alt="" width="28" height="28" style="object-fit:contain;">
+          <h3 style="font-size:15px; font-weight:800; color:var(--stage-tutor-1); margin:0;">Pro-Tip</h3>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); margin:0; line-height:1.5;">
+          Submitting class logs within 2 hours helps parents get real-time feedback on their child's Scratch & Python projects!
+        </p>
+      </div>
     </div>
+  </div>
+  </div><!-- end lg:ml-64 wrapper -->
 
-    <!-- Website Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Website</p>
-      <a href="index.html">Home</a>
-      <a href="programs.html">Roadmap</a>
-      <a href="for-parents.html">For Parents</a>
-      <a href="blog.html">Blog</a>
-      <a href="contact.html">Contact</a>
-    </div>
-
-    <!-- Social Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Social</p>
-      <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-      <a href="mailto:admin@stemuluskidstech.com">Email Us</a>
-      <a href="join-as-tutor.html">Join as Tutor</a>
-</div>
-
-    <!-- Legal Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Legal</p>
-      <a href="privacy-policy.html">Privacy Policy</a>
-      <a href="privacy-policy.html#terms">Terms of Service</a>
-      <a href="parent-dashboard.html">Parent Login</a>
-      <a href="enroll.html">Enroll Now</a>
-    </div>
+  <!-- FLOATING ACTION TOOLBAR -->
+  <div class="pill-toolbar">
+    <a href="tutor-dashboard.html" class="toolbar-btn active" title="Dashboard">
+      <i data-lucide="home"></i>
+    </a>
+    <a href="tutor-attendance.html" class="toolbar-btn" title="Attendance">
+      <i data-lucide="clipboard-check"></i>
+    </a>
+    <a href="tutor-attendance-create.html" class="toolbar-btn" title="Log Session">
+      <i data-lucide="plus"></i>
+    </a>
+    <a href="tutor-monthly-report.html" class="toolbar-btn" title="Monthly Report">
+      <i data-lucide="file-bar-chart"></i>
+    </a>
   </div>
 
-  <div class="footer-bottom">
-    <p class="footer-legal-left">©2026 STEMulus Innovations LTD. All rights reserved.</p>
-    <p class="footer-legal-right">
-      Built with craft, not algorithms
-      <i data-lucide="heart" style="width:12px;height:12px;fill:currentColor;color:currentColor;display:inline-block;vertical-align:middle;margin:0 2px;"></i>
-      <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:inline-flex;align-items:center;">
-        <i data-lucide="mail" style="width:18px;height:18px;"></i>
-      </a>
-      <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:inline-flex;align-items:center;">
-        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
-      </a>
-    </p>
-  </div>
-  
-  <!-- Background Text "STEMULUS" stylized bottom watermark -->
-  <div class="footer-bg-text">STEMulus</div>
-</footer>
-<script>
-(function(){var ring=document.getElementById('cursor-ring'),dot=document.getElementById('cursor-dot');if(!ring||!dot)return;var mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();document.querySelectorAll('a,button').forEach(function(el){el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-link');});el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-link');});});})();
-window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.editorial-heading,.prog-card,.feature-item,.stat-num').forEach(function(el,i){gsap.from(el,{y:50,opacity:0,duration:0.9,ease:'power 3.out',delay:(i% 4)*.1,scrollTrigger:{trigger:el,start:'top 88%'}});});});
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="assets/js/firebase-config.min.js" defer></script>
+  <script src="assets/js/dashboard-engine.min.js" defer></script>
+  <script src="assets/js/tutor-engine.min.js" defer></script>
+  <script src="assets/js/portal-scene-engine.min.js" defer></script>
 
-// Mobile Sidebar Toggle
-document.addEventListener('DOMContentLoaded', function() {
- var menuBtn = document.getElementById('tutor-menu-btn');
- var sidebar = document.getElementById('tutor-sidebar');
- var mainContent = document.querySelector('main');
- 
- if (menuBtn && sidebar) {
- menuBtn.addEventListener('click', function(e) {
- e.stopPropagation();
- sidebar.classList.toggle('open');
- });
- 
- if (mainContent) {
- mainContent.addEventListener('click', function() {
- if (sidebar.classList.contains('open')) {
- sidebar.classList.remove('open');
- }
- });
- }
- 
- sidebar.querySelectorAll('a').forEach(function(link) {
- link.addEventListener('click', function() {
- sidebar.classList.remove('open');
- });
- });
- }
-});
-</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) lucide.createIcons();
 
-<!-- Firebase SDK (Compat) - for Firestore dashboard cloud sync -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="assets/js/firebase-config.js"></script>
-<script src="assets/js/dashboard-engine.js"></script>
-<script src="assets/js/tutor-engine.js"></script>
-<script src="mobile-nav.js"></script>
+      gsap.from("#hero-banner", { y: 30, opacity: 0, duration: 0.7, ease: "power2.out" });
+      gsap.from(".stat-card", { y: 15, opacity: 0, duration: 0.5, stagger: 0.08, delay: 0.3 });
+      gsap.from(".dash-card", { y: 20, opacity: 0, duration: 0.6, stagger: 0.1, delay: 0.4 });
 
-<!-- Floating WhatsApp CTA Button -->
-<a href="https://wa.me/2347052466716?text=Hello% 20STEMulus% 2C% 20I'm% 20interested% 20in% 20a% 20coding% 20class% 20for% 20my% 20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp">
-  <svg viewBox="0 0 448 512" aria-hidden="true">
-  <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-</svg>
-</a>
+      document.body.classList.add('portal-loaded');
+      var mc = document.querySelector('.lg\\:ml-64');
+      if (mc) {
+        mc.style.marginLeft = window.innerWidth >= 1024 ? '256px' : '0';
+        window.addEventListener('resize', function(){ if(mc) mc.style.marginLeft = window.innerWidth >= 1024 ? '256px' : '0'; });
+      }
+    });
 
+    // Sync hero KPI pills with stat elements populated by tutor-engine
+    setInterval(() => {
+      const su = document.getElementById('stat-upcoming');
+      const ss = document.getElementById('stat-students');
+      const sh = document.getElementById('stat-hours');
+      const ku = document.getElementById('kpi-upcoming');
+      const ks = document.getElementById('kpi-students');
+      const kh = document.getElementById('kpi-hours');
+      if (su && ku) ku.textContent = su.textContent;
+      if (ss && ks) ks.textContent = ss.textContent;
+      if (sh && kh) kh.textContent = sh.textContent;
+
+      // Sync tutor name into hero
+      const tn = document.getElementById('tutor-name');
+      const hn = document.getElementById('hero-tutor-name');
+      if (tn && hn && tn.textContent !== 'Tutor Account') hn.textContent = tn.textContent.split(' ')[0];
+    }, 1000);
+  </script>
+  <script>
+  (function(){
+    var btn=document.getElementById('menu-btn');
+    var sb=document.getElementById('sidebar');
+    var ov=document.getElementById('sidebar-overlay');
+    if(btn&&sb){
+      btn.onclick=function(){sb.classList.toggle('open');if(ov)ov.classList.toggle('show');};
+      if(ov)ov.onclick=function(){sb.classList.remove('open');ov.classList.remove('show');};
+      sb.querySelectorAll('a').forEach(function(a){a.onclick=function(){sb.classList.remove('open');if(ov)ov.classList.remove('show');};});
+    }
+  })();
+  </script>
+  <script src="assets/js/class-reminder-engine.js" defer></script>
+  <script>
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'stemulus_session' && !e.newValue) {
+        window.location.href = 'parent-login.html';
+      }
+    });
+  </script>
 </body>
 </html>
-

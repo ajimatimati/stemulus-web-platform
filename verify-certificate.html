@@ -1,612 +1,1069 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Credential Verification | STEMulus Kids Tech</title>
- <link rel="preconnect" href="https://fonts.googleapis.com">
- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
- <link href="https://fonts.googleapis.com/css 2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
- 
- <!-- SEO Meta Tags -->
- <meta name="description" content="Verify the authenticity and value of STEMulus student graduation certificates.">
- <meta name="robots" content="index, follow">
- <link rel="canonical" href="https://stemuluskidstech.com/verify-certificate.html">
- <!-- Tailwind CSS -->
- <script src="https://cdn.tailwindcss.com"></script>
- 
- <!-- Lucide Icons -->
- <script src="https://unpkg.com/lucide@latest" defer></script>
- <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
- 
- <!-- Fonts -->
- 
- <style>
- body {
- font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
- background-color: #FAF7F2; /* Apple-style rich cream background */
- color: #1D1D1F;
- -webkit-font-smoothing: antialiased;
- }
- 
- .serif-text {
- font-family: 'Nunito', sans-serif;
- }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify Certificate | STEMulus Kids Tech</title>
 
- .apple-card {
- background-color: #FFFFFF;
- border-radius:24px;
- border:1px solid #E8E8ED;
- box-shadow:0 8px 40px rgba(0,0,0,0.02);
- transition: transform 0.3s ease, box-shadow 0.3s ease;
- }
+  <!-- SEO Meta -->
+  <meta name="description" content="Verify the authenticity of any STEMulus Kids Tech certificate of completion. Enter the credential ID to confirm instantly." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <link rel="canonical" href="https://stemuluskidstech.com/verify-certificate.html" />
 
- /* Input field custom focus */
- .apple-input {
- background-color: #F5F5F7;
- border:1px solid #E8E8ED;
- color: #1D1D1F;
- transition: all 0.2s ease;
- }
- .apple-input:focus {
- background-color: #FFFFFF;
- border-color: #F4600C;
- box-shadow:0 0 0 4px rgba(244,96,12,0.1);
- }
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Verify a STEMulus Certificate | Credential Check" />
+  <meta property="og:description" content="Instantly verify the authenticity of any STEMulus student graduation certificate. Enter the credential ID to confirm." />
+  <meta property="og:url" content="https://stemuluskidstech.com/verify-certificate.html" />
+  <meta property="og:image" content="https://stemuluskidstech.com/assets/images/og-image.jpg" />
+  <meta property="og:image:width" content="1729" />
+  <meta property="og:image:height" content="910" />
+  <meta property="og:image:alt" content="A focused child learning to code on a laptop — STEMulus Private 1-on-1 Coding Academy" />
+  <meta property="og:site_name" content="STEMulus Kids Tech" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Verify a STEMulus Certificate | Credential Check" />
+  <meta name="twitter:description" content="Instantly verify the authenticity of any STEMulus student graduation certificate." />
+  <meta name="twitter:image" content="https://stemuluskidstech.com/assets/images/og-image.jpg" />
 
- .btn-apple-primary {
- background-color: #F4600C;
- color: #FFFFFF;
- font-weight:600;
- padding:12px 28px;
- border-radius:30px;
- transition: all 0.2s ease;
- font-size:0.85rem;
- letter-spacing:0.02em;
- }
- .btn-apple-primary:hover {
- background-color: #E05307;
- transform: translateY(-1px);
- }
- 
- .btn-apple-secondary {
- background-color: #F5F5F7;
- color: #1D1D1F;
- font-weight:600;
- padding:12px 28px;
- border-radius:30px;
- border:1px solid #E8E8ED;
- transition: all 0.2s ease;
- font-size:0.85rem;
- letter-spacing:0.02em;
- }
- .btn-apple-secondary:hover {
- background-color: #E8E8ED;
- transform: translateY(-1px);
- }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:ital,wght@0,600;0,700;0,800;1,800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 
- /* Subtle skeleton loading */
- @keyframes shimmer {100% {
- transform: translateX(100%);
- }
- }
- .shimmer::after {
- position: absolute;
- top:0; right:0; bottom:0; left:0;
- transform: translateX(-100%);
- background-image: linear-gradient(90deg,
- rgba(255,255,255,0)0%,
- rgba(255,255,255,0.4)20%,
- rgba(255,255,255,0.6)60%,
- rgba(255,255,255,0)100%
- );
- animation: shimmer 1.6s infinite;
- content: '';
- }
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="assets/css/tailwind-output.css" />
+  <link rel="stylesheet" href="dist/combined.css">
 
- /* Print styling to isolate the certificate replica on printed page */
- @media print {
- body {
- background-color: #FFFFFF!important;
- color: #000000!important;
- }
- header, footer, main > div > div > :not(#cert-replica-container), .btn-apple-primary, .btn-apple-secondary, #state-loading, #state-invalid {
- display: none !important;
- }
- main {
- padding:0 !important;
- margin:0 !important;
- display: block !important;
- }
- .w-full.max-w-xl {
- max-width:100% !important;
- width:100% !important;
- }
- .apple-card {
- box-shadow: none !important;
- border: none !important;
- padding:0 !important;
- margin:0 !important;
- background: transparent !important;
- }
- #cert-replica-container {
- display: block !important;
- width:100% !important;
- max-width:100% !important;
- border:10px double #F4600C!important;
- padding:40px !important;
- margin:0 auto !important;
- box-shadow: none !important;
- background-color: #FFFFFF!important;
- page-break-inside: avoid;
- }
- }
- </style>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
 
- <!-- Standard Favicon -->
- <link rel="icon" type="image/png" href="logo.png">
- <link rel="apple-touch-icon" href="logo.png">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+
+  <style>
+    /* ===== Base ===== */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: #FAF7F2;
+      color: #1D1D1F;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ===== Confetti ===== */
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+      overflow: hidden;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: -14px;
+      opacity: 0;
+    }
+
+    @keyframes confettiFall {
+      0%   { transform: translateY(0) rotateZ(0deg); opacity: 1; }
+      85%  { opacity: 1; }
+      100% { transform: translateY(105vh) rotateZ(720deg); opacity: 0; }
+    }
+
+    @keyframes confettiSway {
+      0%, 100% { margin-left: 0; }
+      25%  { margin-left: 40px; }
+      75%  { margin-left: -40px; }
+    }
+
+    /* ===== Nav ===== */
+    .site-nav {
+      background: white;
+      border-bottom: 1px solid #E8E8ED;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    /* ===== Hero Section ===== */
+    .hero-section {
+      background: linear-gradient(160deg, #FAF7F2 0%, #FFF8F4 50%, #FAF7F2 100%);
+      border-bottom: 1px solid #F0EDE8;
+      padding: 72px 24px 56px;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #F4600C;
+      background: rgba(244,96,12,0.08);
+      border: 1px solid rgba(244,96,12,0.2);
+      border-radius: 9999px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      color: #1A237E;
+      line-height: 1.1;
+      margin: 0 0 16px 0;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: #6B7280;
+      max-width: 520px;
+      margin: 0 auto 40px;
+      line-height: 1.65;
+    }
+
+    .search-bar-wrap {
+      display: flex;
+      max-width: 540px;
+      margin: 0 auto 16px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search-bar-wrap input {
+      flex: 1;
+      background: white;
+      border: 1.5px solid #E8E8ED;
+      border-radius: 9999px;
+      padding: 14px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: #1D1D1F;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    .search-bar-wrap input::placeholder { color: #9CA3AF; font-family: 'DM Sans', monospace; }
+    .search-bar-wrap input:focus {
+      border-color: #F4600C;
+      box-shadow: 0 0 0 4px rgba(244,96,12,0.1);
+    }
+
+    .btn-verify-now {
+      background: #F4600C;
+      color: white;
+      border: none;
+      border-radius: 9999px;
+      padding: 14px 28px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(244,96,12,0.3);
+    }
+    .btn-verify-now:hover {
+      background: #E05307;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(244,96,12,0.4);
+    }
+
+    .hero-note {
+      font-size: 0.78rem;
+      color: #9CA3AF;
+    }
+
+    /* ===== States Container ===== */
+    .states-container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    /* ===== Card ===== */
+    .verify-card {
+      background: white;
+      border-radius: 24px;
+      border: 1px solid #E8E8ED;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    /* ===== Loading State ===== */
+    .spinner {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 3px solid #E8E8ED;
+      border-top-color: #F4600C;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== Success Check ===== */
+    .check-circle {
+      width: 80px;
+      height: 80px;
+      background: #ECFDF5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes popIn {
+      0%   { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+
+    /* ===== Error X ===== */
+    .x-circle {
+      width: 80px;
+      height: 80px;
+      background: #FEF2F2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ===== Divider ===== */
+    .brand-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .brand-divider-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, #1A237E 0%, #F4600C 100%);
+      border-radius: 9999px;
+    }
+    .brand-divider-dot {
+      width: 8px;
+      height: 8px;
+      background: #F4600C;
+      border-radius: 50%;
+    }
+
+    /* ===== Certificate Card ===== */
+    .cert-card {
+      background: white;
+      border: 1.5px solid #E8E8ED;
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #1A237E 0%, #F4600C 100%);
+    }
+
+    .verified-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #ECFDF5;
+      border: 1px solid #6EE7B7;
+      color: #059669;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 12px;
+      border-radius: 9999px;
+    }
+
+    /* ===== Mini Certificate Preview ===== */
+    #mini-cert-preview {
+      background: white;
+      border: 3px solid #1A237E;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      transform: scale(0.9);
+      transform-origin: top center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+    #mini-cert-preview::before {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border: 2px solid #F4600C;
+      pointer-events: none;
+      z-index: 10;
+    }
+    #mini-cert-preview::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(45deg, rgba(26,35,126,0.03) 1px, transparent 1px),
+        linear-gradient(-45deg, rgba(26,35,126,0.03) 1px, transparent 1px);
+      background-size: 16px 16px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .mini-cert-header {
+      background: #1A237E;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .mini-cert-body {
+      padding: 20px 24px 12px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .mini-cert-footer {
+      background: #F4600C;
+      height: 6px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===== Share Buttons ===== */
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.825rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      text-decoration: none;
+    }
+    .share-btn-whatsapp {
+      background: #25D366;
+      color: white;
+      box-shadow: 0 3px 12px rgba(37,211,102,0.3);
+    }
+    .share-btn-whatsapp:hover { background: #1ebe5b; transform: translateY(-1px); }
+    .share-btn-copy {
+      background: white;
+      color: #1D1D1F;
+      border: 1.5px solid #E8E8ED;
+    }
+    .share-btn-copy:hover { background: #F5F5F7; transform: translateY(-1px); }
+
+    /* ===== CTA ===== */
+    .cta-btn-orange {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #F4600C;
+      color: white;
+      border-radius: 9999px;
+      padding: 12px 24px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(244,96,12,0.3);
+    }
+    .cta-btn-orange:hover { background: #E05307; transform: translateY(-1px); }
+    .cta-btn-navy {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      color: #1A237E;
+      border: 1.5px solid #1A237E;
+      border-radius: 9999px;
+      padding: 12px 24px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .cta-btn-navy:hover { background: #1A237E; color: white; transform: translateY(-1px); }
+
+    /* ===== Manual Entry ===== */
+    .manual-entry-form {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .manual-entry-form input {
+      flex: 1;
+      min-width: 200px;
+      background: #F5F5F7;
+      border: 1px solid #E8E8ED;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-family: 'DM Sans', monospace;
+      font-size: 0.875rem;
+      color: #1D1D1F;
+      outline: none;
+      transition: border-color 0.2s;
+      text-transform: uppercase;
+    }
+    .manual-entry-form input:focus {
+      background: white;
+      border-color: #F4600C;
+      box-shadow: 0 0 0 3px rgba(244,96,12,0.1);
+    }
+    .manual-entry-form button {
+      background: #F4600C;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 11px 22px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .manual-entry-form button:hover { background: #E05307; }
+
+    /* ===== Footer ===== */
+    .site-footer {
+      background: #1A237E;
+      color: rgba(255,255,255,0.7);
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    /* ===== Anim ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-up { animation: fadeInUp 0.45s ease both; }
+
+    @media (max-width: 640px) {
+      .hero-title { font-size: 1.75rem; }
+      .search-bar-wrap { flex-direction: column; }
+      .search-bar-wrap input { border-radius: 12px; }
+      .btn-verify-now { width: 100%; border-radius: 12px; }
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
 
- <!-- Header / Navbar -->
- <header class="py-6 px-8 border-b border-[#E8E8ED] bg-white/80 backdrop-blur-md sticky top-0 z-40">
- <div class="max-w-5xl mx-auto flex items-center justify-between">
- <a href="index.html" class="flex items-center gap-3">
- <img src="logo.png" alt="STEMulus Logo" class="h-8">
- <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-[#86868B] border-l border-[#E8E8ED] pl-3">Ledger Verification</span>
- </a>
- <a href="index.html" class="text-xs uppercase tracking-wider font-bold text-[#1D1D1F] hover:text-[#F4600C] transition-colors flex items-center gap-1.5">
- <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Exit
- </a>
- </div>
- </header>
+<body>
+<a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#F4600C;color:#fff;padding:8px 16px;z-index:9999;border-radius:0 0 8px 0;transition:top 0.2s;font-size:0.875rem;font-weight:700;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to content</a>
 
- <!-- Main Content -->
- <main class="flex-grow flex items-center justify-center py-16 px-6">
- <div class="w-full max-w-xl">
- 
- <!-- ================= LOADING STATE ================= -->
- <div id="state-loading" class="apple-card p-10 md:p-14 text-center space-y-8">
- <div class="w-12 h-12 rounded-full border-2 border-t-[#F4600C] border-[#E8E8ED] animate-spin mx-auto"></div>
- <div class="space-y-2">
- <h2 class="text-xl font-bold tracking-tight">Accessing Secure Ledger</h2>
- <p class="text-xs text-[#86868B] max-w-xs mx-auto">Verifying cryptographic credential hash against the STEMulus registry database...</p>
- </div>
- <div class="space-y-3 pt-6 border-t border-[#E8E8ED]">
- <div class="h-5 bg-[#F5F5F7] rounded w-2/3 mx-auto relative overflow-hidden shimmer"></div>
- <div class="h-3 bg-[#F5F5F7] rounded w-1/2 mx-auto relative overflow-hidden shimmer"></div>
- </div>
- </div>
+  <!-- ===== Confetti Container ===== -->
+  <div class="confetti-container" id="confetti-container" aria-hidden="true"></div>
 
- <!-- ================= VERIFIED STATE (SUCCESS) ================= -->
- <div id="state-verified" class="hidden apple-card p-10 md:p-12 text-center space-y-8 animate-fadeIn">
- <!-- Sleek circular badge -->
- <div class="w-16 h-16 mx-auto flex items-center justify-center bg-[#E5F6EE] rounded-full no-print">
- <i data-lucide="shield-check" class="w-8 h-8 text-[#10B981]"></i>
- </div>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="site-nav">
+    <div style="max-width:1100px; margin:0 auto; padding:0 24px; height:64px; display:flex; align-items:center; justify-content:space-between;">
+      <a href="index.html" style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+        <img src="logo-dark.jpg" alt="STEMulus Kids Tech" style="height:36px; object-fit:contain;" />
+        <span style="font-family:'Outfit',sans-serif; font-weight:700; font-size:0.8rem; color:#9CA3AF; border-left:1px solid #E8E8ED; padding-left:12px; text-transform:uppercase; letter-spacing:0.1em;">
+          Certificate Verification
+        </span>
+      </a>
+      <a href="index.html" style="font-family:'DM Sans',sans-serif; font-size:0.8rem; font-weight:600; color:#1A237E; text-decoration:none; display:flex; align-items:center; gap:6px; transition:color 0.2s;"
+         onmouseover="this.style.color='#F4600C'" onmouseout="this.style.color='#1A237E'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        stemuluskidstech.com
+      </a>
+    </div>
+  </nav>
 
- <!-- Verified Header -->
- <div class="space-y-2 no-print">
- <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#10B981]">Authentic Credential</span>
- <h2 class="text-3xl font-extrabold tracking-tight text-[#1D1D1F]">Certificate Valid</h2>
- <p class="text-xs text-[#86868B] max-w-md mx-auto">This certificate of completion is registered in our secure database as a valid academic record.</p>
- </div>
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero-section" id="main-content">
+    <div style="max-width:640px; margin:0 auto;">
+      <div class="hero-eyebrow">Instant Credential Verification</div>
+      <h1 class="hero-title">Verify a STEMulus<br/>Certificate</h1>
+      <p class="hero-sub">
+        Every STEMulus graduate earns a verified digital credential. Enter the credential ID below to confirm authenticity.
+      </p>
 
- <!-- Apple-style minimal Grid details -->
- <div class="border-t border-b border-[#E8E8ED] py-6 my-6 text-left space-y-5 no-print">
- <div>
- <span class="text-[10px] uppercase tracking-[0.15em] text-[#86868B] font-bold block mb-1">Student Graduate</span>
- <span class="text-2xl font-semibold serif-text italic text-[#1D1D1F]" id="student-name-display">-</span>
- </div>
+      <form class="search-bar-wrap" id="hero-search-form" onsubmit="handleHeroSearch(event)">
+        <input
+          type="text"
+          id="hero-search-input"
+          placeholder="Enter credential ID (e.g. STM-2026-ABC123)"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button type="submit" class="btn-verify-now">Verify Now</button>
+      </form>
 
- <div class="grid grid-cols-2 gap-4 pt-4 border-t border-[#F5F5F7]">
- <div>
- <span class="text-[10px] uppercase tracking-[0.15em] text-[#86868B] font-bold block mb-1">Course Finished</span>
- <span class="text-xs font-semibold text-[#1D1D1F]" id="program-name-display">-</span>
- </div>
- <div>
- <span class="text-[10px] uppercase tracking-[0.15em] text-[#86868B] font-bold block mb-1">Evaluation Status</span>
- <span class="text-xs font-semibold text-[#F4600C] flex items-center gap-1" id="grade-display">
- <i data-lucide="star" class="w-3.5 h-3.5 fill-[#F4600C] stroke-none"></i>
- Distinction
- </span>
- </div>
- </div>
+      <p class="hero-note">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:4px;opacity:0.6;">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        QR codes on certificates link directly to this page
+      </p>
+    </div>
+  </section>
 
- <div class="grid grid-cols-2 gap-4 pt-4 border-t border-[#F5F5F7]">
- <div>
- <span class="text-[10px] uppercase tracking-[0.15em] text-[#86868B] font-bold block mb-1">Credential ID</span>
- <span class="text-xs font-mono font-medium text-[#1D1D1F]" id="credential-id-display">-</span>
- </div>
- <div>
- <span class="text-[10px] uppercase tracking-[0.15em] text-[#86868B] font-bold block mb-1">Date Issued</span>
- <span class="text-xs font-medium text-[#1D1D1F]" id="issue-date-display">-</span>
- </div>
- </div>
- </div>
+  <!-- ===== STATES ===== -->
+  <div class="states-container">
 
- <!-- Silicon Valley Cryptographic Sign -->
- <div class="text-left space-y-2 no-print">
- <div class="flex items-center justify-between text-[9px] uppercase tracking-[0.15em] text-[#86868B] font-bold">
- <span>Ledger Fingerprint (SHA-256)</span>
- <span class="text-[#10B981] flex items-center gap-1"><i data-lucide="shield" class="w-3 h-3"></i> Secured</span>
- </div>
- <div class="font-mono text-[10px] text-[#86868B] bg-[#F5F5F7] p-3 rounded-lg break-all select-all border border-[#E8E8ED]" id="crypto-fingerprint">
- -
- </div>
- </div>
-
- <!-- Digital Certificate Visual Replica (Print-Optimized) -->
- <div id="cert-replica-container" class="mt-8 border-8 border-double border-[#F4600C]/30 p-8 rounded-2xl bg-white shadow-md relative overflow-hidden text-center max-w-lg mx-auto transition-transform duration-300 hover:scale-[1.01] hover:shadow-lg">
- <!-- Watermark / Background icon -->
- <div class="absolute -right-16 -bottom-16 opacity-[0.03] pointer-events-none text-[#F4600C]">
- <i data-lucide="award" class="w-64 h-64"></i>
- </div>
- <!-- Subtle Corner Borders -->
- <div class="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-[#F4600C]/20"></div>
- <div class="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-[#F4600C]/20"></div>
- <div class="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-[#F4600C]/20"></div>
- <div class="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-[#F4600C]/20"></div>
- 
- <!-- Top logo/header -->
- <div class="mb-6">
- <img src="logo.png" alt="STEMulus Logo" class="h-8 mx-auto mb-2">
- <p class="text-[9px] uppercase tracking-[0.25em] text-[#86868B] font-bold">Credential of Completion</p>
- </div>
- 
- <!-- Certificate Main text -->
- <p class="text-xs text-gray-500 italic mb-4">This is to certify that</p>
- <h3 class="text-3xl font-extrabold text-[#1D1D1F] serif-text italic tracking-wide mb-4" id="cert-replica-student-name">-</h3>
- <p class="text-xs text-gray-500 italic mb-4">has successfully completed the program</p>
- <h4 class="text-lg font-extrabold text-[#F4600C] uppercase tracking-wider mb-6 leading-tight" id="cert-replica-program-name">-</h4>
- 
- <!-- Certificate details like Grade and ID in the replica -->
- <div class="flex justify-center gap-6 mb-8 text-[11px] text-[#86868B]">
- <div>
- <span class="block uppercase tracking-wider text-[9px] font-bold">Grade</span>
- <span class="font-semibold text-[#1D1D1F]" id="cert-replica-grade">-</span>
- </div>
- <div class="border-l border-gray-200"></div>
- <div>
- <span class="block uppercase tracking-wider text-[9px] font-bold">Credential ID</span>
- <span class="font-mono font-semibold text-[#1D1D1F]" id="cert-replica-id">-</span>
- </div>
- </div>
-
- <!-- Signatures and Stamp -->
- <div class="flex justify-between items-end mt-8 pt-6 border-t border-[#F5F5F7]">
- <div class="text-left">
- <span class="text-[8px] uppercase tracking-wider text-[#86868B] block mb-1">Date Issued</span>
- <span class="text-xs font-semibold text-[#1D1D1F]" id="cert-replica-date">-</span>
- </div>
- <div class="relative flex flex-col items-center">
- <!-- Digital seal -->
- <div class="w-12 h-12 rounded-full border border-dashed border-[#10B981] flex items-center justify-center mb-1">
- <i data-lucide="shield-check" class="w-6 h-6 text-[#10B981]"></i>
- </div>
- <span class="text-[7px] uppercase tracking-widest text-[#10B981] font-bold">VALID RECORD</span>
- </div>
- <div class="text-right">
- <span class="text-[8px] uppercase tracking-wider text-[#86868B] block mb-1">Registrar</span>
- <span class="text-xs font-semibold text-[#1D1D1F] italic serif-text">STEMulus Innovations</span>
- </div>
- </div>
- </div>
-
- <!-- Actions -->
- <div class="flex flex-col sm:flex-row items-center gap-3 justify-center pt-2 no-print">
- <button onclick="window.print()" class="w-full sm:w-auto btn-apple-primary flex items-center justify-center gap-2">
- <i data-lucide="printer" class="w-4 h-4"></i> Print Certificate
- </button>
- <a id="linkedin-share-btn" target="_blank" href="#" class="w-full sm:w-auto btn-apple-secondary flex items-center justify-center gap-2">
- <i data-lucide="linkedin" class="w-4 h-4 text-blue-600"></i> Add to LinkedIn
- </a>
- </div>
-
- <!-- Verification Timestamp -->
- <p class="text-[9px] uppercase tracking-[0.15em] text-[#86868B] font-bold text-center mt-4 no-print" id="verification-time"></p>
- </div>
-
- <!-- ================= ERROR STATE (INVALID) ================= -->
- <div id="state-invalid" class="hidden apple-card p-10 md:p-12 text-center space-y-8 animate-fadeIn">
- <div class="w-16 h-16 mx-auto flex items-center justify-center bg-[#FDF2F2] rounded-full">
- <i data-lucide="alert-circle" class="w-8 h-8 text-[#EF4444]"></i>
- </div>
-
- <div class="space-y-2">
- <h2 class="text-2xl font-extrabold tracking-tight text-[#1D1D1F]">Credential Check Failed</h2>
- <p class="text-xs text-[#86868B] max-w-sm mx-auto">The requested credential code was not found or has been revoked from the registered academic ledger.</p>
- </div>
-
- <!-- Manual Verification Form -->
- <div class="bg-[#FAF7F2] border border-[#E8E8ED] rounded-2xl p-6 text-left max-w-md mx-auto space-y-3">
- <label class="block text-[9px] uppercase tracking-[0.15em] font-bold text-[#86868B]">Verify Manually</label>
- <form id="manual-verify-form" class="flex gap-2">
- <input type="text" id="manual-credential-id" required placeholder="e.g. STEM-2026-X8F3" 
- class="flex-grow apple-input rounded-xl px-4 py-2.5 text-xs focus:outline-none uppercase font-mono">
- <button type="submit" class="btn-apple-primary px-5 py-2.5">
- Verify
- </button>
- </form>
- </div>
-
- <div class="flex items-center justify-center gap-4 text-xs text-[#86868B] pt-4 border-t border-[#E8E8ED]">
- <a href="contact.html" class="hover:underline flex items-center gap-1"><i data-lucide="mail" class="w-3.5 h-3.5"></i> Report Discrepancy</a>
- <span>•</span>
- <a href="index.html" class="hover:underline">Visit STEMulus Website</a>
- </div>
- </div>
-
- </div>
- </main>
-
- <!-- Footer -->
-
-<footer class="footer-editorial" role="contentinfo">
-  <!-- Model Viewer Script Loaded Dynamically inside the footer -->
-  <div class="footer-grid">
-    <!-- Brand column with 3D model logo -->
-    <div class="footer-brand-col">
-      <div class="footer-3d-wrapper">
-    <div class="footer-hologram-coin">
-      <div class="coin-glow"></div>
-      <div class="coin-inner">
-        <div class="coin-front">
-          <img src="logo.png" alt="STEMulus Logo">
-        </div>
-        <div class="coin-back">
-          <img src="logo.png" alt="STEMulus Logo">
-        </div>
+    <!-- STATE A: LOADING -->
+    <div id="state-loading" style="display:none;">
+      <div class="verify-card p-10 text-center" style="padding:60px 40px;">
+        <div class="spinner mb-6"></div>
+        <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.3rem; color:#1A237E; margin:0 0 8px;">
+          Verifying credential...
+        </h2>
+        <p style="color:#9CA3AF; font-size:0.875rem; margin:0;">
+          Checking credential registry...
+        </p>
       </div>
     </div>
-  </div>
+
+    <!-- STATE B: VERIFIED -->
+    <div id="state-verified" style="display:none;" class="fade-in-up">
+
+      <!-- Big green checkmark -->
+      <div style="text-align:center; margin-bottom:28px;">
+        <div class="check-circle">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:2rem; color:#059669; margin:0 0 6px;">
+          Credential Verified!
+        </h2>
+        <p style="color:#6B7280; font-size:0.9rem; margin:0;">
+          This certificate is authentic and registered in the STEMulus credential registry.
+        </p>
+      </div>
+
+      <!-- Decorative divider -->
+      <div class="brand-divider">
+        <div class="brand-divider-line"></div>
+        <div class="brand-divider-dot"></div>
+        <div class="brand-divider-line" style="background:linear-gradient(90deg,#F4600C 0%,#1A237E 100%);"></div>
+      </div>
+
+      <!-- Certificate Info Card -->
+      <div class="cert-card">
+        <div class="verified-badge">VERIFIED</div>
+
+        <div style="margin-bottom:20px;">
+          <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; color:#9CA3AF; font-weight:700; margin:0 0 8px;">Student Graduate</p>
+          <h3 id="vc-student-name" style="font-family:'Nunito',sans-serif; font-weight:800; font-size:1.75rem; color:#1A237E; margin:0; line-height:1.15;">
+            —
+          </h3>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; padding-top:16px; border-top:1px solid #F5F5F7;">
+          <div>
+            <p style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.12em; color:#9CA3AF; font-weight:700; margin:0 0 4px;">Program</p>
+            <p id="vc-program" style="font-size:0.875rem; font-weight:600; color:#1D1D1F; margin:0; line-height:1.4;">—</p>
+          </div>
+          <div>
+            <p style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.12em; color:#9CA3AF; font-weight:700; margin:0 0 4px;">Grade</p>
+            <p id="vc-grade" style="font-size:0.875rem; font-weight:700; color:#F4600C; margin:0;">—</p>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; padding-top:16px; margin-top:16px; border-top:1px solid #F5F5F7;">
+          <div>
+            <p style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.12em; color:#9CA3AF; font-weight:700; margin:0 0 4px;">Issue Date</p>
+            <p id="vc-date" style="font-size:0.875rem; font-weight:600; color:#1D1D1F; margin:0;">—</p>
+          </div>
+          <div>
+            <p style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.12em; color:#9CA3AF; font-weight:700; margin:0 0 4px;">Credential ID</p>
+            <p id="vc-credential-id" style="font-family:monospace; font-size:0.875rem; font-weight:700; color:#1D1D1F; margin:0;">—</p>
+          </div>
+        </div>
+
+        <div style="padding-top:16px; margin-top:16px; border-top:1px solid #F5F5F7;">
+          <p style="font-size:0.72rem; color:#9CA3AF; margin:0; text-align:center; font-style:italic;">
+            Issued by STEMulus Kids Tech &nbsp;·&nbsp; <span id="vc-verified-time"></span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Mini Certificate Preview -->
+      <div style="margin:28px 0 8px;">
+        <p style="font-family:'Outfit',sans-serif; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:#9CA3AF; text-align:center; margin:0 0 16px;">
+          Certificate Preview
+        </p>
+        <div id="mini-cert-preview">
+          <div class="mini-cert-header">
+            <img src="logo.png" alt="STEMulus" style="height:36px; object-fit:contain; filter:brightness(0) invert(1);" />
+            <span style="color:rgba(255,255,255,0.8); font-family:'Outfit',sans-serif; font-size:0.55rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase;">Certificate of Completion</span>
+          </div>
+          <div class="mini-cert-body">
+            <p style="font-size:0.6rem; font-style:italic; color:#9CA3AF; margin:0 0 6px;">This certifies that</p>
+            <div id="mini-student-name" style="font-family:'Nunito',sans-serif; font-weight:800; font-size:1.5rem; color:#1A237E; line-height:1.1; margin-bottom:4px;">Student Name</div>
+            <div style="width:140px; height:2px; background:#F4600C; margin:0 auto 10px;"></div>
+            <p style="font-size:0.6rem; font-style:italic; color:#9CA3AF; margin:0 0 6px;">has successfully completed</p>
+            <div id="mini-program-name" style="font-family:'Outfit',sans-serif; font-weight:700; font-size:0.85rem; color:#1A237E; margin-bottom:10px; line-height:1.3;">Program Name</div>
+            <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:6px;">
+              <span style="font-size:0.6rem; color:#6B7280; font-style:italic;">with the distinction of</span>
+              <span id="mini-grade-badge" style="background:#F4600C; color:white; border-radius:9999px; padding:3px 12px; font-family:'Outfit',sans-serif; font-size:0.65rem; font-weight:700;">Distinction</span>
+            </div>
+            <p id="mini-date" style="font-size:0.58rem; color:#9CA3AF; margin:0 0 12px;">Issued: —</p>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:0 16px; margin-bottom:8px;">
+              <div style="width:60px; height:60px; background:#F5F5F7; border-radius:6px; display:flex; align-items:center; justify-content:center;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5">
+                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                </svg>
+              </div>
+              <img src="logo.png" alt="STEMulus" style="width:48px; height:auto; object-fit:contain;" />
+              <div style="text-align:right; width:80px;">
+                <div style="border-top:1px solid #d1d5db; margin-bottom:4px;"></div>
+                <span style="font-size:0.5rem; color:#9CA3AF; font-style:italic;">Authorized by<br/>STEMulus Kids Tech</span>
+              </div>
+            </div>
+            <p id="mini-credential-id" style="font-family:monospace; font-size:0.5rem; color:#9CA3AF; margin:0 0 6px; letter-spacing:0.06em;">—</p>
+          </div>
+          <div class="mini-cert-footer"></div>
+        </div>
+      </div>
+
+      <!-- Share & CTA -->
+      <div style="background:white; border-radius:20px; border:1px solid #E8E8ED; padding:28px; margin-top:24px;">
+        <p style="font-family:'Outfit',sans-serif; font-weight:700; font-size:0.875rem; color:#1A237E; margin:0 0 16px; text-align:center; text-transform:uppercase; letter-spacing:0.08em;">
+          Share this achievement
+        </p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:24px;">
+          <a id="btn-whatsapp-share" href="#" target="_blank" class="share-btn share-btn-whatsapp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
+            </svg>
+            Share on WhatsApp
+          </a>
+          <button id="btn-copy-share" class="share-btn share-btn-copy" onclick="copyShareLink()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            Copy Link
+          </button>
+        </div>
+
+        <div style="border-top:1px solid #F5F5F7; padding-top:20px; text-align:center;">
+          <p style="font-size:0.8rem; color:#9CA3AF; margin:0 0 14px;">Want your child to earn their own certificate?</p>
+          <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+            <a href="enroll.html" class="cta-btn-orange">
+              Enroll Your Child
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a href="programs.html" class="cta-btn-navy">View Programs</a>
+          </div>
+        </div>
+      </div>
+
     </div>
+    <!-- END STATE B -->
 
-    <!-- Website Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Website</p>
-      <a href="index.html">Home</a>
-      <a href="programs.html">Roadmap</a>
-      <a href="for-parents.html">For Parents</a>
-      <a href="blog.html">Blog</a>
-      <a href="contact.html">Contact</a>
+    <!-- STATE C: NOT FOUND -->
+    <div id="state-invalid" style="display:none;" class="fade-in-up">
+      <div class="verify-card" style="padding:48px 36px; text-align:center;">
+
+        <div class="x-circle">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </div>
+
+        <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.6rem; color:#1D1D1F; margin:0 0 10px;">
+          Certificate Not Found
+        </h2>
+        <p style="color:#6B7280; font-size:0.9rem; margin:0 0 32px; max-width:380px; margin-left:auto; margin-right:auto; line-height:1.6;">
+          The credential ID you entered does not match any record in our system. Please check and try again.
+        </p>
+
+        <!-- Manual retry form -->
+        <div style="background:#FAF7F2; border:1px solid #E8E8ED; border-radius:16px; padding:24px; margin-bottom:24px; text-align:left;">
+          <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; color:#9CA3AF; font-weight:700; margin:0 0 12px;">Try Another Credential ID</p>
+          <form class="manual-entry-form" id="retry-form" onsubmit="handleRetry(event)">
+            <input
+              type="text"
+              id="retry-input"
+              placeholder="e.g. STM-2026-ABC123"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button type="submit">Verify</button>
+          </form>
+        </div>
+
+        <div style="border-top:1px solid #E8E8ED; padding-top:20px;">
+          <p style="font-size:0.8rem; color:#9CA3AF; margin:0 0 14px;">Need help? Contact us directly.</p>
+          <a href="https://wa.me/2347052466716?text=Hi%20STEMulus%2C%20I%20need%20help%20verifying%20a%20certificate."
+             target="_blank" rel="noopener"
+             class="share-btn share-btn-whatsapp"
+             style="display:inline-flex;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
+            </svg>
+            Contact via WhatsApp
+          </a>
+        </div>
+
+      </div>
     </div>
+    <!-- END STATE C -->
 
-    <!-- Social Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Social</p>
-      <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-      <a href="mailto:admin@stemuluskidstech.com">Email Us</a>
-      <a href="join-as-tutor.html">Join as Tutor</a>
-</div>
+  </div>
+  <!-- END STATES CONTAINER -->
 
-    <!-- Legal Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Legal</p>
-      <a href="privacy-policy.html">Privacy Policy</a>
-      <a href="privacy-policy.html#terms">Terms of Service</a>
-      <a href="parent-dashboard.html">Parent Login</a>
-      <a href="enroll.html">Enroll Now</a>
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div style="max-width:700px; margin:0 auto;">
+      <img src="logo.png" alt="STEMulus" style="height:32px; object-fit:contain; filter:brightness(0) invert(1); margin-bottom:12px;" />
+      <p style="font-family:'Outfit',sans-serif; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.5); margin:0 0 16px;">
+        Global Coding Academy &nbsp;·&nbsp; Est. 2025
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:16px; justify-content:center; font-size:0.8rem; margin-bottom:24px;">
+        <a href="index.html" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">Home</a>
+        <a href="programs.html" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">Programs</a>
+        <a href="enroll.html" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">Enroll</a>
+        <a href="contact.html" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">Contact</a>
+        <a href="issue-certificate.html" style="color:rgba(255,255,255,0.4); text-decoration:none; font-size:0.72rem;" onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Admin</a>
+      </div>
+      <p style="font-size:0.75rem; color:rgba(255,255,255,0.35); margin:0;">
+        &copy; 2026 STEMulus Innovations LTD. All rights reserved.
+      </p>
     </div>
-  </div>
+  </footer>
 
-  <div class="footer-bottom">
-    <p class="footer-legal-left">©2026 STEMulus Innovations LTD. All rights reserved.</p>
-    <p class="footer-legal-right">
-      Built with craft, not algorithms
-      <i data-lucide="heart" style="width:12px;height:12px;fill:currentColor;color:currentColor;display:inline-block;vertical-align:middle;margin:0 2px;"></i>
-      <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:inline-flex;align-items:center;">
-        <i data-lucide="mail" style="width:18px;height:18px;"></i>
-      </a>
-      <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:inline-flex;align-items:center;">
-        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
-      </a>
-    </p>
-  </div>
-  
-  <!-- Background Text "STEMULUS" stylized bottom watermark -->
-  <div class="footer-bg-text">STEMulus</div>
-</footer>
-
-  <!-- Firebase SDK (Compat) - Required for Firestore cloud verification -->
+  <!-- ===== Firebase SDK ===== -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-  <!-- Firebase App Configuration -->
-  <script src="assets/js/firebase-config.js"></script>
+  <!-- ===== App Scripts ===== -->
+  <script src="assets/js/firebase-config.min.js" defer></script>
+  <script src="assets/js/dashboard-engine.min.js" defer></script>
 
-  <!-- Dashboard Engine State Manager (local fallback) -->
-  <script src="assets/js/dashboard-engine.js"></script>
-
-  <!-- Verification Script -->
+  <!-- ===== Page Script ===== -->
   <script>
-  document.addEventListener('DOMContentLoaded', async () => {
-  const stateLoading = document.getElementById('state-loading');
-  const stateVerified = document.getElementById('state-verified');
-  const stateInvalid = document.getElementById('state-invalid');
+    /* ============================================
+       GLOBALS
+    ============================================ */
+    var currentCredId = null;
 
-  // Parse credential ID from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const credentialId = urlParams.get('id') || urlParams.get('credential_id');
+    /* ============================================
+       CONFETTI
+    ============================================ */
+    function launchConfetti() {
+      var container = document.getElementById('confetti-container');
+      container.innerHTML = '';
+      var colors = ['#F4600C', '#1A237E', '#10B981', '#F59E0B', '#FFFFFF', '#EF4444', '#8B5CF6'];
+      var shapes = ['square', 'circle', 'rect'];
 
-  if (!credentialId) {
-  showState('invalid');
-  return;
-  }
+      for (var i = 0; i < 60; i++) {
+        (function(idx) {
+          var piece = document.createElement('div');
+          piece.className = 'confetti-piece';
 
-  try {
-  // ─────────────────────────────────────────────────
-  // STEP 1: Try Firebase Firestore (cross-device cloud)
-  // ─────────────────────────────────────────────────
-  let data = null;
+          var color = colors[Math.floor(Math.random() * colors.length)];
+          var shape = shapes[Math.floor(Math.random() * shapes.length)];
+          var left = Math.random() * 100;
+          var delay = Math.random() * 1.5;
+          var duration = 2.5 + Math.random() * 2;
+          var size = 6 + Math.random() * 8;
 
-  if (typeof firebase !== 'undefined' && firebase.apps.length) {
-    try {
-      const firestoreDb = firebase.firestore();
-      const docRef = firestoreDb.collection('certificates').doc(credentialId.trim().toUpperCase());
-      const snapshot = await docRef.get();
-      if (snapshot.exists) {
-        data = snapshot.data();
-        console.log('[STEMulus Verification] Found in Firebase cloud.');
+          piece.style.cssText = [
+            'left:' + left + 'vw',
+            'background:' + color,
+            'width:' + size + 'px',
+            'height:' + (shape === 'rect' ? (size * 0.4) : size) + 'px',
+            'border-radius:' + (shape === 'circle' ? '50%' : '1px'),
+            'animation: confettiFall ' + duration + 's ' + delay + 's ease-in forwards, confettiSway ' + (duration * 0.6) + 's ' + delay + 's ease-in-out infinite'
+          ].join(';');
+
+          container.appendChild(piece);
+
+          setTimeout(function() {
+            piece.remove();
+          }, (delay + duration + 0.5) * 1000);
+        })(i);
       }
-    } catch (fbErr) {
-      console.warn('[STEMulus Verification] Firebase query failed, trying local fallback:', fbErr);
     }
-  }
 
-  // ─────────────────────────────────────────────────
-  // STEP 2: Fallback to DashboardEngine localStorage
-  // ─────────────────────────────────────────────────
-  if (!data && typeof DashboardEngine !== 'undefined') {
-    const localCerts = DashboardEngine.getCertificates();
-    data = localCerts.find(c => c.credential_id && c.credential_id.trim().toUpperCase() === credentialId.trim().toUpperCase()) || null;
-    if (data) {
-      console.log('[STEMulus Verification] Found in local DashboardEngine storage.');
+    /* ============================================
+       SHOW / HIDE STATES
+    ============================================ */
+    function showState(state) {
+      document.getElementById('state-loading').style.display = 'none';
+      document.getElementById('state-verified').style.display = 'none';
+      document.getElementById('state-invalid').style.display = 'none';
+
+      if (state === 'loading') {
+        document.getElementById('state-loading').style.display = 'block';
+      } else if (state === 'verified') {
+        document.getElementById('state-verified').style.display = 'block';
+      } else if (state === 'invalid') {
+        document.getElementById('state-invalid').style.display = 'block';
+      }
     }
-  }
 
-  if (!data) {
-  console.warn("[STEMulus Verification] Credential not found in cloud or local storage.");
-  showState('invalid');
-  document.getElementById('manual-credential-id').value = credentialId;
-  return;
-  }
+    /* ============================================
+       VERIFY CERTIFICATE
+    ============================================ */
+    function verifyCertificate(id) {
+      if (!id || !id.trim()) {
+        showState('invalid');
+        return;
+      }
 
- // Populate data
- document.getElementById('student-name-display').textContent = data.student_name;
- document.getElementById('program-name-display').textContent = data.program_name;
- document.getElementById('credential-id-display').textContent = data.credential_id;
+      id = id.trim().toUpperCase();
+      currentCredId = id;
 
- // Populate certificate replica
- if (document.getElementById('cert-replica-student-name')) {
- document.getElementById('cert-replica-student-name').textContent = data.student_name;
- }
- if (document.getElementById('cert-replica-program-name')) {
- document.getElementById('cert-replica-program-name').textContent = data.program_name;
- }
- if (document.getElementById('cert-replica-grade')) {
- document.getElementById('cert-replica-grade').textContent = data.grade_level || 'Pass';
- }
- if (document.getElementById('cert-replica-id')) {
- document.getElementById('cert-replica-id').textContent = data.credential_id;
- }
- 
- // Format Grade / Distinction
- const gradeEl = document.getElementById('grade-display');
- if (gradeEl) {
- gradeEl.textContent = data.grade_level || 'Pass';
-  if (data.grade_level && (data.grade_level.toLowerCase().includes('distinction') || data.grade_level.toLowerCase().includes('honors'))) {
-  gradeEl.className = "text-xs font-semibold text-[#F4600C] flex items-center gap-1";
-  gradeEl.innerHTML = `<svg class="w-3.5 h-3.5 fill-[#F4600C] stroke-none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-6 5.87 1.77 6.86L12 18.89l-5.77 3.11L7.72 15.14 1.73 9.27l6.91-1.01L12 2z"/></svg> ${data.grade_level}`;
-  } else {
-  gradeEl.className = "text-xs font-semibold text-[#10B981] flex items-center gap-1";
-  gradeEl.innerHTML = `<svg class="w-3.5 h-3.5 fill-[#10B981] stroke-none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-6 5.87 1.77 6.86L12 18.89l-5.77 3.11L7.72 15.14 1.73 9.27l6.91-1.01L12 2z"/></svg> ${data.grade_level}`;
-  }
- }
+      // Scroll states container into view
+      document.querySelector('.states-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      showState('loading');
 
- // Format Issue Date
- if (data.issue_date) {
- const options = { year: 'numeric', month: 'long', day: 'numeric' };
- const formattedDate = new Date(data.issue_date).toLocaleDateString('en-US', options);
- if (document.getElementById('issue-date-display')) {
- document.getElementById('issue-date-display').textContent = formattedDate;
- }
- if (document.getElementById('cert-replica-date')) {
- document.getElementById('cert-replica-date').textContent = formattedDate;
- }
- }
+      // Also populate the hero search input
+      document.getElementById('hero-search-input').value = id;
 
- // Set Verification Time in footer
- const now = new Date();
- const timeEl = document.getElementById('verification-time');
- if (timeEl) {
- timeEl.textContent = 'Checked: ' + now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
- }
+      // Small delay for UX (loading state visibility)
+      setTimeout(function() {
+        doVerify(id);
+      }, 600);
+    }
 
- // Generate simulated secure cryptographic hash (SHA-256 style)
- const mockHash = await sha256(`STEMULUS-SECURE-CREDENTIAL-${data.credential_id}-${data.student_name}-${data.issue_date}`);
- if (document.getElementById('crypto-fingerprint')) {
- document.getElementById('crypto-fingerprint').textContent = mockHash;
- }
+    function doVerify(id) {
+      var data = null;
 
- // Configure LinkedIn Share Button
- setupLinkedInButton(data.student_name, data.program_name, data.credential_id, data.issue_date);
+      // STEP 1: Try Firebase Firestore
+      if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+        try {
+          var db = firebase.firestore();
+          db.collection('certificates').doc(id).get().then(function(snapshot) {
+            if (snapshot.exists) {
+              data = snapshot.data();
+              console.log('[STEMulus] Found in Firebase.');
+              populateAndShow(data);
+            } else {
+              // STEP 2: Fallback to DashboardEngine
+              data = localLookup(id);
+              if (data) {
+                populateAndShow(data);
+              } else {
+                showState('invalid');
+              }
+            }
+          }).catch(function(err) {
+            console.warn('[STEMulus] Firebase lookup failed:', err);
+            data = localLookup(id);
+            if (data) {
+              populateAndShow(data);
+            } else {
+              showState('invalid');
+            }
+          });
+          return; // async path taken
+        } catch(e) {
+          console.warn('[STEMulus] Firebase error:', e);
+        }
+      }
 
- // Transition state
- showState('verified');
+      // STEP 2: Local DashboardEngine / localStorage
+      data = localLookup(id);
+      if (data) {
+        populateAndShow(data);
+      } else {
+        showState('invalid');
+      }
+    }
 
- } catch (err) {
- console.error("[STEMulus Verification] System error:", err);
- showState('invalid');
- }
+    function localLookup(id) {
+      // Try DashboardEngine
+      if (typeof DashboardEngine !== 'undefined') {
+        var certs = DashboardEngine.getCertificates ? DashboardEngine.getCertificates() : [];
+        var found = certs.find(function(c) {
+          return c.credential_id && c.credential_id.trim().toUpperCase() === id;
+        });
+        if (found) return found;
+      }
 
- // Function to change visible state container
- function showState(state) {
- stateLoading.classList.add('hidden');
- stateVerified.classList.add('hidden');
- stateInvalid.classList.add('hidden');
+      // Raw localStorage fallback
+      try {
+        var db = JSON.parse(localStorage.getItem('stemulus_db') || '{}');
+        if (db.certificates) {
+          var match = db.certificates.find(function(c) {
+            return c.credential_id && c.credential_id.trim().toUpperCase() === id;
+          });
+          if (match) return match;
+        }
+      } catch(e) {}
 
- if (state === 'loading') stateLoading.classList.remove('hidden');
- else if (state === 'verified') stateVerified.classList.remove('hidden');
- else if (state === 'invalid') stateInvalid.classList.remove('hidden');
- }
+      return null;
+    }
 
- // Mock SHA-256 helper inside client using Web Crypto API
- async function sha256(message) {
- try {
- const msgBuffer = new TextEncoder().encode(message);
- const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
- const hashArray = Array.from(new Uint8Array(hashBuffer));
- const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
- return hashHex.toUpperCase();
- } catch (e) {
- let hash =0;
- for (let i =0; i < message.length; i++) {
- const char = message.charCodeAt(i);
- hash = ((hash <<5) - hash) + char;
- hash = hash & hash;
- }
- return "SHA256:F" + Math.abs(hash).toString(16).toUpperCase().repeat(4).slice(0,64);
- }
- }
+    /* ============================================
+       POPULATE VERIFIED STATE
+    ============================================ */
+    function populateAndShow(data) {
+      var studentName = data.student_name || 'STEMulus Graduate';
+      var programName = data.program_name || 'STEM Technology & Coding Program';
+      var grade       = data.grade_level  || 'Pass';
+      var credId      = data.credential_id || currentCredId || '';
+      var issueDate   = data.issue_date || '';
 
- // Setup manual verification form submit
- const manualForm = document.getElementById('manual-verify-form');
- if (manualForm) {
- manualForm.addEventListener('submit', (e) => {
- e.preventDefault();
- const inputId = document.getElementById('manual-credential-id').value.trim();
- if (inputId) {
- window.location.search = `?id=${encodeURIComponent(inputId)}`;
- }
- });
- }
+      var formattedDate = '—';
+      if (issueDate) {
+        try {
+          formattedDate = new Date(issueDate + 'T12:00:00').toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+          });
+        } catch(e) { formattedDate = issueDate; }
+      }
 
- // Config LinkedIn share URL
- function setupLinkedInButton(studentName, programName, certId, issueDate) {
- const button = document.getElementById('linkedin-share-btn');
- if (!button) return;
+      // Populate info card
+      setText('vc-student-name', studentName);
+      setText('vc-program', programName);
+      setText('vc-grade', grade);
+      setText('vc-date', formattedDate);
+      setText('vc-credential-id', credId);
+      setText('vc-verified-time', 'Verified ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
 
- const base = "https://www.linkedin.com/profile/add";
- const start = new Date(issueDate);
- const year = start.getFullYear();
- const month = start.getMonth() +1;
+      // Populate mini certificate
+      setText('mini-student-name', studentName);
+      setText('mini-program-name', programName);
+      setText('mini-grade-badge', grade);
+      setText('mini-date', 'Issued: ' + formattedDate);
+      setText('mini-credential-id', credId);
 
- const params = new URLSearchParams({
- startTask: "CERTIFICATION_AUTHORITY",
- name: `Certificate of Completion in ${programName}`,
- organizationName: "STEMulus Kids Tech",
- issueYear: year,
- issueMonth: month,
- certId: certId,
- certUrl: `https://stemuluskidstech.com/verify-certificate.html?id=${certId}`
- });
+      // Configure share links
+      var verifyUrl = 'https://stemuluskidstech.com/verify-certificate.html?id=' + encodeURIComponent(credId);
+      var waMsg = encodeURIComponent(
+        studentName + ' just earned a certificate in ' + programName +
+        ' from STEMulus Kids Tech!\n\nVerify it here: ' + verifyUrl
+      );
+      var waLink = document.getElementById('btn-whatsapp-share');
+      if (waLink) waLink.href = 'https://wa.me/?text=' + waMsg;
 
- button.href = `${base}?${params.toString()}`;
- }
- });
- </script>
+      window._shareUrl = verifyUrl;
+
+      showState('verified');
+      launchConfetti();
+    }
+
+    function setText(id, text) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = text;
+    }
+
+    /* ============================================
+       COPY SHARE LINK
+    ============================================ */
+    function copyShareLink() {
+      var url = window._shareUrl || window.location.href;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function() {
+          var btn = document.getElementById('btn-copy-share');
+          if (btn) {
+            var orig = btn.innerHTML;
+            btn.textContent = 'Copied!';
+            btn.style.background = '#ECFDF5';
+            btn.style.color = '#059669';
+            setTimeout(function() {
+              btn.innerHTML = orig;
+              btn.style.background = '';
+              btn.style.color = '';
+            }, 2000);
+          }
+        }).catch(function() {
+          alert('Copy this link: ' + url);
+        });
+      } else {
+        alert('Copy this link: ' + url);
+      }
+    }
+
+    /* ============================================
+       HERO SEARCH
+    ============================================ */
+    function handleHeroSearch(e) {
+      e.preventDefault();
+      var val = document.getElementById('hero-search-input').value.trim();
+      if (val) verifyCertificate(val);
+    }
+
+    /* ============================================
+       RETRY FORM (invalid state)
+    ============================================ */
+    function handleRetry(e) {
+      e.preventDefault();
+      var val = document.getElementById('retry-input').value.trim();
+      if (val) verifyCertificate(val);
+    }
+
+    /* ============================================
+       ADD verifyCertificate TO DashboardEngine
+       (if it doesn't have it already)
+    ============================================ */
+    function patchDashboardEngine() {
+      if (typeof DashboardEngine !== 'undefined' && !DashboardEngine.verifyCertificate) {
+        DashboardEngine.verifyCertificate = function(id) {
+          var certs = DashboardEngine.getCertificates ? DashboardEngine.getCertificates() : [];
+          return certs.find(function(c) {
+            return c.credential_id && c.credential_id.trim().toUpperCase() === id.trim().toUpperCase();
+          }) || null;
+        };
+      }
+    }
+
+    /* ============================================
+       INIT: Read ?id= param from URL
+    ============================================ */
+    document.addEventListener('DOMContentLoaded', function() {
+      patchDashboardEngine();
+
+      var params = new URLSearchParams(window.location.search);
+      var idParam = params.get('id') || params.get('credential_id');
+
+      if (idParam) {
+        document.getElementById('hero-search-input').value = idParam.toUpperCase();
+        verifyCertificate(idParam);
+      }
+      // If no id, show nothing — just the hero search
+    });
+  </script>
 
 </body>
 </html>

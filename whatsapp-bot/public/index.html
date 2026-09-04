@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STEMulus Kids Tech — WhatsApp Admin Console</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <div class="glow-bg"></div>
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo-box"><span data-icon-3d="rocket" data-icon-size="28"></span></div>
+        <div class="brand-text">
+          <h1>STEMulus</h1>
+          <span>WhatsApp Console</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <button class="nav-btn active" data-tab="chats">Conversations</button>
+        <button class="nav-btn" data-tab="rules">Static Rules</button>
+        <button class="nav-btn" data-tab="playbook">Playbook</button>
+        <button class="nav-btn" data-tab="settings">Settings</button>
+        <button class="nav-btn" data-tab="logs">Live Terminal</button>
+      </nav>
+      <div class="sidebar-footer">
+        <span class="version">v1.0.0 Stable</span>
+        <span class="status-indicator connected" id="global-status-dot"></span>
+        <span id="global-status-text">Connecting...</span>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Header / Controls -->
+      <header class="top-header">
+        <div class="header-title">
+          <h2 id="tab-title">Active Conversations</h2>
+          <p id="tab-subtitle">Real-time chat control & takeover options</p>
+        </div>
+        <div class="header-actions">
+          <button id="provider-badge" class="badge">Meta Cloud API</button>
+          <div class="toggle-container">
+            <span class="toggle-label">Global Bot Active</span>
+            <label class="switch">
+              <input type="checkbox" id="global-bot-toggle" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+      </header>
+
+      <!-- Stats Bar -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon sent"><span data-icon-3d="mail" data-icon-size="20"></span></div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-sent">0</span>
+            <span class="stat-label">Messages Sent</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon recv"><span data-icon-3d="mail" data-icon-size="20"></span></div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-recv">0</span>
+            <span class="stat-label">Messages Received</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon rule"><span data-icon-3d="document" data-icon-size="20"></span></div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-rules">0</span>
+            <span class="stat-label">Rules Matched</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon ai"><span data-icon-3d="robot" data-icon-size="20"></span></div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-ai">0</span>
+            <span class="stat-label">AI Responses</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tabs Views -->
+      <div class="tabs-container">
+        
+        <!-- Chats Tab -->
+        <div class="tab-view active" id="tab-chats">
+          <div class="chats-layout">
+            
+            <!-- Left panel: List -->
+            <div class="chat-list-panel glass">
+              <div class="panel-header">
+                <input type="text" id="chat-search" placeholder="Search conversations...">
+              </div>
+              <div class="chat-items-container" id="chat-list">
+                <!-- Dynamic Chat list items -->
+                <div class="empty-state">No active chats found.</div>
+              </div>
+            </div>
+
+            <!-- Right panel: Active Chat view & takeover -->
+            <div class="chat-view-panel glass">
+              <div id="no-chat-selected" class="panel-center">
+                <div class="center-icon"><span data-icon-3d="chat" data-icon-size="28"></span></div>
+                <h3>Select a Conversation</h3>
+                <p>Click on any user in the sidebar to review logs or toggle human takeover.</p>
+              </div>
+              
+              <div id="chat-active" class="chat-active-container" style="display: none;">
+                <div class="chat-header">
+                  <div class="chat-user-info">
+                    <h3 id="active-chat-phone">+234 705 246 6716</h3>
+                    <span id="active-chat-jid">jid@s.whatsapp.net</span>
+                  </div>
+                  <div class="chat-header-actions">
+                    <button id="takeover-toggle-btn" class="btn btn-warning">Pause Bot (Takeover)</button>
+                  </div>
+                </div>
+                <div class="chat-history-box" id="active-chat-history">
+                  <!-- Messages load dynamically -->
+                </div>
+                <div class="chat-footer-box">
+                  <p class="takeover-warning" id="takeover-active-warning" style="display: none;">
+                    [Paused] Bot is paused for this user. Messages you send via WhatsApp mobile will be delivered.
+                  </p>
+                  <p class="takeover-inactive-warning" id="takeover-inactive-warning">
+                    [Active] Bot is responding automatically to this chat. Click pause to take over manually.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Rules Tab -->
+        <div class="tab-view" id="tab-rules">
+          <div class="rules-container glass">
+            <div class="panel-header">
+              <h3>Keyword Routing Rules</h3>
+              <button id="add-rule-btn" class="btn btn-primary">+ Add New Rule</button>
+            </div>
+            <div class="rules-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Rule ID</th>
+                    <th>Triggers</th>
+                    <th>Match Type</th>
+                    <th>Action</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="rules-tbody">
+                  <!-- Rules load dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Playbook Tab -->
+        <div class="tab-view" id="tab-playbook">
+          <div class="playbook-container glass">
+            <div class="panel-header">
+              <h3>AI Knowledge Grounding Playbook</h3>
+              <button id="save-playbook-btn" class="btn btn-primary">Save Playbook</button>
+            </div>
+            <div class="editor-box">
+              <textarea id="playbook-textarea" placeholder="Paste your STEMulus training knowledge base playbook details here..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-view" id="tab-settings">
+          <div class="settings-grid">
+            
+            <div class="settings-card glass">
+              <h3>Core Connection Configuration</h3>
+              <div class="form-group">
+                <label>WhatsApp Provider</label>
+                <select id="setting-provider">
+                  <option value="meta">Meta Cloud API (Recommended)</option>
+                  <option value="baileys">Baileys QR Scan (Local SIM)</option>
+                </select>
+              </div>
+              
+              <!-- QR Code block (renders if Baileys is active and qr status) -->
+              <div class="qr-block" id="qr-container" style="display: none;">
+                <h4>Scan QR Code to Authenticate</h4>
+                <div class="qr-img-box">
+                  <img id="qr-image" src="" alt="WhatsApp Auth QR Code">
+                </div>
+                <p class="qr-instruction">Open WhatsApp on your phone → Linked Devices → Link a Device.</p>
+              </div>
+
+              <!-- Meta-specific config -->
+              <div class="meta-config-block" id="meta-settings-block">
+                <div class="form-group">
+                  <label>Meta Phone ID</label>
+                  <input type="text" id="setting-meta-phone-id" placeholder="e.g. 104277492161203">
+                </div>
+                <div class="form-group">
+                  <label>Meta Business WABA ID</label>
+                  <input type="text" id="setting-meta-waba-id" placeholder="e.g. 102213798992100">
+                </div>
+                <div class="form-group">
+                  <label>Webhook Verify Token</label>
+                  <input type="text" id="setting-meta-verify-token" placeholder="Default verify token">
+                </div>
+                <div class="form-group">
+                  <label>Meta permanent token</label>
+                  <textarea id="setting-meta-token" placeholder="EAAG..."></textarea>
+                </div>
+              </div>
+
+              <div class="settings-actions">
+                <button id="save-connection-btn" class="btn btn-primary">Save Settings</button>
+                <button id="logout-btn" class="btn btn-danger" style="display: none;">Log Out WhatsApp</button>
+              </div>
+            </div>
+
+            <div class="settings-card glass">
+              <h3>AI Engine & Prompt Engineering</h3>
+              <div class="form-group">
+                <label>Google Gemini Model</label>
+                <select id="setting-gemini-model">
+                  <option value="gemini-2.0-flash">gemini-2.0-flash (Fast & Accurate)</option>
+                  <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                  <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>System instructions</label>
+                <textarea id="setting-system-prompt" class="tall" placeholder="Inject core instructions, role, tone, restrictions..."></textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group half">
+                  <label>Temperature (Creativity)</label>
+                  <input type="number" id="setting-temperature" step="0.1" min="0" max="1" value="0.7">
+                </div>
+                <div class="form-group half">
+                  <label>Max Output Tokens</label>
+                  <input type="number" id="setting-max-tokens" min="10" max="2000" value="500">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Fallback Default Reply</label>
+                <input type="text" id="setting-fallback-reply" placeholder="Fallback message when bot fails or is confused">
+              </div>
+              <div class="form-group toggle-row">
+                <label>Enable AI Fallback Engine</label>
+                <label class="switch">
+                  <input type="checkbox" id="setting-ai-enabled" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <button id="save-ai-btn" class="btn btn-primary">Save AI Configuration</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Logs Tab -->
+        <div class="tab-view" id="tab-logs">
+          <div class="logs-container glass">
+            <div class="panel-header">
+              <h3>Live Console Terminal</h3>
+              <button id="clear-logs-btn" class="btn btn-secondary">Clear Terminal</button>
+            </div>
+            <div class="terminal" id="terminal-logs">
+              <!-- Logs show here -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Rule Modal -->
+  <div class="modal" id="rule-modal" style="display: none;">
+    <div class="modal-content glass">
+      <div class="modal-header">
+        <h3 id="modal-rule-title">Add Keyword Rule</h3>
+        <span class="modal-close" id="modal-rule-close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Rule ID (Unique Name)</label>
+          <input type="text" id="rule-id-input" placeholder="e.g. pricing-info">
+        </div>
+        <div class="form-group">
+          <label>Triggers (comma separated)</label>
+          <input type="text" id="rule-triggers-input" placeholder="e.g. price, cost, fees, how much">
+        </div>
+        <div class="form-group">
+          <label>Match Type</label>
+          <select id="rule-matchtype-input">
+            <option value="exact">Exact Match</option>
+            <option value="startsWith">Starts With</option>
+            <option value="contains">Contains (Broadest)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Auto Action trigger (Optional)</label>
+          <select id="rule-action-input">
+            <option value="">None (Just send text)</option>
+            <option value="requestHumanTakeover">Request Human Takeover (Pause Bot)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Auto-Reply Response Message</label>
+          <textarea id="rule-response-input" class="tall" placeholder="Enter the text response message to reply automatically..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="modal-rule-cancel-btn" class="btn btn-secondary">Cancel</button>
+        <button id="modal-rule-save-btn" class="btn btn-primary">Save Rule</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

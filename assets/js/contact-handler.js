@@ -7,6 +7,7 @@
     'use strict';
 
     const CONFIG = {
+        EMAIL_ENDPOINT: '/.netlify/functions/send-email',
         NTFY_TOPIC: 'stemulus-messages-admin2026'
     };
 
@@ -48,15 +49,25 @@
                 timestamp: new Date().toISOString()
             };
 
-            // Send AJAX to Netlify and NTFY in parallel
+            // Send all notifications in parallel
             const results = await Promise.allSettled([
+                sendEmailNotification(messageData),
                 sendNTFYNotification(messageData),
-                submitToNetlify(form, formData)
+                submitToNetlify(form, formData),
+                (typeof WhatsAppNotify !== 'undefined'
+                    ? WhatsAppNotify.sendContactNotification({
+                        parentName: `${messageData.firstName} ${messageData.lastName}`,
+                        email: messageData.email,
+                        phone: '2347052466716',
+                        subject: messageData.subject,
+                        message: messageData.message
+                    })
+                    : Promise.resolve({ success: false, skipped: 'WhatsAppNotify not loaded' }))
             ]);
 
             // Log results
             results.forEach((result, index) => {
-                const services = ['NTFY Push', 'Netlify Forms'];
+                const services = ['Email (Resend)', 'NTFY Push', 'Netlify Forms', 'WhatsApp Notify'];
                 if (result.status === 'fulfilled') {
                     console.log(`[ContactForm] ${services[index]} success`);
                 } else {
@@ -79,6 +90,26 @@
         }
     }
 
+    async function sendEmailNotification(data) {
+        const resp = await fetch(CONFIG.EMAIL_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: 'contact',
+                data: {
+                    firstName: data.firstName,
+                    lastName:  data.lastName,
+                    email:     data.email,
+                    subject:   data.subject,
+                    message:   data.message,
+                }
+            })
+        });
+        const json = await resp.json();
+        if (!json.ok) console.warn('[ContactForm] Email send issue:', json);
+        return json;
+    }
+
     async function sendNTFYNotification(data) {
         const title = `New Message: ${data.firstName} ${data.lastName}`;
         const message = `
@@ -95,15 +126,17 @@ Time: ${new Date().toLocaleString()}
         const mailtoLink = `mailto:${data.email}?subject=${encodeURIComponent('Re: ' + data.subject)}`;
 
         try {
-            const response = await fetch(`https://ntfy.sh/${CONFIG.NTFY_TOPIC}`, {
+            const response = await fetch('/.netlify/functions/notify', {
                 method: 'POST',
-                headers: {
-                    'Title': title,
-                    'Priority': 'high',
-                    'Tags': 'speech_balloon,envelope',
-                    'Click': mailtoLink
-                },
-                body: message
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    channel: 'contact',
+                    title,
+                    message,
+                    priority: 'high',
+                    tags: 'speech_balloon,envelope',
+                    click: mailtoLink
+                })
             });
 
             if (!response.ok) throw new Error('NTFY post failed');
@@ -131,7 +164,10 @@ Time: ${new Date().toLocaleString()}
             body: body
         });
 
-        if (!response.ok) throw new Error('Netlify form submission failed');
+        // Treat only server-side errors as failures. Netlify Forms returns 3xx
+        // redirects on success, and fetch follows them to a 200 homepage — both
+        // are acceptable outcomes, so only throw on 5xx.
+        if (response.status >= 500) throw new Error('Netlify form submission failed');
         return { success: true };
     }
 
@@ -148,7 +184,7 @@ Time: ${new Date().toLocaleString()}
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold font-nunito text-slate-800 mb-2">Message Received! 🚀</h3>
+                    <h3 class="text-2xl font-bold font-nunito text-slate-800 mb-2">Message Received! <span data-icon-3d="rocket" data-icon-size="24"></span></h3>
                     <p class="text-slate-600 mb-8">Thanks for reaching out, ${data.firstName}. We have received your inquiry and our team will get back to you at <strong>${data.email}</strong> within 2 hours.</p>
                     <a href="index.html" class="inline-block bg-orange-600 text-white font-bold py-3 px-8 rounded-xl hover:brightness-110 shadow-lg hover:shadow-orange-500/20 transition-all">Return Home</a>
                 </div>

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema.json",
+  "name": "STEMulus WebMCP Server",
+  "version": "1.0.0",
+  "description": "Model Context Protocol endpoint for automated AI agents to discover curriculum, inspect schedules, book free 1-on-1 trial classes, and enroll students into STEMulus Kids Tech.",
+  "homepage": "https://stemuluskidstech.com",
+  "endpoints": {
+    "rpc": "https://stemuluskidstech.com/api/mcp",
+    "directFunction": "https://stemuluskidstech.com/.netlify/functions/mcp",
+    "playground": "https://stemuluskidstech.com/webmcp.html"
+  },
+  "capabilities": {
+    "tools": true,
+    "resources": true,
+    "prompts": false
+  },
+  "tools": [
+    {
+      "name": "get_courses",
+      "description": "Query STEMulus course catalog, age brackets, pricing, and curriculum milestones."
+    },
+    {
+      "name": "check_availability",
+      "description": "Check available 1-on-1 trial class slots for any programming course and date."
+    },
+    {
+      "name": "book_trial_class",
+      "description": "Book a free 45-minute 1-on-1 trial coding class with Google Meet link and dual reminders."
+    },
+    {
+      "name": "enroll_student",
+      "description": "Programmatically enroll a student, provision student ID, and create parent portal account."
+    }
+  ],
+  "clientConfigurations": {
+    "claudeDesktop": {
+      "mcpServers": {
+        "stemulus": {
+          "command": "node",
+          "args": ["tools/webmcp-server.js"]
+        }
+      }
+    },
+    "cursor": {
+      "mcpServers": {
+        "stemulus": {
+          "url": "https://stemuluskidstech.com/api/mcp"
+        }
+      }
+    }
+  }
+}

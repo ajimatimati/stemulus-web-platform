@@ -1,0 +1,693 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   STEMulus — 3D Minimalist UI Layer  v1.0
+   ─────────────────────────────────────────────────────────────────────────
+   Design language: floating frosted planes · thin geometric borders ·
+   warm-white depth system · long soft shadows · micro-relief on every
+   interactive surface. Works with the brand's orange / navy / chalk palette.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 0. Global depth tokens ─────────────────────────────────────────────── */
+:root {
+  --d0:  0 1px 2px rgba(15,23,42,0.04);
+  --d1:  0 2px 6px rgba(15,23,42,0.05), 0 8px 24px rgba(15,23,42,0.04);
+  --d2:  0 4px 12px rgba(15,23,42,0.06), 0 18px 40px rgba(15,23,42,0.05);
+  --d3:  0 8px 24px rgba(15,23,42,0.07), 0 32px 64px rgba(15,23,42,0.06);
+  --d-orange: 0 6px 20px rgba(244,96,12,0.18), 0 2px 6px rgba(244,96,12,0.12);
+  --d-orange-lg: 0 12px 36px rgba(244,96,12,0.22), 0 4px 10px rgba(244,96,12,0.14);
+  --surface:     #ffffff;
+  --surface-warm:#fffbf7;
+  --surface-tint:#fff7f0;
+  --border-hair: rgba(15,23,42,0.06);
+  --border-soft: rgba(15,23,42,0.10);
+  --border-orange: rgba(244,96,12,0.20);
+  --radius-card: 20px;
+  --radius-pill: 999px;
+  --radius-icon: 14px;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── 1. Navigation — frosted bar with geometric underline ────────────────── */
+.nav-editorial {
+  background: rgba(250, 249, 247, 0.82) !important;
+  backdrop-filter: blur(18px) saturate(1.4) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.4) !important;
+  border-bottom: 1px solid var(--border-hair) !important;
+  box-shadow: var(--d1) !important;
+}
+
+.nav-cta-btn {
+  background: #f4600c !important;
+  color: #fff !important;
+  border-radius: var(--radius-pill) !important;
+  padding: 0.55rem 1.4rem !important;
+  font-weight: 700 !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.02em !important;
+  box-shadow: var(--d-orange) !important;
+  transition: transform 0.35s var(--ease-spring), box-shadow 0.35s ease !important;
+}
+
+.nav-cta-btn:hover {
+  transform: translateY(-2px) scale(1.03) !important;
+  box-shadow: var(--d-orange-lg) !important;
+}
+
+/* ── 2. Hero split — canvas column frosted panel ────────────────────────── */
+.preai-hero-split {
+  position: relative;
+}
+
+.preai-hero-img-col {
+  position: relative;
+}
+
+/* Soft depth ring behind 3D canvas */
+.preai-hero-img-col::before {
+  content: '';
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(244, 96, 12, 0.07) 0%,
+    rgba(250, 204, 21, 0.04) 50%,
+    transparent 75%
+  );
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(20px);
+}
+
+/* Hero stat chips — 3D pill look */
+.preai-hero-stat {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: 12px !important;
+  padding: 0.5rem 1rem !important;
+  box-shadow: var(--d1) !important;
+  transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s ease !important;
+}
+
+.preai-hero-stat:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: var(--d2) !important;
+}
+
+/* Chapter label depth */
+.preai-hero-chapter {
+  background: linear-gradient(135deg, rgba(244,96,12,0.08), rgba(244,96,12,0.04)) !important;
+  border: 1px solid var(--border-orange) !important;
+  border-radius: var(--radius-pill) !important;
+  padding: 0.28rem 0.85rem !important;
+  display: inline-block !important;
+  box-shadow: 0 2px 8px rgba(244,96,12,0.06) !important;
+}
+
+/* ── 3. Index hero stat strip ────────────────────────────────────────────── */
+.hero-stat-item {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: 14px !important;
+  padding: 0.9rem 1.4rem !important;
+  box-shadow: var(--d1) !important;
+  transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s ease !important;
+}
+
+.hero-stat-item:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: var(--d2) !important;
+}
+
+/* ── 4. Index: Skills marquee cards ─────────────────────────────────────── */
+.logo-card {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--d1) !important;
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s ease !important;
+}
+
+.logo-card:hover {
+  transform: translateY(-5px) scale(1.04) !important;
+  box-shadow: var(--d2) !important;
+}
+
+/* ── 5. Index: Why-STEMulus cards ────────────────────────────────────────── */
+.why-card {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--d1) !important;
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.why-card:hover {
+  transform: perspective(900px) translateY(-8px) rotateX(1.5deg) !important;
+  box-shadow: var(--d3) !important;
+}
+
+/* Number bubble */
+.why-card__num {
+  box-shadow: var(--d-orange) !important;
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.3s ease !important;
+}
+
+.why-card:hover .why-card__num {
+  transform: scale(1.15) rotate(-5deg) !important;
+  box-shadow: var(--d-orange-lg) !important;
+}
+
+/* ── 6. Index: Showcase cards ───────────────────────────────────────────── */
+.showcase-new-card {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--d1) !important;
+  overflow: hidden;
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s ease !important;
+}
+
+.showcase-new-card:hover {
+  transform: perspective(900px) translateY(-8px) rotateX(2deg) !important;
+  box-shadow: var(--d3) !important;
+}
+
+.showcase-new-card img {
+  transition: transform 0.7s var(--ease-out-expo) !important;
+}
+
+.showcase-new-card:hover img {
+  transform: scale(1.07) !important;
+}
+
+/* Meta tag badge */
+.showcase-new-meta__tag {
+  background: rgba(244,96,12,0.08) !important;
+  color: #f4600c !important;
+  border-radius: var(--radius-pill) !important;
+  padding: 0.15rem 0.55rem !important;
+  font-size: 0.67rem !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(244,96,12,0.14) !important;
+}
+
+/* ── 7. Index: Testimonial cards ─────────────────────────────────────────── */
+.testi-card {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--d1) !important;
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s ease, border-color 0.4s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.testi-card:hover {
+  transform: perspective(900px) translateY(-6px) rotateX(1.5deg) !important;
+  box-shadow: var(--d2) !important;
+}
+
+/* Quote mark accent */
+.testi-card::before {
+  content: '\201C';
+  position: absolute;
+  top: -8px;
+  right: 14px;
+  font-size: 5rem;
+  line-height: 1;
+  font-family: Georgia, serif;
+  color: rgba(244,96,12,0.06);
+  pointer-events: none;
+}
+
+/* ── 8. Index: Stats band ────────────────────────────────────────────────── */
+.stats-item {
+  transition: background 0.3s ease, transform 0.4s var(--ease-out-expo) !important;
+}
+
+.stats-item:hover {
+  background: rgba(244,96,12,0.02) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ── 9. Index: Programs grid cells ──────────────────────────────────────── */
+.prog-cell {
+  background: var(--surface) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--d0) !important;
+  transition: background 0.3s ease, transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease !important;
+  border: 1px solid var(--border-hair) !important;
+}
+
+.prog-cell:hover {
+  background: var(--surface-tint) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: var(--d2) !important;
+}
+
+/* ── 10. Index: CTA section ─────────────────────────────────────────────── */
+.cta-btn-solid, .btn-pill-solid, .fp-btn-primary {
+  border-radius: var(--radius-pill) !important;
+  box-shadow: var(--d-orange) !important;
+  transition: transform 0.35s var(--ease-spring), box-shadow 0.35s ease !important;
+  font-weight: 700 !important;
+}
+
+.cta-btn-solid:hover, .btn-pill-solid:hover, .fp-btn-primary:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: var(--d-orange-lg) !important;
+}
+
+.cta-btn-ghost-white, .btn-pill-outline, .fp-btn-ghost {
+  border-radius: var(--radius-pill) !important;
+  border: 1.5px solid rgba(15,23,42,0.18) !important;
+  transition: transform 0.35s var(--ease-spring), background 0.3s ease, border-color 0.3s ease !important;
+  font-weight: 700 !important;
+}
+
+.cta-btn-ghost-white:hover, .btn-pill-outline:hover, .fp-btn-ghost:hover {
+  transform: translateY(-2px) !important;
+  background: rgba(15,23,42,0.04) !important;
+  border-color: rgba(15,23,42,0.30) !important;
+}
+
+/* ── 11. Blog: Article cards ─────────────────────────────────────────────── */
+#blog-grid-container > article {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--d1) !important;
+  overflow: hidden;
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s ease, border-color 0.4s ease !important;
+}
+
+#blog-grid-container > article:hover {
+  transform: perspective(900px) translateY(-8px) rotateX(2deg) !important;
+  box-shadow: var(--d3) !important;
+}
+
+#blog-grid-container > article > div:first-child {
+  overflow: hidden;
+}
+
+#blog-grid-container > article > div:first-child img {
+  transition: transform 0.7s var(--ease-out-expo) !important;
+}
+
+#blog-grid-container > article:hover > div:first-child img {
+  transform: scale(1.06) !important;
+}
+
+/* Category pill */
+#blog-grid-container > article p:first-child {
+  background: rgba(244,96,12,0.06);
+  border-radius: var(--radius-pill);
+  padding: 0.2rem 0.6rem;
+  display: inline-block;
+}
+
+/* ── 12. Blog: Filter category buttons ───────────────────────────────────── */
+#posts > div > div > button {
+  border-radius: var(--radius-pill) !important;
+  border: 1px solid var(--border-soft) !important;
+  transition: background 0.25s ease, transform 0.3s var(--ease-spring), box-shadow 0.3s ease !important;
+}
+
+#posts > div > div > button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--d1) !important;
+}
+
+/* ── 13. Contact: Info cards ─────────────────────────────────────────────── */
+[data-stagger] .rounded-xl {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--d1) !important;
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s ease, border-color 0.4s ease !important;
+}
+
+[data-stagger] .rounded-xl:hover {
+  transform: perspective(900px) translateY(-8px) rotateX(2deg) !important;
+  box-shadow: var(--d3) !important;
+}
+
+/* Icon circle */
+[data-stagger] .rounded-full {
+  background: rgba(244,96,12,0.08) !important;
+  border: 1px solid rgba(244,96,12,0.10) !important;
+  box-shadow: 0 2px 8px rgba(244,96,12,0.06) !important;
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.3s ease !important;
+}
+
+[data-stagger] .rounded-xl:hover .rounded-full {
+  transform: scale(1.1) rotate(-5deg) !important;
+  box-shadow: var(--d-orange) !important;
+}
+
+/* ── 14. Contact: Form inputs ────────────────────────────────────────────── */
+.form-input {
+  background: rgba(15,23,42,0.02) !important;
+  border: 1px solid var(--border-soft) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--d0) !important;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease !important;
+}
+
+.form-input:focus {
+  background: var(--surface) !important;
+  border-color: rgba(244,96,12,0.40) !important;
+  box-shadow: 0 0 0 4px rgba(244,96,12,0.08), var(--d0) !important;
+}
+
+/* Contact form panel 3D card */
+.contact-form-panel {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--d2) !important;
+  padding: 2.5rem !important;
+}
+
+/* ── 15. For-Parents: Step cards ─────────────────────────────────────────── */
+.fp-step {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--d1) !important;
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s ease, border-color 0.4s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.fp-step:hover {
+  transform: perspective(900px) translateY(-8px) rotateX(2deg) !important;
+  box-shadow: var(--d3) !important;
+}
+
+/* Step icon */
+.fp-step__icon {
+  border-radius: var(--radius-icon) !important;
+  box-shadow: var(--d1) !important;
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.3s ease !important;
+}
+
+.fp-step:hover .fp-step__icon {
+  transform: scale(1.12) rotate(-5deg) !important;
+  box-shadow: var(--d2) !important;
+}
+
+/* Ghost step number */
+.fp-step__num {
+  position: relative;
+  z-index: 0;
+  transition: color 0.4s ease !important;
+}
+
+.fp-step:hover .fp-step__num {
+  color: rgba(244,96,12,0.10) !important;
+}
+
+/* ── 16. For-Parents: Safety cards ───────────────────────────────────────── */
+.fp-safety-card {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--d1) !important;
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s ease, border-color 0.4s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.fp-safety-card:hover {
+  transform: perspective(900px) translateY(-8px) rotateX(2deg) !important;
+  box-shadow: var(--d3) !important;
+}
+
+/* Floating card number label — 3D embossed */
+.fp-safety-card__num {
+  background: linear-gradient(135deg, rgba(244,96,12,0.06), rgba(244,96,12,0.02)) !important;
+  border: 1px solid rgba(244,96,12,0.12) !important;
+  border-radius: var(--radius-pill) !important;
+  padding: 0.1rem 0.55rem !important;
+  font-size: 0.62rem !important;
+  letter-spacing: 0.12em !important;
+  color: #f4600c !important;
+  display: inline-block !important;
+  margin-bottom: 1.25rem !important;
+}
+
+/* Icon */
+.fp-safety-card__icon {
+  border-radius: var(--radius-icon) !important;
+  box-shadow: var(--d1) !important;
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.3s ease !important;
+}
+
+.fp-safety-card:hover .fp-safety-card__icon {
+  transform: scale(1.12) rotate(-5deg) !important;
+  box-shadow: var(--d2) !important;
+}
+
+/* ── 17. For-Parents: Chat cards ─────────────────────────────────────────── */
+.fp-chat-card {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--d1) !important;
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s ease, border-color 0.4s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.fp-chat-card:hover {
+  transform: perspective(900px) translateY(-6px) rotateX(1.5deg) !important;
+  box-shadow: var(--d2) !important;
+}
+
+/* Chat bubble depth */
+.fp-bubble--incoming {
+  background: rgba(241,245,249,0.8) !important;
+  border: 1px solid rgba(15,23,42,0.06) !important;
+  border-radius: 0 14px 14px 14px !important;
+  box-shadow: var(--d0) !important;
+}
+
+.fp-bubble--outgoing {
+  background: rgba(255,237,213,0.9) !important;
+  border: 1px solid rgba(244,96,12,0.10) !important;
+  border-radius: 14px 0 14px 14px !important;
+  box-shadow: var(--d0) !important;
+}
+
+/* Avatar chip */
+.fp-chat-avatar {
+  border-radius: 12px !important;
+  box-shadow: var(--d1) !important;
+}
+
+/* ── 18. For-Parents: Dashboard mockup ───────────────────────────────────── */
+.fp-dash-mock {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-soft) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--d2), 8px 8px 0 rgba(244,96,12,0.06) !important;
+  overflow: hidden;
+  transition: transform 0.6s var(--ease-out-expo), box-shadow 0.6s ease !important;
+}
+
+.fp-dash-mock:hover {
+  transform: perspective(900px) translateY(-6px) rotate(-0.5deg) !important;
+  box-shadow: var(--d3), 12px 12px 0 rgba(244,96,12,0.08) !important;
+}
+
+/* Bar (title bar of mockup) */
+.fp-dash-mock__bar {
+  background: #0d1b2a !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* Data rows */
+.fp-dash-row {
+  background: rgba(250,249,247,0.6) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: 10px !important;
+  transition: background 0.2s ease !important;
+}
+
+.fp-dash-row:hover {
+  background: var(--surface-tint) !important;
+}
+
+/* Progress block */
+.fp-dash-progress {
+  border: 1px solid rgba(244,96,12,0.14) !important;
+  border-radius: 10px !important;
+  background: rgba(255,243,237,0.7) !important;
+}
+
+/* ── 19. For-Parents: Checklist ──────────────────────────────────────────── */
+.fp-checklist li {
+  border-radius: 10px !important;
+  padding: 0.45rem 0.75rem !important;
+  transition: background 0.25s ease, transform 0.3s var(--ease-out-expo) !important;
+}
+
+.fp-checklist li:hover {
+  background: rgba(244,96,12,0.04) !important;
+  transform: translateX(5px) !important;
+}
+
+/* Check circle */
+.fp-check {
+  border-radius: 50% !important;
+  box-shadow: 0 2px 6px rgba(244,96,12,0.20) !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── 20. For-Parents: FAQ accordion ──────────────────────────────────────── */
+.fp-faq details {
+  border-bottom: 1px solid var(--border-hair) !important;
+  border-radius: 0 !important;
+}
+
+.fp-faq summary {
+  border-radius: 8px !important;
+  padding-left: 0.5rem !important;
+  margin-left: -0.5rem !important;
+  transition: background 0.2s ease, color 0.2s ease !important;
+}
+
+.fp-faq summary:hover {
+  background: rgba(244,96,12,0.03) !important;
+}
+
+/* ── 21. Programs: Roadmap cards ─────────────────────────────────────────── */
+.roadmap-card-outer {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--d1) !important;
+  overflow: hidden;
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s ease, border-color 0.4s ease !important;
+}
+
+.roadmap-card-outer:hover {
+  box-shadow: var(--d3) !important;
+}
+
+/* Phase intro headers */
+.roadmap-phase-intro {
+  background: linear-gradient(135deg, rgba(244,96,12,0.04), rgba(15,23,42,0.02)) !important;
+  border: 1px solid var(--border-hair) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--d0) !important;
+}
+
+/* ── 22. Section backgrounds — subtle warm depth planes ─────────────────── */
+
+/* Alternate section tint — gives page layered depth */
+section.bg-slate-50,
+section.py-20.bg-slate--50,
+.fp-split + .fp-split {
+  background: var(--surface-warm) !important;
+}
+
+/* Sections on contact/blog that are bg-white */
+section.bg-white,
+.bg-white {
+  background: var(--surface) !important;
+}
+
+/* ── 23. CTA band — elevated warm glass ──────────────────────────────────── */
+.cta-band, .cta-band-new, .fp-cta {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 247, 240, 0.98) 0%,
+    rgba(255, 251, 247, 0.98) 100%
+  ) !important;
+  border-top: 1px solid rgba(244,96,12,0.10) !important;
+  border-bottom: 1px solid rgba(244,96,12,0.10) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), inset 0 -1px 0 rgba(244,96,12,0.06) !important;
+}
+
+/* ── 24. Footer — subtle bottom plane ────────────────────────────────────── */
+.footer-editorial {
+  border-top: 1px solid var(--border-hair) !important;
+  box-shadow: 0 -1px 0 rgba(255,255,255,0.6) !important;
+}
+
+/* ── 25. Global section headings — depth underline ───────────────────────── */
+.fp-section-h em,
+.preai-hero-h1 em,
+.zb-h2 em,
+.editorial-heading em {
+  background: linear-gradient(90deg, #f4600c, #fa8c3c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-style: italic;
+}
+
+/* ── 26. 3D hero canvas wrap — ambient glow ──────────────────────────────── */
+.three-canvas-wrap {
+  position: relative !important;
+  filter: drop-shadow(0 0 40px rgba(244,96,12,0.06)) !important;
+}
+
+/* ── 27. Scroll progress bar ─────────────────────────────────────────────── */
+.scroll-progress {
+  background: linear-gradient(90deg, #f4600c 0%, #facc15 60%, #f4600c 100%) !important;
+  box-shadow: 0 0 8px rgba(244,96,12,0.40) !important;
+  height: 2.5px !important;
+}
+
+/* ── 28. Eyebrow labels — pill treatment ─────────────────────────────────── */
+.fp-eyebrow,
+.preai-hero-chapter,
+.cta-band__eyebrow,
+.cta-band-new__eyebrow,
+.fp-cta__eyebrow {
+  letter-spacing: 0.12em !important;
+}
+
+/* ── 29. Stats section values — kinetic weight ───────────────────────────── */
+.fp-dash-row__val,
+.stat-num,
+.hero-stat-num,
+.preai-hero-stat-num {
+  font-family: 'Outfit', 'Nunito', sans-serif !important;
+  font-weight: 900 !important;
+}
+
+/* ── 30. Mobile reductions ────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .why-card:hover,
+  .showcase-new-card:hover,
+  .testi-card:hover,
+  .fp-step:hover,
+  .fp-safety-card:hover,
+  .fp-chat-card:hover,
+  #blog-grid-container > article:hover,
+  [data-stagger] .rounded-xl:hover,
+  .roadmap-card-outer:hover {
+    transform: translateY(-4px) !important;
+  }
+}
+
+/* ── 31. Reduced motion ───────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  .three-canvas-wrap canvas {
+    display: block !important;
+  }
+}

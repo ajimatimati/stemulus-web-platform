@@ -1,38 +1,185 @@
 # Netlify Build Configuration for STEMulus
 
 [build]
+  command = "npm install && cd tools && npm install && cd .. && npm run build"
   publish = "."
+  functions = "netlify/functions"
 
-# Form submission settings
-# Note: Email notifications must be configured in the Netlify dashboard:
-# Site settings → Forms → Form notifications → Add notification → Email
+# Morning run: 07:00 WAT (06:00 UTC) — tutor digests + birthday alerts
+[[scheduled_functions]]
+  name = "scheduled-notifications"
+  cron = "0 6 * * *"
 
-# Redirect after successful form submission (optional - handled by JS)
-# [[redirects]]
-#   from = "/enroll-success"
-#   to = "/enroll.html"
-#   status = 200
+# Evening run: 18:00 WAT (17:00 UTC) — parent 24h reminders
+[[scheduled_functions]]
+  name = "scheduled-notifications"
+  cron = "0 17 * * *"
 
-# Headers for security and performance
+# ── Redirects ────────────────────────────────────────────────────────────────
+
+# Block .env and config files from ever being served publicly
+[[redirects]]
+  from = "/.env"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/**/.env"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/whatsapp-bot/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Hall of Fame retired — redirect to Programs
+[[redirects]]
+  from = "/hall-of-fame.html"
+  to = "/programs.html"
+  status = 301
+
+# Legacy / broken inbound links
+[[redirects]]
+  from = "/login.html"
+  to = "/parent-login.html"
+  status = 301
+
+[[redirects]]
+  from = "/why-stemulus.html"
+  to = "/"
+  status = 301
+
+# Tutor login alias redirect
+[[redirects]]
+  from = "/tutor-login.html"
+  to = "/parent-login.html?role=tutor"
+  status = 301
+
+# WebMCP API endpoint redirect
+[[redirects]]
+  from = "/api/mcp"
+  to = "/.netlify/functions/mcp"
+  status = 200
+
+# Automated Class Reminders API endpoint redirect
+[[redirects]]
+  from = "/api/class-reminders"
+  to = "/.netlify/functions/class-reminders"
+  status = 200
+
+# Trailing-slash canonicalisation (avoids duplicate content)
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+
+# Custom 404 catch-all (must be last redirect rule)
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+# ── Security & Performance Headers ───────────────────────────────────────────
+
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    # CSP: allows self + known CDNs used by the site (GSAP, Lucide, Three.js, Firebase, EmailJS, QRCode)
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://www.gstatic.com https://cdn.emailjs.com https://www.googletagmanager.com https://gsap.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.emailjs.com https://ntfy.sh https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://api.emailjs.com"
 
-# Cache static assets
+# Cache static assets aggressively
 [[headers]]
-  for = "/assets/*"
+  for = "/dist/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, must-revalidate"
+
+[[headers]]
+  for = "/assets/css/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache images at root (logos, videos referenced directly)
 [[headers]]
   for = "/*.png"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=2592000"
 
 [[headers]]
   for = "/*.jpg"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/*.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+# HTML pages — short cache so updates deploy quickly
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+# Dashboard pages — never cache (always serve fresh)
+[[headers]]
+  for = "/admin-dashboard.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/parent-dashboard.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/tutor-dashboard.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/parent-progress.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/tutor-attendance.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/tutor-attendance-create.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/tutor-monthly-report.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/admin-login.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/parent-login.html"
+  [headers.values]
+    Cache-Control = "no-store"

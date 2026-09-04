@@ -27,7 +27,7 @@ if (typeof firebase !== 'undefined' && !firebase.apps.length) {
 let db;
 if (typeof firebase !== 'undefined') {
     db = firebase.firestore();
-    console.log("[STEMulus] ✅ Firebase Client & Firestore Initialized");
+    console.log("[STEMulus] [OK] Firebase Client & Firestore Initialized");
 } else {
     console.warn("[STEMulus] Firebase SDK not found. Make sure configuration scripts are loaded.");
 }

@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Log Session | STEMulus Tutor Portal</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/portal-animations.css">
+  <link rel="stylesheet" href="assets/css/tutor-styles.css">
+  <link rel="stylesheet" href="assets/css/3d-svg-icons.css">
+  <script src="assets/js/3d-icons.js" defer></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <script>if(window.tailwind){tailwind.config={theme:{extend:{}}}}</script>
+  <script>
+  (function(){
+    try {
+      var s=JSON.parse(sessionStorage.getItem('stemulus_session')||'null');
+      var ttl=8*60*60*1000;
+      if(!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
+        window.location.replace('parent-login.html?role=tutor');
+      }
+    } catch(e){}
+  })();
+  </script>
+  <style>
+    body, html {
+      background-color: #0f1117 !important;
+      color: #e2e8f0;
+      font-family: 'Nunito', sans-serif;
+    }
+    #sidebar { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+    #sidebar.open { transform: translateX(0); }
+    @media(min-width:1024px){ #sidebar { transform: translateX(0) !important; } }
+    #sidebar-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:40;display:none; }
+    #sidebar-overlay.show { display:block; }
+    #sidebar nav a:hover { background:rgba(244,96,12,0.12) !important; color:#f4600c !important; }
+
+    /* Dark card base */
+    .dark-card {
+      background: #181c27;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+    }
+
+    /* Progress steps */
+    .step-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 2rem;
+    }
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      position: relative;
+    }
+    .step-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      z-index: 0;
+    }
+    .step-item.done:not(:last-child)::after {
+      background: #4B49AC;
+    }
+    .step-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      position: relative;
+      z-index: 1;
+      border: 2px solid rgba(255,255,255,0.1);
+      background: #1e2330;
+      color: rgba(255,255,255,0.35);
+      transition: all 0.3s;
+    }
+    .step-item.active .step-dot {
+      background: linear-gradient(135deg, #4B49AC, #7978E9);
+      border-color: #7978E9;
+      color: #fff;
+      box-shadow: 0 0 16px rgba(121,120,233,0.45);
+    }
+    .step-item.done .step-dot {
+      background: #22c55e;
+      border-color: #16a34a;
+      color: #fff;
+    }
+    .step-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      margin-top: 6px;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      line-height: 1.2;
+      max-width: 72px;
+    }
+    .step-item.active .step-label { color: #a5b4fc; }
+    .step-item.done .step-label { color: #86efac; }
+
+    /* Section panels */
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+
+    /* Section header */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .section-header-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .section-header h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+    .section-header p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 1px;
+    }
+
+    /* Form labels & inputs */
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: #0f1117;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: #f1f5f9;
+      font-size: 0.88rem;
+      font-family: 'Nunito', sans-serif;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: #7978E9;
+      box-shadow: 0 0 0 3px rgba(121,120,233,0.2);
+    }
+    .form-input::placeholder { color: rgba(255,255,255,0.2); }
+    textarea.form-input { resize: vertical; }
+
+    /* Radio attendance cards */
+    .radio-card-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .radio-card {
+      flex: 1; min-width: 100px;
+      padding: 0.7rem 0.9rem;
+      border-radius: 12px;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      background: #0f1117;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      text-align: center;
+    }
+    .radio-card:hover { border-color: rgba(121,120,233,0.5); background: rgba(121,120,233,0.07); }
+    .radio-card input[type="radio"] { display: none; }
+    .radio-card.selected-present { border-color: #22c55e; background: rgba(34,197,94,0.1); }
+    .radio-card.selected-absent { border-color: #ef4444; background: rgba(239,68,68,0.1); }
+    .radio-card.selected-rescheduled { border-color: #f59e0b; background: rgba(245,158,11,0.1); }
+    .radio-card.selected-punctual { border-color: #7978E9; background: rgba(121,120,233,0.12); }
+    .radio-card-icon { font-size: 1.3rem; }
+    .radio-card-label { font-size: 0.75rem; font-weight: 700; color: #94a3b8; }
+    .radio-card.selected-present .radio-card-label { color: #4ade80; }
+    .radio-card.selected-absent .radio-card-label { color: #f87171; }
+    .radio-card.selected-rescheduled .radio-card-label { color: #fcd34d; }
+    .radio-card.selected-punctual .radio-card-label { color: #a5b4fc; }
+
+    /* Star rating */
+    .star-group { display: flex; gap: 8px; align-items: center; }
+    .star-btn {
+      font-size: 2rem;
+      cursor: pointer;
+      color: rgba(255,255,255,0.15);
+      transition: color 0.15s, transform 0.1s;
+      background: none; border: none; padding: 0; line-height: 1;
+    }
+    .star-btn:hover, .star-btn.lit { color: #f59e0b; transform: scale(1.15); }
+    .star-feedback {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #f59e0b;
+      margin-left: 8px;
+      min-width: 120px;
+    }
+
+    /* Assignment radio pills */
+    .pill-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pill-radio {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      background: #0f1117;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #64748b;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .pill-radio:hover { border-color: rgba(121,120,233,0.5); color: #a5b4fc; }
+    .pill-radio.selected { border-color: #7978E9; background: rgba(121,120,233,0.18); color: #c7d2fe; }
+    .pill-radio input { display: none; }
+
+    /* Nav buttons */
+    .btn-primary {
+      padding: 0.75rem 1.75rem;
+      background: linear-gradient(135deg, #4B49AC, #7978E9);
+      color: #fff;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(121,120,233,0.35); }
+    .btn-secondary {
+      padding: 0.75rem 1.5rem;
+      background: rgba(255,255,255,0.06);
+      color: #94a3b8;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1.5px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+      transition: background 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+    .btn-submit {
+      padding: 0.85rem 2rem;
+      background: linear-gradient(135deg, #f4600c, #ff8c42);
+      color: #fff;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(244,96,12,0.4); }
+
+    /* Confirm checkbox */
+    .confirm-check {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 1rem 1.25rem;
+      background: rgba(34,197,94,0.07);
+      border: 1.5px solid rgba(34,197,94,0.25);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .confirm-check input[type="checkbox"] {
+      width: 20px; height: 20px;
+      accent-color: #22c55e;
+      margin-top: 1px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .confirm-check span {
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #86efac;
+      line-height: 1.45;
+    }
+
+    /* Success screen */
+    #success-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    .success-check-circle {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: rgba(34,197,94,0.15);
+      border: 2px solid rgba(34,197,94,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.8rem;
+      margin-bottom: 1.5rem;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Validation error highlight */
+    .field-error { border-color: #ef4444 !important; box-shadow: 0 0 0 3px rgba(239,68,68,0.15) !important; }
+    .error-msg { font-size: 0.72rem; color: #f87171; margin-top: 4px; font-weight: 600; display: none; }
+    .error-msg.show { display: block; }
+
+    /* Punctuality reveal */
+    #punctuality-group { transition: opacity 0.3s; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500" style="background:#0f1117;">
+    <div class="text-center">
+      <div class="loader mx-auto mb-8 relative" style="height:30px;">
+        <span><span></span><span></span><span></span><span></span></span>
+        <div class="base"><span></span><div class="face"></div></div>
+      </div>
+      <p class="text-slate-400 font-medium mt-8">Loading session form...</p>
+    </div>
+  </div>
+
+  <!-- Animated Background -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="absolute -top-40 -left-40 w-96 h-96 rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-float" style="background:#4B49AC;"></div>
+    <div class="absolute -bottom-40 right-20 w-96 h-96 rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-float" style="background:#f4600c;animation-delay:3s;"></div>
+  </div>
+
+  <div id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 flex flex-col z-50" style="background:#0f1117;border-right:1px solid rgba(255,255,255,0.07);border-radius:0 24px 24px 0;">
+    <div class="p-6 flex items-center gap-3" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+      <img src="favicon.png" width="36" height="36" style="border-radius:10px;object-fit:contain;" alt="STEMulus">
+      <div>
+        <span class="font-nunito font-bold text-lg" style="color:#ffffff;">STEMulus</span>
+        <p class="text-xs" style="color:rgba(255,255,255,0.45);">Tutor Portal</p>
+      </div>
+    </div>
+    <nav class="flex-1 p-4 space-y-1" style="overflow-y:auto;">
+      <a href="tutor-dashboard.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
+      </a>
+      <a href="tutor-attendance.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="users" class="w-5 h-5"></i> My Students
+      </a>
+      <a href="tutor-attendance-create.html" class="flex items-center gap-3 px-4 py-3 font-semibold" style="border-radius:16px;background:rgba(244,96,12,0.18);color:#f4600c;">
+        <i data-lucide="clipboard-check" class="w-5 h-5"></i> Class Log
+      </a>
+      <a href="tutor-monthly-report.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="file-bar-chart" class="w-5 h-5"></i> My Reports
+      </a>
+      <a href="tutor-dashboard.html#schedule-list" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="calendar" class="w-5 h-5"></i> My Schedule
+      </a>
+    </nav>
+    <div class="p-4" style="border-top:1px solid rgba(255,255,255,0.07);">
+      <div class="flex items-center gap-3 mb-4 px-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs" style="background:rgba(244,96,12,0.25);color:#f4600c;" id="avatar-initials">T</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-bold truncate" style="color:rgba(255,255,255,0.9);" id="tutor-name">Tutor Name</p>
+          <p class="text-xs truncate" style="color:rgba(255,255,255,0.4);">Instructor</p>
+        </div>
+      </div>
+      <button id="logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=tutor';" class="w-full flex items-center justify-center gap-2 transition-colors text-sm py-2" style="color:rgba(255,255,255,0.6);border:none;background:rgba(255,255,255,0.05);border-radius:12px;cursor:pointer;">
+        <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="lg:ml-64 p-4 md:p-8 relative z-10" style="min-height:100vh;">
+    <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div class="flex items-center gap-3">
+        <button id="menu-btn" class="lg:hidden p-2 focus:outline-none" style="color:rgba(255,255,255,0.6);" aria-label="Toggle menu">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        <div>
+          <h1 class="text-2xl font-bold font-nunito" style="color:#f1f5f9;">Log New Session</h1>
+          <p style="color:rgba(255,255,255,0.4);font-size:0.85rem;">Record progress, attendance, and feedback for your student</p>
+        </div>
+      </div>
+      <a href="tutor-attendance.html" class="inline-flex items-center gap-2 text-sm font-semibold self-start sm:self-auto" style="color:rgba(255,255,255,0.5);">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to History
+      </a>
+    </header>
+
+    <!-- Hero Band -->
+    <div class="rounded-2xl mb-8" style="background:linear-gradient(135deg,#AB47BC,#F4600C);min-height:130px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;overflow:hidden;position:relative;">
+      <div>
+        <h2 style="font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:4px;">Daily Session Log</h2>
+        <p style="color:rgba(255,255,255,0.75);font-size:0.85rem;">4 quick sections — takes about 2 minutes</p>
+      </div>
+      <img src="images/portal/standalone/register-papers-3d.png" alt="Log" class="animate-float-band" style="width:120px;height:120px;object-fit:contain;" loading="lazy">
+    </div>
+
+    <!-- Form Card -->
+    <div class="max-w-2xl" id="form-wrap">
+      <div class="dark-card overflow-hidden">
+
+        <!-- Progress Bar -->
+        <div class="px-6 pt-6 pb-2">
+          <div class="step-bar" id="step-bar">
+            <div class="step-item active" data-step="1">
+              <div class="step-dot">1</div>
+              <div class="step-label">Logistics &amp; Attendance</div>
+            </div>
+            <div class="step-item" data-step="2">
+              <div class="step-dot">2</div>
+              <div class="step-label">Learning Log</div>
+            </div>
+            <div class="step-item" data-step="3">
+              <div class="step-dot">3</div>
+              <div class="step-label">Engagement &amp; Feedback</div>
+            </div>
+            <div class="step-item" data-step="4">
+              <div class="step-dot">4</div>
+              <div class="step-label">Action Items</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form body -->
+        <div class="px-6 pb-6">
+
+          <!-- SECTION 1 -->
+          <div class="form-section active" id="section-1">
+            <div class="section-header">
+              <div class="section-header-icon" style="background:rgba(121,120,233,0.15);">
+                <i data-lucide="users" style="color:#7978E9;width:20px;height:20px;"></i>
+              </div>
+              <div>
+                <h3>Logistics &amp; Attendance</h3>
+                <p>est. 20 seconds &nbsp;·&nbsp; Step 1 of 4</p>
+              </div>
+            </div>
+
+            <!-- Student Name -->
+            <div class="mb-5">
+              <label class="form-label">Student Name <span style="color:#f87171;">*</span></label>
+              <div id="student-display-wrap">
+                <input type="text" id="student_name_display" class="form-input" readonly placeholder="Loading from schedule..." style="cursor:default;opacity:0.7;">
+              </div>
+              <div id="student-dropdown-wrap" style="display:none;">
+                <select id="student_id_select" class="form-input">
+                  <option value="">Choose student...</option>
+                </select>
+              </div>
+              <input type="hidden" id="student_id" name="student_id">
+              <input type="hidden" id="student_name" name="student_name">
+              <input type="hidden" id="course_covered" name="course_covered">
+              <p class="error-msg" id="err-student">Please select a student.</p>
+            </div>
+
+            <!-- Date of Class -->
+            <div class="mb-5">
+              <label class="form-label">Date of Class <span style="color:#f87171;">*</span></label>
+              <input type="date" id="class_date" name="class_date" class="form-input" required>
+              <p class="error-msg" id="err-date">Please select a date.</p>
+            </div>
+
+            <!-- Attendance Status -->
+            <div class="mb-5">
+              <label class="form-label">Attendance Status <span style="color:#f87171;">*</span></label>
+              <div class="radio-card-group" id="attendance-cards">
+                <label class="radio-card" data-value="present" data-style="selected-present">
+                  <input type="radio" name="attendance_status" value="present">
+                  <div class="radio-card-icon" data-icon-3d="check" data-icon-size="28"></div>
+                  <div class="radio-card-label">Present</div>
+                </label>
+                <label class="radio-card" data-value="absent" data-style="selected-absent">
+                  <input type="radio" name="attendance_status" value="absent">
+                  <div class="radio-card-icon" data-icon-3d="cross" data-icon-size="28"></div>
+                  <div class="radio-card-label">Absent</div>
+                </label>
+                <label class="radio-card" data-value="rescheduled" data-style="selected-rescheduled">
+                  <input type="radio" name="attendance_status" value="rescheduled">
+                  <div class="radio-card-icon" data-icon-3d="refresh" data-icon-size="28"></div>
+                  <div class="radio-card-label">Rescheduled</div>
+                </label>
+              </div>
+              <p class="error-msg" id="err-attendance">Please select an attendance status.</p>
+            </div>
+
+            <!-- Punctuality (shown only if Present) -->
+            <div class="mb-2" id="punctuality-group" style="display:none;">
+              <label class="form-label">Punctuality</label>
+              <div class="radio-card-group" id="punctuality-cards">
+                <label class="radio-card" data-value="on_time" data-style="selected-punctual">
+                  <input type="radio" name="punctuality" value="on_time">
+                  <div class="radio-card-icon" data-icon-3d="lightning" data-icon-size="28"></div>
+                  <div class="radio-card-label">On Time</div>
+                </label>
+                <label class="radio-card" data-value="5_10_late" data-style="selected-punctual">
+                  <input type="radio" name="punctuality" value="5_10_late">
+                  <div class="radio-card-icon" data-icon-3d="clock" data-icon-size="28"></div>
+                  <div class="radio-card-label">5–10 min Late</div>
+                </label>
+                <label class="radio-card" data-value="15_plus_late" data-style="selected-punctual">
+                  <input type="radio" name="punctuality" value="15_plus_late">
+                  <div class="radio-card-icon" data-icon-3d="clock" data-icon-size="28"></div>
+                  <div class="radio-card-label">&gt;15 min Late</div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2 -->
+          <div class="form-section" id="section-2">
+            <div class="section-header">
+              <div class="section-header-icon" style="background:rgba(244,96,12,0.12);">
+                <i data-lucide="book-open" style="color:#f4600c;width:20px;height:20px;"></i>
+              </div>
+              <div>
+                <h3>The Learning Log</h3>
+                <p>est. 40 seconds &nbsp;·&nbsp; Step 2 of 4</p>
+              </div>
+            </div>
+
+            <!-- Topic / Module -->
+            <div class="mb-5">
+              <label class="form-label">Topic / Module <span style="color:#f87171;">*</span></label>
+              <input type="text" id="topic" name="topic" class="form-input" maxlength="255"
+                     placeholder="e.g. JavaScript Events – input &amp; submit">
+              <p class="error-msg" id="err-topic">Please enter the topic covered.</p>
+            </div>
+
+            <!-- What We Built Today -->
+            <div class="mb-5">
+              <label class="form-label">What We Built Today <span style="color:#f87171;">*</span></label>
+              <textarea id="what_built" name="what_built" class="form-input" rows="4" maxlength="2000"
+                        placeholder="e.g. Interactive form with preventDefault, input validation..."></textarea>
+              <p class="error-msg" id="err-built">Please describe what was built or covered.</p>
+            </div>
+
+            <!-- Assignment Status -->
+            <div class="mb-2">
+              <label class="form-label">Previous Assignment Status <span style="color:#f87171;">*</span></label>
+              <div class="pill-group" id="assignment-pills">
+                <label class="pill-radio" data-value="completed_fully">
+                  <input type="radio" name="assignment_status" value="completed_fully"> Completed Fully
+                </label>
+                <label class="pill-radio" data-value="partially_done">
+                  <input type="radio" name="assignment_status" value="partially_done"> Partially Done
+                </label>
+                <label class="pill-radio" data-value="not_done">
+                  <input type="radio" name="assignment_status" value="not_done"> Not Done
+                </label>
+                <label class="pill-radio" data-value="no_prev_homework">
+                  <input type="radio" name="assignment_status" value="no_prev_homework"> No Prev Homework
+                </label>
+              </div>
+              <p class="error-msg" id="err-assignment">Please select an assignment status.</p>
+            </div>
+          </div>
+
+          <!-- SECTION 3 -->
+          <div class="form-section" id="section-3">
+            <div class="section-header">
+              <div class="section-header-icon" style="background:rgba(245,158,11,0.12);">
+                <i data-lucide="star" style="color:#f59e0b;width:20px;height:20px;"></i>
+              </div>
+              <div>
+                <h3>Student Engagement &amp; Feedback</h3>
+                <p>est. 30 seconds &nbsp;·&nbsp; Step 3 of 4</p>
+              </div>
+            </div>
+
+            <!-- Concept Grasp Stars -->
+            <div class="mb-5">
+              <label class="form-label">Concept Grasp <span style="color:#f87171;">*</span></label>
+              <div class="star-group" id="star-group">
+                <button type="button" class="star-btn" data-val="1" aria-label="1 star"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+                <button type="button" class="star-btn" data-val="2" aria-label="2 stars"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+                <button type="button" class="star-btn" data-val="3" aria-label="3 stars"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+                <button type="button" class="star-btn" data-val="4" aria-label="4 stars"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+                <button type="button" class="star-btn" data-val="5" aria-label="5 stars"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+                <span class="star-feedback" id="star-feedback">Tap a star to rate</span>
+              </div>
+              <input type="hidden" id="concept_grasp" name="concept_grasp">
+              <p class="error-msg" id="err-grasp">Please rate the student's concept grasp.</p>
+            </div>
+
+            <!-- Tutor Comment -->
+            <div class="mb-2">
+              <label class="form-label">Tutor Comment <span style="color:#f87171;">*</span></label>
+              <textarea id="tutor_comment" name="tutor_comment" class="form-input" rows="4" maxlength="1000"
+                        placeholder="2-3 sentences on standout win or focus area for this student today"></textarea>
+              <p class="error-msg" id="err-comment">Please add a comment for this session.</p>
+            </div>
+          </div>
+
+          <!-- SECTION 4 -->
+          <div class="form-section" id="section-4">
+            <div class="section-header">
+              <div class="section-header-icon" style="background:rgba(34,197,94,0.1);">
+                <i data-lucide="check-square" style="color:#22c55e;width:20px;height:20px;"></i>
+              </div>
+              <div>
+                <h3>Action Items for Home</h3>
+                <p>est. 20 seconds &nbsp;·&nbsp; Step 4 of 4</p>
+              </div>
+            </div>
+
+            <!-- Homework Assigned -->
+            <div class="mb-5">
+              <label class="form-label">Homework Assigned</label>
+              <textarea id="homework_assigned" name="homework_assigned" class="form-input" rows="4" maxlength="1500"
+                        placeholder="Clear instructions for student &amp; parents, e.g. Complete Scratch project Level 3, due next class"></textarea>
+            </div>
+
+            <!-- Review & Confirm -->
+            <div class="mb-5">
+              <label class="confirm-check" id="confirm-label">
+                <input type="checkbox" id="confirm_accuracy" name="confirm_accuracy">
+                <span>I confirm this session happened and this report is accurate</span>
+              </label>
+              <p class="error-msg" id="err-confirm">You must confirm accuracy before submitting.</p>
+            </div>
+
+            <!-- Info notice -->
+            <div class="p-4 rounded-xl text-xs mb-4" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.35);">
+              <i data-lucide="info" style="display:inline;width:14px;height:14px;vertical-align:middle;margin-right:6px;"></i>
+              Attendance entries are submitted as <strong style="color:rgba(255,255,255,0.5);">Pending</strong> and will notify the Admin dashboard instantly. Upon approval, parent portal metrics will update.
+            </div>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="flex items-center justify-between mt-6 pt-4" style="border-top:1px solid rgba(255,255,255,0.07);">
+            <button type="button" id="btn-back" class="btn-secondary" style="display:none;" onclick="navigateSection(-1)">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+            </button>
+            <div style="flex:1;"></div>
+            <button type="button" id="btn-next" class="btn-primary" onclick="navigateSection(1)">
+              Next <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+            <button type="button" id="btn-submit" class="btn-submit" style="display:none;" onclick="submitDailyLog()">
+              <i data-lucide="send" class="w-4 h-4"></i> Submit Session Log
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div id="success-screen" class="max-w-2xl dark-card" style="display:none;">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 2rem;text-align:center;">
+        <div class="success-check-circle" style="display:flex;align-items:center;justify-content:center;margin-bottom:1rem;"><span data-icon-3d="check" data-icon-size="52"></span></div>
+        <h2 style="font-size:1.6rem;font-weight:800;color:#f1f5f9;margin-bottom:0.75rem;">Session Logged Successfully!</h2>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.95rem;max-width:400px;margin-bottom:2rem;">
+          Parents will see this in their portal once the admin approves the record.
+        </p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+          <a href="tutor-attendance-create.html" class="btn-primary" style="text-decoration:none;">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> Log Another Session
+          </a>
+          <a href="tutor-attendance.html" class="btn-secondary" style="text-decoration:none;">
+            <i data-lucide="list" class="w-4 h-4"></i> View Class Log
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="assets/js/firebase-config.min.js" defer></script>
+  <script src="assets/js/dashboard-engine.min.js" defer></script>
+  <script src="assets/js/tutor-attendance-engine.min.js" defer></script>
+
+  <script>
+  // ─── Sidebar toggle ───────────────────────────────────────────────────
+  (function(){
+    var btn=document.getElementById('menu-btn');
+    var sb=document.getElementById('sidebar');
+    var ov=document.getElementById('sidebar-overlay');
+    if(btn&&sb){
+      btn.onclick=function(){sb.classList.toggle('open');if(ov)ov.classList.toggle('show');};
+      if(ov)ov.onclick=function(){sb.classList.remove('open');ov.classList.remove('show');};
+      sb.querySelectorAll('a').forEach(function(a){a.onclick=function(){sb.classList.remove('open');if(ov)ov.classList.remove('show');};});
+    }
+  })();
+
+  // ─── State ────────────────────────────────────────────────────────────
+  var currentStep = 1;
+  var totalSteps = 4;
+  var starRating = 0;
+
+  // ─── Set today's date default ─────────────────────────────────────────
+  (function(){
+    var d = document.getElementById('class_date');
+    if(d){ var now=new Date(); d.value=now.toISOString().split('T')[0]; }
+  })();
+
+  // ─── Attendance radio cards ───────────────────────────────────────────
+  document.querySelectorAll('#attendance-cards .radio-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      document.querySelectorAll('#attendance-cards .radio-card').forEach(function(c){
+        c.classList.remove('selected-present','selected-absent','selected-rescheduled');
+      });
+      var style = card.getAttribute('data-style');
+      card.classList.add(style);
+      card.querySelector('input').checked = true;
+      // Show/hide punctuality
+      var pg = document.getElementById('punctuality-group');
+      if(card.getAttribute('data-value') === 'present'){
+        pg.style.display = 'block';
+      } else {
+        pg.style.display = 'none';
+        document.querySelectorAll('[name="punctuality"]').forEach(function(r){ r.checked=false; });
+        document.querySelectorAll('#punctuality-cards .radio-card').forEach(function(c){
+          c.classList.remove('selected-punctual');
+        });
+      }
+      document.getElementById('err-attendance').classList.remove('show');
+    });
+  });
+
+  // ─── Punctuality radio cards ──────────────────────────────────────────
+  document.querySelectorAll('#punctuality-cards .radio-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      document.querySelectorAll('#punctuality-cards .radio-card').forEach(function(c){
+        c.classList.remove('selected-punctual');
+      });
+      card.classList.add('selected-punctual');
+      card.querySelector('input').checked = true;
+    });
+  });
+
+  // ─── Assignment pills ─────────────────────────────────────────────────
+  document.querySelectorAll('#assignment-pills .pill-radio').forEach(function(pill){
+    pill.addEventListener('click', function(){
+      document.querySelectorAll('#assignment-pills .pill-radio').forEach(function(p){
+        p.classList.remove('selected');
+      });
+      pill.classList.add('selected');
+      pill.querySelector('input').checked = true;
+      document.getElementById('err-assignment').classList.remove('show');
+    });
+  });
+
+  // ─── Star rating ──────────────────────────────────────────────────────
+  var starLabels = { 1:'Needs Revision', 2:'Below Average', 3:'Getting It', 4:'Good Progress', 5:'Mastered Quickly' };
+  document.querySelectorAll('#star-group .star-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var val = parseInt(btn.getAttribute('data-val'));
+      starRating = val;
+      document.getElementById('concept_grasp').value = val;
+      document.getElementById('star-feedback').textContent = starLabels[val] || '';
+      document.querySelectorAll('#star-group .star-btn').forEach(function(s){
+        var sv = parseInt(s.getAttribute('data-val'));
+        s.classList.toggle('lit', sv <= val);
+      });
+      document.getElementById('err-grasp').classList.remove('show');
+    });
+    btn.addEventListener('mouseenter', function(){
+      var hoverVal = parseInt(btn.getAttribute('data-val'));
+      document.querySelectorAll('#star-group .star-btn').forEach(function(s){
+        var sv = parseInt(s.getAttribute('data-val'));
+        s.style.color = sv <= hoverVal ? '#f59e0b' : (sv <= starRating ? '#f59e0b' : '');
+      });
+    });
+    btn.addEventListener('mouseleave', function(){
+      document.querySelectorAll('#star-group .star-btn').forEach(function(s){
+        var sv = parseInt(s.getAttribute('data-val'));
+        s.style.color = sv <= starRating ? '#f59e0b' : '';
+      });
+    });
+  });
+
+  // ─── Step navigation ──────────────────────────────────────────────────
+  function updateStepUI(){
+    for(var i=1;i<=totalSteps;i++){
+      var sectionEl = document.getElementById('section-'+i);
+      var stepItem = document.querySelector('.step-item[data-step="'+i+'"]');
+      if(sectionEl){ sectionEl.classList.toggle('active', i===currentStep); }
+      if(stepItem){
+        stepItem.classList.remove('active','done');
+        if(i===currentStep) stepItem.classList.add('active');
+        else if(i<currentStep) stepItem.classList.add('done');
+      }
+    }
+    var backBtn = document.getElementById('btn-back');
+    var nextBtn = document.getElementById('btn-next');
+    var submitBtn = document.getElementById('btn-submit');
+    backBtn.style.display = currentStep > 1 ? 'inline-flex' : 'none';
+    nextBtn.style.display = currentStep < totalSteps ? 'inline-flex' : 'none';
+    submitBtn.style.display = currentStep === totalSteps ? 'inline-flex' : 'none';
+    if(window.lucide) lucide.createIcons();
+  }
+
+  function validateSection(step){
+    var ok = true;
+    if(step===1){
+      // Student
+      var sid = document.getElementById('student_id').value;
+      var sname = document.getElementById('student_name').value;
+      var sdropVal = document.getElementById('student_id_select') && document.getElementById('student_id_select').value;
+      if(!sid && !sname && !sdropVal){
+        document.getElementById('err-student').classList.add('show'); ok=false;
+      } else { document.getElementById('err-student').classList.remove('show'); }
+      // Date
+      if(!document.getElementById('class_date').value){
+        document.getElementById('err-date').classList.add('show'); ok=false;
+      } else { document.getElementById('err-date').classList.remove('show'); }
+      // Attendance
+      var atChecked = document.querySelector('[name="attendance_status"]:checked');
+      if(!atChecked){
+        document.getElementById('err-attendance').classList.add('show'); ok=false;
+      } else { document.getElementById('err-attendance').classList.remove('show'); }
+    }
+    if(step===2){
+      if(!document.getElementById('topic').value.trim()){
+        document.getElementById('err-topic').classList.add('show'); ok=false;
+      } else { document.getElementById('err-topic').classList.remove('show'); }
+      if(!document.getElementById('what_built').value.trim()){
+        document.getElementById('err-built').classList.add('show'); ok=false;
+      } else { document.getElementById('err-built').classList.remove('show'); }
+      var asChecked = document.querySelector('[name="assignment_status"]:checked');
+      if(!asChecked){
+        document.getElementById('err-assignment').classList.add('show'); ok=false;
+      } else { document.getElementById('err-assignment').classList.remove('show'); }
+    }
+    if(step===3){
+      if(!starRating){
+        document.getElementById('err-grasp').classList.add('show'); ok=false;
+      } else { document.getElementById('err-grasp').classList.remove('show'); }
+      if(!document.getElementById('tutor_comment').value.trim()){
+        document.getElementById('err-comment').classList.add('show'); ok=false;
+      } else { document.getElementById('err-comment').classList.remove('show'); }
+    }
+    return ok;
+  }
+
+  function navigateSection(dir){
+    if(dir===1){
+      if(!validateSection(currentStep)) return;
+      if(currentStep < totalSteps){ currentStep++; updateStepUI(); window.scrollTo({top:0,behavior:'smooth'}); }
+    } else {
+      if(currentStep > 1){ currentStep--; updateStepUI(); window.scrollTo({top:0,behavior:'smooth'}); }
+    }
+  }
+
+  // ─── Submit ───────────────────────────────────────────────────────────
+  function submitDailyLog(){
+    // Validate section 4
+    var confirmCheck = document.getElementById('confirm_accuracy');
+    if(!confirmCheck.checked){
+      document.getElementById('err-confirm').classList.add('show'); return;
+    }
+    document.getElementById('err-confirm').classList.remove('show');
+
+    // Collect data
+    var studentIdEl = document.getElementById('student_id');
+    var studentNameEl = document.getElementById('student_name');
+    var dropSel = document.getElementById('student_id_select');
+    var finalStudentId = studentIdEl.value || (dropSel ? dropSel.value : '');
+    var finalStudentName = studentNameEl.value || (dropSel ? dropSel.options[dropSel.selectedIndex] && dropSel.options[dropSel.selectedIndex].text : '');
+
+    var atStatus = document.querySelector('[name="attendance_status"]:checked');
+    var punctuality = document.querySelector('[name="punctuality"]:checked');
+    var assignStatus = document.querySelector('[name="assignment_status"]:checked');
+
+    var courseVal = (document.getElementById('course_covered') && document.getElementById('course_covered').value) || 'STEM Coding';
+    var record = {
+      student_id: finalStudentId,
+      student_name: finalStudentName,
+      course: courseVal,
+      coursesCovered: [courseVal],
+      class_date: document.getElementById('class_date').value,
+      attendance_status: atStatus ? atStatus.value : '',
+      punctuality: punctuality ? punctuality.value : '',
+      topic: document.getElementById('topic').value.trim(),
+      whatBuilt: document.getElementById('what_built').value.trim(),
+      assignmentStatus: assignStatus ? assignStatus.value : '',
+      conceptGrasp: starRating,
+      tutorComment: document.getElementById('tutor_comment').value.trim(),
+      homeworkAssigned: document.getElementById('homework_assigned').value.trim(),
+      confirmed: true,
+      submitted_at: new Date().toISOString()
+    };
+
+    // Disable submit button
+    var submitBtn = document.getElementById('btn-submit');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg> Submitting...';
+
+    // Submit via DashboardEngine
+    var submitFn = (typeof DashboardEngine !== 'undefined' && DashboardEngine.addAttendanceRecord)
+      ? DashboardEngine.addAttendanceRecord(record)
+      : (typeof window.addAttendanceRecord === 'function'
+          ? window.addAttendanceRecord(record)
+          : Promise.resolve({ success: true }));
+
+    Promise.resolve(submitFn)
+      .then(function(result){
+        showSuccess();
+      })
+      .catch(function(err){
+        console.error('Submit error:', err);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i data-lucide="send" class="w-4 h-4"></i> Submit Session Log';
+        if(window.lucide) lucide.createIcons();
+        alert('Submission failed. Please check your connection and try again.');
+      });
+  }
+
+  function showSuccess(){
+    document.getElementById('form-wrap').style.display = 'none';
+    var ss = document.getElementById('success-screen');
+    ss.style.display = 'flex';
+    if(window.lucide) lucide.createIcons();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // ─── Populate student from schedule or dropdown ───────────────────────
+  function populateStudentField(){
+    try {
+      if(typeof DashboardEngine !== 'undefined' && DashboardEngine.getCurrentScheduledStudent){
+        var sched = DashboardEngine.getCurrentScheduledStudent();
+        if(sched && sched.name){
+          document.getElementById('student_name_display').value = sched.name;
+          document.getElementById('student_id').value = sched.id || '';
+          document.getElementById('student_name').value = sched.name;
+          if (sched.course && document.getElementById('course_covered')) {
+            document.getElementById('course_covered').value = sched.course;
+          }
+          return;
+        }
+      }
+      
+      var students = [];
+      if(typeof DashboardEngine !== 'undefined'){
+        if(DashboardEngine.getTutorStudents) students = DashboardEngine.getTutorStudents();
+        if(!students.length && DashboardEngine.getStudents) students = DashboardEngine.getStudents();
+      }
+      
+      if(students && students.length){
+        document.getElementById('student-display-wrap').style.display = 'none';
+        document.getElementById('student-dropdown-wrap').style.display = 'block';
+        var sel = document.getElementById('student_id_select');
+        sel.innerHTML = '<option value="">Choose student...</option>';
+        students.forEach(function(s){
+          var fullName = (s.firstName && s.lastName) ? (s.firstName + ' ' + s.lastName) : (s.firstName || s.name || s.display_name || s.email || 'Student');
+          var opt = document.createElement('option');
+          opt.value = s.id || s.uid || '';
+          opt.textContent = fullName + (s.program ? ' (' + s.program + ')' : '');
+          opt.setAttribute('data-name', fullName);
+          opt.setAttribute('data-program', s.program || '');
+          sel.appendChild(opt);
+        });
+
+        sel.onchange = function(){
+          var selectedOpt = sel.options[sel.selectedIndex];
+          if(selectedOpt && selectedOpt.value){
+            document.getElementById('student_id').value = selectedOpt.value;
+            document.getElementById('student_name').value = selectedOpt.getAttribute('data-name') || selectedOpt.textContent;
+            var prog = selectedOpt.getAttribute('data-program');
+            if(prog && document.getElementById('course_covered')){
+              document.getElementById('course_covered').value = prog;
+            }
+          } else {
+            document.getElementById('student_id').value = '';
+            document.getElementById('student_name').value = '';
+          }
+        };
+        return;
+      }
+    } catch(e){ console.warn('Student populate error', e); }
+    // Fallback: show dropdown empty
+    document.getElementById('student-display-wrap').style.display = 'none';
+    document.getElementById('student-dropdown-wrap').style.display = 'block';
+  }
+
+  // ─── Init ─────────────────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', function(){
+    populateStudentField();
+    updateStepUI();
+    // Re-run lucide after any dynamic changes
+    if(window.lucide) lucide.createIcons();
+  });
+  </script>
+
+  <script src="assets/js/mulu-widget.min.js" defer></script>
+</body>
+</html>

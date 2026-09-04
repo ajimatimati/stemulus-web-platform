@@ -3,12 +3,12 @@
  * Microsoft Clarity (heatmaps) + Custom funnel tracking
  */
 
-const AnalyticsTracker = (function() {
+const AnalyticsTracker = (function () {
     'use strict';
 
     // Microsoft Clarity Project ID (replace with actual ID)
-    const CLARITY_ID = 'your-clarity-id'; // TODO: Replace with actual Clarity ID
-    
+    const CLARITY_ID = 'xwxlmnjox0';
+
     // Funnel stages
     const funnelStages = {
         'index.html': 'homepage_visit',
@@ -20,31 +20,36 @@ const AnalyticsTracker = (function() {
 
     // Initialize Microsoft Clarity (free heatmaps)
     function initClarity() {
-        // Skip if already loaded or no ID
-        if (window.clarity || CLARITY_ID === 'your-clarity-id') {
-            console.log('Analytics: Clarity skipped (no ID configured)');
+        // Warn and bail if placeholder ID is still set
+        if (!CLARITY_ID || CLARITY_ID === 'your-clarity-id') {
+            console.warn('Clarity ID not configured — analytics disabled');
             return;
         }
-        
-        (function(c, l, a, r, i, t, y) {
-            c[a] = c[a] || function() { (c[a].q = c[a].q || []).push(arguments); };
+        // Skip if already loaded
+        if (window.clarity) {
+            console.log('Analytics: Clarity already loaded');
+            return;
+        }
+
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
             t = l.createElement(r);
             t.async = 1;
             t.src = "https://www.clarity.ms/tag/" + i;
             y = l.getElementsByTagName(r)[0];
             y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", CLARITY_ID);
-        
+
         console.log('Analytics: Microsoft Clarity initialized');
     }
 
     // Track custom events
     function trackEvent(category, action, label = null, value = null) {
-        // Send to Clarity if available
-        if (window.clarity) {
+        // Send to Clarity if available and properly configured
+        if (window.clarity && CLARITY_ID && CLARITY_ID !== 'your-clarity-id') {
             window.clarity('set', `${category}_${action}`, label || 'true');
         }
-        
+
         // Send to Google Analytics if available
         if (window.gtag) {
             window.gtag('event', action, {
@@ -53,7 +58,7 @@ const AnalyticsTracker = (function() {
                 value: value
             });
         }
-        
+
         // Log for debugging
         console.log(`Analytics: ${category} - ${action}`, label ? `(${label})` : '');
     }
@@ -62,11 +67,11 @@ const AnalyticsTracker = (function() {
     function trackPageView() {
         const page = window.location.pathname.split('/').pop() || 'index.html';
         const stage = funnelStages[page.toLowerCase()];
-        
+
         if (stage) {
             trackEvent('funnel', stage, page);
         }
-        
+
         trackEvent('pageview', 'view', page);
     }
 
@@ -75,17 +80,17 @@ const AnalyticsTracker = (function() {
         document.addEventListener('click', (e) => {
             const target = e.target.closest('a, button');
             if (!target) return;
-            
+
             // CTA buttons
             if (target.href && target.href.includes('enroll')) {
                 trackEvent('cta', 'enroll_click', window.location.pathname);
             }
-            
+
             // WhatsApp clicks
             if (target.href && target.href.includes('wa.me')) {
                 trackEvent('cta', 'whatsapp_click', window.location.pathname);
             }
-            
+
             // Program page clicks
             if (target.href && target.href.includes('-')) {
                 const program = target.href.split('/').pop().replace('.html', '');
@@ -100,12 +105,12 @@ const AnalyticsTracker = (function() {
     function trackScrollDepth() {
         const depths = [25, 50, 75, 90];
         const tracked = new Set();
-        
+
         window.addEventListener('scroll', () => {
             const scrollPercent = Math.round(
                 (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
             );
-            
+
             for (const depth of depths) {
                 if (scrollPercent >= depth && !tracked.has(depth)) {
                     tracked.add(depth);
@@ -120,10 +125,10 @@ const AnalyticsTracker = (function() {
         let startTime = Date.now();
         const timeThresholds = [30, 60, 120, 300]; // seconds
         const tracked = new Set();
-        
+
         setInterval(() => {
             const timeSpent = Math.round((Date.now() - startTime) / 1000);
-            
+
             for (const threshold of timeThresholds) {
                 if (timeSpent >= threshold && !tracked.has(threshold)) {
                     tracked.add(threshold);
@@ -131,7 +136,7 @@ const AnalyticsTracker = (function() {
                 }
             }
         }, 10000);
-        
+
         // Track on page leave
         window.addEventListener('beforeunload', () => {
             const timeSpent = Math.round((Date.now() - startTime) / 1000);
@@ -142,7 +147,7 @@ const AnalyticsTracker = (function() {
     // Track form interactions
     function trackForms() {
         const forms = document.querySelectorAll('form');
-        
+
         forms.forEach((form, index) => {
             // Track form start
             form.addEventListener('focusin', () => {
@@ -151,7 +156,7 @@ const AnalyticsTracker = (function() {
                     trackEvent('form', 'start', form.id || `form_${index}`);
                 }
             }, { once: true });
-            
+
             // Track form submit
             form.addEventListener('submit', () => {
                 trackEvent('form', 'submit', form.id || `form_${index}`);
@@ -164,7 +169,7 @@ const AnalyticsTracker = (function() {
         document.addEventListener('click', (e) => {
             const link = e.target.closest('a[href]');
             if (!link) return;
-            
+
             const url = new URL(link.href, window.location.origin);
             if (url.origin !== window.location.origin) {
                 trackEvent('outbound', 'click', url.hostname);

@@ -7,17 +7,17 @@ const ChatbotWidget = (function() {
     'use strict';
 
     // ==========================================
-    // 🧠 CONVERSATION BRAIN (FLOWS)
+    // CONVERSATION BRAIN (FLOWS)
     // ==========================================
     const flows = {
         // Entry Point
         initial: {
-            message: "Hi there! 👋 I'm the STEMulus Assistant.\n\nI can help you find the perfect coding course for your child. What would you like to do?",
+            message: "Hi there! I'm the STEMulus Assistant.\n\nI can help you find the perfect coding course for your child. What would you like to do?",
             options: [
-                { text: "🚀 Find a Course", next: "ask_age" },
-                { text: "💰 See Pricing", next: "pricing_intro" },
-                { text: "📍 Location/Online", next: "location_info" },
-                { text: "👤 Chat with Human", next: "human_handoff" }
+                { text: "Find a Course", next: "ask_age" },
+                { text: "See Pricing", next: "pricing_intro" },
+                { text: "Location/Online", next: "location_info" },
+                { text: "Chat with Human", next: "human_handoff" }
             ]
         },
 
@@ -32,7 +32,7 @@ const ChatbotWidget = (function() {
         },
 
         recommend_young: {
-            message: "For ages 5-9, we recommend our **Pathfinders** track! 🌟\n\nThey'll start with **Scratch Block Coding** to build games and animations without typing code. It's super fun!",
+            message: "For ages 5-9, we recommend our **Pathfinders** track!\n\nThey'll start with **Scratch Block Coding** to build games and animations without typing code. It's super fun!",
             options: [
                 { text: "View Details", url: "programs.html#pathfinders" },
                 { text: "What's the price?", next: "price_young" },
@@ -41,7 +41,7 @@ const ChatbotWidget = (function() {
         },
 
         recommend_mid: {
-            message: "Perfect age for our **Adventurers** track! 🚀\n\nThey can learn **Python Game Development**, **Web Design**, or **Robotics**. Do they like building things or playing games?",
+            message: "Perfect age for our **Adventurers** track!\n\nThey can learn **Python Game Development**, **Web Design**, or **Robotics**. Do they like building things or playing games?",
             options: [
                 { text: "Building (Robotics)", next: "info_robotics" },
                 { text: "Games (Python)", next: "info_python" },
@@ -50,7 +50,7 @@ const ChatbotWidget = (function() {
         },
 
         recommend_teen: {
-            message: "For teens (14+), we have the **Innovators** track! 💡\n\nThis is pro-level stuff: **Data Science**, **AI**, or **Advanced Web Dev**. Great for university prep!",
+            message: "For teens (14+), we have the **Innovators** track!\n\nThis is pro-level stuff: **Data Science**, **AI**, or **Advanced Web Dev**. Great for university prep!",
             options: [
                 { text: "Tell me more about AI", next: "info_ai" },
                 { text: "See Pricing", next: "price_teen" },
@@ -60,28 +60,28 @@ const ChatbotWidget = (function() {
 
         // --- Info Snippets ---
         info_robotics: {
-            message: " Our **Arduino Robotics** course combines coding with hardware. They'll build real circuits and smart devices! Kits are included. 🤖",
+            message: " Our **Arduino Robotics** course combines coding with hardware. They'll build real circuits and smart devices! Kits are included.",
             options: [
                 { text: "How much?", next: "price_mid" },
                 { text: "Enroll Now", url: "enroll.html?program=robotics" }
             ]
         },
         info_python: {
-            message: "🐍 **Python** is a professional language used by Google and NASA! We teach it through building real video games. It's our most popular course.",
+            message: "**Python** is a professional language used by Google and NASA! We teach it through building real video games. It's our most popular course.",
             options: [
                 { text: "See Pricing", next: "price_mid" },
                 { text: "Enroll Now", url: "enroll.html?program=python" }
             ]
         },
         info_web: {
-            message: "🌐 They'll learn HTML, CSS, and JavaScript to build real responsive websites. Great for creativity and logic!",
+            message: "They'll learn HTML, CSS, and JavaScript to build real responsive websites. Great for creativity and logic!",
             options: [
                 { text: "See Pricing", next: "price_mid" },
                 { text: "Enroll Now", url: "enroll.html?program=web" }
             ]
         },
         info_ai: {
-            message: "🤖 Our AI course teaches Machine Learning concepts using Python. Students build projects that can recognize images and predict data.",
+            message: "Our AI course teaches Machine Learning concepts using Python. Students build projects that can recognize images and predict data.",
             options: [
                 { text: "See Pricing", next: "price_teen" },
                 { text: "Enroll Now", url: "enroll.html?program=ai" }
@@ -98,28 +98,28 @@ const ChatbotWidget = (function() {
             ]
         },
         price_young: {
-            message: "💰 **Pathfinders (5-9)**: ₦45,000 per month.\n\nIncludes 4 weekends of classes, access to our platform, and a certificate!",
+            message: "**Pathfinders (5-9)**: ₦45,000 per month.\n\nIncludes 4 weekends of classes, access to our platform, and a certificate!",
             options: [
                 { text: "Do you have discounts?", next: "discounts" },
                 { text: "I'm ready to enroll", url: "enroll.html" }
             ]
         },
         price_mid: {
-            message: "💰 **Adventurers (10-13)**: ₦55,000 per month.\n\nIncludes project reviews, mentorship, and all software tools.",
+            message: "**Adventurers (10-13)**: ₦55,000 per month.\n\nIncludes project reviews, mentorship, and all software tools.",
             options: [
                 { text: "Any discounts?", next: "discounts" },
                 { text: "Enroll Now", url: "enroll.html" }
             ]
         },
         price_teen: {
-            message: "💰 **Innovators (14+)**: ₦65,000 per month.\n\nAdvanced curriculum with professional portfolio building.",
+            message: "**Innovators (14+)**: ₦65,000 per month.\n\nAdvanced curriculum with professional portfolio building.",
             options: [
                 { text: "Any discounts?", next: "discounts" },
                 { text: "Enroll Now", url: "enroll.html" }
             ]
         },
         discounts: {
-            message: "🎁 **Yes!**\n• **Sibling Discount**: 15% off for the second child.\n• **Term Payment**: Pay for 3 months at once and save 10%!",
+            message: "**Yes!**\n• **Sibling Discount**: 15% off for the second child.\n• **Term Payment**: Pay for 3 months at once and save 10%!",
             options: [
                 { text: "That sounds great!", next: "initial" },
                 { text: "Enroll Now", url: "enroll.html" }
@@ -128,7 +128,7 @@ const ChatbotWidget = (function() {
 
         // --- Logistics ---
         location_info: {
-            message: "💻 currently, all our classes are **100% Online via Zoom**.\n\nWe use screen sharing and remote control to help kids exactly as if we were there!",
+            message: "Currently, all our classes are **100% Online via Zoom**.\n\nWe use screen sharing and remote control to help kids exactly as if we were there!",
             options: [
                 { text: "Do they need a laptop?", next: "equipment" },
                 { text: "Back to Menu", next: "initial" }
@@ -143,16 +143,16 @@ const ChatbotWidget = (function() {
         
         // --- Handoff ---
         human_handoff: {
-            message: "I'll connect you with our team on WhatsApp! Click below to chat with a real human. 👇",
+            message: "I'll connect you with our team on WhatsApp! Click below to chat with a real human.",
             options: [
-                { text: "💬 Open WhatsApp", url: "https://wa.me/2347052466716?text=Hi%20STEMulus!%20I%20have%20a%20question..." },
+                { text: "Open WhatsApp", url: "https://wa.me/2347052466716?text=Hi%20STEMulus!%20I%20have%20a%20question..." },
                 { text: "Nevermind", next: "initial" }
             ]
         },
 
         // --- Fallback ---
         fallback: {
-            message: "I'm not sure I understood that. 😅\n\nI'm best at answering questions with the buttons below, but you can also Ask for a Human.",
+            message: "I'm not sure I understood that.\n\nI'm best at answering questions with the buttons below, but you can also Ask for a Human.",
             options: [
                 { text: "Back to Start", next: "initial" },
                 { text: "Chat with Human", next: "human_handoff" }
@@ -161,7 +161,7 @@ const ChatbotWidget = (function() {
     };
 
     // ==========================================
-    // ⚙️ ENGINE & STATE
+    // ENGINE & STATE
     // ==========================================
     let state = {
         currentNode: 'initial',
@@ -331,7 +331,7 @@ const ChatbotWidget = (function() {
     }
 
     // ==========================================
-    // 🛠️ RENDER & LOGIC
+    // RENDER & LOGIC
     // ==========================================
     function createWidgetHTML() {
         // Prevent duplicate creation
@@ -342,7 +342,7 @@ const ChatbotWidget = (function() {
         div.innerHTML = `
             <div class="chatbot-window">
                 <div class="chatbot-header">
-                    <h3 style="margin:0; font-size:1.1rem">🤖 STEMulus Assistant</h3>
+                    <h3 style="margin:0; font-size:1.1rem"><span data-icon-3d="robot" data-icon-size="20"></span> STEMulus Assistant</h3>
                     <p style="margin:4px 0 0; opacity:0.9; font-size:0.85rem">Online • Usually replies instantly</p>
                 </div>
                 <div class="chatbot-messages" id="bot-messages"></div>

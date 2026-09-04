@@ -229,7 +229,7 @@
           logoImg.style.filter = 'none';
         } else {
           nav.classList.remove('nav-on-light');
-          logoImg.style.filter = 'none';
+          logoImg.style.filter = 'brightness(0) invert(1)';
         }
       }
 

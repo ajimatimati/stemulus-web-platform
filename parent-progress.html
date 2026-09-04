@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="manifest" href="/site.webmanifest">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Child Progress Monitoring | STEMulus Parent Portal</title>
   
@@ -9,8 +10,18 @@
   <meta name="description" content="Track your child's coding progress, mastery radar charts, curriculum milestones, and historical tutor feedback logs on STEMulus.">
   <meta name="keywords" content="STEMulus progress monitoring, child coding reports, student progress dashboard">
   <meta name="author" content="STEMulus Kids Tech">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <link rel="canonical" href="https://stemuluskidstech.com/parent-progress.html">
+  <meta name="robots" content="noindex, nofollow">
+  <script>
+  (function(){
+    try {
+      var s=JSON.parse(sessionStorage.getItem('stemulus_session')||'null');
+      var ttl=8*60*60*1000;
+      if(!s || (s.role !== 'parent' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
+        window.location.replace('parent-login.html?role=parent');
+      }
+    } catch(e){}
+  })();
+  </script>
   
   <!-- SEO: OPEN GRAPH -->
   <meta property="og:type" content="website">
@@ -18,16 +29,16 @@
   <meta property="og:description" content="Track your child's coding progress, mastery radar charts, curriculum milestones, and historical tutor feedback logs on STEMulus.">
   <meta property="og:url" content="https://stemuluskidstech.com/parent-progress.html">
   <meta property="og:site_name" content="STEMulus">
-  <meta property="og:image" content="https://stemuluskidstech.com/logo.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:image" content="https://stemuluskidstech.com/assets/images/og-image.jpg">
+  <meta property="og:image:width" content="1729">
+  <meta property="og:image:height" content="910">
   <meta property="og:locale" content="en_US">
   
   <!-- SEO: TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Child Progress Monitoring | STEMulus">
   <meta name="twitter:description" content="Track your child's coding progress, mastery radar charts, curriculum milestones, and historical tutor feedback logs on STEMulus.">
-  <meta name="twitter:image" content="https://stemuluskidstech.com/logo.png">
+  <meta name="twitter:image" content="https://stemuluskidstech.com/assets/images/og-image.jpg">
   <meta name="twitter:site" content="@focuskidstech">
   
   <!-- SEO: GEO -->
@@ -37,48 +48,35 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&family=DM+Sans:wght@400;500;600&family=Fredoka+One&display=swap" rel="stylesheet">
   
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest" defer></script>
   <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
   
   <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
   
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  <link rel="stylesheet" href="preai-overhaul.css">
-  <link rel="stylesheet" href="responsive.css">
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/portal-animations.css">
+  <link rel="stylesheet" href="assets/css/3d-svg-icons.css">
+  <script src="assets/js/3d-icons.js" defer></script>
   
   <!-- Standard Favicon -->
-  <link rel="icon" type="image/png" href="logo.png">
-  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
   
-  <script>
-    if (window.tailwind) {
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              brand: {
-                orange: '#F4600C',
-                blue: '#1e293b',
-              }
-            }
-          }
-        }
-      };
-    }
-  </script>
-  
+  <script>if(window.tailwind){tailwind.config={theme:{extend:{}}}}</script>
   <style>
     /* Premium visual defaults matching homepage light/beige feel */
     body, html {
-      background-color: #fcfbfa!important;
-      color: #0f172a!important;
-      font-family: 'DM Sans', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-family: 'Nunito', sans-serif;
     }
     .text-outfit {
       font-family: 'Outfit', sans-serif;
@@ -174,35 +172,105 @@
     .gauge-circle {
       transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    #sidebar { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+    #sidebar.open { transform: translateX(0); }
+    @media(min-width:1024px){ #sidebar { transform: translateX(0) !important; } }
+    #sidebar-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:40;display:none; }
+    #sidebar-overlay.show { display:block; }
+    #sidebar nav a:hover { background:rgba(244,96,12,0.12) !important; color:#f4600c !important; }
+    @media print {
+      #sidebar, #sidebar-overlay, nav, .hero-band, .project-canvas-section, .woohoments-section, #admin-menu-btn, .skip-nav { display: none !important; }
+      body { background: #fff; color: #000; }
+      main, .lg\:ml-64 { margin-left: 0 !important; padding: 0 !important; }
+    }
   </style>
 </head>
 <body class="bg-[#fcfbfa] min-h-screen text-slate-900">
-  
+
+  <div id="sidebar-overlay"></div>
+  <!-- Parent Sidebar -->
+  <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 flex flex-col z-50" style="background:#0f1117;border-right:1px solid rgba(255,255,255,0.07);border-radius:0 24px 24px 0;">
+    <div class="p-6 flex items-center gap-3" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+      <img src="favicon.png" width="36" height="36" style="border-radius:10px;object-fit:contain;" alt="STEMulus">
+      <div>
+        <span class="font-nunito font-bold text-lg" style="color:#ffffff;">STEMulus</span>
+        <p class="text-xs" style="color:rgba(255,255,255,0.45);">Parent Portal</p>
+      </div>
+    </div>
+    <nav class="flex-1 p-4 space-y-1" style="overflow-y:auto;">
+      <a href="parent-dashboard.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="home" class="w-5 h-5"></i> Home
+      </a>
+      <a href="parent-progress.html" class="flex items-center gap-3 px-4 py-3 font-semibold" style="border-radius:16px;background:rgba(244,96,12,0.18);color:#f4600c;">
+        <i data-lucide="bar-chart-2" class="w-5 h-5"></i> My Child's Progress
+      </a>
+      <a href="book-class.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="calendar-plus" class="w-5 h-5"></i> Book a Class
+      </a>
+      <a href="contact.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="message-circle" class="w-5 h-5"></i> Contact Us
+      </a>
+    </nav>
+    <div class="p-4" style="border-top:1px solid rgba(255,255,255,0.07);">
+      <div class="flex items-center gap-3 mb-3 px-2">
+        <div id="sidebar-avatar-letter" class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs" style="background:rgba(244,96,12,0.25);color:#f4600c;">P</div>
+        <div class="flex-1 min-w-0">
+          <p id="sidebar-user-name" class="text-sm font-bold truncate" style="color:rgba(255,255,255,0.9);">Parent Account</p>
+          <p class="text-xs truncate" style="color:rgba(255,255,255,0.4);">Parent</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
   <!-- Top Navigation Header -->
-  <nav class="bg-[#101726] text-white border-b border-gray-800 sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <img src="logo.png" alt="STEMulus Logo" class="h-10 w-auto bg-white rounded-xl p-1">
+  <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm lg:pl-64" style="transition:padding 0.3s;">
+    <div class="container mx-auto px-6 py-3.5 flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
+        <button id="menu-btn" class="lg:hidden" style="background:none;border:none;cursor:pointer;padding:8px 4px;color:#64748b;" aria-label="Toggle sidebar">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <img src="favicon.png" alt="STEMulus Logo" class="h-9 w-9 object-contain">
         <div>
-          <span class="text-xs text-brand-orange font-bold uppercase tracking-widest text-outfit">Parent Portal</span>
-          <h1 class="font-outfit font-extrabold text-lg leading-tight">Child Progress Monitor</h1>
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-[#F4600C] block leading-none mb-1">Parent Portal</span>
+          <h1 class="font-nunito font-extrabold text-slate-900 text-lg leading-tight m-0" style="color: #0F172A !important;">Child Progress Monitor</h1>
         </div>
       </div>
       
-      <div class="flex items-center gap-4">
-        <a href="parent-dashboard.html" id="back-dashboard-btn" class="flex items-center gap-2 border border-gray-700 hover:bg-gray-800 text-gray-200 text-sm font-semibold px-4 py-2 rounded-xl transition-all">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+      <div class="flex items-center gap-3">
+        <a href="parent-dashboard.html" id="back-dashboard-btn" class="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm">
+          <i data-lucide="arrow-left" class="w-4 h-4 text-slate-600"></i>
           <span>Portal Home</span>
         </a>
-        <button id="logout-btn" class="p-2 text-gray-400 hover:text-white transition-colors" title="Log Out">
+        <button onclick="window.print()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:#6366F1;color:#fff;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:0.875rem;font-weight:600;cursor:pointer;" title="Print progress report">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print Report
+        </button>
+        <button id="logout-btn" class="p-2 text-slate-400 hover:text-slate-700 transition-colors rounded-lg" title="Log Out">
           <i data-lucide="log-out" class="w-5 h-5"></i>
         </button>
       </div>
     </div>
   </nav>
 
+  <!-- Hero Band -->
+  <div class="hero-band" style="background: linear-gradient(135deg, #6366F1, #A78BFA);" data-animate="enter">
+    <img src="images/portal/standalone/trophy-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift" style="position:absolute; top:10%; left:6%;" loading="lazy">
+    <img src="images/portal/standalone/puzzle-piece-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-orbit motion-delay-2" style="position:absolute; bottom:15%; left:18%;" loading="lazy">
+    <img src="images/portal/standalone/compass-3d.png" alt="" class="float-accent float-accent--sm float-accent--soft animate-drift-reverse motion-delay-4" style="position:absolute; top:22%; right:38%;" loading="lazy">
+    <div class="accent-sphere--pink accent-sphere animate-drift-reverse motion-delay-3" style="bottom:20%; right:30%;"></div>
+    <div class="hero-band-content">
+      <h1>Progress Monitor</h1>
+      <p>Deep insights into your child's coding mastery and curriculum milestones</p>
+      <div class="kpi-pills">
+        <span class="kpi-pill"><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i> Live Tracking</span>
+        <span class="kpi-pill"><i data-lucide="target" style="width:14px;height:14px;"></i> Skill Radar</span>
+      </div>
+    </div>
+    <img src="images/portal/standalone/progress-cylinder-3d.png" alt="Progress" class="hero-3d-object animate-float-band magnetic-repel" loading="lazy">
+  </div>
+
   <!-- Main Progress Content -->
-  <main class="container mx-auto px-4 py-8 max-w-6xl">
+  <main class="container mx-auto px-4 py-8 max-w-6xl lg:pl-72" style="transition:padding 0.3s;">
     
     <!-- Top Selector Bar -->
     <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -228,9 +296,11 @@
       <i data-lucide="alert-circle" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
       <h3 class="text-xl font-bold text-gray-800">Access Denied / Student Not Found</h3>
       <p class="text-gray-500 max-w-md mx-auto mt-2">Please return to the dashboard or log in with your parent account credentials.</p>
-      <a href="parent-dashboard.html" class="inline-block mt-6 bg-brand-orange hover:bg-orange-600 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md">
-        Back to Parent Dashboard
-      </a>
+      <div class="mt-6">
+        <a href="parent-dashboard.html" class="btn-3d">
+          Back to Parent Dashboard
+        </a>
+      </div>
     </div>
 
     <!-- Main Dashboard Grid -->
@@ -344,7 +414,7 @@
             <div class="border-t border-white/10 pt-4 space-y-4">
               <h5 class="text-xs font-bold text-indigo-300 uppercase tracking-wider">Tutor Focus Area</h5>
               <p class="text-sm text-gray-300 leading-relaxed" id="mentor-focus-comment">
-                "Daniel is showing solid intuition for nested loop variables. Our primary focus is getting him comfortable with indexing elements inside lists."
+                Mentor feedback will appear here once session reports are submitted.
               </p>
             </div>
           </div>
@@ -357,6 +427,59 @@
           </div>
         </div>
         
+      </div>
+
+      <!-- WooHooMents: Milestone Video Highlights -->
+      <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6">
+        <div class="mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
+          <div>
+            <h3 class="text-lg font-outfit font-bold text-slate-800 flex items-center gap-2">
+              <i data-lucide="video" class="w-5 h-5 text-brand-orange"></i> Milestone Highlights (WooHooMents)
+            </h3>
+            <p class="text-xs text-gray-500 mt-1">Short video highlights of your child explaining their custom code.</p>
+          </div>
+          <button class="btn-3d btn-3d-secondary px-3 py-1.5 text-xs" onclick="this.setAttribute('disabled','true'); this.title='Archive coming soon';" title="Coming soon">View Archive</button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="rounded-xl overflow-hidden shadow-sm border border-gray-200 group relative">
+            <div class="aspect-video bg-gray-900 relative">
+               <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500" alt="Highlight 1">
+               <div class="absolute inset-0 flex items-center justify-center">
+                 <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                   <i data-lucide="play" class="w-5 h-5 text-white ml-1"></i>
+                 </div>
+               </div>
+            </div>
+            <div class="p-4 bg-white">
+              <span class="text-[10px] font-bold text-orange-600 uppercase tracking-wider mb-1 block">Module 2</span>
+              <h4 class="text-sm font-bold text-slate-800">Space Raider Launch</h4>
+              <p class="text-xs text-gray-500 mt-1 truncate">Daniel explains his collision detection logic.</p>
+            </div>
+          </div>
+          <div class="rounded-xl overflow-hidden shadow-sm border border-gray-200 group relative">
+            <div class="aspect-video bg-gray-900 relative">
+               <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500" alt="Highlight 2">
+               <div class="absolute inset-0 flex items-center justify-center">
+                 <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                   <i data-lucide="play" class="w-5 h-5 text-white ml-1"></i>
+                 </div>
+               </div>
+            </div>
+            <div class="p-4 bg-white">
+              <span class="text-[10px] font-bold text-orange-600 uppercase tracking-wider mb-1 block">Module 1</span>
+              <h4 class="text-sm font-bold text-slate-800">First Python Loop</h4>
+              <p class="text-xs text-gray-500 mt-1 truncate">A quick showcase of basic automation.</p>
+            </div>
+          </div>
+          <div class="rounded-xl overflow-hidden shadow-sm border border-gray-200 flex items-center justify-center bg-gray-50 p-6 text-center hover:bg-gray-100 transition-colors cursor-pointer">
+            <div>
+              <i data-lucide="calendar" class="w-8 h-8 text-gray-400 mx-auto mb-2"></i>
+              <p class="text-sm font-bold text-slate-700">Next Highlight</p>
+              <p class="text-xs text-gray-500 mt-1">Expected after Module 3 completion</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Roadmap Timeline Section -->
@@ -465,7 +588,7 @@
                 <button class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm" onclick="ProjectCanvasController.addVariable()">
                   <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Variable
                 </button>
-                <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md shadow-indigo-950/10 flex items-center justify-center gap-1.5" onclick="ProjectCanvasController.deployProject()">
+                <button class="btn-3d w-full py-3" onclick="ProjectCanvasController.deployProject()">
                   <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="deploy-btn-spinner"></i> Save & Deploy Project
                 </button>
               </div>
@@ -558,6 +681,30 @@
         </div>
       </div>
 
+      <!-- Official Monthly Academic Evaluations Section -->
+      <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6 mb-6" id="official-evaluations-section">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-block bg-indigo-50 text-indigo-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Formal Academic Records</span>
+            </div>
+            <h3 class="text-lg font-outfit font-bold text-slate-800 flex items-center gap-2">
+              <i data-lucide="award" class="w-5 h-5 text-indigo-600"></i> Official Monthly Progress Reports
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">Formal monthly evaluations reviewed and endorsed by the Academic Board with downloadable publication-grade PDFs.</p>
+          </div>
+          <div class="text-xs text-gray-400 font-semibold" id="official-reports-count">
+            Showing 0 evaluations
+          </div>
+        </div>
+
+        <div class="space-y-4" id="official-reports-list">
+          <div class="text-center py-8 bg-slate-50/70 border border-dashed border-slate-200 rounded-2xl p-6">
+            <p class="text-xs text-slate-500">No official monthly evaluations released yet for this student.</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Detailed Session Reports Log -->
       <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -579,79 +726,39 @@
         </div>
       </div>
 
+      <!-- Certificates Earned Section -->
+      <section id="certificates-section" style="margin:1.5rem 0;padding:1.5rem;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+        <h3 style="font-family:'Fredoka',sans-serif;font-size:1.2rem;font-weight:600;color:#2d2d4e;margin:0 0 1rem;">Certificates Earned</h3>
+        <div id="certs-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">
+          <p style="color:#6b6b8a;font-size:0.875rem;" id="certs-empty">Loading certificates...</p>
+        </div>
+      </section>
+
+      <!-- Attendance History Section -->
+      <section style="margin:1.5rem 0;padding:1.5rem;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+        <h3 style="font-family:'Fredoka',sans-serif;font-size:1.2rem;font-weight:600;color:#2d2d4e;margin:0 0 1rem;">Attendance History</h3>
+        <div id="attendance-history-table" style="overflow-x:auto;">
+          <p style="color:#6b6b8a;font-size:0.875rem;">Loading attendance history...</p>
+        </div>
+      </section>
+
     </div>
 
   </main>
 
   <!-- Premium Editorial Footer -->
-  <footer class="footer-editorial" role="contentinfo">
-  <!-- Model Viewer Script Loaded Dynamically inside the footer -->
-  <div class="footer-grid">
-    <!-- Brand column with 3D model logo -->
-    <div class="footer-brand-col">
-      <div class="footer-3d-wrapper">
-    <div class="footer-hologram-coin">
-      <div class="coin-glow"></div>
-      <div class="coin-inner">
-        <div class="coin-front">
-          <img src="logo.png" alt="STEMulus Logo">
-        </div>
-        <div class="coin-back">
-          <img src="logo.png" alt="STEMulus Logo">
-        </div>
-      </div>
-    </div>
-  </div>
-    </div>
-
-    <!-- Website Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Website</p>
-      <a href="index.html">Home</a>
-      <a href="programs.html">Roadmap</a>
-      <a href="for-parents.html">For Parents</a>
-      <a href="blog.html">Blog</a>
-      <a href="contact.html">Contact</a>
-    </div>
-
-    <!-- Social Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Social</p>
-      <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-      <a href="mailto:admin@stemuluskidstech.com">Email Us</a>
-      <a href="join-as-tutor.html">Join as Tutor</a>
-</div>
-
-    <!-- Legal Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Legal</p>
-      <a href="privacy-policy.html">Privacy Policy</a>
-      <a href="privacy-policy.html#terms">Terms of Service</a>
-      <a href="parent-dashboard.html">Parent Login</a>
-      <a href="enroll.html">Enroll Now</a>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <p class="footer-legal-left">©2026 STEMulus Innovations LTD. All rights reserved.</p>
-    <p class="footer-legal-right">
-      Built with craft, not algorithms
-      <i data-lucide="heart" style="width:12px;height:12px;fill:currentColor;color:currentColor;display:inline-block;vertical-align:middle;margin:0 2px;"></i>
-      <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:inline-flex;align-items:center;">
-        <i data-lucide="mail" style="width:18px;height:18px;"></i>
-      </a>
-      <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:inline-flex;align-items:center;">
-        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
-      </a>
-    </p>
-  </div>
-  
-  <!-- Background Text "STEMULUS" stylized bottom watermark -->
-  <div class="footer-bg-text">STEMulus</div>
+  <footer class="mt-auto py-6 px-8 border-t border-slate-200 bg-white text-center text-xs text-slate-500 font-semibold" style="color: #64748b !important; background-color: #ffffff !important;">
+  <p>© 2026 STEMulus Innovations LTD. All rights reserved. • STEMulus Portal Workspace</p>
 </footer>
 
+  <!-- Firebase SDK (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="assets/js/firebase-config.min.js" defer></script>
+
   <!-- State & Controller Scripts -->
-  <script src="assets/js/dashboard-engine.js"></script>
+  <script src="assets/js/dashboard-engine.min.js" defer></script>
+  <script src="assets/js/report-pdf-generator.min.js" defer></script>
   <script>
     // Self-contained page engine for parent-progress
     const ProgressPageController = (function() {
@@ -660,45 +767,71 @@
       let activeStudentId = null;
       let conceptChartInstance = null;
 
-      // Roadmap timeline presets
+      // Roadmap timeline presets — 11 STEMulus stages
       const TIMELINE_MODULES = {
         "Python Programming": [
-          { title: "Intro to Python & Print", desc: "Print statements, basic strings, variables" },
-          { title: "Variables & Calculations", desc: "Data types, math operators, modulo" },
-          { title: "Conditional Logic", desc: "If / elif / else statements & nested gates" },
-          { title: "Loops & Flow Control", desc: "For loops, while gates, lists indexation" },
-          { title: "Functions & Code Reuse", desc: "Defining methods, parameters, scoping" },
-          { title: "Final Capstone Project", desc: "Independent application or text game build" }
+          { title: "Python Setup & Print", desc: "Environment setup, print statements, code execution" },
+          { title: "Variables & Data Types", desc: "Strings, integers, floats, booleans" },
+          { title: "Conditional Logic", desc: "If / elif / else, comparison operators" },
+          { title: "Loops & Iteration", desc: "For loops, while loops, range()" },
+          { title: "Functions & Scope", desc: "def keyword, parameters, return values" },
+          { title: "Lists & Tuples", desc: "Sequences, indexing, slicing, appending" },
+          { title: "Dictionaries & Sets", desc: "Key-value pairs, lookups, built-in methods" },
+          { title: "File I/O & Error Handling", desc: "Reading/writing files, try/except blocks" },
+          { title: "OOP & Classes", desc: "Objects, attributes, methods, inheritance" },
+          { title: "Libraries & APIs", desc: "pip, requests module, external integrations" },
+          { title: "Capstone Project", desc: "Independent Python application build" }
         ],
         "Scratch Creators": [
-          { title: "Scratch Stage & Motion", desc: "Motion blocks, coordinates, click events" },
-          { title: "Events & Costumes", desc: "Animations, sprite transitions, key inputs" },
-          { title: "Sound & Broadcasting", desc: "Sending signals, audio effects, dialog" },
-          { title: "Repeat Loops & Animations", desc: "Continuous animations, moving obstacles" },
-          { title: "Variables & Scores", desc: "Creating variable scores, game states" },
-          { title: "Final Game Capstone", desc: "Publishing a complete interactive build" }
+          { title: "Scratch Stage & Sprites", desc: "Interface overview, backdrop, sprite creation" },
+          { title: "Motion & Events", desc: "Move blocks, key events, click triggers" },
+          { title: "Looks & Costumes", desc: "Sprite animations, size controls, visual effects" },
+          { title: "Sound & Music", desc: "Audio blocks, recording, beat sequencing" },
+          { title: "Control Blocks", desc: "Repeat loops, if/else conditions, wait blocks" },
+          { title: "Broadcasting", desc: "Send/receive messages, scene transitions" },
+          { title: "Variables & Scores", desc: "Create variables, live score tracking" },
+          { title: "Lists & Data", desc: "List blocks, storing and reading game states" },
+          { title: "Custom Blocks", desc: "My Blocks, reusable procedures, abstraction" },
+          { title: "Multiplayer Concepts", desc: "Two-sprite interaction, collision detection" },
+          { title: "Final Game Project", desc: "Publish a complete, shareable interactive game" }
         ],
         "default": [
-          { title: "Foundations Intro", desc: "Core commands, workspace layout" },
-          { title: "Control & Input", desc: "Trigger events, conditionals" },
-          { title: "Loops & Variables", desc: "Simple repeats, storing variables" },
-          { title: "Core Architecture", desc: "Code modularity, simple lists" },
-          { title: "Complex Structures", desc: "Custom objects, nested loops" },
-          { title: "Independent Capstone", desc: "Original project publication" }
+          { title: "Digital Foundations", desc: "Computing basics, file systems, digital tools" },
+          { title: "Scratch Visual Coding", desc: "Drag-and-drop logic, sprite event handling" },
+          { title: "Scratch Game Design", desc: "Game loops, collision detection, score mechanics" },
+          { title: "HTML Web Structure", desc: "Tags, semantic elements, page architecture" },
+          { title: "CSS & Styling", desc: "Selectors, properties, responsive layout basics" },
+          { title: "JavaScript Basics", desc: "Variables, functions, data types, operators" },
+          { title: "JS DOM & Events", desc: "Interactive pages, event listeners, DOM methods" },
+          { title: "Python Fundamentals", desc: "Syntax, conditionals, loops, functions" },
+          { title: "Python Projects", desc: "Lists, dictionaries, mini-application builds" },
+          { title: "APIs & Databases", desc: "Fetch requests, JSON handling, local storage" },
+          { title: "Capstone Portfolio", desc: "Final project: full-stack application or game" }
         ]
       };
 
       function init() {
         // 1. Verify parent authentication
         currentParent = DashboardEngine.getSession();
-        if (!currentParent || currentParent.role !== 'parent') {
+        if (!currentParent || (currentParent.role !== 'parent' && currentParent.role !== 'admin')) {
           // Send back to dashboard for login redirection
-          window.location.href = 'parent-dashboard.html';
+          window.location.href = 'parent-login.html';
           return;
         }
 
+        // Update sidebar user block with real session data
+        var sidebarAvatar = document.querySelector('.sidebar-avatar-letter') || document.getElementById('sidebar-avatar-letter');
+        var sidebarName = document.querySelector('.sidebar-user-name') || document.getElementById('sidebar-user-name');
+        var session = DashboardEngine.getSession();
+        if (session) {
+          if (sidebarAvatar) sidebarAvatar.textContent = (session.name || session.email || 'P').charAt(0).toUpperCase();
+          if (sidebarName) sidebarName.textContent = session.name || session.email || 'Parent';
+        }
+
         // 2. Fetch children list
-        parentStudents = DashboardEngine.getStudents(currentParent.email);
+        parentStudents = (currentParent.role === 'admin' && DashboardEngine.getStudents(currentParent.email).length === 0)
+          ? DashboardEngine.getStudents()
+          : DashboardEngine.getStudents(currentParent.email);
         if (parentStudents.length === 0) {
           showErrorState();
           return;
@@ -729,7 +862,7 @@
         // Log out handler
         document.getElementById('logout-btn').addEventListener('click', function() {
           DashboardEngine.logout();
-          window.location.href = 'parent-dashboard.html';
+          window.location.href = 'parent-login.html';
         });
       }
 
@@ -791,6 +924,49 @@
 
         // Render logs
         renderSessionLogs(student);
+
+        // Render official monthly evaluations
+        renderOfficialMonthlyReports(student);
+
+        // Render certificates
+        var certsContainer = document.getElementById('certs-list');
+        var certsEmpty = document.getElementById('certs-empty');
+        if (certsContainer && typeof DashboardEngine !== 'undefined') {
+          var certs = DashboardEngine.getCertificates ? DashboardEngine.getCertificates(student.firstName + ' ' + student.lastName) : [];
+          if (!certs || certs.length === 0) { if (certsEmpty) certsEmpty.textContent = 'No certificates yet.'; }
+          else {
+            certsContainer.innerHTML = certs.map(function(c) {
+              return '<div style="border:1px solid #e0e7ff;border-radius:8px;padding:1rem;background:#f5f3ff;">' +
+                '<div style="margin-bottom:0.5rem;"><span data-icon-3d="graduation-cap" data-icon-size="36"></span></div>' +
+                '<strong style="font-family:Fredoka,sans-serif;color:#4338ca;font-size:0.95rem;">' + (c.program || c.title || 'Certificate') + '</strong>' +
+                '<p style="font-size:0.75rem;color:#6b6b8a;margin:0.25rem 0 0;">' + (c.credential_id || '') + '</p>' +
+                '<p style="font-size:0.75rem;color:#6b6b8a;margin:0.25rem 0 0;">' + (c.issue_date ? new Date(c.issue_date).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}) : "") + '</p>' +
+              '</div>';
+            }).join('');
+          }
+        }
+
+        // Render attendance history table
+        var attTable = document.getElementById("attendance-history-table");
+        if (attTable && typeof DashboardEngine !== "undefined") {
+          var allSchedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
+          var studentSessions = allSchedules.filter(function(s) { return s.studentId === student.id || s.studentName === (student.firstName + " " + student.lastName); });
+          if (!studentSessions.length) { attTable.innerHTML = "<p style='color:#6b6b8a;font-size:0.875rem;'>No sessions recorded yet.</p>"; }
+          else {
+            studentSessions.sort(function(a,b) { return new Date(b.date) - new Date(a.date); });
+            attTable.innerHTML = "<table style='width:100%;border-collapse:collapse;font-size:0.875rem;'><thead><tr style='background:#f8f9ff;'><th style='padding:8px 12px;text-align:left;color:#6b6b8a;font-weight:600;'>Date</th><th style='padding:8px 12px;text-align:left;color:#6b6b8a;font-weight:600;'>Topic</th><th style='padding:8px 12px;text-align:left;color:#6b6b8a;font-weight:600;'>Tutor</th><th style='padding:8px 12px;text-align:center;color:#6b6b8a;font-weight:600;'>Status</th></tr></thead><tbody>" +
+            studentSessions.map(function(s,i) {
+              var statusColor = s.attendanceStatus === "present" ? "#22c55e" : s.attendanceStatus === "absent" ? "#ef4444" : "#f59e0b";
+              var statusLabel = s.attendanceStatus === "present" ? "Present" : s.attendanceStatus === "absent" ? "Absent" : "Pending";
+              return "<tr style='border-bottom:1px solid #f1f5f9;" + (i%2?"background:#fafafa":"") + "'>" +
+                "<td style='padding:8px 12px;'>" + (s.date ? new Date(s.date).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) : "N/A") + "</td>" +
+                "<td style='padding:8px 12px;'>" + (s.topic || s.program || "Session") + "</td>" +
+                "<td style='padding:8px 12px;'>" + (s.mentor || s.tutorName || "N/A") + "</td>" +
+                "<td style='padding:8px 12px;text-align:center;'><span style='background:" + statusColor + "22;color:" + statusColor + ";padding:2px 8px;border-radius:12px;font-size:0.75rem;font-weight:600;'>" + statusLabel + "</span></td>" +
+              "</tr>";
+            }).join("") + "</tbody></table>";
+          }
+        }
 
         // Update Project Canvas Title dynamically
         const projectTitleEl = document.getElementById('canvas-front-title');
@@ -928,8 +1104,8 @@
         const modules = TIMELINE_MODULES[programName] || TIMELINE_MODULES["default"];
         
         // Calculate status dynamically based on progress percentage
-        // 6 modules: each represents ~16.6% progress
-        const completedCount = Math.floor(student.progress / 16.6);
+        // 11 modules: each represents ~9.09% progress (100/11)
+        const completedCount = Math.floor(student.progress / 9.09);
 
         roadmapContainer.innerHTML = modules.map((mod, index) => {
           let status = "locked"; // locked, active, completed
@@ -953,7 +1129,7 @@
             <div class="bg-white border border-gray-200/50 shadow-sm rounded-2xl p-5 flex flex-col justify-between hover:shadow transition-shadow relative">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Level 0${index + 1}</span>
+                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">S${index + 1}</span>
                   <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-xl uppercase tracking-wider ${badgeClass}">${status}</span>
                 </div>
                 <div>
@@ -1057,8 +1233,96 @@
         if (window.lucide) lucide.createIcons();
       }
 
+      function renderOfficialMonthlyReports(student) {
+        const container = document.getElementById('official-reports-list');
+        const countEl = document.getElementById('official-reports-count');
+        if (!container) return;
+
+        let reports = [];
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getMonthlyReports) {
+          const allMR = DashboardEngine.getMonthlyReports();
+          const sNameLower = ((student.firstName || '') + ' ' + (student.lastName || '')).toLowerCase().trim();
+          reports = allMR.filter(mr => {
+            if (mr.status !== 'sent_to_parent') return false;
+            if (mr.studentId && mr.studentId === student.id) return true;
+            if (mr.studentName && mr.studentName.toLowerCase().trim() === sNameLower) return true;
+            if (mr.studentName && mr.studentName.toLowerCase().trim() === (student.firstName || '').toLowerCase().trim()) return true;
+            return false;
+          });
+        }
+
+        if (countEl) countEl.textContent = `Showing ${reports.length} evaluation${reports.length !== 1 ? 's' : ''}`;
+
+        if (reports.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-8 bg-slate-50/60 border border-slate-200/80 rounded-2xl p-6">
+              <i data-lucide="file-check-2" class="w-8 h-8 text-slate-300 mx-auto mb-2"></i>
+              <p class="text-xs font-semibold text-slate-500">No official monthly evaluations released yet.</p>
+              <p class="text-[11px] text-slate-400 mt-0.5">When tutor monthly evaluations are reviewed and endorsed by administration, formal printable reports will be archived here.</p>
+            </div>
+          `;
+          if (window.lucide) lucide.createIcons();
+          return;
+        }
+
+        reports.sort((a, b) => new Date(b.sentAt || b.submittedAt || 0) - new Date(a.sentAt || a.submittedAt || 0));
+
+        container.innerHTML = reports.map(r => {
+          const dateStr = r.month 
+            ? new Date(r.month + '-01').toLocaleDateString('en-GB', {month:'long', year:'numeric'}) 
+            : 'Academic Evaluation';
+          const sentDate = r.sentAt ? new Date(r.sentAt).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) : 'Approved';
+          const grade = r.overallGrade || 'A';
+          const tutor = r.tutorName || 'Faculty Instructor';
+
+          return `
+            <div class="bg-gradient-to-r from-white via-indigo-50/30 to-blue-50/20 border border-indigo-100/80 rounded-2xl p-5 md:p-6 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row gap-5 items-start justify-between">
+              <div class="space-y-2 flex-1">
+                <div class="flex items-center gap-2.5 flex-wrap">
+                  <span class="inline-block bg-indigo-600 text-white text-xs font-black px-3 py-1 rounded-xl shadow-sm">${dateStr}</span>
+                  <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-black px-3 py-1 rounded-xl border border-emerald-200">Grade: ${grade}</span>
+                  <span class="text-xs text-slate-400">&bull;</span>
+                  <span class="text-xs font-semibold text-slate-600">Dispatched: ${sentDate}</span>
+                </div>
+                <div>
+                  <h4 class="font-extrabold text-base text-slate-800 font-nunito">${r.course || student.program}</h4>
+                  <p class="text-xs text-slate-500">Lead Instructor: <strong class="text-slate-700">${tutor}</strong> &nbsp;&bull;&nbsp; Attendance: <strong class="text-slate-700">${r.sessionsAttended || r.totalSessions || 4} Sessions (${r.totalHours || 6} hrs)</strong></p>
+                </div>
+                ${r.topics ? `
+                  <div class="text-xs text-slate-600 bg-white p-3 rounded-xl border border-slate-200/70">
+                    <strong class="text-slate-700 block text-[10px] uppercase tracking-wider mb-0.5">Topics &amp; Concepts Mastered:</strong>
+                    <p class="line-clamp-2">${r.topics}</p>
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="shrink-0 w-full md:w-auto pt-2 md:pt-0">
+                <button type="button" onclick="ProgressPageController.openOfficialPDF('${r.id}')" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-5 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-md">
+                  <i data-lucide="file-text" class="w-4 h-4"></i> View / Print Official PDF
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        if (window.lucide) lucide.createIcons();
+      }
+
+      function openOfficialPDF(id) {
+        if (typeof StemulusReportPDF !== 'undefined') {
+          const reports = DashboardEngine.getMonthlyReports ? DashboardEngine.getMonthlyReports() : [];
+          const r = reports.find(item => item.id === id);
+          if (r) {
+            StemulusReportPDF.open(r);
+            return;
+          }
+        }
+        alert('Report document is loading or could not be found.');
+      }
+
       return {
-        init
+        init,
+        openOfficialPDF
       };
     })();
 
@@ -1300,6 +1564,27 @@
     // Initialize on DOM load
     document.addEventListener('DOMContentLoaded', function() {
       ProjectCanvasController.init();
+    });
+  </script>
+  <!-- Mulu AI Mascot Widget -->
+  <script src="assets/js/mulu-widget.min.js" defer></script>
+  <script>
+  (function(){
+    var btn=document.getElementById('menu-btn');
+    var sb=document.getElementById('sidebar');
+    var ov=document.getElementById('sidebar-overlay');
+    if(btn&&sb){
+      btn.onclick=function(){sb.classList.toggle('open');if(ov)ov.classList.toggle('show');};
+      if(ov)ov.onclick=function(){sb.classList.remove('open');ov.classList.remove('show');};
+      sb.querySelectorAll('a').forEach(function(a){a.onclick=function(){sb.classList.remove('open');if(ov)ov.classList.remove('show');};});
+    }
+  })();
+  </script>
+  <script>
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'stemulus_session' && !e.newValue) {
+        window.location.href = 'parent-login.html';
+      }
     });
   </script>
 </body>

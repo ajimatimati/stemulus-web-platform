@@ -29,10 +29,7 @@
 
   // ─── State ──────────────────────────────────────────────────────────────────
   let isScrubbingActive = false;
-  let targetTime        = 0;
-  let currentTime       = 0;
   let hintHidden        = false;
-  const LERP            = 0.10; // Higher = snappier response, 0.08–0.12 is ideal
 
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768);
 
@@ -50,29 +47,66 @@
       if (video.readyState >= 1) {
         proceed();
       } else {
-        video.addEventListener('loadedmetadata', proceed, { once: true });
+        video.addEventListener('error', () => onHandoff(), { once: true });
+        // canplaythrough = browser confident it can play all the way through without buffering
+        // Fall back to canplay if canplaythrough is slow (> 8s)
+        let cptFiredBypass = false;
+        const cptFallbackBypass = setTimeout(() => {
+          if (!cptFiredBypass) {
+            video.removeEventListener('canplaythrough', onCanPlayThroughBypass);
+            video.addEventListener('canplay', proceed, { once: true });
+          }
+        }, 8000);
+        function onCanPlayThroughBypass() {
+          cptFiredBypass = true;
+          clearTimeout(cptFallbackBypass);
+          proceed();
+        }
+        video.addEventListener('canplaythrough', onCanPlayThroughBypass, { once: true });
+        video.load(); // trigger load when preload="metadata" or "none"
       }
       return;
     }
 
     body.classList.add('video-loading-lock');
 
+    // Safety net: if video fails or takes too long, always unlock the page
+    let handoffCalled = false;
+    function safeHandoff() {
+      if (handoffCalled) return;
+      handoffCalled = true;
+      onHandoff();
+    }
+    video.addEventListener('error', () => {
+      console.warn('[VideoScrub] Video failed to load — unlocking page.');
+      body.classList.remove('video-loading-lock');
+      handoffCalled = true; // suppress scrub setup, no video to scrub
+    }, { once: true });
+    // Hard timeout: 8s max wait regardless of network
+    setTimeout(() => {
+      if (!handoffCalled) {
+        console.warn('[VideoScrub] Video load timeout — unlocking page.');
+        safeHandoff();
+      }
+    }, 15000);
+
     if (isMobile) {
       // Mobile bypass: autoplay looping video background, avoid heavy ScrollTrigger scrub
       video.loop = true;
       video.muted = true;
       video.setAttribute('playsinline', 'true');
-      
+
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
           console.warn('[VideoScrub] Autoplay blocked on mobile.');
         });
       }
-      
+
       // Complete loader handoff immediately to unlock scroll
       setTimeout(() => {
         body.classList.remove('video-loading-lock');
+        handoffCalled = true;
         // Hide scroll hint since scrubbing is disabled
         if (hint) {
           hint.style.opacity = '0';
@@ -82,10 +116,25 @@
       return;
     }
 
-    if (video.readyState >= 1) {
+    // canplaythrough = browser confident it can play all the way through without buffering
+    // Fall back to canplay if canplaythrough is slow (> 8s)
+    let cptFired = false;
+    const cptFallback = setTimeout(() => {
+      if (!cptFired && !handoffCalled) {
+        video.removeEventListener('canplaythrough', onCanPlayThrough);
+        video.addEventListener('canplay', startIntroPlayback, { once: true });
+      }
+    }, 8000);
+    function onCanPlayThrough() {
+      cptFired = true;
+      clearTimeout(cptFallback);
       startIntroPlayback();
+    }
+    if (video.readyState >= 4) {
+      startIntroPlayback(); // already fully buffered
     } else {
-      video.addEventListener('loadedmetadata', startIntroPlayback, { once: true });
+      video.addEventListener('canplaythrough', onCanPlayThrough, { once: true });
+      video.load();
     }
   }
 
@@ -102,7 +151,17 @@
     }
 
     video.addEventListener('timeupdate', watchIntro);
-    video.addEventListener('ended', onHandoff, { once: true });
+    video.addEventListener('ended', safeHandoff, { once: true });
+
+    // Suspend the safety deadline while video is buffering
+    video.addEventListener('waiting', function onWaiting() {
+      // video stalled — temporarily disable safeHandoff by extending deadline
+      // The 'playing' event will fire when it resumes — watchIntro continues naturally
+      console.log('[VideoScrub] Buffering mid-intro — waiting for data...');
+    });
+    video.addEventListener('playing', function onResumed() {
+      console.log('[VideoScrub] Resumed after buffer.');
+    });
   }
 
   function watchIntro() {
@@ -134,7 +193,13 @@
 
   function initScrollTrigger() {
     if (!window.gsap || !window.ScrollTrigger) {
-      console.error('[VideoScrub] GSAP or ScrollTrigger not loaded!');
+      // Retry up to 10× every 400ms — covers slow CDN loads
+      window._scrubRetries = (window._scrubRetries || 0) + 1;
+      if (window._scrubRetries < 10) {
+        setTimeout(initScrollTrigger, 400);
+      } else {
+        console.error('[VideoScrub] GSAP never loaded after retries — scrub disabled.');
+      }
       return;
     }
 
@@ -151,41 +216,21 @@
     matchMediaInstance.add("(min-width: 769px)", () => {
       isScrubbingActive = true;
 
-      // Function to get absolute scroll distance to showcase section
-      const getScrollDistance = () => {
-        const pageContent = document.getElementById('page-content');
-        const showcase = document.getElementById('showcase-section');
-        if (!pageContent || !showcase) return window.innerHeight * 3;
-        return showcase.getBoundingClientRect().top + window.scrollY;
-      };
+      // Scrub ends when the spacer bottom hits the top of the viewport.
+      // The spacer is 100vh tall → entire 10s video plays within one full viewport of scroll.
+      const SCRUB_END = '+=' + Math.round(window.innerHeight * 1.0) + 'px';
 
-      const getInitialVideoTransform = () => {
-        return { xPercent: 30, scale: 1.15 };
-      };
-
-      // Set up variables
-      const initial = getInitialVideoTransform();
       const playhead = { time: video.duration };
-      const totalDist = getScrollDistance();
-      const vh = window.innerHeight;
 
-      // Calculate percentage ratios within the total scroll timeline
-      const shiftStart = (0.4 * vh) / totalDist;
-      const shiftEnd = (1.2 * vh) / totalDist;
-      const fadeStart = (0.4 * vh) / totalDist;
-      const fadeEnd = (0.9 * vh) / totalDist;
-
-      // Single, Unified GSAP Timeline for perfect sync of position & playhead frame
-      const tl = gsap.timeline({
+      // ── Track 1: Video frame scrub — scrub:true = zero lag, frame-perfect ──
+      const tlScrub = gsap.timeline({
         scrollTrigger: {
-          trigger: '#page-content',
+          trigger: '#scrub-spacer',
           start: 'top top',
-          endTrigger: '#showcase-section',
-          end: 'top top',
-          scrub: 1.0, // perfectly smooth catch-up
+          end: SCRUB_END,
+          scrub: true,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            // Fade out scroll hint once user has started scrubbing
             if (!hintHidden && self.progress > 0.02 && hint) {
               hint.style.opacity = '0';
               hint.style.transition = 'opacity 0.5s ease';
@@ -195,8 +240,7 @@
         }
       });
 
-      // 1. Scrub video playhead from duration (assembled) to 0 (unassembled)
-      tl.to(playhead, {
+      tlScrub.to(playhead, {
         time: 0,
         ease: 'none',
         duration: 1,
@@ -207,34 +251,32 @@
         }
       }, 0);
 
-      // 2. Animate video position & scale (spatial transition) - DISABLED to keep robot fixed at 2/3 line
-      // tl.fromTo(video, 
-      //   {
-      //     xPercent: initial.xPercent,
-      //     scale: initial.scale
-      //   },
-      //   {
-      //     xPercent: 0,
-      //     scale: 1.35,
-      //     ease: 'power1.inOut',
-      //     duration: shiftEnd - shiftStart
-      //   },
-      //   shiftStart
-      // );
+      // ── Track 2: Visual fades — scrub:0.8 = smooth, cinematic feel ──
+      // Fades happen over the last 40% of the scrub window
+      const tlFade = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#scrub-spacer',
+          start: 'top top',
+          end: SCRUB_END,
+          scrub: 0.8,
+          invalidateOnRefresh: true
+        }
+      });
 
-      // 3. Fade out video overlay
-      tl.to('#video-overlay', {
+      tlFade.to('#video-overlay', {
         opacity: 0,
         ease: 'power1.inOut',
-        duration: shiftEnd - shiftStart
-      }, shiftStart);
+        duration: 0.4
+      }, 0.45);
 
-      // 4. Fade out hero panel
-      tl.to('#hero-panel', {
-        autoAlpha: 0, // opacity + visibility toggle
+      tlFade.to('#hero-panel', {
+        autoAlpha: 0,
         ease: 'power1.inOut',
-        duration: fadeEnd - fadeStart
-      }, fadeStart);
+        duration: 0.4
+      }, 0.45);
+
+      // Start the alive blink loop — desktop only
+      initBlinkEngine();
     });
 
     // ─── Mobile Setup (<= 768px) ───
@@ -266,6 +308,118 @@
         }
       }, 250);
     });
+
+  }
+
+  function initBlinkEngine() {
+    // robot_blink.mp4 = reverse(t=8.6-10s) + forward(t=8.6-10s)
+    // = glowing→dark→glowing (2.8s total)
+    // Starts AND ends on the identical glowing frame as the frozen scrub video.
+    // The overlay fades in over the frozen background → plays → fades out.
+    // The main scrub video is NEVER seeked — zero visible jump.
+    const IDLE_MIN = 4500;   // ms minimum between blinks
+    const IDLE_MAX = 10000;  // ms maximum between blinks
+    const FADE_MS  = 80;     // crossfade duration in ms (fast — imperceptible)
+
+    const blinkVid = document.getElementById('blink-video');
+    if (!blinkVid) return;
+
+    let blinkTimer    = null;
+    let isBlinking    = false;
+    let isScrolling   = false;
+    let scrollTimeout = null;
+    let isHeroPast    = false;
+    let fadeRaf       = null;
+
+    // ── Scroll guard — never play while scrubbing ──
+    window.addEventListener('scroll', () => {
+      isScrolling = true;
+      cancelBlink();
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+        if (!isHeroPast && window.scrollY < window.innerHeight * 0.5) {
+          scheduleBlink();
+        }
+      }, 350);
+    }, { passive: true });
+
+    // ── IntersectionObserver — suspend when hero is off screen ──
+    const heroEl = document.getElementById('hero-panel');
+    if (heroEl) {
+      new IntersectionObserver((entries) => {
+        const visible = entries[0].isIntersecting;
+        isHeroPast = !visible;
+        if (!visible) cancelBlink();
+        else if (!isScrolling) scheduleBlink();
+      }, { threshold: 0.1 }).observe(heroEl);
+    }
+
+    function setOpacity(el, val) {
+      el.style.opacity = val;
+    }
+
+    function fadeTo(el, target, durationMs, onDone) {
+      cancelAnimationFrame(fadeRaf);
+      const start    = parseFloat(el.style.opacity) || 0;
+      const diff     = target - start;
+      const t0       = performance.now();
+      function tick(now) {
+        const p = Math.min((now - t0) / durationMs, 1);
+        setOpacity(el, start + diff * p);
+        if (p < 1) { fadeRaf = requestAnimationFrame(tick); }
+        else if (onDone) onDone();
+      }
+      fadeRaf = requestAnimationFrame(tick);
+    }
+
+    function cancelBlink() {
+      clearTimeout(blinkTimer);
+      blinkTimer = null;
+      cancelAnimationFrame(fadeRaf);
+      if (isBlinking) {
+        isBlinking = false;
+        blinkVid.pause();
+        setOpacity(blinkVid, 0);
+        blinkVid.removeEventListener('ended', onBlinkEnded);
+      }
+    }
+
+    function scheduleBlink() {
+      if (blinkTimer || isBlinking || isScrolling || isHeroPast) return;
+      const delay = IDLE_MIN + Math.random() * (IDLE_MAX - IDLE_MIN);
+      blinkTimer = setTimeout(fireBlink, delay);
+    }
+
+    function fireBlink() {
+      blinkTimer = null;
+      if (isScrolling || isHeroPast) return;
+      isBlinking = true;
+
+      blinkVid.currentTime = 0;
+      blinkVid.addEventListener('ended', onBlinkEnded, { once: true });
+
+      // Fade overlay in, then play, then fade out when ended
+      fadeTo(blinkVid, 1, FADE_MS, () => {
+        blinkVid.play().catch(() => { cancelBlink(); scheduleBlink(); });
+      });
+    }
+
+    function onBlinkEnded() {
+      // Fade overlay back out — scrub video underneath is already on the matching frame
+      fadeTo(blinkVid, 0, FADE_MS, () => {
+        isBlinking = false;
+        scheduleBlink();
+      });
+    }
+
+    // Pre-buffer blink video during the 2s idle window before first blink
+    blinkVid.load();
+
+    // Kick off first blink after page settles
+    setTimeout(() => {
+      if (!isScrolling && !isHeroPast) scheduleBlink();
+    }, 2000);
   }
 
   // ─── Boot ───────────────────────────────────────────────────────────────────

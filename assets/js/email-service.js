@@ -1,254 +1,158 @@
 /**
- * STEMulus Email Service
- * Wrapper for EmailJS integration with template support
- * 
- * SETUP INSTRUCTIONS:
- * 1. Create a free account at https://www.emailjs.com/
- * 2. Create an Email Service (e.g., Gmail, Outlook)
- * 3. Create Email Templates for each type (welcome, reminder, etc.)
- * 4. Copy your Service ID, Template IDs, and Public Key below
+ * STEMulus Email Service v2
+ * All email now routes through /.netlify/functions/send-email (Resend API).
+ * No keys are stored in this file. Public API is backwards-compatible with v1.
  */
 
-const EmailService = (function() {
-    
-    // ============ CONFIGURE THESE VALUES ============
-    const CONFIG = {
-        PUBLIC_KEY: 'T5jVjnlOABDwBNXbt',   // EmailJS public key
-        SERVICE_ID: 'service_7v7j9u5',     // EmailJS service ID
-        TEMPLATES: {
-            WELCOME: 'template_welcome',         // Welcome email template ID
-            REMINDER_24H: 'template_reminder24', // 24-hour reminder template ID
-            REMINDER_1H: 'template_reminder1',   // 1-hour reminder template ID
-            SCHEDULE_CHANGE: 'template_schedule',// Schedule change template ID
-            CERTIFICATE: 'template_certificate', // Completion certificate template ID
-            CUSTOM: 'template_custom'            // Generic custom email template ID
-        }
+const EmailService = (function () {
+
+  const ENDPOINT = '/.netlify/functions/send-email';
+
+  async function _post(type, data) {
+    try {
+      const resp = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, data }),
+      });
+      const json = await resp.json();
+      if (!resp.ok && resp.status !== 207) throw new Error(json.error || 'Send failed');
+      return { success: json.ok, results: json.results };
+    } catch (err) {
+      console.error('[EmailService]', type, err.message);
+      return { success: false, error: err.message };
+    }
+  }
+
+  // ── Public API (same shape as v1) ────────────────────────────────────────
+
+  /**
+   * Generic send — used by admin compose, quick-booking, etc.
+   * options: { to, subject, body, studentName, ccParent? }
+   */
+  async function send(options) {
+    return _post('custom', {
+      to: options.to || 'admin@stemuluskidstech.com',
+      subject: options.subject || 'Message from STEMulus',
+      body: options.body || '',
+      cc: options.ccParent || undefined,
+    });
+  }
+
+  /**
+   * Welcome email sent when a parent account is first created.
+   * student: { parentEmail, parentName, name, course, tempPassword }
+   */
+  async function sendWelcomeEmail(student) {
+    return _post('welcome', {
+      parentEmail: student.parentEmail || student.email,
+      parentName: student.parentName || student.name,
+      studentName: student.name,
+      courseName: getCourseLabel(student.course),
+      tempPassword: student.tempPassword || '(see admin portal)',
+      classroomLink: student.classroomLink || '',
+    });
+  }
+
+  /**
+   * Welcome email sent when a tutor account is first created.
+   * tutor: { tutorEmail, tutorName, tempPassword, subjects }
+   */
+  async function sendTutorWelcomeEmail(tutor) {
+    // tutor: { tutorEmail, tutorName, tempPassword, subjects }
+    return _post('tutor-welcome', {
+      tutorEmail: tutor.tutorEmail || tutor.email,
+      tutorName: tutor.tutorName || tutor.name,
+      tempPassword: tutor.tempPassword,
+      subjects: tutor.subjects || ''
+    });
+  }
+
+  /**
+   * Class reminder email.
+   * options: { student, schedule, type ('24h'|'1h') }
+   */
+  async function sendReminderEmail(options) {
+    const { student, schedule, type } = options;
+    return _post('reminder', {
+      parentEmail: student.parentEmail || student.email,
+      parentName: student.parentName || student.name,
+      studentName: student.name,
+      courseName: getCourseLabel(schedule.course),
+      classDate: formatDate(schedule.date),
+      classTime: schedule.time,
+      duration: schedule.duration || 60,
+      zoomLink: schedule.link || '',
+      mentorName: schedule.mentor || 'Your Instructor',
+      reminderType: type,
+    });
+  }
+
+  /**
+   * Schedule change notification.
+   * options: { student, oldSchedule, newSchedule, message }
+   */
+  async function sendScheduleChangeEmail(options) {
+    const { student, oldSchedule, newSchedule, message } = options;
+    return _post('schedule', {
+      parentEmail: student.parentEmail || student.email,
+      parentName: student.parentName || student.name,
+      studentName: student.name,
+      courseName: getCourseLabel(newSchedule.course),
+      oldDate: formatDate(oldSchedule.date),
+      oldTime: oldSchedule.time,
+      newDate: formatDate(newSchedule.date),
+      newTime: newSchedule.time,
+      changeMessage: message || '',
+    });
+  }
+
+  /**
+   * Certificate of completion email.
+   * student: { parentEmail, parentName, name }  courseName: string
+   */
+  async function sendCertificateEmail(student, courseName) {
+    return _post('certificate', {
+      parentEmail: student.parentEmail || student.email,
+      parentName: student.parentName || student.name,
+      studentName: student.name,
+      courseName,
+      completionDate: new Date().toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'long', year: 'numeric',
+      }),
+    });
+  }
+
+  // No-op init kept so callers that do EmailService.init() don't break
+  async function init() { return true; }
+
+  // ── Utilities ─────────────────────────────────────────────────────────────
+
+  function getCourseLabel(courseId) {
+    const labels = {
+      'junior-robotics':    'Junior Robotics',
+      'python-programming': 'Python Programming',
+      'web-design':         'Web Design & Development',
+      'scratch-creators':   'Scratch Creators',
+      'ai-explorers':       'AI Explorers',
+      'creative-coding':    'Creative Coding',
+      'digital-art':        'Digital Art',
+      'arduino-robotics':   'Arduino & Robotics',
+      'fullstack-web-dev':  'Full-Stack Web Development',
     };
-    // ================================================
+    return labels[courseId] || courseId || 'STEMulus Programme';
+  }
 
-    let initialized = false;
+  function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-GB', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    });
+  }
 
-    /**
-     * Initialize EmailJS with public key
-     */
-    function init() {
-        if (CONFIG.PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') {
-            console.warn('[STEMulus Email] EmailJS not configured. Please update email-service.js with your credentials.');
-            return false;
-        }
-
-        if (typeof emailjs === 'undefined') {
-            // Load EmailJS SDK dynamically
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
-            script.onload = () => {
-                emailjs.init(CONFIG.PUBLIC_KEY);
-                initialized = true;
-                console.log('[STEMulus Email] EmailJS initialized.');
-            };
-            document.head.appendChild(script);
-        } else {
-            emailjs.init(CONFIG.PUBLIC_KEY);
-            initialized = true;
-        }
-        return true;
-    }
-
-    /**
-     * Send a custom email
-     * @param {Object} options - Email options
-     * @param {string} options.to - Recipient email
-     * @param {string} options.subject - Email subject
-     * @param {string} options.body - Email body (HTML or text)
-     * @param {string} options.studentName - Student's name
-     * @param {string} options.ccParent - Parent email to CC (optional)
-     */
-    async function send(options) {
-        if (!initialized) {
-            const initResult = init();
-            if (!initResult) {
-                console.error('[STEMulus Email] Cannot send - EmailJS not configured.');
-                return { success: false, error: 'EmailJS not configured' };
-            }
-            // Wait for SDK to load
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-
-        const templateParams = {
-            to_email: options.to,
-            to_name: options.studentName || 'Student',
-            subject: options.subject || 'Message from STEMulus',
-            message: options.body || '',
-            cc_email: options.ccParent || '',
-            from_name: 'STEMulus Kids Tech',
-            reply_to: 'admin@stemuluskidstech.com, admin@stemuluskidstech.com',
-            bcc_email: 'ajimatimati@gmail.com'
-        };
-
-        try {
-            const response = await emailjs.send(
-                CONFIG.SERVICE_ID,
-                CONFIG.TEMPLATES.CUSTOM,
-                templateParams
-            );
-            console.log('[STEMulus Email] Email sent:', response);
-            return { success: true, response };
-        } catch (error) {
-            console.error('[STEMulus Email] Send failed:', error);
-            return { success: false, error: error.text || error.message };
-        }
-    }
-
-    /**
-     * Send a welcome email to a new student
-     * @param {Object} student - Student data object
-     */
-    async function sendWelcomeEmail(student) {
-        const templateParams = {
-            to_email: student.parentEmail || student.email,
-            to_name: student.parentName || student.name,
-            student_name: student.name,
-            course_name: getCourseLabel(student.course),
-            from_name: 'STEMulus Kids Tech',
-            reply_to: 'admin@stemuluskidstech.com, admin@stemuluskidstech.com',
-            bcc_email: 'ajimatimati@gmail.com'
-        };
-
-        try {
-            await emailjs.send(CONFIG.SERVICE_ID, CONFIG.TEMPLATES.WELCOME, templateParams);
-            console.log('[STEMulus Email] Welcome email sent to:', student.name);
-            return { success: true };
-        } catch (error) {
-            console.error('[STEMulus Email] Welcome email failed:', error);
-            return { success: false, error };
-        }
-    }
-
-    /**
-     * Send a class reminder email
-     * @param {Object} options - Reminder options
-     * @param {Object} options.student - Student data
-     * @param {Object} options.schedule - Schedule data
-     * @param {string} options.type - '24h' or '1h'
-     */
-    async function sendReminderEmail(options) {
-        const { student, schedule, type } = options;
-        const templateId = type === '24h' ? CONFIG.TEMPLATES.REMINDER_24H : CONFIG.TEMPLATES.REMINDER_1H;
-
-        const templateParams = {
-            to_email: student.parentEmail || student.email,
-            to_name: student.parentName || student.name,
-            student_name: student.name,
-            course_name: getCourseLabel(schedule.course),
-            class_date: formatDate(schedule.date),
-            class_time: schedule.time,
-            class_duration: schedule.duration || 60,
-            zoom_link: schedule.link || 'Link will be provided',
-            mentor_name: schedule.mentor || 'Your Instructor',
-            from_name: 'STEMulus Kids Tech',
-            reply_to: 'admin@stemuluskidstech.com, admin@stemuluskidstech.com',
-            bcc_email: 'ajimatimati@gmail.com'
-        };
-
-        try {
-            await emailjs.send(CONFIG.SERVICE_ID, templateId, templateParams);
-            console.log(`[STEMulus Email] ${type} reminder sent to:`, student.name);
-            return { success: true };
-        } catch (error) {
-            console.error(`[STEMulus Email] ${type} reminder failed:`, error);
-            return { success: false, error };
-        }
-    }
-
-    /**
-     * Send a schedule change notification
-     * @param {Object} options - Change options
-     */
-    async function sendScheduleChangeEmail(options) {
-        const { student, oldSchedule, newSchedule, message } = options;
-
-        const templateParams = {
-            to_email: student.parentEmail || student.email,
-            to_name: student.parentName || student.name,
-            student_name: student.name,
-            course_name: getCourseLabel(newSchedule.course),
-            old_date: formatDate(oldSchedule.date),
-            old_time: oldSchedule.time,
-            new_date: formatDate(newSchedule.date),
-            new_time: newSchedule.time,
-            change_message: message || 'Please note the updated schedule for your upcoming class.',
-            from_name: 'STEMulus Kids Tech',
-            reply_to: 'admin@stemuluskidstech.com, admin@stemuluskidstech.com',
-            bcc_email: 'ajimatimati@gmail.com'
-        };
-
-        try {
-            await emailjs.send(CONFIG.SERVICE_ID, CONFIG.TEMPLATES.SCHEDULE_CHANGE, templateParams);
-            console.log('[STEMulus Email] Schedule change email sent to:', student.name);
-            return { success: true };
-        } catch (error) {
-            console.error('[STEMulus Email] Schedule change email failed:', error);
-            return { success: false, error };
-        }
-    }
-
-    /**
-     * Send a certificate of completion email
-     * @param {Object} student - Student data
-     * @param {string} courseName - Course completed
-     */
-    async function sendCertificateEmail(student, courseName) {
-        const templateParams = {
-            to_email: student.parentEmail || student.email,
-            to_name: student.parentName || student.name,
-            student_name: student.name,
-            course_name: courseName,
-            completion_date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
-            from_name: 'STEMulus Kids Tech',
-            reply_to: 'admin@stemuluskidstech.com, admin@stemuluskidstech.com',
-            bcc_email: 'ajimatimati@gmail.com'
-        };
-
-        try {
-            await emailjs.send(CONFIG.SERVICE_ID, CONFIG.TEMPLATES.CERTIFICATE, templateParams);
-            console.log('[STEMulus Email] Certificate email sent to:', student.name);
-            return { success: true };
-        } catch (error) {
-            console.error('[STEMulus Email] Certificate email failed:', error);
-            return { success: false, error };
-        }
-    }
-
-    // ==================== UTILITIES ====================
-
-    function getCourseLabel(courseId) {
-        const labels = {
-            'junior-robotics': 'Junior Robotics',
-            'python-programming': 'Python Programming',
-            'web-design': 'Web Design & Development',
-            'scratch-creators': 'Scratch Creators',
-            'ai-explorers': 'AI Explorers'
-        };
-        return labels[courseId] || courseId;
-    }
-
-    function formatDate(dateStr) {
-        const date = new Date(dateStr);
-        return date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    }
-
-    // ==================== PUBLIC API ====================
-
-    return {
-        init,
-        send,
-        sendWelcomeEmail,
-        sendReminderEmail,
-        sendScheduleChangeEmail,
-        sendCertificateEmail
-    };
+  return { init, send, sendWelcomeEmail, sendTutorWelcomeEmail, sendReminderEmail, sendScheduleChangeEmail, sendCertificateEmail };
 
 })();
 
-// Auto-initialize
+// Kept for backwards-compat — no actual initialisation needed
 document.addEventListener('DOMContentLoaded', EmailService.init);

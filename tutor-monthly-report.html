@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Monthly Report | STEMulus Tutor Portal</title>
+
+  <meta name="description" content="Submit your monthly teaching report — student progress summaries, challenges, and recommendations.">
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&family=DM+Sans:wght@400;500;600&family=Fredoka+One&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
+
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+
+  <!-- Design System -->
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/portal-animations.css">
+  <link rel="stylesheet" href="assets/css/3d-svg-icons.css">
+  <script src="assets/js/3d-icons.js" defer></script>
+
+  <!-- Core State & PDF Generator -->
+  <script src="assets/js/dashboard-engine.js"></script>
+  <script src="assets/js/report-pdf-generator.js"></script>
+  <script>
+  (function(){
+    try {
+      var s=JSON.parse(sessionStorage.getItem('stemulus_session')||'null');
+      var ttl=8*60*60*1000;
+      if(!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
+        window.location.replace('parent-login.html?role=tutor');
+      }
+    } catch(e){}
+  })();
+  </script>
+
+  <script>if(window.tailwind){tailwind.config={theme:{extend:{}}}}</script>
+  <style>
+    body, html { background-color: #f8fafc !important; color: #0f172a !important; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fadeIn { animation: fadeIn 0.3s ease forwards; }
+    #tutor-sidebar.open { transform: translateX(0) !important; }
+    @media(min-width:1024px){ #tutor-sidebar { transform: translateX(0) !important; } }
+    #sidebar-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:40;display:none; }
+    #sidebar-overlay.show { display:block; }
+    .report-section { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 2rem; margin-bottom: 1.5rem; }
+    .report-section h3 { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.1rem; color: #1A2332; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .report-section .section-desc { font-size: 0.8rem; color: #64748b; margin-bottom: 1.25rem; line-height: 1.6; }
+    .field-label { display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 0.5rem; }
+    .field-input { width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: #1A2332; background: #f8fafc; outline: none; transition: all 0.2s; }
+    .field-input:focus { border-color: #4B49AC; box-shadow: 0 0 0 3px rgba(75,73,172,0.08); background: white; }
+    textarea.field-input { min-height: 120px; resize: vertical; line-height: 1.7; }
+    .field-hint { font-size: 0.7rem; color: #94A3B8; margin-top: 0.4rem; font-style: italic; }
+    .student-entry { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; }
+    .student-entry:last-child { margin-bottom: 0; }
+    .step-number { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #4B49AC, #7978E9); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; flex-shrink: 0; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-inter">
+
+<!-- Sidebar -->
+<aside id="tutor-sidebar" style="position:fixed;top:0;left:0;height:100%;width:256px;background:#0f1117;border-right:1px solid rgba(255,255,255,0.07);border-radius:0 24px 24px 0;display:flex;flex-direction:column;z-index:50;transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);">
+  <!-- Logo -->
+  <div style="padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:12px;">
+    <img src="favicon.png" alt="STEMulus" width="36" height="36" style="border-radius:10px;object-fit:contain;">
+    <div>
+      <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;color:#fff;">STEMulus</div>
+      <div style="font-size:0.65rem;color:rgba(255,255,255,0.4);letter-spacing:0.08em;text-transform:uppercase;font-weight:700;">Tutor Portal</div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav style="flex:1;padding:16px 12px;overflow-y:auto;">
+    <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:0 8px;margin-bottom:8px;">Menu</div>
+    <a href="tutor-dashboard.html" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:16px;color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.18s;margin-bottom:3px;" onmouseover="this.style.background='rgba(244,96,12,0.12)';this.style.color='#f97316';" onmouseout="this.style.background='';this.style.color='rgba(255,255,255,0.6)';">
+      <i data-lucide="layout-dashboard" style="width:17px;height:17px;flex-shrink:0;"></i> Dashboard
+    </a>
+    <a href="tutor-attendance.html" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:16px;color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.18s;margin-bottom:3px;" onmouseover="this.style.background='rgba(244,96,12,0.12)';this.style.color='#f97316';" onmouseout="this.style.background='';this.style.color='rgba(255,255,255,0.6)';">
+      <i data-lucide="users" style="width:17px;height:17px;flex-shrink:0;"></i> My Students
+    </a>
+    <a href="tutor-attendance-create.html" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:16px;color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.18s;margin-bottom:3px;" onmouseover="this.style.background='rgba(244,96,12,0.12)';this.style.color='#f97316';" onmouseout="this.style.background='';this.style.color='rgba(255,255,255,0.6)';">
+      <i data-lucide="clipboard-check" style="width:17px;height:17px;flex-shrink:0;"></i> Class Log
+    </a>
+    <a href="tutor-monthly-report.html" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:16px;background:rgba(244,96,12,0.18);color:#f97316;text-decoration:none;font-size:0.88rem;font-weight:700;margin-bottom:3px;">
+      <i data-lucide="file-bar-chart" style="width:17px;height:17px;flex-shrink:0;"></i> Monthly Report
+    </a>
+    <a href="tutor-dashboard.html#schedule-list" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:16px;color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.18s;margin-bottom:3px;" onmouseover="this.style.background='rgba(244,96,12,0.12)';this.style.color='#f97316';" onmouseout="this.style.background='';this.style.color='rgba(255,255,255,0.6)';">
+      <i data-lucide="calendar" style="width:17px;height:17px;flex-shrink:0;"></i> My Schedule
+    </a>
+    <a href="index.html" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:16px;color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.18s;margin-bottom:3px;" onmouseover="this.style.background='rgba(244,96,12,0.12)';this.style.color='#f97316';" onmouseout="this.style.background='';this.style.color='rgba(255,255,255,0.6)';">
+      <i data-lucide="home" style="width:17px;height:17px;flex-shrink:0;"></i> Main Website
+    </a>
+  </nav>
+
+  <!-- User -->
+  <div style="padding:16px;border-top:1px solid rgba(255,255,255,0.07);">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:0 4px;">
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f4600c,#f97316);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:0.85rem;flex-shrink:0;" id="avatar-initials">T</div>
+      <div style="flex:1;min-width:0;">
+        <p style="font-size:0.82rem;font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" id="tutor-name">Tutor</p>
+        <p style="font-size:0.65rem;color:rgba(255,255,255,0.4);">Instructor</p>
+      </div>
+    </div>
+    <button id="logout-btn" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,0.35);background:none;border:none;cursor:pointer;font-size:0.8rem;padding:8px;border-radius:12px;transition:all 0.18s;" onmouseover="this.style.background='rgba(239,68,68,0.12)';this.style.color='#ef4444';" onmouseout="this.style.background='';this.style.color='rgba(255,255,255,0.35)';">
+      <i data-lucide="log-out" style="width:15px;height:15px;"></i> Sign Out
+    </button>
+  </div>
+</aside>
+
+<div id="sidebar-overlay"></div>
+
+<!-- Main Content -->
+<main class="lg:ml-64 min-h-screen">
+
+  <!-- Mobile Header -->
+  <div class="lg:hidden p-4 flex items-center gap-3 border-b border-gray-200 bg-white sticky top-0 z-40">
+    <button id="menu-btn" style="padding:8px;background:none;border:none;cursor:pointer;color:#374151;border-radius:10px;" aria-label="Toggle menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <span class="font-nunito font-bold text-lg text-gray-800">Monthly Report</span>
+  </div>
+
+  <!-- Hero Band -->
+  <div class="hero-band" style="background: linear-gradient(135deg, #4B49AC, #7978E9);">
+    <img src="images/portal/standalone/pencil-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift" style="position:absolute; top:15%; left:8%;" loading="lazy">
+    <img src="images/portal/standalone/lightbulb-3d.png" alt="" class="float-accent float-accent--sm float-accent--soft animate-orbit motion-delay-3" style="position:absolute; bottom:18%; left:20%;" loading="lazy">
+    <img src="images/portal/standalone/paintbrush-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift-reverse motion-delay-5" style="position:absolute; top:22%; right:35%;" loading="lazy">
+    <div class="accent-sphere--pink accent-sphere animate-drift-reverse motion-delay-2" style="bottom:20%; right:30%;"></div>
+    <div class="hero-band-content">
+      <h1>Monthly Tutor Report</h1>
+      <p>Document your teaching progress, student development, and recommendations</p>
+      <div class="kpi-pills">
+        <span class="kpi-pill"><i data-lucide="calendar" style="width:14px;height:14px;"></i> Due: End of Month</span>
+        <span class="kpi-pill"><i data-lucide="clock" style="width:14px;height:14px;"></i> ~15 min to complete</span>
+      </div>
+    </div>
+    <img src="images/portal/standalone/radar-chart-3d.png" alt="Report" class="hero-3d-object animate-float-band magnetic-repel" loading="lazy">
+  </div>
+
+  <!-- Report Form Container -->
+  <div class="p-6 lg:p-8 max-w-4xl mx-auto">
+
+    <!-- Action Required: Revision Banner (Dynamically shown if admin rejected a report) -->
+    <div id="tutor-revision-alert" class="hidden bg-rose-50 border-2 border-rose-300 rounded-2xl p-5 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fadeIn shadow-sm">
+      <div class="flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 font-extrabold text-lg">!</div>
+        <div>
+          <h4 class="font-bold text-rose-900 text-sm">Monthly Report Revision Requested</h4>
+          <p class="text-xs text-rose-700 mt-0.5" id="revision-alert-msg">Admin requested changes on a submitted report.</p>
+        </div>
+      </div>
+      <button type="button" id="jump-to-revision-btn" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-colors whitespace-nowrap">
+        Review Notes &amp; Redo
+      </button>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex items-center gap-2 mb-6 bg-slate-100 p-1.5 rounded-2xl w-full sm:w-fit">
+      <button type="button" id="tab-btn-create" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-white text-indigo-700 shadow-sm transition-all flex items-center justify-center gap-2">
+        <i data-lucide="edit-3" style="width:15px;height:15px;"></i> Submit Report
+      </button>
+      <button type="button" id="tab-btn-history" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-slate-600 hover:text-slate-900 transition-all flex items-center justify-center gap-2">
+        <i data-lucide="clock" style="width:15px;height:15px;"></i> My History (<span id="tutor-history-count">0</span>)
+      </button>
+    </div>
+
+    <!-- TAB 1: FORM WRAPPER -->
+    <div id="form-tab-panel">
+      <!-- Instructions Banner -->
+      <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-5 mb-8 flex gap-4 items-start">
+        <div class="step-number shrink-0">!</div>
+        <div>
+          <h4 class="font-bold text-indigo-900 text-sm mb-1">How This Works</h4>
+          <p class="text-xs text-indigo-700 leading-relaxed">
+            Submit this report at the end of each month. It routes directly to the STEMulus Admin team for review and approval.
+            Once approved, an official, publication-grade academic report is dispatched to the parent.
+            If the admin requests any adjustments, it will appear in your <strong>History</strong> tab with specific notes for you to redo and resubmit.
+          </p>
+        </div>
+      </div>
+
+      <!-- Revision Active Indicator (When redoing a specific report) -->
+      <div id="revision-active-banner" class="hidden bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 mb-6 animate-fadeIn">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <span class="inline-block bg-amber-200 text-amber-900 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider mb-1">Editing Revision</span>
+            <h4 class="text-sm font-bold text-amber-900" id="revision-active-title">Redoing report for student</h4>
+            <p class="text-xs text-amber-800 mt-1 italic" id="revision-active-reason"></p>
+          </div>
+          <button type="button" id="cancel-revision-btn" class="text-xs text-amber-700 hover:text-amber-900 font-bold underline shrink-0">Cancel Redo</button>
+        </div>
+      </div>
+
+      <form id="report-form" class="space-y-0">
+        <input type="hidden" id="editing-report-id" value="">
+
+      <!-- SECTION 1: General Info -->
+      <div class="report-section" data-animate="enter">
+        <h3><span class="step-number">1</span> General Information</h3>
+        <p class="section-desc">Basic details about the reporting period. This helps us file your report correctly.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label class="field-label">Tutor Full Name</label>
+            <input type="text" class="field-input" id="report-tutor-name" placeholder="e.g. Sarah Jane Okafor" readonly style="background:#eef2ff;color:#4B49AC;cursor:default;">
+          </div>
+          <div>
+            <label class="field-label">Reporting Month & Year</label>
+            <input type="month" class="field-input" id="report-month" required>
+          </div>
+          <div>
+            <label class="field-label">Total Sessions Delivered This Month</label>
+            <input type="number" class="field-input" id="report-total-sessions" placeholder="e.g. 24" min="0" required>
+            <p class="field-hint">Count every session you held (including make-up and stand-in classes)</p>
+          </div>
+          <div>
+            <label class="field-label">Total Teaching Hours</label>
+            <input type="number" class="field-input" id="report-total-hours" placeholder="e.g. 36" min="0" step="0.5" required>
+            <p class="field-hint">Sum of all session durations in hours (e.g. 24 sessions x 1.5 hrs = 36)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: Per-Student Progress -->
+      <div class="report-section" data-animate="enter">
+        <h3><span class="step-number">2</span> Individual Student Progress</h3>
+        <p class="section-desc">
+          For EACH student you taught this month, provide a brief progress summary. Be specific about what they learned, where they struggled, and what you recommend next.
+          This is the most important section — parents rely on these insights.
+        </p>
+
+        <div id="student-entries">
+          <!-- First entry (template) -->
+          <div class="student-entry">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Student 1</span>
+              <button type="button" class="text-xs text-red-400 hover:text-red-600 font-semibold" onclick="this.closest('.student-entry').remove()">Remove</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="field-label">Student Name</label>
+                <input type="text" class="field-input" placeholder="e.g. Daniel Adeyemi">
+              </div>
+              <div>
+                <label class="field-label">Program / Course</label>
+                <input type="text" class="field-input" placeholder="e.g. Python Programming Foundations">
+              </div>
+              <div>
+                <label class="field-label">Sessions Attended (this month)</label>
+                <input type="number" class="field-input" placeholder="e.g. 8" min="0">
+              </div>
+              <div>
+                <label class="field-label">Current Module / Level</label>
+                <input type="text" class="field-input" placeholder="e.g. Module 4 — Loops & Flow Control">
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <label class="field-label">Topics Covered This Month</label>
+                <textarea class="field-input" placeholder="List the key topics and concepts covered:&#10;&#10;e.g.&#10;• For loops with range()&#10;• While loop conditions and break/continue&#10;• Nested loops — iterating over 2D lists&#10;• List indexing and slicing&#10;• Mini-project: Number guessing game using while loop"></textarea>
+                <p class="field-hint">Be specific with concept names. This helps us track curriculum coverage.</p>
+              </div>
+              <div>
+                <label class="field-label">Strengths Observed</label>
+                <textarea class="field-input" style="min-height:80px;" placeholder="What is this student doing well? What comes naturally?&#10;&#10;e.g. Daniel quickly grasps new concepts when shown visual examples. He independently debugged a nested loop issue without prompts. His logical thinking is above average for his age group."></textarea>
+              </div>
+              <div>
+                <label class="field-label">Challenges & Struggles</label>
+                <textarea class="field-input" style="min-height:80px;" placeholder="What did they find difficult? Where did they need extra support?&#10;&#10;e.g. Struggles with remembering zero-based indexing. Needs repeated practice with list slicing syntax. Gets frustrated when code doesn't work on first try — we're working on debugging patience."></textarea>
+              </div>
+              <div>
+                <label class="field-label">Recommendation for Next Month</label>
+                <textarea class="field-input" style="min-height:80px;" placeholder="What should the focus be next month? Any pace adjustments needed?&#10;&#10;e.g. Move into Functions & Code Reuse module. Spend first 2 sessions reinforcing list manipulation before progressing. Consider assigning a small independent project to build confidence."></textarea>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="field-label">Overall Grade (A+ to F)</label>
+                  <select class="field-input">
+                    <option value="">Select grade...</option>
+                    <option value="A+">A+ — Exceptional</option>
+                    <option value="A">A — Excellent</option>
+                    <option value="B+">B+ — Very Good</option>
+                    <option value="B">B — Good Progress</option>
+                    <option value="C+">C+ — Satisfactory</option>
+                    <option value="C">C — Needs Improvement</option>
+                    <option value="D">D — Below Expectations</option>
+                    <option value="F">F — Not Progressing</option>
+                  </select>
+                  <p class="field-hint">Grade relative to expected pace for their age and program level</p>
+                </div>
+                <div>
+                  <label class="field-label">Engagement Level</label>
+                  <select class="field-input">
+                    <option value="">Select level...</option>
+                    <option value="highly-engaged">Highly Engaged — always enthusiastic</option>
+                    <option value="engaged">Engaged — participates actively</option>
+                    <option value="moderate">Moderate — needs prompting sometimes</option>
+                    <option value="low">Low — often distracted or unresponsive</option>
+                    <option value="declining">Declining — was better before, now dropping off</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" id="add-student-btn" class="w-full mt-4 py-3 border-2 border-dashed border-indigo-200 rounded-xl text-indigo-600 font-bold text-sm hover:bg-indigo-50 transition-colors flex items-center justify-center gap-2">
+          <i data-lucide="plus" class="w-4 h-4"></i> Add Another Student
+        </button>
+      </div>
+
+      <!-- SECTION 3: Teaching Challenges -->
+      <div class="report-section" data-animate="enter">
+        <h3><span class="step-number">3</span> Teaching Challenges & Blockers</h3>
+        <p class="section-desc">
+          Help us identify systemic issues. Were there technical problems, scheduling conflicts, or curriculum gaps that affected your teaching this month?
+        </p>
+
+        <div class="space-y-5">
+          <div>
+            <label class="field-label">Technical Issues</label>
+            <textarea class="field-input" id="report-tech-issues" placeholder="Any platform, Zoom, or tool issues that disrupted sessions?&#10;&#10;e.g.&#10;• Zoom disconnected twice during Daniel's sessions on June 12th and 19th&#10;• Scratch online editor was slow on 3 occasions — had to switch to offline version&#10;• No issues this month (if none, just write 'None')"></textarea>
+          </div>
+          <div>
+            <label class="field-label">Scheduling / Attendance Issues</label>
+            <textarea class="field-input" id="report-schedule-issues" placeholder="Were there cancellations, no-shows, or rescheduling problems?&#10;&#10;e.g.&#10;• Amara missed 2 sessions due to family travel — rescheduled both successfully&#10;• Daniel's Thursday 4pm slot clashes with his new school activity — requesting time change&#10;• No attendance issues this month"></textarea>
+          </div>
+          <div>
+            <label class="field-label">Curriculum / Content Feedback</label>
+            <textarea class="field-input" id="report-curriculum-feedback" placeholder="Is the curriculum working well? Any gaps or improvements needed?&#10;&#10;e.g.&#10;• Module 3 exercises for Scratch Creators feel too easy for 10-year-olds — needs harder challenges&#10;• Python Module 4 transition is too abrupt — students need a bridging session between conditionals and loops&#10;• Everything is well-paced for my current cohort"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: Wins & Highlights -->
+      <div class="report-section" data-animate="enter">
+        <h3><span class="step-number">4</span> Wins & Highlights</h3>
+        <p class="section-desc">
+          Share the good stuff! What moments stood out? These help us celebrate students (with parents) and identify what teaching approaches work best.
+        </p>
+
+        <div class="space-y-5">
+          <div>
+            <label class="field-label">Student Achievements & Milestones</label>
+            <textarea class="field-input" id="report-achievements" placeholder="Any breakthroughs, completed projects, or 'WooHoo moments'?&#10;&#10;e.g.&#10;• Daniel completed his Space Raider game independently — fully functional with collision detection and scoring&#10;• Amara published her first Scratch animation to the class showcase page&#10;• Both students passed their Module 3 assessment on first attempt"></textarea>
+          </div>
+          <div>
+            <label class="field-label">Teaching Experiments That Worked</label>
+            <textarea class="field-input" id="report-teaching-experiments" style="min-height:80px;" placeholder="Did you try a new approach that worked well?&#10;&#10;e.g.&#10;• Started each session with a 5-min 'debug challenge' warm-up — students love it, improves focus&#10;• Used pair programming between two students for the first time — excellent engagement boost&#10;• Nothing new tried this month"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5: Tutor Self-Assessment -->
+      <div class="report-section" data-animate="enter">
+        <h3><span class="step-number">5</span> Self-Assessment & Support Needed</h3>
+        <p class="section-desc">
+          Honest reflection on your own performance. This isn't punitive — it helps us provide the right support, training, or resources.
+        </p>
+
+        <div class="space-y-5">
+          <div>
+            <label class="field-label">How confident did you feel teaching this month's content? (1-10)</label>
+            <input type="range" min="1" max="10" value="7" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" id="confidence-slider" oninput="document.getElementById('confidence-val').textContent = this.value">
+            <div class="flex justify-between text-xs text-gray-400 mt-1">
+              <span>1 — Not confident</span>
+              <span class="font-bold text-indigo-600" id="confidence-val">7</span>
+              <span>10 — Very confident</span>
+            </div>
+          </div>
+          <div>
+            <label class="field-label">Areas Where You Need Support</label>
+            <textarea class="field-input" id="report-support-needed" style="min-height:80px;" placeholder="Is there content you need help with? Resources needed? Training requests?&#10;&#10;e.g.&#10;• Would appreciate updated lesson plan for Python Module 5 — current one feels thin&#10;• Need access to a shared asset library for Scratch sprite examples&#10;• Would like a session with the senior tutor on teaching debugging techniques to younger kids&#10;• No support needed at this time"></textarea>
+          </div>
+          <div>
+            <label class="field-label">Any Other Comments</label>
+            <textarea class="field-input" id="report-other-comments" style="min-height:80px;" placeholder="Anything else the admin team should know?&#10;&#10;e.g.&#10;• I'll be unavailable from July 20-25 (family event) — need stand-in coverage&#10;• Recommend scheduling a parent-tutor call for Amara's family to discuss pacing concerns&#10;• All good — looking forward to next month!"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Section -->
+      <div class="report-section text-center" data-animate="enter" style="background: linear-gradient(135deg, #f8fafc, #eef2ff);">
+        <img src="images/portal/standalone/certificate-3d.png" alt="Certificate submitted" class="w-16 h-16 mx-auto mb-4 opacity-80" loading="lazy">
+        <h3 class="justify-center"><span class="step-number" style="background: linear-gradient(135deg, #F4600C, #FB923C); display:inline-flex; align-items:center; justify-content:center;"><span data-icon-3d="check" data-icon-size="16"></span></span> Ready to Submit</h3>
+        <p class="section-desc text-center">
+          Review your entries above. Once submitted, this report will be sent to the admin team for review. You can edit it until the end of the month.
+        </p>
+        <button type="submit" class="btn-3d orange px-8 py-4 text-base mt-4">
+          <i data-lucide="send" class="w-5 h-5"></i> Submit Monthly Report
+        </button>
+        <p class="text-xs text-gray-400 mt-3">Your report is saved on this device and sent to the admin team immediately upon submission.</p>
+      </div>
+
+    </form>
+
+    </div>
+    </div> <!-- Close form-tab-panel -->
+
+    <!-- TAB 2: HISTORY PANEL -->
+    <div id="history-tab-panel" class="hidden animate-fadeIn space-y-5">
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="font-nunito font-extrabold text-lg text-slate-800">My Submitted Reports</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Track review status, inspect admin revision requests, or view official dispatched PDFs.</p>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <button type="button" class="history-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 transition-all" data-filter="all">All</button>
+            <button type="button" class="history-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-filter="pending_review">Pending</button>
+            <button type="button" class="history-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-filter="rejected">Revisions</button>
+            <button type="button" class="history-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-filter="sent_to_parent">Approved</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="tutor-history-list" class="space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer-editorial lg:ml-64" role="contentinfo">
+    <div class="footer-grid">
+        <div>
+            <p class="footer-brand-name">STEMulus</p>
+            <p class="footer-brand-tag">Global Coding Academy · Est. 2025</p>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Portal</p>
+            <a href="tutor-dashboard.html">Dashboard</a>
+            <a href="tutor-attendance.html">Attendance</a>
+            <a href="tutor-monthly-report.html">Monthly Report</a>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Company</p>
+            <a href="index.html">Main Website</a>
+            <a href="contact.html">Contact</a>
+            <a href="join-as-tutor.html">Join as Tutor</a>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Legal</p>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="book-class.html"><strong>Book a Free Class</strong></a>
+      <a href="enroll.html">Enroll Now</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p class="footer-legal">&copy; 2026 STEMulus Innovations LTD. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Auth check
+  var _session = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSession) ? DashboardEngine.getSession() : null;
+  if (!_session || (_session.role !== 'tutor' && _session.role !== 'admin')) { window.location.href = 'parent-login.html?role=tutor'; return; }
+
+  // Populate tutor info
+  var nameEl = document.getElementById('tutor-name');
+  var avatarEl = document.getElementById('avatar-initials');
+  var reportNameEl = document.getElementById('report-tutor-name');
+  if (nameEl) nameEl.textContent = _session.name || 'Tutor';
+  if (avatarEl) avatarEl.textContent = (_session.name || 'T')[0].toUpperCase();
+  if (reportNameEl) reportNameEl.value = _session.name || '';
+
+  // Set default month to current
+  var monthInput = document.getElementById('report-month');
+  if (monthInput) {
+    var now = new Date();
+    monthInput.value = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+  }
+
+  // Logout
+  var logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', function() {
+      if (typeof DashboardEngine !== 'undefined') DashboardEngine.logout();
+      window.location.href = 'parent-login.html?role=tutor';
+    });
+  }
+
+  // Mobile menu toggle
+  (function(){
+    var btn = document.getElementById('menu-btn');
+    var sb = document.getElementById('tutor-sidebar');
+    var ov = document.getElementById('sidebar-overlay');
+    if (btn && sb) {
+      btn.onclick = function(){ sb.classList.toggle('open'); if(ov) ov.classList.toggle('show'); };
+      if (ov) ov.onclick = function(){ sb.classList.remove('open'); ov.classList.remove('show'); };
+      sb.querySelectorAll('a').forEach(function(a){ a.onclick = function(){ sb.classList.remove('open'); if(ov) ov.classList.remove('show'); }; });
+    }
+  })();
+
+  // Tab switching
+  var tabForm = document.getElementById('tab-btn-create');
+  var tabHist = document.getElementById('tab-btn-history');
+  var panelForm = document.getElementById('form-tab-panel');
+  var panelHist = document.getElementById('history-tab-panel');
+
+  function showTab(which) {
+    if (which === 'form') {
+      tabForm.className = 'flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-white text-indigo-700 shadow-sm transition-all flex items-center justify-center gap-2';
+      tabHist.className = 'flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-slate-600 hover:text-slate-900 transition-all flex items-center justify-center gap-2';
+      panelForm.classList.remove('hidden');
+      panelHist.classList.add('hidden');
+    } else {
+      tabHist.className = 'flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-white text-indigo-700 shadow-sm transition-all flex items-center justify-center gap-2';
+      tabForm.className = 'flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-slate-600 hover:text-slate-900 transition-all flex items-center justify-center gap-2';
+      panelHist.classList.remove('hidden');
+      panelForm.classList.add('hidden');
+      renderHistory();
+    }
+    if (window.lucide) lucide.createIcons();
+  }
+
+  if (tabForm) tabForm.onclick = function(){ showTab('form'); };
+  if (tabHist) tabHist.onclick = function(){ showTab('history'); };
+
+  var jumpBtn = document.getElementById('jump-to-revision-btn');
+  if (jumpBtn) {
+    jumpBtn.onclick = function() {
+      showTab('history');
+      var filterBtn = document.querySelector('.history-filter-btn[data-filter="rejected"]');
+      if (filterBtn) filterBtn.click();
+    };
+  }
+
+  // Cancel redo
+  var cancelRevBtn = document.getElementById('cancel-revision-btn');
+  if (cancelRevBtn) {
+    cancelRevBtn.onclick = function() {
+      document.getElementById('editing-report-id').value = '';
+      document.getElementById('revision-active-banner').classList.add('hidden');
+      document.getElementById('report-form').reset();
+      if (reportNameEl) reportNameEl.value = _session.name || '';
+      resetStudentEntries();
+    };
+  }
+
+  // Student Entries Container
+  var addBtn = document.getElementById('add-student-btn');
+  var entriesContainer = document.getElementById('student-entries');
+  var studentCount = 1;
+
+  function resetStudentEntries() {
+    if (!entriesContainer) return;
+    entriesContainer.innerHTML = generateStudentEntry(1, {});
+    studentCount = 1;
+    if (window.lucide) lucide.createIcons();
+  }
+
+  // Initialize first student entry
+  resetStudentEntries();
+
+  if (addBtn && entriesContainer) {
+    addBtn.addEventListener('click', function() {
+      studentCount++;
+      var entry = document.createElement('div');
+      entry.className = 'student-entry';
+      entry.innerHTML = generateStudentEntry(studentCount, {});
+      entriesContainer.appendChild(entry);
+      if (window.lucide) lucide.createIcons();
+    });
+
+    entriesContainer.addEventListener('click', function(e) {
+      var removeBtn = e.target.closest('.remove-student-btn');
+      if (removeBtn) {
+        var entry = removeBtn.closest('.student-entry');
+        if (entry) entry.remove();
+      }
+    });
+
+    // Quick auto-fill selection
+    entriesContainer.addEventListener('change', function(e) {
+      if (e.target.classList.contains('student-quick-picker')) {
+        var sel = e.target;
+        var opt = sel.options[sel.selectedIndex];
+        if (!opt || !opt.value) return;
+        var entry = sel.closest('.student-entry');
+        if (!entry) return;
+        var sId = opt.value;
+        var sName = opt.getAttribute('data-name');
+        var sProg = opt.getAttribute('data-program');
+        
+        var nameInput = entry.querySelector('.student-name-input');
+        var courseInput = entry.querySelector('.student-course-input');
+        var sessionsInput = entry.querySelector('.student-sessions-input');
+        
+        if (nameInput) nameInput.value = sName || '';
+        if (courseInput) courseInput.value = sProg || '';
+
+        // Calculate sessions attended from schedules if present
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSchedules) {
+          var allSchedules = DashboardEngine.getSchedules(sId) || [];
+          var presentCount = allSchedules.filter(function(sc){ return sc.attendanceStatus === 'present'; }).length;
+          if (sessionsInput && presentCount > 0) sessionsInput.value = presentCount;
+        }
+      }
+    });
+  }
+
+  // Form submission
+  document.getElementById('report-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var monthVal = document.getElementById('report-month').value;
+    var sessionsVal = document.getElementById('report-total-sessions').value;
+    var hoursVal = document.getElementById('report-total-hours').value;
+    var tutorNameVal = document.getElementById('report-tutor-name').value;
+    var confidenceVal = document.getElementById('confidence-slider').value;
+    var editingId = document.getElementById('editing-report-id').value;
+
+    if (!monthVal) { alert('Please select a reporting month.'); return; }
+    if (!sessionsVal) { alert('Please enter total sessions.'); return; }
+    if (!hoursVal) { alert('Please enter total hours.'); return; }
+
+    var studentEntries = document.querySelectorAll('#student-entries .student-entry');
+    if (!studentEntries.length) {
+      alert('Please add at least one student progress entry.');
+      return;
+    }
+
+    var commonMeta = {
+      tutorName: tutorNameVal,
+      tutorEmail: _session.email,
+      month: monthVal,
+      totalSessions: parseInt(sessionsVal) || 0,
+      totalHours: parseFloat(hoursVal) || 0,
+      confidence: confidenceVal,
+      technicalIssues: (document.getElementById('report-tech-issues') || {}).value || '',
+      scheduleIssues: (document.getElementById('report-schedule-issues') || {}).value || '',
+      curriculumFeedback: (document.getElementById('report-curriculum-feedback') || {}).value || '',
+      achievements: (document.getElementById('report-achievements') || {}).value || '',
+      teachingExperiments: (document.getElementById('report-teaching-experiments') || {}).value || '',
+      supportNeeded: (document.getElementById('report-support-needed') || {}).value || '',
+      otherComments: (document.getElementById('report-other-comments') || {}).value || ''
+    };
+
+    // If we are editing a single rejected report
+    if (editingId) {
+      var entry = studentEntries[0];
+      var revisedReport = Object.assign({}, commonMeta, {
+        id: editingId,
+        studentName: (entry.querySelector('.student-name-input') || {}).value || '',
+        course: (entry.querySelector('.student-course-input') || {}).value || '',
+        sessionsAttended: parseInt((entry.querySelector('.student-sessions-input') || {}).value) || 0,
+        module: (entry.querySelector('.student-module-input') || {}).value || '',
+        topics: (entry.querySelector('.student-topics-input') || {}).value || '',
+        strengths: (entry.querySelector('.student-strengths-input') || {}).value || '',
+        challenges: (entry.querySelector('.student-challenges-input') || {}).value || '',
+        recommendation: (entry.querySelector('.student-rec-input') || {}).value || '',
+        overallGrade: (entry.querySelector('.student-grade-input') || {}).value || 'A',
+        engagementLevel: (entry.querySelector('.student-engagement-input') || {}).value || 'engaged',
+        status: 'pending_review'
+      });
+
+      if (typeof DashboardEngine !== 'undefined' && DashboardEngine.addMonthlyReport) {
+        DashboardEngine.addMonthlyReport(revisedReport);
+      }
+    } else {
+      // Multiple students submission
+      var batchId = 'batch-' + Date.now();
+      studentEntries.forEach(function(entry, idx) {
+        var childReport = Object.assign({}, commonMeta, {
+          id: 'mrep-' + Date.now() + '-' + idx + '-' + Math.random().toString(36).substr(2, 4),
+          batchId: batchId,
+          studentName: (entry.querySelector('.student-name-input') || {}).value || '',
+          course: (entry.querySelector('.student-course-input') || {}).value || '',
+          sessionsAttended: parseInt((entry.querySelector('.student-sessions-input') || {}).value) || 0,
+          module: (entry.querySelector('.student-module-input') || {}).value || '',
+          topics: (entry.querySelector('.student-topics-input') || {}).value || '',
+          strengths: (entry.querySelector('.student-strengths-input') || {}).value || '',
+          challenges: (entry.querySelector('.student-challenges-input') || {}).value || '',
+          recommendation: (entry.querySelector('.student-rec-input') || {}).value || '',
+          overallGrade: (entry.querySelector('.student-grade-input') || {}).value || 'A',
+          engagementLevel: (entry.querySelector('.student-engagement-input') || {}).value || 'engaged',
+          status: 'pending_review'
+        });
+
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.addMonthlyReport) {
+          DashboardEngine.addMonthlyReport(childReport);
+        }
+      });
+    }
+
+    // Reset edit state
+    document.getElementById('editing-report-id').value = '';
+    document.getElementById('revision-active-banner').classList.add('hidden');
+
+    // Show success state
+    document.getElementById('report-form').classList.add('hidden');
+    document.getElementById('report-success').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Refresh history
+    renderHistory();
+  });
+
+  // History Filter Buttons
+  var filterButtons = document.querySelectorAll('.history-filter-btn');
+  var currentHistoryFilter = 'all';
+  filterButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      filterButtons.forEach(function(b){
+        b.className = 'history-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all';
+      });
+      btn.className = 'history-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 transition-all';
+      currentHistoryFilter = btn.getAttribute('data-filter');
+      renderHistory();
+    });
+  });
+
+  // Render History List
+  function renderHistory() {
+    var container = document.getElementById('tutor-history-list');
+    var badge = document.getElementById('tutor-history-count');
+    if (!container) return;
+
+    var allReports = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getMonthlyReports)
+      ? DashboardEngine.getMonthlyReports(_session.email)
+      : (JSON.parse(localStorage.getItem('stemulus_monthly_reports') || '[]'));
+
+    if (badge) badge.textContent = allReports.length;
+
+    // Check for revisions
+    var rejectedReports = allReports.filter(function(r){ return r.status === 'rejected'; });
+    var alertEl = document.getElementById('tutor-revision-alert');
+    var alertMsg = document.getElementById('revision-alert-msg');
+    if (rejectedReports.length > 0) {
+      if (alertEl) alertEl.classList.remove('hidden');
+      if (alertMsg) alertMsg.textContent = 'Admin requested revisions on ' + rejectedReports.length + ' student report' + (rejectedReports.length > 1 ? 's' : '') + '. Click below to redo.';
+    } else {
+      if (alertEl) alertEl.classList.add('hidden');
+    }
+
+    var list = allReports;
+    if (currentHistoryFilter !== 'all') {
+      list = allReports.filter(function(r){ return (r.status || 'pending_review') === currentHistoryFilter; });
+    }
+
+    if (!list.length) {
+      container.innerHTML = '<div class="bg-white border border-gray-200 rounded-2xl p-12 text-center text-slate-400">' +
+        '<i data-lucide="file-text" class="w-10 h-10 mx-auto mb-2 opacity-40"></i>' +
+        '<p class="text-sm font-semibold">No reports matching this filter.</p>' +
+      '</div>';
+      if (window.lucide) lucide.createIcons();
+      return;
+    }
+
+    container.innerHTML = list.slice().reverse().map(function(r) {
+      var status = r.status || 'pending_review';
+      var statusBadge = '';
+      var actions = '';
+
+      if (status === 'pending_review') {
+        statusBadge = '<span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold px-2.5 py-1 rounded-full"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Pending Admin Review</span>';
+        actions = '<button onclick="previewReportPDF(\'' + r.id + '\')" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5"><i data-lucide="eye" style="width:13px;height:13px;"></i> Preview Draft</button>';
+      } else if (status === 'sent_to_parent') {
+        statusBadge = '<span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold px-2.5 py-1 rounded-full"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Approved &amp; Sent to Parent</span>';
+        actions = '<button onclick="previewReportPDF(\'' + r.id + '\')" class="text-xs font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5"><i data-lucide="file-check" style="width:13px;height:13px;"></i> View Official PDF</button>';
+      } else if (status === 'rejected') {
+        statusBadge = '<span class="inline-flex items-center gap-1.5 bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold px-2.5 py-1 rounded-full"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Revision Requested</span>';
+        actions = '<button onclick="startReportRedo(\'' + r.id + '\')" class="text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 px-3.5 py-1.5 rounded-xl transition-all shadow-sm flex items-center gap-1.5"><i data-lucide="edit-3" style="width:13px;height:13px;"></i> Redo &amp; Resubmit</button>';
+      }
+
+      var monthLabel = r.month || 'Evaluation';
+      try {
+        var p = r.month.split('-');
+        monthLabel = new Date(parseInt(p[0]), parseInt(p[1]) - 1, 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+      } catch(e) {}
+
+      var feedbackBox = (status === 'rejected' && r.rejectionReason) ? (
+        '<div class="mt-3 bg-rose-50 border border-rose-200 rounded-xl p-3.5 text-xs text-rose-800">' +
+          '<div class="font-extrabold text-rose-900 uppercase tracking-wider text-[10px] mb-1">Admin Feedback &amp; Required Changes:</div>' +
+          '<div class="italic">“' + r.rejectionReason + '”</div>' +
+        '</div>'
+      ) : '';
+
+      return '<div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm transition-shadow hover:shadow-md">' +
+        '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">' +
+          '<div class="flex items-center gap-3">' +
+            '<div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center font-extrabold text-indigo-700 text-sm">' +
+              (r.overallGrade || 'A') +
+            '</div>' +
+            '<div>' +
+              '<h4 class="font-nunito font-extrabold text-slate-800 text-base leading-tight">' + (r.studentName || 'Student Evaluation') + '</h4>' +
+              '<p class="text-xs text-slate-500 font-medium">' + (r.course || 'Coding Track') + ' &middot; ' + monthLabel + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="flex items-center gap-3 flex-wrap">' +
+            statusBadge +
+            actions +
+          '</div>' +
+        '</div>' +
+        '<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 text-xs">' +
+          '<div><span class="text-gray-400 font-bold uppercase text-[10px]">Sessions:</span> <span class="font-bold text-slate-700">' + (r.sessionsAttended !== undefined ? r.sessionsAttended : (r.totalSessions || 0)) + ' attended</span></div>' +
+          '<div><span class="text-gray-400 font-bold uppercase text-[10px]">Module:</span> <span class="font-bold text-slate-700 truncate block">' + (r.module || 'Module Progress') + '</span></div>' +
+          '<div><span class="text-gray-400 font-bold uppercase text-[10px]">Engagement:</span> <span class="font-bold text-slate-700 capitalize">' + (r.engagementLevel || 'engaged') + '</span></div>' +
+          '<div><span class="text-gray-400 font-bold uppercase text-[10px]">Submitted:</span> <span class="text-slate-500">' + (r.submittedAt ? new Date(r.submittedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—') + '</span></div>' +
+        '</div>' +
+        (r.strengths ? '<div class="text-xs text-slate-600 line-clamp-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100"><strong>Strengths:</strong> ' + r.strengths + '</div>' : '') +
+        feedbackBox +
+      '</div>';
+    }).join('');
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  // Preview PDF handler
+  window.previewReportPDF = function(reportId) {
+    var allReports = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getMonthlyReports)
+      ? DashboardEngine.getMonthlyReports(_session.email)
+      : [];
+    var rep = allReports.find(function(r){ return r.id === reportId; });
+    if (!rep) { alert('Report record not found.'); return; }
+    if (window.StemulusReportPDF) {
+      StemulusReportPDF.open(rep);
+    } else {
+      alert('PDF generator component is loading. Please try again.');
+    }
+  };
+
+  // Start Redo handler
+  window.startReportRedo = function(reportId) {
+    var allReports = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getMonthlyReports)
+      ? DashboardEngine.getMonthlyReports(_session.email)
+      : [];
+    var rep = allReports.find(function(r){ return r.id === reportId; });
+    if (!rep) { alert('Report not found for redo.'); return; }
+
+    showTab('form');
+    document.getElementById('editing-report-id').value = rep.id;
+    document.getElementById('revision-active-banner').classList.remove('hidden');
+    document.getElementById('revision-active-title').textContent = 'Redoing Monthly Report for ' + (rep.studentName || 'Student');
+    document.getElementById('revision-active-reason').textContent = 'Admin Feedback: "' + (rep.rejectionReason || 'Please update report') + '"';
+
+    if (document.getElementById('report-month')) document.getElementById('report-month').value = rep.month || '';
+    if (document.getElementById('report-total-sessions')) document.getElementById('report-total-sessions').value = rep.totalSessions || '';
+    if (document.getElementById('report-total-hours')) document.getElementById('report-total-hours').value = rep.totalHours || '';
+    if (document.getElementById('confidence-slider')) document.getElementById('confidence-slider').value = rep.confidence || 7;
+
+    // Put student entry
+    if (entriesContainer) {
+      entriesContainer.innerHTML = '';
+      var entry = document.createElement('div');
+      entry.className = 'student-entry';
+      entry.innerHTML = generateStudentEntry(1, {
+        studentId: rep.studentId,
+        name: rep.studentName,
+        course: rep.course,
+        sessionsAttended: rep.sessionsAttended,
+        module: rep.module,
+        topics: rep.topics,
+        strengths: rep.strengths,
+        challenges: rep.challenges,
+        recommendation: rep.recommendation,
+        overallGrade: rep.overallGrade,
+        engagementLevel: rep.engagementLevel
+      });
+      entriesContainer.appendChild(entry);
+    }
+
+    if (document.getElementById('report-tech-issues')) document.getElementById('report-tech-issues').value = rep.technicalIssues || '';
+    if (document.getElementById('report-schedule-issues')) document.getElementById('report-schedule-issues').value = rep.scheduleIssues || '';
+    if (document.getElementById('report-curriculum-feedback')) document.getElementById('report-curriculum-feedback').value = rep.curriculumFeedback || '';
+    if (document.getElementById('report-achievements')) document.getElementById('report-achievements').value = rep.achievements || '';
+    if (document.getElementById('report-teaching-experiments')) document.getElementById('report-teaching-experiments').value = rep.teachingExperiments || '';
+    if (document.getElementById('report-support-needed')) document.getElementById('report-support-needed').value = rep.supportNeeded || '';
+    if (document.getElementById('report-other-comments')) document.getElementById('report-other-comments').value = rep.otherComments || '';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.lucide) lucide.createIcons();
+  };
+
+  // Initial load of history badge & alerts
+  renderHistory();
+});
+
+function generateStudentEntry(num, data) {
+  data = data || {};
+  var tutorStudents = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutorStudents) 
+    ? DashboardEngine.getTutorStudents() 
+    : [];
+  
+  var optionsHTML = '<option value="">-- Or Select from My Students --</option>' +
+    tutorStudents.map(function(s){
+      var full = (s.firstName || '') + ' ' + (s.lastName || '');
+      var selected = (data.studentId === s.id || data.name === full) ? ' selected' : '';
+      return '<option value="' + s.id + '"' + selected + ' data-name="' + full + '" data-program="' + (s.program||'') + '">' + full + ' (' + (s.program||'') + ')</option>';
+    }).join('');
+
+  return '<div class="flex items-center justify-between mb-4">' +
+    '<span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Student ' + num + '</span>' +
+    (num > 1 ? '<button type="button" class="remove-student-btn text-xs text-red-400 hover:text-red-600 font-semibold">Remove</button>' : '') +
+  '</div>' +
+  '<div class="mb-4 bg-indigo-50/60 p-3 rounded-xl border border-indigo-100/80">' +
+    '<label class="field-label flex items-center gap-1.5" style="color:#4338ca;"><span data-icon-3d="lightning" data-icon-size="16"></span> Quick Auto-Fill from Roster</label>' +
+    '<select class="field-input student-quick-picker" style="background:#fff;">' + optionsHTML + '</select>' +
+  '</div>' +
+  '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">' +
+    '<div><label class="field-label">Student Name</label><input type="text" class="field-input student-name-input" placeholder="e.g. Daniel Adeyemi" value="' + (data.name || '') + '" required></div>' +
+    '<div><label class="field-label">Program / Course</label><input type="text" class="field-input student-course-input" placeholder="e.g. Python Programming Foundations" value="' + (data.course || '') + '" required></div>' +
+    '<div><label class="field-label">Sessions Attended (this month)</label><input type="number" class="field-input student-sessions-input" placeholder="e.g. 8" min="0" value="' + (data.sessionsAttended !== undefined ? data.sessionsAttended : '') + '" required></div>' +
+    '<div><label class="field-label">Current Module / Level</label><input type="text" class="field-input student-module-input" placeholder="e.g. Module 4 — Loops & Flow Control" value="' + (data.module || '') + '" required></div>' +
+  '</div>' +
+  '<div class="space-y-4">' +
+    '<div><label class="field-label">Topics Covered This Month</label><textarea class="field-input student-topics-input" placeholder="List key topics and concepts covered this month..." required>' + (data.topics || '') + '</textarea></div>' +
+    '<div><label class="field-label">Strengths Observed</label><textarea class="field-input student-strengths-input" style="min-height:80px;" placeholder="What is this student excelling at?" required>' + (data.strengths || '') + '</textarea></div>' +
+    '<div><label class="field-label">Challenges & Struggles</label><textarea class="field-input student-challenges-input" style="min-height:80px;" placeholder="Where did they need extra support?" required>' + (data.challenges || '') + '</textarea></div>' +
+    '<div><label class="field-label">Recommendation for Next Month</label><textarea class="field-input student-rec-input" style="min-height:80px;" placeholder="What should the focus be next month?" required>' + (data.recommendation || '') + '</textarea></div>' +
+    '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">' +
+      '<div><label class="field-label">Overall Grade</label><select class="field-input student-grade-input" required>' +
+        '<option value="">Select grade...</option>' +
+        ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D', 'F'].map(function(g){
+          var gLabels = {'A+':'A+ — Exceptional','A':'A — Excellent','B+':'B+ — Very Good','B':'B — Good Progress','C+':'C+ — Satisfactory','C':'C — Needs Improvement','D':'D — Below Expectations','F':'F — Not Progressing'};
+          var sel = (data.overallGrade === g) ? ' selected' : '';
+          return '<option value="' + g + '"' + sel + '>' + gLabels[g] + '</option>';
+        }).join('') +
+      '</select></div>' +
+      '<div><label class="field-label">Engagement Level</label><select class="field-input student-engagement-input" required>' +
+        '<option value="">Select level...</option>' +
+        ['highly-engaged', 'engaged', 'moderate', 'low', 'declining'].map(function(lvl){
+          var lvlLabels = {'highly-engaged':'Highly Engaged','engaged':'Engaged','moderate':'Moderate','low':'Low','declining':'Declining'};
+          var sel = (data.engagementLevel === lvl) ? ' selected' : '';
+          return '<option value="' + lvl + '"' + sel + '>' + lvlLabels[lvl] + '</option>';
+        }).join('') +
+      '</select></div>' +
+    '</div>' +
+  '</div>';
+}
+</script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="assets/js/firebase-config.min.js" defer></script>
+<script src="assets/js/portal-scene-engine.min.js" defer></script>
+
+</body>
+</html>

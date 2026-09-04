@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                             <i data-lucide="check" class="w-10 h-10 text-green-600"></i>
                         </div>
-                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Enrollment Received! 🚀</h2>
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Enrollment Received! <span data-icon-3d="rocket" data-icon-size="24"></span></h2>
                         <p class="text-gray-600 mb-8">Thank you, ${data.parent_name}. We have received your application. <br>Our admissions team will contact you at <strong>${data.email}</strong> shortly.</p>
                         <a href="index.html" class="bg-orange-500 text-white px-8 py-3 rounded-full font-bold hover:bg-orange-600 transition-colors">Return Home</a>
                     </div>

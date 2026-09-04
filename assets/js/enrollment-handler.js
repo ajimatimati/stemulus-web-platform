@@ -7,19 +7,20 @@ const EnrollmentHandler = (function() {
     
     // ============ CONFIGURATION ============
     const CONFIG = {
-        // EmailJS settings (uses email-service.js config)
-        EMAILJS_PUBLIC_KEY: 'T5jVjnlOABDwBNXbt', 
-        EMAILJS_SERVICE_ID: 'service_7v7j9u5',
-        EMAILJS_TEMPLATE_ID: 'template_duun9x7',
+        EMAIL_ENDPOINT: '/.netlify/functions/send-email',
 
-        // NTFY Push Notification
-        NTFY_TOPIC: 'stemulus-enrollments-admin2026',
-        
-        // Admin contact for notifications
+        NTFY_TOPIC: 'stm-enr-lx7k9w2mq8vp4tz',
+
         ADMIN_EMAIL: 'admin@stemuluskidstech.com',
         ADMIN_WHATSAPP: '+2347052466716'
     };
     // =======================================
+
+    function sanitize(str) {
+        const d = document.createElement('div');
+        d.textContent = String(str || '');
+        return d.innerHTML;
+    }
 
     let isSubmitting = false;
     let originalBtnHTML = ''; // Capture once to avoid ripple accumulation
@@ -106,10 +107,34 @@ const EnrollmentHandler = (function() {
                     firstName: formData.get('student_first_name') || '',
                     lastName: formData.get('student_last_name') || '',
                     age: formData.get('student_age') || '',
+                    birthday: formData.get('student_birthday') || '',
                     gender: formData.get('student_gender') || '',
+                    email: formData.get('student_email') || '',
                     experience: formData.get('experience') || '',
                     program: formData.get('program') || ''
                 });
+            }
+
+            // Capture any unsaved child still in the form fields (e.g. child 2 that was
+            // never clicked "Add Another Child" for, so it never entered childrenArray).
+            var lastFirst = formData.get('student_first_name') || '';
+            var lastLast = formData.get('student_last_name') || '';
+            if (lastFirst.trim()) {
+                var alreadySaved = childrenArray.some(function(c){
+                    return c.firstName === lastFirst.trim() && c.lastName === lastLast.trim();
+                });
+                if (!alreadySaved) {
+                    childrenArray.push({
+                        firstName: lastFirst.trim(),
+                        lastName: lastLast.trim(),
+                        age: formData.get('student_age') || '',
+                        birthday: formData.get('student_birthday') || '',
+                        gender: formData.get('student_gender') || '',
+                        email: formData.get('student_email') || '',
+                        experience: formData.get('experience') || '',
+                        program: formData.get('program') || ''
+                    });
+                }
             }
             
             const enrollmentData = {
@@ -120,11 +145,18 @@ const EnrollmentHandler = (function() {
                 studentGender: childrenArray[0]?.gender || formData.get('student_gender'),
                 experience: childrenArray[0]?.experience || formData.get('experience'),
                 program: childrenArray[0]?.program || formData.get('program'),
+                studentBirthday: childrenArray[0]?.birthday || formData.get('student_birthday') || '',
+                studentEmail: childrenArray[0]?.email || formData.get('student_email') || '',
                 // Parent info
                 parentName: formData.get('parent_name'),
                 email: formData.get('email'),
                 phone: formData.get('phone'),
                 referral: formData.get('referral') || 'Not specified',
+                // Father & Mother detailed info
+                fatherName: formData.get('father_name') || '',
+                fatherPhone: formData.get('father_phone') || '',
+                motherName: formData.get('mother_name') || '',
+                motherPhone: formData.get('mother_phone') || '',
                 // All children data
                 children: childrenArray,
                 totalChildren: childrenArray.length,
@@ -133,16 +165,31 @@ const EnrollmentHandler = (function() {
                 enrollmentId: generateEnrollmentId()
             };
 
+            // Save enrollment data immediately so it's never lost even if
+            // notifications or the success screen throw an error.
+            saveEnrollmentLocally(enrollmentData);
+
             // Send notifications in parallel
             const results = await Promise.allSettled([
                 sendEmailNotification(enrollmentData),
                 sendPhoneNotification(enrollmentData),
-                submitToNetlify(form, formData)
+                submitToNetlify(form, formData),
+                (typeof WhatsAppNotify !== 'undefined'
+                    ? WhatsAppNotify.sendEnrollmentNotification({
+                        parentName: enrollmentData.parentName,
+                        studentName: enrollmentData.children[0] ? `${enrollmentData.children[0].firstName} ${enrollmentData.children[0].lastName}` : 'Student',
+                        email: enrollmentData.email,
+                        phone: enrollmentData.phone,
+                        enrollmentId: enrollmentData.enrollmentId,
+                        program: enrollmentData.children[0] ? enrollmentData.children[0].program : 'STEM Program',
+                        age: enrollmentData.children[0] ? enrollmentData.children[0].age : ''
+                    })
+                    : Promise.resolve({ success: false, skipped: 'WhatsAppNotify not loaded' }))
             ]);
 
             // Log results
             results.forEach((result, index) => {
-                const services = ['Email', 'Phone Push', 'Netlify'];
+                const services = ['Email', 'Phone Push', 'Netlify', 'WhatsApp Notify'];
                 if (result.status === 'fulfilled') {
                     console.log(`[Enrollment] ${services[index]} notification sent`);
                 } else {
@@ -152,17 +199,18 @@ const EnrollmentHandler = (function() {
 
             // Show success screen
             showSuccessScreen(enrollmentData);
-            
-            // Save to localStorage
-            saveEnrollmentLocally(enrollmentData);
 
         } catch (error) {
             console.error('[Enrollment] Submission error:', error);
             showErrorMessage('Something went wrong. Please try again or contact us via WhatsApp.');
             
-            // Restore button — plain text, no SVGs
+            // Restore button to original state
             if (submitBtn) {
-                submitBtn.textContent = 'Complete Enrollment';
+                if (originalBtnHTML) {
+                    submitBtn.innerHTML = originalBtnHTML;
+                } else {
+                    submitBtn.textContent = 'Complete Enrollment';
+                }
                 submitBtn.disabled = false;
             }
         } finally {
@@ -171,51 +219,39 @@ const EnrollmentHandler = (function() {
     }
 
     /**
-     * Send email notification via EmailJS
+     * Send enrollment email notifications via Netlify Function (Resend API).
+     * Sends admin alert + parent confirmation in a single request.
      */
     async function sendEmailNotification(data) {
-        if (!CONFIG.EMAILJS_PUBLIC_KEY || CONFIG.EMAILJS_PUBLIC_KEY === 'Pending_User_Input') {
-             // Silently skip if not configured to avoid error spam, but log it
-            console.log('[Enrollment] EmailJS Public Key missing. Email notification skipped.');
-            return { skipped: true };
+        const resp = await fetch(CONFIG.EMAIL_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: 'enrollment',
+                data: {
+                    enrollmentId:      data.enrollmentId,
+                    studentFirstName:  data.studentFirstName,
+                    studentLastName:   data.studentLastName,
+                    studentAge:        data.studentAge,
+                    program:           data.program,
+                    parentName:        data.parentName,
+                    email:             data.email,
+                    phone:             data.phone,
+                    referral:          data.referral,
+                    children:          data.children || [],
+                }
+            })
+        });
+        // Guard against non-JSON responses (e.g. HTML error pages) so the
+        // function never throws and always returns gracefully.
+        let json;
+        try {
+            json = await resp.json();
+        } catch (_) {
+            json = { ok: false, error: 'Non-JSON response from email endpoint' };
         }
-
-        // Load EmailJS if not present
-        if (typeof emailjs === 'undefined') {
-            await loadScript('https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js');
-            emailjs.init(CONFIG.EMAILJS_PUBLIC_KEY);
-        }
-
-        const templateParams = {
-            to_email: CONFIG.ADMIN_EMAIL,
-            enrollment_id: data.enrollmentId,
-            student_first_name: data.studentFirstName,
-            student_last_name: data.studentLastName,
-            student_age: data.studentAge,
-            program: data.program,
-            parent_name: data.parentName,
-            email: data.email,
-            phone: data.phone,
-            referral: data.referral,
-            timestamp: new Date().toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' })
-        };
-
-        // Send to main admin email
-        const sendToAdmin = emailjs.send(
-            CONFIG.EMAILJS_SERVICE_ID,
-            CONFIG.EMAILJS_TEMPLATE_ID,
-            templateParams
-        );
-
-        // Always send a copy to admin@stemuluskidstech.com as well
-        const copyParams = { ...templateParams, to_email: 'admin@stemuluskidstech.com' };
-        const sendToCopy = emailjs.send(
-            CONFIG.EMAILJS_SERVICE_ID,
-            CONFIG.EMAILJS_TEMPLATE_ID,
-            copyParams
-        );
-
-        return await Promise.all([sendToAdmin, sendToCopy]);
+        if (!json.ok) console.warn('[Enrollment] Email partial failure:', json.results || json.error);
+        return json;
     }
 
     /**
@@ -249,22 +285,22 @@ Time: ${new Date().toLocaleTimeString()}
         `.trim();
 
         try {
-            const response = await fetch(`https://ntfy.sh/${CONFIG.NTFY_TOPIC}`, {
+            const response = await fetch('/.netlify/functions/notify', {
                 method: 'POST',
-                headers: {
-                    'Title': title,
-                    'Priority': 'high',
-                    'Tags': 'tada,student',
-                    'Click': `https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(`Hi! Following up on enrollment for ${data.studentFirstName}`)}`
-                },
-                body: message
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    channel: 'enroll',
+                    title,
+                    message,
+                    priority: 'high',
+                    tags: 'tada,student',
+                    click: `https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(`Hi! Following up on enrollment for ${data.studentFirstName}`)}`
+                })
             });
-            
-            if (!response.ok) throw new Error('NTFY request failed');
+            if (!response.ok) throw new Error('Notify request failed');
             return { success: true };
         } catch (error) {
             console.warn('[Enrollment] Phone notification failed:', error);
-            // Don't throw here, just return failure so Promise.allSettled treats other tasks as fine
             return { success: false, error };
         }
     }
@@ -273,13 +309,17 @@ Time: ${new Date().toLocaleTimeString()}
      * Submit form to Netlify Forms
      */
     async function submitToNetlify(form, formData) {
+        formData.set('form-name', 'enrollment'); // explicit guard in case hidden input is absent
         const response = await fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams(formData).toString()
         });
         
-        if (!response.ok) throw new Error('Netlify form submission failed');
+        // Treat only server-side errors as failures. Netlify Forms returns 3xx
+        // redirects on success, and fetch follows them to a 200 homepage — both
+        // are acceptable outcomes, so only throw on 5xx.
+        if (response.status >= 500) throw new Error('Netlify form submission failed');
         return { success: true };
     }
 
@@ -291,70 +331,21 @@ Time: ${new Date().toLocaleTimeString()}
         createConfetti();
 
         // Replace form with success message
-        const formContainer = document.querySelector('.glass-form');
-        formContainer.innerHTML = `
-            <div class="text-center py-8 animate-fadeIn">
-                <!-- Success Icon -->
-                <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-2xl shadow-green-500/30">
-                    <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-                    </svg>
-                </div>
-
-                <!-- Success Message -->
-                <h2 class="text-3xl font-bold font-poppins text-white mb-3">
-                    ✅ Enrollment Submitted!
-                </h2>
-                <p class="text-white/70 mb-6 max-w-md mx-auto leading-relaxed">
-                    Thank you, <strong class="text-white">${data.parentName}</strong>! We've received your enrollment.
-                </p>
-
-                <!-- Enrollment ID -->
-                <div class="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-6 py-3 mb-8">
-                    <span class="text-sm text-white/55">Enrollment ID:</span>
-                    <span class="font-mono font-bold text-orange-400">${data.enrollmentId}</span>
-                </div>
-
-                <!-- Next Steps -->
-                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 text-left max-w-lg mx-auto">
-                    <h3 class="font-bold text-white mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                        What happens next?
-                    </h3>
-                    <ol class="space-y-3 text-white/70 text-sm">
-                        <li class="flex items-start gap-3">
-                            <span class="w-6 h-6 shrink-0 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">1</span>
-                            <span>We'll review your enrollment within <strong class="text-white">24 hours</strong></span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="w-6 h-6 shrink-0 rounded-full bg-orange-500 text-white text-xs flex items-center justify-center font-bold">2</span>
-                            <span>You'll receive a confirmation email at <strong class="text-orange-400">${data.email}</strong></span>
-                        </li>
-                    </ol>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(`Hi! I just enrolled my child ${data.studentFirstName}. Enrollment ID: ${data.enrollmentId}`)}"
-                       target="_blank"
-                       class="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-green-500/30 transition-all">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                        </svg>
-                        Chat on WhatsApp
-                    </a>
-                    <a href="index.html"
-                       class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/15 text-white font-bold px-6 py-3 rounded-full transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                        </svg>
-                        Back to Home
-                    </a>
-                </div>
-            </div>
-        `;
+        const formContainer = document.querySelector('.form-card');
+        if (!formContainer) return; // guard: don't throw if selector fails
+        const successHTML = `<div style="text-align:center;padding:2rem 1rem;">
+  <div style="width:80px;height:80px;margin:0 auto 1.5rem;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  </div>
+  <h2 style="font-family:'Fredoka',sans-serif;font-size:1.8rem;font-weight:700;color:#2d2d4e;margin:0 0 0.75rem;">Enrollment Submitted!</h2>
+  <p style="font-family:'Inter',sans-serif;color:#6b6b8a;margin:0 0 1.5rem;line-height:1.6;max-width:400px;margin-left:auto;margin-right:auto;">
+    Thank you! We'll review your application and contact you within 24 hours to schedule your <strong>FREE trial class</strong>.
+  </p>
+  <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:#6b6b8a;margin:0 0 2rem;">
+    A confirmation email has been sent to your inbox.
+  </p>
+</div>`;
+        formContainer.innerHTML = successHTML;
 
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -426,6 +417,28 @@ Time: ${new Date().toLocaleTimeString()}
             enrollments.push(data);
             localStorage.setItem('stemulus_enrollments', JSON.stringify(enrollments));
             console.log('[Enrollment] Saved locally as backup');
+
+            // Secondary save for admin portal to read
+            try {
+                var pending = JSON.parse(localStorage.getItem('stemulus_pending_enrollments') || '[]');
+                pending.push({
+                    id: data.enrollmentId || ('enr-'+Date.now()),
+                    studentFirstName: data.studentFirstName,
+                    studentLastName: data.studentLastName,
+                    studentAge: data.studentAge,
+                    studentGender: data.studentGender,
+                    experience: data.experience,
+                    program: data.program,
+                    parentName: data.parentName,
+                    email: data.email,
+                    phone: data.phone,
+                    children: data.children || [],
+                    timestamp: new Date().toISOString(),
+                    source: 'public_form',
+                    status: 'pending'
+                });
+                localStorage.setItem('stemulus_pending_enrollments', JSON.stringify(pending));
+            } catch(pendErr) { console.warn('pending save failed', pendErr); }
 
             // Sync with central DashboardEngine database
             if (typeof DashboardEngine !== 'undefined') {

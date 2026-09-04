@@ -76,7 +76,7 @@ canvas {
   transform-origin: center;
 }
 
-/* Animate to ✕ when open */
+/* Animate to close icon when open */
 #nav-hamburger.open span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
@@ -827,12 +827,15 @@ table {
  align-items: flex-start !important;
  border-top: 1px solid rgba(0,0,0,0.08) !important;
  padding-top: 1.5rem !important;
+ padding-left: 0.25rem !important;
+ margin-top: 1rem !important;
  }
 
  .hero-stat-item {
  border-bottom: 1px dashed rgba(10, 10, 10, 0.08) !important;
  width: 100% !important;
  padding-bottom: 0.8rem !important;
+ padding-left: 0.75rem !important;
  }
 
  .hero-stat-item:last-child {

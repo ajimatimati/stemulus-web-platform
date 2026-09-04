@@ -37,9 +37,9 @@ try {
     blogs.push(newPost);
 
     fs.writeFileSync(BLOGS_PATH, JSON.stringify(blogs, null, 4));
-    console.log(`✅ Success! Added "${title}" to the content pool.`);
-    console.log(`🚀 It will release in ${releaseDays} days.`);
+    console.log(`[Success] Added "${title}" to the content pool.`);
+    console.log(`It will release in ${releaseDays} days.`);
 
 } catch (error) {
-    console.error('❌ Error adding blog post:', error.message);
+    console.error('[Error] Error adding blog post:', error.message);
 }

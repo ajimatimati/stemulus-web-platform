@@ -165,7 +165,7 @@ const ReferralTracker = (function() {
         container.innerHTML = `
             <div style="margin-top: 16px; padding: 16px; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1;">
                 <label style="display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 8px;">
-                    🎁 Have a promo code?
+                    Have a promo code?
                 </label>
                 <div style="display: flex; gap: 8px;">
                     <input type="text" id="promo-code-input" placeholder="Enter code" 
@@ -206,7 +206,7 @@ const ReferralTracker = (function() {
             if (result.valid) {
                 input.disabled = true;
                 applyBtn.disabled = true;
-                applyBtn.textContent = '✓ Applied';
+                applyBtn.textContent = 'Applied';
                 applyBtn.style.background = '#10b981';
 
                 // Store promo code with referral
@@ -243,7 +243,7 @@ const ReferralTracker = (function() {
                          color: white; font-size: 13px; font-weight: 600; border-radius: 20px;
                          position: fixed; top: 100px; right: 20px; z-index: 1000; 
                          box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
-                ✨ Referred by ${influencer.name}
+                Referred by ${influencer.name}
             </span>
         `;
         document.body.appendChild(badge);

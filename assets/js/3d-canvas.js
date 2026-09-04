@@ -591,9 +591,12 @@
       default:         ctrl = buildDefault(group, scene);  break;
     }
 
+    // ── Reduced motion: render one static frame, skip animation loop ──────
+    const prefersStill = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // ── Mouse / touch parallax ─────────────────────────────────────────────
     let tx = 0, ty = 0, sx = 0, sy = 0;
-    const HX = window.innerWidth / 2, HY = window.innerHeight / 2;
+    let HX = window.innerWidth / 2, HY = window.innerHeight / 2;
     window.addEventListener('mousemove', e => {
       tx = (e.clientX - HX) / 240;
       ty = (e.clientY - HY) / 240;
@@ -605,9 +608,30 @@
       }
     }, { passive: true });
 
+    // ── Pause when hidden (tab or scrolled out of viewport) ────────────────
+    let isVisible = true;
+    let isInViewport = true;
+    document.addEventListener('visibilitychange', () => {
+      isVisible = !document.hidden;
+      if (isVisible && isInViewport && !prefersStill) animate();
+    });
+    const observer = new IntersectionObserver(([entry]) => {
+      isInViewport = entry.isIntersecting;
+      if (isInViewport && isVisible && !prefersStill) animate();
+    }, { threshold: 0.05 });
+    observer.observe(container);
+
     // ── Animation loop ──────────────────────────────────────────────────────
     const clock = new THREE.Clock();
-    (function animate() {
+
+    if (prefersStill) {
+      renderer.render(scene, camera);
+    } else {
+      animate();
+    }
+
+    function animate() {
+      if (!isVisible || !isInViewport) return;
       requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
 
@@ -626,7 +650,7 @@
       if (ctrl && ctrl.update) ctrl.update(t);
 
       renderer.render(scene, camera);
-    })();
+    }
 
     // ── Resize ──────────────────────────────────────────────────────────────
     window.addEventListener('resize', () => {
@@ -635,6 +659,8 @@
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
+      HX = window.innerWidth / 2;
+      HY = window.innerHeight / 2;
     });
   }
 })();

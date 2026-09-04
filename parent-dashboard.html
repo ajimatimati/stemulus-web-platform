@@ -2,342 +2,540 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="manifest" href="/site.webmanifest">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parent Dashboard | STEMulus</title>
+  <meta name="robots" content="noindex, nofollow">
+  <title>Parent Dashboard | STEMulus Portal</title>
+  <meta name="description" content="Track your child's coding progress, upcoming sessions and achievements on the STEMulus parent portal.">
+  <link rel="icon" type="image/png" href="favicon.png">
 
-  <!-- SEO: CORE -->
-  <meta name="description" content="Track your child's coding progress, upcoming sessions and achievements on the STEMulus parent dashboard.">
-  <meta name="keywords" content="STEMulus parent portal, track coding progress, parent dashboard">
-  <meta name="author" content="STEMulus Kids Tech">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <link rel="canonical" href="https://stemuluskidstech.com/parent-dashboard.html">
-
-  <!-- SEO: OPEN GRAPH -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Parent Dashboard | STEMulus">
-  <meta property="og:description" content="Track your child's coding progress, upcoming sessions and achievements on the STEMulus parent dashboard.">
-  <meta property="og:url" content="https://stemuluskidstech.com/parent-dashboard.html">
-  <meta property="og:site_name" content="STEMulus">
-  <meta property="og:image" content="https://stemuluskidstech.com/logo.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="en_US">
-
-  <!-- SEO: TWITTER CARD -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Parent Dashboard | STEMulus">
-  <meta name="twitter:description" content="Track your child's coding progress, upcoming sessions and achievements on the STEMulus parent dashboard.">
-  <meta name="twitter:image" content="https://stemuluskidstech.com/logo.png">
-  <meta name="twitter:site" content="@stemuluskids">
-
-  <!-- SEO: GEO -->
-  <meta name="geo.region" content="NG">
-  <meta name="geo.placename" content="Lagos, Nigeria">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="logo.png">
-  <link rel="apple-touch-icon" href="logo.png">
-
-  <!-- Fonts -->
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <!-- Lucide Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest" defer></script>
-  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- STEMulus Portal Design System -->
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/portal-animations.css">
+  <link rel="stylesheet" href="assets/css/3d-svg-icons.css">
+  <script src="assets/js/3d-icons.js" defer></script>
 
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="preai-overhaul.css">
-  <link rel="stylesheet" href="responsive.css">
-
-  <!-- Tailwind custom config -->
-  <script>
-    if (window.tailwind) {
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              'brand-orange': '#F4600C',
-              'brand-blue': '#1A3A6E'
-            },
-            fontFamily: {
-              inter: ['DM Sans', 'sans-serif'],
-              nunito: ['Nunito', 'sans-serif']
-            }
-          }
-        }
-      };
-    }
-  </script>
-
-  <!-- Dashboard override styles: light mode -->
   <style>
-    body, html {
-      background-color: #f8fafc !important;
-      background-image: none !important;
-      color: #0f172a !important;
-    }
-    .bg-brand-dark { background-color: #ffffff !important; }
-    .text-white\/55, .text-white\/60, .text-white\/50 { color: #64748b !important; }
-    nav { background-color: #ffffff !important; border-bottom: 1px solid #e2e8f0 !important; }
-    nav h1, nav p, nav span { color: #0f172a !important; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-fadeIn { animation: fadeIn 0.3s ease forwards; }
-  </style>
+    body { background-color: var(--bg-page); min-height: 100vh; font-family: 'Nunito', sans-serif; margin: 0; padding-bottom: 5rem; }
 
-  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "EducationalOrganization",
-        "@id": "https://stemuluskidstech.com/#organization",
-        "name": "STEMulus Kids Tech",
-        "url": "https://stemuluskidstech.com",
-        "logo": "https://stemuluskidstech.com/logo.png",
-        "telephone": "+2347052466716",
-        "email": "admin@stemuluskidstech.com"
-      },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://stemuluskidstech.com/" },
-          { "@type": "ListItem", "position": 2, "name": "Parent Dashboard", "item": "https://stemuluskidstech.com/parent-dashboard.html" }
-        ]
+    .portal-nav { background: white; border-bottom: 1px solid var(--border-soft); position: sticky; top: 0; z-index: 40; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+
+    .parent-hero { background: linear-gradient(135deg, var(--stage-parent-1), var(--stage-parent-2)); border-radius: 28px; padding: 2.5rem; color: white; position: relative; overflow: hidden; margin-bottom: 2rem; box-shadow: var(--shadow-shell); }
+    .hero-title { font-family: 'Fredoka One', cursive; font-size: 32px; margin: 0 0 8px 0; font-weight: normal; }
+    .hero-sub { font-size: 15px; opacity: 0.95; margin: 0 0 20px 0; max-width: 500px; }
+
+    .kpi-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .kpi-chip { background: rgba(255,255,255,0.22); backdrop-filter: blur(8px); padding: 8px 16px; border-radius: 16px; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.3); }
+
+    .hero-3d { position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); width: 200px; height: auto; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15)); }
+    .hero-accent { position: absolute; pointer-events: none; }
+
+    .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    @media (max-width: 960px) { .dash-grid { grid-template-columns: 1fr; } .hero-3d { display: none; } }
+
+    .dash-card { background: white; border-radius: 24px; padding: 1.5rem; border: 1px solid var(--border-soft); box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 1.5rem; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+    .card-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 10px; }
+
+    .action-btn-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #F8FAFC; border-radius: 16px; border: 1px solid var(--border-soft); text-decoration: none; color: var(--text-main); font-weight: 700; font-size: 14px; transition: all 0.2s; }
+    .action-btn-item:hover { background: #FFF5F2; border-color: var(--brand-orange); color: var(--brand-orange); }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #sidebar { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+    #sidebar.open { transform: translateX(0); }
+    @media(min-width:1024px){ #sidebar { transform: translateX(0) !important; } }
+    #sidebar-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:40;display:none; }
+    #sidebar-overlay.show { display:block; }
+    #sidebar nav a:hover { background:rgba(244,96,12,0.12) !important; color:#f4600c !important; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       PARENT DASHBOARD — COMPREHENSIVE MOBILE RESPONSIVENESS
+       Covers sidebar, layout, hero, cards, toolbar, tables, touch targets
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* 1. SIDEBAR — explicitly hidden on mobile, desktop offset for content */
+    @media (max-width: 1023px) {
+      #sidebar {
+        transform: translateX(-100%) !important;
       }
-    ]
-  }
-  </script>
-</head>
+      #sidebar.open {
+        transform: translateX(0) !important;
+      }
+      /* 2. CONTENT LAYOUT — remove sidebar left offset on mobile */
+      .portal-nav,
+      .portal-nav.lg\:pl-64 {
+        padding-left: 0 !important;
+      }
+      .lg\:ml-64 {
+        margin-left: 0 !important;
+      }
+      .dash-grid {
+        margin-left: 0 !important;
+      }
+    }
 
-<body class="bg-gray-50 min-h-screen font-inter dashboard-page">
-<div id="cursor-ring" aria-hidden="true"></div>
-<div id="cursor-dot" aria-hidden="true"></div>
+    /* Desktop sidebar offset — polyfill for missing Tailwind */
+    @media (min-width: 1024px) {
+      .portal-nav {
+        padding-left: 16rem !important;
+      }
+      .lg\:ml-64 {
+        margin-left: 16rem !important;
+      }
+      .dash-grid {
+        margin-left: 16rem !important;
+      }
+      #menu-btn {
+        display: none !important;
+      }
+    }
 
-<!-- Loading Screen -->
-<div id="loading-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center transition-opacity duration-500">
-  <div class="text-center">
-    <div class="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-    <p class="text-gray-500 font-medium">Loading your portal...</p>
-  </div>
-</div>
+    /* 3. STUDENT CARDS — stack to 1 column on narrow screens */
+    @media (max-width: 640px) {
+      #children-container {
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
 
-<!-- Navbar -->
-<nav class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
-  <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <img src="logo.png" alt="STEMulus" class="h-10 w-auto rounded-full p-1 border border-gray-100">
-      <div>
-        <h1 class="font-nunito font-bold text-lg leading-tight text-gray-800">Parent Portal</h1>
-        <p class="text-xs text-gray-500">Welcome, <span id="user-name" class="font-semibold text-blue-600">Parent</span></p>
-      </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <a href="index.html" class="text-xs uppercase tracking-wider font-bold text-gray-400 hover:text-blue-600 transition-colors flex items-center gap-1.5">
-        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Exit
-      </a>
-      <a href="enroll.html" class="hidden md:flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors">
-        <i data-lucide="plus-circle" class="w-4 h-4"></i>
-        <span>Enroll Child</span>
-      </a>
-      <button id="logout-btn" class="p-2 text-gray-400 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50" title="Log Out">
-        <i data-lucide="log-out" class="w-5 h-5"></i>
-      </button>
-    </div>
-  </div>
-</nav>
+      /* 5. FONT SIZES — hero title > 24px reduce to ≤ 20px */
+      .hero-title {
+        font-size: 20px !important;
+        line-height: 1.25 !important;
+      }
+      .hero-sub {
+        font-size: 13px !important;
+        margin-bottom: 14px !important;
+      }
 
-<!-- Main Content -->
-<main class="container mx-auto px-4 py-8 max-w-7xl">
+      /* Hero section padding */
+      .parent-hero {
+        padding: 1.5rem 1.25rem !important;
+        border-radius: 20px !important;
+        margin-bottom: 1.25rem !important;
+      }
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      /* 8. STAT NUMBERS — KPI chips on small phones */
+      .kpi-chip {
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+        border-radius: 12px !important;
+      }
+      .kpi-row {
+        gap: 8px !important;
+      }
 
-    <!-- LEFT COLUMN: Children & Schedule -->
-    <div class="lg:col-span-2 space-y-8">
+      /* Card padding reduction on small screens */
+      .dash-card {
+        padding: 1rem 0.875rem !important;
+        border-radius: 18px !important;
+      }
 
-      <!-- My Children Section -->
-      <section>
-        <div class="flex items-center justify-between mb-5">
-          <h2 class="text-xl font-bold text-gray-800 font-nunito">My Children</h2>
-          <a href="enroll.html" class="text-sm text-orange-500 font-semibold hover:underline flex items-center gap-1">
-            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Enroll a Child
-          </a>
-        </div>
+      /* Dashboard grid gap */
+      .dash-grid {
+        gap: 1rem !important;
+        padding: 0 0.875rem !important;
+      }
 
-        <div id="children-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Placeholder card removed by JS when data loads -->
-          <div class="col-span-1 md:col-span-2 text-center py-12 bg-white rounded-2xl border border-gray-200 shadow-sm">
-            <i data-lucide="smile" class="w-12 h-12 text-gray-300 mx-auto mb-3"></i>
-            <p class="text-gray-500 font-medium">No children enrolled yet.</p>
-            <a href="enroll.html" class="inline-block mt-3 text-orange-500 hover:underline font-semibold text-sm">Enroll your first child →</a>
-          </div>
-        </div>
-      </section>
+      /* Main content area padding */
+      .dash-grid + * { padding: 0 0.875rem; }
+      div[style*="padding:0 1.5rem"],
+      div[style*="padding: 0 1.5rem"] {
+        padding-left: 0.875rem !important;
+        padding-right: 0.875rem !important;
+      }
 
-      <!-- Upcoming Classes -->
-      <section>
-        <h2 class="text-xl font-bold text-gray-800 font-nunito mb-5">Upcoming Classes</h2>
-        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-          <div id="schedule-container" class="divide-y divide-gray-100">
-            <div class="p-10 text-center" id="no-schedule-msg">
-              <i data-lucide="calendar" class="w-10 h-10 text-gray-300 mx-auto mb-3"></i>
-              <p class="text-gray-500 font-medium">No upcoming classes scheduled.</p>
-              <p class="text-xs text-gray-400 mt-1">Classes will appear here once assigned by your admin.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      /* 6. QUICK ACTIONS — ensure full-width tap targets on mobile */
+      .action-btn-item {
+        width: 100% !important;
+        min-height: 44px !important;
+        padding: 10px 14px !important;
+        font-size: 13px !important;
+      }
 
-    </div>
+      /* 9. ALL BUTTONS — 44px touch target minimum */
+      .btn-3d,
+      button {
+        min-height: 44px !important;
+      }
 
-    <!-- RIGHT COLUMN: Notifications & Links -->
-    <div class="space-y-6">
+      /* Nav bar — reduce right-side button text on very small screens */
+      .nav-inner a.btn-3d {
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+      }
+      .nav-inner {
+        padding: 0.5rem 0.875rem !important;
+      }
 
-      <!-- Notifications -->
-      <section class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-        <h2 class="text-base font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <i data-lucide="bell" class="w-4 h-4 text-orange-500"></i> Notifications
-        </h2>
-        <div id="parent-notifications-list" class="space-y-3 max-h-[320px] overflow-y-auto">
-          <div class="flex gap-3 items-start p-3 bg-slate-50 rounded-xl">
-            <div class="w-2 h-2 rounded-full bg-orange-500 mt-2 shrink-0"></div>
-            <div>
-              <p class="text-sm text-gray-700 font-semibold">Welcome to STEMulus!</p>
-              <p class="text-xs text-gray-400 mt-0.5">We're excited to start this coding journey with you.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      /* Body bottom padding to clear pill toolbar + safe area */
+      body {
+        padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)) !important;
+      }
+    }
 
-      <!-- Quick Help -->
-      <section class="bg-blue-600 rounded-2xl p-6 text-white relative overflow-hidden shadow-md">
-        <div class="absolute -right-6 -bottom-6 opacity-10">
-          <i data-lucide="message-circle" class="w-32 h-32"></i>
-        </div>
-        <h3 class="font-bold text-lg mb-2 text-white">Need Help?</h3>
-        <p class="text-blue-100 text-sm mb-4">Questions about scheduling, payments, or your child's progress?</p>
-        <a href="contact.html" class="inline-flex items-center gap-2 bg-white text-blue-700 px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-blue-50 transition-colors">
-          <i data-lucide="mail" class="w-4 h-4"></i> Contact Support
-        </a>
-      </section>
+    /* Extra-small phones (≤ 375px) */
+    @media (max-width: 375px) {
+      .hero-title {
+        font-size: 18px !important;
+      }
+      .kpi-chip {
+        font-size: 11px !important;
+        padding: 5px 8px !important;
+      }
+      /* Hide text label of Progress/Enroll nav buttons, keep icon */
+      .nav-inner a.btn-3d span,
+      .nav-inner a.btn-3d svg ~ * {
+        display: none !important;
+      }
+      .nav-inner a.btn-3d {
+        padding: 6px 8px !important;
+        gap: 0 !important;
+      }
+    }
 
-      <!-- Progress Portal -->
-      <section class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-        <h3 class="font-bold text-gray-800 text-sm mb-1 flex items-center gap-2">
-          <i data-lucide="bar-chart-2" class="w-4 h-4 text-blue-500"></i> Detailed Progress
-        </h3>
-        <p class="text-xs text-gray-500 mb-3">Full skill breakdowns, session history, and achievements.</p>
-        <a href="parent-progress.html" class="block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-2.5 rounded-xl transition-colors">
-          Open Progress Portal
-        </a>
-      </section>
+    /* 4. BOTTOM TOOLBAR — safe-area insets so it never overlaps content */
+    .pill-toolbar {
+      bottom: max(1.5rem, calc(0.75rem + env(safe-area-inset-bottom, 0px))) !important;
+      padding-left: max(1.25rem, env(safe-area-inset-left, 1.25rem)) !important;
+      padding-right: max(1.25rem, env(safe-area-inset-right, 1.25rem)) !important;
+    }
 
-      <!-- Enroll Another Child (mobile) -->
-      <a href="enroll.html" class="flex md:hidden items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm py-3 rounded-xl transition-colors shadow-md">
-        <i data-lucide="plus-circle" class="w-4 h-4"></i> Enroll Another Child
-      </a>
+    /* 7. SESSION HISTORY TABLE — horizontal scroll for any dynamic tables */
+    #sessions-container table,
+    #children-container table,
+    #schedule-container table,
+    .dash-card table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      max-width: 100%;
+    }
 
-    </div>
-  </div>
+    @media (max-width: 768px) {
+      /* Wrap any table rendered by JS in overflow-x scroll */
+      #sessions-container,
+      #schedule-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      #sessions-container table,
+      #schedule-container table {
+        min-width: 500px;
+      }
 
-</main>
-
-<!-- FOOTER -->
-<footer class="footer-editorial" role="contentinfo">
-  <div class="footer-grid">
-    <div class="footer-brand-col">
-      <div class="footer-3d-wrapper">
-        <div class="footer-hologram-coin">
-          <div class="coin-glow"></div>
-          <div class="coin-inner">
-            <div class="coin-front"><img src="logo.png" alt="STEMulus Logo"></div>
-            <div class="coin-back"><img src="logo.png" alt="STEMulus Logo"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-col">
-      <p class="footer-col-title">Website</p>
-      <a href="index.html">Home</a>
-      <a href="programs.html">Roadmap</a>
-      <a href="for-parents.html">For Parents</a>
-      <a href="blog.html">Blog</a>
-      <a href="contact.html">Contact</a>
-    </div>
-
-    <div class="footer-col">
-      <p class="footer-col-title">Social</p>
-      <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-      <a href="mailto:admin@stemuluskidstech.com">Email Us</a>
-      <a href="join-as-tutor.html">Join as Tutor</a>
-    </div>
-
-    <div class="footer-col">
-      <p class="footer-col-title">Legal</p>
-      <a href="privacy-policy.html">Privacy Policy</a>
-      <a href="privacy-policy.html#terms">Terms of Service</a>
-      <a href="parent-dashboard.html">Parent Login</a>
-      <a href="enroll.html">Enroll Now</a>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <p class="footer-legal-left">©2026 STEMulus Innovations LTD. All rights reserved.</p>
-    <p class="footer-legal-right">
-      Built with craft, not algorithms
-      <i data-lucide="heart" style="width:12px;height:12px;fill:currentColor;color:currentColor;display:inline-block;vertical-align:middle;margin:0 2px;"></i>
-      <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:inline-flex;align-items:center;">
-        <i data-lucide="mail" style="width:18px;height:18px;"></i>
-      </a>
-      <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:inline-flex;align-items:center;">
-        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
-      </a>
-    </p>
-  </div>
-  <div class="footer-bg-text">STEMulus</div>
-</footer>
-
-<!-- Cursor Script -->
+      /* Hero 3D accent images — hide on mobile to prevent overflow */
+      .hero-accent {
+        display: none !important;
+      }
+      .accent-sphere {
+        display: none !important;
+      }
+    }
+  </style>
 <script>
 (function(){
-  var ring=document.getElementById('cursor-ring'),dot=document.getElementById('cursor-dot');
-  if(!ring||!dot)return;
-  var mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
-  (function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
-  document.querySelectorAll('a,button').forEach(function(el){
-    el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-link');});
-    el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-link');});
-  });
+  try {
+    var s=JSON.parse(sessionStorage.getItem('stemulus_session')||'null');
+    var ttl=8*60*60*1000;
+    if(!s || (s.role !== 'parent' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
+      // Not logged in as parent or admin - redirect to login
+      window.location.replace('parent-login.html?role=parent');
+    }
+  } catch(e){}
 })();
 </script>
+</head>
+<body>
 
-<!-- Firebase SDK (Compat) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="assets/js/firebase-config.js"></script>
+  <div id="sidebar-overlay"></div>
+  <!-- Parent Sidebar -->
+  <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 flex flex-col z-50" style="background:#0f1117;border-right:1px solid rgba(255,255,255,0.07);border-radius:0 24px 24px 0;">
+    <div class="p-6 flex items-center gap-3" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+      <img src="favicon.png" width="36" height="36" style="border-radius:10px;object-fit:contain;" alt="STEMulus">
+      <div>
+        <span class="font-nunito font-bold text-lg" style="color:#ffffff;">STEMulus</span>
+        <p class="text-xs" style="color:rgba(255,255,255,0.45);">Parent Portal</p>
+      </div>
+    </div>
+    <nav class="flex-1 p-4 space-y-1" style="overflow-y:auto;">
+      <a href="parent-dashboard.html" class="flex items-center gap-3 px-4 py-3 font-semibold" style="border-radius:16px;background:rgba(244,96,12,0.18);color:#f4600c;">
+        <i data-lucide="home" class="w-5 h-5"></i> Home
+      </a>
+      <a href="parent-progress.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="bar-chart-2" class="w-5 h-5"></i> My Child's Progress
+      </a>
+      <a href="book-class.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="calendar-plus" class="w-5 h-5"></i> Book a Class
+      </a>
+      <a href="contact.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+        <i data-lucide="message-circle" class="w-5 h-5"></i> Contact Us
+      </a>
+    </nav>
+    <div class="p-4" style="border-top:1px solid rgba(255,255,255,0.07);">
+      <div class="flex items-center gap-3 mb-3 px-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs" style="background:rgba(244,96,12,0.25);color:#f4600c;">P</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-bold truncate" style="color:rgba(255,255,255,0.9);" id="sidebar-user-name">Parent Account</p>
+          <p class="text-xs truncate" style="color:rgba(255,255,255,0.4);">Parent</p>
+        </div>
+      </div>
+    </div>
+  </aside>
 
-<!-- Dashboard Engine & Controllers -->
-<script src="assets/js/dashboard-engine.js"></script>
-<script src="assets/js/parent-engine.js"></script>
-<script src="mobile-nav.js"></script>
+  <!-- Loading Screen -->
+  <div id="loading-screen" style="position:fixed; inset:0; background:white; z-index:99; display:flex; align-items:center; justify-content:center; transition:opacity 0.4s;">
+    <div style="text-align:center;">
+      <div style="width:40px; height:40px; border:4px solid #E2E8F0; border-top-color:var(--brand-orange); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 12px;"></div>
+      <p style="font-weight:700; color:var(--text-muted);">Loading Parent Portal...</p>
+    </div>
+  </div>
 
-<!-- Floating WhatsApp CTA -->
-<a href="https://wa.me/2347052466716?text=Hello%20STEMulus%2C%20I'm%20interested%20in%20a%20coding%20class%20for%20my%20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp">
-  <svg viewBox="0 0 448 512" aria-hidden="true">
-    <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-  </svg>
-</a>
+  <!-- Navbar -->
+  <nav class="portal-nav lg:pl-64" style="transition:padding 0.3s;">
+    <div class="nav-inner">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button id="menu-btn" class="lg:hidden" style="background:none;border:none;cursor:pointer;padding:8px;color:#64748b;" aria-label="Toggle sidebar">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <img src="favicon.png" alt="STEMulus Logo" width="36" height="36" style="object-fit:contain;">
+        <div>
+          <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--brand-orange); display:block;">Parent Portal</span>
+          <span style="font-weight:800; font-size:16px; color:var(--text-main);" id="user-name">Parent Account</span>
+        </div>
+      </div>
 
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="parent-progress.html" class="btn-3d" style="background:#f1f5f9; color:var(--text-main); font-size:13px; padding:8px 16px;">
+          <i data-lucide="bar-chart-2" style="width:16px;"></i> Progress
+        </a>
+        <a href="enroll.html" class="btn-3d orange" style="font-size:13px; padding:8px 16px;">
+          <i data-lucide="plus-circle" style="width:16px;"></i> Enroll
+        </a>
+        <button id="logout-btn" style="background:none; border:none; color:#94a3b8; cursor:pointer; padding:8px;" title="Sign Out">
+          <i data-lucide="log-out" style="width:20px;"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content Container -->
+  <div class="lg:ml-64" style="transition:margin 0.3s;">
+  <div style="max-width:1200px; margin:2rem auto 0; padding:0 1.5rem;">
+
+    <!-- HERO BANNER -->
+    <div class="parent-hero" id="hero-banner">
+      <!-- Floating 3D accents -->
+      <img src="images/portal/standalone/star-badge-3d.png" alt="" class="hero-accent float-accent--sm animate-drift motion-delay-2" style="top:12%; left:6%; width:36px; opacity:0.6; filter:blur(1.5px);">
+      <img src="images/portal/standalone/planet-3d.png" alt="" class="hero-accent float-accent--sm animate-orbit motion-delay-4" style="bottom:15%; left:25%; width:30px; opacity:0.5; filter:blur(2px);">
+      <div class="accent-sphere animate-drift-reverse motion-delay-3" style="top:20%; right:35%;"></div>
+
+      <div style="max-width:600px; position:relative; z-index:2;">
+        <h1 class="hero-title">Welcome back, <span id="hero-user-name">Parent</span></h1>
+        <p class="hero-sub">Track your child's coding milestones, upcoming private 1-on-1 sessions, and verified STEM certificates.</p>
+
+        <div class="kpi-row">
+          <div class="kpi-chip">
+            <i data-lucide="users" style="width:16px; color:#E0F2FE;"></i>
+            <span id="kpi-children">0</span> Children
+          </div>
+          <div class="kpi-chip">
+            <i data-lucide="calendar" style="width:16px; color:#E0F2FE;"></i>
+            <span id="kpi-sessions">0</span> Sessions
+          </div>
+          <div class="kpi-chip">
+            <i data-lucide="award" style="width:16px; color:#E0F2FE;"></i>
+            <span id="kpi-certs">0</span> Certificates
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero 3D Object -->
+      <img src="images/portal/standalone/rocket-3d.png" alt="Rocket" class="hero-3d animate-float-band magnetic-repel">
+    </div>
+  </div>
+  </div><!-- end content wrapper -->
+
+  <!-- DASHBOARD GRID -->
+  <div class="dash-grid lg:ml-64" style="transition:margin 0.3s;">
+
+    <!-- LEFT MAIN COLUMN -->
+    <div>
+      <!-- My Children -->
+      <div class="dash-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <img src="images/portal/standalone/girl-avatar-3d.png" alt="" width="32" height="32" style="object-fit:contain;">
+            Enrolled Children
+          </h2>
+          <a href="enroll.html" style="font-size:13px; font-weight:700; color:var(--brand-orange); text-decoration:none;">+ Add Another</a>
+        </div>
+        <div id="children-container" style="display:flex; flex-direction:column; gap:12px;">
+          <!-- Rendered by parent-engine.js -->
+        </div>
+      </div>
+
+      <!-- Upcoming Sessions -->
+      <div class="dash-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <img src="images/portal/standalone/calendar-3d.png" alt="" width="28" height="28" style="object-fit:contain;">
+            Upcoming Classes
+          </h2>
+        </div>
+        <div id="sessions-container" style="display:flex; flex-direction:column; gap:10px;">
+          <!-- Rendered by parent-engine.js -->
+        </div>
+        <div id="schedule-container" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR COLUMN -->
+    <div>
+      <!-- Notifications -->
+      <div class="dash-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <img src="images/portal/standalone/notification-orb-3d.png" alt="" width="24" height="24" style="object-fit:contain;">
+            Notifications
+          </h2>
+        </div>
+        <div id="parent-notifications-list" class="space-y-3" style="max-height:320px; overflow-y:auto;">
+          <p style="text-align:center; color:var(--text-muted); font-size:13px; padding:1rem 0;">No notifications yet.</p>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="dash-card">
+        <div class="card-header">
+          <h2 class="card-title">Quick Actions</h2>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <a href="parent-progress.html" class="action-btn-item">
+            <i data-lucide="line-chart" style="color:var(--brand-orange);"></i>
+            Detailed Progress Analytics
+          </a>
+          <a href="https://wa.me/2347052466716?text=Hello%20STEMulus%2C%20I'm%20a%20parent%20seeking%20support" target="_blank" class="action-btn-item">
+            <i data-lucide="message-square" style="color:#25D366;"></i>
+            Chat with Tutor on WhatsApp
+          </a>
+          <a href="tutor-evaluation.html" class="action-btn-item">
+            <i data-lucide="star" style="color:#F59E0B;"></i>
+            Rate &amp; Review Tutor
+          </a>
+          <a href="enroll.html" class="action-btn-item">
+            <i data-lucide="plus-circle" style="color:var(--stage-parent-1);"></i>
+            Enroll Another Child
+          </a>
+        </div>
+      </div>
+
+      <!-- Help Card -->
+      <div class="dash-card" style="background:linear-gradient(145deg, #FFF5F2, #FEF3C7); border-color:#FED7AA;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+          <img src="images/portal/standalone/whatsapp-3d.png" alt="" width="36" height="36" style="object-fit:contain;">
+          <h3 style="font-size:15px; font-weight:800; color:var(--text-main); margin:0;">Need Support?</h3>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); margin:0 0 12px 0; line-height:1.5;">
+          Questions about scheduling, payments, or your child's progress? Our team responds within 2 hours.
+        </p>
+        <a href="contact.html" class="btn-3d orange" style="font-size:13px; padding:8px 16px; width:100%; text-align:center; display:block;">
+          Contact Support
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING ACTION TOOLBAR -->
+  <div class="pill-toolbar">
+    <a href="parent-dashboard.html" class="toolbar-btn active" title="Dashboard">
+      <i data-lucide="home"></i>
+    </a>
+    <a href="parent-progress.html" class="toolbar-btn" title="Progress Reports">
+      <i data-lucide="bar-chart-3"></i>
+    </a>
+    <a href="https://wa.me/2347052466716" target="_blank" class="toolbar-btn" title="WhatsApp Support">
+      <i data-lucide="help-circle"></i>
+    </a>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="assets/js/firebase-config.min.js" defer></script>
+  <script src="assets/js/dashboard-engine.min.js" defer></script>
+  <script src="assets/js/report-pdf-generator.min.js" defer></script>
+  <script src="assets/js/parent-engine.min.js" defer></script>
+  <script src="assets/js/portal-scene-engine.min.js" defer></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) lucide.createIcons();
+
+      setTimeout(() => {
+        const loader = document.getElementById('loading-screen');
+        if(loader) { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 400); }
+      }, 500);
+
+      gsap.from("#hero-banner", { y: 30, opacity: 0, duration: 0.7, ease: "power2.out" });
+      gsap.from(".dash-card", { y: 20, opacity: 0, duration: 0.6, stagger: 0.1, delay: 0.2 });
+    });
+
+    window.addEventListener('stemulusDbUpdated', updateKPIs);
+    setInterval(updateKPIs, 2000);
+
+    function updateKPIs() {
+      try {
+        const session = DashboardEngine.getSession();
+        if (!session) return;
+
+        const navName = document.getElementById('user-name');
+        const heroName = document.getElementById('hero-user-name');
+        if (session.name && navName) navName.textContent = session.name;
+        if (session.name && heroName) heroName.textContent = session.name.split(' ')[0];
+
+        const students = DashboardEngine.getStudents(session.email);
+        const studentIds = students.map(s => s.id);
+        const schedules = DashboardEngine.getSchedules().filter(s => studentIds.includes(s.studentId));
+
+        let certCount = 0;
+        students.forEach(s => { certCount += DashboardEngine.getCertificates(s.firstName).length; });
+
+        document.getElementById('kpi-children').textContent = students.length;
+        document.getElementById('kpi-sessions').textContent = schedules.length;
+        document.getElementById('kpi-certs').textContent = certCount;
+      } catch(e) {}
+    }
+  </script>
+  <script>
+  (function(){
+    var btn=document.getElementById('menu-btn');
+    var sb=document.getElementById('sidebar');
+    var ov=document.getElementById('sidebar-overlay');
+    if(btn&&sb){
+      btn.onclick=function(){sb.classList.toggle('open');if(ov)ov.classList.toggle('show');};
+      if(ov)ov.onclick=function(){sb.classList.remove('open');ov.classList.remove('show');};
+      sb.querySelectorAll('a').forEach(function(a){a.onclick=function(){sb.classList.remove('open');if(ov)ov.classList.remove('show');};});
+    }
+  })();
+  </script>
+  <script src="assets/js/class-reminder-engine.js" defer></script>
+  <script>
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'stemulus_session' && !e.newValue) {
+        window.location.href = 'parent-login.html';
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,19 @@
+{
+  "name": "stemulus-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "STEMulus Kids Tech — Online Coding Academy Website",
+  "scripts": {
+    "build:tw": "npx tailwindcss -i src/tailwind-input.css -o assets/css/tailwind-output.css --minify",
+    "build:css": "npm run build:tw && node tools/concat-css.js",
+    "watch:css": "npx tailwindcss -i src/tailwind-input.css -o assets/css/tailwind-output.css --watch",
+    "minify:js": "node tools/minify.js",
+    "build": "npm run build:css && npm run minify:js"
+  },
+  "dependencies": {
+    "resend": "^3.2.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}

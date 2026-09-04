@@ -7,7 +7,7 @@ const SEOMetaManager = (function() {
     
     // Get current page info
     const currentUrl = window.location.href;
-    const baseUrl = 'https://stemulus.com';
+    const baseUrl = 'https://stemuluskidstech.com';
     const pathname = window.location.pathname.replace(/^\//, '').replace(/\/$/, '') || 'index.html';
     
     // Default page metadata (can be overridden by PAGE_META)

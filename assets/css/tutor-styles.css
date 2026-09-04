@@ -1,0 +1,74 @@
+/* Custom styles for the tutor portal */
+:root {
+    --tutor-primary: #4B49AC;
+    --tutor-secondary: #7978E9;
+    --tutor-gradient: linear-gradient(135deg, #4B49AC 0%, #7978E9 100%);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(75, 73, 172, 0.05);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--tutor-primary) 0%, var(--tutor-secondary) 100%);
+    border-radius: 10px;
+}
+
+/* Minimalist Glass Card */
+.glass-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark .glass-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+}
+
+/* Status Badges */
+.badge-approved {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    color: rgb(16, 185, 129) !important;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+.badge-pending {
+    background-color: rgba(245, 158, 11, 0.1) !important;
+    color: rgb(245, 158, 11) !important;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+.badge-rejected {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    color: rgb(239, 68, 68) !important;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Floating Animations */
+@keyframes float-orb {
+    0%, 100% {
+        transform: translateY(0px) scale(1);
+    }
+    50% {
+        transform: translateY(-20px) scale(1.05);
+    }
+}
+
+.animate-float {
+    animation: float-orb 8s ease-in-out infinite;
+}
+
+/* Dotted Micro-Grid Radial Background Pattern */
+.bg-dotted-grid {
+    background-size: 20px 20px;
+    background-image: radial-gradient(circle, rgba(75, 73, 172, 0.08) 1px, transparent 1px);
+}
+
+.dark .bg-dotted-grid {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}

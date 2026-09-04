@@ -200,7 +200,7 @@ const LeadMagnet = (function() {
         }
         
         .lead-magnet-benefits li::before {
-            content: '✓';
+            content: '';
             color: #10B981;
             font-weight: bold;
             font-size: 16px;
@@ -362,7 +362,7 @@ const LeadMagnet = (function() {
                     
                     <div class="lead-magnet-body">
                         <div class="lead-magnet-value">
-                            <h4>📚 What You'll Get:</h4>
+                            <h4><span data-icon-3d="books" data-icon-size="20"></span> What You'll Get:</h4>
                             <ul class="lead-magnet-benefits">
                                 <li>10 Fun Coding Projects for Kids</li>
                                 <li>Age-by-Age Tech Learning Guide</li>
@@ -375,13 +375,13 @@ const LeadMagnet = (function() {
                             <input type="email" class="lead-magnet-input" placeholder="Your email address" required id="lead-email">
                             <input type="text" class="lead-magnet-input" placeholder="Your name (optional)" id="lead-name">
                             <button type="submit" class="lead-magnet-submit">
-                                📩 Send Me The Resources
+                                Send Me The Resources
                             </button>
                         </form>
                         
                         <div class="lead-magnet-footer">
                             <p class="lead-magnet-trust">
-                                🔒 We respect your privacy. Unsubscribe anytime.
+                                <span data-icon-3d="lock" data-icon-size="14"></span> We respect your privacy. Unsubscribe anytime.
                             </p>
                             <button class="lead-magnet-skip">Maybe later</button>
                         </div>
@@ -422,7 +422,7 @@ const LeadMagnet = (function() {
         // Setup event handlers
         setupEventHandlers();
         
-        console.log('[LeadMagnet] ✅ Initialized');
+        console.log('[LeadMagnet] [Ready] Initialized');
     }
 
     function injectStyles() {
@@ -585,12 +585,12 @@ const LeadMagnet = (function() {
             // Show success state
             showSuccess();
             
-            console.log('[LeadMagnet] ✅ Lead captured:', email);
+            console.log('[LeadMagnet] [Captured] Lead captured:', email);
             
         } catch (error) {
             console.error('[LeadMagnet] Error:', error);
             submitBtn.classList.remove('loading');
-            submitBtn.textContent = '📩 Send Me The Resources';
+            submitBtn.textContent = 'Send Me The Resources';
         }
     }
 

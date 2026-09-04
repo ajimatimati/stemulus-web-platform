@@ -1,0 +1,338 @@
+/* ==========================================================================
+   PORTAL ANIMATIONS v4
+   STEMulus — Physics-inspired 3D Object Motion System
+   ========================================================================== */
+
+/* ==========================================================================
+   1. LISSAJOUS ORBITS — Figure-8 paths via independent X/Y sine waves
+   Each variant uses different frequency ratios so objects never sync up.
+   ========================================================================== */
+
+@keyframes lissajous-a {
+    0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
+    20%  { transform: translate(6px, -9px) rotate(2deg) scale(1.02); }
+    40%  { transform: translate(-4px, -14px) rotate(-1deg) scale(0.98); }
+    60%  { transform: translate(-8px, -5px) rotate(-2.5deg) scale(1.01); }
+    80%  { transform: translate(3px, 4px) rotate(1.5deg) scale(0.99); }
+    100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+}
+
+@keyframes lissajous-b {
+    0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25%  { transform: translate(-7px, -6px) rotate(-2deg) scale(1.03); }
+    50%  { transform: translate(5px, -12px) rotate(1.5deg) scale(0.97); }
+    75%  { transform: translate(8px, 3px) rotate(-1deg) scale(1.02); }
+    100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+}
+
+@keyframes lissajous-c {
+    0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
+    16%  { transform: translate(4px, -7px) rotate(1.8deg) scale(1.01); }
+    33%  { transform: translate(9px, -3px) rotate(-0.5deg) scale(1.03); }
+    50%  { transform: translate(5px, 6px) rotate(-2deg) scale(0.98); }
+    66%  { transform: translate(-3px, 8px) rotate(0.8deg) scale(1.01); }
+    83%  { transform: translate(-7px, 2px) rotate(2.2deg) scale(0.99); }
+    100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+}
+
+/* ==========================================================================
+   2. HERO OBJECT HOVER — Weightless levitation with subtle 3D tilt
+   ========================================================================== */
+
+@keyframes hero-levitate {
+    0%   { transform: translateY(0) rotateX(0deg) rotateZ(0deg) scale(1); }
+    25%  { transform: translateY(-8px) rotateX(1.5deg) rotateZ(-0.5deg) scale(1.01); }
+    50%  { transform: translateY(-14px) rotateX(0deg) rotateZ(0.8deg) scale(1.02); }
+    75%  { transform: translateY(-6px) rotateX(-1deg) rotateZ(-0.3deg) scale(1.01); }
+    100% { transform: translateY(0) rotateX(0deg) rotateZ(0deg) scale(1); }
+}
+
+@keyframes hero-levitate-band {
+    0%   { transform: translateY(0) rotateZ(0deg) scale(1); }
+    30%  { transform: translateY(-10px) rotateZ(1deg) scale(1.015); }
+    60%  { transform: translateY(-6px) rotateZ(-0.5deg) scale(1.01); }
+    100% { transform: translateY(0) rotateZ(0deg) scale(1); }
+}
+
+/* ==========================================================================
+   3. ACCENT FLOAT VARIANTS — Different depth layers move differently
+   ========================================================================== */
+
+/* Near layer (larger accents): bigger range, faster */
+@keyframes accent-near {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    33%  { transform: translate(5px, -10px) rotate(3deg); }
+    66%  { transform: translate(-4px, -6px) rotate(-2deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* Mid layer (medium accents): moderate range */
+@keyframes accent-mid {
+    0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
+    50%  { transform: translate(4px, -7px) rotate(2.5deg) scale(1.04); }
+    100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+}
+
+/* Far layer (small blurred accents): slow, tiny movement — parallax depth */
+@keyframes accent-far {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    50%  { transform: translate(2px, -3px) rotate(1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* ==========================================================================
+   4. BLOB MORPH — Organic shape breathing
+   ========================================================================== */
+
+@keyframes blob-morph {
+    0%   { border-radius: 0 48% 52% 0 / 0 42% 58% 0; }
+    25%  { border-radius: 0 55% 45% 0 / 0 50% 50% 0; }
+    50%  { border-radius: 0 42% 58% 0 / 0 55% 45% 0; }
+    75%  { border-radius: 0 58% 42% 0 / 0 45% 55% 0; }
+    100% { border-radius: 0 48% 52% 0 / 0 42% 58% 0; }
+}
+
+.animate-blob {
+    animation: blob-morph 18s ease-in-out infinite alternate;
+}
+
+/* ==========================================================================
+   5. PUBLIC CLASSES — Drop-in replacements (same class names, richer motion)
+   ========================================================================== */
+
+/* Main hero object float — now with 3D tilt */
+.animate-float {
+    animation: hero-levitate 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    will-change: transform;
+    transform-style: preserve-3d;
+}
+
+/* Hero band variant — tuned for objects inside gradient bands */
+.animate-float-band {
+    animation: hero-levitate-band 7s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    will-change: transform;
+}
+
+/* Simple float for background orbs — gentle, non-distracting */
+.animate-float-simple {
+    animation: accent-mid 10s ease-in-out infinite;
+    will-change: transform;
+}
+
+/* Drift — replaced with Lissajous orbit A (figure-8 path) */
+.animate-drift {
+    animation: lissajous-a 12s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    will-change: transform;
+}
+
+/* Drift reverse — Lissajous orbit B (different phase) */
+.animate-drift-reverse {
+    animation: lissajous-b 14s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    will-change: transform;
+}
+
+/* Orbit — Lissajous C for larger accent pieces */
+.animate-orbit {
+    animation: lissajous-c 16s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    will-change: transform;
+}
+
+/* Depth-aware accent classes (use on float-accent elements) */
+.animate-accent-near {
+    animation: accent-near 9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    will-change: transform;
+}
+
+.animate-accent-far {
+    animation: accent-far 18s ease-in-out infinite;
+    will-change: transform;
+}
+
+/* ==========================================================================
+   6. TIMING OFFSETS — Desync identical animations on the same page
+   Each object gets a unique delay so nothing pulses in lockstep.
+   ========================================================================== */
+
+.motion-delay-1 { animation-delay: -2s; }
+.motion-delay-2 { animation-delay: -5s; }
+.motion-delay-3 { animation-delay: -8s; }
+.motion-delay-4 { animation-delay: -11s; }
+.motion-delay-5 { animation-delay: -14s; }
+
+/* nth-child auto-offset for repeated elements (e.g. multiple accents) */
+.float-accent:nth-child(2) { animation-delay: -3.7s; }
+.float-accent:nth-child(3) { animation-delay: -7.2s; }
+.float-accent:nth-child(4) { animation-delay: -10.5s; }
+
+/* ==========================================================================
+   7. CARD REVEAL — Stagger enter from below
+   ========================================================================== */
+
+@keyframes card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.animate-enter {
+    animation: card-enter 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+}
+
+.delay-1 { animation-delay: 80ms; }
+.delay-2 { animation-delay: 160ms; }
+.delay-3 { animation-delay: 240ms; }
+.delay-4 { animation-delay: 320ms; }
+.delay-5 { animation-delay: 400ms; }
+.delay-6 { animation-delay: 480ms; }
+
+/* ==========================================================================
+   8. TACTILE BUTTON PRESS
+   ========================================================================== */
+
+.btn-3d:active,
+.attendance-cube:active {
+    transform: translateY(3px) scale(0.97) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 -2px 0 rgba(0, 0, 0, 0.15) !important;
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   9. PROGRESS RING SWEEP
+   ========================================================================== */
+
+@keyframes ring-sweep {
+    from { stroke-dasharray: 0 100; }
+    to { stroke-dasharray: var(--target-percent, 100) 100; }
+}
+
+.animate-ring {
+    animation: ring-sweep 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ==========================================================================
+   10. HERO OBJECT CROSSFADE (role switch on login)
+   ========================================================================== */
+
+.hero-3d-object {
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-3d-object.switching {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+}
+
+/* ==========================================================================
+   11. PULSE DOT (notification indicator)
+   ========================================================================== */
+
+@keyframes pulse-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.7; }
+}
+
+.animate-pulse-dot {
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   12. SHELL ENTER (page load)
+   ========================================================================== */
+
+@keyframes shell-enter {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.animate-shell-enter {
+    animation: shell-enter 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ==========================================================================
+   13. CONFETTI BURST (success states)
+   ========================================================================== */
+
+@keyframes confetti-fall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    animation: confetti-fall 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   14. SCROLL-REACTIVE SWAY (subtle parallax tilt on scroll)
+   Applied via JS: adds --scroll-y custom property to body
+   ========================================================================== */
+
+.scroll-sway {
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateY(calc(var(--scroll-sway, 0) * 1px))
+               rotateX(calc(var(--scroll-sway, 0) * 0.05deg));
+}
+
+.scroll-sway--reverse {
+    transform: translateY(calc(var(--scroll-sway, 0) * -0.5px))
+               rotateX(calc(var(--scroll-sway, 0) * -0.03deg));
+}
+
+/* ==========================================================================
+   15. MAGNETIC HOVER REPEL (hero objects push away from cursor)
+   Applied via JS: sets --mx and --my custom properties on the element
+   ========================================================================== */
+
+.magnetic-repel {
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translate(
+        calc(var(--mx, 0) * 1px),
+        calc(var(--my, 0) * 1px)
+    );
+}
+
+/* ==========================================================================
+   16. REDUCED MOTION — Respect user preference
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-float-band,
+    .animate-float-simple,
+    .animate-drift,
+    .animate-drift-reverse,
+    .animate-orbit,
+    .animate-accent-near,
+    .animate-accent-far,
+    .animate-blob,
+    .animate-pulse-dot {
+        animation: none !important;
+    }
+
+    .scroll-sway,
+    .scroll-sway--reverse,
+    .magnetic-repel {
+        transform: none !important;
+    }
+
+    .hero-3d-object {
+        transition-duration: 0.01ms !important;
+    }
+}

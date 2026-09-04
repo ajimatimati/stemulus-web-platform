@@ -3,11 +3,12 @@
 <head>
  <script src="https://unpkg.com/lucide@latest" defer></script>
  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
- <script src="https://cdn.tailwindcss.com"></script>
+ <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
  <meta charset="UTF-8">
   <meta name="theme-color" content="#F4600C">
   <!-- SEO: CORE -->
-  <meta name="description" content="STEMulus Junior Robotics: young learners aged6-9 explore robots, sensors and basic programming concepts through hands-on play.">
+  <meta name="description" content="Private 1-on-1 online Junior Robotics for kids aged 6-9. Expert mentors guide children through robots, sensors and coding via Zoom. Free trial available.">
   <meta name="keywords" content="junior robotics kids, robotics age 6, young coders robots, beginner robotics children">
   <meta name="author" content="STEMulus Kids Tech">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -18,7 +19,7 @@
   <meta property="og:description" content="STEMulus Junior Robotics: young learners aged6-9 explore robots, sensors and basic programming concepts through hands-on play.">
   <meta property="og:url" content="https://stemuluskidstech.com/junior-robotics.html">
   <meta property="og:site_name" content="STEMulus">
-  <meta property="og:image" content="https://stemuluskidstech.com/assets/images/junior_robotics_playful.png">
+  <meta property="og:image" content="https://stemuluskidstech.com/assets/images/junior_robotics_playful.webp">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="STEMulus Kids Tech — Online Coding Academy Logo">
@@ -27,11 +28,10 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Junior Robotics for Kids (Ages6-9) | STEMulus Academy">
   <meta name="twitter:description" content="STEMulus Junior Robotics: young learners aged6-9 explore robots, sensors and basic programming concepts through hands-on play.">
-  <meta name="twitter:image" content="https://stemuluskidstech.com/assets/images/junior_robotics_playful.png">
+  <meta name="twitter:image" content="https://stemuluskidstech.com/assets/images/junior_robotics_playful.webp">
   <meta name="twitter:site" content="@stemuluskids">
   <!-- SEO: GEO -->
-  <meta name="geo.region" content="NG">
-  <meta name="geo.placename" content="Lagos, Nigeria">
+  <meta name="geo.region" content="GLOBAL">
   <!-- SEO: CORE -->
   <!-- SEO: OPEN GRAPH -->
   <!-- SEO: TWITTER CARD -->
@@ -41,19 +41,16 @@
   <!-- --- SEO: TWITTER CARD --- -->
   <!-- --- SEO: GEO --- -->
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Junior Robotics for Kids (Ages6-9) | STEMulus Academy</title>
+ <title>Junior Robotics for Kids Online | Ages 6-9 | STEMulus KidsTech</title>
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
- <link href="https://fonts.googleapis.com/css 2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
  
- <link rel="stylesheet" href="style.css">
 
  <!-- Supabase SDK -->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
- <link rel="stylesheet" href="preai-overhaul.css">
 
-<link rel="stylesheet" href="responsive.css">
 
  <!-- Standard Favicon -->
  <script type="application/ld+json">
@@ -168,35 +165,43 @@
 </script>
 
  <!-- Standard Favicon -->
- <link rel="icon" type="image/png" href="logo.png">
- <link rel="apple-touch-icon" href="logo.png">
+ <link rel="icon" type="image/png" href="favicon.png">
+ <link rel="apple-touch-icon" href="/favicon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#F4600C">
+ <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Course","name":"Junior Robotics for Kids","description":"Private 1-on-1 online Junior Robotics for kids aged 6-9. Expert mentors guide children through robots, sensors and coding via Zoom. Free trial available.","provider":{"@type":"Organization","name":"STEMulus KidsTech","url":"https://stemuluskidstech.com"},"educationalLevel":"Beginner","typicalAgeRange":"6-9","teaches":"Robotics basics, sensors, simple programming concepts and hands-on play","availableLanguage":"English","courseMode":"Online","url":"https://stemuluskidstech.com/junior-robotics.html","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free first trial class"}}
+ </script>
 </head>
 <body class="antialiased">
+<a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#F4600C;color:#fff;padding:8px 16px;z-index:9999;border-radius:0 0 8px 0;transition:top 0.2s;font-size:0.875rem;font-weight:700;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to content</a>
 <div id="cursor-ring" aria-hidden="true"></div>
 <div id="cursor-dot"  aria-hidden="true"></div>
 <nav class="nav-editorial" role="navigation" aria-label="Main Navigation" id="main-nav">
  <a href="index.html" class="nav-logo-editorial">
- <img src="logo.png" alt="STEMulus Logo" width="44" height="44">
- </a>
+      <img src="favicon.png" alt="STEMulus" width="36" height="36">
+      
+    </a>
  <div style="display:flex; align-items:center; gap:2.5rem;">
  <a href="programs.html">Roadmap</a>
  <a href="for-parents.html">Parents</a>
  <a href="blog.html">Blog</a>
  <a href="contact.html">Contact</a>
  </div>
- <div style="display:flex; align-items:center; gap:1.5rem;">
+ <div style="display:flex; align-items:center; gap:1rem;">
+      <a href="book-class.html" class="nav-cta-btn-secondary">Free Class</a>
  <a href="enroll.html" class="nav-cta-btn">
- Enroll Free
+ Enroll Now
  </a>
  </div>
 </nav>
 
  <!-- Navigation -->
 
- <main>
+ <main id="main-content">
  
  <!-- --- HERO - Pre-AI Editorial --- -->
- <section class="preai-hero-split" style="--accent 1:#10B981;--accent 2:#3b82f6;">
+ <section class="preai-hero-split" style="--accent-1:#10B981;--accent-2:#3b82f6;">
 
  <!-- LEFT: Text column -->
  <div class="preai-hero-text">
@@ -253,7 +258,7 @@
 
  <!-- RIGHT: Image column -->
  <div class="preai-hero-img-col">
- <img src="assets/images/junior_robotics_playful.png" alt="Young child building robot" class="preai-hero-img" loading="eager" decoding="async">
+ <img src="assets/images/junior_robotics_playful.webp" alt="Young child building robot" class="preai-hero-img" loading="eager" decoding="async">
  <div class="preai-hero-img-overlay"></div>
  <!-- Corner accent -->
  <div class="preai-hero-img-corner"></div>
@@ -263,96 +268,96 @@
 
  <!-- Overview -->
  <section class="py-20 bg-white">
- <div class="container mx-auto px-6">
- <div class="grid lg:grid-cols-2 gap-12 items-center" data-stagger>
- <div>
- <span class="inline-block px-3 py-1 rounded-xl bg-supernova-orange/10 text-supernova-orange text-sm font-bold mb-4">FOR YOUNG ENGINEERS</span>
- <h2 class="text-4xl md:text-5xl font-bold font-nunito text-white mb-6">
- Robotics Made <span class="text-supernova-orange">Fun!</span>
- </h2>
- <p class="text-lg text-white/65 leading-relaxed mb-6">
- Using LEGO-style building systems and age-appropriate coding tools, children learn the basics of robotics through play. They'll build robots that move, make sounds, and respond to their environment!
- </p>
- <p class="text-lg text-white/65 leading-relaxed mb-8">
- No reading required - our visual programming interface uses icons and colors that even early readers can understand.
- </p>
- 
- <div class="grid sm:grid-cols-2 gap-4" data-stagger>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
- <i data-lucide="calendar" class="w-6 h-6 text-supernova-orange"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Duration</p>
- <p class="font-bold text-slate-700">10 Weeks</p>
- </div>
- </div>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
- <i data-lucide="clock" class="w-6 h-6 text-supernova-orange"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Sessions</p>
- <p class="font-bold text-slate-700">1.5 hrs/week</p>
- </div>
- </div>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
- <i data-lucide="smile" class="w-6 h-6 text-supernova-orange"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Experience</p>
- <p class="font-bold text-slate-700">No Prior Needed</p>
- </div>
- </div>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
- <i data-lucide="map-pin" class="w-6 h-6 text-supernova-orange"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Format</p>
- <p class="font-bold text-slate-700">Online 1-on-1 Sessions</p>
- </div>
- </div>
- </div>
- </div>
- <div>
- <img loading="lazy" src="images/kid_robot_proud.png" alt="Kids building robots" class="rounded-none w-full">
- </div>
- </div>
- </div>
- </section>
+  <div class="container mx-auto px-6">
+  <div class="grid lg:grid-cols-2 gap-12 items-center" data-stagger>
+  <div>
+  <span class="inline-block px-3 py-1 rounded-xl bg-supernova-orange/10 text-supernova-orange text-sm font-bold mb-4">FOR YOUNG ENGINEERS</span>
+  <h2 class="text-4xl md:text-5xl font-bold font-nunito text-slate-800 mb-6">
+  Robotics Made <span class="text-supernova-orange">Fun!</span>
+  </h2>
+  <p class="text-lg text-slate-600 leading-relaxed mb-6">
+  Using LEGO-style building systems and age-appropriate coding tools, children learn the basics of robotics through play. They'll build robots that move, make sounds, and respond to their environment!
+  </p>
+  <p class="text-lg text-slate-600 leading-relaxed mb-8">
+  No reading required - our visual programming interface uses icons and colors that even early readers can understand.
+  </p>
+  
+  <div class="grid sm:grid-cols-2 gap-4" data-stagger>
+  <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
+  <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
+  <i data-lucide="calendar" class="w-6 h-6 text-supernova-orange"></i>
+  </div>
+  <div>
+  <p class="text-sm text-slate-500">Duration</p>
+  <p class="font-bold text-slate-700">10 Weeks</p>
+  </div>
+  </div>
+  <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
+  <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
+  <i data-lucide="clock" class="w-6 h-6 text-supernova-orange"></i>
+  </div>
+  <div>
+  <p class="text-sm text-slate-500">Sessions</p>
+  <p class="font-bold text-slate-700">1.5 hrs/week</p>
+  </div>
+  </div>
+  <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
+  <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
+  <i data-lucide="smile" class="w-6 h-6 text-supernova-orange"></i>
+  </div>
+  <div>
+  <p class="text-sm text-slate-500">Experience</p>
+  <p class="font-bold text-slate-700">No Prior Needed</p>
+  </div>
+  </div>
+  <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
+  <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
+  <i data-lucide="map-pin" class="w-6 h-6 text-supernova-orange"></i>
+  </div>
+  <div>
+  <p class="text-sm text-slate-500">Format</p>
+  <p class="font-bold text-slate-700">Online 1-on-1 Sessions</p>
+  </div>
+  </div>
+  </div>
+  </div>
+  <div>
+  <img loading="lazy" src="assets/images/junior_robotics_playful.webp" alt="Kids building robots" class="rounded-none w-full">
+  </div>
+  </div>
+  </div>
+  </section>
 
- <!-- What They'll Build -->
- <section class="py-20 bg-white">
- <div class="container mx-auto px-6">
- <div class="text-center mb-16">
- <h2 class="text-4xl font-bold font-nunito text-white mb-4">Robots They'll Build</h2>
- </div>
- <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto" data-stagger>
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group text-center">
- <div class="text-5xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="car" class="w-12 h-12 text-white"></i></div>
- <h3 class="font-bold text-slate-800 mb-2">Race Car Bot</h3>
- <p class="text-sm text-white/65">Motors and wheels</p>
- </div>
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group text-center">
- <div class="text-5xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="bug" class="w-12 h-12 text-white"></i></div>
- <h3 class="font-bold text-slate-800 mb-2">Crawling Bug</h3>
- <p class="text-sm text-white/65">Movement patterns</p>
- </div>
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group text-center">
- <div class="text-5xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="music" class="w-12 h-12 text-white"></i></div>
- <h3 class="font-bold text-slate-800 mb-2">Music Maker</h3>
- <p class="text-sm text-white/65">Sounds and lights</p>
- </div>
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group text-center">
- <div class="text-5xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="hand" class="w-12 h-12 text-white"></i></div>
- <h3 class="font-bold text-slate-800 mb-2">Grabber Arm</h3>
- <p class="text-sm text-white/65">Servo motors</p>
- </div>
- </div>
- </div>
- </section>
+  <!-- What They'll Build -->
+  <section id="curriculum" class="py-20 bg-white">
+  <div class="container mx-auto px-6">
+  <div class="text-center mb-16">
+  <h2 class="text-4xl font-bold font-nunito text-slate-800 mb-4">Robots They'll Build</h2>
+  </div>
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto" data-stagger>
+  <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group text-center">
+  <div class="text-5xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="car" class="w-12 h-12 text-supernova-orange"></i></div>
+  <h3 class="font-bold text-slate-800 mb-2">Race Car Bot</h3>
+  <p class="text-sm text-slate-600">Motors and wheels</p>
+  </div>
+  <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group text-center">
+  <div class="text-5xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="bug" class="w-12 h-12 text-supernova-orange"></i></div>
+  <h3 class="font-bold text-slate-800 mb-2">Crawling Bug</h3>
+  <p class="text-sm text-slate-600">Movement patterns</p>
+  </div>
+  <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group text-center">
+  <div class="text-5xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="music" class="w-12 h-12 text-supernova-orange"></i></div>
+  <h3 class="font-bold text-slate-800 mb-2">Music Maker</h3>
+  <p class="text-sm text-slate-600">Sounds and lights</p>
+  </div>
+  <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group text-center">
+  <div class="text-5xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="hand" class="w-12 h-12 text-supernova-orange"></i></div>
+  <h3 class="font-bold text-slate-800 mb-2">Grabber Arm</h3>
+  <p class="text-sm text-slate-600">Servo motors</p>
+  </div>
+  </div>
+  </div>
+  </section>
 
  <!-- Pricing -->
  <section class="py-20 bg-gradient-to-br from-supernova-orange to-pink-500 text-white">
@@ -361,7 +366,7 @@
  <h2 class="text-4xl font-bold font-nunito mb-8">Start Their Journey</h2>
  <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto" data-stagger>
  <!-- Basic Plan -->
- <div class="bg-white rounded-none p-8 border border-gray-200 flex flex-col relative overflow-hidden group hover:border-orange-400 transition-all">
+ <div class="bg-white rounded-none p-8 border border-gray-200 flex flex-col relative overflow-hidden group transition-all">
  <div class="absolute top-0 right-0 bg-orange-900/30 text-orange-600 px-4 py-1 rounded-bl-xl font-bold text-xs uppercase tracking-wide">Starter</div>
  <h3 class="text-2xl font-bold font-nunito text-slate-800 mb-2">Basic Plan</h3>
  <div class="mb-6">
@@ -439,7 +444,7 @@
  </h2>
  </div>
  <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto" data-stagger>
- <a href="scratch-creators.html" class="group bg-slate-50 rounded-none p-6 border border-slate-200 hover:border-orange-500 transition-colors">
+ <a href="scratch-creators.html" class="group bg-slate-50 rounded-none p-6 border border-slate-200 transition-colors">
  <div class="w-12 h-12 bg-orange-900/30 rounded-none flex items-center justify-center mb-4">
  <i data-lucide="gamepad-2" class="w-6 h-6 text-orange-500"></i>
  </div>
@@ -483,81 +488,125 @@
 </section>
 </main>
 
+
+
 <footer class="footer-editorial" role="contentinfo">
-  <!-- Model Viewer Script Loaded Dynamically inside the footer -->
-  <div class="footer-grid">
-    <!-- Brand column with 3D model logo -->
-    <div class="footer-brand-col">
-      <div class="footer-3d-wrapper">
-    <div class="footer-hologram-coin">
-      <div class="coin-glow"></div>
-      <div class="coin-inner">
-        <div class="coin-front">
-          <img src="logo.png" alt="STEMulus Logo">
+    <div class="footer-grid">
+        <!-- Brand column -->
+        <div>
+            <p class="footer-brand-name">STEMulus</p>
+            <p class="footer-brand-tag">Global Coding Academy · Est. 2025</p>
+            <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;line-height:1.75;color:#475569;max-width:320px;">
+                Turning screen time into build time for kids aged 5–17, across three continents. Expert mentors. Real projects. Permanent skills.
+            </p>
         </div>
-        <div class="coin-back">
-          <img src="logo.png" alt="STEMulus Logo">
+
+        <!-- Programs -->
+        <div class="footer-col">
+            <p class="footer-col-title">Programs</p>
+            <a href="scratch-creators.html">Game Creators</a>
+            <a href="python-programming.html">Python Power</a>
+            <a href="web-wizards.html">Web Wizards</a>
+            <a href="arduino-robotics.html">Robotics Lab</a>
+            <a href="creative-coding.html">Creative Coding</a>
+            <a href="ai-machine-learning.html">AI Explorers</a>
         </div>
-      </div>
-    </div>
-  </div>
+
+        <!-- Company -->
+        <div class="footer-col">
+            <p class="footer-col-title">Company</p>
+            <a href="index.html#why-section">Why STEMulus</a>
+            <a href="for-parents.html">For Parents</a>
+            <a href="join-as-tutor.html">Join as a Tutor</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+        </div>
+
+        <!-- Account -->
+        <div class="footer-col">
+            <p class="footer-col-title">Get Started</p>
+            <a href="book-class.html"><strong>Book a Free Class</strong></a>
+            <a href="enroll.html">Enroll Now</a>
+            <a href="programs.html#pricing">Pricing</a>
+            <a href="parent-login.html">Log In</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+        </div>
     </div>
 
-    <!-- Website Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Website</p>
-      <a href="index.html">Home</a>
-      <a href="programs.html">Roadmap</a>
-      <a href="for-parents.html">For Parents</a>
-      <a href="blog.html">Blog</a>
-      <a href="contact.html">Contact</a>
+    <div class="footer-bottom">
+        <p class="footer-legal">© 2026 STEMulus Innovations LTD. All rights reserved.</p>
+        <p class="footer-legal" style="display:flex;align-items:center;gap:0.5rem;">
+            Built with craft, not algorithms
+            <i data-lucide="heart" style="width:12px;height:12px;fill:var(--orange);color:var(--orange);display:inline-block;vertical-align:middle;margin:0 2px;"></i>
+            <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:flex;align-items:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+            </a>
+            <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:flex;align-items:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
+                </svg>
+            </a>
+        </p>
     </div>
-
-    <!-- Social Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Social</p>
-      <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-      <a href="mailto:admin@stemuluskidstech.com">Email Us</a>
-      <a href="join-as-tutor.html">Join as Tutor</a>
-</div>
-
-    <!-- Legal Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Legal</p>
-      <a href="privacy-policy.html">Privacy Policy</a>
-      <a href="privacy-policy.html#terms">Terms of Service</a>
-      <a href="parent-dashboard.html">Parent Login</a>
-      <a href="enroll.html">Enroll Now</a>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <p class="footer-legal-left">©2026 STEMulus Innovations LTD. All rights reserved.</p>
-    <p class="footer-legal-right">
-      Built with craft, not algorithms
-      <i data-lucide="heart" style="width:12px;height:12px;fill:currentColor;color:currentColor;display:inline-block;vertical-align:middle;margin:0 2px;"></i>
-      <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:inline-flex;align-items:center;">
-        <i data-lucide="mail" style="width:18px;height:18px;"></i>
-      </a>
-      <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:inline-flex;align-items:center;">
-        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
-      </a>
-    </p>
-  </div>
-  
-  <!-- Background Text "STEMULUS" stylized bottom watermark -->
-  <div class="footer-bg-text">STEMulus</div>
 </footer>
 <script>
 (function(){var ring=document.getElementById('cursor-ring'),dot=document.getElementById('cursor-dot');if(!ring||!dot)return;var mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();document.querySelectorAll('a,button').forEach(function(el){el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-link');});el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-link');});});})();
-window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.editorial-heading,.prog-card,.feature-item,.stat-num').forEach(function(el,i){gsap.from(el,{y:50,opacity:0,duration:0.9,ease:'power 3.out',delay:(i% 4)*.1,scrollTrigger:{trigger:el,start:'top 88%'}});});});
+window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.editorial-heading,.prog-card,.feature-item,.stat-num').forEach(function(el,i){gsap.from(el,{y:50,opacity:0,duration:0.9,ease:'power3.out',delay:(i% 4)*.1,scrollTrigger:{trigger:el,start:'top 88%'}});});});
 </script>
 
 <script src="mobile-nav.js"></script>
 
 <!-- Floating WhatsApp CTA Button -->
-<a href="https://wa.me/2347052466716?text=Hello% 20STEMulus% 2C% 20I'm% 20interested% 20in% 20a% 20coding% 20class% 20for% 20my% 20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp">
-  <svg viewBox="0 0 448 512" aria-hidden="true">
-  <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-</svg>
+<a href="https://wa.me/2347052466716?text=Hello%20STEMulus%2C%20I'm%20interested%20in%20a%20coding%20class%20for%20my%20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp" style="width: 56px !important; height: 56px !important; max-width: 56px !important; max-height: 56px !important; min-width: 56px !important; min-height: 56px !important;">
+  <svg width="28" height="28" viewBox="0 0 448 512" aria-hidden="true" style="width: 28px !important; height: 28px !important; max-width: 28px !important; max-height: 28px !important; fill: #ffffff !important; display: block !important; flex-shrink: 0 !important;">
+    <path fill="#ffffff" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+  </svg>
 </a>
+
+<script src="assets/js/quick-booking.min.js" defer></script>
+<script src="assets/js/organization-schema.min.js" defer></script>
+<script src="assets/js/course-schema.min.js" defer></script>
+
+<!-- CONVERSION FUNNEL: Mobile Sticky Booking Bar -->
+<div id="mobile-booking-bar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:8000;padding:0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0));background:linear-gradient(135deg,#f4600c,#d4520a);box-shadow:0 -4px 20px rgba(244,96,12,0.35);">
+  <div style="display:flex;gap:8px;align-items:center;">
+    <a href="#" onclick="event.preventDefault();if(typeof QuickBooking!=='undefined'){QuickBooking.open();}else{window.location.href='book-class.html';}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:0.4rem;background:#ffffff;color:#f4600c;font-weight:800;font-size:0.85rem;padding:0.7rem 0.5rem;border-radius:10px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Book Free Trial
+    </a>
+    <a href="https://wa.me/2347052466716?text=Hello%20STEMulus%2C%20I'd%20like%20to%20book%20a%20free%20trial%20class%20for%20my%20child" target="_blank" rel="noopener noreferrer" style="flex:1;display:flex;align-items:center;justify-content:center;gap:0.4rem;background:#25D366;color:#ffffff;font-weight:800;font-size:0.85rem;padding:0.7rem 0.5rem;border-radius:10px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp Chat
+    </a>
+  </div>
+</div>
+<script>
+  (function(){
+    function checkMobile(){ document.getElementById('mobile-booking-bar').style.display = window.innerWidth<=768?'block':'none'; }
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    document.addEventListener('click', function(e){ if(e.target.closest('#quick-booking-modal')) document.getElementById('mobile-booking-bar').style.display='none'; });
+  })();
+</script>
+
+<!-- CONVERSION FUNNEL: Desktop Sticky Floating CTA -->
+<div id="desktop-sticky-cta" style="display:none;position:fixed;bottom:32px;right:90px;z-index:8000;">
+  <a href="#" onclick="event.preventDefault();if(typeof QuickBooking!=='undefined'){QuickBooking.open();}" style="display:inline-flex;align-items:center;gap:0.6rem;background:linear-gradient(135deg,#f4600c,#d4520a);color:#fff;font-weight:800;font-size:0.85rem;padding:0.75rem 1.25rem;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px rgba(244,96,12,0.4);transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 28px rgba(244,96,12,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(244,96,12,0.4)'">
+    Book Free Trial Class →
+  </a>
+</div>
+<script>
+  (function(){
+    var btn = document.getElementById('desktop-sticky-cta');
+    function checkDesktop(){ btn.style.display = window.innerWidth>768?'block':'none'; }
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    var shown = false;
+    window.addEventListener('scroll', function(){ if(window.scrollY>300&&!shown){ btn.style.display=window.innerWidth>768?'block':'none'; shown=true; } else if(window.scrollY<100){ shown=false; btn.style.display='none'; } }, {passive:true});
+  })();
+</script>
+</body>
+</html>

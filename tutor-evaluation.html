@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Tutor Evaluation | STEMulus Kids Tech</title>
+  <meta name="description" content="Share your experience with your STEMulus tutor. Your feedback helps us maintain the highest standard of 1-on-1 coding education.">
+  <meta name="author" content="STEMulus Kids Tech">
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Tutor Evaluation | STEMulus Kids Tech">
+  <meta property="og:description" content="Rate your STEMulus tutor and help us improve 1-on-1 coding education.">
+  <meta property="og:url" content="https://stemuluskidstech.com/tutor-evaluation.html">
+  <meta property="og:site_name" content="STEMulus Kids Tech">
+  <meta property="og:image" content="https://stemuluskidstech.com/assets/images/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tutor Evaluation | STEMulus Kids Tech">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script defer>window.addEventListener('DOMContentLoaded', function() { if (window.lucide) lucide.createIcons(); });</script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/portal-animations.css">
+  <link rel="stylesheet" href="assets/css/3d-svg-icons.css">
+  <script src="assets/js/3d-icons.js" defer></script>
+
+  <style>
+    :root {
+      --orange: #F4600C;
+      --orange-light: #FB923C;
+      --navy: #1A237E;
+      --navy-mid: #283593;
+      --bg: #f8fafc;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body, html { background-color: var(--bg) !important; color: var(--text) !important; font-family: 'DM Sans', sans-serif; margin: 0; }
+
+    /* ── NAV ── */
+    .eval-nav {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 40;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    .eval-nav-inner {
+      max-width: 860px; margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo-badge {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--orange), var(--navy));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; color: white;
+    }
+    .nav-logo-text { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 17px; color: var(--text); }
+    .nav-logo-text span { color: var(--orange); }
+    .nav-label {
+      font-size: 13px; font-weight: 700; color: var(--muted);
+      background: #f1f5f9; padding: 6px 14px; border-radius: 20px;
+    }
+    .nav-back {
+      font-size: 13px; font-weight: 700; color: var(--orange);
+      text-decoration: none; display: flex; align-items: center; gap: 5px;
+      transition: opacity 0.2s;
+    }
+    .nav-back:hover { opacity: 0.75; }
+
+    /* ── HERO ── */
+    .eval-hero {
+      background: linear-gradient(135deg, var(--orange) 0%, #c94a08 40%, var(--navy) 100%);
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .eval-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.08) 0%, transparent 60%);
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 600px; margin: 0 auto; }
+    .hero-star-img {
+      width: 80px; height: 80px; object-fit: contain;
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.25));
+      margin-bottom: 1rem;
+    }
+    .hero-title {
+      font-family: 'Nunito', sans-serif; font-weight: 800;
+      font-size: clamp(1.75rem, 5vw, 2.5rem); color: white; margin: 0 0 0.5rem;
+    }
+    .hero-sub { font-size: 1rem; color: rgba(255,255,255,0.88); margin: 0; line-height: 1.6; }
+
+    /* ── FORM WRAPPER ── */
+    .eval-wrap { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+    /* ── CARD ── */
+    .eval-card {
+      background: white; border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+      padding: 2rem; margin-bottom: 1.5rem;
+    }
+    .section-heading {
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.05rem;
+      color: var(--text); margin: 0 0 0.35rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .section-heading .step-dot {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--orange), var(--orange-light));
+      color: white; font-size: 0.72rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .section-desc { font-size: 0.82rem; color: var(--muted); margin: 0 0 1.5rem; line-height: 1.6; padding-left: 2.25rem; }
+
+    /* ── FIELD STYLES ── */
+    .field-label {
+      display: block; font-size: 0.7rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--muted); margin-bottom: 0.45rem;
+    }
+    .field-input {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
+      border-radius: 12px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; color: var(--text); background: #f8fafc;
+      outline: none; transition: all 0.2s; appearance: none;
+    }
+    .field-input:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(244,96,12,0.1); background: white; }
+    textarea.field-input { min-height: 110px; resize: vertical; line-height: 1.7; }
+
+    /* ── TOGGLE BUTTONS ── */
+    .toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .toggle-btn {
+      padding: 9px 20px; border-radius: 10px; border: 1.5px solid var(--border);
+      font-weight: 700; font-size: 0.85rem; cursor: pointer;
+      background: #f8fafc; color: var(--muted); transition: all 0.18s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .toggle-btn:hover { border-color: var(--orange); color: var(--orange); }
+    .toggle-btn.active {
+      background: var(--orange); border-color: var(--orange);
+      color: white; box-shadow: 0 3px 12px rgba(244,96,12,0.3);
+    }
+
+    /* ── STAR RATING ── */
+    .rating-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1.1rem; background: #f8fafc; border-radius: 16px;
+      border: 1.5px solid var(--border); margin-bottom: 0.75rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .rating-item:hover { background: white; border-color: #fbd5c0; }
+    .rating-icon {
+      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #fff7f3, #ffe9df);
+      color: var(--orange); font-size: 1.1rem;
+    }
+    .rating-info { flex: 1; min-width: 0; }
+    .rating-label { font-weight: 800; font-size: 0.9rem; color: var(--text); margin: 0 0 2px; }
+    .rating-desc { font-size: 0.75rem; color: var(--muted); margin: 0 0 0.6rem; }
+    .stars { display: flex; gap: 4px; }
+    .star-btn {
+      background: none; border: none; cursor: pointer; padding: 2px;
+      font-size: 1.4rem; line-height: 1; color: #d1d5db;
+      transition: color 0.15s, transform 0.12s;
+    }
+    .star-btn:hover { transform: scale(1.2); }
+    .star-btn.filled, .star-btn.preview { color: var(--orange); }
+
+    /* Average Badge */
+    #avg-badge {
+      display: none; background: linear-gradient(135deg, var(--orange), var(--orange-light));
+      color: white; border-radius: 12px; padding: 0.75rem 1.25rem;
+      font-weight: 800; font-size: 0.95rem;
+      text-align: center; margin-top: 1rem;
+      box-shadow: 0 4px 14px rgba(244,96,12,0.25);
+    }
+
+    /* ── SKILL CHIPS ── */
+    .skill-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-chip {
+      padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border);
+      font-size: 0.82rem; font-weight: 700; cursor: pointer;
+      background: #f8fafc; color: var(--muted);
+      transition: all 0.18s; font-family: 'DM Sans', sans-serif;
+    }
+    .skill-chip:hover { border-color: var(--orange); color: var(--orange); }
+    .skill-chip.selected {
+      background: rgba(244,96,12,0.1); border-color: var(--orange);
+      color: var(--orange);
+    }
+
+    /* ── NPS SLIDER ── */
+    .nps-wrap { position: relative; }
+    .nps-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); margin-top: 4px; }
+    input[type="range"].nps-range {
+      width: 100%; height: 8px; appearance: none;
+      border-radius: 4px; outline: none; cursor: pointer;
+    }
+    input[type="range"].nps-range::-webkit-slider-thumb {
+      appearance: none; width: 22px; height: 22px; border-radius: 50%;
+      background: white; border: 3px solid var(--orange);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer;
+    }
+    #nps-val-display {
+      display: inline-block; padding: 4px 12px; border-radius: 20px;
+      font-weight: 800; font-size: 1rem; margin-top: 8px;
+      border: 2px solid currentColor;
+    }
+
+    /* ── EXPERIENCE CARDS ── */
+    .exp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    @media (max-width: 500px) { .exp-grid { grid-template-columns: 1fr; } }
+    .exp-card {
+      border: 2px solid var(--border); border-radius: 16px; padding: 1.25rem;
+      text-align: center; cursor: pointer; transition: all 0.2s;
+      background: #f8fafc;
+    }
+    .exp-card:hover { border-color: var(--orange); background: white; }
+    .exp-card.selected { border-color: var(--orange); background: rgba(244,96,12,0.06); }
+    .exp-card.selected .exp-icon { transform: scale(1.1); }
+    .exp-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; transition: transform 0.2s; }
+    .exp-label { font-weight: 800; font-size: 0.88rem; color: var(--text); margin-bottom: 2px; }
+    .exp-sub { font-size: 0.72rem; color: var(--muted); }
+
+    /* ── SUBMIT BUTTON ── */
+    .submit-btn {
+      width: 100%; padding: 1rem 2rem; border: none; border-radius: 14px;
+      background: linear-gradient(135deg, var(--orange), #e5540a);
+      color: white; font-family: 'Nunito', sans-serif; font-weight: 800;
+      font-size: 1.1rem; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; gap: 10px; transition: all 0.2s;
+      box-shadow: 0 6px 20px rgba(244,96,12,0.35);
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(244,96,12,0.4); }
+    .submit-btn:active { transform: translateY(0); }
+    .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+    /* ── SUCCESS STATE ── */
+    #eval-success {
+      display: none; text-align: center;
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      border: 1px solid #a7f3d0; border-radius: 20px;
+      padding: 3rem 2rem; max-width: 860px; margin: 2rem auto;
+    }
+    .checkmark-circle {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, #10b981, #059669);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 8px 24px rgba(16,185,129,0.3);
+      animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes pop-in { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .success-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.6rem; color: #065f46; margin: 0 0 0.5rem; }
+    .success-sub { color: #047857; font-size: 0.95rem; margin: 0 0 2rem; }
+    .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 12px;
+      background: #25d366; color: white; font-weight: 700; font-size: 0.9rem;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
+    .btn-home {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 12px;
+      background: white; color: var(--navy); font-weight: 700; font-size: 0.9rem;
+      text-decoration: none; border: 2px solid var(--border); transition: all 0.2s;
+    }
+    .btn-home:hover { border-color: var(--navy); transform: translateY(-1px); }
+
+    /* ── CONFETTI ── */
+    .confetti-piece {
+      position: fixed; width: 8px; height: 8px; border-radius: 2px;
+      animation: confetti-fall linear forwards;
+      pointer-events: none; z-index: 9999;
+    }
+    @keyframes confetti-fall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ── VALIDATION ERROR ── */
+    .field-error { font-size: 0.72rem; color: #ef4444; margin-top: 4px; display: none; }
+    .field-input.error, input.error, textarea.error { border-color: #ef4444 !important; }
+
+    /* ── LOADING STATE ── */
+    .loading-spinner {
+      display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── TESTIMONIAL PERMISSION ── */
+    #testimonial-name-wrap { display: none; margin-top: 0.75rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .eval-card { padding: 1.25rem; }
+      .eval-hero { padding: 2rem 1.25rem 2rem; }
+    }
+    @media (max-width: 400px) {
+      .nav-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="eval-nav" role="navigation">
+  <div class="eval-nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="STEMulus home">
+      <div class="nav-logo-badge">S</div>
+      <span class="nav-logo-text">STEM<span>ulus</span></span>
+    </a>
+    <span class="nav-label">Tutor Evaluation</span>
+    <a href="https://stemuluskidstech.com" class="nav-back" aria-label="Back to main site">
+      <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+      stemuluskidstech.com
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="eval-hero">
+  <div class="hero-content">
+    <img src="images/portal/standalone/star-badge-3d.png"
+         onerror="this.style.display='none'"
+         alt="Star badge" class="hero-star-img" loading="eager">
+    <h1 class="hero-title">Rate Your Tutor</h1>
+    <p class="hero-sub">Your feedback helps us maintain the highest standard of 1-on-1 tutoring</p>
+  </div>
+</header>
+
+<!-- MAIN FORM AREA -->
+<div class="eval-wrap">
+
+  <!-- NETLIFY FORM (with honeypot) -->
+  <form
+    id="eval-form"
+    name="tutor-evaluation"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    novalidate
+  >
+    <!-- Netlify hidden fields -->
+    <input type="hidden" name="form-name" value="tutor-evaluation">
+    <!-- Honeypot -->
+    <div aria-hidden="true" style="display:none;">
+      <label>Don't fill this out if you're human: <input name="bot-field"></label>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         SECTION 1 — Evaluator Info
+    ════════════════════════════════════════ -->
+    <div class="eval-card">
+      <h2 class="section-heading">
+        <span class="step-dot">1</span>
+        About You
+      </h2>
+      <p class="section-desc">Tell us a little about yourself so we can file this evaluation correctly.</p>
+
+      <!-- Who is evaluating? -->
+      <div style="margin-bottom:1.25rem;">
+        <label class="field-label">Who is giving this evaluation?</label>
+        <div class="toggle-group" id="evaluator-type-group" role="group" aria-label="Evaluator type">
+          <button type="button" class="toggle-btn active" data-value="parent">Parent / Guardian</button>
+          <button type="button" class="toggle-btn" data-value="admin">Admin</button>
+        </div>
+        <input type="hidden" name="evaluatorType" id="evaluator-type-val" value="parent">
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <div>
+          <label class="field-label" for="eval-your-name">Your Name <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="eval-your-name" name="yourName" class="field-input" placeholder="e.g. Jane Okafor" autocomplete="name" required>
+          <span class="field-error" id="err-your-name">Please enter your name.</span>
+        </div>
+        <div>
+          <label class="field-label" for="eval-email">Your Email <span style="color:#ef4444;">*</span></label>
+          <input type="email" id="eval-email" name="yourEmail" class="field-input" placeholder="jane@example.com" autocomplete="email" required>
+          <span class="field-error" id="err-email">Please enter a valid email.</span>
+        </div>
+        <div>
+          <label class="field-label" for="eval-student-name">Student / Child Name <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="eval-student-name" name="studentName" class="field-input" placeholder="e.g. Daniel Adeyemi" required>
+          <span class="field-error" id="err-student-name">Please enter the student's name.</span>
+        </div>
+        <div>
+          <label class="field-label" for="eval-tutor-name">Tutor Name (if known)</label>
+          <input type="text" id="eval-tutor-name" name="tutorName" class="field-input" placeholder="e.g. Sarah Okonkwo">
+        </div>
+      </div>
+
+      <div style="margin-top:1rem;">
+        <label class="field-label" for="eval-session-date">Session Date / Date Range</label>
+        <input type="date" id="eval-session-date" name="sessionDate" class="field-input" style="max-width:240px;">
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         SECTION 2 — Star Ratings
+    ════════════════════════════════════════ -->
+    <div class="eval-card">
+      <h2 class="section-heading">
+        <span class="step-dot">2</span>
+        Performance Ratings
+      </h2>
+      <p class="section-desc">Rate your tutor on each of the 5 criteria below. At least 3 ratings are required.</p>
+
+      <div id="ratings-list">
+
+        <div class="rating-item" data-criterion="teachingQuality">
+          <div class="rating-icon"><i data-lucide="graduation-cap" style="width:20px;height:20px;"></i></div>
+          <div class="rating-info">
+            <p class="rating-label">Teaching Quality</p>
+            <p class="rating-desc">Clear explanations, age-appropriate pace</p>
+            <div class="stars" role="group" aria-label="Teaching Quality rating">
+              <button type="button" class="star-btn" data-val="1" aria-label="1 star">&#9733;</button>
+              <button type="button" class="star-btn" data-val="2" aria-label="2 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="3" aria-label="3 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="4" aria-label="4 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="5" aria-label="5 stars">&#9733;</button>
+            </div>
+          </div>
+          <input type="hidden" name="ratingTeachingQuality" class="rating-val" value="">
+        </div>
+
+        <div class="rating-item" data-criterion="punctuality">
+          <div class="rating-icon"><i data-lucide="clock" style="width:20px;height:20px;"></i></div>
+          <div class="rating-info">
+            <p class="rating-label">Punctuality &amp; Reliability</p>
+            <p class="rating-desc">Always on time, consistent sessions</p>
+            <div class="stars" role="group" aria-label="Punctuality rating">
+              <button type="button" class="star-btn" data-val="1" aria-label="1 star">&#9733;</button>
+              <button type="button" class="star-btn" data-val="2" aria-label="2 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="3" aria-label="3 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="4" aria-label="4 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="5" aria-label="5 stars">&#9733;</button>
+            </div>
+          </div>
+          <input type="hidden" name="ratingPunctuality" class="rating-val" value="">
+        </div>
+
+        <div class="rating-item" data-criterion="engagement">
+          <div class="rating-icon"><i data-lucide="zap" style="width:20px;height:20px;"></i></div>
+          <div class="rating-info">
+            <p class="rating-label">Student Engagement</p>
+            <p class="rating-desc">Keeps child motivated and interested</p>
+            <div class="stars" role="group" aria-label="Engagement rating">
+              <button type="button" class="star-btn" data-val="1" aria-label="1 star">&#9733;</button>
+              <button type="button" class="star-btn" data-val="2" aria-label="2 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="3" aria-label="3 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="4" aria-label="4 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="5" aria-label="5 stars">&#9733;</button>
+            </div>
+          </div>
+          <input type="hidden" name="ratingEngagement" class="rating-val" value="">
+        </div>
+
+        <div class="rating-item" data-criterion="communication">
+          <div class="rating-icon"><i data-lucide="message-circle" style="width:20px;height:20px;"></i></div>
+          <div class="rating-info">
+            <p class="rating-label">Communication</p>
+            <p class="rating-desc">Updates parents, responds promptly</p>
+            <div class="stars" role="group" aria-label="Communication rating">
+              <button type="button" class="star-btn" data-val="1" aria-label="1 star">&#9733;</button>
+              <button type="button" class="star-btn" data-val="2" aria-label="2 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="3" aria-label="3 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="4" aria-label="4 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="5" aria-label="5 stars">&#9733;</button>
+            </div>
+          </div>
+          <input type="hidden" name="ratingCommunication" class="rating-val" value="">
+        </div>
+
+        <div class="rating-item" data-criterion="technicalKnowledge">
+          <div class="rating-icon"><i data-lucide="code-2" style="width:20px;height:20px;"></i></div>
+          <div class="rating-info">
+            <p class="rating-label">Technical Knowledge</p>
+            <p class="rating-desc">Strong command of the subject matter</p>
+            <div class="stars" role="group" aria-label="Technical Knowledge rating">
+              <button type="button" class="star-btn" data-val="1" aria-label="1 star">&#9733;</button>
+              <button type="button" class="star-btn" data-val="2" aria-label="2 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="3" aria-label="3 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="4" aria-label="4 stars">&#9733;</button>
+              <button type="button" class="star-btn" data-val="5" aria-label="5 stars">&#9733;</button>
+            </div>
+          </div>
+          <input type="hidden" name="ratingTechnicalKnowledge" class="rating-val" value="">
+        </div>
+
+      </div><!-- /#ratings-list -->
+
+      <!-- Average badge -->
+      <div id="avg-badge" role="status" aria-live="polite">
+        Average Score: <span id="avg-val">—</span> / 5.0
+      </div>
+      <input type="hidden" name="averageRating" id="avg-hidden-val" value="">
+      <span class="field-error" id="err-ratings" style="display:none;">Please rate at least 3 criteria.</span>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         SECTION 3 — Skill Assessment
+    ════════════════════════════════════════ -->
+    <div class="eval-card">
+      <h2 class="section-heading">
+        <span class="step-dot">3</span>
+        Skill Assessment
+      </h2>
+      <p class="section-desc">What did your child learn or improve during their sessions? Select all that apply.</p>
+
+      <div class="skill-grid" id="skill-grid" role="group" aria-label="Skills learned">
+        <button type="button" class="skill-chip" data-skill="Problem Solving">Problem Solving</button>
+        <button type="button" class="skill-chip" data-skill="Logical Thinking">Logical Thinking</button>
+        <button type="button" class="skill-chip" data-skill="Creativity">Creativity</button>
+        <button type="button" class="skill-chip" data-skill="Debugging Skills">Debugging Skills</button>
+        <button type="button" class="skill-chip" data-skill="Coding Confidence">Coding Confidence</button>
+        <button type="button" class="skill-chip" data-skill="Project Completion">Project Completion</button>
+        <button type="button" class="skill-chip" data-skill="Algorithm Understanding">Algorithm Understanding</button>
+        <button type="button" class="skill-chip" data-skill="Communication Skills">Communication Skills</button>
+        <button type="button" class="skill-chip" data-skill="Teamwork">Teamwork</button>
+        <button type="button" class="skill-chip" data-skill="Self-Motivation">Self-Motivation</button>
+      </div>
+      <input type="hidden" name="skillsLearned" id="skills-hidden" value="">
+    </div>
+
+    <!-- ════════════════════════════════════════
+         SECTION 4 — Written Feedback
+    ════════════════════════════════════════ -->
+    <div class="eval-card">
+      <h2 class="section-heading">
+        <span class="step-dot">4</span>
+        Written Feedback
+      </h2>
+      <p class="section-desc">Help us understand your experience in your own words.</p>
+
+      <div style="margin-bottom:1.25rem;">
+        <label class="field-label" for="eval-strengths">What did your tutor do exceptionally well? <span style="color:#ef4444;">*</span></label>
+        <textarea id="eval-strengths" name="tutorStrengths" class="field-input" rows="3" placeholder="e.g. She was always patient, explained concepts in fun ways, and my son looked forward to every session..." required></textarea>
+        <span class="field-error" id="err-strengths">Please share what went well.</span>
+      </div>
+
+      <div style="margin-bottom:1.25rem;">
+        <label class="field-label" for="eval-improvements">What could be improved? <span style="color:var(--muted); font-weight:600; text-transform:none; font-size:0.7rem;">(optional)</span></label>
+        <textarea id="eval-improvements" name="tutorImprovements" class="field-input" rows="3" placeholder="Any constructive feedback helps us grow..."></textarea>
+      </div>
+
+      <div style="margin-bottom:1.25rem;">
+        <label class="field-label">Would you recommend this tutor to other parents?</label>
+        <div class="toggle-group" id="recommend-group" role="group">
+          <button type="button" class="toggle-btn" data-value="yes">Yes, definitely</button>
+          <button type="button" class="toggle-btn" data-value="maybe">Maybe</button>
+          <button type="button" class="toggle-btn" data-value="no">Not at this time</button>
+        </div>
+        <input type="hidden" name="wouldRecommend" id="recommend-val" value="">
+      </div>
+
+      <div>
+        <label class="field-label">May we share your feedback as a testimonial?</label>
+        <div class="toggle-group" id="testimonial-group" role="group">
+          <button type="button" class="toggle-btn" data-value="yes">Yes, go ahead</button>
+          <button type="button" class="toggle-btn" data-value="no">No, keep private</button>
+        </div>
+        <input type="hidden" name="testimonialPermission" id="testimonial-val" value="">
+
+        <div id="testimonial-name-wrap">
+          <label class="field-label" for="testimonial-display-name" style="margin-top:0.75rem;">Display Name for Testimonial</label>
+          <input type="text" id="testimonial-display-name" name="testimonialDisplayName" class="field-input" placeholder='e.g. "Jane O." or "A Parent from Lagos"' style="max-width:340px;">
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         SECTION 5 — Overall Experience
+    ════════════════════════════════════════ -->
+    <div class="eval-card">
+      <h2 class="section-heading">
+        <span class="step-dot">5</span>
+        Overall Experience
+      </h2>
+      <p class="section-desc">Two final questions about your overall STEMulus experience.</p>
+
+      <!-- NPS Slider -->
+      <div style="margin-bottom:1.75rem;">
+        <label class="field-label" for="nps-slider">
+          How likely are you to recommend STEMulus to a friend?
+        </label>
+        <div class="nps-wrap">
+          <input type="range" id="nps-slider" name="npsScore" class="nps-range" min="0" max="10" value="7" aria-valuemin="0" aria-valuemax="10" aria-valuenow="7">
+        </div>
+        <div class="nps-labels">
+          <span>0 — Not at all</span>
+          <div>
+            <span id="nps-val-display" style="color:#16a34a; border-color:#16a34a;">7</span>
+          </div>
+          <span>10 — Absolutely!</span>
+        </div>
+      </div>
+
+      <!-- Experience Cards -->
+      <div>
+        <label class="field-label" style="margin-bottom:0.75rem;">How would you describe your overall experience?</label>
+        <div class="exp-grid" id="exp-grid" role="group" aria-label="Overall experience">
+          <div class="exp-card" data-value="excellent" tabindex="0" role="button" aria-pressed="false">
+            <span class="exp-icon" data-icon-3d="star" data-icon-size="32"></span>
+            <p class="exp-label">Excellent</p>
+            <p class="exp-sub">Exceeded expectations</p>
+          </div>
+          <div class="exp-card" data-value="good" tabindex="0" role="button" aria-pressed="false">
+            <span class="exp-icon" data-icon-3d="check" data-icon-size="32"></span>
+            <p class="exp-label">Good</p>
+            <p class="exp-sub">Met expectations</p>
+          </div>
+          <div class="exp-card" data-value="needs-improvement" tabindex="0" role="button" aria-pressed="false">
+            <span class="exp-icon" data-icon-3d="target" data-icon-size="32"></span>
+            <p class="exp-label">Needs Improvement</p>
+            <p class="exp-sub">Room to grow</p>
+          </div>
+        </div>
+        <input type="hidden" name="overallExperience" id="exp-val" value="">
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="eval-card" style="text-align:center; background:linear-gradient(135deg, #fff7f3, #fff);">
+      <button type="submit" class="submit-btn" id="submit-btn">
+        <i data-lucide="send" style="width:20px;height:20px;"></i>
+        <span id="submit-label">Submit Evaluation</span>
+        <span id="submit-spinner" class="loading-spinner" style="display:none;"></span>
+      </button>
+      <p style="font-size:0.75rem; color:var(--muted); margin-top:0.75rem;">Your feedback is reviewed within 24 hours. Thank you for taking the time.</p>
+    </div>
+
+  </form><!-- /#eval-form -->
+
+  <!-- SUCCESS STATE -->
+  <div id="eval-success" role="alert" aria-live="assertive">
+    <div class="checkmark-circle">
+      <i data-lucide="check" style="width:36px;height:36px;color:white;stroke-width:3;"></i>
+    </div>
+    <h2 class="success-title">Thank You for Your Feedback!</h2>
+    <p class="success-sub">Your evaluation helps us improve. We'll review it within 24 hours.</p>
+    <div class="success-actions">
+      <a id="wa-share-btn" href="#" class="btn-wa" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M5.077 0C2.289 0 0 2.29 0 5.077v13.846C0 21.711 2.29 24 5.077 24h13.846C21.711 24 24 21.71 24 18.923V5.077C24 2.289 21.71 0 18.923 0H5.077zm6.923 17.385a7.685 7.685 0 01-3.662-.925L4.615 17.77l1.332-3.635a7.692 7.692 0 118.053 3.25z"/></svg>
+        Share on WhatsApp
+      </a>
+      <a href="index.html" class="btn-home">
+        <i data-lucide="home" style="width:16px;height:16px;"></i>
+        Return Home
+      </a>
+    </div>
+  </div>
+
+</div><!-- /.eval-wrap -->
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="assets/js/firebase-config.min.js" defer></script>
+<script src="assets/js/dashboard-engine.min.js" defer></script>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── INIT ──────────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.lucide) lucide.createIcons();
+    initEvaluatorTypeToggle();
+    initStarRatings();
+    initSkillChips();
+    initToggleGroups();
+    initNpsSlider();
+    initExpCards();
+    initFormSubmit();
+    // Set today as default date
+    var dateInput = document.getElementById('eval-session-date');
+    if (dateInput) {
+      dateInput.value = new Date().toISOString().split('T')[0];
+    }
+  });
+
+  // ── EVALUATOR TYPE TOGGLE ─────────────────────────────────────────────
+  function initEvaluatorTypeToggle() {
+    var group = document.getElementById('evaluator-type-group');
+    var hidden = document.getElementById('evaluator-type-val');
+    if (!group) return;
+    group.querySelectorAll('.toggle-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        group.querySelectorAll('.toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        hidden.value = btn.dataset.value;
+      });
+    });
+  }
+
+  // ── STAR RATINGS ──────────────────────────────────────────────────────
+  var ratingValues = {};
+
+  function initStarRatings() {
+    document.querySelectorAll('.rating-item').forEach(function(item) {
+      var criterion = item.dataset.criterion;
+      var stars = item.querySelectorAll('.star-btn');
+      var hiddenInput = item.querySelector('.rating-val');
+      ratingValues[criterion] = 0;
+
+      stars.forEach(function(star, idx) {
+        // Hover: preview
+        star.addEventListener('mouseenter', function() {
+          stars.forEach(function(s, i) {
+            s.classList.toggle('preview', i <= idx);
+            s.classList.remove('filled');
+          });
+        });
+        // Mouse leave: restore filled state
+        item.addEventListener('mouseleave', function() {
+          restoreFilledStars(stars, ratingValues[criterion]);
+        });
+        // Click
+        star.addEventListener('click', function() {
+          var val = parseInt(star.dataset.val, 10);
+          if (ratingValues[criterion] === val) {
+            // Click same star: reset
+            ratingValues[criterion] = 0;
+            hiddenInput.value = '';
+          } else {
+            ratingValues[criterion] = val;
+            hiddenInput.value = val;
+          }
+          restoreFilledStars(stars, ratingValues[criterion]);
+          updateAverageBadge();
+        });
+      });
+    });
+  }
+
+  function restoreFilledStars(stars, val) {
+    stars.forEach(function(s, i) {
+      s.classList.remove('preview');
+      s.classList.toggle('filled', i < val);
+    });
+  }
+
+  function updateAverageBadge() {
+    var vals = Object.values(ratingValues).filter(function(v) { return v > 0; });
+    var badge = document.getElementById('avg-badge');
+    var avgEl = document.getElementById('avg-val');
+    var avgHidden = document.getElementById('avg-hidden-val');
+    if (vals.length === 0) {
+      badge.style.display = 'none';
+      avgHidden.value = '';
+      return;
+    }
+    var avg = (vals.reduce(function(a, b) { return a + b; }, 0) / vals.length).toFixed(1);
+    avgEl.textContent = avg;
+    avgHidden.value = avg;
+    badge.style.display = 'block';
+  }
+
+  // ── SKILL CHIPS ───────────────────────────────────────────────────────
+  function initSkillChips() {
+    var grid = document.getElementById('skill-grid');
+    var hidden = document.getElementById('skills-hidden');
+    if (!grid) return;
+    grid.querySelectorAll('.skill-chip').forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        chip.classList.toggle('selected');
+        var selected = Array.from(grid.querySelectorAll('.skill-chip.selected')).map(function(c) {
+          return c.dataset.skill;
+        });
+        hidden.value = selected.join(', ');
+      });
+    });
+  }
+
+  // ── GENERIC TOGGLE GROUPS (recommend / testimonial) ───────────────────
+  function initToggleGroups() {
+    ['recommend', 'testimonial'].forEach(function(id) {
+      var group = document.getElementById(id + '-group');
+      var hidden = document.getElementById(id + '-val');
+      if (!group || !hidden) return;
+      group.querySelectorAll('.toggle-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          group.querySelectorAll('.toggle-btn').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          hidden.value = btn.dataset.value;
+          // Show/hide testimonial name field
+          if (id === 'testimonial') {
+            var nameWrap = document.getElementById('testimonial-name-wrap');
+            if (nameWrap) nameWrap.style.display = btn.dataset.value === 'yes' ? 'block' : 'none';
+          }
+        });
+      });
+    });
+  }
+
+  // ── NPS SLIDER ────────────────────────────────────────────────────────
+  function initNpsSlider() {
+    var slider = document.getElementById('nps-slider');
+    var display = document.getElementById('nps-val-display');
+    if (!slider || !display) return;
+
+    function updateNps(val) {
+      display.textContent = val;
+      var color, bg;
+      if (val <= 6) {
+        color = '#dc2626'; bg = 'linear-gradient(90deg, #fca5a5, #f87171)';
+      } else if (val <= 8) {
+        color = '#d97706'; bg = 'linear-gradient(90deg, #fde68a, #fbbf24)';
+      } else {
+        color = '#16a34a'; bg = 'linear-gradient(90deg, #86efac, #4ade80)';
+      }
+      display.style.color = color;
+      display.style.borderColor = color;
+      slider.style.background = bg;
+    }
+
+    slider.addEventListener('input', function() { updateNps(parseInt(this.value, 10)); });
+    updateNps(parseInt(slider.value, 10));
+  }
+
+  // ── EXPERIENCE CARDS ──────────────────────────────────────────────────
+  function initExpCards() {
+    var grid = document.getElementById('exp-grid');
+    var hidden = document.getElementById('exp-val');
+    if (!grid) return;
+    grid.querySelectorAll('.exp-card').forEach(function(card) {
+      function activate() {
+        grid.querySelectorAll('.exp-card').forEach(function(c) {
+          c.classList.remove('selected');
+          c.setAttribute('aria-pressed', 'false');
+        });
+        card.classList.add('selected');
+        card.setAttribute('aria-pressed', 'true');
+        hidden.value = card.dataset.value;
+      }
+      card.addEventListener('click', activate);
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+      });
+    });
+  }
+
+  // ── FORM VALIDATION ───────────────────────────────────────────────────
+  function validate() {
+    var ok = true;
+
+    function showErr(id, show) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = show ? 'block' : 'none';
+    }
+    function fieldErr(inputId, errId, condition) {
+      var inp = document.getElementById(inputId);
+      if (inp) inp.classList.toggle('error', condition);
+      showErr(errId, condition);
+      if (condition) ok = false;
+    }
+
+    // Name
+    var yourName = (document.getElementById('eval-your-name') || {}).value || '';
+    fieldErr('eval-your-name', 'err-your-name', yourName.trim().length < 2);
+
+    // Email
+    var email = (document.getElementById('eval-email') || {}).value || '';
+    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+    fieldErr('eval-email', 'err-email', !emailOk);
+
+    // Student name
+    var studentName = (document.getElementById('eval-student-name') || {}).value || '';
+    fieldErr('eval-student-name', 'err-student-name', studentName.trim().length < 2);
+
+    // At least 3 star ratings
+    var ratedCount = Object.values(ratingValues).filter(function(v) { return v > 0; }).length;
+    showErr('err-ratings', ratedCount < 3);
+    if (ratedCount < 3) ok = false;
+
+    // Strengths
+    var strengths = (document.getElementById('eval-strengths') || {}).value || '';
+    fieldErr('eval-strengths', 'err-strengths', strengths.trim().length < 5);
+
+    return ok;
+  }
+
+  // ── CONFETTI ──────────────────────────────────────────────────────────
+  function launchConfetti() {
+    var colors = ['#F4600C', '#1A237E', '#FBBF24', '#34D399', '#818CF8', '#FB923C'];
+    for (var i = 0; i < 90; i++) {
+      (function(delay) {
+        setTimeout(function() {
+          var piece = document.createElement('div');
+          piece.className = 'confetti-piece';
+          piece.style.cssText = [
+            'left:' + (Math.random() * 100) + 'vw',
+            'background:' + colors[Math.floor(Math.random() * colors.length)],
+            'width:' + (6 + Math.random() * 6) + 'px',
+            'height:' + (6 + Math.random() * 6) + 'px',
+            'animation-duration:' + (1.5 + Math.random() * 2) + 's',
+            'border-radius:' + (Math.random() > 0.5 ? '50%' : '2px')
+          ].join(';');
+          document.body.appendChild(piece);
+          setTimeout(function() { piece.remove(); }, 4000);
+        }, delay);
+      })(i * 25);
+    }
+  }
+
+  // ── FORM SUBMIT ───────────────────────────────────────────────────────
+  function initFormSubmit() {
+    var form = document.getElementById('eval-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!validate()) {
+        // Scroll to first error
+        var firstError = form.querySelector('.error, .field-error[style*="block"]');
+        if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      var submitBtn = document.getElementById('submit-btn');
+      var submitLabel = document.getElementById('submit-label');
+      var submitSpinner = document.getElementById('submit-spinner');
+      submitBtn.disabled = true;
+      submitLabel.textContent = 'Sending...';
+      submitSpinner.style.display = 'inline-block';
+
+      // Gather all data
+      var evalData = {
+        evaluatorType: document.getElementById('evaluator-type-val').value,
+        yourName: document.getElementById('eval-your-name').value.trim(),
+        yourEmail: document.getElementById('eval-email').value.trim(),
+        studentName: document.getElementById('eval-student-name').value.trim(),
+        tutorName: document.getElementById('eval-tutor-name').value.trim(),
+        sessionDate: document.getElementById('eval-session-date').value,
+        ratings: Object.assign({}, ratingValues),
+        averageRating: document.getElementById('avg-hidden-val').value,
+        skillsLearned: document.getElementById('skills-hidden').value,
+        tutorStrengths: document.getElementById('eval-strengths').value.trim(),
+        tutorImprovements: document.getElementById('eval-improvements').value.trim(),
+        wouldRecommend: document.getElementById('recommend-val').value,
+        testimonialPermission: document.getElementById('testimonial-val').value,
+        testimonialDisplayName: (document.getElementById('testimonial-display-name') || {}).value || '',
+        npsScore: document.getElementById('nps-slider').value,
+        overallExperience: document.getElementById('exp-val').value,
+        submittedAt: new Date().toISOString()
+      };
+
+      // 1 — Netlify Forms (native form POST)
+      var netlifyPromise = fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString()
+      }).catch(function(err) { console.warn('Netlify form post failed:', err); });
+
+      // 2 — Netlify Function email alert
+      var emailPromise = fetch('/.netlify/functions/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'custom',
+          data: {
+            to: 'admin@stemuluskidstech.com',
+            subject: '[Tutor Evaluation] ' + (evalData.tutorName || 'Unknown Tutor') +
+                     ' — by ' + evalData.yourName,
+            body: JSON.stringify(evalData, null, 2)
+          }
+        })
+      }).catch(function(err) { console.warn('Email function failed:', err); });
+
+      // 3 — Firestore (if Firebase loaded)
+      var firestorePromise = Promise.resolve();
+      if (typeof firebase !== 'undefined' && firebase.firestore) {
+        firestorePromise = firebase.firestore()
+          .collection('tutor_evaluations')
+          .add(Object.assign({}, evalData, {
+            submittedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }))
+          .catch(function(err) { console.warn('Firestore save failed:', err); });
+      }
+
+      Promise.all([netlifyPromise, emailPromise, firestorePromise]).finally(function() {
+        // Show success regardless (graceful degradation)
+        submitBtn.disabled = false;
+        submitLabel.textContent = 'Submit Evaluation';
+        submitSpinner.style.display = 'none';
+
+        // Hide form, show success
+        document.getElementById('eval-form').style.display = 'none';
+        var successEl = document.getElementById('eval-success');
+        successEl.style.display = 'block';
+        successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (window.lucide) lucide.createIcons();
+
+        // WhatsApp share
+        var waBtn = document.getElementById('wa-share-btn');
+        if (waBtn) {
+          var waMsg = encodeURIComponent(
+            'I just submitted a tutor evaluation for STEMulus Kids Tech! ' +
+            'Great coding program for kids. Check it out: https://stemuluskidstech.com'
+          );
+          waBtn.href = 'https://wa.me/?text=' + waMsg;
+        }
+
+        // Confetti!
+        launchConfetti();
+      });
+    });
+  }
+
+})();
+</script>
+
+</body>
+</html>

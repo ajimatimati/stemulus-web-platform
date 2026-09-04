@@ -1,0 +1,39 @@
+[
+  {
+    "id": "menu",
+    "triggers": ["menu", "help", "options", "start", "hi", "hello", "hey", "good day"],
+    "matchType": "exact",
+    "response": "Welcome to *STEMulus Kids Tech*! 👋 Where young minds build the future! 🚀\n\nHow can I help you today? Please reply with a number or ask your question:\n\n1️⃣ *Our Programs* (Coding & Academics)\n2️⃣ *Book a Free Trial Class*\n3️⃣ *Enrollment Information*\n4️⃣ *Class Format, Duration & Pricing*\n5️⃣ *Speak to a Human Admin*\n\nOr simply type what you're looking for, and I will assist you! 😊"
+  },
+  {
+    "id": "programs",
+    "triggers": ["1", "programs", "courses", "classes", "what do you teach", "subjects"],
+    "matchType": "startsWith",
+    "response": "🎓 *STEMulus Kids Tech Programs:*\n\n🖥️ *Coding & Robotics (Ages 5-17):*\n• *Scratch Creators* (Ages 5-9) - Block-based intro\n• *Web Wizards* (Ages 8-14) - HTML, CSS, JavaScript\n• *Python Programming* (Ages 10-17) - Text coding fundamentals\n• *Robotics & Arduino* (Ages 8-15) - Hardware & software\n• *AI Explorers* (Ages 12-17) - Machine learning introduction\n• *Digital Art & Design* (Ages 7-14) - Illustration & UI/UX\n\n📚 *Academic Enrichment:*\n• Mathematics Mastery, English Language, Science Explorers, Triple Science, GCSE Past Papers\n\nWould you like to book a *free trial* for any of these? Reply *2* to get started! 🎯"
+  },
+  {
+    "id": "free-trial",
+    "triggers": ["2", "free trial", "trial class", "book a class", "demo", "try"],
+    "matchType": "startsWith",
+    "response": "🎯 *Book a Free Trial Class!*\n\nEvery child gets one free trial session with an assessment! To schedule it, please reply with:\n1. Your child's *name*\n2. Your child's *age*\n3. Which *program* they'd like to try\n4. Your preferred *day & time*\n\nAlternatively, you can book instantly on our website:\n🔗 https://stemuluskidstech.com/book-class.html\n\nLet me know your child's details, and I will generate your class meeting link! 💻"
+  },
+  {
+    "id": "enrollment",
+    "triggers": ["3", "enroll", "join", "sign up", "registration"],
+    "matchType": "startsWith",
+    "response": "🚀 *Enroll in STEMulus!*\n\nAfter attending the free trial class, you can enroll your child in the full program. Classes run twice a week for 1 to 1.5 hours per session.\n\nTo enroll, please visit our enrollment page:\n🔗 https://stemuluskidstech.com/enroll.html\n\nIf you have already attended a trial, let me know the program you'd like to register for, and I will alert the admin to send over details! 📝"
+  },
+  {
+    "id": "pricing",
+    "triggers": ["4", "pricing", "fees", "cost", "how much", "duration"],
+    "matchType": "startsWith",
+    "response": "📅 *Class Format & Pricing:*\n\n• *Format:* Live, online, instructor-led virtual sessions (Max 6 students per group).\n• *Duration:* 1 hour (Ages 5-9) or 1.5 hours (Ages 10+) twice a week. Custom durations are available.\n• *Pricing:* All pricing is customized based on your chosen program and tailored options. The admin team handles pricing details manually to offer the best fit for your child.\n\nA human administrator will contact you with pricing plans, or discuss them with you during the trial class! 💬"
+  },
+  {
+    "id": "human",
+    "triggers": ["5", "human", "agent", "person", "speak to someone", "admin", "teacher", "help"],
+    "matchType": "startsWith",
+    "response": "🙋 Connecting you to our admin team right now!\n\nThe AI assistant has been paused for this chat. A human administrator will reply directly here to help you. Thank you for your patience! 🙏",
+    "action": "requestHumanTakeover"
+  }
+]

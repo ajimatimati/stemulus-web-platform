@@ -6,7 +6,8 @@
 const QuickBooking = (function() {
     
     const CONFIG = {
-        NTFY_TOPIC: 'stemulus-enrollments-admin2026',
+        EMAIL_ENDPOINT: '/.netlify/functions/send-email',
+        NTFY_TOPIC: 'stm-enr-lx7k9w2mq8vp4tz',
         ADMIN_EMAIL: 'admin@stemuluskidstech.com',
         ADMIN_WHATSAPP: '+2347052466716'
     };
@@ -30,7 +31,7 @@ const QuickBooking = (function() {
             const target = e.target.closest('a');
             if (target) {
                 const href = target.getAttribute('href') || '';
-                const isBookingLink = href.includes('book-class.html') || target.classList.contains('btn-hero-secondary');
+                const isBookingLink = href.includes('book-class.html') || href.includes('book-class') || target.classList.contains('btn-book-class');
                 
                 if (isBookingLink) {
                     e.preventDefault();
@@ -351,8 +352,8 @@ const QuickBooking = (function() {
                 animation: qb-slide-up 0.3s ease-out forwards;
             }
             @keyframes qb-slide-up {
-                from { transform: translateY(100%) opacity: 0; }
-                to { transform: translateY(0) opacity: 1; }
+                from { transform: translateY(100%); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
             }
         `;
         document.head.appendChild(style);
@@ -418,6 +419,15 @@ const QuickBooking = (function() {
                         <button type="submit" class="qb-submit-btn">
                             Book Free Class
                         </button>
+                        <div style="margin:1rem 0;display:flex;align-items:center;gap:0.75rem;">
+                            <div style="flex:1;height:1px;background:rgba(0,0,0,0.1);"></div>
+                            <span style="font-size:0.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;">or</span>
+                            <div style="flex:1;height:1px;background:rgba(0,0,0,0.1);"></div>
+                        </div>
+                        <a href="https://wa.me/2347052466716?text=Hi%2C%20I%27d%20like%20to%20book%20a%20free%20trial%20class%20for%20my%20child!" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;justify-content:center;gap:0.6rem;width:100%;padding:0.85rem;background:#25D366;color:#fff;border-radius:10px;font-weight:700;font-size:0.88rem;text-decoration:none;border:none;box-sizing:border-box;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.556 4.116 1.529 5.843L0 24l6.345-1.5A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.007-1.374l-.357-.213-3.764.891.9-3.67-.233-.378A9.792 9.792 0 012.182 12C2.182 6.573 6.573 2.182 12 2.182S21.818 6.573 21.818 12 17.427 21.818 12 21.818z"/></svg>
+                            Book Instantly via WhatsApp
+                        </a>
                     </form>
                 </div>
             </div>
@@ -593,11 +603,21 @@ const QuickBooking = (function() {
                 sendAdminEmail(bookingData),
                 sendParentEmail(bookingData),
                 sendNtfyNotification(bookingData),
-                submitToNetlify(form, formData)
+                submitToNetlify(form, formData),
+                (typeof WhatsAppNotify !== 'undefined'
+                    ? WhatsAppNotify.sendBookingNotification({
+                        parentName: bookingData.parentName,
+                        studentName: bookingData.studentName,
+                        email: bookingData.email,
+                        phone: bookingData.phone,
+                        bookingId: bookingData.bookingId,
+                        contactPref: bookingData.contactPref
+                    })
+                    : Promise.resolve({ success: false, skipped: 'WhatsAppNotify not loaded' }))
             ]);
 
             results.forEach((result, idx) => {
-                const services = ['Admin Email', 'Parent Email', 'NTFY Push', 'Netlify Forms'];
+                const services = ['Admin Email', 'Parent Email', 'NTFY Push', 'Netlify Forms', 'WhatsApp Notify'];
                 if (result.status === 'fulfilled') {
                     console.log(`[QuickBooking] ${services[idx]} notification sent`);
                 } else {
@@ -610,91 +630,42 @@ const QuickBooking = (function() {
             saveBookingLocally(bookingData);
 
         } catch (error) {
-            console.error('[QuickBooking] Submission error:', error);
+            console.warn('[QuickBooking] Submission error:', error);
             showErrorToast('Failed to complete booking. Please try again or reach out on WhatsApp.');
             
             // Restore button state
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Complete Booking';
+            submitBtn.textContent = 'Book Free Class';
         }
     }
 
     /**
-     * Send email notification to admin (EmailJS)
+     * Send booking emails (admin alert + parent confirmation) via Netlify Function.
      */
     async function sendAdminEmail(data) {
-        if (typeof EmailService === 'undefined') {
-            console.warn('[QuickBooking] EmailService not found. Admin email skipped.');
-            return;
-        }
-
-        const bodyText = `A new quick free trial class booking has been received.
-
-Booking Details:
-- Booking ID: ${data.bookingId}
-- Child Name & Age: ${data.studentName}
-- Preferred Contact Mode: ${data.contactPref}
-
-Parent Info:
-- Parent Name: ${data.parentName}
-- Email: ${data.email}
-- Phone/WhatsApp: ${data.phone}
-- Request Time: ${new Date(data.timestamp).toLocaleString('en-GB')}
-        `;
-
-        // Direct alert
-        const sendToAdmin = EmailService.send({
-            to: CONFIG.ADMIN_EMAIL,
-            studentName: 'Admin',
-            subject: `[Quick Booking] New Trial Request - ${data.bookingId}`,
-            body: bodyText
+        const resp = await fetch(CONFIG.EMAIL_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: 'booking',
+                data: {
+                    bookingId:   data.bookingId,
+                    parentName:  data.parentName,
+                    studentName: data.studentName,
+                    email:       data.email,
+                    phone:       data.phone,
+                    contactPref: data.contactPref,
+                }
+            })
         });
-
-        // Copy alert to admin@stemuluskidstech.com
-        const sendToCopy = EmailService.send({
-            to: 'admin@stemuluskidstech.com',
-            studentName: 'STEMulus Clubs',
-            subject: `[Quick Booking Copy] New Trial Request - ${data.bookingId}`,
-            body: bodyText
-        });
-
-        return Promise.all([sendToAdmin, sendToCopy]);
+        const json = await resp.json();
+        if (!json.ok) console.warn('[QuickBooking] Email partial failure:', json.results);
+        return json;
     }
 
-    /**
-     * Send confirmation email to parent (EmailJS)
-     */
-    async function sendParentEmail(data) {
-        if (typeof EmailService === 'undefined') {
-            console.warn('[QuickBooking] EmailService not found. Parent email skipped.');
-            return;
-        }
-
-        const bodyText = `Hi ${data.parentName},
-
-Thank you for requesting a free trial class with STEMulus! We have received your booking request for ${data.studentName}.
-
-Booking Summary:
-- Booking ID: ${data.bookingId}
-- Preferred Communication: ${data.contactPref}
-
-What happens next?
-We are matching your request with one of our specialized coding mentors. A member of our team will contact you at ${data.phone} (or via email at ${data.email}) within 2 hours to confirm your scheduling options and provide your Zoom trial link.
-
-If you have any questions, you can reply directly to this email or chat with us on WhatsApp at: https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent('Hi! Following up on quick trial booking ID ' + data.bookingId)}.
-
-Best regards,
-STEMulus Kids Tech Team
-        `;
-
-        return await EmailService.send({
-            to: data.email,
-            studentName: data.parentName,
-            subject: `Free Trial Booking Requested - STEMulus Kids Tech`,
-            body: bodyText,
-            ccParent: 'admin@stemuluskidstech.com'
-        });
-    }
+    // sendParentEmail is now handled inside the same 'booking' type call above.
+    // Kept as no-op so the Promise.allSettled call index stays compatible.
+    async function sendParentEmail(_data) { return { skipped: true }; }
 
     /**
      * Send push notification to admin via NTFY
@@ -710,15 +681,17 @@ Booking ID: ${data.bookingId}
         `.trim();
 
         try {
-            const response = await fetch(`https://ntfy.sh/${CONFIG.NTFY_TOPIC}`, {
+            const response = await fetch('/.netlify/functions/notify', {
                 method: 'POST',
-                headers: {
-                    'Title': title,
-                    'Priority': 'high',
-                    'Tags': 'zap,sparkles,calendar',
-                    'Click': `https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(`Hi! Following up on quick booking for ${data.studentName}`)}`
-                },
-                body: message
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    channel: 'enroll',
+                    title,
+                    message,
+                    priority: 'high',
+                    tags: 'zap,sparkles,calendar',
+                    click: `https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(`Hi! Following up on quick booking for ${data.studentName}`)}`
+                })
             });
 
             if (!response.ok) throw new Error('NTFY post failed');
@@ -733,13 +706,20 @@ Booking ID: ${data.bookingId}
      * POST payload to Netlify
      */
     async function submitToNetlify(form, formData) {
+        // Ensure form-name is always present, even if the hidden input is somehow absent.
+        if (typeof formData.set === 'function') {
+            formData.set('form-name', 'free-class-booking');
+        }
         const response = await fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams(formData).toString()
         });
 
-        if (!response.ok) throw new Error('Netlify form post failed');
+        // Treat only server-side errors as failures. Netlify Forms returns 3xx
+        // redirects on success, and fetch follows them to a 200 homepage — both
+        // are acceptable outcomes, so only throw on 5xx.
+        if (response.status >= 500) throw new Error('Netlify form post failed');
         return { success: true };
     }
 

@@ -23,6 +23,51 @@ package-lock.json
 .env.staging
 *.zip
 *.tar.gz
+whatsapp-bot/data/chat_history.json
+whatsapp-bot/.wwebjs_*
+.wwebjs_*
 
 # Local Netlify folder
 .netlify
+
+# Stale build copies — use root HTML files only
+dist/
+
+# Dev-only script utilities at root (not deployed assets)
+apply-brutalist-grid.js
+clean-grid.js
+deep-scrub.js
+fix-emails.js
+fix-favicon.js
+inject-badges.js
+inject-files.js
+inject-preai.js
+patch-groups.js
+purge-cohorts.js
+refactor.js
+remove-login.js
+restore-index.js
+seo-update.js
+svg-cleanup.js
+svg-fix.js
+update-ages.js
+update-year.js
+apply-parallax.js
+connector-paths.js
+optimize-gsap.js
+extract-frames.ps1
+fix-hero.ps1
+prepare-deploy.ps1
+
+# Planning docs
+ADMIN-SETUP-GUIDE.md
+PORTAL_IMPLEMENTATION_PLAN.md
+PORTAL_REDESIGN_PLAN.md
+SQL_SETUP.sql
+chat\ memory.md
+
+# Scratch dir
+scratch/
+
+# Archived files
+_archive/

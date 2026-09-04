@@ -8,12 +8,18 @@ const TutorApplicationHandler = (function() {
     // ============ CONFIGURATION ============
     const CONFIG = {
         // NTFY Push Notification
-        NTFY_TOPIC: 'stemulus-tutors-admin2026',
+        NTFY_TOPIC: 'stm-ttr-nb3r5y6jd1cx8ws',
         
         // Admin contact for notifications
         ADMIN_WHATSAPP: '+2347052466716'
     };
     // =======================================
+
+    function sanitize(str) {
+        const d = document.createElement('div');
+        d.textContent = String(str || '');
+        return d.innerHTML;
+    }
 
     let isSubmitting = false;
     let originalBtnHTML = '';
@@ -150,17 +156,19 @@ App ID: ${data.applicationId}
         const waText = `Hi ${data.fullname}! Thanks for applying to be a mentor at STEMulus. We loved your profile and would love to schedule a short interview/demo session with you. Are you available this week?`;
 
         try {
-            const response = await fetch(`https://ntfy.sh/${CONFIG.NTFY_TOPIC}`, {
+            const response = await fetch('/.netlify/functions/notify', {
                 method: 'POST',
-                headers: {
-                    'Title': title,
-                    'Priority': 'high',
-                    'Tags': 'mortar_board,sparkles',
-                    'Click': `https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(waText)}`
-                },
-                body: message
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    channel: 'tutor',
+                    title,
+                    message,
+                    priority: 'high',
+                    tags: 'mortar_board,sparkles',
+                    click: `https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(waText)}`
+                })
             });
-            
+
             if (!response.ok) throw new Error('NTFY request failed');
             return { success: true };
         } catch (error) {
@@ -210,16 +218,16 @@ App ID: ${data.applicationId}
 
                 <!-- Success Message -->
                 <h2 class="text-3xl font-bold font-poppins text-white mb-3">
-                    ✅ Application Received!
+                    [Verified] Application Received!
                 </h2>
                 <p class="text-white/70 mb-6 max-w-md mx-auto leading-relaxed">
-                    Thank you, <strong class="text-white">${data.fullname}</strong>! We've successfully received your mentor application.
+                    Thank you, <strong class="text-white">${sanitize(data.fullname)}</strong>! We've successfully received your mentor application.
                 </p>
 
                 <!-- Application ID -->
                 <div class="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-6 py-3 mb-8">
                     <span class="text-sm text-white/55">Application ID:</span>
-                    <span class="font-mono font-bold text-orange-400">${data.applicationId}</span>
+                    <span class="font-mono font-bold text-orange-400">${sanitize(data.applicationId)}</span>
                 </div>
 
                 <!-- Next Steps -->

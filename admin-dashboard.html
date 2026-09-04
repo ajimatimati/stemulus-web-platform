@@ -3,46 +3,41 @@
 <head>
  <script src="https://unpkg.com/lucide@latest" defer></script>
  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
- <script src="https://cdn.tailwindcss.com"></script>
+ <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
  <meta charset="UTF-8">
+  <link rel="manifest" href="/site.webmanifest">
   <!-- SEO: CORE -->
   <meta name="description" content="STEMulus internal admin dashboard.">
   <meta name="keywords" content="STEMulus admin">
   <meta name="author" content="STEMulus Kids Tech">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <link rel="canonical" href="https://stemuluskidstech.com/admin-dashboard.html">
+  <meta name="robots" content="noindex, nofollow">
   <!-- SEO: OPEN GRAPH -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Admin Dashboard | STEMulus">
   <meta property="og:description" content="STEMulus internal admin dashboard.">
   <meta property="og:url" content="https://stemuluskidstech.com/admin-dashboard.html">
   <meta property="og:site_name" content="STEMulus">
-  <meta property="og:image" content="https://stemuluskidstech.com/logo.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:image" content="https://stemuluskidstech.com/assets/images/og-image.jpg">
+  <meta property="og:image:width" content="1729">
+  <meta property="og:image:height" content="910">
   <meta property="og:locale" content="en_US">
   <!-- SEO: TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Admin Dashboard | STEMulus">
   <meta name="twitter:description" content="STEMulus internal admin dashboard.">
-  <meta name="twitter:image" content="https://stemuluskidstech.com/logo.png">
+  <meta name="twitter:image" content="https://stemuluskidstech.com/assets/images/og-image.jpg">
   <meta name="twitter:site" content="@stemuluskids">
   <!-- SEO: GEO -->
   <meta name="geo.region" content="NG">
   <meta name="geo.placename" content="Lagos, Nigeria">
-  <!-- SEO: CORE -->
-  <!-- SEO: OPEN GRAPH -->
-  <!-- SEO: TWITTER CARD -->
-  <!-- SEO: GEO -->
-  <!-- SEO: CORE -->
-  <!-- SEO: OPEN GRAPH -->
-  <!-- SEO: TWITTER CARD -->
-  <!-- SEO: GEO -->
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Admin Dashboard | STEMulus</title>
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
- <link href="https://fonts.googleapis.com/css 2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="assets/css/3d-svg-icons.css">
+ <script src="assets/js/3d-icons.js" defer></script>
+ <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
  <!-- Fonts -->
  
  <style>
@@ -58,8 +53,9 @@
  
  /* Sidebar Active State */
  .nav-link.active {
- background: linear-gradient(90deg, rgba(59,130,246,0.2)0%, transparent 100%);
- border-left:3px solid #3b82f6;
+ background: rgba(244,96,12,0.18) !important;
+ color: #f4600c !important;
+ border-left: none;
  }
  
  /* Custom Scrollbar */
@@ -103,95 +99,47 @@
  .admin-section.active { display: block; }
  </style>
 
-<script>
- if (window.tailwind) {
- tailwind.config = {
- theme: {
- extend: {
- colors: {
- admin: {
- dark: '#f8fafc',
- border: '#e2e8f0',
- card: '#ffffff',
- accent: '#3b82f6',
- danger: '#ef4444',
- success: '#22c55e',
- warning: '#f59e0b',
- }
- }
- }
- }
- };
- }
-</script>
 <style>
- /* Global Dashboard Brightening Overrides */
- body, html {
- background-color: #f8fafc!important;
- background-image: none !important;
- color: #0f172a!important;
- }
- .bg-white, .bg-gray-50 {
-  background-color: #FAFBFC!important;
-  color: #1f2937!important;
-}
- .glass-card, .bg-white, .stat-card {
+  /* Global Dashboard Brightening Overrides */
+  body, html {
+    background-color: #f8fafc !important;
+    color: #0f172a;
+    font-family: 'Nunito', sans-serif;
+  }
+  .bg-white, .bg-gray-50 {
+    background-color: #ffffff !important;
+    color: #1f2937;
+  }
+  .glass-card, .stat-card {
   background-color: #ffffff!important;
   color: #1f2937!important;
   border-color: #e5e7eb!important;
 }
- .text-white, .text-white\/90, h 1, h 2, h 3, h 4, h 5, h 6, th, td, label, span:not(.text-white) {
- color: #0f172a!important;
- }
- .text-white\/60, .text-white\/55, .text-white\/50, .text-white\/45, .text-white\/40, .text-white\/30, .text-white\/20, .text-slate-400 {
- color: #64748b!important;
- }
- input, select, textarea {
- background-color: #ffffff!important;
- border-color: #cbd5e1!important;
- color: #0f172a!important;
- }
+  input, select, textarea {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+  }
  input::placeholder {
  color: #94a3b8!important;
  }
- /* Action Buttons (Keep text white) */
- button, button *, .btn-pill-solid, .bg-admin-accent, .bg-supernova-orange, .bg-blue-600, .bg-orange-500, button span {
- color: #ffffff!important;
- }
- /* Sidebar styling overrides */
- aside, aside * {
- color: #0f172a!important;
- background-color: #ffffff!important;
- }
- aside a:hover {
- background-color: #f1f5f9!important;
- }
- aside .border-r {
- border-right-color: #e2e8f0!important;
- }
- aside .border-b {
- border-bottom-color: #e2e8f0!important;
- }
- aside .border-t {
- border-top-color: #e2e8f0!important;
- }
- .nav-link.active, .nav-link.active i, .nav-link.active span {
- background: linear-gradient(90deg, rgba(59,130,246,0.08)0%, transparent 100%) !important;
- border-left:3px solid #3b82f6!important;
- color: #2563eb!important;
- }
- /* Table borders */
- table, tr, td, th {
- border-color: #e2e8f0!important;
- }
- th {
- background-color: #f1f5f9!important;
- color: #475569!important;
- }
- /* Logo in sidebar needs to invert to be visible */
- aside img {
- filter: invert(1) !important;
- }
+  /* Action Buttons (Keep text high-contrast) */
+  .btn-pill-solid, .bg-admin-accent, .bg-supernova-orange, .bg-blue-600, .bg-orange-500, .bg-emerald-600, .bg-green-600, .btn-primary {
+    color: #ffffff !important;
+  }
+  .btn-secondary, button.bg-gray-100, button.bg-slate-100, .bg-slate-100, .bg-gray-100 {
+    color: #334155 !important;
+    background-color: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+  /* Table borders */
+  table, tr, td, th {
+    border-color: #e2e8f0 !important;
+  }
+  th {
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+  }
 </style>
 
 <script type="application/ld+json">
@@ -254,16 +202,34 @@
 }
 </script>
 
- <!-- Standard Favicon -->
- <link rel="icon" type="image/png" href="logo.png">
- <link rel="apple-touch-icon" href="logo.png">
+  <!-- Portal Design System -->
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/portal-animations.css">
+
+  <!-- Standard Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+<script>
+(function(){
+  try {
+    var s=JSON.parse(sessionStorage.getItem('stemulus_session')||'null');
+    var ttl=8*60*60*1000;
+    if(!s || s.role !== 'admin' || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
+      // Not logged in as admin
+      var loginScreen = document.getElementById('login-screen');
+      if (loginScreen) loginScreen.classList.remove('hidden');
+    }
+  } catch(e){}
+})();
+</script>
 </head>
 <body class="antialiased bg-slate-50 text-slate-800 dashboard-page">
-<!-- ===================== LOGIN SCREEN ===================== -->
+  <div id="sidebar-overlay" class="sidebar-overlay lg:hidden"></div>
+  <!-- ===================== LOGIN SCREEN ===================== -->
  <div id="login-screen" class="login-bg min-h-screen flex items-center justify-center p-6">
  <div class="glass-card rounded-none p-8 w-full max-w-md animate-fadeIn">
  <div class="text-center mb-8">
-  <img src="logo.png" alt="STEMulus" class="h-12 mx-auto mb-4">
+  <img src="favicon.png" alt="STEMulus" class="h-12 mx-auto mb-4">
  <h1 class="text-2xl font-nunito font-bold text-slate-800">Admin Portal</h1>
  <p class="text-gray-500 text-sm mt-2">Sign in to manage your students</p>
  </div>
@@ -283,9 +249,9 @@
  <label class="block text-sm font-medium text-gray-500 mb-2">Password</label>
  <div class="relative">
  <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/55"></i>
- <input type="password" id="login-password" required
+ <div class="relative"><input type="password" id="login-password" required
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-3 pl-11 pr-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="••••••••">
+ placeholder="••••••••"><button type="button" onclick="var i=document.getElementById('login-password');i.type=i.type==='password'?'text':'password';this.querySelector('svg').classList.toggle('hidden')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button></div>
  </div>
  </div>
  
@@ -305,91 +271,170 @@
  <!-- ===================== MAIN DASHBOARD ===================== -->
  <div id="dashboard-container" class="hidden">
  <!-- Sidebar -->
- <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-white border-r border-admin-border z-50 flex flex-col">
+ <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 z-50 flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-300" style="background:#0f1117;border-right:1px solid rgba(255,255,255,0.07);border-radius:0 24px 24px 0;">
  <!-- Logo -->
- <div class="p-6 border-b border-admin-border">
+ <div class="p-6" style="border-bottom:1px solid rgba(255,255,255,0.07);">
  <div class="flex items-center gap-3">
- <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-admin-accent to-supernova-orange flex items-center justify-center">
- <i data-lucide="rocket" class="w-5 h-5 text-white"></i>
- </div>
+ <img src="favicon.png" width="36" height="36" style="border-radius:10px;object-fit:contain;" alt="STEMulus">
  <div>
- <h2 class="font-nunito font-bold text-slate-800">STEMulus</h2>
- <p class="text-xs text-slate-500">Admin Portal</p>
+ <h2 class="font-nunito font-bold" style="color:#ffffff;">STEMulus</h2>
+ <p class="text-xs" style="color:rgba(255,255,255,0.45);">Admin Portal</p>
  </div>
  </div>
  </div>
  
  <!-- Navigation -->
  <nav class="flex-1 py-6 overflow-y-auto">
- <div class="px-4 mb-2 text-xs font-semibold text-gray-800/55 uppercase tracking-wider">Main</div>
+ <div class="px-4 mb-2 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.35);">Main</div>
  <ul class="space-y-1 px-3">
  <li>
- <a href="#" data-section="dashboard" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <a href="#" data-section="dashboard" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-2xl transition-colors" style="background:rgba(244,96,12,0.18);color:#f4600c;">
  <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
  <span>Dashboard</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="students" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <a href="#" data-section="students" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
  <i data-lucide="users" class="w-5 h-5"></i>
  <span>Students</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="schedules" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <a href="#" data-section="schedules" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
  <i data-lucide="calendar" class="w-5 h-5"></i>
  <span>Schedules</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="courses" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <a href="#" data-section="attendance" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+ <span>Attendance Logs</span>
+ <span id="pending-attendance-badge" class="ml-auto bg-amber-500/20 text-amber-600 text-xs font-bold px-2 py-0.5 rounded-xl hidden">0</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="courses" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
  <i data-lucide="book-open" class="w-5 h-5"></i>
  <span>Courses</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="projects" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <a href="#" data-section="projects" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
  <i data-lucide="folder-kanban" class="w-5 h-5"></i>
  <span>Projects</span>
  <span class="ml-auto bg-supernova-orange/20 text-supernova-orange text-xs font-bold px-2 py-0.5 rounded-xl">New</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="certificates" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <a href="#" data-section="certificates" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
  <i data-lucide="award" class="w-5 h-5"></i>
  <span>Certificates</span>
  <span class="ml-auto bg-emerald-500/20 text-emerald-600 text-xs font-bold px-2 py-0.5 rounded-xl">New</span>
  </a>
  </li>
+ <li>
+ <a href="tutor-evaluation.html" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <i data-lucide="star" class="w-5 h-5"></i>
+ <span>View Evaluations</span>
+ </a>
+ </li>
  </ul>
- 
- <div class="px-4 mb-2 mt-6 text-xs font-semibold text-gray-800/55 uppercase tracking-wider">Communications</div>
+
+ <div class="px-4 mb-2 mt-6 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.35);">Workflows</div>
  <ul class="space-y-1 px-3">
  <li>
- <a href="#" data-section="emails" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <a href="#" data-section="onboarding" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <i data-lucide="user-plus" class="w-5 h-5"></i>
+ <span>Onboard</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="assignments" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <i data-lucide="git-branch" class="w-5 h-5"></i>
+ <span>Assignments</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="schedule-wf" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <i data-lucide="calendar-days" class="w-5 h-5"></i>
+ <span>Schedule</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="approvals" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <i data-lucide="check-square" class="w-5 h-5"></i>
+ <span>Approvals</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="notifications" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <i data-lucide="bell" class="w-5 h-5"></i>
+ <span>Notifications</span>
+ </a>
+ </li>
+ </ul>
+
+ <div class="px-4 mb-2 mt-6 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.35);">Communications</div>
+ <ul class="space-y-1 px-3">
+ <li>
+ <a href="#" data-section="emails" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
  <i data-lucide="mail" class="w-5 h-5"></i>
  <span>Email Center</span>
  <span class="ml-auto bg-admin-accent/20 text-admin-accent text-xs font-bold px-2 py-0.5 rounded-xl">New</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="logs" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800/60 hover:text-blue-700 hover:bg-blue-50 transition-colors">
+ <a href="#" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors group" data-section="email-queue">
+  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+  <span>Email Queue</span>
+  <span id="nav-queue-badge" class="ml-auto bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full hidden">0</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors" data-section="password-resets">
+  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+  <span>Password Resets</span>
+  <span id="nav-reset-badge" class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full hidden">0</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="logs" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
  <i data-lucide="file-text" class="w-5 h-5"></i>
  <span>Email Logs</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors" data-section="reports">
+  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+  <span>Reports</span>
+  <span id="reports-nav-badge" class="ml-auto hidden bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="whatsapp-bot" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <i data-lucide="message-square" class="w-5 h-5"></i>
+ <span>WhatsApp Bot</span>
+ <span class="ml-auto bg-blue-500/20 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-xl">Active</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors" data-section="settings">
+  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+  <span>Settings</span>
  </a>
  </li>
  </ul>
  </nav>
  
  <!-- User Section -->
- <div class="p-4 border-t border-admin-border">
+ <div class="p-4" style="border-top:1px solid rgba(255,255,255,0.07);">
  <div class="flex items-center gap-3">
- <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-sm" id="user-avatar">A</div>
+ <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-sm" style="border-radius:50%;" id="user-avatar">A</div>
  <div class="flex-1 min-w-0">
- <p class="text-sm font-medium text-slate-800 truncate" id="user-name">Admin</p>
- <p class="text-xs text-slate-500 truncate" id="user-email">admin@stemuluskidstech.com</p>
+ <p class="text-sm font-medium truncate" style="color:rgba(255,255,255,0.9);" id="user-name">Admin</p>
+ <p class="text-xs truncate" style="color:rgba(255,255,255,0.4);" id="user-email">admin@stemuluskidstech.com</p>
  </div>
- <button id="logout-btn" class="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Sign Out">
+ <button id="logout-btn" class="p-2 transition-colors" style="color:rgba(255,255,255,0.4);" title="Sign Out">
  <i data-lucide="log-out" class="w-5 h-5"></i>
  </button>
  </div>
@@ -397,7 +442,7 @@
  </aside>
 
  <!-- Main Content Area -->
- <main class="ml-64 min-h-screen">
+ <main class="ml-0 lg:ml-64 min-h-screen">
  <!-- Top Bar -->
  <header class="sticky top-0 z-40 bg-gray-50/80 backdrop-blur-md border-b border-admin-border px-8 py-4">
  <div class="flex items-center justify-between">
@@ -418,6 +463,10 @@
  class="bg-white border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent w-64 transition-colors">
  </div>
  <!-- Quick Actions -->
+ <button id="open-quick-onboard-btn" onclick="AdminEngine.openQuickOnboardModal()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-3.5 py-2 rounded-lg transition-all flex items-center gap-2 text-sm shadow-sm">
+ <i data-lucide="zap" class="w-4 h-4"></i>
+ <span>Quick Onboard</span>
+ </button>
  <button id="quick-add-student" class="bg-admin-accent hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
  <i data-lucide="plus" class="w-4 h-4"></i>
  <span>Add Student</span>
@@ -431,6 +480,21 @@
  
  <!-- ===== DASHBOARD SECTION ===== -->
  <section id="section-dashboard" class="admin-section active animate-fadeIn">
+ <!-- Hero Band -->
+ <div class="hero-band rounded-2xl mb-8" style="background: linear-gradient(135deg, #1A2332, #4B49AC);">
+   <img src="images/portal/standalone/trophy-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift" style="position:absolute; top:10%; left:6%;" loading="lazy">
+   <div class="hero-band-content">
+     <h1 style="color:white!important;">Admin Command Center</h1>
+     <p>Manage students, schedules, certificates, and communications</p>
+     <div class="kpi-pills">
+       <span class="kpi-pill"><i data-lucide="users" style="width:14px;height:14px;"></i> <span id="kpi-admin-students">0</span> Students</span>
+       <span class="kpi-pill"><i data-lucide="calendar" style="width:14px;height:14px;"></i> <span id="kpi-admin-classes">0</span> Classes</span>
+       <span class="kpi-pill"><i data-lucide="mail" style="width:14px;height:14px;"></i> <span id="kpi-admin-emails">0</span> Pending</span>
+     </div>
+   </div>
+   <img src="images/portal/standalone/admin-shield-3d.png" alt="Admin" class="hero-3d-object animate-float-band" style="width:200px;height:200px;" loading="lazy">
+ </div>
+
  <!-- Stats Cards -->
  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
  <div class="glass-card rounded-none p-6">
@@ -464,7 +528,7 @@
  </div>
  </div>
  <h3 class="text-3xl font-bold text-slate-800" id="stat-pending-emails">0</h3>
- <p class="text-slate-500 text-sm">Pending Emails</p>
+ <p class="text-slate-500 text-sm">Pending Enrollments</p>
  </div>
  
  <div class="glass-card rounded-3xl p-6 border border-slate-100 shadow-sm bg-white">
@@ -477,29 +541,137 @@
  <p class="text-slate-500 text-sm">Active Courses</p>
  </div>
  </div>
- 
+
+ <!-- This Week Summary -->
+ <div class="mt-6">
+  <div class="glass-card rounded-none p-5">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-base font-nunito font-bold text-slate-800">This Week</h3>
+      <span id="week-range-label" class="text-xs text-gray-400 font-medium"></span>
+    </div>
+    <div id="this-week-summary" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-indigo-50 rounded-xl p-4 text-center">
+        <div id="week-sessions" class="text-2xl font-bold text-indigo-700">—</div>
+        <div class="text-xs text-indigo-500 font-semibold uppercase tracking-wide mt-1">Sessions</div>
+      </div>
+      <div class="bg-emerald-50 rounded-xl p-4 text-center">
+        <div id="week-present" class="text-2xl font-bold text-emerald-700">—</div>
+        <div class="text-xs text-emerald-500 font-semibold uppercase tracking-wide mt-1">Present</div>
+      </div>
+      <div class="bg-rose-50 rounded-xl p-4 text-center">
+        <div id="week-absent" class="text-2xl font-bold text-rose-700">—</div>
+        <div class="text-xs text-rose-500 font-semibold uppercase tracking-wide mt-1">Absent</div>
+      </div>
+      <div class="bg-amber-50 rounded-xl p-4 text-center">
+        <div id="week-pending" class="text-2xl font-bold text-amber-700">—</div>
+        <div class="text-xs text-amber-500 font-semibold uppercase tracking-wide mt-1">Pending Review</div>
+      </div>
+    </div>
+  </div>
+ </div>
+
+ <!-- Today's Classes Widget -->
+ <div class="mt-6">
+  <div class="glass-card rounded-none p-5">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-base font-nunito font-bold text-slate-800">Today's Classes</h3>
+      <span id="today-classes-date" class="text-xs text-gray-400 font-medium"></span>
+    </div>
+    <div id="todays-classes-list" class="space-y-2 max-h-64 overflow-y-auto">
+      <p class="text-gray-400 text-sm text-center py-4">No classes scheduled today.</p>
+    </div>
+  </div>
+ </div>
+
+ <!-- Notice Board Widget -->
+ <div class="mt-4">
+  <div class="glass-card rounded-none p-5">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-base font-nunito font-bold text-slate-800">Notice Board</h3>
+      <button id="create-notice-btn" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 px-3 py-1.5 border border-indigo-200 rounded-lg transition-colors">+ Create</button>
+    </div>
+    <div id="notice-board-list" class="space-y-2 max-h-48 overflow-y-auto">
+      <p class="text-gray-400 text-sm">No notices yet.</p>
+    </div>
+    <!-- Create notice form (hidden by default) -->
+    <div id="create-notice-form" class="hidden mt-4 pt-4 border-t border-gray-100 space-y-3">
+      <input type="text" id="notice-title-input" placeholder="Notice title..." class="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-indigo-400">
+      <textarea id="notice-body-input" rows="2" placeholder="Notice content..." class="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
+      <div class="flex gap-2">
+        <button onclick="saveNotice()" class="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-1.5 rounded-lg transition-colors">Post Notice</button>
+        <button onclick="document.getElementById('create-notice-form').classList.add('hidden')" class="text-xs font-medium text-gray-500 hover:text-gray-700 px-4 py-1.5 border border-gray-200 rounded-lg transition-colors">Cancel</button>
+      </div>
+    </div>
+  </div>
+ </div>
+
  <!-- Recent Activity & Quick Actions -->
- <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+ <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
  <!-- Recent Students -->
  <div class="lg:col-span-2 glass-card rounded-none p-6">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-lg font-semibold text-slate-800">Recent Students</h3>
- <a href="#" data-section="students" class="text-admin-accent text-sm hover:underline">View All</a>
+ <a href="#" data-section="students" class="nav-link text-admin-accent text-sm hover:underline">View All</a>
  </div>
  <div id="recent-students-list" class="space-y-4">
  <p class="text-slate-400 text-center py-8">No students yet. Add your first student!</p>
  </div>
  </div>
- 
+
  <!-- Today's Schedule -->
  <div class="glass-card rounded-none p-6">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-lg font-semibold text-slate-800">Today's Classes</h3>
- <a href="#" data-section="schedules" class="text-admin-accent text-sm hover:underline">Full Calendar</a>
+ <a href="#" data-section="schedules" class="nav-link text-admin-accent text-sm hover:underline">Full Calendar</a>
  </div>
  <div id="today-schedule-list" class="space-y-3">
  <p class="text-slate-400 text-center py-8">No classes scheduled for today.</p>
  </div>
+ </div>
+ </div>
+
+ <!-- Manual Onboarding Panel -->
+ <div class="glass-card rounded-none p-6">
+ <div class="flex items-center gap-3 mb-5">
+ <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+ <i data-lucide="user-plus" class="w-5 h-5 text-emerald-600"></i>
+ </div>
+ <div>
+ <h3 class="text-lg font-semibold text-slate-800">Manual Onboarding</h3>
+ <p class="text-slate-400 text-sm">Add users directly to the portal</p>
+ </div>
+ </div>
+ <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+ <button id="add-student-btn-dashboard" onclick="AdminEngine.openStudentModal()"
+ class="flex items-center gap-3 p-4 bg-admin-accent/10 hover:bg-admin-accent/20 border border-admin-accent/20 rounded-xl transition-colors text-left">
+ <div class="w-9 h-9 rounded-lg bg-admin-accent/20 flex items-center justify-center shrink-0">
+ <i data-lucide="graduation-cap" class="w-5 h-5 text-admin-accent"></i>
+ </div>
+ <div>
+ <p class="font-semibold text-slate-800 text-sm">Add Student</p>
+ <p class="text-slate-400 text-xs">Enroll a new student</p>
+ </div>
+ </button>
+ <button id="add-tutor-btn"
+ class="flex items-center gap-3 p-4 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 rounded-xl transition-colors text-left">
+ <div class="w-9 h-9 rounded-lg bg-emerald-500/20 flex items-center justify-center shrink-0">
+ <i data-lucide="briefcase" class="w-5 h-5 text-emerald-600"></i>
+ </div>
+ <div>
+ <p class="font-semibold text-slate-800 text-sm">Add Tutor</p>
+ <p class="text-slate-400 text-xs">Onboard a new tutor</p>
+ </div>
+ </button>
+ <button id="add-parent-btn"
+ class="flex items-center gap-3 p-4 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 rounded-xl transition-colors text-left">
+ <div class="w-9 h-9 rounded-lg bg-purple-500/20 flex items-center justify-center shrink-0">
+ <i data-lucide="heart-handshake" class="w-5 h-5 text-purple-600"></i>
+ </div>
+ <div>
+ <p class="font-semibold text-slate-800 text-sm">Add Parent</p>
+ <p class="text-slate-400 text-xs">Register a parent account</p>
+ </div>
+ </button>
  </div>
  </div>
  </section>
@@ -557,8 +729,8 @@
  <th class="px-6 py-4 font-semibold">Student</th>
  <th class="px-6 py-4 font-semibold">Parent</th>
  <th class="px-6 py-4 font-semibold">Course</th>
+ <th class="px-6 py-4 font-semibold">Tutor</th>
  <th class="px-6 py-4 font-semibold">Status</th>
- <th class="px-6 py-4 font-semibold">Enrolled</th>
  <th class="px-6 py-4 font-semibold text-right">Actions</th>
  </tr>
  </thead>
@@ -593,6 +765,38 @@
  <div id="schedule-calendar" class="min-h-[500px]">
  <p class="text-slate-400 text-center py-20">Loading calendar...</p>
  </div>
+ </div>
+ </section>
+
+ <!-- ===== ATTENDANCE SECTION ===== -->
+ <section id="section-attendance" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Attendance Approvals</h2>
+ <p class="text-slate-500">Review and approve tutor attendance logs</p>
+ </div>
+ </div>
+ 
+ <div class="glass-card rounded-none p-6 overflow-x-auto">
+ <table class="w-full text-left border-collapse data-table">
+ <thead>
+ <tr>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Date/Time</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Tutor</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Student</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Topic & Course</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Duration</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Type</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Status</th>
+ <th class="p-3 text-xs font-semibold uppercase tracking-wider text-slate-400 text-right">Actions</th>
+ </tr>
+ </thead>
+ <tbody id="admin-attendance-list">
+ <tr>
+ <td colspan="8" class="p-8 text-center text-slate-400">Loading logs...</td>
+ </tr>
+ </tbody>
+ </table>
  </div>
  </section>
 
@@ -652,16 +856,21 @@
  </div>
  
  <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Program Name *</label>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Program *</label>
  <select id="cert-program-name" required class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 focus:outline-none focus:border-admin-accent">
  <option value="">-- Select Program --</option>
- <option value="Scratch Game Creators">Scratch Game Creators</option>
- <option value="Python Programming Power">Python Programming Power</option>
- <option value="Web Wizards Academy">Web Wizards Academy</option>
- <option value="Arduino Robotics Lab">Arduino Robotics Lab</option>
- <option value="Creative Coding Essentials">Creative Coding Essentials</option>
+ <option value="Scratch Creators & Game Design">Scratch Creators & Game Design</option>
+ <option value="Python Programming & Data Science">Python Programming & Data Science</option>
+ <option value="Web Wizards (HTML, CSS & JavaScript)">Web Wizards (HTML, CSS & JavaScript)</option>
+ <option value="Robotics & Arduino Engineering">Robotics & Arduino Engineering</option>
+ <option value="3D Game Development (Unity & Roblox)">3D Game Development (Unity & Roblox)</option>
+ <option value="Mobile App Development">Mobile App Development</option>
  <option value="AI & Machine Learning Explorers">AI & Machine Learning Explorers</option>
- <option value="Fullstack Web Development">Fullstack Web Development</option>
+ <option value="Data Analytics & Streamlit Web Apps">Data Analytics & Streamlit Web Apps</option>
+ <option value="Introduction to Computer Science">Introduction to Computer Science</option>
+ <option value="3D Modeling, CAD & Digital Design">3D Modeling, CAD & Digital Design</option>
+ <option value="Cybersecurity & Digital Safety">Cybersecurity & Digital Safety</option>
+ <option value="STEM Physics & Electronics Lab">STEM Physics & Electronics Lab</option>
  </select>
  </div>
 
@@ -680,6 +889,22 @@
  </div>
  </div>
  
+ <div class="mb-4">
+  <label class="block text-sm font-medium text-gray-500 mb-2">Certificate File <span class="text-gray-400 font-normal">(PDF, PNG, JPG — optional)</span></label>
+  <div class="flex items-center gap-3">
+    <label for="cert-file-input" class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-gray-50 border border-admin-border rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+      Choose File
+    </label>
+    <span id="cert-file-name" class="text-sm text-gray-400">No file chosen</span>
+    <input type="file" id="cert-file-input" accept=".pdf,.png,.jpg,.jpeg" class="hidden">
+  </div>
+  <div id="cert-file-preview" class="mt-3 hidden">
+    <img id="cert-preview-img" src="" alt="Certificate preview" class="max-h-40 rounded-lg border border-gray-200 object-contain">
+    <p id="cert-preview-pdf" class="text-sm text-gray-500 hidden">PDF file selected — will be attached to email</p>
+  </div>
+ </div>
+
  <div class="pt-4">
  <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
  <i data-lucide="award" class="w-5 h-5"></i>
@@ -892,6 +1117,121 @@
  </div>
  </section>
 
+ <!-- ===== EMAIL QUEUE SECTION ===== -->
+ <section id="section-email-queue" class="admin-section space-y-6 animate-fadeIn">
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-xl font-bold text-gray-800">Email Queue</h2>
+      <p class="text-sm text-gray-500 mt-1">Review and send queued personalised emails before they reach parents or tutors.</p>
+    </div>
+    <span id="queue-count-badge" class="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full hidden">0 pending</span>
+  </div>
+  <div id="email-queue-list" class="space-y-3">
+    <p class="text-gray-400 text-sm text-center py-8">No emails pending review.</p>
+  </div>
+  <div class="mt-8">
+    <h3 class="text-base font-semibold text-gray-700 mb-3">Sent History</h3>
+    <div id="email-history-list" class="space-y-2">
+      <p class="text-gray-400 text-sm">No emails sent yet.</p>
+    </div>
+  </div>
+ </section>
+
+ <!-- ===== PASSWORD RESETS SECTION ===== -->
+ <section id="section-password-resets" class="admin-section space-y-6 animate-fadeIn">
+  <div>
+    <h2 class="text-xl font-bold text-gray-800">Password Reset Requests</h2>
+    <p class="text-sm text-gray-500 mt-1">Users who have requested a password reset. Generate a new password and send it to them.</p>
+  </div>
+  <div id="password-resets-list" class="space-y-3">
+    <p class="text-gray-400 text-sm text-center py-8">No pending password reset requests.</p>
+  </div>
+ </section>
+
+ <!-- ===== SETTINGS SECTION ===== -->
+ <section id="section-settings" class="admin-section animate-fadeIn">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-2xl font-nunito font-bold text-slate-800">Settings</h2>
+      <p class="text-slate-500 mt-1">Manage your profile, change your password, and set notification preferences.</p>
+    </div>
+  </div>
+
+  <!-- Change Password -->
+  <div class="glass-card rounded-none p-6 mb-6">
+    <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Change Password</h3>
+    <form id="change-password-form" class="space-y-4 max-w-md">
+      <div>
+        <label class="block text-sm font-semibold text-gray-600 mb-1.5">Current Password</label>
+        <div class="relative">
+          <input type="password" id="current-password" placeholder="Enter current password" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors pr-10">
+          <button type="button" onclick="var i=document.getElementById('current-password');i.type=i.type==='password'?'text':'password'" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-600 mb-1.5">New Password</label>
+        <div class="relative">
+          <input type="password" id="new-password" placeholder="Enter new password (min 8 chars)" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors pr-10">
+          <button type="button" onclick="var i=document.getElementById('new-password');i.type=i.type==='password'?'text':'password'" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-600 mb-1.5">Confirm New Password</label>
+        <input type="password" id="confirm-password" placeholder="Repeat new password" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+      </div>
+      <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-2.5 rounded-lg transition-colors">Update Password</button>
+      <p id="password-change-msg" class="text-sm hidden"></p>
+    </form>
+  </div>
+
+  <!-- Profile Information -->
+  <div class="glass-card rounded-none p-6 mb-6">
+    <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Profile Information</h3>
+    <form id="update-profile-form" class="space-y-4 max-w-md">
+      <div>
+        <label class="block text-sm font-semibold text-gray-600 mb-1.5">Display Name</label>
+        <input type="text" id="profile-name" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-600 mb-1.5">Email</label>
+        <input type="email" id="profile-email" disabled class="w-full bg-gray-100 border border-gray-200 rounded-lg py-2.5 px-4 text-gray-500 cursor-not-allowed">
+        <p class="text-xs text-gray-400 mt-1">Email cannot be changed. Contact support if needed.</p>
+      </div>
+      <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-2.5 rounded-lg transition-colors">Save Profile</button>
+    </form>
+  </div>
+
+  <!-- Notification Preferences -->
+  <div class="glass-card rounded-none p-6 mb-6">
+    <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Notification Preferences</h3>
+    <div class="space-y-3 max-w-md">
+      <label class="flex items-center gap-3 cursor-pointer">
+        <input type="checkbox" id="notif-email" checked class="w-4 h-4 rounded accent-orange-500">
+        <span class="text-sm font-medium text-gray-700">Email notifications for new enrollments</span>
+      </label>
+      <label class="flex items-center gap-3 cursor-pointer">
+        <input type="checkbox" id="notif-push" checked class="w-4 h-4 rounded accent-orange-500">
+        <span class="text-sm font-medium text-gray-700">Push notifications (NTFY) for bookings + enrollments</span>
+      </label>
+      <label class="flex items-center gap-3 cursor-pointer">
+        <input type="checkbox" id="notif-reports" checked class="w-4 h-4 rounded accent-orange-500">
+        <span class="text-sm font-medium text-gray-700">Weekly report generation reminder (Sundays)</span>
+      </label>
+      <button id="save-notif-prefs-btn" class="mt-2 bg-gray-700 hover:bg-gray-800 text-white font-bold px-6 py-2.5 rounded-lg transition-colors">Save Preferences</button>
+    </div>
+  </div>
+
+  <!-- Account Information -->
+  <div class="glass-card rounded-none p-6">
+    <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Account Information</h3>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-lg">
+      <div><p class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Role</p><p id="acct-role" class="font-semibold text-gray-800 mt-0.5">Admin</p></div>
+      <div><p class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Member Since</p><p id="acct-since" class="font-semibold text-gray-800 mt-0.5">—</p></div>
+      <div><p class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Last Login</p><p id="acct-last-login" class="font-semibold text-gray-800 mt-0.5">Now</p></div>
+    </div>
+  </div>
+ </section>
+
  <!-- ===== EMAIL LOGS SECTION ===== -->
  <section id="section-logs" class="admin-section animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
@@ -926,11 +1266,375 @@
  </div>
  </section>
 
+ <!-- ===== MONTHLY REPORTS SECTION ===== -->
+ <section id="section-reports" class="admin-section animate-fadeIn">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div>
+      <h2 class="text-2xl font-nunito font-bold text-slate-800">Monthly Academic Reports</h2>
+      <p class="text-slate-500 mt-1">Review tutor evaluations per child, edit qualitative insights, approve and dispatch official clean PDF reports to parents.</p>
+    </div>
+    <div class="flex items-center gap-3 flex-wrap">
+      <span id="reports-count-badge" class="hidden bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1 rounded-full"></span>
+      <button id="generate-weekly-reports-btn" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        Generate Weekly Summaries
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter & Search Toolbar -->
+  <div class="glass-card p-4 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="flex items-center gap-2 flex-wrap" id="admin-reports-filter-group">
+      <button type="button" class="admin-report-filter px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all" data-filter="all">
+        All Reports (<span id="rep-count-all">0</span>)
+      </button>
+      <button type="button" class="admin-report-filter px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-filter="pending_review">
+        Pending Review (<span id="rep-count-pending" class="text-amber-600 font-extrabold">0</span>)
+      </button>
+      <button type="button" class="admin-report-filter px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-filter="sent_to_parent">
+        Sent to Parents (<span id="rep-count-sent" class="text-emerald-600">0</span>)
+      </button>
+      <button type="button" class="admin-report-filter px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-filter="rejected">
+        Needs Revision (<span id="rep-count-rejected" class="text-rose-600">0</span>)
+      </button>
+    </div>
+    <div class="relative w-full md:w-64">
+      <input type="text" id="admin-reports-search" placeholder="Search student, course, tutor..." class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2 text-xs text-slate-800 placeholder-gray-400 focus:outline-none focus:border-indigo-500">
+    </div>
+  </div>
+
+  <div id="monthly-reports-list" class="space-y-4">
+    <div class="glass-card rounded-none p-12 text-center text-gray-400">
+      <svg class="w-12 h-12 mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      <p class="font-medium">No monthly reports submitted yet.</p>
+      <p class="text-sm mt-1">Reports submitted by tutors will appear here.</p>
+    </div>
+  </div>
+ </section>
+
+ <!-- ===== WHATSAPP BOT SECTION ===== -->
+ <section id="section-whatsapp-bot" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">WhatsApp Admin Bot</h2>
+ <p class="text-slate-500">Configure bot state and takeover settings</p>
+ </div>
+ </div>
+
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+   <div class="glass-card p-6 flex flex-col justify-between">
+     <div>
+       <h3 class="text-lg font-nunito font-bold text-slate-800 mb-2">Bot Status</h3>
+       <p class="text-sm text-slate-500 mb-4">Toggle the automated WhatsApp responder globally.</p>
+     </div>
+     <div class="flex items-center justify-between">
+       <span class="text-sm font-semibold text-slate-700">Bot Active</span>
+       <label class="relative inline-flex items-center cursor-pointer">
+         <input type="checkbox" id="whatsapp-bot-status-toggle" class="sr-only peer" checked>
+         <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+       </label>
+     </div>
+   </div>
+
+   <div class="glass-card p-6 flex flex-col justify-between">
+     <div>
+       <h3 class="text-lg font-nunito font-bold text-slate-800 mb-2">Meta Cloud Integration</h3>
+       <p class="text-sm text-slate-500 mb-4">Connection status to the Meta developer webhook portal.</p>
+     </div>
+     <div class="flex items-center justify-between">
+       <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+         Connected
+       </span>
+       <span class="text-xs text-slate-400">Meta Cloud API</span>
+     </div>
+   </div>
+
+   <div class="glass-card p-6 flex flex-col justify-between">
+     <div>
+       <h3 class="text-lg font-nunito font-bold text-slate-800 mb-2">Dashboard Control</h3>
+       <p class="text-sm text-slate-500 mb-4">Open the advanced WhatsApp admin and rules editor console.</p>
+     </div>
+     <div>
+       <a href="#" onclick="alert('WhatsApp Bot console is not available in production. Configure STEMULUS_BOT_URL.'); return false;" class="w-full text-center block bg-admin-accent hover:bg-admin-accent/90 text-white font-nunito font-semibold py-2 px-4 rounded transition-colors text-sm">
+         Open Console
+       </a>
+     </div>
+   </div>
+ </div>
+
+ <div class="glass-card p-6">
+   <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Active Takeovers</h3>
+   <div class="overflow-x-auto">
+     <table class="w-full text-sm text-left">
+       <thead>
+         <tr class="text-gray-500 uppercase text-xs border-b border-admin-border">
+           <th class="pb-3 font-semibold">User phone</th>
+           <th class="pb-3 font-semibold">Status</th>
+           <th class="pb-3 font-semibold">Takeover Action</th>
+         </tr>
+       </thead>
+       <tbody id="whatsapp-active-takeovers" class="divide-y divide-admin-border">
+         <tr>
+           <td colspan="3" class="py-4 text-center text-slate-400 text-xs">No active conversation takeovers. Bot is responding globally.</td>
+         </tr>
+       </tbody>
+     </table>
+   </div>
+ </div>
+ </section>
+
+
+ <!-- ===== ONBOARDING SECTION ===== -->
+ <section id="section-onboarding" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Onboarding Wizard</h2>
+ <p class="text-slate-500">Add parents and tutors through a guided multi-step process</p>
+ </div>
+ </div>
+ <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
+ <button onclick="AdminWorkflows.OnboardingWizard.openParentOnboarding()"
+ class="flex items-center gap-4 p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-200 transition-all text-left">
+ <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
+ <i data-lucide="user-plus" class="w-6 h-6 text-blue-600"></i>
+ </div>
+ <div>
+ <p class="font-bold text-slate-800">Onboard Parent</p>
+ <p class="text-slate-500 text-xs mt-1">Register parent + children with guided wizard</p>
+ </div>
+ </button>
+ <button onclick="AdminWorkflows.OnboardingWizard.openTutorOnboarding()"
+ class="flex items-center gap-4 p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-200 transition-all text-left">
+ <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0">
+ <i data-lucide="briefcase" class="w-6 h-6 text-emerald-600"></i>
+ </div>
+ <div>
+ <p class="font-bold text-slate-800">Onboard Tutor</p>
+ <p class="text-slate-500 text-xs mt-1">Add tutor with qualifications and availability</p>
+ </div>
+ </button>
+ </div>
+ </section>
+
+ <!-- ===== ASSIGNMENTS SECTION ===== -->
+ <section id="section-assignments" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Enrollment Assignments</h2>
+ <p class="text-slate-500">Assign tutors to unassigned enrollments</p>
+ </div>
+ <button onclick="AdminWorkflows.EnrollmentAssignment.renderAssignmentPanel('assignment-panel')"
+ class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
+ <i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh
+ </button>
+ </div>
+ <div id="assignment-panel"></div>
+ <script>
+ document.addEventListener('DOMContentLoaded', function() {
+ if (typeof AdminWorkflows !== 'undefined') {
+ AdminWorkflows.EnrollmentAssignment.renderAssignmentPanel('assignment-panel');
+ }
+ });
+ </script>
+ </section>
+
+ <!-- ===== SCHEDULE WORKFLOW SECTION ===== -->
+ <section id="section-schedule-wf" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Weekly Schedule</h2>
+ <p class="text-slate-500">Interactive calendar view of all sessions</p>
+ </div>
+ </div>
+ <div id="schedule-wf-calendar"></div>
+ <script>
+ document.addEventListener('DOMContentLoaded', function() {
+ if (typeof AdminWorkflows !== 'undefined') {
+ AdminWorkflows.ScheduleManager.renderCalendarView('schedule-wf-calendar');
+ }
+ });
+ </script>
+ </section>
+
+ <!-- ===== APPROVALS SECTION ===== -->
+ <section id="section-approvals" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Attendance Approvals</h2>
+ <p class="text-slate-500">Review and approve tutor attendance logs</p>
+ </div>
+ <button onclick="AdminWorkflows.AttendanceApproval.renderApprovalQueue('approval-queue')"
+ class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
+ <i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh
+ </button>
+ </div>
+ <div id="approval-queue"></div>
+ <script>
+ document.addEventListener('DOMContentLoaded', function() {
+ if (typeof AdminWorkflows !== 'undefined') {
+ AdminWorkflows.AttendanceApproval.renderApprovalQueue('approval-queue');
+ }
+ });
+ </script>
+
+ <div class="mt-8 border-t border-gray-100 pt-6">
+   <div class="flex items-center justify-between mb-3">
+     <div>
+       <h3 class="text-base font-nunito font-bold text-gray-700">Website Enrollment Submissions</h3>
+       <p class="text-xs text-gray-400 mt-0.5">Students who filled in the online enroll form. Approve to create student record and parent account.</p>
+     </div>
+     <button onclick="if(typeof loadNetlifyEnrollments==='function')loadNetlifyEnrollments()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 px-3 py-1.5 border border-indigo-200 rounded-lg transition-colors">Refresh</button>
+   </div>
+   <div id="netlify-enrollments-list" class="space-y-3">
+     <p class="text-gray-400 text-sm text-center py-4">Click Refresh to load pending online enrollments.</p>
+   </div>
+ </div>
+
+ </section>
+
+ <!-- ===== NOTIFICATIONS SECTION ===== -->
+ <section id="section-notifications" class="admin-section animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <div>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Notification Center</h2>
+ <p class="text-slate-500">Broadcast emails, WhatsApp messages, and portal notifications</p>
+ </div>
+ </div>
+ <div id="notification-composer"></div>
+ <script>
+ document.addEventListener('DOMContentLoaded', function() {
+ if (typeof AdminWorkflows !== 'undefined') {
+ AdminWorkflows.NotificationCenter.renderComposer('notification-composer');
+ }
+ });
+ </script>
+ </section>
+
  </div>
  </main>
  </div>
 
  <!-- ===================== MODALS ===================== -->
+
+ <!-- Add/Edit Tutor Modal -->
+ <div id="tutor-modal" class="fixed inset-0 z-50 hidden">
+ <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('tutor-modal')"></div>
+ <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+ <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <h3 id="tutor-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Tutor</h3>
+ <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('tutor-modal')">
+ <i data-lucide="x" class="w-6 h-6"></i>
+ </button>
+ </div>
+
+ <form id="tutor-form" class="space-y-4">
+ <input type="hidden" id="tutor-existing-email">
+
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Full Name *</label>
+ <input type="text" id="tutor-name" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="Tutor's full name">
+ </div>
+
+ <div class="grid grid-cols-2 gap-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Email *</label>
+ <input type="email" id="tutor-email" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="tutor@stemuluskidstech.com">
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Phone</label>
+ <input type="tel" id="tutor-phone"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="+234...">
+ </div>
+ </div>
+
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Subjects / Specialisation</label>
+ <input type="text" id="tutor-subjects"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="e.g. Python, Robotics, Web Design">
+ </div>
+
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Login Password *</label>
+ <input type="password" id="tutor-password" minlength="8"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="Min. 8 characters">
+ <p class="text-xs text-slate-400 mt-1">Share this with the tutor so they can log in.</p>
+ </div>
+
+ <div class="flex items-center gap-3 pt-2">
+ <button type="submit" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 rounded-lg transition-colors">
+ Save Tutor
+ </button>
+ <button type="button" class="px-6 py-3 text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('tutor-modal')">
+ Cancel
+ </button>
+ </div>
+ </form>
+ </div>
+ </div>
+ </div>
+
+ <!-- Add Parent Modal -->
+ <div id="parent-modal" class="fixed inset-0 z-50 hidden">
+ <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('parent-modal')"></div>
+ <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+ <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
+ <div class="flex items-center justify-between mb-6">
+ <h3 class="text-xl font-nunito font-bold text-slate-800">Add Parent Account</h3>
+ <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('parent-modal')">
+ <i data-lucide="x" class="w-6 h-6"></i>
+ </button>
+ </div>
+
+ <form id="parent-form" class="space-y-4">
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Full Name *</label>
+ <input type="text" id="new-parent-name" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="Parent's full name">
+ </div>
+
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Email *</label>
+ <input type="email" id="new-parent-email" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="parent@example.com">
+ </div>
+
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Phone</label>
+ <input type="tel" id="new-parent-phone"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="+234...">
+ </div>
+
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Login Password *</label>
+ <input type="password" id="new-parent-password" required minlength="6"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ placeholder="Min. 6 characters">
+ <p class="text-xs text-slate-400 mt-1">Share this with the parent so they can access their portal.</p>
+ </div>
+
+ <div class="flex items-center gap-3 pt-2">
+ <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors">
+ Create Parent Account
+ </button>
+ <button type="button" class="px-6 py-3 text-slate-400 hover:text-slate-600 transition-colors" onclick="AdminEngine.closeModal('parent-modal')">
+ Cancel
+ </button>
+ </div>
+ </form>
+ </div>
+ </div>
+ </div>
  
  <!-- Add/Edit Student Modal -->
  <div id="student-modal" class="fixed inset-0 z-50 hidden">
@@ -1026,8 +1730,21 @@
  </select>
  </div>
  </div>
+ <div class="mt-4">
+ <label class="block text-sm font-medium text-gray-500 mb-2">Assigned Tutor *</label>
+ <select id="student-tutor" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+ <option value="">-- Select Tutor --</option>
+ </select>
+ </div>
  </div>
  
+ <div style="margin-bottom:1rem;">
+   <label style="display:block;font-size:0.82rem;font-weight:600;color:#374151;margin-bottom:4px;" for="student-classroom-link">Google Classroom Link <span style="font-size:0.75rem;color:#9ca3af;font-weight:400;">(optional — share with parent on enrolment)</span></label>
+   <input type="url" id="student-classroom-link" name="classroomLink" placeholder="https://classroom.google.com/c/..."
+     class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors">
+ </div>
+
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Notes</label>
  <textarea id="student-notes" rows="3"
@@ -1062,7 +1779,16 @@
  
  <form id="schedule-form" class="space-y-5">
  <input type="hidden" id="schedule-id">
- 
+
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Student *</label>
+ <select id="schedule-student" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors"
+ onchange="AdminEngine.handleScheduleStudentChange(this.value)">
+ <option value="">-- Select Student --</option>
+ </select>
+ </div>
+
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Course *</label>
  <select id="schedule-course" required
@@ -1099,10 +1825,11 @@
  </select>
  </div>
  <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Mentor</label>
- <input type="text" id="schedule-mentor"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="Instructor name">
+ <label class="block text-sm font-medium text-gray-500 mb-2">Mentor *</label>
+ <select id="schedule-mentor" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+ <option value="">-- Select Mentor --</option>
+ </select>
  </div>
  </div>
  
@@ -1170,7 +1897,6 @@
  <input type="text" id="project-student-name" required
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="e.g. Tunde">
- placeholder="e.g. Daniel M.">
  </div>
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Student Age *</label>
@@ -1274,137 +2000,424 @@
  </div>
  </div>
 
+ <!-- ===== ADMIN MONTHLY REPORT REVIEW & EDIT MODAL ===== -->
+ <div id="admin-report-review-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+   <div class="modal-overlay absolute inset-0 bg-black/75 backdrop-blur-sm" onclick="AdminEngine.closeModal('admin-report-review-modal')"></div>
+   <div class="relative min-h-screen flex items-center justify-center p-4">
+     <div class="bg-white border border-[#e2e8f0] p-6 sm:p-8 max-w-2xl w-full shadow-2xl space-y-5 animate-fadeIn rounded-2xl relative my-8">
+       
+       <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+         <div>
+           <span class="inline-block bg-indigo-50 text-indigo-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider mb-1">Admin Evaluation Review</span>
+           <h3 class="text-xl font-nunito font-extrabold text-slate-800" id="rev-modal-title">Review Monthly Report</h3>
+           <p class="text-xs text-slate-500" id="rev-modal-subtitle">Tutor: Sarah Jane &middot; Period: June 2026</p>
+         </div>
+         <button type="button" onclick="AdminEngine.closeModal('admin-report-review-modal')" class="text-gray-400 hover:text-gray-600 p-2">
+           <i data-lucide="x" class="w-5 h-5"></i>
+         </button>
+       </div>
+
+       <form id="admin-review-form" onsubmit="event.preventDefault();" class="space-y-4">
+         <input type="hidden" id="rev-report-id" value="">
+
+         <!-- Student & Session Snapshot -->
+         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-100 text-xs">
+           <div>
+             <span class="text-gray-400 font-bold uppercase text-[10px] block">Student</span>
+             <span class="font-bold text-slate-800 truncate block" id="rev-student-name">—</span>
+           </div>
+           <div>
+             <span class="text-gray-400 font-bold uppercase text-[10px] block">Course</span>
+             <span class="font-bold text-slate-800 truncate block" id="rev-course-name">—</span>
+           </div>
+           <div>
+             <span class="text-gray-400 font-bold uppercase text-[10px] block">Sessions</span>
+             <span class="font-bold text-slate-800" id="rev-attendance-count">—</span>
+           </div>
+           <div>
+             <span class="text-gray-400 font-bold uppercase text-[10px] block">Hours</span>
+             <span class="font-bold text-slate-800" id="rev-total-hours">—</span>
+           </div>
+         </div>
+
+         <!-- Grade & Engagement -->
+         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+           <div>
+             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Assigned Grade</label>
+             <select id="rev-overall-grade" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm font-bold text-slate-800 focus:outline-none focus:border-indigo-500">
+               <option value="A+">A+ — Exceptional Performance</option>
+               <option value="A">A — Excellent Progress</option>
+               <option value="B+">B+ — Very Good Competency</option>
+               <option value="B">B — Good Steady Growth</option>
+               <option value="C+">C+ — Satisfactory</option>
+               <option value="C">C — Needs Improvement</option>
+               <option value="D">D — Below Expectations</option>
+               <option value="F">F — Not Progressing</option>
+             </select>
+           </div>
+           <div>
+             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Engagement Level</label>
+             <select id="rev-engagement-level" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-indigo-500">
+               <option value="highly-engaged">Highly Engaged — Proactive &amp; Enthusiastic</option>
+               <option value="engaged">Engaged — Actively Participates</option>
+               <option value="moderate">Moderate — Paced &amp; Steady</option>
+               <option value="low">Needs Prompting — Developing Focus</option>
+               <option value="declining">Attention Needed</option>
+             </select>
+           </div>
+         </div>
+
+         <!-- Topics Covered -->
+         <div>
+           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Topics &amp; Concepts Mastered (Parent Facing)</label>
+           <textarea id="rev-topics" rows="3" class="w-full bg-white border border-gray-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:border-indigo-500" placeholder="Topics covered..."></textarea>
+         </div>
+
+         <!-- Strengths -->
+         <div>
+           <label class="block text-xs font-bold text-emerald-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5"><span data-icon-3d="star" data-icon-size="16"></span> Strengths Observed &amp; Breakthroughs</label>
+           <textarea id="rev-strengths" rows="3" class="w-full bg-white border border-emerald-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:border-emerald-500" placeholder="Observed strengths..."></textarea>
+         </div>
+
+         <!-- Challenges -->
+         <div>
+           <label class="block text-xs font-bold text-amber-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5"><span data-icon-3d="target" data-icon-size="16"></span> Challenges &amp; Focus Areas</label>
+           <textarea id="rev-challenges" rows="2" class="w-full bg-white border border-amber-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:border-amber-500" placeholder="Challenges observed..."></textarea>
+         </div>
+
+         <!-- Recommendations -->
+         <div>
+           <label class="block text-xs font-bold text-indigo-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5"><span data-icon-3d="rocket" data-icon-size="16"></span> Next Month's Objectives &amp; Recommendations</label>
+           <textarea id="rev-recommendation" rows="2" class="w-full bg-white border border-indigo-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:border-indigo-500" placeholder="Next steps..."></textarea>
+         </div>
+
+         <!-- Director Note -->
+         <div class="bg-indigo-50/70 border border-indigo-100 rounded-xl p-3.5">
+           <label class="block text-xs font-bold text-indigo-900 uppercase tracking-wider mb-1">Academic Director's Endorsement Note (Appears on Official PDF)</label>
+           <textarea id="rev-director-note" rows="2" class="w-full bg-white border border-indigo-200 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-500" placeholder="e.g. The Academic Board is delighted with Daniel's rapid grasp of loop structures this month. Highly commendable work!"></textarea>
+         </div>
+
+         <!-- Action Buttons -->
+         <div class="pt-3 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+           <div class="flex items-center gap-2 w-full sm:w-auto">
+             <button type="button" onclick="AdminEngine.previewCurrentReportPDF()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs transition-colors flex items-center justify-center gap-1.5">
+               <i data-lucide="eye" class="w-4 h-4"></i> Preview Clean PDF
+             </button>
+             <button type="button" onclick="AdminEngine.saveReportDraft()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 text-slate-700 font-bold text-xs transition-colors">
+               Save Draft
+             </button>
+           </div>
+           
+           <div class="flex items-center gap-2 w-full sm:w-auto">
+             <button type="button" onclick="AdminEngine.promptRejectReport()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 font-bold text-xs transition-colors flex items-center justify-center gap-1.5">
+               <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reject &amp; Request Redo
+             </button>
+             <button type="button" onclick="AdminEngine.approveAndSendReport()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5">
+               <i data-lucide="send" class="w-4 h-4"></i> Accept &amp; Send to Parent
+             </button>
+           </div>
+         </div>
+       </form>
+
+     </div>
+   </div>
+ </div>
+
+ <!-- ===== ADMIN 1-CLICK QUICK ONBOARD MODAL ===== -->
+ <div id="admin-quick-onboard-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+   <div class="modal-overlay absolute inset-0 bg-black/75 backdrop-blur-sm" onclick="AdminEngine.closeModal('admin-quick-onboard-modal')"></div>
+   <div class="relative min-h-screen flex items-center justify-center p-4">
+     <div class="bg-white border border-[#e2e8f0] p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-5 animate-fadeIn rounded-2xl relative my-8">
+       
+       <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+         <div class="flex items-center gap-3">
+           <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-extrabold text-lg">
+             <i data-lucide="zap" class="w-5 h-5"></i>
+           </div>
+           <div>
+             <h3 class="text-lg font-nunito font-extrabold text-slate-800">Quick User Onboarding</h3>
+             <p class="text-xs text-slate-500">Automate password, roster linking, and welcome dispatches</p>
+           </div>
+         </div>
+         <button type="button" onclick="AdminEngine.closeModal('admin-quick-onboard-modal')" class="text-gray-400 hover:text-gray-600 p-2">
+           <i data-lucide="x" class="w-5 h-5"></i>
+         </button>
+       </div>
+
+       <!-- Tabs: Student+Parent vs Tutor -->
+       <div class="flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl text-xs font-bold">
+         <button type="button" id="qo-tab-student" onclick="AdminEngine.switchQuickOnboardTab('student')" class="flex-1 py-2 rounded-lg bg-white text-indigo-700 shadow-sm transition-all text-center">
+           Student &amp; Parent (1-Click)
+         </button>
+         <button type="button" id="qo-tab-tutor" onclick="AdminEngine.switchQuickOnboardTab('tutor')" class="flex-1 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all text-center">
+           New Tutor (1-Click)
+         </button>
+       </div>
+
+       <!-- Form 1: Student + Parent -->
+       <form id="qo-student-form" onsubmit="AdminEngine.submitQuickOnboardStudent(event)" class="space-y-4">
+         <div>
+           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Parent Full Name</label>
+           <input type="text" id="qo-parent-name" required placeholder="e.g. John Adeyemi" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+         </div>
+         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+           <div>
+             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Parent Email</label>
+             <input type="email" id="qo-parent-email" required placeholder="parent@email.com" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+           </div>
+           <div>
+             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Parent Phone (WhatsApp)</label>
+             <input type="tel" id="qo-parent-phone" placeholder="+234..." class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+           </div>
+         </div>
+         <div class="grid grid-cols-3 gap-3">
+           <div class="col-span-2">
+             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Child Full Name</label>
+             <input type="text" id="qo-child-name" required placeholder="e.g. Daniel Adeyemi" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+           </div>
+           <div>
+             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Age</label>
+             <input type="number" id="qo-child-age" min="4" max="18" value="10" required class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+           </div>
+         </div>
+         <div>
+           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Learning Track / Course</label>
+           <select id="qo-program" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-orange-500">
+             <option value="Python Programming Foundations">Python Programming Foundations</option>
+             <option value="Scratch Creators">Scratch Creators (Ages 6-9)</option>
+             <option value="Robotics &amp; Arduino">Robotics &amp; Arduino IoT</option>
+             <option value="AI &amp; Machine Learning">AI &amp; Machine Learning for Kids</option>
+             <option value="Full-Stack Web Development">Full-Stack Web Development</option>
+             <option value="Digital Art &amp; Game Design">Digital Art &amp; Game Design</option>
+           </select>
+         </div>
+         <div>
+           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Assign Lead Tutor</label>
+           <select id="qo-tutor-select" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-orange-500">
+             <option value="Sarah Jane">Sarah Jane (Senior Instructor)</option>
+           </select>
+         </div>
+         <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold py-3 rounded-xl transition-all shadow-md text-xs flex items-center justify-center gap-2">
+           <i data-lucide="user-check" class="w-4 h-4"></i> Complete 1-Click Onboard &amp; Generate Credentials
+         </button>
+       </form>
+
+       <!-- Form 2: Tutor -->
+       <form id="qo-tutor-form" onsubmit="AdminEngine.submitQuickOnboardTutor(event)" class="space-y-4 hidden">
+         <div>
+           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tutor Full Name</label>
+           <input type="text" id="qo-tutor-name" required placeholder="e.g. David Okon" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+         </div>
+         <div>
+           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tutor Email</label>
+           <input type="email" id="qo-tutor-email" required placeholder="tutor@stemuluskidstech.com" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+         </div>
+         <div>
+           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Specialization Tracks</label>
+           <input type="text" id="qo-tutor-tracks" placeholder="e.g. Python, Scratch, Robotics" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+         </div>
+         <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold py-3 rounded-xl transition-all shadow-md text-xs flex items-center justify-center gap-2">
+           <i data-lucide="shield-check" class="w-4 h-4"></i> Create Tutor Account &amp; Generate Access
+         </button>
+       </form>
+
+       <!-- Success Credential Snapshot Box -->
+       <div id="qo-success-box" class="hidden bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-5 space-y-3 animate-fadeIn">
+         <div class="flex items-center gap-2.5 text-emerald-800">
+           <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>
+           <h4 class="font-bold text-sm">Account Created Successfully!</h4>
+         </div>
+         <div class="bg-white border border-emerald-200 rounded-xl p-3 text-xs font-mono space-y-1 text-slate-800" id="qo-credential-output">
+           <!-- Populated dynamically -->
+         </div>
+         <button type="button" id="qo-copy-btn" onclick="AdminEngine.copyQuickOnboardCredentials()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition-colors flex items-center justify-center gap-2">
+           <i data-lucide="copy" class="w-4 h-4"></i> Copy Credentials to Clipboard
+         </button>
+       </div>
+
+     </div>
+   </div>
+ </div>
+
  <!-- Toast Notification Container -->
  <div id="toast-container" class="fixed bottom-6 right-6 z-50 space-y-3"></div>
 
   <!-- Firebase SDK (Compat) - for Firestore certificate cloud sync -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="assets/js/firebase-config.js"></script>
+  <script src="assets/js/firebase-config.min.js" defer></script>
  
  <!-- QRCode Generator Library -->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
  
+ <!-- Core PDF Generator -->
+ <script src="assets/js/report-pdf-generator.js" defer></script>
+
  <!-- Dashboard Engine -->
- <script src="assets/js/dashboard-engine.js"></script>
+ <script src="assets/js/dashboard-engine.min.js" defer></script>
  
  <!-- Admin Engine -->
- <script src="assets/js/admin-engine.js"></script>
+ <script src="assets/js/admin-engine.min.js" defer></script>
+ 
+ <!-- WhatsApp Bot Integration -->
+ <script>
+   document.addEventListener('DOMContentLoaded', () => {
+     const statusToggle = document.getElementById('whatsapp-bot-status-toggle');
+     const takeoverBody = document.getElementById('whatsapp-active-takeovers');
+     const botUrl = window.STEMULUS_BOT_URL || '';
+
+     async function fetchBotStatus() {
+       try {
+         const res = await fetch(`${botUrl}/api/status`);
+         if (!res.ok) return;
+         const data = await res.json();
+         if (statusToggle) statusToggle.checked = !data.globalTakeover;
+         
+         const listRes = await fetch(`${botUrl}/api/conversations`);
+         if (!listRes.ok) return;
+         const list = await listRes.json();
+         
+         const pausedChats = list.filter(c => c.takeoverActive);
+         if (takeoverBody) {
+           takeoverBody.innerHTML = '';
+           if (pausedChats.length === 0) {
+             takeoverBody.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-slate-400 text-xs">No active conversation takeovers. Bot is responding globally.</td></tr>`;
+             return;
+           }
+           
+           pausedChats.forEach(chat => {
+             const tr = document.createElement('tr');
+             tr.className = 'border-b border-admin-border hover:bg-slate-50';
+             tr.innerHTML = `
+               <td class="py-3 font-semibold text-slate-800">+${chat.phone}</td>
+               <td class="py-3 text-amber-600 font-semibold text-xs">BOT PAUSED</td>
+               <td class="py-3">
+                 <button class="text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors" onclick="resumeChat('${chat.phone}')">
+                   Resume Bot
+                 </button>
+               </td>
+             `;
+             takeoverBody.appendChild(tr);
+           });
+         }
+       } catch (err) {
+         console.warn('WhatsApp Bot server connection failed:', err.message);
+       }
+     }
+
+     window.resumeChat = async (phone) => {
+       try {
+         const res = await fetch(`${botUrl}/api/takeover`, {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({ phone, paused: false })
+         });
+         if (res.ok) fetchBotStatus();
+       } catch (err) {
+         console.error('Error toggling takeover:', err);
+       }
+     };
+
+     if (statusToggle) {
+       statusToggle.onchange = async () => {
+         try {
+           const paused = !statusToggle.checked;
+           await fetch(`${botUrl}/api/takeover`, {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({ phone: 'all', paused })
+           });
+         } catch (err) {
+           console.error('Global toggle error:', err);
+         }
+       };
+     }
+
+     // Initial load and periodic refresh
+     fetchBotStatus();
+     setInterval(fetchBotStatus, 15000);
+   });
+ </script>
  
  <!-- Email Service -->
- <script src="assets/js/email-service.js"></script>
+ <script src="assets/js/email-service.min.js" defer></script>
+
+ <!-- Admin Workflows (5 workflow modules) -->
+ <script src="assets/js/admin-workflows.min.js" defer></script>
  
  <!-- Initialize Lucide Icons -->
  
 <!-- FOOTER  |  NEWSPAPER EDITORIAL -->
 
-<footer class="footer-editorial" role="contentinfo">
-  <!-- Model Viewer Script Loaded Dynamically inside the footer -->
-  <div class="footer-grid">
-    <!-- Brand column with 3D model logo -->
-    <div class="footer-brand-col">
-      <div class="footer-3d-wrapper">
-    <div class="footer-hologram-coin">
-      <div class="coin-glow"></div>
-      <div class="coin-inner">
-        <div class="coin-front">
-          <img src="logo.png" alt="STEMulus Logo">
-        </div>
-        <div class="coin-back">
-          <img src="logo.png" alt="STEMulus Logo">
-        </div>
-      </div>
-    </div>
-  </div>
-    </div>
 
-    <!-- Website Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Website</p>
-      <a href="index.html">Home</a>
-      <a href="programs.html">Roadmap</a>
-      <a href="for-parents.html">For Parents</a>
-      <a href="blog.html">Blog</a>
-      <a href="contact.html">Contact</a>
-    </div>
 
-    <!-- Social Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Social</p>
-      <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-      <a href="mailto:admin@stemuluskidstech.com">Email Us</a>
-      <a href="join-as-tutor.html">Join as Tutor</a>
-      <a href="hall-of-fame.html">Hall of Fame</a>
-    </div>
-
-    <!-- Legal Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Legal</p>
-      <a href="privacy-policy.html">Privacy Policy</a>
-      <a href="privacy-policy.html#terms">Terms of Service</a>
-      <a href="parent-dashboard.html">Parent Login</a>
-      <a href="enroll.html">Enroll Now</a>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <p class="footer-legal-left">©2026 STEMulus Innovations LTD. All rights reserved.</p>
-    <p class="footer-legal-right">
-      Built with craft, not algorithms
-      <i data-lucide="heart" style="width:12px;height:12px;fill:currentColor;color:currentColor;display:inline-block;vertical-align:middle;margin:0 2px;"></i>
-      <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:inline-flex;align-items:center;">
-        <i data-lucide="mail" style="width:18px;height:18px;"></i>
-      </a>
-      <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:inline-flex;align-items:center;">
-        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
-      </a>
-    </p>
-  </div>
-  
-  <!-- Background Text "STEMULUS" stylized bottom watermark -->
-  <div class="footer-bg-text">STEMulus</div>
+<footer class="mt-auto py-6 px-8 border-t border-slate-200 bg-white text-center text-xs text-slate-500 font-semibold" style="color: #64748b !important; background-color: #ffffff !important;">
+  <p>© 2026 STEMulus Innovations LTD. All rights reserved. • Admin Command Center</p>
 </footer>
 <script>
 (function(){var ring=document.getElementById('cursor-ring'),dot=document.getElementById('cursor-dot');if(!ring||!dot)return;var mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();document.querySelectorAll('a,button').forEach(function(el){el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-link');});el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-link');});});})();
-window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.editorial-heading,.prog-card,.feature-item,.stat-num').forEach(function(el,i){gsap.from(el,{y:50,opacity:0,duration:0.9,ease:'power 3.out',delay:(i% 4)*.1,scrollTrigger:{trigger:el,start:'top 88%'}});});});
+window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.editorial-heading,.prog-card,.feature-item,.stat-num').forEach(function(el,i){gsap.from(el,{y:50,opacity:0,duration:0.9,ease:'power3.out',delay:(i% 4)*.1,scrollTrigger:{trigger:el,start:'top 88%'}});});});
 
-// Mobile Sidebar Toggle
-document.addEventListener('DOMContentLoaded', function() {
- var menuBtn = document.getElementById('admin-menu-btn');
- var sidebar = document.getElementById('sidebar');
- var mainContent = document.querySelector('main');
- 
- if (menuBtn && sidebar) {
- menuBtn.addEventListener('click', function(e) {
- e.stopPropagation();
- sidebar.classList.toggle('open');
- });
- 
- if (mainContent) {
- mainContent.addEventListener('click', function() {
- if (sidebar.classList.contains('open')) {
- sidebar.classList.remove('open');
- }
- });
- }
- 
- sidebar.querySelectorAll('a').forEach(function(link) {
- link.addEventListener('click', function() {
- sidebar.classList.remove('open');
- });
- });
- }
-});
 </script>
 
 <script src="mobile-nav.js"></script>
 
 <!-- Floating WhatsApp CTA Button -->
-<a href="https://wa.me/2347052466716?text=Hello% 20STEMulus% 2C% 20I'm% 20interested% 20in% 20a% 20coding% 20class% 20for% 20my% 20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp">
-  <svg viewBox="0 0 448 512" aria-hidden="true">
-  <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-</svg>
+<a href="https://wa.me/2347052466716?text=Hello%20STEMulus%2C%20I'm%20interested%20in%20a%20coding%20class%20for%20my%20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp" style="width: 56px !important; height: 56px !important; max-width: 56px !important; max-height: 56px !important; min-width: 56px !important; min-height: 56px !important;">
+  <svg width="28" height="28" viewBox="0 0 448 512" aria-hidden="true" style="width: 28px !important; height: 28px !important; max-width: 28px !important; max-height: 28px !important; fill: #ffffff !important; display: block !important; flex-shrink: 0 !important;">
+    <path fill="#ffffff" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+  </svg>
 </a>
 
+<!-- Admin KPI sync for hero band -->
+<script>
+(function() {
+  // Mobile Sidebar Drawer Toggle
+  document.addEventListener('DOMContentLoaded', function() {
+    var menuBtn = document.getElementById('admin-menu-btn');
+    var sidebar = document.getElementById('sidebar');
+    var overlay = document.getElementById('sidebar-overlay');
+    
+    if (menuBtn && sidebar && overlay) {
+      function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.add('active');
+      }
+      function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.remove('active');
+      }
+      menuBtn.addEventListener('click', openSidebar);
+      overlay.addEventListener('click', closeSidebar);
+    }
+  });
+
+  function syncAdminKPIs() {
+    var s1 = document.getElementById('stat-total-students');
+    var s2 = document.getElementById('stat-upcoming-classes');
+    var s3 = document.getElementById('stat-pending-emails');
+    var k1 = document.getElementById('kpi-admin-students');
+    var k2 = document.getElementById('kpi-admin-classes');
+    var k3 = document.getElementById('kpi-admin-emails');
+    if (s1 && k1) k1.textContent = s1.textContent;
+    if (s2 && k2) k2.textContent = s2.textContent;
+    if (s3 && k3) k3.textContent = s3.textContent;
+  }
+  setInterval(syncAdminKPIs, 5000);
+  window.addEventListener('stemulusDbUpdated', syncAdminKPIs);
+})();
+</script>
+<script src="assets/js/portal-scene-engine.min.js" defer></script>
+<!-- Mulu AI Mascot Widget -->
+<script src="assets/js/mulu-widget.min.js" defer></script>
+<!-- Automated Dual Class Reminder Engine -->
+<script src="assets/js/class-reminder-engine.js" defer></script>
+<script>
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'stemulus_session' && !e.newValue) {
+      window.location.href = 'parent-login.html';
+    }
+  });
+</script>
 </body>
 </html>

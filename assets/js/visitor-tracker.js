@@ -43,7 +43,7 @@ const VisitorTracker = (function() {
         // Check if should send daily digest
         checkDailyDigest();
         
-        console.log('[Visitor] ✅ Tracker initialized', sessionData.isNew ? '(New visitor)' : '(Returning)');
+        console.log('[Visitor] [Ready] Tracker initialized', sessionData.isNew ? '(New visitor)' : '(Returning)');
     }
 
     // ==================== SESSION MANAGEMENT ====================

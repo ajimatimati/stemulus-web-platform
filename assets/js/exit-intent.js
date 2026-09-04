@@ -218,7 +218,7 @@ const ExitIntent = (function() {
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </button>
-                    <div class="exit-intent-emoji">🚀</div>
+                    <div class="exit-intent-emoji" style="display:flex;justify-content:center;margin-bottom:12px;"><span data-icon-3d="rocket" data-icon-size="48"></span></div>
                     <h2>Wait! Don't Miss Out</h2>
                 </div>
                 <div class="exit-intent-body">
@@ -230,7 +230,7 @@ const ExitIntent = (function() {
                     </div>
                     
                     <a href="https://wa.me/2347052466716?text=Hi%20STEMulus!%20I'd%20like%20to%20get%20the%20free%20Parents%20Guide%20to%20Kids%20Coding%20PDF" target="_blank" class="exit-intent-cta">
-                        📚 Get Free Guide
+                        Get Free Guide
                     </a>
                     
                     <button class="exit-intent-skip">No thanks, I'll pass</button>

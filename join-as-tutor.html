@@ -3,7 +3,8 @@
 <head>
   <script src="https://unpkg.com/lucide@latest" defer></script>
   <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
   <meta charset="UTF-8">
   <meta name="theme-color" content="#F4600C">
   <!-- SEO: CORE -->
@@ -18,34 +19,30 @@
   <meta property="og:description" content="Passionate about coding and teaching? Join STEMulus as a tutor and work with talented young learners. Flexible hours, fair pay.">
   <meta property="og:url" content="https://stemuluskidstech.com/join-as-tutor.html">
   <meta property="og:site_name" content="STEMulus">
-  <meta property="og:image" content="https://stemuluskidstech.com/logo.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="STEMulus Kids Tech — Online Coding Academy Logo">
+  <meta property="og:image" content="https://stemuluskidstech.com/assets/images/og-image.jpg">
+  <meta property="og:image:width" content="1729">
+  <meta property="og:image:height" content="910">
+  <meta property="og:image:alt" content="A focused child learning to code on a laptop — STEMulus Private 1-on-1 Coding Academy">
   <meta property="og:locale" content="en_US">
   <!-- SEO: TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Join as a Tutor | STEMulus Coding Academy">
   <meta name="twitter:description" content="Passionate about coding and teaching? Join STEMulus as a tutor and work with talented young learners. Flexible hours, fair pay.">
-  <meta name="twitter:image" content="https://stemuluskidstech.com/logo.png">
+  <meta name="twitter:image" content="https://stemuluskidstech.com/assets/images/og-image.jpg">
   <meta name="twitter:site" content="@stemuluskids">
   <!-- SEO: GEO -->
   <meta name="geo.region" content="NG">
   <meta name="geo.placename" content="Lagos, Nigeria">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Join as a Tutor | STEMulus Coding Academy</title>
+  <title>Teach Coding with STEMulus | Join as a Mentor (Ages 5-17)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="section-dividers.css">
  
   <!-- Supabase SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-  <link rel="stylesheet" href="preai-overhaul.css">
-  <link rel="stylesheet" href="responsive.css">
 
   <script type="application/ld+json">
   {
@@ -72,17 +69,12 @@
         }
       },
       {
-        "@type": "WebSite",
-        "@id": "https://stemuluskidstech.com/#website",
-        "url": "https://stemuluskidstech.com",
-        "name": "STEMulus",
-        "publisher": {
-          "@id": "https://stemuluskidstech.com/#organization"
-        },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://stemuluskidstech.com/?s={search_term_string}",
-          "query-input": "required name=search_term_string"
+        "@type": "WebPage",
+        "@id": "https://stemuluskidstech.com/join-as-tutor.html#webpage",
+        "url": "https://stemuluskidstech.com/join-as-tutor.html",
+        "name": "Teach Coding with STEMulus | Join as a Mentor (Ages 5-17)",
+        "isPartOf": {
+          "@id": "https://stemuluskidstech.com/#website"
         }
       },
       {
@@ -131,8 +123,10 @@
   </script>
 
   <!-- Standard Favicon -->
-  <link rel="icon" type="image/png" href="logo.png">
-  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#F4600C">
   
   <style>
     /* Radio/checkbox dynamic styling peer helper */
@@ -199,26 +193,29 @@
   </script>
 </head>
 <body class="antialiased font-inter bg-white text-gray-700">
+<a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#F4600C;color:#fff;padding:8px 16px;z-index:9999;border-radius:0 0 8px 0;transition:top 0.2s;font-size:0.875rem;font-weight:700;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to content</a>
 <div id="cursor-ring" aria-hidden="true"></div>
 <div id="cursor-dot" aria-hidden="true"></div>
 <nav class="nav-editorial" role="navigation" aria-label="Main Navigation" id="main-nav">
   <a href="index.html" class="nav-logo-editorial">
-    <img src="logo.png" alt="STEMulus Logo" width="44" height="44">
-  </a>
+      <img src="favicon.png" alt="STEMulus" width="36" height="36">
+      
+    </a>
   <div style="display:flex; align-items:center; gap:2.5rem;">
     <a href="programs.html">Roadmap</a>
     <a href="for-parents.html">Parents</a>
     <a href="blog.html">Blog</a>
     <a href="contact.html">Contact</a>
   </div>
-  <div style="display:flex; align-items:center; gap:1.5rem;">
+  <div style="display:flex; align-items:center; gap:1rem;">
+      <a href="book-class.html" class="nav-cta-btn-secondary">Free Class</a>
     <a href="enroll.html" class="nav-cta-btn">
-      Enroll Free
+      Enroll Now
     </a>
   </div>
 </nav>
 
-<main>
+<main id="main-content">
   
   <!-- HERO - Pre-AI Editorial -->
   <section class="preai-hero-split" style="--accent-1:#f4600c;--accent-2:#06b6d4;">
@@ -276,7 +273,7 @@
 
     <!-- RIGHT: Image column -->
     <div class="preai-hero-img-col">
-      <img src="images/become-a-mentor.jpg" alt="Mentor and student session" class="preai-hero-img" loading="eager" decoding="async">
+      <img src="assets/images/stemulus_mastery_kids.webp" alt="Mentor and student session" class="preai-hero-img" loading="eager" decoding="async">
       <div class="preai-hero-img-overlay"></div>
       <!-- Corner accent -->
       <div class="preai-hero-img-corner"></div>
@@ -301,7 +298,7 @@
           We value expertise and passion. Here is what makes STEMulus the best place for professional tutors.
         </p>
       </div>      <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto" data-stagger>
-        <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:border-orange-500/30 transition-all">
+        <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm transition-all">
           <div class="w-14 h-14 bg-orange-50 rounded-xl flex items-center justify-center mb-6">
             <i data-lucide="wallet" class="w-7 h-7 text-orange-500"></i>
           </div>
@@ -311,7 +308,7 @@
           </p>
         </div>
 
-        <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:border-orange-500/30 transition-all">
+        <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm transition-all">
           <div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-6">
             <i data-lucide="globe" class="w-7 h-7 text-purple-600"></i>
           </div>
@@ -321,7 +318,7 @@
           </p>
         </div>
 
-        <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:border-orange-500/30 transition-all">
+        <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm transition-all">
           <div class="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center mb-6">
             <i data-lucide="users" class="w-7 h-7 text-emerald-600"></i>
           </div>
@@ -498,6 +495,7 @@
         </div>
 
         <form id="tutorApplyForm" name="tutor-application" method="POST" data-netlify="true" class="space-y-6">
+          <input type="hidden" name="form-name" value="tutor-application">
           <div class="grid md:grid-cols-2 gap-6">
             <!-- Full Name -->
             <div class="space-y-2">
@@ -531,37 +529,37 @@
             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
               <label class="cursor-pointer group">
                 <input type="checkbox" name="expertise" value="Scratch" class="sr-only peer">
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 transition-all text-slate-600 font-semibold text-sm">
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 peer-checked:bg-orange-50 peer-checked:border-orange-500 peer-checked:text-orange-700 transition-all text-slate-600 font-semibold text-sm">
                   Scratch (Visual)
                 </div>
               </label>
               <label class="cursor-pointer group">
                 <input type="checkbox" name="expertise" value="Python" class="sr-only peer">
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 transition-all text-slate-600 font-semibold text-sm">
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 peer-checked:bg-orange-50 peer-checked:border-orange-500 peer-checked:text-orange-700 transition-all text-slate-600 font-semibold text-sm">
                   Python
                 </div>
               </label>
               <label class="cursor-pointer group">
                 <input type="checkbox" name="expertise" value="Web Wizards" class="sr-only peer">
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 transition-all text-slate-600 font-semibold text-sm">
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 peer-checked:bg-orange-50 peer-checked:border-orange-500 peer-checked:text-orange-700 transition-all text-slate-600 font-semibold text-sm">
                   Web Design
                 </div>
               </label>
               <label class="cursor-pointer group">
                 <input type="checkbox" name="expertise" value="Robotics" class="sr-only peer">
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 transition-all text-slate-600 font-semibold text-sm">
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 peer-checked:bg-orange-50 peer-checked:border-orange-500 peer-checked:text-orange-700 transition-all text-slate-600 font-semibold text-sm">
                   Robotics
                 </div>
               </label>
               <label class="cursor-pointer group">
                 <input type="checkbox" name="expertise" value="AI Explorers" class="sr-only peer">
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 transition-all text-slate-600 font-semibold text-sm">
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 peer-checked:bg-orange-50 peer-checked:border-orange-500 peer-checked:text-orange-700 transition-all text-slate-600 font-semibold text-sm">
                   AI Explorers
                 </div>
               </label>
               <label class="cursor-pointer group">
                 <input type="checkbox" name="expertise" value="Academic STEM" class="sr-only peer">
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 transition-all text-slate-600 font-semibold text-sm">
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 peer-checked:bg-orange-50 peer-checked:border-orange-500 peer-checked:text-orange-700 transition-all text-slate-600 font-semibold text-sm">
                   Math & Science
                 </div>
               </label>
@@ -574,19 +572,19 @@
             <div class="grid grid-cols-3 gap-3">
               <label class="cursor-pointer">
                 <input type="radio" name="experience" value="None" class="sr-only peer" required>
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 transition-all text-slate-600 font-semibold text-sm">
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 peer-checked:bg-orange-50 peer-checked:border-orange-500 peer-checked:text-orange-700 transition-all text-slate-600 font-semibold text-sm">
                   None
                 </div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="experience" value="1-2 years" class="sr-only peer">
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 transition-all text-slate-600 font-semibold text-sm">
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 peer-checked:bg-orange-50 peer-checked:border-orange-500 peer-checked:text-orange-700 transition-all text-slate-600 font-semibold text-sm">
                   1 - 2 Years
                 </div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="experience" value="3+ years" class="sr-only peer">
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 transition-all text-slate-600 font-semibold text-sm">
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center hover:bg-slate-100 peer-checked:bg-orange-50 peer-checked:border-orange-500 peer-checked:text-orange-700 transition-all text-slate-600 font-semibold text-sm">
                   3+ Years
                 </div>
               </label>
@@ -602,7 +600,7 @@
 
           <!-- Consent Checkbox -->
           <label class="flex items-start gap-3 cursor-pointer p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition-all">
-            <input type="checkbox" required class="mt-1 w-5 h-5 accent-orange-500 border-slate-200 rounded focus:ring-orange-500">
+            <input type="checkbox" name="consent" value="yes" required class="mt-1 w-5 h-5 accent-orange-500 border-slate-200 rounded focus:ring-orange-500">
             <span class="text-sm text-slate-600 leading-relaxed">
               I consent to STEMulus Innovations Limited conducting background checks and academic vetting, and reaching out to me regarding this application.
             </span>
@@ -642,85 +640,85 @@
 <!-- -----------------------------------------------
 FOOTER | NEWSPAPER EDITORIAL
 ----------------------------------------------- -->
+
+
 <footer class="footer-editorial" role="contentinfo">
-  <!-- Model Viewer Script Loaded Dynamically inside the footer -->
-  <div class="footer-grid">
-    <!-- Brand column with 3D model logo -->
-    <div class="footer-brand-col">
-      <div class="footer-3d-wrapper">
-    <div class="footer-hologram-coin">
-      <div class="coin-glow"></div>
-      <div class="coin-inner">
-        <div class="coin-front">
-          <img src="logo.png" alt="STEMulus Logo">
+    <div class="footer-grid">
+        <!-- Brand column -->
+        <div>
+            <p class="footer-brand-name">STEMulus</p>
+            <p class="footer-brand-tag">Global Coding Academy · Est. 2025</p>
+            <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;line-height:1.75;color:#475569;max-width:320px;">
+                Turning screen time into build time for kids aged 5–17, across three continents. Expert mentors. Real projects. Permanent skills.
+            </p>
         </div>
-        <div class="coin-back">
-          <img src="logo.png" alt="STEMulus Logo">
+
+        <!-- Programs -->
+        <div class="footer-col">
+            <p class="footer-col-title">Programs</p>
+            <a href="scratch-creators.html">Game Creators</a>
+            <a href="python-programming.html">Python Power</a>
+            <a href="web-wizards.html">Web Wizards</a>
+            <a href="arduino-robotics.html">Robotics Lab</a>
+            <a href="creative-coding.html">Creative Coding</a>
+            <a href="ai-machine-learning.html">AI Explorers</a>
         </div>
-      </div>
-    </div>
-  </div>
+
+        <!-- Company -->
+        <div class="footer-col">
+            <p class="footer-col-title">Company</p>
+            <a href="index.html#why-section">Why STEMulus</a>
+            <a href="for-parents.html">For Parents</a>
+            <a href="join-as-tutor.html">Join as a Tutor</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+        </div>
+
+        <!-- Account -->
+        <div class="footer-col">
+            <p class="footer-col-title">Get Started</p>
+            <a href="book-class.html"><strong>Book a Free Class</strong></a>
+            <a href="enroll.html">Enroll Now</a>
+            <a href="programs.html#pricing">Pricing</a>
+            <a href="parent-login.html">Log In</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+        </div>
     </div>
 
-    <!-- Website Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Website</p>
-      <a href="index.html">Home</a>
-      <a href="programs.html">Roadmap</a>
-      <a href="for-parents.html">For Parents</a>
-      <a href="blog.html">Blog</a>
-      <a href="contact.html">Contact</a>
+    <div class="footer-bottom">
+        <p class="footer-legal">© 2026 STEMulus Innovations LTD. All rights reserved.</p>
+        <p class="footer-legal" style="display:flex;align-items:center;gap:0.5rem;">
+            Built with craft, not algorithms
+            <i data-lucide="heart" style="width:12px;height:12px;fill:var(--orange);color:var(--orange);display:inline-block;vertical-align:middle;margin:0 2px;"></i>
+            <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:flex;align-items:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+            </a>
+            <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:flex;align-items:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
+                </svg>
+            </a>
+        </p>
     </div>
-
-    <!-- Social Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Social</p>
-      <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-      <a href="mailto:admin@stemuluskidstech.com">Email Us</a>
-      <a href="join-as-tutor.html">Join as Tutor</a>
-</div>
-
-    <!-- Legal Links -->
-    <div class="footer-col">
-      <p class="footer-col-title">Legal</p>
-      <a href="privacy-policy.html">Privacy Policy</a>
-      <a href="privacy-policy.html#terms">Terms of Service</a>
-      <a href="parent-dashboard.html">Parent Login</a>
-      <a href="enroll.html">Enroll Now</a>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <p class="footer-legal-left">©2026 STEMulus Innovations LTD. All rights reserved.</p>
-    <p class="footer-legal-right">
-      Built with craft, not algorithms
-      <i data-lucide="heart" style="width:12px;height:12px;fill:currentColor;color:currentColor;display:inline-block;vertical-align:middle;margin:0 2px;"></i>
-      <a href="mailto:admin@stemuluskidstech.com" aria-label="Email STEMulus" style="color:currentColor;margin-left:1rem;display:inline-flex;align-items:center;">
-        <i data-lucide="mail" style="width:18px;height:18px;"></i>
-      </a>
-      <a href="https://wa.me/2347052466716" aria-label="WhatsApp STEMulus" style="color:currentColor;margin-left:0.5rem;display:inline-flex;align-items:center;">
-        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
-      </a>
-    </p>
-  </div>
-  
-  <!-- Background Text "STEMULUS" stylized bottom watermark -->
-  <div class="footer-bg-text">STEMulus</div>
 </footer>
 <script>
 (function(){var ring=document.getElementById('cursor-ring'),dot=document.getElementById('cursor-dot');if(!ring||!dot)return;var mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();document.querySelectorAll('a,button').forEach(function(el){el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-link');});el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-link');});});})();
-window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.editorial-heading,.prog-card,.feature-item,.stat-num').forEach(function(el,i){gsap.from(el,{y:50,opacity:0,duration:0.9,ease:'power 3.out',delay:(i% 4)*.1,scrollTrigger:{trigger:el,start:'top 88%'}});});});
+window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.editorial-heading,.prog-card,.feature-item,.stat-num').forEach(function(el,i){gsap.from(el,{y:50,opacity:0,duration:0.9,ease:'power3.out',delay:(i% 4)*.1,scrollTrigger:{trigger:el,start:'top 88%'}});});});
 </script>
 
 <script src="mobile-nav.js"></script>
-<script src="assets/js/tutor-application-handler.js"></script>
+<script src="assets/js/tutor-application-handler.min.js" defer></script>
 
 <!-- Floating WhatsApp CTA Button -->
-<a href="https://wa.me/2347052466716?text=Hello%20STEMulus%2C%20I'm%20interested%20in%20a%20coding%20class%20for%20my%20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp">
-  <svg viewBox="0 0 448 512" aria-hidden="true">
-  <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-</svg>
+<a href="https://wa.me/2347052466716?text=Hello%20STEMulus%2C%20I'm%20interested%20in%20a%20coding%20class%20for%20my%20child" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with STEMulus on WhatsApp" style="width: 56px !important; height: 56px !important; max-width: 56px !important; max-height: 56px !important; min-width: 56px !important; min-height: 56px !important;">
+  <svg width="28" height="28" viewBox="0 0 448 512" aria-hidden="true" style="width: 28px !important; height: 28px !important; max-width: 28px !important; max-height: 28px !important; fill: #ffffff !important; display: block !important; flex-shrink: 0 !important;">
+    <path fill="#ffffff" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+  </svg>
 </a>
 
+<script src="assets/js/quick-booking.min.js" defer></script>
 </body>
 </html>

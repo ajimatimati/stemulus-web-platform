@@ -1,0 +1,86 @@
+=== STEMULUS KIDS TECH — OFFICIAL KNOWLEDGE BASE ===
+
+COMPANY: STEMulus Kids Tech
+WEBSITE: https://stemuluskidstech.com
+WHATSAPP: +234 705 246 6716
+EMAIL: admin@stemuluskidstech.com
+TAGLINE: "Where Young Minds Build the Future"
+TYPE: Online STEM education academy for children ages 5-17
+
+=== PROGRAMS ===
+
+1. SCRATCH CREATORS (Ages 5-9)
+   - Visual block-based programming
+   - Create animations, games, and interactive stories
+   - No prior experience needed
+
+2. WEB WIZARDS (Ages 8-14)
+   - HTML, CSS, JavaScript
+   - Build real websites from scratch
+   - Portfolio project included
+
+3. PYTHON PROGRAMMING (Ages 10-17)
+   - Text-based coding fundamentals
+   - Data science and automation basics
+   - Project-based curriculum
+
+4. ROBOTICS & ARDUINO (Ages 8-15)
+   - Hardware + software integration
+   - Build and program physical robots
+   - Sensors, motors, and circuits
+
+5. AI & MACHINE LEARNING EXPLORERS (Ages 12-17)
+   - Introduction to artificial intelligence
+   - Machine learning concepts
+   - Build AI-powered projects
+
+6. DIGITAL ART & DESIGN (Ages 7-14)
+   - Digital illustration and graphic design
+   - UI/UX design basics
+   - Creative coding with p5.js
+
+=== ACADEMIC PROGRAMS ===
+- Mathematics Mastery
+- English Language
+- Science Explorers
+- Triple Science
+- GCSE Past Papers
+
+=== FREE TRIAL ===
+- Every new student gets a FREE trial class
+- No commitment, no payment required
+- Parent/guardian must book via website or WhatsApp
+- Trial includes: 1 full lesson + assessment + program recommendation
+- After booking a trial, the admin will share a scheduling link or coordinate a preferred slot
+
+=== ENROLLMENT PROCESS ===
+1. Book a free trial class (website or WhatsApp)
+2. Attend the trial session
+3. Receive personalized program recommendation
+4. Enroll in chosen program
+5. Begin regular classes
+
+=== CLASS FORMAT & DURATION ===
+- All classes are ONLINE (virtual)
+- Live instructor-led sessions
+- Small group sizes (max 6 students per class)
+- Duration: 1 hour for younger students (Ages 5-9) or 1.5 hours for older students (10+). Custom durations are available.
+- Frequency: Twice a week.
+- Platform: We use Jitsi Meet for online classes. A link is automatically generated (e.g. meet.jit.si/stemulus-trial-xxxx) when booking.
+
+=== PRICING ===
+- Pricing is handled manually by the administration based on the child's program and customized options.
+- The assistant should inform parents that they will receive pricing details from the administrative team or during their trial class assessment session.
+
+=== FAQ ===
+Q: What equipment does my child need?
+A: A laptop or desktop computer with internet access. Tablets are not recommended for coding classes.
+
+Q: What if my child has no coding experience?
+A: That's perfectly fine! We have programs for absolute beginners (Scratch Creators for ages 5-9, Web Wizards for ages 8+).
+
+Q: Can I sit in on a class?
+A: Parents are welcome to observe the free trial session.
+
+Q: What platform do you use for online classes?
+A: We use Jitsi Meet for all virtual sessions.

@@ -289,8 +289,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-logo-editorial img {
   filter: none;
-  width: 44px;
-  height: 44px;
+  height: 40px;
+  width: auto;
+  max-width: 180px;
   object-fit: contain;
   display: block;
 }
@@ -1590,7 +1591,7 @@ p .text-supernova-orange,
 li .text-supernova-orange,
 .text-supernova-orange:not(h1):not(h2):not(h3):not(h4):not(a):not(button):not([class*="mono-label"]):not([class*="stat-"]):not([class*="footer-"]):not([class*="prog-card-"]):not([class*="feature-num"]):not([class*="timeline-"]) {
   color: #c94d00!important;
-  /* #c94d00on white = 5.1:1 ✓ */
+  /* #c94d00on white = 5.1:1 [Pass] */
 }
 
 /* Orange on dark bg is fine — restore */
@@ -1605,7 +1606,7 @@ section.hero-preai .text-supernova-orange,
 .timeline-step .text-supernova-orange,
 .nav-editorial .text-supernova-orange {
   color: var(--orange) !important;
-  /* full #f4600con dark = 4.7:1 ✓ */
+  /* full #f4600con dark = 4.7:1 [Pass] */
 }
 
 /* ── 21d. LOW-OPACITY TEXT — RAISE FLOOR ─────────────────────── */
@@ -1617,7 +1618,7 @@ section.hero-preai .text-supernova-orange,
 [class*="text-white/3"],
 [class*="text-white/2"] {
   color: rgba(10, 10, 10, 0.65) !important;
-  /* 4.6:1 on #0a0a0a✓ */
+  /* 4.6:1 on #0a0a0a [Pass] */
 }
 
 /* 40% is borderline: lift to 55% */
@@ -1662,7 +1663,7 @@ section.hero-preai .text-supernova-orange,
 .skill-statement .mono-label,
 .difference-section .mono-label {
   color: rgba(10, 10, 10, 0.5) !important;
-  /* 6.0:1 on chalk ✓ */
+  /* 6.0:1 on chalk [Pass] */
 }
 
 /* ── 21g. FORM INPUTS & PLACEHOLDERS ─────────────────────────── */
@@ -1726,7 +1727,7 @@ section[class*="bg-gray-50"] input {
 
 .difference-section .feature-desc {
   color: rgba(10, 10, 10, 0.6) !important;
-  /* 6.8:1 on #faf9f7✓ */
+  /* 6.8:1 on #faf9f7 [Pass] */
 }
 
 /* ── 21k. FOOTER EDITORIAL — CONSISTENT LEGIBILITY ───────────── */
@@ -2583,6 +2584,82 @@ a, button,
 }
 
 
+/* 3D Tactile Buttons */
+.btn-3d {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--orange, #f4600c);
+  color: white !important;
+  font-family: var(--heading, 'Nunito', sans-serif);
+  font-weight: 800;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 4px 0 #c24100, 0 8px 16px rgba(244, 96, 12, 0.3);
+  transform: translateY(0);
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  will-change: transform, box-shadow;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.btn-3d:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #c24100, 0 12px 20px rgba(244, 96, 12, 0.4);
+}
+
+.btn-3d:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #c24100, 0 2px 4px rgba(244, 96, 12, 0.3);
+}
+
+.btn-3d-secondary {
+  background: white;
+  color: #0f172a !important;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 4px 0 #cbd5e1, 0 8px 16px rgba(15, 23, 42, 0.05);
+}
+
+.btn-3d-secondary:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 0 #94a3b8, 0 12px 20px rgba(15, 23, 42, 0.08);
+}
+
+.btn-3d-secondary:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #94a3b8, 0 2px 4px rgba(15, 23, 42, 0.03);
+}
+
+.btn-3d-blue {
+  background: #2563eb;
+  box-shadow: 0 4px 0 #1e40af, 0 8px 16px rgba(37, 99, 235, 0.3);
+}
+.btn-3d-blue:hover {
+  box-shadow: 0 6px 0 #1e40af, 0 12px 20px rgba(37, 99, 235, 0.4);
+}
+.btn-3d-blue:active {
+  box-shadow: 0 0 0 #1e40af, 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+.btn-3d-green {
+  background: #16a34a;
+  box-shadow: 0 4px 0 #166534, 0 8px 16px rgba(22, 163, 74, 0.3);
+}
+.btn-3d-green:hover {
+  box-shadow: 0 6px 0 #166534, 0 12px 20px rgba(22, 163, 74, 0.4);
+}
+.btn-3d-green:active {
+  box-shadow: 0 0 0 #166534, 0 2px 4px rgba(22, 163, 74, 0.3);
+}
+
 /* ═══════════════════════════════════════════════
  DESIGN ITERATION — PREMIUM ADDITIONS
  3D tilt cards, scroll reveal, micro-animations
@@ -3069,6 +3146,7 @@ body.borderless-homepage .divider-line {
   z-index: 0;  /* Lowest layer — everything sits above */
   overflow: hidden;
   pointer-events: none;
+  background: #080c1c;
 }
 
 #video-bg video {
@@ -3085,24 +3163,31 @@ body.borderless-homepage .divider-line {
   position: absolute;
   inset: 0;
   background:
-  /* Left gray feather — blend video edge seamlessly into the page background */
+  /* Left gray feather */
   linear-gradient(
-  to right,
-  rgba(168, 172, 176, 1.0) 0%,
-  rgba(168, 172, 176, 1.0) 36%,
-  rgba(168, 172, 176, 0.0) 65%
+    to right,
+    rgba(168, 172, 176, 1.0) 0%,
+    rgba(168, 172, 176, 1.0) 32%,
+    rgba(168, 172, 176, 0.0) 58%
   ),
-  /* Top grounding shadow to protect white navigation text contrast */
+  /* Right gray feather — mirrors left, fills empty right-side space */
   linear-gradient(
-  to bottom,
-  rgba(10, 10, 10, 0.12) 0%,
-  transparent 120px
+    to left,
+    rgba(168, 172, 176, 1.0) 0%,
+    rgba(168, 172, 176, 0.85) 8%,
+    rgba(168, 172, 176, 0.0) 32%
   ),
-  /* Subtle bottom grounding shadow */
+  /* Top nav shadow */
   linear-gradient(
-  to top,
-  rgba(10, 10, 10, 0.08) 0%,
-  transparent 30%
+    to bottom,
+    rgba(10, 10, 10, 0.12) 0%,
+    transparent 120px
+  ),
+  /* Bottom shadow */
+  linear-gradient(
+    to top,
+    rgba(10, 10, 10, 0.08) 0%,
+    transparent 30%
   );
   z-index: 1;
 }
@@ -3115,6 +3200,12 @@ body.borderless-homepage .divider-line {
  to let the fixed video show through */
 }
 
+@media (max-width: 768px) {
+  #page-content {
+    overflow-x: hidden !important;
+  }
+}
+
 /* ── Scrub Spacer — container for the hero section ────── */
 #scrub-spacer {
   position: relative;
@@ -3123,7 +3214,7 @@ body.borderless-homepage .divider-line {
 
 @media (min-width: 769px) {
   #scrub-spacer {
-    height: 180vh !important; /* Provides scroll depth for scrubbing on desktop (shortened for snappy reveal) */
+    height: 100vh !important;
   }
 }
 
@@ -3132,6 +3223,8 @@ body.borderless-homepage .divider-line {
  height: auto !important; /* Collapses to natural height on mobile */
  padding-top: 80px !important;
  padding-bottom: 40px !important;
+ padding-left: 1rem !important;
+ padding-right: 1rem !important;
   }
 }
 
@@ -3383,6 +3476,12 @@ body.borderless-homepage .hero-stats-strip-new {
   justify-content: flex-start !important;
 }
 
+@media (max-width: 500px) {
+  .hero-stats-strip-new {
+    padding-left: 0.25rem !important;
+  }
+}
+
 /* ================================================================
  GSAP VIDEO SCROLL-SCRUBBING STYLES
  ================================================================ */
@@ -3433,11 +3532,6 @@ body.borderless-homepage .hero-stats-strip-new {
   text-align: center;
   color: white;
   pointer-events: auto; /* Re-enable clicks inside sections */
-}
-
-/* Force body styling during loading lock */
-body.video-loading-lock {
-  overflow: hidden !important;
 }
 
 /* ── Scroll Hint Bounce Animation ──────────────────────────── */
@@ -3567,14 +3661,15 @@ main > section:first-of-type,
 
 /* Crop the background video by 8% zoom to completely hide the Gemini watermark */
 #scrub-video {
-  transform: translateX(0%) scale(1.08);
+  transform: translateX(0%) scale(1.05);
   transform-origin: center center !important;
 }
 
-/* Fixed position for desktop to place the robot exactly at the 2/3 line of the screen */
+/* Fixed position for desktop — robot sits right-of-center, slightly smaller for quality feel */
 @media (min-width: 769px) {
-  #scrub-video {
-    transform: translateX(30%) scale(1.15) !important;
+  #scrub-video,
+  #blink-video {
+    transform: translateX(22%) scale(1.05) !important;
     transform-origin: center center !important;
   }
 }
@@ -3607,13 +3702,15 @@ main > section:first-of-type,
 
 /* Slim logo image inside navbar */
 .nav-logo-editorial {
-  display: flex !important;
+  display: inline-flex !important;
   align-items: center !important;
+  gap: 0.65rem !important;
 }
 .nav-logo-editorial img {
-  width: 32px !important;
-  height: 32px !important;
+  width: 36px !important;
+  height: 36px !important;
   object-fit: contain !important;
+  background: transparent !important;
   display: block !important;
   transition: transform 0.25s ease !important;
 }
@@ -3653,6 +3750,33 @@ main > section:first-of-type,
   background: #d4520a!important;
   transform: translateY(-1px) !important;
   box-shadow: 0 4px 12px rgba(10, 10, 10, 0.12) !important;
+}
+
+.nav-cta-btn-secondary {
+  background: transparent !important;
+  color: var(--orange, #f4600c) !important;
+  border: 1.5px solid var(--orange, #f4600c) !important;
+  padding: 0.45rem 1.4rem !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  transition: background-color 0.2s, color 0.2s, transform 0.2s !important;
+}
+.nav-cta-btn-secondary:hover {
+  background: var(--orange, #f4600c) !important;
+  color: white !important;
+  transform: translateY(-1px) !important;
+}
+body.borderless-homepage .nav-editorial:not(.nav-light) .nav-cta-btn-secondary {
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+}
+body.borderless-homepage .nav-editorial:not(.nav-light) .nav-cta-btn-secondary:hover {
+  background: var(--orange, #f4600c) !important;
+  border-color: var(--orange, #f4600c) !important;
+  color: white !important;
 }
 
 /* Homepage-specific: Initial transparent state over video background */
@@ -4188,10 +4312,8 @@ body.borderless-homepage .testi-avatar {
   animation: marquee-scroll-right 45s linear infinite;
 }
 
-/* Interaction pause on hover */
-.skills-marquee-container:hover .logo-marquee-track {
-  animation-play-state: paused;
-}
+/* Marquee runs continuously — hover shows button interactivity, not pause */
+/* .skills-marquee-container:hover .logo-marquee-track { animation-play-state: paused; } */
 
 @keyframes marquee-scroll-left {
   0% { transform: translateX(0); }
@@ -4330,94 +4452,17 @@ body.borderless-homepage .testi-avatar {
   }
 }
 
-/* ── Premium Brand-Tailored Marquee Badge Glows & Highlights ── */
+/* ── Sophisticated Editorial Marquee Styling ── */
 .logo-card {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; /* smooth spring hover bounce */
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
 }
 
-/* Individual card category hover transforms and brand glows */
-.logo-card.card-scratch:hover {
-  border-color: rgba(244, 96, 12, 0.5) !important;
-  box-shadow: 0 8px 25px rgba(244, 96, 12, 0.22) !important;
-  transform: translateY(-4px) scale(1.04) !important;
-}
-.logo-card.card-python:hover {
-  border-color: rgba(55, 118, 171, 0.5) !important;
-  box-shadow: 0 8px 25px rgba(55, 118, 171, 0.22) !important;
-  transform: translateY(-4px) scale(1.04) !important;
-}
-.logo-card.card-js:hover {
-  border-color: rgba(241, 196, 15, 0.5) !important;
-  box-shadow: 0 8px 25px rgba(241, 196, 15, 0.22) !important;
-  transform: translateY(-4px) scale(1.04) !important;
-}
-.logo-card.card-html:hover {
-  border-color: rgba(227, 79, 38, 0.5) !important;
-  box-shadow: 0 8px 25px rgba(227, 79, 38, 0.22) !important;
-  transform: translateY(-4px) scale(1.04) !important;
-}
-.logo-card.card-ai:hover {
-  border-color: rgba(139, 92, 246, 0.5) !important;
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.22) !important;
-  transform: translateY(-4px) scale(1.04) !important;
-}
-.logo-card.card-arduino:hover {
-  border-color: rgba(0, 151, 157, 0.5) !important;
-  box-shadow: 0 8px 25px rgba(0, 151, 157, 0.22) !important;
-  transform: translateY(-4px) scale(1.04) !important;
-}
-.logo-card.card-robotics:hover {
-  border-color: rgba(239, 68, 68, 0.5) !important;
-  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.22) !important;
-  transform: translateY(-4px) scale(1.04) !important;
-}
-.logo-card.card-3d:hover {
-  border-color: rgba(6, 182, 212, 0.5) !important;
-  box-shadow: 0 8px 25px rgba(6, 182, 212, 0.22) !important;
-  transform: translateY(-4px) scale(1.04) !important;
-}
-.logo-card.card-roblox:hover {
-  border-color: rgba(31, 41, 55, 0.5) !important;
-  box-shadow: 0 8px 25px rgba(31, 41, 55, 0.18) !important;
-  transform: translateY(-4px) scale(1.04) !important;
-}
-.logo-card.card-pygame:hover {
-  border-color: rgba(16, 185, 129, 0.5) !important;
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.22) !important;
-  transform: translateY(-4px) scale(1.04) !important;
-}
-
-/* ── Glowing Indicators Badge & Pulsing dot ── */
-.skills-pill-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0.5rem 1.15rem;
-  background: rgba(255, 255, 255, 0.82) !important;
-  border: 1.5px solid rgba(26, 35, 126, 0.1) !important;
-  border-radius: 12px !important;
-  font-family: 'DM Sans', sans-serif !important;
-  font-size: 0.68rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.14em !important;
-  color: #1A237E !important;
-  box-shadow: 0 4px 15px rgba(26, 35, 126, 0.03) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-
-.skills-pill-badge .pulse-dot {
-  width: 7px;
-  height: 7px;
-  background: #f4600c;
-  border-radius: 50%;
-  animation: pulse-breathing 2s infinite;
-}
-
-@keyframes pulse-breathing {
-  0% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba(244, 96, 12, 0.4); }
-  70% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 0 6px rgba(244, 96, 12, 0); }
-  100% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba(244, 96, 12, 0); }
+.logo-card:hover {
+  border-color: rgba(15, 23, 42, 0.25) !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06) !important;
+  transform: translateY(-2px) !important;
 }
 
 #skills-section {
@@ -4656,7 +4701,6 @@ body.borderless-homepage .testi-avatar {
   height: 6px;
   background-color: #38bdf8;
   border-radius: 50%;
-  animation: pulse-breathing 2s infinite;
 }
 
 .testimonials-sidebar .gradient-h2 {
@@ -4767,10 +4811,6 @@ body.borderless-homepage .testi-avatar {
    GLOBAL LIGHT & GLOW REMOVAL OVERRIDES (No Neon / No Accent Borders)
    ──────────────────────────────────────────────────────────────── */
 /* Deactivate pulse animations and blinking dots */
-.skills-pill-badge .pulse-dot {
-  animation: none !important;
-  box-shadow: none !important;
-}
 .pulse-dot,
 [class*="pulse-dot"],
 .animate-pulse {
@@ -5419,4 +5459,163 @@ a:hover .roadmap-button-trail {
   object-fit: cover !important;
   border-radius: inherit !important;
   display: block !important;
+}
+
+/* ================================================================
+   FIXES — 2026-08-11
+   1. Lucide SVG icons — guarantee visible size independent of Tailwind
+   2. Hero stat cards — restore dark text on mobile/tablet (warm-white panel bg)
+   ================================================================ */
+
+/* 1. Lucide icons: w-4/w-5 Tailwind classes may not resolve if Tailwind build
+      is incomplete. Pin width/height directly on the generated <svg> elements
+      inside logo-card so they always render at the intended 20px. */
+.logo-card svg,
+.logo-card [data-lucide] {
+  width: 20px !important;
+  height: 20px !important;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* Also cover nav/CTA and general data-lucide usage site-wide */
+[data-lucide] {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* w-4 class fallback (16px) */
+.w-4, [data-lucide].w-4 { width: 16px !important; height: 16px !important; }
+/* w-5 class fallback (20px) */
+.w-5, [data-lucide].w-5 { width: 20px !important; height: 20px !important; }
+/* h-4/h-5 fallback */
+.h-4 { height: 16px !important; }
+.h-5 { height: 20px !important; }
+
+/* 2. Hero stat cards: on mobile the panel has a warm-white background so the
+      white text from the desktop video-float style becomes invisible.
+      These overrides restore dark, high-contrast text for ≤768px. */
+@media (max-width: 768px) {
+  #hero-panel .hero-stat-num,
+  #hero-panel .hero-stats-strip-new .hero-stat-num {
+    color: #1A237E !important;
+    text-shadow: none !important;
+  }
+  #hero-panel .hero-stat-label,
+  #hero-panel .hero-stats-strip-new .hero-stat-label {
+    color: #475569 !important;
+    text-shadow: none !important;
+  }
+  #hero-panel .hero-stat-num span {
+    color: #1A237E !important;
+    opacity: 1 !important;
+  }
+  /* Stat container — restore subtle border on warm-white panel */
+  #hero-panel .hero-stat-item {
+    padding: 8px 10px !important;
+    border-radius: 10px !important;
+    background: rgba(255,255,255,0.55) !important;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06) !important;
+  }
+}
+
+/* Tablet 769–1024px: panel is transparent over video — add text-shadow to
+   guarantee stat legibility against any video frame colour */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #hero-panel .hero-stat-num {
+    text-shadow: 0 1px 8px rgba(0,0,0,0.6) !important;
+  }
+  #hero-panel .hero-stat-label {
+    text-shadow: 0 1px 6px rgba(0,0,0,0.55) !important;
+  }
+}
+
+/* ================================================================
+   BUTTON RESPONSIVENESS FIXES
+   ================================================================ */
+
+/* hero-cta-group — stack vertically on mobile, row on desktop */
+@media (max-width: 768px) {
+  .hero-cta-group {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    max-width: 360px !important;
+    gap: 12px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .hero-cta-group a,
+  .hero-cta-group button {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    min-width: unset !important;
+    font-size: 0.9rem !important;
+    padding: 0.85rem 1.25rem !important;
+  }
+}
+
+/* Prevent translateY(-4px) from being clipped in nav and tight containers */
+.nav-editorial .nav-cta-btn,
+nav .nav-cta-btn {
+  transform: translateY(0) !important; /* nav has no room for lift offset */
+  position: relative;
+  overflow: visible;
+}
+.nav-editorial .nav-cta-btn:hover,
+nav .nav-cta-btn:hover {
+  transform: translateY(-2px) !important;
+}
+.nav-editorial .nav-cta-btn:active,
+nav .nav-cta-btn:active {
+  transform: translateY(0) !important;
+}
+
+/* btn-pill-solid / btn-pill-outline — full-width on small screens */
+@media (max-width: 480px) {
+  .btn-pill-solid,
+  .btn-pill-outline {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+  /* CTA band button row — stack on mobile */
+  .cta-band-new .cta-btn-solid,
+  .cta-band-new .cta-btn-ghost-white,
+  .cta-band .btn-pill-solid,
+  .cta-band .btn-pill-outline,
+  section[aria-label="Enroll"] .btn-pill-solid,
+  section[aria-label="Enroll"] .btn-pill-outline {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 0 10px !important;
+    text-align: center !important;
+  }
+}
+
+/* Ensure nav CTA button text never wraps */
+.nav-cta-btn {
+  white-space: nowrap !important;
+}
+
+/* Tablet: keep hero CTAs readable between 480-768 */
+@media (min-width: 481px) and (max-width: 768px) {
+  .hero-cta-group {
+    max-width: 400px !important;
+  }
+  .hero-cta-group a {
+    font-size: 0.95rem !important;
+    padding: 0.9rem 1.5rem !important;
+  }
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

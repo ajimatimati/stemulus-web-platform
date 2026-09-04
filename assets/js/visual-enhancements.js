@@ -14,7 +14,7 @@
         init3DCards();
         initAnimatedGrowth();
         initOdometerCounters();
-        console.log('[Enhancements] ✅ All visual enhancements loaded');
+        console.log('[Enhancements] [Ready] All visual enhancements loaded');
     }
 
     // ============================================================
@@ -75,8 +75,9 @@
     // ENHANCEMENT 2: 3D Tilt Effect for Cards with Holographic Shine
     // ============================================================
     function init3DCards() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         const cards = document.querySelectorAll('.card-3d-tilt');
-        
+
         cards.forEach(card => {
             const shine = document.createElement('div');
             shine.className = 'card-shine';

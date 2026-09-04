@@ -29,7 +29,7 @@ const CloudSync = (function() {
 
             if (error) throw error;
 
-            console.log(`[STEMulus] Data synced to ${table} ☁️`);
+            console.log(`[STEMulus] Data synced to ${table} [Cloud]`);
             return true;
         } catch (error) {
             console.error("[STEMulus] Cloud Sync Error:", error);

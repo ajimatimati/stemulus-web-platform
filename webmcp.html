@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STEMulus WebMCP — Agent Protocol & Developer Console</title>
+  <meta name="description" content="Model Context Protocol (MCP) server & testing console for STEMulus Kids Tech. Programmatic course querying, trial class bookings, and student enrollment for AI agents.">
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
+  <link rel="stylesheet" href="assets/css/3d-svg-icons.css">
+  <script src="assets/js/3d-icons.js" defer></script>
+
+  <style>
+    body {
+      background-color: #0B0F19;
+      color: #E2E8F0;
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .glass-panel {
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+    }
+    .neon-border-orange {
+      border: 1px solid rgba(244, 96, 12, 0.35);
+      box-shadow: 0 0 25px rgba(244, 96, 12, 0.12);
+    }
+    .tab-btn.active {
+      background: #F4600C;
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(244, 96, 12, 0.4);
+    }
+    pre code {
+      color: #38BDF8;
+    }
+  </style>
+</head>
+<body class="p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <header class="flex flex-col md:flex-row items-start md:items-center justify-between pb-8 border-b border-slate-800/80 gap-4">
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="flex items-center gap-3 text-white no-underline">
+          <span data-icon-3d="robot" data-icon-size="44" class="motion-float"></span>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-2xl font-bold tracking-tight text-white m-0" style="font-family:'Outfit', sans-serif;">STEMulus WebMCP</h1>
+              <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">v1.0.0 Online</span>
+            </div>
+            <p class="text-xs text-slate-400 m-0 mt-0.5">Model Context Protocol for External AI Agents & Developers</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="/.well-known/mcp.json" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-2 rounded-xl border border-slate-700 transition flex items-center gap-2">
+          <span data-icon-3d="document" data-icon-size="16"></span>
+          Discovery Manifest
+        </a>
+        <a href="index.html" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-orange-600/30">
+          Main Website &rarr;
+        </a>
+      </div>
+    </header>
+
+    <!-- Overview Banner -->
+    <section class="my-8 glass-panel p-6 neon-border-orange">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+        <div class="md:col-span-2">
+          <span class="text-orange-400 text-xs font-bold uppercase tracking-widest block mb-1">Standardized Agent Connectivity</span>
+          <h2 class="text-xl md:text-2xl font-bold text-white mb-2" style="font-family:'Outfit', sans-serif;">Empower Any AI Agent to Book Classes & Enroll Students</h2>
+          <p class="text-slate-300 text-xs leading-relaxed mb-4">
+            Connect Claude Desktop, Cursor, OpenAI Agents, or custom autonomous assistants directly to the STEMulus platform using standards-compliant JSON-RPC 2.0. Agents can autonomously answer curriculum questions, check 1-on-1 schedule availability, book free trials, and enroll new students.
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs font-mono">
+            <span class="bg-slate-800/90 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700">Endpoint: /api/mcp</span>
+            <span class="bg-slate-800/90 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700">Transport: JSON-RPC 2.0 / HTTP POST</span>
+            <span class="bg-slate-800/90 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700">Auth: Public Agent Sandbox</span>
+          </div>
+        </div>
+
+        <div class="glass-panel p-4 bg-slate-900/60 border-slate-800">
+          <span class="text-slate-400 text-[11px] font-bold uppercase tracking-wider block mb-2">Automated Dual Reminders</span>
+          <div class="space-y-2 text-xs text-slate-300">
+            <div class="flex items-center gap-2">
+              <span data-icon-3d="clock" data-icon-size="16"></span>
+              <span><strong>6 Hours Before:</strong> Syllabus prep brief</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span data-icon-3d="lightning" data-icon-size="16"></span>
+              <span><strong>5 Minutes Before:</strong> Direct join classroom link</span>
+            </div>
+            <div class="text-[11px] text-emerald-400 font-semibold pt-1 border-t border-slate-800">
+              [Notice] Sent simultaneously to Parent and Assigned Tutor.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Testbench -->
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+      <!-- Left Column: Tool Selector & Inputs (7 cols) -->
+      <div class="lg:col-span-7 space-y-6">
+        <div class="glass-panel p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span data-icon-3d="target" data-icon-size="20"></span>
+              Select MCP Tool to Execute
+            </h3>
+            <span class="text-xs text-slate-400 font-mono">POST /api/mcp</span>
+          </div>
+
+          <!-- Tool Selector Buttons -->
+          <div class="grid grid-cols-2 gap-2 mb-6">
+            <button class="tab-btn active text-left p-3 rounded-xl border border-slate-700 text-xs font-bold transition flex items-center gap-2" onclick="selectTool('get_courses')">
+              <span data-icon-3d="books" data-icon-size="18"></span>
+              <div>
+                <div>get_courses</div>
+                <div class="text-[10px] font-normal opacity-75">Catalog &amp; Pricing</div>
+              </div>
+            </button>
+
+            <button class="tab-btn text-left p-3 rounded-xl border border-slate-700 text-xs font-bold transition flex items-center gap-2" onclick="selectTool('check_availability')">
+              <span data-icon-3d="calendar" data-icon-size="18"></span>
+              <div>
+                <div>check_availability</div>
+                <div class="text-[10px] font-normal opacity-75">1-on-1 Open Slots</div>
+              </div>
+            </button>
+
+            <button class="tab-btn text-left p-3 rounded-xl border border-slate-700 text-xs font-bold transition flex items-center gap-2" onclick="selectTool('book_trial_class')">
+              <span data-icon-3d="rocket" data-icon-size="18"></span>
+              <div>
+                <div>book_trial_class</div>
+                <div class="text-[10px] font-normal opacity-75">Book Free Trial</div>
+              </div>
+            </button>
+
+            <button class="tab-btn text-left p-3 rounded-xl border border-slate-700 text-xs font-bold transition flex items-center gap-2" onclick="selectTool('enroll_student')">
+              <span data-icon-3d="graduation-cap" data-icon-size="18"></span>
+              <div>
+                <div>enroll_student</div>
+                <div class="text-[10px] font-normal opacity-75">Direct Enrollment</div>
+              </div>
+            </button>
+          </div>
+
+          <!-- Dynamic Tool Arguments Form -->
+          <div id="tool-form" class="space-y-4">
+            <!-- Populated dynamically via JS -->
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs text-slate-400" id="tool-desc"></span>
+            <button id="btn-execute" onclick="executeCurrentTool()" class="bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-orange-600/30">
+              <span data-icon-3d="lightning" data-icon-size="16"></span>
+              Execute Tool Call
+            </button>
+          </div>
+        </div>
+
+        <!-- Agent Config Snippets -->
+        <div class="glass-panel p-6">
+          <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+            <span data-icon-3d="code" data-icon-size="18"></span>
+            Add STEMulus to Your AI Agent Configuration
+          </h3>
+
+          <div class="space-y-3">
+            <div>
+              <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span>Claude Desktop Config (claude_desktop_config.json)</span>
+                <button onclick="copySnippet('claude-snippet')" class="text-orange-400 hover:underline">Copy</button>
+              </div>
+              <pre id="claude-snippet" class="bg-slate-950 p-3 rounded-xl text-[11px] font-mono overflow-x-auto border border-slate-800"><code>{
+  "mcpServers": {
+    "stemulus": {
+      "command": "node",
+      "args": ["tools/webmcp-server.js"]
+    }
+  }
+}</code></pre>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span>Cursor / Remote Agent Config (.cursor/mcp.json)</span>
+                <button onclick="copySnippet('cursor-snippet')" class="text-orange-400 hover:underline">Copy</button>
+              </div>
+              <pre id="cursor-snippet" class="bg-slate-950 p-3 rounded-xl text-[11px] font-mono overflow-x-auto border border-slate-800"><code>{
+  "mcpServers": {
+    "stemulus": {
+      "url": "https://stemuluskidstech.com/api/mcp"
+    }
+  }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: JSON-RPC Terminal & Response (5 cols) -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="glass-panel p-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span data-icon-3d="laptop" data-icon-size="18"></span>
+              JSON-RPC 2.0 Request
+            </h3>
+            <span class="text-[11px] text-slate-400 font-mono" id="req-method">tools/call</span>
+          </div>
+          <pre id="req-display" class="bg-slate-950 p-3 rounded-xl text-[11px] font-mono text-emerald-400 overflow-x-auto border border-slate-800 max-h-48"></pre>
+        </div>
+
+        <div class="glass-panel p-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span data-icon-3d="check" data-icon-size="18"></span>
+              Server Response Payload
+            </h3>
+            <span class="text-[11px] text-slate-400 font-mono" id="resp-status">Status: Ready</span>
+          </div>
+          <pre id="resp-display" class="bg-slate-950 p-4 rounded-xl text-[11px] font-mono text-cyan-300 overflow-x-auto border border-slate-800 min-h-[260px] max-h-[460px] whitespace-pre-wrap">// Select a tool and click 'Execute Tool Call' to see live JSON-RPC 2.0 response here.</pre>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
+      STEMulus Kids Tech WebMCP Protocol Engine &bull; Private 1-on-1 Coding for Kids &bull; <a href="https://stemuluskidstech.com" class="text-orange-400 hover:underline">stemuluskidstech.com</a>
+    </footer>
+  </div>
+
+  <script>
+    const TOOL_DEFINITIONS = {
+      get_courses: {
+        desc: "Returns course catalog, curriculum outlines, age ranges, and tuition fees.",
+        fields: [
+          { id: "age", label: "Child Age Filter (Optional, 5-17)", type: "number", value: "9" },
+          { id: "category", label: "Category Filter (Optional)", type: "text", value: "" }
+        ]
+      },
+      check_availability: {
+        desc: "Queries open 1-on-1 trial class slots for a program and date.",
+        fields: [
+          { id: "program", label: "Program ID", type: "text", value: "python-young-coders" },
+          { id: "date", label: "Target Date (YYYY-MM-DD)", type: "date", value: new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0] }
+        ]
+      },
+      book_trial_class: {
+        desc: "Books a free 1-on-1 trial class, assigns mentor, and schedules 6h & 5m reminders.",
+        fields: [
+          { id: "parentName", label: "Parent Full Name", type: "text", value: "Kemi Adeyemi" },
+          { id: "parentEmail", label: "Parent Email", type: "email", value: "kemi.adeyemi@example.com" },
+          { id: "parentPhone", label: "Parent WhatsApp Phone", type: "text", value: "+2347012345678" },
+          { id: "childName", label: "Child Name", type: "text", value: "Daniel Adeyemi" },
+          { id: "childAge", label: "Child Age (5-17)", type: "number", value: "10" },
+          { id: "program", label: "Program Track", type: "text", value: "python-young-coders" },
+          { id: "preferredDate", label: "Session Date", type: "date", value: new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0] },
+          { id: "preferredTime", label: "Session Time (WAT)", type: "text", value: "14:00" },
+          { id: "notes", label: "Notes", type: "text", value: "Loves Scratch, ready to start typed Python" }
+        ]
+      },
+      enroll_student: {
+        desc: "Directly enrolls a student into full courses and provisions portal account.",
+        fields: [
+          { id: "parentName", label: "Parent Full Name", type: "text", value: "Chinedu Okafor" },
+          { id: "parentEmail", label: "Parent Email", type: "email", value: "chinedu.okafor@example.com" },
+          { id: "parentPhone", label: "Parent Phone", type: "text", value: "+2348098765432" },
+          { id: "childName", label: "Student Name", type: "text", value: "Zara Okafor" },
+          { id: "childAge", label: "Student Age", type: "number", value: "8" },
+          { id: "program", label: "Program Track", type: "text", value: "scratch-creators" },
+          { id: "plan", label: "Billing Plan ('monthly' | 'quarterly' | 'annual')", type: "text", value: "quarterly" },
+          { id: "tutorPreference", label: "Tutor Preference", type: "text", value: "Female mentor preferred" }
+        ]
+      }
+    };
+
+    let currentTool = "get_courses";
+
+    function selectTool(name) {
+      currentTool = name;
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.includes(name));
+      });
+      renderForm();
+      updateRequestPreview();
+    }
+
+    function renderForm() {
+      const tool = TOOL_DEFINITIONS[currentTool];
+      document.getElementById('tool-desc').textContent = tool.desc;
+      const container = document.getElementById('tool-form');
+      container.innerHTML = tool.fields.map(f => `
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">${f.label}</label>
+          <input type="${f.type}" id="arg-${f.id}" value="${f.value}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono" oninput="updateRequestPreview()">
+        </div>
+      `).join('');
+    }
+
+    function getArguments() {
+      const tool = TOOL_DEFINITIONS[currentTool];
+      const args = {};
+      tool.fields.forEach(f => {
+        const val = document.getElementById('arg-' + f.id)?.value;
+        if (val !== undefined && val !== '') {
+          args[f.id] = f.type === 'number' ? Number(val) : val;
+        }
+      });
+      return args;
+    }
+
+    function updateRequestPreview() {
+      const payload = {
+        jsonrpc: "2.0",
+        id: Date.now(),
+        method: "tools/call",
+        params: {
+          name: currentTool,
+          arguments: getArguments()
+        }
+      };
+      document.getElementById('req-display').textContent = JSON.stringify(payload, null, 2);
+    }
+
+    async function executeCurrentTool() {
+      const btn = document.getElementById('btn-execute');
+      const respDisplay = document.getElementById('resp-display');
+      const respStatus = document.getElementById('resp-status');
+
+      btn.disabled = true;
+      btn.innerHTML = `<span data-icon-3d="refresh" data-icon-size="16" class="motion-spin"></span> Executing...`;
+      respStatus.textContent = "Executing...";
+
+      const payload = {
+        jsonrpc: "2.0",
+        id: Date.now(),
+        method: "tools/call",
+        params: {
+          name: currentTool,
+          arguments: getArguments()
+        }
+      };
+
+      try {
+        const res = await fetch('/.netlify/functions/mcp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        respDisplay.textContent = JSON.stringify(data, null, 2);
+        respStatus.textContent = "Status: 200 OK";
+      } catch (err) {
+        respDisplay.textContent = "// Error calling endpoint: " + err.message + "\n// Note: When testing offline or without netlify dev, use tools/webmcp-server.js directly.";
+        respStatus.textContent = "Status: Network Error";
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span data-icon-3d="lightning" data-icon-size="16"></span> Execute Tool Call`;
+        if (window.Stemulus3DIcons) window.Stemulus3DIcons.hydrate();
+      }
+    }
+
+    function copySnippet(id) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Configuration snippet copied to clipboard!");
+      });
+    }
+
+    // Initialize default view
+    renderForm();
+    updateRequestPreview();
+  </script>
+</body>
+</html>

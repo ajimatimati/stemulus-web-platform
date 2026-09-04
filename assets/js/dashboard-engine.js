@@ -5,13 +5,28 @@
  */
 
 const DashboardEngine = (function() {
+
+    // ---- Password hashing (SHA-256 via Web Crypto — no library needed) ----
+    async function hashPassword(plain) {
+        const encoded = new TextEncoder().encode(plain);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
+        return Array.from(new Uint8Array(hashBuffer))
+            .map(b => b.toString(16).padStart(2, '0'))
+            .join('');
+    }
+
+    function isHashed(value) {
+        return typeof value === 'string' && /^[0-9a-f]{64}$/.test(value);
+    }
+    // -----------------------------------------------------------------------
+
+    // ---- Write-lock: prevents Firestore snapshot from overwriting a local save in-flight ----
+    var isSyncing = false;
+    // -------------------------------------------------------------------------------------------
+
     // Default seed data for the STEMulus system
     const DEFAULT_DATA = {
-        users: {
-            "parent@stemulus.com": { email: "parent@stemulus.com", password: "parent123", role: "parent", name: "John Doe" },
-            "tutor@stemulus.com": { email: "tutor@stemulus.com", password: "tutor123", role: "tutor", name: "Sarah Jane" },
-            "admin@stemulus.com": { email: "admin@stemulus.com", password: "admin123", role: "admin", name: "Headmaster Admin" }
-        },
+        users: {},
         students: [
             {
                 id: "std-1001",
@@ -22,13 +37,15 @@ const DashboardEngine = (function() {
                 experience: "Beginner",
                 program: "Python Programming",
                 status: "active",
-                parentEmail: "parent@stemulus.com",
+                remindersPaused: false,
+                parentEmail: "parent@stemuluskidstech.com",
                 parentName: "John Doe",
                 parentPhone: "+2347052466716",
                 birthday: "2015-06-01",
                 progress: 65, // percent
                 avatarColor: "bg-blue-500",
                 tutorName: "Sarah Jane",
+                classroomLink: '',
                 skills: { logic: 85, loops: 80, variables: 90, syntax: 75, projects: 70 },
                 metrics: { attended: 14, total: 24, projects: 3, lines: 1450 }
             },
@@ -41,13 +58,15 @@ const DashboardEngine = (function() {
                 experience: "None",
                 program: "Scratch Creators",
                 status: "active",
-                parentEmail: "parent@stemulus.com",
+                remindersPaused: false,
+                parentEmail: "parent@stemuluskidstech.com",
                 parentName: "John Doe",
                 parentPhone: "+2347052466716",
                 birthday: "2018-05-31", // Today!
                 progress: 40,
                 avatarColor: "bg-orange-500",
                 tutorName: "Sarah Jane",
+                classroomLink: '',
                 skills: { logic: 60, loops: 70, variables: 40, syntax: 55, projects: 75 },
                 metrics: { attended: 8, total: 20, projects: 2, lines: 0 }
             }
@@ -105,7 +124,7 @@ const DashboardEngine = (function() {
                 requestedDate: "2026-06-03",
                 requestedTime: "17:30",
                 status: "pending", // pending, approved, declined
-                parentEmail: "parent@stemulus.com"
+                parentEmail: "parent@stemuluskidstech.com"
             }
         ],
         progressReports: [
@@ -217,7 +236,7 @@ const DashboardEngine = (function() {
             }
         ],
         onboarding: {
-            "parent@stemulus.com": {
+            "parent@stemuluskidstech.com": {
                 completed: false,
                 currentStep: 1, // 1: Profile, 2: Setup Slack/ntfy, 3: Schedule Review
                 steps: [
@@ -234,7 +253,7 @@ const DashboardEngine = (function() {
                 message: "Explore your new premium dashboard. Track sessions, view reports, and download certificates.",
                 timestamp: "2026-05-31T10:00:00.000Z",
                 read: false,
-                userEmail: "parent@stemulus.com"
+                userEmail: "parent@stemuluskidstech.com"
             }
         ],
         milestones: [
@@ -269,7 +288,11 @@ const DashboardEngine = (function() {
                 tags: "Chidi's Autonomous Sonar Rover"
             }
         ],
-        ntfyTopic: "stemulus-birthday-alerts-2026"
+        ntfyTopic: "stm-bday-qm4p7s9ke2ax1nf",
+        attendanceRecords: [],
+        monthlyReports: [],
+        emailQueue: [],
+        passwordResetRequests: []
     };
 
     // Helper to retrieve data from localStorage
@@ -281,6 +304,19 @@ const DashboardEngine = (function() {
         }
         try {
             const parsed = JSON.parse(dbStr);
+            if (!parsed.attendanceRecords) {
+                parsed.attendanceRecords = [];
+                localStorage.setItem("stemulus_db", JSON.stringify(parsed));
+            }
+            if (!parsed.monthlyReports) {
+                try {
+                    var legacyReports = JSON.parse(localStorage.getItem("stemulus_monthly_reports") || "[]");
+                    parsed.monthlyReports = Array.isArray(legacyReports) ? legacyReports : [];
+                } catch(e) {
+                    parsed.monthlyReports = [];
+                }
+                localStorage.setItem("stemulus_db", JSON.stringify(parsed));
+            }
             // Proactively ensure STEM-2026-QWHF is in the local storage certificates
             if (parsed.certificates && !parsed.certificates.some(c => c.credential_id === "STEM-2026-QWHF")) {
                 parsed.certificates.push({
@@ -303,58 +339,99 @@ const DashboardEngine = (function() {
 
     // Helper to save data to localStorage & Cloud
     function saveDB(db) {
-        localStorage.setItem("stemulus_db", JSON.stringify(db));
+        try { localStorage.setItem('stemulus_db', JSON.stringify(db)); } catch(e) { console.warn('Storage quota exceeded:', e); }
         window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
 
-        // ☁️ Broadcast updates to Firebase Firestore for cloud persistence
+        // Broadcast updates to Firebase Firestore for cloud persistence
         if (typeof firebase !== 'undefined' && firebase.apps.length) {
             try {
+                isSyncing = true;
                 firebase.firestore().collection('state').doc('current').set(db)
-                    .then(() => console.log('[STEMulus Cloud] ✅ Database state synced to Firestore'))
-                    .catch(err => console.warn('[STEMulus Cloud] Firestore sync failed:', err));
+                    .then(() => { isSyncing = false; console.log('[STEMulus Cloud] [Synced] Database state synced to Firestore'); })
+                    .catch(err => { isSyncing = false; console.warn('[STEMulus Cloud] Firestore sync failed:', err); });
             } catch (e) {
+                isSyncing = false;
                 console.error('[STEMulus Cloud] Firestore sync error:', e);
             }
         }
     }
+
+    // Session time-to-live: 8 hours
+    var SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 
     // Get currently logged-in user from session
     function getSession() {
         const sessionStr = sessionStorage.getItem("stemulus_session");
         if (!sessionStr) return null;
         try {
-            return JSON.parse(sessionStr);
+            const session = JSON.parse(sessionStr);
+            if (session && session.issuedAt) {
+                if (Date.now() - session.issuedAt > SESSION_TTL_MS) {
+                    sessionStorage.clear();
+                    return null;
+                }
+            }
+            return session;
         } catch (e) {
             return null;
         }
     }
 
-    function login(email, password) {
+    async function login(email, password) {
+        try {
         const db = getDB();
-        const user = db.users[email.toLowerCase().trim()];
-        if (user && user.password === password) {
-            sessionStorage.setItem("stemulus_session", JSON.stringify(user));
-            return { success: true, user };
+        const key = email.toLowerCase().trim();
+        const user = db.users[key];
+        if (!user) return { success: false, message: "Invalid email or password." };
+
+        const inputHash = await hashPassword(password);
+
+        let match = false;
+        if (isHashed(user.password)) {
+            match = user.password === inputHash;
+        } else {
+            // Plaintext still in store — compare directly, then upgrade
+            match = user.password === password;
+            if (match) {
+                db.users[key].password = inputHash;
+                saveDB(db);
+            }
+        }
+
+        if (match) {
+            const safeUser = { email: user.email, role: user.role, name: user.name, issuedAt: Date.now() };
+            sessionStorage.setItem("stemulus_session", JSON.stringify(safeUser));
+            return { success: true, user: safeUser };
         }
         return { success: false, message: "Invalid email or password." };
+        } catch(err) { return { success: false, message: 'Login failed. Ensure you are on a secure (HTTPS) connection. Error: ' + err.message }; }
     }
 
     function logout() {
-        sessionStorage.removeItem("stemulus_session");
+        sessionStorage.clear();
     }
 
     // --- Students Controller ---
     function getStudents(parentEmail = null) {
         const db = getDB();
         if (parentEmail) {
-            return db.students.filter(s => s.parentEmail === parentEmail);
+            return db.students.filter(s => s.parentEmail && s.parentEmail.toLowerCase() === parentEmail.toLowerCase());
         }
         return db.students;
+    }
+
+    function getStudentsByTutor(tutorEmail) {
+        var db = getDB ? getDB() : JSON.parse(localStorage.getItem('stemulus_db') || '{}');
+        var students = db.students || [];
+        if (!tutorEmail) return students;
+        return students.filter(function(s) { return (s.tutorEmail || '').toLowerCase() === tutorEmail.toLowerCase(); });
     }
 
     function addStudent(student) {
         const db = getDB();
         student.id = "std-" + Date.now();
+        if (student.status === undefined) student.status = 'active';
+        if (student.remindersPaused === undefined) student.remindersPaused = false;
         db.students.push(student);
         saveDB(db);
         return student;
@@ -377,6 +454,34 @@ const DashboardEngine = (function() {
         saveDB(db);
     }
 
+    function setRemindersPaused(studentId, paused) {
+        var db = getDB();
+        var student = (db.students||[]).find(function(s){ return s.id===studentId; });
+        if (!student) return false;
+        student.remindersPaused = !!paused;
+        saveDB(db);
+        return true;
+    }
+
+    function updateStudentStatus(studentId, status) {
+        var db = getDB();
+        var student = (db.students||[]).find(function(s){ return s.id===studentId; });
+        if (!student) return false;
+        student.status = status;
+        saveDB(db);
+        return true;
+    }
+
+    function updateTutorStatus(tutorEmail, status) {
+        var db = getDB();
+        var key = (tutorEmail||'').toLowerCase().trim();
+        var tutor = db.users && db.users[key];
+        if (!tutor) return false;
+        tutor.status = status;
+        saveDB(db);
+        return true;
+    }
+
     // --- Tutors Controller ---
     function getTutors() {
         const db = getDB();
@@ -391,7 +496,7 @@ const DashboardEngine = (function() {
         tutorNamesFromStudents.forEach(name => {
             if (!tutorMap[name]) {
                 const matchedUser = tutorUsers.find(u => u.name === name);
-                tutorMap[name] = { name, email: matchedUser ? matchedUser.email : (name.toLowerCase().replace(/\s+/g,'') + '@stemulus.com') };
+                tutorMap[name] = { name, email: matchedUser ? matchedUser.email : (name.toLowerCase().replace(/\s+/g,'') + '@stemuluskidstech.com') };
             }
         });
         return Object.values(tutorMap);
@@ -431,6 +536,122 @@ const DashboardEngine = (function() {
         saveDB(db);
     }
 
+    // --- Attendance Records Controller ---
+    function getAttendanceRecords(tutorEmail = null) {
+        const db = getDB();
+        db.attendanceRecords = db.attendanceRecords || [];
+        if (tutorEmail) {
+            return db.attendanceRecords.filter(r => r.tutorEmail === tutorEmail);
+        }
+        return db.attendanceRecords;
+    }
+
+    function addAttendanceRecord(record) {
+        if (!record || !record.studentId || !record.topic || !Array.isArray(record.coursesCovered) || record.coursesCovered.length === 0) {
+            return { success: false, message: 'Missing required fields: studentId, topic, and coursesCovered (array).' };
+        }
+        const db = getDB();
+        db.attendanceRecords = db.attendanceRecords || [];
+        record.id = "att-" + Date.now();
+        record.status = "pending";
+        record.timestamp = new Date().toISOString();
+        // Optional fields from 4-section attendance form (undefined means not provided — old records are unaffected)
+        if (record.punctuality       === undefined) record.punctuality       = '';
+        if (record.whatBuilt         === undefined) record.whatBuilt         = '';
+        if (record.assignmentStatus  === undefined) record.assignmentStatus  = '';
+        if (record.conceptGrasp      === undefined) record.conceptGrasp      = 0;
+        if (record.tutorComment      === undefined) record.tutorComment      = '';
+        if (record.homeworkAssigned  === undefined) record.homeworkAssigned  = '';
+        db.attendanceRecords.push(record);
+        saveDB(db);
+        return record;
+    }
+
+    function updateAttendanceStatus(id, status) {
+        const db = getDB();
+        db.attendanceRecords = db.attendanceRecords || [];
+        const idx = db.attendanceRecords.findIndex(r => r.id === id);
+        if (idx !== -1) {
+            db.attendanceRecords[idx].status = status;
+            
+            // If approved, update matching schedule and student metrics
+            if (status === 'approved') {
+                const record = db.attendanceRecords[idx];
+                const schedIdx = db.schedules.findIndex(s => 
+                    s.studentId === record.studentId && 
+                    s.date === record.classDate
+                );
+                if (schedIdx !== -1) {
+                    db.schedules[schedIdx].attendanceStatus = 'present';
+                }
+                
+                // Update student metrics (attended count)
+                const studIdx = db.students.findIndex(s => s.id === record.studentId);
+                if (studIdx !== -1) {
+                    if (!db.students[studIdx].metrics) {
+                        db.students[studIdx].metrics = { attended: 0, total: 0, projects: 0, lines: 0 };
+                    }
+                    db.students[studIdx].metrics.attended = (db.students[studIdx].metrics.attended || 0) + 1;
+                    db.students[studIdx].metrics.total = (db.students[studIdx].metrics.total || 0) + 1;
+                }
+
+                // Add progress report
+                db.progressReports = db.progressReports || [];
+                db.progressReports.push({
+                    id: "rep-" + Date.now(),
+                    studentId: record.studentId,
+                    studentName: record.studentName,
+                    program: record.coursesCovered.join(", "),
+                    date: record.classDate,
+                    tutorName: record.tutorName,
+                    module: record.topic,
+                    grade: "A",
+                    feedback: record.notes
+                });
+            }
+            
+            saveDB(db);
+            return db.attendanceRecords[idx];
+        }
+        return null;
+    }
+
+    function checkDuplicateAttendance(studentId, date, time, topic, courses) {
+        const db = getDB();
+        const records = db.attendanceRecords || [];
+        const matches = records.filter(r => r.studentId === studentId && r.classDate === date);
+        if (matches.length === 0) {
+            return { has_duplicate: false, has_exact_duplicate: false, duplicates: [] };
+        }
+        
+        let hasExact = false;
+        const duplicateList = matches.map(dup => {
+            const timeMatches = (dup.classTime === time);
+            const topicMatches = (dup.topic.toLowerCase().trim() === topic.toLowerCase().trim());
+            const coursesMatch = (JSON.stringify(dup.coursesCovered.sort()) === JSON.stringify(courses.sort()));
+            const isExact = timeMatches && topicMatches && coursesMatch;
+            if (isExact) hasExact = true;
+            
+            return {
+                time: dup.classTime,
+                tutor: dup.tutorName,
+                status: dup.status === 'pending' ? 'Pending' : (dup.status === 'approved' ? 'Approved' : 'Rejected'),
+                topic: dup.topic,
+                courses: dup.coursesCovered.join(", "),
+                time_matches: timeMatches,
+                topic_matches: topicMatches,
+                courses_match: coursesMatch,
+                is_exact_match: isExact
+            };
+        });
+
+        return {
+            has_duplicate: true,
+            has_exact_duplicate: hasExact,
+            duplicates: duplicateList
+        };
+    }
+
     // --- Reschedule Requests ---
     function getRescheduleRequests(parentEmail = null) {
         const db = getDB();
@@ -453,7 +674,7 @@ const DashboardEngine = (function() {
             message: `${request.studentName} requested to reschedule ${request.course} from ${request.currentDate} to ${request.requestedDate}`,
             timestamp: new Date().toISOString(),
             read: false,
-            userEmail: "admin@stemulus.com"
+            userEmail: "admin@stemuluskidstech.com"
         });
 
         saveDB(db);
@@ -559,9 +780,16 @@ const DashboardEngine = (function() {
         const db = getDB();
         cert.id = "cert-" + Date.now();
         db.certificates.push(cert);
+
+        var certStudent = (db.students || []).find(function(s) { return (s.firstName + ' ' + s.lastName) === cert.student_name || s.firstName === cert.student_name; });
+        if (certStudent && certStudent.parentEmail) {
+            if (!db.notifications) db.notifications = [];
+            db.notifications.push({ id: 'notif-cert-' + Date.now(), userEmail: certStudent.parentEmail.toLowerCase(), title: 'Certificate Issued', message: cert.student_name + ' has been awarded: ' + (cert.program_name || cert.program || 'STEM Program Certification') + '. Credential ID: ' + cert.credential_id, timestamp: new Date().toISOString(), read: false });
+        }
+
         saveDB(db);
 
-        // ☁️ Dual-write to Firebase Firestore for cross-device verification
+        // Dual-write to Firebase Firestore for cross-device verification
         try {
             if (typeof firebase !== 'undefined' && firebase.apps.length) {
                 const firestoreDb = firebase.firestore();
@@ -571,9 +799,12 @@ const DashboardEngine = (function() {
                     program_name: cert.program_name,
                     grade_level: cert.grade_level,
                     issue_date: cert.issue_date,
-                    issued_at: new Date().toISOString()
+                    tutor_name: cert.tutor_name || 'STEMulus Faculty',
+                    status: cert.status || 'issued',
+                    director_note: cert.director_note || '',
+                    issued_at: cert.issued_at || new Date().toISOString()
                 }).then(() => {
-                    console.log('[STEMulus] ✅ Certificate synced to Firebase cloud:', cert.credential_id);
+                    console.log('[STEMulus] [Synced] Certificate synced to Firebase cloud:', cert.credential_id);
                 }).catch(err => {
                     console.warn('[STEMulus] Firebase sync failed (offline?). Cert saved locally.', err);
                 });
@@ -592,13 +823,13 @@ const DashboardEngine = (function() {
         db.certificates = db.certificates.filter(c => c.id !== id);
         saveDB(db);
 
-        // ☁️ Also delete from Firebase Firestore
+        // Also delete from Firebase Firestore
         if (cert) {
             try {
                 if (typeof firebase !== 'undefined' && firebase.apps.length) {
                     const firestoreDb = firebase.firestore();
                     firestoreDb.collection('certificates').doc(cert.credential_id).delete().then(() => {
-                        console.log('[STEMulus] ✅ Certificate revoked from Firebase cloud:', cert.credential_id);
+                        console.log('[STEMulus] [Revoked] Certificate revoked from Firebase cloud:', cert.credential_id);
                     }).catch(err => {
                         console.warn('[STEMulus] Firebase delete failed:', err);
                     });
@@ -607,6 +838,60 @@ const DashboardEngine = (function() {
                 console.warn('[STEMulus] Firebase not available for cert deletion:', e);
             }
         }
+    }
+
+    function updateCertificate(id, updates) {
+        const db = getDB();
+        const idx = db.certificates.findIndex(c => c.id === id || c.credential_id === id);
+        if (idx !== -1) {
+            db.certificates[idx] = { ...db.certificates[idx], ...updates };
+            saveDB(db);
+            // Dual-write update to Firestore
+            try {
+                if (typeof firebase !== 'undefined' && firebase.apps.length) {
+                    const cert = db.certificates[idx];
+                    firebase.firestore().collection('certificates').doc(cert.credential_id).set(cert, { merge: true }).catch(() => {});
+                }
+            } catch(e) {}
+            return db.certificates[idx];
+        }
+        return null;
+    }
+
+    function getCurrentScheduledStudent() {
+        const session = getSession();
+        const db = getDB();
+        if (!session) return null;
+        const tutorSchedules = (db.schedules || []).filter(s => 
+            (s.mentor === session.name || s.tutorEmail === session.email) && s.attendanceStatus === 'pending'
+        );
+        if (tutorSchedules.length > 0) {
+            const sched = tutorSchedules[0];
+            return {
+                id: sched.studentId,
+                name: sched.studentName,
+                course: sched.course,
+                scheduleId: sched.id,
+                time: sched.time,
+                date: sched.date
+            };
+        }
+        return null;
+    }
+
+    function getTutorStudents(tutorEmail = null) {
+        const session = getSession();
+        const email = tutorEmail || (session && session.email);
+        const name = session && session.name;
+        const db = getDB();
+        const students = db.students || [];
+        if (!email && !name) return students;
+        if (session && session.role === 'admin') return students;
+        const filtered = students.filter(s => 
+            (email && s.tutorEmail && s.tutorEmail.toLowerCase() === email.toLowerCase()) ||
+            (name && s.tutorName && s.tutorName.toLowerCase() === name.toLowerCase())
+        );
+        return filtered.length > 0 ? filtered : students;
     }
 
 
@@ -657,7 +942,7 @@ const DashboardEngine = (function() {
         return enrollment;
     }
 
-    function approveEnrollment(id) {
+    async function approveEnrollment(id) {
         const db = getDB();
         const idx = db.enrollments.findIndex(e => e.id === id);
         if (idx !== -1) {
@@ -677,10 +962,16 @@ const DashboardEngine = (function() {
                 parentEmail: enr.email,
                 parentName: enr.parentName,
                 parentPhone: enr.phone,
-                birthday: new Date(Date.now() - 365*24*3600*1000 * parseInt(enr.studentAge)).toISOString().split('T')[0], // approx birthday
+                birthday: enr.studentBirthday || new Date(Date.now() - 365*24*3600*1000 * parseInt(enr.studentAge)).toISOString().split('T')[0], // actual DOB or approx
+                studentEmail: enr.studentEmail || "",
+                fatherName: enr.fatherName || "",
+                fatherPhone: enr.fatherPhone || "",
+                motherName: enr.motherName || "",
+                motherPhone: enr.motherPhone || "",
                 progress: 0,
                 avatarColor: "bg-purple-500",
-                tutorName: "Sarah Jane"
+                tutorName: "Sarah Jane",
+                classroomLink: enr.classroomLink || ''
             };
             db.students.push(newStudent);
 
@@ -710,13 +1001,44 @@ const DashboardEngine = (function() {
 
             // Make sure parent user exists
             if (!db.users[enr.email.toLowerCase()]) {
+                var pwdChars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+                var randomPassword = Array.from(crypto.getRandomValues(new Uint8Array(10))).map(function(b) { return pwdChars[b % pwdChars.length]; }).join('');
+                const defaultPwd = await hashPassword(randomPassword);
                 db.users[enr.email.toLowerCase()] = {
                     email: enr.email,
-                    password: "parent123", // default
+                    password: defaultPwd,
                     role: "parent",
                     name: enr.parentName
                 };
-                
+
+                // Send the generated password to the parent via notification
+                db.notifications.push({
+                    id: "not-" + (Date.now() + 1),
+                    title: "Your Portal Login Credentials",
+                    message: `Welcome ${enr.parentName}! Your STEMulus parent portal login: Email: ${enr.email} | Temporary Password: ${randomPassword} — Please change this after your first login.`,
+                    timestamp: new Date().toISOString(),
+                    read: false,
+                    userEmail: enr.email
+                });
+
+                // Queue welcome email with portal credentials
+                addToEmailQueue({
+                    type: 'welcome',
+                    to: enr.email || enr.parentEmail,
+                    recipientName: enr.parentName,
+                    subject: 'Welcome to STEMulus — ' + (enr.studentFirstName||'') + "'s coding journey starts!",
+                    htmlPreview: 'Welcome email for ' + (enr.parentName||'') + ' — contains portal login credentials',
+                    data: {
+                        parentEmail: enr.email || enr.parentEmail,
+                        parentName: enr.parentName,
+                        studentName: (enr.studentFirstName||'') + ' ' + (enr.studentLastName||''),
+                        courseName: enr.program || enr.course,
+                        tempPassword: randomPassword,
+                        classroomLink: enr.classroomLink || ''
+                    },
+                    triggeredBy: 'enrollment_approval:' + (enr.id||id)
+                });
+
                 // Initialize parent onboarding
                 db.onboarding[enr.email] = {
                     completed: false,
@@ -738,9 +1060,9 @@ const DashboardEngine = (function() {
     // --- Birthday Notification / NTFY Alert ---
     async function triggerBirthdayNtfy(student) {
         const db = getDB();
-        const topic = db.ntfyTopic || "stemulus-birthday-alerts-2026";
-        const title = `🎂 STEMulus Birthday Alert: ${student.firstName} ${student.lastName}!`;
-        const message = `Our student ${student.firstName} ${student.lastName} (Age ${student.age}) is celebrating their birthday today!\nLet's send them a special coding challenge or discount! 🎉\nParent: ${student.parentName} (${student.parentPhone})`;
+        const topic = db.ntfyTopic || "stm-bday-qm4p7s9ke2ax1nf";
+        const title = `[Birthday] STEMulus Birthday Alert: ${student.firstName} ${student.lastName}!`;
+        const message = `Our student ${student.firstName} ${student.lastName} (Age ${student.age}) is celebrating their birthday today!\nLet's send them a special coding challenge or congratulations!\nParent: ${student.parentName} (${student.parentPhone})`;
 
         try {
             const response = await fetch(`https://ntfy.sh/${topic}`, {
@@ -760,7 +1082,7 @@ const DashboardEngine = (function() {
                 message: `ntfy alert successfully broadcast to topic: ${topic}`,
                 timestamp: new Date().toISOString(),
                 read: true,
-                userEmail: "admin@stemulus.com"
+                userEmail: "admin@stemuluskidstech.com"
             });
             saveDB(db);
 
@@ -774,7 +1096,7 @@ const DashboardEngine = (function() {
     // --- Notifications Controller ---
     function getNotifications(email) {
         const db = getDB();
-        return db.notifications.filter(n => n.userEmail === email).sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+        return db.notifications.filter(n => (n.userEmail||'').toLowerCase() === (email||'').toLowerCase()).sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
     }
 
     function addNotification(notif) {
@@ -782,6 +1104,7 @@ const DashboardEngine = (function() {
         notif.id = "not-" + Date.now();
         notif.timestamp = notif.timestamp || new Date().toISOString();
         notif.read = false;
+        notif.userEmail = (notif.userEmail || '').toLowerCase();
         db.notifications.push(notif);
         saveDB(db);
         return notif;
@@ -793,6 +1116,476 @@ const DashboardEngine = (function() {
             if (n.userEmail === email) n.read = true;
         });
         saveDB(db);
+    }
+
+    function syncLegacyMonthlyReports(reportsList) {
+        try {
+            localStorage.setItem('stemulus_monthly_reports', JSON.stringify(reportsList));
+        } catch(e) {}
+    }
+
+    function getMonthlyReports(filter) {
+        var db = getDB();
+        var reports = db.monthlyReports || [];
+        if (!filter) return reports;
+        if (typeof filter === 'string') {
+            var filterLower = filter.toLowerCase().trim();
+            var currentSession = getSession();
+            if (currentSession && currentSession.role === 'admin' && filterLower === (currentSession.email || '').toLowerCase()) {
+                return reports;
+            }
+            return reports.filter(function(r) {
+                return (r.tutorEmail && r.tutorEmail.toLowerCase() === filterLower) ||
+                       (r.parentEmail && r.parentEmail.toLowerCase() === filterLower) ||
+                       (r.studentId && r.studentId === filter) ||
+                       (r.status && r.status === filter);
+            });
+        }
+        if (typeof filter === 'object') {
+            return reports.filter(function(r) {
+                for (var key in filter) {
+                    if (filter[key] !== undefined && filter[key] !== null) {
+                        var val = r[key];
+                        if (typeof val === 'string' && typeof filter[key] === 'string') {
+                            if (val.toLowerCase() !== filter[key].toLowerCase()) return false;
+                        } else if (val !== filter[key]) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            });
+        }
+        return reports;
+    }
+
+    function addMonthlyReport(report) {
+        var db = getDB();
+        if (!db.monthlyReports) db.monthlyReports = [];
+        
+        // Link student profile if student exists in database
+        if (report.studentName && (!report.studentId || !report.parentEmail)) {
+            var sNameLower = report.studentName.toLowerCase().trim();
+            var matched = (db.students || []).find(function(s) {
+                var full = ((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim();
+                return full === sNameLower || (s.firstName && s.firstName.toLowerCase() === sNameLower);
+            });
+            if (matched) {
+                report.studentId = report.studentId || matched.id;
+                report.parentEmail = report.parentEmail || matched.parentEmail;
+                report.parentName = report.parentName || matched.parentName;
+                if (!report.course && matched.program) report.course = matched.program;
+            }
+        }
+
+        // If ID exists and is already in db (e.g. resubmitting a rejected report)
+        var existingIdx = report.id ? db.monthlyReports.findIndex(function(r){ return r.id === report.id; }) : -1;
+        if (existingIdx !== -1) {
+            report.status = 'pending_review';
+            report.resubmittedAt = new Date().toISOString();
+            report.rejectionReason = ''; // Cleared upon tutor redo
+            db.monthlyReports[existingIdx] = Object.assign({}, db.monthlyReports[existingIdx], report);
+            saveDB(db);
+            syncLegacyMonthlyReports(db.monthlyReports);
+            return { success: true, id: report.id, isUpdate: true };
+        }
+
+        report.id = report.id || ('mrep-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5));
+        report.createdAt = report.createdAt || new Date().toISOString();
+        report.submittedAt = report.submittedAt || new Date().toISOString();
+        report.status = report.status || 'pending_review';
+        report.rejectionReason = report.rejectionReason || '';
+        report.adminNotes = report.adminNotes || '';
+        db.monthlyReports.push(report);
+
+        // Notify Admin of new monthly submission
+        db.notifications = db.notifications || [];
+        db.notifications.push({
+            id: 'not-' + Date.now(),
+            title: 'New Monthly Report Submitted',
+            message: (report.tutorName || 'A tutor') + ' submitted a monthly report for ' + (report.studentName || 'a student') + ' (' + (report.month || 'Current Month') + '). Pending review.',
+            timestamp: new Date().toISOString(),
+            read: false,
+            userEmail: 'admin@stemuluskidstech.com'
+        });
+
+        saveDB(db);
+        syncLegacyMonthlyReports(db.monthlyReports);
+        return { success: true, id: report.id };
+    }
+
+    function updateMonthlyReport(id, updates) {
+        var db = getDB();
+        db.monthlyReports = db.monthlyReports || [];
+        var idx = db.monthlyReports.findIndex(function(r){ return r.id === id; });
+        if (idx === -1) return false;
+        db.monthlyReports[idx] = Object.assign({}, db.monthlyReports[idx], updates);
+        saveDB(db);
+        syncLegacyMonthlyReports(db.monthlyReports);
+        return db.monthlyReports[idx];
+    }
+
+    function rejectMonthlyReport(id, reason) {
+        var db = getDB();
+        db.monthlyReports = db.monthlyReports || [];
+        var idx = db.monthlyReports.findIndex(function(r){ return r.id === id; });
+        if (idx === -1) return false;
+        var r = db.monthlyReports[idx];
+        r.status = 'rejected';
+        r.rejectionReason = reason || 'Please revise your feedback and resubmit.';
+        r.reviewedAt = new Date().toISOString();
+
+        // Notify Tutor with revision details
+        if (r.tutorEmail) {
+            db.notifications = db.notifications || [];
+            db.notifications.push({
+                id: 'not-' + Date.now(),
+                title: 'Monthly Report Revision Requested',
+                message: 'Admin requested revisions for ' + (r.studentName || 'student') + '\'s ' + (r.month || '') + ' report: "' + r.rejectionReason + '". You can edit and resubmit in your portal.',
+                timestamp: new Date().toISOString(),
+                read: false,
+                userEmail: r.tutorEmail.toLowerCase()
+            });
+        }
+
+        saveDB(db);
+        syncLegacyMonthlyReports(db.monthlyReports);
+        return r;
+    }
+
+    function approveAndSendMonthlyReport(id, adminEdits) {
+        var db = getDB();
+        db.monthlyReports = db.monthlyReports || [];
+        var idx = db.monthlyReports.findIndex(function(r){ return r.id === id; });
+        if (idx === -1) return false;
+        var r = db.monthlyReports[idx];
+
+        if (adminEdits && typeof adminEdits === 'object') {
+            Object.assign(r, adminEdits);
+        }
+
+        r.status = 'sent_to_parent';
+        r.reviewedAt = new Date().toISOString();
+        r.sentAt = new Date().toISOString();
+
+        // Find or link student
+        var matchedStudent = (db.students || []).find(function(s){
+            return s.id === r.studentId || (r.studentName && ((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim() === r.studentName.toLowerCase().trim());
+        });
+
+        var parentEmail = r.parentEmail || (matchedStudent ? matchedStudent.parentEmail : null);
+        var sId = r.studentId || (matchedStudent ? matchedStudent.id : null);
+
+        // Sync into progressReports for child's persistent historical timeline
+        db.progressReports = db.progressReports || [];
+        var existingProgressIdx = db.progressReports.findIndex(function(p){ return p.monthlyReportId === r.id; });
+        var progEntry = {
+            id: existingProgressIdx !== -1 ? db.progressReports[existingProgressIdx].id : ('rep-' + Date.now()),
+            monthlyReportId: r.id,
+            studentId: sId,
+            studentName: r.studentName,
+            program: r.course,
+            date: (r.month ? r.month + '-28' : new Date().toISOString().split('T')[0]),
+            tutorName: r.tutorName,
+            module: r.module || 'Monthly Academic Review',
+            grade: r.overallGrade || 'A',
+            feedback: r.strengths ? (r.strengths + (r.recommendation ? ' | Recommendation: ' + r.recommendation : '')) : (r.topics || 'Monthly progress evaluation completed.')
+        };
+        if (existingProgressIdx !== -1) {
+            db.progressReports[existingProgressIdx] = progEntry;
+        } else {
+            db.progressReports.push(progEntry);
+        }
+
+        // Notify Parent with link to official evaluation
+        if (parentEmail) {
+            db.notifications = db.notifications || [];
+            db.notifications.push({
+                id: 'not-' + Date.now(),
+                title: 'Official Monthly Progress Report Ready! [Report]',
+                message: 'The official ' + (r.month || '') + ' progress evaluation for ' + (r.studentName || 'your child') + ' is now available in your portal with full academic grades and clean printable PDF.',
+                timestamp: new Date().toISOString(),
+                read: false,
+                userEmail: parentEmail.toLowerCase()
+            });
+
+            // Queue welcome / report delivery email
+            addToEmailQueue({
+                type: 'monthly_report',
+                to: parentEmail.toLowerCase(),
+                recipientName: r.parentName || 'Parent',
+                subject: 'STEMulus Official Monthly Academic Evaluation — ' + (r.studentName || 'Student') + ' (' + (r.month || '') + ')',
+                htmlPreview: 'Official progress report for ' + (r.studentName || 'Student') + ' — Grade: ' + (r.overallGrade || 'A') + '. Available to download and print in your Parent Portal.',
+                data: {
+                    reportId: r.id,
+                    studentName: r.studentName,
+                    grade: r.overallGrade,
+                    month: r.month,
+                    course: r.course,
+                    tutorName: r.tutorName
+                },
+                triggeredBy: 'admin_monthly_report_send:' + r.id
+            });
+        }
+
+        // Notify Tutor
+        if (r.tutorEmail) {
+            db.notifications = db.notifications || [];
+            db.notifications.push({
+                id: 'not-' + Date.now() + '-tut',
+                title: 'Monthly Report Dispatched to Parent',
+                message: 'Your report for ' + (r.studentName || 'student') + ' (' + (r.month || '') + ') was approved by admin and dispatched to the parent.',
+                timestamp: new Date().toISOString(),
+                read: false,
+                userEmail: r.tutorEmail.toLowerCase()
+            });
+        }
+
+        saveDB(db);
+        syncLegacyMonthlyReports(db.monthlyReports);
+        return r;
+    }
+
+    async function quickOnboardUser(params) {
+        var db = getDB();
+        var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@';
+        var tempPwd = Array.from(crypto.getRandomValues(new Uint8Array(10))).map(function(b){return chars[b%chars.length];}).join('');
+        var hashed = await hashPassword(tempPwd);
+
+        if (params.type === 'tutor') {
+            var tutorEmail = (params.email || '').toLowerCase().trim();
+            if (!tutorEmail) return { success: false, message: 'Tutor email is required.' };
+            if (db.users && db.users[tutorEmail]) {
+                return { success: false, message: 'A user with email ' + tutorEmail + ' already exists.' };
+            }
+            db.users[tutorEmail] = {
+                email: tutorEmail,
+                name: params.name || 'Tutor',
+                role: 'tutor',
+                password: hashed,
+                createdAt: new Date().toISOString()
+            };
+            db.notifications = db.notifications || [];
+            db.notifications.push({
+                id: 'not-' + Date.now(),
+                title: 'Welcome to STEMulus Faculty!',
+                message: 'Your tutor portal account is active. Log in with your email and temporary password: ' + tempPwd,
+                timestamp: new Date().toISOString(),
+                read: false,
+                userEmail: tutorEmail
+            });
+            addToEmailQueue({
+                type: 'tutor_welcome',
+                to: tutorEmail,
+                recipientName: params.name || 'Tutor',
+                subject: 'Welcome to STEMulus Faculty — Your Tutor Portal Access',
+                htmlPreview: 'Welcome ' + (params.name || 'Tutor') + '! Your tutor portal credentials: Login: ' + tutorEmail + ' | Temp Password: ' + tempPwd,
+                data: { tutorEmail: tutorEmail, tutorName: params.name || 'Tutor', tempPassword: tempPwd, subjects: params.program || '' },
+                triggeredBy: 'quick_onboard_tutor'
+            });
+            saveDB(db);
+            return { success: true, type: 'tutor', email: tutorEmail, tempPassword: tempPwd, name: params.name || 'Tutor' };
+        } else {
+            // Student + Parent
+            var parentEmail = (params.email || '').toLowerCase().trim();
+            if (!parentEmail) return { success: false, message: 'Parent email is required.' };
+            if (!db.users[parentEmail]) {
+                db.users[parentEmail] = {
+                    email: parentEmail,
+                    name: params.name || 'Parent',
+                    role: 'parent',
+                    password: hashed,
+                    createdAt: new Date().toISOString()
+                };
+            }
+            var childAge = parseInt(params.childAge) || 10;
+            var parts = (params.childName || 'Student').trim().split(/\s+/);
+            var fName = parts[0] || 'Student';
+            var lName = parts.slice(1).join(' ') || (params.name ? params.name.split(' ').slice(-1)[0] : 'S.');
+            
+            var newStudent = {
+                id: 'std-' + Date.now(),
+                firstName: fName,
+                lastName: lName,
+                age: childAge,
+                gender: params.gender || 'Not specified',
+                experience: params.experience || 'Beginner',
+                program: params.program || 'Python Programming Foundations',
+                status: 'active',
+                remindersPaused: false,
+                parentEmail: parentEmail,
+                parentName: params.name || 'Parent',
+                parentPhone: params.phone || '',
+                birthday: params.birthday || new Date(Date.now() - childAge * 365.25 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                progress: 0,
+                avatarColor: ['#4F46E5', '#059669', '#D97706', '#DC2626', '#7C3AED', '#2563EB', '#0891B2'][Math.floor(Math.random() * 7)],
+                tutorName: params.tutorName || 'Sarah Jane',
+                classroomLink: params.classroomLink || 'https://zoom.us/j/stemulus-class'
+            };
+            db.students = db.students || [];
+            db.students.push(newStudent);
+
+            // Auto-create initial schedule slot 3 days from now at 16:30
+            var schedDate = new Date();
+            schedDate.setDate(schedDate.getDate() + 3);
+            db.schedules = db.schedules || [];
+            db.schedules.push({
+                id: 'sch-' + Date.now(),
+                studentId: newStudent.id,
+                studentName: fName + ' ' + lName,
+                course: newStudent.program,
+                date: schedDate.toISOString().split('T')[0],
+                time: '16:30',
+                duration: '60',
+                mentor: newStudent.tutorName,
+                link: newStudent.classroomLink,
+                attendanceStatus: 'pending'
+            });
+
+            // Set onboarding wizard for parent
+            db.onboarding = db.onboarding || {};
+            db.onboarding[parentEmail] = {
+                completed: false,
+                currentStep: 1,
+                steps: [
+                    { id: 'profile', label: 'Verify Contact Information', done: true },
+                    { id: 'alerts', label: 'Configure Birthday & Class Alerts', done: false },
+                    { id: 'schedule', label: 'Accept Tutorial Schedule', done: false }
+                ]
+            };
+
+            // Queue welcome notification & email
+            db.notifications = db.notifications || [];
+            db.notifications.push({
+                id: 'not-' + Date.now(),
+                title: 'Student Onboarded Successfully!',
+                message: fName + ' ' + lName + ' has been registered in ' + newStudent.program + '. Portal login credentials generated.',
+                timestamp: new Date().toISOString(),
+                read: false,
+                userEmail: parentEmail
+            });
+
+            addToEmailQueue({
+                type: 'welcome',
+                to: parentEmail,
+                recipientName: params.name || 'Parent',
+                subject: 'Welcome to STEMulus — ' + fName + '\'s coding journey starts!',
+                htmlPreview: 'Welcome ' + (params.name || 'Parent') + '! Portal credentials: Email: ' + parentEmail + ' | Temp Password: ' + tempPwd,
+                data: {
+                    parentEmail: parentEmail,
+                    parentName: params.name || 'Parent',
+                    studentName: fName + ' ' + lName,
+                    courseName: newStudent.program,
+                    tempPassword: tempPwd,
+                    classroomLink: newStudent.classroomLink
+                },
+                triggeredBy: 'quick_onboard_student'
+            });
+
+            saveDB(db);
+            return {
+                success: true,
+                type: 'student_parent',
+                parentEmail: parentEmail,
+                parentName: params.name || 'Parent',
+                childName: fName + ' ' + lName,
+                program: newStudent.program,
+                tutorName: newStudent.tutorName,
+                tempPassword: tempPwd
+            };
+        }
+    }
+
+    // --- Email Queue Controller ---
+    function addToEmailQueue(item) {
+        // item: { type, to, recipientName, subject, htmlPreview, data, triggeredBy }
+        var db = getDB();
+        if (!db.emailQueue) db.emailQueue = [];
+        var entry = Object.assign({}, item, {
+            id: 'eq-' + Date.now(),
+            status: 'draft',
+            createdAt: new Date().toISOString(),
+            sentAt: null,
+            editedSubject: null,
+            editedBody: null
+        });
+        db.emailQueue.push(entry);
+        saveDB(db);
+        dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+        return entry.id;
+    }
+
+    function getEmailQueue() {
+        var db = getDB();
+        return (db.emailQueue || []).filter(function(e){ return e.status === 'draft'; });
+    }
+
+    function getEmailHistory() {
+        var db = getDB();
+        return (db.emailQueue || []).filter(function(e){ return e.status !== 'draft'; });
+    }
+
+    function updateQueuedEmail(id, fields) {
+        // fields: { editedSubject, editedBody }
+        var db = getDB();
+        var entry = (db.emailQueue || []).find(function(e){ return e.id === id; });
+        if (!entry) return false;
+        Object.assign(entry, fields);
+        saveDB(db);
+        return true;
+    }
+
+    function cancelQueuedEmail(id) {
+        var db = getDB();
+        var entry = (db.emailQueue || []).find(function(e){ return e.id === id; });
+        if (!entry) return false;
+        entry.status = 'cancelled';
+        saveDB(db);
+        return true;
+    }
+
+    // --- Password Reset Requests Controller ---
+    function addPasswordResetRequest(email) {
+        var db = getDB();
+        if (!db.passwordResetRequests) db.passwordResetRequests = [];
+        var existing = db.passwordResetRequests.find(function(r){ return r.email===email && r.status==='pending'; });
+        if (existing) { existing.updatedAt = new Date().toISOString(); saveDB(db); return existing.id; }
+        var req = { id: 'pwr-'+Date.now(), email: email.toLowerCase().trim(), status: 'pending', requestedAt: new Date().toISOString() };
+        db.passwordResetRequests.push(req);
+        saveDB(db);
+        dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+        return req.id;
+    }
+
+    function getPendingPasswordResets() {
+        var db = getDB();
+        return (db.passwordResetRequests || []).filter(function(r){ return r.status==='pending'; });
+    }
+
+    function resolvePasswordReset(reqId, newPassword) {
+        var db = getDB();
+        var req = (db.passwordResetRequests || []).find(function(r){ return r.id===reqId; });
+        if (!req) return false;
+        req.status = 'resolved';
+        req.resolvedAt = new Date().toISOString();
+        // Also update the user password
+        if (db.users && db.users[req.email]) {
+            // Will be hashed on next login via auto-upgrade logic
+            db.users[req.email].password = newPassword;
+            db.users[req.email].mustChangePassword = true;
+        }
+        saveDB(db);
+        return true;
+    }
+
+    function resetUserPassword(email, newPassword) {
+        var db = getDB();
+        var key = (email||'').toLowerCase().trim();
+        if (!db.users || !db.users[key]) return { success:false, message:'User not found' };
+        db.users[key].password = newPassword; // stored plain, auto-upgraded on next login
+        db.users[key].mustChangePassword = true;
+        saveDB(db);
+        return { success:true };
     }
 
     // --- Milestones Controller ---
@@ -834,19 +1627,96 @@ const DashboardEngine = (function() {
         return false;
     }
 
+    // --- Weekly Report Generator ---
+    function generateWeeklyReport(studentId) {
+        var db = getDB();
+        var student = (db.students||[]).find(function(s){ return s.id===studentId; });
+        if (!student) return null;
+
+        var now = new Date();
+        var weekStart = new Date(now); weekStart.setDate(now.getDate() - 7); weekStart.setHours(0,0,0,0);
+        var weekEnd = new Date(now); weekEnd.setHours(23,59,59,999);
+
+        var records = (db.schedules||[]).filter(function(s){
+            if (!s.date) return false;
+            var d = new Date(s.date);
+            var matches = (s.studentId===studentId || s.studentName===(student.firstName+' '+student.lastName)) && d>=weekStart && d<=weekEnd;
+            return matches;
+        });
+
+        if (!records.length) return null;
+
+        var sessionSummaries = records.map(function(r){ return {
+            date: r.date, topic: r.topic||r.module||'', whatBuilt: r.whatBuilt||'',
+            attendanceStatus: r.attendanceStatus||'', punctuality: r.punctuality||'',
+            conceptGrasp: r.conceptGrasp||0, tutorComment: r.tutorComment||'',
+            homeworkAssigned: r.homeworkAssigned||'', assignmentStatus: r.assignmentStatus||''
+        }; });
+
+        var avgGrasp = 0;
+        var graspCount = sessionSummaries.filter(function(s){ return s.conceptGrasp>0; }).length;
+        if (graspCount>0) avgGrasp = Math.round(sessionSummaries.reduce(function(sum,s){ return sum+(s.conceptGrasp||0); },0)/graspCount*10)/10;
+
+        var report = {
+            id: 'wr-'+Date.now(),
+            studentId: studentId,
+            studentName: student.firstName+' '+student.lastName,
+            tutorName: student.tutorName||'',
+            parentEmail: student.parentEmail||'',
+            weekStart: weekStart.toISOString().split('T')[0],
+            weekEnd: weekEnd.toISOString().split('T')[0],
+            sessionsTotal: records.length,
+            sessionsAttended: records.filter(function(r){ return r.attendanceStatus==='present'; }).length,
+            averageConceptGrasp: avgGrasp,
+            sessions: sessionSummaries,
+            generatedAt: new Date().toISOString(),
+            status: 'draft'
+        };
+
+        return report;
+    }
+
+    function generateAllWeeklyReports() {
+        var db = getDB();
+        var students = db.students||[];
+        var reports = [];
+        students.filter(function(s){ return s.status!=='inactive'&&s.status!=='withdrawn'; }).forEach(function(student){
+            var report = generateWeeklyReport(student.id);
+            if (report) reports.push(report);
+        });
+        return reports;
+    }
+
+    // Creates default admin/tutor/parent seed accounts on first run (only when users:{} is empty)
+    async function initDefaultAccounts() {
+        var db = getDB();
+        if (db.users && Object.keys(db.users).length === 0) {
+            var tutorHash  = await hashPassword('Tutor2026!');
+            var parentHash = await hashPassword('Parent2026!');
+            db.users['admin@stemuluskidstech.com'] = { email:'admin@stemuluskidstech.com', name:'STEMulus Admin', role:'admin', password:'eb0567a3ba892aba637c82bb25518215b94917f52d2cd68d5807bbc7bd8d0a2a', createdAt:new Date().toISOString() };
+            db.users['tutor@stemuluskidstech.com']  = { email: 'tutor@stemuluskidstech.com',  name: 'Demo Tutor',    role: 'tutor',  password: tutorHash,  createdAt: new Date().toISOString() };
+            db.users['parent@stemuluskidstech.com'] = { email: 'parent@stemuluskidstech.com', name: 'Demo Parent',   role: 'parent', password: parentHash, createdAt: new Date().toISOString() };
+            saveDB(db);
+            console.log('[STEMulus] Default seed accounts created.');
+            return true;
+        }
+        return false;
+    }
+
     // Initialize DB on script load
     getDB();
 
-    // ☁️ Firebase Cloud Sync real-time snapshot subscription
+    // Firebase Cloud Sync real-time snapshot subscription
     if (typeof firebase !== 'undefined' && firebase.apps.length) {
         try {
             firebase.firestore().collection('state').doc('current').onSnapshot(doc => {
+                if (isSyncing) return; // skip snapshot while a local save is in-flight
                 if (doc.exists()) {
                     const cloudData = doc.data();
                     
                     // Proactively ensure STEM-2026-QWHF is in the certificates list
+                    if (!cloudData.certificates) cloudData.certificates = [];
                     if (cloudData.certificates && !cloudData.certificates.some(c => c.credential_id === "STEM-2026-QWHF")) {
-                        if (!cloudData.certificates) cloudData.certificates = [];
                         cloudData.certificates.push({
                             id: "cert-6002",
                             credential_id: "STEM-2026-QWHF",
@@ -859,7 +1729,7 @@ const DashboardEngine = (function() {
                     
                     localStorage.setItem("stemulus_db", JSON.stringify(cloudData));
                     window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
-                    console.log('[STEMulus Cloud] 🔄 Local state synchronized with Firestore cloud');
+                    console.log('[STEMulus Cloud] [Synced] Local state synchronized with Firestore cloud');
                 } else {
                     console.log('[STEMulus Cloud] Seeding initial state to Firestore...');
                     firebase.firestore().collection('state').doc('current').set(getDB());
@@ -907,6 +1777,69 @@ const DashboardEngine = (function() {
         addMilestone,
         updateMilestone,
         deleteMilestone,
-        getNtfyTopic: () => getDB().ntfyTopic
+        getAttendanceRecords,
+        addAttendanceRecord,
+        updateAttendanceStatus,
+        checkDuplicateAttendance,
+        getStudentsByTutor,
+        getTutorStudents,
+        getCurrentScheduledStudent,
+        updateCertificate,
+        getDB,
+        saveDB,
+        getMonthlyReports,
+        addMonthlyReport,
+        updateMonthlyReport,
+        rejectMonthlyReport,
+        approveAndSendMonthlyReport,
+        quickOnboardUser,
+        addToEmailQueue,
+        getEmailQueue,
+        getEmailHistory,
+        updateQueuedEmail,
+        cancelQueuedEmail,
+        addPasswordResetRequest,
+        getPendingPasswordResets,
+        resolvePasswordReset,
+        resetUserPassword,
+        setRemindersPaused,
+        updateStudentStatus,
+        updateTutorStatus,
+        generateWeeklyReport,
+        generateAllWeeklyReports,
+        getNtfyTopic: () => getDB().ntfyTopic,
+        addUser: async function(userData) {
+            const db = getDB();
+            const key = userData.email.toLowerCase().trim();
+            if (db.users[key]) return { success: false, message: 'A user with this email already exists.' };
+            if (!userData.password) { throw new Error('Password is required for addUser()'); }
+            const plain = userData.password;
+            db.users[key] = {
+                email: userData.email.toLowerCase().trim(),
+                password: await hashPassword(plain),
+                role: userData.role || 'parent',
+                name: userData.name
+            };
+            saveDB(db);
+            return { success: true };
+        },
+        updateUserPassword: async function(email, newPassword) {
+            const db = getDB();
+            const key = email.toLowerCase().trim();
+            if (!db.users[key]) return false;
+            db.users[key].password = await hashPassword(newPassword);
+            saveDB(db);
+            return true;
+        },
+        checkAuth: function(requiredRole) {
+            var session = this.getSession ? this.getSession() : JSON.parse(sessionStorage.getItem('stemulus_session') || 'null');
+            if (!session || !session.role) { window.location.href = 'parent-login.html'; return null; }
+            if (requiredRole && session.role !== requiredRole) { window.location.href = 'parent-login.html?role=' + requiredRole; return null; }
+            return session;
+        },
+        initDefaultAccounts
     };
 })();
+
+// Auto-initialize default seed accounts on first load
+DashboardEngine.initDefaultAccounts();

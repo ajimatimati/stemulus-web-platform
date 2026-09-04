@@ -1,5 +1,5 @@
 /**
- * STEMulus Portal Logic
+ * STEMulus Portal Logic (Firebase Edition)
  * Handles authentication state and portal navigation.
  */
 
@@ -8,20 +8,18 @@ const Portal = (function() {
      * Check if user is logged in
      */
     function init() {
-        if (typeof supabase === 'undefined') return;
+        if (typeof firebase === 'undefined' || !firebase.auth) return;
 
-        supabase.auth.onAuthStateChange((event, session) => {
+        firebase.auth().onAuthStateChanged(user => {
             const portalLinks = document.querySelectorAll('.portal-link');
-            const user = session ? session.user : null;
             
             if (user) {
-                // console.log("[STEMulus] User signed in:", user.email);
+                // If logged in, point portal links to the login page which auto-redirects to their dashboard
                 portalLinks.forEach(link => {
                     link.textContent = 'Go to Portal';
-                    link.href = 'portal-dashboard.html';
+                    link.href = 'parent-login.html';
                 });
             } else {
-                // console.log("[STEMulus] User signed out.");
                 portalLinks.forEach(link => {
                     link.textContent = 'Parent Portal';
                     link.href = 'parent-login.html';
@@ -35,12 +33,11 @@ const Portal = (function() {
      */
     async function login(email, password) {
         try {
-            const { error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
-            if (error) throw error;
-            window.location.href = 'portal-dashboard.html';
+            if (typeof firebase === 'undefined' || !firebase.auth) {
+                throw new Error("Firebase Auth SDK not initialized.");
+            }
+            await firebase.auth().signInWithEmailAndPassword(email, password);
+            window.location.href = 'parent-login.html';
         } catch (error) {
             throw error;
         }
@@ -51,8 +48,10 @@ const Portal = (function() {
      */
     async function logout() {
         try {
-            const { error } = await supabase.auth.signOut();
-            if (error) throw error;
+            if (typeof firebase === 'undefined' || !firebase.auth) {
+                throw new Error("Firebase Auth SDK not initialized.");
+            }
+            await firebase.auth().signOut();
             window.location.href = 'index.html';
         } catch (error) {
             console.error("Logout Error:", error);
