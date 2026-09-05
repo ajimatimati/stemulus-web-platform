@@ -317,6 +317,21 @@ const DashboardEngine = (function() {
                 }
                 localStorage.setItem("stemulus_db", JSON.stringify(parsed));
             }
+            // Sanitize any legacy students created during testing that had synthetic "today" birthdays
+            if (parsed.students && Array.isArray(parsed.students)) {
+                let cleaned = false;
+                parsed.students.forEach(s => {
+                    if (s.id !== 'std-1001' && s.id !== 'std-1002' && !s.hasExplicitBirthday) {
+                        if (s.birthday && (s.birthday.endsWith('-09-05') || s.birthday.endsWith('-09-04') || s.birthday.endsWith('-09-06'))) {
+                            s.birthday = '';
+                            cleaned = true;
+                        }
+                    }
+                });
+                if (cleaned) {
+                    localStorage.setItem("stemulus_db", JSON.stringify(parsed));
+                }
+            }
             // Proactively ensure STEM-2026-QWHF is in the local storage certificates
             if (parsed.certificates && !parsed.certificates.some(c => c.credential_id === "STEM-2026-QWHF")) {
                 parsed.certificates.push({
@@ -512,6 +527,8 @@ const DashboardEngine = (function() {
         student.id = "std-" + Date.now();
         if (student.status === undefined) student.status = 'active';
         if (student.remindersPaused === undefined) student.remindersPaused = false;
+        student.birthday = (student.birthday && typeof student.birthday === 'string' && student.birthday.trim().length >= 10) ? student.birthday.trim() : '';
+        student.hasExplicitBirthday = !!(student.birthday);
         db.students.push(student);
         saveDB(db);
         return student;
@@ -1041,9 +1058,8 @@ const DashboardEngine = (function() {
                 status: "active",
                 parentEmail: enr.email,
                 parentName: enr.parentName,
-                parentPhone: enr.phone,
-                birthday: enr.studentBirthday || new Date(Date.now() - 365*24*3600*1000 * parseInt(enr.studentAge)).toISOString().split('T')[0], // actual DOB or approx
-                studentEmail: enr.studentEmail || "",
+                birthday: (enr.studentBirthday && typeof enr.studentBirthday === 'string' && enr.studentBirthday.trim().length >= 10) ? enr.studentBirthday.trim() : "",
+                hasExplicitBirthday: !!(enr.studentBirthday && enr.studentBirthday.trim()),
                 fatherName: enr.fatherName || "",
                 fatherPhone: enr.fatherPhone || "",
                 motherName: enr.motherName || "",
@@ -1139,6 +1155,10 @@ const DashboardEngine = (function() {
 
     // --- Birthday Notification / NTFY Alert ---
     async function triggerBirthdayNtfy(student) {
+        if (!student || !student.birthday || typeof student.birthday !== 'string' || student.birthday.trim().length < 10) {
+            console.warn("[Birthday] Skipping birthday alert: Student has no recorded birthday.");
+            return { success: false, message: "Student has no recorded birthday." };
+        }
         const db = getDB();
         const topic = db.ntfyTopic || "stm-bday-qm4p7s9ke2ax1nf";
         const title = `[Birthday] STEMulus Birthday Alert: ${student.firstName} ${student.lastName}!`;
@@ -1496,7 +1516,8 @@ const DashboardEngine = (function() {
                 parentEmail: parentEmail,
                 parentName: params.name || 'Parent',
                 parentPhone: params.phone || '',
-                birthday: params.birthday || new Date(Date.now() - childAge * 365.25 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                birthday: (params.birthday && typeof params.birthday === 'string' && params.birthday.trim().length >= 10) ? params.birthday.trim() : '',
+                hasExplicitBirthday: !!(params.birthday && params.birthday.trim()),
                 progress: 0,
                 avatarColor: ['#4F46E5', '#059669', '#D97706', '#DC2626', '#7C3AED', '#2563EB', '#0891B2'][Math.floor(Math.random() * 7)],
                 tutorName: params.tutorName || 'Sarah Jane',

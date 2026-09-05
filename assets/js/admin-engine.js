@@ -1122,6 +1122,7 @@ async function submitQuickOnboardStudent(e) {
     const parentPhone = (document.getElementById('qo-parent-phone') ? document.getElementById('qo-parent-phone').value.trim() : '');
     const childName = document.getElementById('qo-child-name').value.trim();
     const childAge = document.getElementById('qo-child-age').value.trim();
+    const childBirthday = (document.getElementById('qo-child-birthday') ? document.getElementById('qo-child-birthday').value.trim() : '');
     const program = document.getElementById('qo-program').value;
     const tutorSelect = document.getElementById('qo-tutor-select');
     const tutorName = tutorSelect ? tutorSelect.value : 'Lead Instructor';
@@ -1138,6 +1139,7 @@ async function submitQuickOnboardStudent(e) {
         phone: parentPhone,
         childName: childName,
         childAge: childAge,
+        birthday: childBirthday,
         program: program,
         tutorName: tutorName
     });
@@ -1526,8 +1528,10 @@ async function checkBirthdays() {
     const todayMMDD = today.substring(5);                 // MM-DD
 
     const birthdayStudents = students.filter(s => {
-        if (!s.birthday) return false;
-        return s.birthday.substring(5) === todayMMDD;
+        if (!s.birthday || typeof s.birthday !== 'string') return false;
+        const b = s.birthday.trim();
+        if (b.length < 10) return false;
+        return b.substring(5) === todayMMDD;
     });
 
     const dashboardSection = document.getElementById('section-dashboard');
@@ -1536,16 +1540,7 @@ async function checkBirthdays() {
 
     if (birthdayStudents.length === 0 || !dashboardSection) return;
 
-    // Auto-fire NTFY for each student not yet alerted today
-    for (const student of birthdayStudents) {
-        const sentKey = `stemulus_bday_sent_${today}_${student.id}`;
-        if (!localStorage.getItem(sentKey)) {
-            await DashboardEngine.triggerBirthdayNtfy(student);
-            localStorage.setItem(sentKey, '1');
-        }
-    }
-
-    // Show banner for first birthday student (with re-send option)
+    // Show banner for first birthday student with deliberate send / re-send control
     const student = birthdayStudents[0];
     const sentKey = `stemulus_bday_sent_${today}_${student.id}`;
     const alreadySent = !!localStorage.getItem(sentKey);
@@ -1560,10 +1555,11 @@ async function checkBirthdays() {
                 </div>
                 <div>
                     <h4 class="font-bold text-gray-800 text-base">Student Birthday Today!</h4>
-                    <p class="text-xs text-gray-500">It is <strong class="text-orange-600 font-bold">${student.firstName} ${student.lastName}</strong>'s birthday today (Age ${student.age}). Push alert sent automatically.</p>
+                    <p class="text-xs text-gray-500">It is <strong class="text-orange-600 font-bold">${student.firstName} ${student.lastName}</strong>'s birthday today (Age ${student.age}).</p>
                 </div>
             </div>
             <div class="flex items-center gap-3 shrink-0">
+                ${alreadySent ? `
                 <span class="text-xs text-green-600 font-semibold bg-green-50 border border-green-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
                     <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Alert Sent
                 </span>
@@ -1571,6 +1567,12 @@ async function checkBirthdays() {
                     class="bg-white hover:bg-slate-50 text-slate-600 border border-slate-200 font-semibold text-xs px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5">
                     <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Re-send
                 </button>
+                ` : `
+                <button onclick="AdminEngine.sendBirthdayNotification('${student.id}')"
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-1.5">
+                    <i data-lucide="send" class="w-3.5 h-3.5"></i> Send Push Alert
+                </button>
+                `}
             </div>
         `;
 
@@ -1585,11 +1587,19 @@ async function sendBirthdayNotification(studentId) {
     const student = DashboardEngine.getStudents().find(s => s.id === studentId);
     if (!student) return;
 
+    if (!student.birthday || typeof student.birthday !== 'string' || student.birthday.trim().length < 10) {
+        showToast('This student has no birthday date on record.', 'warning');
+        return;
+    }
+
     const res = await DashboardEngine.triggerBirthdayNtfy(student);
     if (res.success) {
-        showToast(`Birthday push alert re-sent for ${student.firstName}!`, 'success');
+        const today = new Date().toISOString().split('T')[0];
+        localStorage.setItem(`stemulus_bday_sent_${today}_${student.id}`, '1');
+        showToast(`Birthday push alert dispatched for ${student.firstName}!`, 'success');
+        checkBirthdays();
     } else {
-        showToast('Failed to send birthday push alert.', 'warning');
+        showToast(res.message || 'Failed to send birthday push alert.', 'warning');
     }
 }
 
@@ -2097,11 +2107,13 @@ function openStudentModal(studentId = null) {
             if (document.getElementById('student-status')) document.getElementById('student-status').value = student.status || 'active';
             if (document.getElementById('student-tutor')) document.getElementById('student-tutor').value = student.tutorName || '';
             if (document.getElementById('student-notes')) document.getElementById('student-notes').value = student.notes || '';
+            if (document.getElementById('student-birthday')) document.getElementById('student-birthday').value = student.birthday || '';
             var classroomInput = document.getElementById('student-classroom-link');
             if (classroomInput) classroomInput.value = student.classroomLink || '';
         }
     } else {
         if (title) title.textContent = 'Add New Student';
+        if (document.getElementById('student-birthday')) document.getElementById('student-birthday').value = '';
         var classroomInput = document.getElementById('student-classroom-link');
         if (classroomInput) classroomInput.value = '';
     }
@@ -2123,6 +2135,7 @@ function saveStudent(e) {
     const lastName = nameParts.slice(1).join(' ') || '';
 
     const age = parseInt(document.getElementById('student-age').value) || 0;
+    const birthdayVal = (document.getElementById('student-birthday') ? document.getElementById('student-birthday').value : '').trim();
     const email = document.getElementById('student-email') ? document.getElementById('student-email').value.trim() : '';
     const phone = document.getElementById('student-phone') ? document.getElementById('student-phone').value.trim() : '';
 
@@ -2145,6 +2158,8 @@ function saveStudent(e) {
         firstName,
         lastName,
         age,
+        birthday: birthdayVal || '',
+        hasExplicitBirthday: !!(birthdayVal && birthdayVal.length >= 10),
         email,
         phone,
         parentName,
@@ -2159,6 +2174,11 @@ function saveStudent(e) {
 
     if (id) {
         studentData.id = id;
+        const existingStudent = studentsCache.find(s => s.id === id);
+        if (!birthdayVal && existingStudent && existingStudent.birthday) {
+            studentData.birthday = existingStudent.birthday;
+            studentData.hasExplicitBirthday = existingStudent.hasExplicitBirthday;
+        }
         const updated = DashboardEngine.updateStudent(studentData);
         if (updated) {
             showToast('Student updated successfully!', 'success');
@@ -2168,7 +2188,6 @@ function saveStudent(e) {
     } else {
         studentData.progress = 0;
         studentData.avatarColor = getRandomAvatarColor();
-        studentData.birthday = new Date(Date.now() - age * 365.25 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
         studentData.skills = { logic: 50, loops: 50, variables: 50, syntax: 50, projects: 50 };
         studentData.metrics = { attended: 0, total: 12, projects: 0, lines: 0 };
 

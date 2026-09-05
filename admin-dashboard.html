@@ -1734,20 +1734,25 @@
  <form id="student-form" class="space-y-5">
  <input type="hidden" id="student-id">
  
- <div class="grid grid-cols-2 gap-4">
- <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Student Name *</label>
- <input type="text" id="student-name" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="Full name">
- </div>
- <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Age *</label>
- <input type="number" id="student-age" required min="5" max="18"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="e.g.12">
- </div>
- </div>
+ <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+  <div>
+  <label class="block text-sm font-medium text-gray-500 mb-2">Student Name *</label>
+  <input type="text" id="student-name" required
+  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
+  placeholder="Full name">
+  </div>
+  <div>
+  <label class="block text-sm font-medium text-gray-500 mb-2">Age *</label>
+  <input type="number" id="student-age" required min="5" max="18"
+  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
+  placeholder="e.g.12">
+  </div>
+  <div>
+  <label class="block text-sm font-medium text-gray-500 mb-2">Date of Birth (Optional)</label>
+  <input type="date" id="student-birthday"
+  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors">
+  </div>
+  </div>
  
  <div class="grid grid-cols-2 gap-4">
  <div>
@@ -2262,6 +2267,10 @@
              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Age</label>
              <input type="number" id="qo-child-age" min="4" max="18" value="10" required class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
            </div>
+         </div>
+         <div>
+           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Date of Birth <span class="text-slate-500 font-normal lowercase">(optional — for birthday celebrations)</span></label>
+           <input type="date" id="qo-child-birthday" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
          </div>
          <div>
            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Learning Track / Course</label>
