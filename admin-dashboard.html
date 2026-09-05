@@ -304,9 +304,15 @@
  </a>
  </li>
  <li>
- <a href="#" data-section="students" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
- <i data-lucide="users" class="w-5 h-5"></i>
+ <a href="#" data-section="students" data-roster-tab="students" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <i data-lucide="graduation-cap" class="w-5 h-5"></i>
  <span>Students</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="students" data-roster-tab="parents" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <i data-lucide="users" class="w-5 h-5"></i>
+ <span>Parents Directory</span>
  </a>
  </li>
  <li>
@@ -688,40 +694,56 @@
  <!-- ===== STUDENTS SECTION ===== -->
  <section id="section-students" class="admin-section animate-fadeIn">
  <!-- Header -->
- <div class="flex items-center justify-between mb-6">
+ <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
  <div>
- <h2 class="text-2xl font-nunito font-bold text-slate-800">Student Management</h2>
- <p class="text-slate-500">Manage all enrolled students</p>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800" id="roster-section-title">Student & Parent Management</h2>
+ <p class="text-slate-500" id="roster-section-subtitle">Manage all enrolled students and registered parents</p>
  </div>
  <div class="flex items-center gap-3">
- <button id="export-csv-btn" class="bg-white border border-admin-border hover:bg-gray-50 text-slate-700 px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
+ <button id="export-csv-btn" class="bg-white border border-admin-border hover:bg-gray-50 text-slate-700 px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm font-semibold shadow-sm">
  <i data-lucide="download" class="w-4 h-4"></i>
- <span>Export CSV</span>
+ <span id="export-btn-label">Export CSV</span>
  </button>
- <button id="add-student-btn" class="bg-admin-accent hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
+ <button id="add-student-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm">
  <i data-lucide="plus" class="w-4 h-4"></i>
  <span>Add Student</span>
  </button>
  </div>
  </div>
+
+ <!-- Roster Tabs Switcher -->
+ <div class="flex items-center gap-2 mb-6 border-b border-slate-200 pb-3">
+   <button type="button" id="tab-btn-students" onclick="AdminEngine.switchRosterTab('students')" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm bg-blue-600 text-white shadow-sm transition-all">
+     <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+     <span>Students Roster</span>
+     <span id="badge-students-count" class="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full font-mono">0</span>
+   </button>
+   <button type="button" id="tab-btn-parents" onclick="AdminEngine.switchRosterTab('parents')" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
+     <i data-lucide="users" class="w-4 h-4"></i>
+     <span>Parents Directory</span>
+     <span id="badge-parents-count" class="bg-slate-200 text-slate-700 text-xs px-2 py-0.5 rounded-full font-mono">0</span>
+   </button>
+ </div>
  
+ <!-- Students View Container -->
+ <div id="students-view-container">
  <!-- Filters -->
  <div class="glass-card rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-4">
  <div class="flex-1 min-w-[200px]">
  <div class="relative">
  <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
- <input type="text" id="student-search" placeholder="Search by name or email..."
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors">
+ <input type="text" id="student-search" placeholder="Search by student name or email..."
+ class="w-full bg-gray-50 border border-admin-border rounded-xl py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors">
  </div>
  </div>
- <select id="filter-course" class="bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-sm text-gray-800 focus:outline-none focus:border-admin-accent">
+ <select id="filter-course" class="bg-gray-50 border border-admin-border rounded-xl py-2 px-4 text-sm text-gray-800 font-medium focus:outline-none focus:border-admin-accent">
  <option value="">All Courses</option>
  <option value="junior-robotics">Junior Robotics</option>
  <option value="python-programming">Python Programming</option>
  <option value="web-design">Web Design</option>
  <option value="scratch-creators">Scratch Creators</option>
  </select>
- <select id="filter-status" class="bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-sm text-gray-800 focus:outline-none focus:border-admin-accent">
+ <select id="filter-status" class="bg-gray-50 border border-admin-border rounded-xl py-2 px-4 text-sm text-gray-800 font-medium focus:outline-none focus:border-admin-accent">
  <option value="">All Status</option>
  <option value="active">Active</option>
  <option value="inactive">Inactive</option>
@@ -736,7 +758,7 @@
  <thead>
  <tr class="text-left text-gray-500 uppercase text-xs">
  <th class="px-6 py-4 font-semibold">Student</th>
- <th class="px-6 py-4 font-semibold">Parent</th>
+ <th class="px-6 py-4 font-semibold">Parent Contact</th>
  <th class="px-6 py-4 font-semibold">Course</th>
  <th class="px-6 py-4 font-semibold">Tutor</th>
  <th class="px-6 py-4 font-semibold">Status</th>
@@ -752,6 +774,58 @@
  </tr>
  </tbody>
  </table>
+ </div>
+ </div>
+ </div>
+
+ <!-- Parents View Container -->
+ <div id="parents-view-container" class="hidden">
+ <!-- Filters -->
+ <div class="glass-card rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-4">
+ <div class="flex-1 min-w-[200px]">
+ <div class="relative">
+ <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+ <input type="text" id="parent-search" placeholder="Search parents by name, email, or child..."
+ class="w-full bg-gray-50 border border-admin-border rounded-xl py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors">
+ </div>
+ </div>
+ <select id="filter-parent-country" class="bg-gray-50 border border-admin-border rounded-xl py-2 px-4 text-sm text-gray-800 font-medium focus:outline-none focus:border-admin-accent">
+ <option value="">All Locations</option>
+ <option value="Nigeria">Nigeria</option>
+ <option value="United Kingdom">United Kingdom</option>
+ <option value="United States">United States</option>
+ <option value="Canada">Canada</option>
+ </select>
+ <button type="button" onclick="AdminWorkflows.OnboardingWizard.openParentOnboarding()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm">
+ <i data-lucide="user-plus" class="w-4 h-4"></i>
+ <span>Onboard Parent</span>
+ </button>
+ </div>
+
+ <!-- Parents Table -->
+ <div class="glass-card rounded-2xl overflow-hidden">
+ <div class="overflow-x-auto max-h-[60vh] overflow-y-auto">
+ <table class="data-table w-full text-sm">
+ <thead>
+ <tr class="text-left text-gray-500 uppercase text-xs">
+ <th class="px-6 py-4 font-semibold">Parent</th>
+ <th class="px-6 py-4 font-semibold">Phone / WhatsApp</th>
+ <th class="px-6 py-4 font-semibold">Enrolled Children</th>
+ <th class="px-6 py-4 font-semibold">Location</th>
+ <th class="px-6 py-4 font-semibold">Status</th>
+ <th class="px-6 py-4 font-semibold text-right">Actions</th>
+ </tr>
+ </thead>
+ <tbody id="parents-table-body" class="divide-y divide-admin-border">
+ <tr>
+ <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+ <i data-lucide="users" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+ <p>No parents found.</p>
+ </td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
  </div>
  </div>
  </section>

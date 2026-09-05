@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Students — Tutor Portal | STEMulus</title>
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/portal-animations.css">
+  <link rel="stylesheet" href="assets/css/responsive-overhaul.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; color: #0f172a; }
+    .font-nunito { font-family: 'Nunito', sans-serif; }
+    .tutor-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 40; }
+    .tutor-hero { background: linear-gradient(135deg, #4338ca 0%, #6366f1 50%, #818cf8 100%); border-radius: 1.5rem; color: #ffffff; padding: 2.25rem 2rem; position: relative; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(67, 56, 202, 0.25); }
+    .kpi-chip { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.18); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 9999px; padding: 0.4rem 1rem; font-size: 0.85rem; font-weight: 700; color: #ffffff; }
+    .student-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1.25rem; box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.04); transition: all 0.25s ease; }
+    .student-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08); border-color: #cbd5e1; }
+  </style>
+</head>
+<body class="antialiased bg-slate-50 text-slate-800">
+  <div id="sidebar-overlay" class="sidebar-overlay lg:hidden"></div>
+
+  <!-- Sidebar -->
+  <aside id="tutor-sidebar" class="sidebar-drawer fixed top-0 left-0 bottom-0 w-64 z-50 flex flex-col" style="background:#0F172A; transition:transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+    <div class="p-6 flex items-center justify-between" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+      <div class="flex items-center gap-3">
+        <img src="favicon.png" alt="STEMulus" class="w-8 h-8 object-contain">
+        <span class="font-extrabold text-lg text-white font-nunito tracking-wide">STEMulus</span>
+      </div>
+      <button id="sidebar-close-btn" class="lg:hidden p-1 text-slate-200 hover:text-white" aria-label="Close sidebar">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+      <a href="tutor-dashboard.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
+        <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
+      </a>
+      <a href="tutor-students.html" class="flex items-center gap-3 px-4 py-3 font-semibold" style="border-radius:16px;background:rgba(244,96,12,0.18);color:#f4600c;">
+        <i data-lucide="users" class="w-5 h-5"></i> My Students
+      </a>
+      <a href="tutor-attendance.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
+        <i data-lucide="clipboard-list" class="w-5 h-5"></i> Attendance History
+      </a>
+      <a href="tutor-attendance-create.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
+        <i data-lucide="clipboard-check" class="w-5 h-5"></i> Class Log
+      </a>
+      <a href="tutor-monthly-report.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
+        <i data-lucide="file-bar-chart" class="w-5 h-5"></i> My Reports
+      </a>
+      <a href="tutor-dashboard.html#schedule-list" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
+        <i data-lucide="calendar" class="w-5 h-5"></i> My Schedule
+      </a>
+    </nav>
+
+    <div class="p-4" style="border-top:1px solid rgba(255,255,255,0.07);">
+      <div class="flex items-center gap-3 mb-3 px-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs" style="background:rgba(244,96,12,0.25);color:#f4600c;" id="sidebar-avatar">T</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-bold truncate text-white" id="sidebar-tutor-name">Tutor Account</p>
+          <p class="text-xs truncate text-slate-200">Instructor</p>
+        </div>
+      </div>
+      <button id="sidebar-logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=tutor';" class="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors" style="border:none;background:rgba(255,255,255,0.05);cursor:pointer;">
+        <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Top Nav -->
+  <nav class="tutor-nav lg:ml-64 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <button id="menu-btn" class="lg:hidden p-2 text-slate-600 hover:text-slate-900" aria-label="Toggle menu">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+      <div>
+        <span class="text-[11px] font-extrabold uppercase tracking-wider text-orange-600 block">Mentor Portal</span>
+        <h1 class="font-bold text-lg text-slate-800 leading-tight">My Assigned Students</h1>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="tutor-attendance-create.html" class="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow-sm transition-colors">
+        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+        <span>Log Session</span>
+      </a>
+      <button onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=tutor';" class="p-2 text-slate-500 hover:text-slate-800" title="Sign Out">
+        <i data-lucide="log-out" class="w-5 h-5"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content View -->
+  <main class="lg:ml-64 p-4 sm:p-8 max-w-7xl">
+    <!-- Hero Banner -->
+    <div class="tutor-hero mb-8">
+      <div class="max-w-2xl relative z-10">
+        <span class="inline-block bg-white/20 text-white text-xs font-extrabold px-3 py-1 rounded-xl uppercase tracking-wider mb-3">Teaching Roster</span>
+        <h2 class="text-3xl font-extrabold font-nunito mb-2">My Assigned Students</h2>
+        <p class="text-indigo-100 text-sm mb-6">Review your active mentees, track their syllabus milestones, and communicate with parents directly.</p>
+        
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="kpi-chip">
+            <i data-lucide="users" class="w-4 h-4 text-white"></i>
+            <span id="kpi-total-students">0</span> Active Students
+          </div>
+          <div class="kpi-chip">
+            <i data-lucide="book-open" class="w-4 h-4 text-white"></i>
+            <span id="kpi-total-courses">0</span> Programs
+          </div>
+          <div class="kpi-chip">
+            <i data-lucide="award" class="w-4 h-4 text-white"></i>
+            <span id="kpi-avg-progress">0%</span> Avg Completion
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter & Search Toolbar -->
+    <div class="bg-white border border-slate-200/80 rounded-2xl p-4 mb-6 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+      <div class="relative flex-1">
+        <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+        <input type="text" id="tutor-student-search" placeholder="Search students by name or parent..." 
+          class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 placeholder-slate-500 font-medium focus:outline-none focus:border-orange-500 transition-colors">
+      </div>
+      <div class="flex items-center gap-3">
+        <select id="tutor-course-filter" class="bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-sm text-slate-800 font-medium focus:outline-none focus:border-orange-500">
+          <option value="">All Programs</option>
+        </select>
+        <button id="refresh-roster-btn" onclick="TutorStudentsApp.loadStudents()" class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-colors" title="Refresh Roster">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Students Grid -->
+    <div id="students-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="col-span-full py-16 text-center text-slate-500 bg-white rounded-2xl border border-slate-200">
+        <i data-lucide="loader" class="w-8 h-8 mx-auto mb-3 animate-spin text-orange-500"></i>
+        <p class="font-medium">Loading your student roster...</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/dashboard-engine.js"></script>
+  <script>
+    const TutorStudentsApp = (function() {
+      let currentTutor = null;
+      let studentsList = [];
+
+      function init() {
+        if (typeof DashboardEngine === 'undefined') return;
+
+        // Check authentication
+        const session = DashboardEngine.getSession ? DashboardEngine.getSession() : JSON.parse(sessionStorage.getItem('stemulus_session') || 'null');
+        if (!session || (session.role !== 'tutor' && session.role !== 'admin')) {
+          window.location.href = 'parent-login.html?role=tutor';
+          return;
+        }
+        currentTutor = session;
+
+        // Update profile in sidebar
+        const nameEl = document.getElementById('sidebar-tutor-name');
+        if (nameEl) nameEl.textContent = currentTutor.name || 'Tutor Account';
+        const avatarEl = document.getElementById('sidebar-avatar');
+        if (avatarEl) avatarEl.textContent = (currentTutor.name || 'T')[0].toUpperCase();
+
+        // Wire sidebar toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('sidebar-close-btn');
+        const sidebar = document.getElementById('tutor-sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+
+        if (menuBtn && sidebar && overlay) {
+          menuBtn.onclick = () => {
+            sidebar.classList.add('open');
+            overlay.classList.add('active');
+          };
+        }
+        if (closeBtn && sidebar && overlay) {
+          closeBtn.onclick = () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+          };
+        }
+        if (overlay && sidebar) {
+          overlay.onclick = () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+          };
+        }
+
+        // Wire search and filters
+        const searchInput = document.getElementById('tutor-student-search');
+        if (searchInput) {
+          searchInput.oninput = (e) => filterRoster(e.target.value);
+        }
+        const courseFilter = document.getElementById('tutor-course-filter');
+        if (courseFilter) {
+          courseFilter.onchange = () => filterRoster();
+        }
+
+        loadStudents();
+      }
+
+      function loadStudents() {
+        const identifier = currentTutor.email || currentTutor.name || 'tutor';
+        let rawStudents = DashboardEngine.getStudentsByTutor ? DashboardEngine.getStudentsByTutor(identifier) : [];
+        
+        // If demo/admin viewing or no tutor assigned, load all active students
+        if (!rawStudents || rawStudents.length === 0) {
+          rawStudents = DashboardEngine.getStudents ? DashboardEngine.getStudents() : [];
+        }
+
+        studentsList = rawStudents;
+
+        // Populate course dropdown
+        const courses = [...new Set(studentsList.map(s => s.program).filter(Boolean))];
+        const courseFilter = document.getElementById('tutor-course-filter');
+        if (courseFilter) {
+          courseFilter.innerHTML = '<option value="">All Programs</option>' + 
+            courses.map(c => '<option value="' + c + '">' + c + '</option>').join('');
+        }
+
+        // Update KPIs
+        const totalEl = document.getElementById('kpi-total-students');
+        if (totalEl) totalEl.textContent = studentsList.length;
+        const coursesEl = document.getElementById('kpi-total-courses');
+        if (coursesEl) coursesEl.textContent = courses.length;
+        const avgEl = document.getElementById('kpi-avg-progress');
+        if (avgEl) {
+          const totalProg = studentsList.reduce((acc, s) => acc + (s.progress || 0), 0);
+          avgEl.textContent = studentsList.length > 0 ? Math.round(totalProg / studentsList.length) + '%' : '0%';
+        }
+
+        renderStudents(studentsList);
+      }
+
+      function filterRoster(query) {
+        const searchEl = document.getElementById('tutor-student-search');
+        const q = (query !== undefined ? query : (searchEl ? searchEl.value : '')).toLowerCase().trim();
+        const courseEl = document.getElementById('tutor-course-filter');
+        const selectedCourse = courseEl ? courseEl.value : '';
+
+        const filtered = studentsList.filter(s => {
+          const matchQuery = !q || 
+            (s.firstName || '').toLowerCase().includes(q) || 
+            (s.lastName || '').toLowerCase().includes(q) ||
+            (s.parentName || '').toLowerCase().includes(q) ||
+            (s.program || '').toLowerCase().includes(q);
+          const matchCourse = !selectedCourse || s.program === selectedCourse;
+          return matchQuery && matchCourse;
+        });
+
+        renderStudents(filtered);
+      }
+
+      function renderStudents(students) {
+        const grid = document.getElementById('students-grid');
+        if (!grid) return;
+
+        if (!students || students.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-full py-16 text-center bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+              <div class="w-16 h-16 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="users" class="w-8 h-8"></i>
+              </div>
+              <h3 class="text-lg font-bold font-nunito text-slate-800 mb-1">No students found</h3>
+              <p class="text-sm text-slate-500 max-w-sm mx-auto mb-6">Students assigned to you by the academy admin will appear here automatically.</p>
+              <a href="tutor-attendance-create.html" class="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow-sm transition-colors">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>Log Session Attendance</span>
+              </a>
+            </div>
+          `;
+          if (window.lucide) lucide.createIcons();
+          return;
+        }
+
+        grid.innerHTML = students.map(s => {
+          const initials = ((s.firstName || 'S')[0] + (s.lastName || '')[0]).toUpperCase();
+          const waPhone = (s.parentPhone || '').replace(/[^0-9]/g, '');
+          const waLink = waPhone ? ('https://wa.me/' + waPhone + '?text=Hello%20' + encodeURIComponent(s.parentName || 'Parent') + '%2C%20this%20is%20' + encodeURIComponent(currentTutor.name || 'your child\'s coding mentor') + '%20from%20STEMulus') : null;
+          const progress = s.progress || 0;
+          const attended = (s.metrics && s.metrics.attended) ? s.metrics.attended : (s.classesAttended || 0);
+          const totalClasses = (s.metrics && s.metrics.total) ? s.metrics.total : 24;
+
+          return `
+            <div class="student-card p-6 flex flex-col justify-between">
+              <div>
+                <!-- Card Header -->
+                <div class="flex items-start justify-between gap-3 mb-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl ${s.avatarColor || 'bg-blue-600'} text-white font-extrabold flex items-center justify-center text-sm shadow-sm">
+                      ${initials}
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-base text-slate-900 font-nunito">${s.firstName} ${s.lastName}</h4>
+                      <p class="text-xs text-slate-500 font-medium">Age ${s.age || 'N/A'} • ${s.gender || 'Student'}</p>
+                    </div>
+                  </div>
+                  <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${s.status === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-700'}">
+                    ${s.status || 'Active'}
+                  </span>
+                </div>
+
+                <!-- Program Badge -->
+                <div class="mb-4">
+                  <span class="inline-block text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 font-bold px-3 py-1 rounded-xl">
+                    ${s.program || 'General STEM Track'}
+                  </span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="space-y-1.5 mb-5">
+                  <div class="flex justify-between text-xs font-semibold text-slate-600">
+                    <span>Syllabus Progress</span>
+                    <span class="text-indigo-600 font-bold">${progress}%</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-2 rounded-xl overflow-hidden">
+                    <div class="bg-indigo-600 h-full rounded-xl transition-all duration-500" style="width: ${progress}%"></div>
+                  </div>
+                  <div class="flex justify-between text-[11px] text-slate-600 pt-0.5 font-medium">
+                    <span>Sessions: ${attended} of ${totalClasses}</span>
+                    <span>${Math.round((attended / (totalClasses || 1)) * 100)}% Attendance</span>
+                  </div>
+                </div>
+
+                <!-- Parent Info Box -->
+                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 mb-5 space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider">Parent Contact</span>
+                    ${waLink ? `
+                      <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-100/70 hover:bg-emerald-200/80 px-2 py-0.5 rounded-lg transition-colors" title="Direct WhatsApp Chat">
+                        <i data-lucide="message-circle" class="w-3 h-3 text-emerald-600"></i>
+                        <span>WhatsApp</span>
+                      </a>
+                    ` : ''}
+                  </div>
+                  <p class="text-xs font-bold text-slate-800">${s.parentName || 'Parent Account'}</p>
+                  <p class="text-xs text-slate-500 font-mono">${s.parentPhone || s.parentEmail || 'No phone on file'}</p>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
+                <a href="tutor-attendance-create.html?studentId=${s.id}" class="inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-xl shadow-sm transition-colors text-center">
+                  <i data-lucide="clipboard-check" class="w-3.5 h-3.5"></i>
+                  <span>Log Class</span>
+                </a>
+                <a href="tutor-monthly-report.html?studentId=${s.id}" class="inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors text-center">
+                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                  <span>Report</span>
+                </a>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        if (window.lucide) lucide.createIcons();
+      }
+
+      return {
+        init,
+        loadStudents,
+        filterRoster
+      };
+    })();
+
+    document.addEventListener('DOMContentLoaded', TutorStudentsApp.init);
+  </script>
+</body>
+</html>

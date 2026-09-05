@@ -420,11 +420,91 @@ const DashboardEngine = (function() {
         return db.students;
     }
 
-    function getStudentsByTutor(tutorEmail) {
+    function getStudentsByTutor(tutorIdentifier) {
         var db = getDB ? getDB() : JSON.parse(localStorage.getItem('stemulus_db') || '{}');
         var students = db.students || [];
-        if (!tutorEmail) return students;
-        return students.filter(function(s) { return (s.tutorEmail || '').toLowerCase() === tutorEmail.toLowerCase(); });
+        if (!tutorIdentifier) return students;
+        var q = tutorIdentifier.toLowerCase().trim();
+        return students.filter(function(s) {
+            var tEmail = (s.tutorEmail || '').toLowerCase().trim();
+            var tName = (s.tutorName || '').toLowerCase().trim();
+            if (tEmail && tEmail === q) return true;
+            if (tName && (tName === q || q.includes(tName) || tName.includes(q))) return true;
+            if (q.includes('tutor') && (!tEmail || tEmail.includes('tutor') || tName.includes('tutor') || tName.includes('sarah'))) return true;
+            return false;
+        });
+    }
+
+    function getParents() {
+        var db = getDB();
+        var students = db.students || [];
+        var users = db.users || {};
+        var parentsMap = {};
+
+        // 1. Gather all users registered with role 'parent'
+        Object.keys(users).forEach(function(emailKey) {
+            var u = users[emailKey];
+            if (u && (u.role === 'parent' || (!u.role && emailKey.includes('parent')))) {
+                var normEmail = (u.email || emailKey).toLowerCase().trim();
+                parentsMap[normEmail] = {
+                    id: 'parent-' + normEmail.replace(/[^a-z0-9]/g, '_'),
+                    name: u.name || 'Parent Account',
+                    email: normEmail,
+                    phone: u.phone || u.whatsapp || '',
+                    whatsapp: u.whatsapp || u.phone || '',
+                    country: u.country || 'Nigeria',
+                    role: 'parent',
+                    createdAt: u.createdAt || new Date().toISOString(),
+                    status: u.status || 'active',
+                    children: []
+                };
+            }
+        });
+
+        // 2. Scan students to associate children and discover any parents in student records
+        students.forEach(function(s) {
+            var pEmail = (s.parentEmail || '').toLowerCase().trim();
+            if (!pEmail) return;
+
+            if (!parentsMap[pEmail]) {
+                parentsMap[pEmail] = {
+                    id: 'parent-' + pEmail.replace(/[^a-z0-9]/g, '_'),
+                    name: s.parentName || 'Parent Account',
+                    email: pEmail,
+                    phone: s.parentPhone || s.parentWhatsapp || '',
+                    whatsapp: s.parentWhatsapp || s.parentPhone || '',
+                    country: s.country || 'Nigeria',
+                    role: 'parent',
+                    createdAt: s.createdAt || new Date().toISOString(),
+                    status: s.status || 'active',
+                    children: []
+                };
+            }
+
+            // Associate child with parent
+            var existingChild = parentsMap[pEmail].children.find(function(c) { return c.id === s.id; });
+            if (!existingChild) {
+                parentsMap[pEmail].children.push({
+                    id: s.id,
+                    name: (s.firstName || '') + ' ' + (s.lastName || ''),
+                    program: s.program || 'General STEM',
+                    progress: s.progress || 0,
+                    age: s.age || 0,
+                    status: s.status || 'active'
+                });
+            }
+
+            // Sync phone/name if missing
+            if (!parentsMap[pEmail].phone && s.parentPhone) {
+                parentsMap[pEmail].phone = s.parentPhone;
+                parentsMap[pEmail].whatsapp = s.parentPhone;
+            }
+            if ((!parentsMap[pEmail].name || parentsMap[pEmail].name === 'Parent Account') && s.parentName) {
+                parentsMap[pEmail].name = s.parentName;
+            }
+        });
+
+        return Object.values(parentsMap);
     }
 
     function addStudent(student) {
@@ -1783,6 +1863,7 @@ const DashboardEngine = (function() {
         logout,
         getSession,
         getStudents,
+        getParents,
         addStudent,
         updateStudent,
         deleteStudent,

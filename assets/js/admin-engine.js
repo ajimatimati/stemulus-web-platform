@@ -152,9 +152,13 @@ function bindEvents() {
     navLinks.forEach(link => {
         link.onclick = function (e) {
             const section = link.getAttribute('data-section');
+            const rosterTab = link.getAttribute('data-roster-tab');
             if (section) {
                 e.preventDefault();
                 navigateToSection(section);
+                if (section === 'students' && rosterTab) {
+                    switchRosterTab(rosterTab);
+                }
             }
         };
     });
@@ -171,6 +175,20 @@ function bindEvents() {
     if (studentSearch) {
         studentSearch.oninput = function (e) {
             filterStudents(e.target.value);
+        };
+    }
+
+    const parentSearch = document.getElementById('parent-search');
+    if (parentSearch) {
+        parentSearch.oninput = function (e) {
+            filterParents(e.target.value);
+        };
+    }
+
+    const filterParentCountry = document.getElementById('filter-parent-country');
+    if (filterParentCountry) {
+        filterParentCountry.onchange = function (e) {
+            filterParents(undefined, e.target.value);
         };
     }
 
@@ -489,6 +507,11 @@ function showMsg(el, text, type) {
 }
 
 function navigateToSection(sectionName) {
+    if (sectionName === 'parents') {
+        sectionName = 'students';
+        switchRosterTab('parents');
+    }
+
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('data-section') === sectionName) link.classList.add('active');
@@ -1215,6 +1238,7 @@ function copyQuickOnboardCredentials() {
 function loadDashboardData() {
     loadStats();
     loadStudents();
+    loadParents();
     loadSchedules();
     loadProjects();
     loadCertificates();
@@ -1802,7 +1826,185 @@ function processAttendance(id, status) {
 
 function loadStudents() {
     studentsCache = DashboardEngine.getStudents();
+    const badge = document.getElementById('badge-students-count');
+    if (badge) badge.textContent = studentsCache.length;
     renderStudentsTable(studentsCache);
+}
+
+let parentsCache = [];
+let activeRosterTab = 'students';
+
+function loadParents() {
+    if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getParents) {
+        parentsCache = DashboardEngine.getParents();
+    } else {
+        parentsCache = [];
+    }
+    const badge = document.getElementById('badge-parents-count');
+    if (badge) badge.textContent = parentsCache.length;
+    renderParentsTable(parentsCache);
+}
+
+function renderParentsTable(parents) {
+    const tbody = document.getElementById('parents-table-body');
+    if (!tbody) return;
+
+    if (!parents || parents.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-12 text-center text-slate-400">
+            <i data-lucide="users" class="w-12 h-12 mx-auto mb-4 opacity-40"></i>
+            <p class="font-semibold">No parents registered yet.</p>
+        </td></tr>`;
+        if (window.lucide) lucide.createIcons();
+        return;
+    }
+
+    tbody.innerHTML = parents.map(p => {
+        const initials = (p.name || 'P').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        const childrenPills = (p.children && p.children.length > 0)
+            ? p.children.map(c => `
+                <span class="inline-flex items-center gap-1 text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded-lg">
+                    <span>${c.name}</span>
+                    <span class="text-[10px] text-indigo-500 font-normal">(${c.program || 'STEM'})</span>
+                </span>
+            `).join(' ')
+            : `<span class="text-xs text-slate-400 italic">No enrolled children</span>`;
+
+        const waNumber = (p.whatsapp || p.phone || '').replace(/[^0-9]/g, '');
+        const waLink = waNumber ? `https://wa.me/${waNumber}?text=Hello%20${encodeURIComponent(p.name)}%2C%20STEMulus%20Admin%20here` : null;
+
+        const dateFormatted = p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Registered';
+
+        return `
+            <tr class="hover:bg-gray-50/80 border-b border-gray-100 text-slate-800 transition-colors">
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                            ${initials}
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900 text-sm">${p.name}</p>
+                            <p class="text-xs text-slate-500 font-mono">${p.email}</p>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-slate-700 font-mono">${p.phone || p.whatsapp || 'N/A'}</span>
+                        ${waLink ? `
+                            <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-lg hover:bg-emerald-100 transition-colors" title="Chat on WhatsApp">
+                                <i data-lucide="message-circle" class="w-3 h-3 text-emerald-600"></i>
+                                <span>WhatsApp</span>
+                            </a>
+                        ` : ''}
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex flex-wrap gap-1.5 max-w-xs">
+                        ${childrenPills}
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="text-xs text-slate-600 font-medium">${p.country || 'Nigeria'}</span>
+                    <p class="text-[10px] text-slate-400">${dateFormatted}</p>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${p.status === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-700 border border-slate-200'}">
+                        ${p.status || 'Active'}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                        <button class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors" onclick="AdminWorkflows.OnboardingWizard.openParentOnboarding({ name: '${p.name.replace(/'/g, "\\'")}', email: '${p.email}', phone: '${p.phone || ''}', country: '${p.country || ''}' })" title="Edit / Add Child">
+                            + Child
+                        </button>
+                        <a href="mailto:${p.email}" class="text-slate-400 hover:text-blue-600 transition-colors p-1" title="Email Parent">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    if (window.lucide) lucide.createIcons();
+}
+
+function switchRosterTab(tab) {
+    activeRosterTab = tab;
+    const studentsBtn = document.getElementById('tab-btn-students');
+    const parentsBtn = document.getElementById('tab-btn-parents');
+    const studentsView = document.getElementById('students-view-container');
+    const parentsView = document.getElementById('parents-view-container');
+    const exportLabel = document.getElementById('export-btn-label');
+    const exportBtn = document.getElementById('export-csv-btn');
+
+    if (tab === 'parents') {
+        if (studentsBtn) {
+            studentsBtn.className = 'flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all';
+        }
+        if (parentsBtn) {
+            parentsBtn.className = 'flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm bg-blue-600 text-white shadow-sm transition-all';
+        }
+        if (studentsView) studentsView.classList.add('hidden');
+        if (parentsView) parentsView.classList.remove('hidden');
+        if (exportLabel) exportLabel.textContent = 'Export Parents CSV';
+        if (exportBtn) exportBtn.onclick = exportParentsCSV;
+        loadParents();
+    } else {
+        if (studentsBtn) {
+            studentsBtn.className = 'flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm bg-blue-600 text-white shadow-sm transition-all';
+        }
+        if (parentsBtn) {
+            parentsBtn.className = 'flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all';
+        }
+        if (studentsView) studentsView.classList.remove('hidden');
+        if (parentsView) parentsView.classList.add('hidden');
+        if (exportLabel) exportLabel.textContent = 'Export CSV';
+        if (exportBtn) exportBtn.onclick = exportStudentsCSV;
+        loadStudents();
+    }
+}
+
+function filterParents(query, country) {
+    const searchEl = document.getElementById('parent-search');
+    const q = (query !== undefined ? query : (searchEl ? searchEl.value : '')).toLowerCase().trim();
+    const filterCountryEl = document.getElementById('filter-parent-country');
+    const c = (country !== undefined ? country : (filterCountryEl ? filterCountryEl.value : '')).toLowerCase().trim();
+
+    const filtered = parentsCache.filter(p => {
+        const matchQuery = !q ||
+            (p.name || '').toLowerCase().includes(q) ||
+            (p.email || '').toLowerCase().includes(q) ||
+            (p.children || []).some(ch => (ch.name || '').toLowerCase().includes(q));
+        const matchCountry = !c || (p.country || '').toLowerCase().includes(c);
+        return matchQuery && matchCountry;
+    });
+
+    renderParentsTable(filtered);
+}
+
+function exportParentsCSV() {
+    const headers = ['Parent Name', 'Parent Email', 'Phone', 'WhatsApp', 'Location', 'Status', 'Children Count', 'Enrolled Children', 'Registered Date'];
+    const rows = parentsCache.map(p => [
+        p.name || '',
+        p.email || '',
+        p.phone || '',
+        p.whatsapp || '',
+        p.country || 'Nigeria',
+        p.status || 'active',
+        (p.children || []).length,
+        (p.children || []).map(c => `${c.name} (${c.program})`).join('; '),
+        p.createdAt || ''
+    ]);
+    const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `stemulus-parents-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(`Exported ${parentsCache.length} parents to CSV.`, 'success');
 }
 
 function renderStudentsTable(students) {
@@ -2841,6 +3043,10 @@ return {
     openTutorModal,
     openParentModal,
     exportStudentsCSV,
+    exportParentsCSV,
+    switchRosterTab,
+    filterParents,
+    loadParents,
     openReportReviewModal,
     previewCurrentReportPDF,
     previewReportPDF,

@@ -343,8 +343,9 @@ const ParentEngine = (function() {
                     </div>
 
                     <div class="pt-2">
-                        <a href="parent-progress.html?studentId=${s.id}" class="btn-3d btn-3d-secondary w-full border border-indigo-100">
-                            View Detailed Progress Dashboard
+                        <a href="parent-progress.html?studentId=${s.id}" class="btn-3d btn-3d-secondary w-full border border-indigo-100 flex items-center justify-center gap-2 text-indigo-700 font-bold hover:bg-indigo-50 transition-colors">
+                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i>
+                            <span>Track Learning Progress &rarr;</span>
                         </a>
                     </div>
 
