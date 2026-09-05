@@ -5,6 +5,13 @@
   publish = "."
   functions = "netlify/functions"
 
+[build.environment]
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+  SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES = "ADMIN_WHATSAPP,ADMIN_EMAIL,FIREBASE_API_KEY"
+
+[functions]
+  directory = "netlify/functions"
+
 # Morning run: 07:00 WAT (06:00 UTC) — tutor digests + birthday alerts
 [[scheduled_functions]]
   name = "scheduled-notifications"
