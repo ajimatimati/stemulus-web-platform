@@ -808,6 +808,9 @@ body:has(.sidebar-overlay.active) .pill-toolbar {
     position: relative;
     z-index: 9001 !important;
 }
+.admin-card,
+div.admin-card,
+[class*="admin-card"],
 .glass-card,
 div.glass-card,
 [class*="glass-card"] {

@@ -3,8 +3,8 @@
 <head>
  <script src="https://unpkg.com/lucide@latest" defer></script>
  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
- <link rel="stylesheet" href="assets/css/tailwind-output.css">
-  <link rel="stylesheet" href="dist/combined.css">
+ <link rel="stylesheet" href="assets/css/tailwind-output.css?v=20260905b">
+  <link rel="stylesheet" href="dist/combined.css?v=20260905b">
  <meta charset="UTF-8">
   <link rel="manifest" href="/site.webmanifest">
   <!-- SEO: CORE -->
@@ -44,7 +44,8 @@
  * { box-sizing: border-box; }
  body { font-family: 'DM Sans', sans-serif; }
  
- /* Glassmorphism */
+ /* Glassmorphism & Admin Cards */
+ .admin-card,
  .glass-card {
   background: #ffffff !important;
   border: 1px solid #e2e8f0 !important;
@@ -115,7 +116,7 @@
     background-color: #ffffff !important;
     color: #1f2937;
   }
-  .glass-card, .stat-card {
+  .admin-card, .glass-card, .stat-card {
   background: #ffffff !important;
   background-color: #ffffff !important;
   color: #1e293b !important;
@@ -284,8 +285,8 @@
 </script>
 
   <!-- Portal Design System -->
-  <link rel="stylesheet" href="assets/css/portal-design-system.css">
-  <link rel="stylesheet" href="assets/css/portal-animations.css">
+  <link rel="stylesheet" href="assets/css/portal-design-system.css?v=20260905b">
+  <link rel="stylesheet" href="assets/css/portal-animations.css?v=20260905b">
 
   <!-- Standard Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
@@ -308,7 +309,7 @@
   <div id="sidebar-overlay" class="sidebar-overlay lg:hidden"></div>
   <!-- ===================== LOGIN SCREEN ===================== -->
  <div id="login-screen" class="login-bg min-h-screen flex items-center justify-center p-6">
- <div class="glass-card rounded-2xl p-8 w-full max-w-md animate-fadeIn">
+ <div class="admin-card rounded-2xl p-8 w-full max-w-md animate-fadeIn">
  <div class="text-center mb-8">
   <img src="favicon.png" alt="STEMulus" class="h-12 mx-auto mb-4">
  <h1 class="text-2xl font-nunito font-bold text-slate-800">Admin Portal</h1>
@@ -588,7 +589,7 @@
 
  <!-- Stats Cards -->
  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
- <div class="glass-card rounded-2xl p-6">
+ <div class="admin-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-4">
  <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
 <i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
@@ -601,7 +602,7 @@
  <p class="text-slate-500 text-sm">Total Students</p>
  </div>
  
- <div class="glass-card rounded-2xl p-6">
+ <div class="admin-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-4">
  <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
 <i data-lucide="calendar-check" class="w-6 h-6 text-emerald-600"></i>
@@ -612,7 +613,7 @@
  <p class="text-slate-500 text-sm">Upcoming Classes</p>
  </div>
  
- <div class="glass-card rounded-2xl p-6">
+ <div class="admin-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-4">
  <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center">
 <i data-lucide="mail" class="w-6 h-6 text-amber-600"></i>
@@ -622,7 +623,7 @@
  <p class="text-slate-500 text-sm">Pending Enrollments</p>
  </div>
  
- <div class="glass-card rounded-3xl p-6 border border-slate-100 shadow-sm bg-white">
+ <div class="admin-card rounded-3xl p-6 border border-slate-100 shadow-sm bg-white">
  <div class="flex items-center justify-between mb-4">
  <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center">
 <i data-lucide="book-open" class="w-6 h-6 text-indigo-600"></i>
@@ -635,7 +636,7 @@
 
  <!-- This Week Summary -->
  <div class="mt-6">
-  <div class="glass-card rounded-2xl p-5">
+  <div class="admin-card rounded-2xl p-5">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-base font-nunito font-bold text-slate-800">This Week</h3>
       <span id="week-range-label" class="text-xs text-slate-600 font-semibold"></span>
@@ -663,7 +664,7 @@
 
  <!-- Today's Classes Widget -->
  <div class="mt-6">
-  <div class="glass-card rounded-2xl p-5">
+  <div class="admin-card rounded-2xl p-5">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-base font-nunito font-bold text-slate-800">Today's Classes</h3>
       <span id="today-classes-date" class="text-xs text-slate-600 font-semibold"></span>
@@ -676,7 +677,7 @@
 
  <!-- Notice Board Widget -->
  <div class="mt-4">
-  <div class="glass-card rounded-2xl p-5">
+  <div class="admin-card rounded-2xl p-5">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-base font-nunito font-bold text-slate-800">Notice Board</h3>
       <button id="create-notice-btn" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 px-3 py-1.5 border border-indigo-200 rounded-lg transition-colors">+ Create</button>
@@ -699,7 +700,7 @@
  <!-- Recent Activity & Quick Actions -->
  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
  <!-- Recent Students -->
- <div class="lg:col-span-2 glass-card rounded-2xl p-6">
+ <div class="lg:col-span-2 admin-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-lg font-semibold text-slate-800">Recent Students</h3>
  <a href="#" onclick="AdminEngine.navigateToSection('students'); return false;" class="text-blue-600 hover:text-blue-800 text-sm font-bold hover:underline">View All</a>
@@ -710,7 +711,7 @@
  </div>
 
  <!-- Today's Schedule -->
- <div class="glass-card rounded-2xl p-6">
+ <div class="admin-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-lg font-semibold text-slate-800">Today's Classes</h3>
  <a href="#" onclick="AdminEngine.navigateToSection('schedules'); return false;" class="text-blue-600 hover:text-blue-800 text-sm font-bold hover:underline">Full Calendar</a>
@@ -722,7 +723,7 @@
  </div>
 
  <!-- Manual Onboarding Panel -->
- <div class="glass-card rounded-2xl p-6">
+ <div class="admin-card rounded-2xl p-6">
  <div class="flex items-center gap-3 mb-5">
  <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
  <i data-lucide="user-plus" class="w-5 h-5 text-emerald-600"></i>
@@ -804,7 +805,7 @@
  <!-- Students View Container -->
  <div id="students-view-container">
  <!-- Filters -->
- <div class="glass-card rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-4">
+ <div class="admin-card rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-4">
  <div class="flex-1 min-w-[200px]">
  <div class="relative">
  <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
@@ -828,7 +829,7 @@
  </div>
  
  <!-- Students Table -->
- <div class="glass-card rounded-2xl overflow-hidden">
+ <div class="admin-card rounded-2xl overflow-hidden">
  <div class="overflow-x-auto max-h-[60vh] overflow-y-auto">
  <table class="data-table w-full text-sm">
  <thead>
@@ -857,7 +858,7 @@
  <!-- Parents View Container -->
  <div id="parents-view-container" class="hidden">
  <!-- Filters -->
- <div class="glass-card rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-4">
+ <div class="admin-card rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-4">
  <div class="flex-1 min-w-[200px]">
  <div class="relative">
  <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
@@ -879,7 +880,7 @@
  </div>
 
  <!-- Parents Table -->
- <div class="glass-card rounded-2xl overflow-hidden">
+ <div class="admin-card rounded-2xl overflow-hidden">
  <div class="overflow-x-auto max-h-[60vh] overflow-y-auto">
  <table class="data-table w-full text-sm">
  <thead>
@@ -920,7 +921,7 @@
  </div>
  
  <!-- Calendar Placeholder -->
- <div class="glass-card rounded-2xl p-6">
+ <div class="admin-card rounded-2xl p-6">
  <div id="schedule-calendar" class="min-h-[500px]">
  <p class="text-slate-500 font-medium text-center py-20">Loading calendar...</p>
  </div>
@@ -936,7 +937,7 @@
  </div>
  </div>
  
- <div class="glass-card rounded-2xl p-6 overflow-x-auto">
+ <div class="admin-card rounded-2xl p-6 overflow-x-auto">
  <table class="w-full text-left border-collapse data-table">
  <thead>
  <tr>
@@ -988,7 +989,7 @@
  
  <!-- Projects Grid -->
  <div id="admin-projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
- <div class="col-span-full glass-card rounded-2xl p-12 text-center">
+ <div class="col-span-full admin-card rounded-2xl p-12 text-center">
  <i data-lucide="folder-kanban" class="w-12 h-12 mx-auto mb-4 text-slate-500"></i>
  <p class="text-slate-500">Loading projects...</p>
  </div>
@@ -1006,7 +1007,7 @@
  
  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
  <!-- Issue Certificate Form -->
- <div class="glass-card rounded-2xl p-6">
+ <div class="admin-card rounded-2xl p-6">
  <h3 class="text-lg font-semibold text-slate-800 mb-4">Issue New Certificate</h3>
  <form id="issue-cert-form" class="space-y-4">
  <div>
@@ -1074,7 +1075,7 @@
  </div>
  
  <!-- Registry List Table -->
- <div class="lg:col-span-2 glass-card rounded-2xl p-6">
+ <div class="lg:col-span-2 admin-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-4">
  <h3 class="text-lg font-semibold text-slate-800">Registry Ledger</h3>
  <div class="relative">
@@ -1118,7 +1119,7 @@
  
  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
  <!-- Email Templates -->
- <div class="lg:col-span-2 glass-card rounded-3xl p-6 border border-slate-100 shadow-sm bg-white">
+ <div class="lg:col-span-2 admin-card rounded-3xl p-6 border border-slate-100 shadow-sm bg-white">
  <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
  <i data-lucide="mail" class="w-5 h-5 text-blue-600"></i>
  <span>Compose Email</span>
@@ -1184,7 +1185,7 @@
  </div>
  
  <!-- Send Portal Notification -->
- <div class="lg:col-span-2 glass-card rounded-3xl p-6 mt-6 border border-slate-100 shadow-sm bg-white">
+ <div class="lg:col-span-2 admin-card rounded-3xl p-6 mt-6 border border-slate-100 shadow-sm bg-white">
  <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
  <i data-lucide="bell" class="w-5 h-5 text-blue-600"></i>
  <span>Send Portal Notification</span>
@@ -1218,7 +1219,7 @@
  </div>
  
  <!-- Automation Settings -->
- <div class="glass-card rounded-3xl p-6 border border-slate-100 shadow-sm bg-white">
+ <div class="admin-card rounded-3xl p-6 border border-slate-100 shadow-sm bg-white">
  <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
  <i data-lucide="settings" class="w-5 h-5 text-blue-600"></i>
  <span>Automation Settings</span>
@@ -1317,7 +1318,7 @@
   </div>
 
   <!-- Change Password -->
-  <div class="glass-card rounded-2xl p-6 mb-6">
+  <div class="admin-card rounded-2xl p-6 mb-6">
     <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Change Password</h3>
     <form id="change-password-form" class="space-y-4 max-w-md">
       <div>
@@ -1344,7 +1345,7 @@
   </div>
 
   <!-- Profile Information -->
-  <div class="glass-card rounded-2xl p-6 mb-6">
+  <div class="admin-card rounded-2xl p-6 mb-6">
     <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Profile Information</h3>
     <form id="update-profile-form" class="space-y-4 max-w-md">
       <div>
@@ -1361,7 +1362,7 @@
   </div>
 
   <!-- Notification Preferences -->
-  <div class="glass-card rounded-2xl p-6 mb-6">
+  <div class="admin-card rounded-2xl p-6 mb-6">
     <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Notification Preferences</h3>
     <div class="space-y-3 max-w-md">
       <label class="flex items-center gap-3 cursor-pointer">
@@ -1381,7 +1382,7 @@
   </div>
 
   <!-- Account Information -->
-  <div class="glass-card rounded-2xl p-6">
+  <div class="admin-card rounded-2xl p-6">
     <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Account Information</h3>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-lg">
       <div><p class="text-xs text-slate-600 font-bold uppercase tracking-wide">Role</p><p id="acct-role" class="font-semibold text-gray-800 mt-0.5">Admin</p></div>
@@ -1400,7 +1401,7 @@
  </div>
  </div>
  
- <div class="glass-card rounded-2xl overflow-hidden">
+ <div class="admin-card rounded-2xl overflow-hidden">
  <div class="overflow-x-auto max-h-[60vh] overflow-y-auto">
  <table class="data-table w-full text-sm">
  <thead>
@@ -1442,7 +1443,7 @@
   </div>
 
   <!-- Filter & Search Toolbar -->
-  <div class="glass-card p-4 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+  <div class="admin-card p-4 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div class="flex items-center gap-2 flex-wrap" id="admin-reports-filter-group">
       <button type="button" class="admin-report-filter px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all" data-filter="all">
         All Reports (<span id="rep-count-all">0</span>)
@@ -1463,7 +1464,7 @@
   </div>
 
   <div id="monthly-reports-list" class="space-y-4">
-    <div class="glass-card rounded-2xl p-12 text-center text-slate-500 font-medium">
+    <div class="admin-card rounded-2xl p-12 text-center text-slate-500 font-medium">
       <svg class="w-12 h-12 mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
       <p class="font-medium">No monthly reports submitted yet.</p>
       <p class="text-sm mt-1">Reports submitted by tutors will appear here.</p>
@@ -1481,7 +1482,7 @@
  </div>
 
  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-   <div class="glass-card p-6 flex flex-col justify-between">
+   <div class="admin-card p-6 flex flex-col justify-between">
      <div>
        <h3 class="text-lg font-nunito font-bold text-slate-800 mb-2">Bot Status</h3>
        <p class="text-sm text-slate-500 mb-4">Toggle the automated WhatsApp responder globally.</p>
@@ -1495,7 +1496,7 @@
      </div>
    </div>
 
-   <div class="glass-card p-6 flex flex-col justify-between">
+   <div class="admin-card p-6 flex flex-col justify-between">
      <div>
        <h3 class="text-lg font-nunito font-bold text-slate-800 mb-2">Meta Cloud Integration</h3>
        <p class="text-sm text-slate-500 mb-4">Connection status to the Meta developer webhook portal.</p>
@@ -1508,7 +1509,7 @@
      </div>
    </div>
 
-   <div class="glass-card p-6 flex flex-col justify-between">
+   <div class="admin-card p-6 flex flex-col justify-between">
      <div>
        <h3 class="text-lg font-nunito font-bold text-slate-800 mb-2">Dashboard Control</h3>
        <p class="text-sm text-slate-500 mb-4">Open the advanced WhatsApp admin and rules editor console.</p>
@@ -1521,7 +1522,7 @@
    </div>
  </div>
 
- <div class="glass-card p-6">
+ <div class="admin-card p-6">
    <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Active Takeovers</h3>
    <div class="overflow-x-auto">
      <table class="w-full text-sm text-left">
@@ -1679,7 +1680,7 @@
  <div id="tutor-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('tutor-modal')"></div>
  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[90vh] overflow-y-auto">
- <div class="glass-card rounded-2xl p-8 m-4 animate-fadeIn">
+ <div class="admin-card rounded-2xl p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="tutor-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Tutor</h3>
  <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('tutor-modal')">
@@ -1744,7 +1745,7 @@
  <div id="parent-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('parent-modal')"></div>
  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[90vh] overflow-y-auto">
- <div class="glass-card rounded-2xl p-8 m-4 animate-fadeIn">
+ <div class="admin-card rounded-2xl p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-xl font-nunito font-bold text-slate-800">Add Parent Account</h3>
  <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('parent-modal')">
@@ -1799,7 +1800,7 @@
  <div id="student-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('student-modal')"></div>
  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
- <div class="glass-card rounded-2xl p-8 m-4 animate-fadeIn">
+ <div class="admin-card rounded-2xl p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="student-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Student</h3>
  <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('student-modal')">
@@ -1933,7 +1934,7 @@
  <div id="schedule-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('schedule-modal')"></div>
  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl max-h-[90vh] overflow-y-auto">
- <div class="glass-card rounded-2xl p-8 m-4 animate-fadeIn">
+ <div class="admin-card rounded-2xl p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="schedule-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Session</h3>
  <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('schedule-modal')">
@@ -2021,7 +2022,7 @@
  <div id="project-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('project-modal')"></div>
  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
- <div class="glass-card rounded-2xl p-8 m-4 animate-fadeIn">
+ <div class="admin-card rounded-2xl p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="project-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Project</h3>
  <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('project-modal')">
@@ -2112,7 +2113,7 @@
  <div id="notification-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('notification-modal')"></div>
  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[90vh] overflow-y-auto">
- <div class="glass-card rounded-3xl p-8 m-4 animate-fadeIn border border-slate-100 shadow-2xl bg-white">
+ <div class="admin-card rounded-3xl p-8 m-4 animate-fadeIn border border-slate-100 shadow-2xl bg-white">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-xl font-nunito font-bold text-slate-800">Send Portal Notification</h3>
  <button type="button" class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('notification-modal')">

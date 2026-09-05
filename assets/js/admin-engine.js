@@ -776,7 +776,7 @@ function loadTutorMonthlyReports() {
             : 'No monthly reports submitted yet.')));
 
         container.innerHTML = `
-            <div class="glass-card rounded-2xl p-12 text-center text-gray-400">
+            <div class="admin-card rounded-2xl p-12 text-center text-gray-400">
                 <svg class="w-12 h-12 mx-auto mb-4 opacity-40 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
@@ -814,7 +814,7 @@ function loadTutorMonthlyReports() {
         const sessionsText = (r.sessionsAttended || r.totalSessions || (r.students && r.students[0] && r.students[0].sessionsAttended) || '?') + ' Sessions';
 
         return `
-            <div class="glass-card rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-all">
+            <div class="admin-card rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-all">
                 <div class="p-5 border-b border-admin-border bg-white flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="space-y-1.5">
                         <div class="flex items-center gap-2.5 flex-wrap">
@@ -922,7 +922,7 @@ function loadTutorMonthlyReports() {
 }
 
 window.toggleReportDetails = function(btn) {
-    var card = btn.closest('.glass-card');
+    var card = btn.closest('.admin-card, .glass-card');
     if (!card) return;
     var details = card.querySelector('.report-details');
     if (!details) return;
@@ -1686,7 +1686,7 @@ function renderRescheduleRequests() {
 
     const resSection = document.createElement('div');
     resSection.id = 'admin-reschedule-section';
-    resSection.className = 'w-full glass-card rounded-2xl p-5 sm:p-6 mt-6 border border-slate-200 bg-white shadow-sm';
+    resSection.className = 'w-full admin-card rounded-2xl p-5 sm:p-6 mt-6 border border-slate-200 bg-white shadow-sm';
     resSection.innerHTML = `
             <h3 class="text-base sm:text-lg font-extrabold text-slate-800 mb-4 flex items-center gap-2">
                 <i data-lucide="calendar-range" class="w-5 h-5 text-orange-500"></i>
@@ -2567,7 +2567,7 @@ function renderProjectCards(projects) {
 
     if (projects.length === 0) {
         grid.innerHTML = `
-                <div class="col-span-full glass-card rounded-3xl p-12 text-center border border-slate-100 bg-white">
+                <div class="col-span-full admin-card rounded-3xl p-12 text-center border border-slate-100 bg-white">
                     <i data-lucide="video" class="w-12 h-12 mx-auto mb-4 text-slate-400"></i>
                     <p class="text-slate-500">No video highlights added yet.</p>
                 </div>
@@ -2577,7 +2577,7 @@ function renderProjectCards(projects) {
     }
 
     grid.innerHTML = projects.map(p => `
-            <div class="glass-card rounded-3xl overflow-hidden shadow-sm border border-slate-100 bg-white flex flex-col hover:shadow-md transition-shadow">
+            <div class="admin-card rounded-3xl overflow-hidden shadow-sm border border-slate-100 bg-white flex flex-col hover:shadow-md transition-shadow">
                 <div class="h-40 overflow-hidden relative bg-slate-900 flex items-center justify-center group">
                     <span class="absolute top-3 left-3 px-2.5 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded-full uppercase tracking-wider z-10">${p.category}</span>
                     <video src="${p.image}" class="w-full h-full object-cover" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause()"></video>
