@@ -605,21 +605,61 @@ window.importNetlifyEnrollment = function(idx) {
     if (typeof loadDashboardData === 'function') loadDashboardData();
 };
 
-function showToast(msg, type = 'info') {
-    const container = document.getElementById('toast-container');
-    if (!container) return;
+function showToast(msg, type = 'info', duration = 5000) {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        document.body.appendChild(container);
+    }
+    container.style.cssText = 'position:fixed!important;top:1.25rem!important;right:1.25rem!important;z-index:999999!important;pointer-events:none!important;display:flex!important;flex-direction:column!important;gap:0.75rem!important;max-width:440px!important;width:calc(100vw - 2.5rem)!important;';
 
     const toast = document.createElement('div');
-    var colorClass = type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-red-600' : type === 'warning' ? 'bg-amber-600' : 'bg-blue-600';
-    toast.className = `px-6 py-3.5 rounded-xl shadow-xl text-white text-sm animate-fadeIn flex items-center gap-3 ${colorClass}`;
+    const bgMap = {
+        success: 'bg-emerald-700 border-emerald-500 text-white',
+        error: 'bg-rose-700 border-rose-500 text-white',
+        warning: 'bg-amber-700 border-amber-500 text-white',
+        info: 'bg-indigo-700 border-indigo-500 text-white'
+    };
+    const iconMap = {
+        success: 'check-circle',
+        error: 'alert-circle',
+        warning: 'alert-triangle',
+        info: 'info'
+    };
+    const colorClass = bgMap[type] || bgMap.info;
+    const iconName = iconMap[type] || 'info';
+
+    toast.className = `portal-toast pointer-events-auto flex items-start gap-3 p-4 rounded-2xl shadow-2xl border text-sm font-medium transition-all duration-300 transform translate-y-0 opacity-100 ${colorClass}`;
+    toast.style.zIndex = '1000000';
+    toast.style.boxShadow = '0 20px 30px -5px rgba(0, 0, 0, 0.45), 0 10px 15px -5px rgba(0, 0, 0, 0.3)';
+    
     toast.innerHTML = `
-            <i data-lucide="${type === 'success' ? 'check-circle' : 'info'}" class="w-5 h-5 shrink-0"></i>
-            <span>${msg}</span>
-        `;
+        <i data-lucide="${iconName}" class="w-5 h-5 shrink-0 mt-0.5"></i>
+        <div class="flex-1 text-xs leading-relaxed font-semibold break-words">${msg}</div>
+        <button type="button" class="shrink-0 p-1 hover:bg-white/20 rounded-lg text-white transition-colors cursor-pointer" aria-label="Dismiss notification">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    `;
+    const closeBtn = toast.querySelector('button');
+    if (closeBtn) {
+        closeBtn.onclick = function() {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-10px)';
+            setTimeout(() => toast.remove(), 250);
+        };
+    }
     container.appendChild(toast);
-    if (window.lucide) lucide.createIcons();
-    setTimeout(() => toast.remove(), 4000);
+    if (window.lucide) lucide.createIcons({ root: toast });
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-10px)';
+            setTimeout(() => toast.remove(), 250);
+        }
+    }, duration);
 }
+window.showToast = showToast;
 
 var currentReportFilter = 'all';
 var currentReportSearchQuery = '';
@@ -1090,7 +1130,7 @@ async function submitQuickOnboardStudent(e) {
         outputEl.innerHTML = `
             <div><strong>ACCOUNT TYPE:</strong> Parent &amp; Student Portal</div>
             <div><strong>PARENT LOGIN:</strong> ${result.parentEmail}</div>
-            <div><strong>INITIAL PASSWORD:</strong> <span class="bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded font-bold">${result.tempPassword}</span></div>
+            <div><strong>INITIAL PASSWORD:</strong> <span class="bg-slate-900 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-lg font-mono font-bold select-all inline-block">${result.tempPassword}</span></div>
             <div><strong>CHILD ROSTER:</strong> ${result.childName} (${result.program})</div>
             <div><strong>ASSIGNED TUTOR:</strong> ${result.tutorName}</div>
             <div><strong>CLASSROOM LINK:</strong> <a href="${result.classroomLink}" target="_blank" class="text-indigo-600 underline">${result.classroomLink}</a></div>
@@ -1099,7 +1139,7 @@ async function submitQuickOnboardStudent(e) {
         successBox.classList.remove('hidden');
     }
 
-    showToast(`Successfully onboarded ${childName}! Credentials ready.`, 'success');
+    showToast(`Successfully onboarded ${childName}! Login: <strong>${result.parentEmail}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${result.tempPassword}</span>`, 'success', 10000);
     loadDashboardData();
     if (window.lucide) lucide.createIcons();
 }
@@ -1133,7 +1173,7 @@ async function submitQuickOnboardTutor(e) {
         outputEl.innerHTML = `
             <div><strong>ACCOUNT TYPE:</strong> STEMulus Tutor / Faculty Portal</div>
             <div><strong>TUTOR LOGIN:</strong> ${result.email}</div>
-            <div><strong>INITIAL PASSWORD:</strong> <span class="bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded font-bold">${result.tempPassword}</span></div>
+            <div><strong>INITIAL PASSWORD:</strong> <span class="bg-slate-900 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-lg font-mono font-bold select-all inline-block">${result.tempPassword}</span></div>
             <div><strong>TUTOR NAME:</strong> ${result.name}</div>
             <div><strong>PORTAL URL:</strong> https://stemuluskidstech.com/tutor-login.html</div>
             <div class="text-[11px] text-gray-500 mt-2">&check; Tutor credentials ready for login.</div>
@@ -1141,7 +1181,7 @@ async function submitQuickOnboardTutor(e) {
         successBox.classList.remove('hidden');
     }
 
-    showToast(`Tutor ${tutorName} onboarded successfully!`, 'success');
+    showToast(`Tutor ${tutorName} onboarded! Login: <strong>${result.email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${result.tempPassword}</span>`, 'success', 10000);
     loadDashboardData();
     if (window.lucide) lucide.createIcons();
 }
@@ -1429,9 +1469,9 @@ window.adminResetAndSend = async function(reqId, email) {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ type:'credentials-reset', data:{ to:email, recipientEmail:email, newPassword:newPwd, portalUrl:'https://stemuluskidstech.com/parent-login.html' }})
     });
-    if (typeof showToast === 'function') showToast('New credentials sent to ' + email, 'success');
+    if (typeof showToast === 'function') showToast('New credentials generated for ' + email + '! Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">' + newPwd + '</span>', 'success', 10000);
   } catch(e) {
-    if (typeof showToast === 'function') showToast('Reset saved but email failed — new password: ' + newPwd, 'warning');
+    if (typeof showToast === 'function') showToast('Reset saved! New password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">' + newPwd + '</span> (email dispatch failed)', 'warning', 10000);
   }
   loadPasswordResets();
 };
@@ -2734,7 +2774,7 @@ async function saveTutor(e) {
         const tempPwd = password || (Math.random().toString(36).slice(2, 9) + Math.random().toString(36).slice(2, 9).toUpperCase() + Math.floor(Math.random()*90+10));
         const result = await DashboardEngine.addUser({ email, password: tempPwd, role: 'tutor', name });
         if (!result.success) { showToast(result.message || 'Could not create tutor account.', 'error'); return; }
-        showToast(`Tutor account created. Login: ${email} — temporary password sent to their email.`, 'success');
+        showToast(`Tutor account created! Login: <strong>${email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${tempPwd}</span>`, 'success', 10000);
         // Send tutor welcome email
         if (typeof EmailService !== 'undefined' && EmailService.sendTutorWelcomeEmail) {
             var tutorEmailData = { tutorEmail: email, tutorName: name, tempPassword: tempPwd, subjects: subjects || '' };
@@ -2772,7 +2812,7 @@ async function saveParent(e) {
     const result = await DashboardEngine.addUser({ email, password: tempPwd, role: 'parent', name });
     if (!result.success) { showToast(result.message || 'Could not create parent account.', 'error'); return; }
 
-    showToast(`Parent portal account created. Login: ${email} — temporary password sent to their email.`, 'success');
+    showToast(`Parent account created! Login: <strong>${email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${tempPwd}</span>`, 'success', 10000);
     closeModal('parent-modal');
     loadDashboardData();
 }

@@ -238,8 +238,8 @@ html.has-scroll-smooth body  {
   min-height: 100vh
 }
 
-.fixed, header  {
-  z-index: 9999!important
+.site-header {
+  z-index: 50;
 }
 
 .c-scrollbar  {

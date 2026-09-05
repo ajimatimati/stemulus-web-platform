@@ -256,21 +256,26 @@ aside img[src*="logo"] {
   -webkit-overflow-scrolling: touch;
 }
 
-/* ── 5. Admin & Tutor Drawer Overlay Utilities ── */
-.sidebar-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.5);
-  backdrop-filter: blur(4px);
-  z-index: 40;
+.sidebar-overlay,
+#sidebar-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  z-index: 850 !important;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
 }
 
-.sidebar-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
+.sidebar-overlay.active,
+.sidebar-overlay.show,
+#sidebar-overlay.active,
+#sidebar-overlay.show {
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 /* ================================================================
@@ -279,26 +284,35 @@ aside img[src*="logo"] {
 
 /* Sidebar: force off-screen on mobile for all portals */
 @media (max-width: 1023px) {
-  #sidebar, aside#sidebar {
+  #sidebar, aside#sidebar, #tutor-sidebar {
     transform: translateX(-100%) !important;
     position: fixed !important;
-    width: 256px !important;
+    width: 280px !important;
+    max-width: 85vw !important;
     height: 100% !important;
     top: 0 !important;
     left: 0 !important;
-    z-index: 50 !important;
+    z-index: 900 !important;
+    box-shadow: none;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    visibility: visible !important;
   }
-  #sidebar.open, aside#sidebar.open {
+  #sidebar.open, aside#sidebar.open, #tutor-sidebar.open {
     transform: translateX(0) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
   }
   .lg\:ml-64, [class*="lg:ml-64"] {
     margin-left: 0 !important;
   }
+  header.sticky, main > header {
+    z-index: 30 !important;
+  }
 }
 @media (min-width: 1024px) {
-  #sidebar, aside#sidebar {
+  #sidebar, aside#sidebar, #tutor-sidebar {
     transform: translateX(0) !important;
     visibility: visible !important;
+    z-index: 30;
   }
 }
 
@@ -357,4 +371,56 @@ aside img[src*="logo"] {
 /* Safe-area padding for iOS bottom bar */
 .pill-toolbar, [id*="mobile-booking-bar"] {
   padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0)) !important;
+}
+
+/* ================================================================
+   NOTIFICATION TOASTS & MODAL FOREGROUND STACKING
+   ================================================================ */
+#toast-container {
+  position: fixed !important;
+  top: 1.25rem !important;
+  right: 1.25rem !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: 999999 !important;
+  pointer-events: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+  max-width: 420px !important;
+  width: calc(100vw - 2.5rem) !important;
+}
+
+@media (max-width: 640px) {
+  #toast-container {
+    top: 1rem !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: calc(100vw - 2rem) !important;
+    max-width: 95vw !important;
+  }
+}
+
+#toast-container > * {
+  pointer-events: auto !important;
+  z-index: 1000000 !important;
+}
+
+.portal-toast {
+  position: relative;
+  z-index: 1000000 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Modals layer cleanly between drawer and toasts */
+[id$="-modal"], [id*="modal"] {
+  z-index: 9000 !important;
+}
+[id$="-modal"] .modal-overlay, [id*="modal"] .modal-overlay {
+  z-index: 9000 !important;
+}
+[id$="-modal"] > div:not(.modal-overlay), [id*="modal"] > div:not(.modal-overlay) {
+  position: relative;
+  z-index: 9001 !important;
 }

@@ -1155,7 +1155,7 @@ img.rounded-full {
 
 .glass-panel,
 .glass-nav,
-[class*="glass"]:not(.glass-panel-light):not(.glass-form) {
+[class*="glass"]:not(.glass-panel-light):not(.glass-form):not(.glass-card):not([class*="glass-card"]) {
   background: rgba(10, 10, 10, 0.92) !important;
   border: 1px solid #e5e7eb!important;
   backdrop-filter: none !important;

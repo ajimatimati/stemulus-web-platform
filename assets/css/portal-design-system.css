@@ -259,7 +259,8 @@ body {
 body:has([id*="modal"][style*="display: flex"]),
 body:has([id*="modal"][style*="display:flex"]),
 body:has(.modal-open) .pill-toolbar,
-body:has(.sidebar-overlay.show) .pill-toolbar {
+body:has(.sidebar-overlay.show) .pill-toolbar,
+body:has(.sidebar-overlay.active) .pill-toolbar {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
@@ -741,3 +742,78 @@ body:has(.sidebar-overlay.show) .pill-toolbar {
 .bg-admin-danger { background-color: #dc2626 !important; }
 .text-admin-danger { color: #dc2626 !important; }
 
+/* ═══════════════════════════════════════════════════════════════
+   TOAST NOTIFICATIONS & FOREGROUND POPUPS
+   ═══════════════════════════════════════════════════════════════ */
+#toast-container {
+    position: fixed !important;
+    top: 1.25rem !important;
+    right: 1.25rem !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: 999999 !important;
+    pointer-events: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    max-width: 420px !important;
+    width: calc(100vw - 2.5rem) !important;
+}
+
+@media (max-width: 640px) {
+    #toast-container {
+        top: 1rem !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: calc(100vw - 2rem) !important;
+        max-width: 95vw !important;
+    }
+}
+
+#toast-container > * {
+    pointer-events: auto !important;
+    z-index: 1000000 !important;
+}
+
+.portal-toast {
+    position: relative;
+    z-index: 1000000 !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PORTAL SIDEBAR DRAWER & HEADER STACKING
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 1023px) {
+    #sidebar, aside#sidebar, #tutor-sidebar {
+        z-index: 900 !important;
+    }
+    .sidebar-overlay, #sidebar-overlay {
+        z-index: 850 !important;
+    }
+    header.sticky, main > header, .portal-nav, nav.portal-nav {
+        z-index: 30 !important;
+    }
+}
+
+[id$="-modal"], [id*="modal"] {
+    z-index: 9000 !important;
+}
+[id$="-modal"] .modal-overlay, [id*="modal"] .modal-overlay {
+    z-index: 9000 !important;
+}
+[id$="-modal"] > div:not(.modal-overlay), [id*="modal"] > div:not(.modal-overlay) {
+    position: relative;
+    z-index: 9001 !important;
+}
+.glass-card,
+div.glass-card,
+[class*="glass-card"] {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+    color: #1e293b !important;
+}
