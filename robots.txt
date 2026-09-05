@@ -13,6 +13,7 @@ Disallow: /tutor-evaluation.html
 Disallow: /tutor-monthly-report.html
 Disallow: /tutor-attendance.html
 Disallow: /tutor-attendance-create.html
+Disallow: /tutor-students.html
 Disallow: /issue-certificate.html
 Disallow: /referral-dashboard.html
 Disallow: /tutor-assessment-preview.html
