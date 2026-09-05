@@ -190,24 +190,24 @@
   <div id="sidebar-overlay"></div>
   <!-- Parent Sidebar -->
   <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 flex flex-col z-50" style="background:#0f1117;border-right:1px solid rgba(255,255,255,0.07);border-radius:0 24px 24px 0;">
-    <div class="p-6 flex items-center gap-3" style="border-bottom:1px solid rgba(255,255,255,0.07);">
-      <img src="favicon.png" width="36" height="36" style="border-radius:10px;object-fit:contain;" alt="STEMulus">
-      <div>
-        <span class="font-nunito font-bold text-lg" style="color:#ffffff;">STEMulus</span>
-        <p class="text-xs" style="color:rgba(255,255,255,0.45);">Parent Portal</p>
+    <div class="px-5 py-6 flex items-center gap-3" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+      <img src="favicon.png" width="36" height="36" style="border-radius:10px;object-fit:contain;flex-shrink:0;" alt="STEMulus">
+      <div class="min-w-0">
+        <span class="font-nunito font-bold text-lg whitespace-nowrap block" style="color:#ffffff;line-height:1.2;">STEMulus</span>
+        <p class="text-xs font-medium" style="color:rgba(255,255,255,0.80);letter-spacing:0.02em;">Parent Portal</p>
       </div>
     </div>
     <nav class="flex-1 p-4 space-y-1" style="overflow-y:auto;">
-      <a href="parent-dashboard.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+      <a href="parent-dashboard.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
         <i data-lucide="home" class="w-5 h-5"></i> Home
       </a>
       <a href="parent-progress.html" class="flex items-center gap-3 px-4 py-3 font-semibold" style="border-radius:16px;background:rgba(244,96,12,0.18);color:#f4600c;">
         <i data-lucide="bar-chart-2" class="w-5 h-5"></i> My Child's Progress
       </a>
-      <a href="book-class.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+      <a href="book-class.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
         <i data-lucide="calendar-plus" class="w-5 h-5"></i> Book a Class
       </a>
-      <a href="contact.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all" style="border-radius:16px;color:rgba(255,255,255,0.65);">
+      <a href="contact.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
         <i data-lucide="message-circle" class="w-5 h-5"></i> Contact Us
       </a>
     </nav>
@@ -219,6 +219,9 @@
           <p class="text-xs truncate" style="color:rgba(255,255,255,0.75);">Parent</p>
         </div>
       </div>
+      <button id="sidebar-logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=parent';" class="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors" style="border:none;background:rgba(255,255,255,0.05);cursor:pointer;">
+        <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+      </button>
     </div>
   </aside>
 
@@ -254,7 +257,6 @@
 
   <!-- Hero Band -->
   <div class="hero-band" style="background: linear-gradient(135deg, #6366F1, #A78BFA);" data-animate="enter">
-    <img src="images/portal/standalone/trophy-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift" style="position:absolute; top:10%; left:6%;" loading="lazy">
     <img src="images/portal/standalone/puzzle-piece-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-orbit motion-delay-2" style="position:absolute; bottom:15%; left:18%;" loading="lazy">
     <img src="images/portal/standalone/compass-3d.png" alt="" class="float-accent float-accent--sm float-accent--soft animate-drift-reverse motion-delay-4" style="position:absolute; top:22%; right:38%;" loading="lazy">
     <div class="accent-sphere--pink accent-sphere animate-drift-reverse motion-delay-3" style="bottom:20%; right:30%;"></div>

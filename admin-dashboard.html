@@ -46,10 +46,12 @@
  
  /* Glassmorphism */
  .glass-card {
- background: rgba(30,41,59,0.8);
- backdrop-filter: blur(12px);
- border:1px solid rgba(255,255,255,0.1);
- }
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+  color: #1e293b !important;
+}
  
  /* Sidebar Active State */
  .nav-link.active {
@@ -111,9 +113,12 @@
     color: #1f2937;
   }
   .glass-card, .stat-card {
-  background-color: #ffffff!important;
-  color: #1f2937!important;
-  border-color: #e5e7eb!important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #e2e8f0 !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
 }
   input, select, textarea {
     background-color: #ffffff !important;
@@ -227,7 +232,7 @@
   <div id="sidebar-overlay" class="sidebar-overlay lg:hidden"></div>
   <!-- ===================== LOGIN SCREEN ===================== -->
  <div id="login-screen" class="login-bg min-h-screen flex items-center justify-center p-6">
- <div class="glass-card rounded-none p-8 w-full max-w-md animate-fadeIn">
+ <div class="glass-card rounded-2xl p-8 w-full max-w-md animate-fadeIn">
  <div class="text-center mb-8">
   <img src="favicon.png" alt="STEMulus" class="h-12 mx-auto mb-4">
  <h1 class="text-2xl font-nunito font-bold text-slate-800">Admin Portal</h1>
@@ -238,9 +243,9 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Email Address</label>
  <div class="relative">
- <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/55"></i>
+ <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
  <input type="email" id="login-email" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-3 pl-11 pr-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-3 pl-11 pr-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="admin@stemuluskidstech.com">
  </div>
  </div>
@@ -248,9 +253,9 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Password</label>
  <div class="relative">
- <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/55"></i>
+ <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
  <div class="relative"><input type="password" id="login-password" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-3 pl-11 pr-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-3 pl-11 pr-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="••••••••"><button type="button" onclick="var i=document.getElementById('login-password');i.type=i.type==='password'?'text':'password';this.querySelector('svg').classList.toggle('hidden')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 font-semibold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button></div>
  </div>
  </div>
@@ -264,7 +269,7 @@
  </button>
  </form>
  
- <p class="text-center text-white/55 text-xs mt-6">Protected area. Unauthorized access is prohibited.</p>
+ <p class="text-center text-slate-200 text-xs mt-6 font-medium">Protected area. Unauthorized access is prohibited.</p>
  </div>
  </div>
 
@@ -273,12 +278,12 @@
  <!-- Sidebar -->
  <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 z-50 flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-300" style="background:#0f1117;border-right:1px solid rgba(255,255,255,0.07);border-radius:0 24px 24px 0;">
  <!-- Logo -->
- <div class="p-6" style="border-bottom:1px solid rgba(255,255,255,0.07);">
- <div class="flex items-center gap-3">
- <img src="favicon.png" width="36" height="36" style="border-radius:10px;object-fit:contain;" alt="STEMulus">
- <div>
- <h2 class="font-nunito font-bold" style="color:#ffffff;">STEMulus</h2>
- <p class="text-xs" style="color:rgba(255,255,255,0.85);">Admin Portal</p>
+ <div class="px-5 py-6" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+<div class="flex items-center gap-3">
+<img src="favicon.png" width="36" height="36" style="border-radius:10px;object-fit:contain;flex-shrink:0;" alt="STEMulus">
+<div class="min-w-0">
+<h2 class="font-nunito font-bold text-lg whitespace-nowrap" style="color:#ffffff;line-height:1.2;">STEMulus</h2>
+<p class="text-xs font-medium" style="color:rgba(255,255,255,0.80);letter-spacing:0.02em;">Admin Portal</p>
  </div>
  </div>
  </div>
@@ -458,16 +463,16 @@
  <div class="flex items-center gap-4">
  <!-- Search -->
  <div class="relative">
- <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/55"></i>
+ <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
  <input type="text" id="global-search" placeholder="Search students..."
- class="bg-white border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent w-64 transition-colors">
+ class="bg-white border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent w-64 transition-colors">
  </div>
  <!-- Quick Actions -->
  <button id="open-quick-onboard-btn" onclick="AdminEngine.openQuickOnboardModal()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-3.5 py-2 rounded-lg transition-all flex items-center gap-2 text-sm shadow-sm">
  <i data-lucide="zap" class="w-4 h-4"></i>
  <span>Quick Onboard</span>
  </button>
- <button id="quick-add-student" class="bg-admin-accent hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
+ <button id="quick-add-student" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl shadow-sm transition-all flex items-center gap-2 text-sm">
  <i data-lucide="plus" class="w-4 h-4"></i>
  <span>Add Student</span>
  </button>
@@ -482,14 +487,13 @@
  <section id="section-dashboard" class="admin-section active animate-fadeIn">
  <!-- Hero Band -->
  <div class="hero-band rounded-2xl mb-8" style="background: linear-gradient(135deg, #1A2332, #4B49AC);">
-   <img src="images/portal/standalone/trophy-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift" style="position:absolute; top:10%; left:6%;" loading="lazy">
    <div class="hero-band-content">
      <h1 style="color:white!important;">Admin Command Center</h1>
      <p>Manage students, schedules, certificates, and communications</p>
      <div class="kpi-pills">
        <span class="kpi-pill"><i data-lucide="users" style="width:14px;height:14px;"></i> <span id="kpi-admin-students">0</span> Students</span>
        <span class="kpi-pill"><i data-lucide="calendar" style="width:14px;height:14px;"></i> <span id="kpi-admin-classes">0</span> Classes</span>
-       <span class="kpi-pill"><i data-lucide="mail" style="width:14px;height:14px;"></i> <span id="kpi-admin-emails">0</span> Pending</span>
+       <span class="kpi-pill"><i data-lucide="mail" style="width:14px;height:14px;"></i> <span id="kpi-admin-emails">0</span> Pending Enrollments</span>
      </div>
    </div>
    <img src="images/portal/standalone/admin-shield-3d.png" alt="Admin" class="hero-3d-object animate-float-band" style="width:200px;height:200px;" loading="lazy">
@@ -497,35 +501,35 @@
 
  <!-- Stats Cards -->
  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
- <div class="glass-card rounded-none p-6">
+ <div class="glass-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-4">
- <div class="w-12 h-12 rounded-lg bg-admin-accent/20 flex items-center justify-center">
- <i data-lucide="users" class="w-6 h-6 text-admin-accent"></i>
- </div>
- <span class="text-admin-success text-sm font-medium flex items-center gap-1">
- <i data-lucide="trending-up" class="w-4 h-4"></i> +12%
- </span>
+ <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+<i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
+</div>
+<span class="text-emerald-600 text-sm font-semibold flex items-center gap-1 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
+<i data-lucide="trending-up" class="w-4 h-4"></i> +12%
+</span>
  </div>
  <h3 class="text-3xl font-bold text-slate-800" id="stat-total-students">0</h3>
  <p class="text-slate-500 text-sm">Total Students</p>
  </div>
  
- <div class="glass-card rounded-none p-6">
+ <div class="glass-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-4">
- <div class="w-12 h-12 rounded-lg bg-admin-success/20 flex items-center justify-center">
- <i data-lucide="calendar-check" class="w-6 h-6 text-admin-success"></i>
- </div>
- <span class="pulse-dot w-3 h-3 bg-admin-success rounded-full"></span>
+ <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
+<i data-lucide="calendar-check" class="w-6 h-6 text-emerald-600"></i>
+</div>
+<span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span>
  </div>
  <h3 class="text-3xl font-bold text-slate-800" id="stat-upcoming-classes">0</h3>
  <p class="text-slate-500 text-sm">Upcoming Classes</p>
  </div>
  
- <div class="glass-card rounded-none p-6">
+ <div class="glass-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-4">
- <div class="w-12 h-12 rounded-lg bg-admin-warning/20 flex items-center justify-center">
- <i data-lucide="mail" class="w-6 h-6 text-admin-warning"></i>
- </div>
+ <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center">
+<i data-lucide="mail" class="w-6 h-6 text-amber-600"></i>
+</div>
  </div>
  <h3 class="text-3xl font-bold text-slate-800" id="stat-pending-emails">0</h3>
  <p class="text-slate-500 text-sm">Pending Enrollments</p>
@@ -533,9 +537,9 @@
  
  <div class="glass-card rounded-3xl p-6 border border-slate-100 shadow-sm bg-white">
  <div class="flex items-center justify-between mb-4">
- <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
- <i data-lucide="book-open" class="w-6 h-6 text-blue-600"></i>
- </div>
+ <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center">
+<i data-lucide="book-open" class="w-6 h-6 text-indigo-600"></i>
+</div>
  </div>
  <h3 class="text-3xl font-bold text-slate-800" id="stat-active-courses">0</h3>
  <p class="text-slate-500 text-sm">Active Courses</p>
@@ -544,7 +548,7 @@
 
  <!-- This Week Summary -->
  <div class="mt-6">
-  <div class="glass-card rounded-none p-5">
+  <div class="glass-card rounded-2xl p-5">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-base font-nunito font-bold text-slate-800">This Week</h3>
       <span id="week-range-label" class="text-xs text-slate-600 font-semibold"></span>
@@ -572,7 +576,7 @@
 
  <!-- Today's Classes Widget -->
  <div class="mt-6">
-  <div class="glass-card rounded-none p-5">
+  <div class="glass-card rounded-2xl p-5">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-base font-nunito font-bold text-slate-800">Today's Classes</h3>
       <span id="today-classes-date" class="text-xs text-slate-600 font-semibold"></span>
@@ -585,7 +589,7 @@
 
  <!-- Notice Board Widget -->
  <div class="mt-4">
-  <div class="glass-card rounded-none p-5">
+  <div class="glass-card rounded-2xl p-5">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-base font-nunito font-bold text-slate-800">Notice Board</h3>
       <button id="create-notice-btn" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 px-3 py-1.5 border border-indigo-200 rounded-lg transition-colors">+ Create</button>
@@ -608,7 +612,7 @@
  <!-- Recent Activity & Quick Actions -->
  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
  <!-- Recent Students -->
- <div class="lg:col-span-2 glass-card rounded-none p-6">
+ <div class="lg:col-span-2 glass-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-lg font-semibold text-slate-800">Recent Students</h3>
  <a href="#" data-section="students" class="nav-link text-admin-accent text-sm hover:underline">View All</a>
@@ -619,7 +623,7 @@
  </div>
 
  <!-- Today's Schedule -->
- <div class="glass-card rounded-none p-6">
+ <div class="glass-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-lg font-semibold text-slate-800">Today's Classes</h3>
  <a href="#" data-section="schedules" class="nav-link text-admin-accent text-sm hover:underline">Full Calendar</a>
@@ -631,7 +635,7 @@
  </div>
 
  <!-- Manual Onboarding Panel -->
- <div class="glass-card rounded-none p-6">
+ <div class="glass-card rounded-2xl p-6">
  <div class="flex items-center gap-3 mb-5">
  <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
  <i data-lucide="user-plus" class="w-5 h-5 text-emerald-600"></i>
@@ -697,12 +701,12 @@
  </div>
  
  <!-- Filters -->
- <div class="glass-card rounded-none p-4 mb-6 flex flex-wrap items-center gap-4">
+ <div class="glass-card rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-4">
  <div class="flex-1 min-w-[200px]">
  <div class="relative">
- <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/55"></i>
+ <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
  <input type="text" id="student-search" placeholder="Search by name or email..."
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors">
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors">
  </div>
  </div>
  <select id="filter-course" class="bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-sm text-gray-800 focus:outline-none focus:border-admin-accent">
@@ -721,7 +725,7 @@
  </div>
  
  <!-- Students Table -->
- <div class="glass-card rounded-none overflow-hidden">
+ <div class="glass-card rounded-2xl overflow-hidden">
  <div class="overflow-x-auto max-h-[60vh] overflow-y-auto">
  <table class="data-table w-full text-sm">
  <thead>
@@ -761,7 +765,7 @@
  </div>
  
  <!-- Calendar Placeholder -->
- <div class="glass-card rounded-none p-6">
+ <div class="glass-card rounded-2xl p-6">
  <div id="schedule-calendar" class="min-h-[500px]">
  <p class="text-slate-500 font-medium text-center py-20">Loading calendar...</p>
  </div>
@@ -777,7 +781,7 @@
  </div>
  </div>
  
- <div class="glass-card rounded-none p-6 overflow-x-auto">
+ <div class="glass-card rounded-2xl p-6 overflow-x-auto">
  <table class="w-full text-left border-collapse data-table">
  <thead>
  <tr>
@@ -829,7 +833,7 @@
  
  <!-- Projects Grid -->
  <div id="admin-projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
- <div class="col-span-full glass-card rounded-none p-12 text-center">
+ <div class="col-span-full glass-card rounded-2xl p-12 text-center">
  <i data-lucide="folder-kanban" class="w-12 h-12 mx-auto mb-4 text-slate-500"></i>
  <p class="text-slate-500">Loading projects...</p>
  </div>
@@ -847,12 +851,12 @@
  
  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
  <!-- Issue Certificate Form -->
- <div class="glass-card rounded-none p-6">
+ <div class="glass-card rounded-2xl p-6">
  <h3 class="text-lg font-semibold text-slate-800 mb-4">Issue New Certificate</h3>
  <form id="issue-cert-form" class="space-y-4">
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Student Name *</label>
- <input type="text" id="cert-student-name" required class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent" placeholder="e.g. Tunde Bakare">
+ <input type="text" id="cert-student-name" required class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent" placeholder="e.g. Tunde Bakare">
  </div>
  
  <div>
@@ -915,12 +919,12 @@
  </div>
  
  <!-- Registry List Table -->
- <div class="lg:col-span-2 glass-card rounded-none p-6">
+ <div class="lg:col-span-2 glass-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-4">
  <h3 class="text-lg font-semibold text-slate-800">Registry Ledger</h3>
  <div class="relative">
- <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/55"></i>
- <input type="text" id="cert-search" placeholder="Search ledger..." class="bg-gray-50 border border-admin-border rounded-lg py-1.5 pl-9 pr-4 text-xs text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent w-48 transition-colors">
+ <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+ <input type="text" id="cert-search" placeholder="Search ledger..." class="bg-gray-50 border border-admin-border rounded-lg py-1.5 pl-9 pr-4 text-xs text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent w-48 transition-colors">
  </div>
  </div>
  
@@ -996,12 +1000,12 @@
  
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Subject</label>
- <input type="text" id="email-subject" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent" placeholder="Email subject...">
+ <input type="text" id="email-subject" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent" placeholder="Email subject...">
  </div>
  
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Message</label>
- <textarea id="email-body" rows="6" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent resize-none" placeholder="Write your message here..."></textarea>
+ <textarea id="email-body" rows="6" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent resize-none" placeholder="Write your message here..."></textarea>
  </div>
  
  <div class="flex items-center gap-4">
@@ -1042,12 +1046,12 @@
  </div>
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Notification Title *</label>
- <input type="text" id="notification-title" required class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent" placeholder="e.g. Schedule Maintenance, Holiday notice...">
+ <input type="text" id="notification-title" required class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent" placeholder="e.g. Schedule Maintenance, Holiday notice...">
  </div>
  </div>
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Message *</label>
- <textarea id="notification-message" required rows="4" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent resize-none" placeholder="Write the portal notification message here..."></textarea>
+ <textarea id="notification-message" required rows="4" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent resize-none" placeholder="Write the portal notification message here..."></textarea>
  </div>
  <div class="flex items-center gap-3 pt-2">
  <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-lg transition-colors flex items-center gap-2">
@@ -1158,7 +1162,7 @@
   </div>
 
   <!-- Change Password -->
-  <div class="glass-card rounded-none p-6 mb-6">
+  <div class="glass-card rounded-2xl p-6 mb-6">
     <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Change Password</h3>
     <form id="change-password-form" class="space-y-4 max-w-md">
       <div>
@@ -1185,7 +1189,7 @@
   </div>
 
   <!-- Profile Information -->
-  <div class="glass-card rounded-none p-6 mb-6">
+  <div class="glass-card rounded-2xl p-6 mb-6">
     <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Profile Information</h3>
     <form id="update-profile-form" class="space-y-4 max-w-md">
       <div>
@@ -1202,7 +1206,7 @@
   </div>
 
   <!-- Notification Preferences -->
-  <div class="glass-card rounded-none p-6 mb-6">
+  <div class="glass-card rounded-2xl p-6 mb-6">
     <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Notification Preferences</h3>
     <div class="space-y-3 max-w-md">
       <label class="flex items-center gap-3 cursor-pointer">
@@ -1222,7 +1226,7 @@
   </div>
 
   <!-- Account Information -->
-  <div class="glass-card rounded-none p-6">
+  <div class="glass-card rounded-2xl p-6">
     <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Account Information</h3>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-lg">
       <div><p class="text-xs text-slate-600 font-bold uppercase tracking-wide">Role</p><p id="acct-role" class="font-semibold text-gray-800 mt-0.5">Admin</p></div>
@@ -1241,7 +1245,7 @@
  </div>
  </div>
  
- <div class="glass-card rounded-none overflow-hidden">
+ <div class="glass-card rounded-2xl overflow-hidden">
  <div class="overflow-x-auto max-h-[60vh] overflow-y-auto">
  <table class="data-table w-full text-sm">
  <thead>
@@ -1304,7 +1308,7 @@
   </div>
 
   <div id="monthly-reports-list" class="space-y-4">
-    <div class="glass-card rounded-none p-12 text-center text-slate-500 font-medium">
+    <div class="glass-card rounded-2xl p-12 text-center text-slate-500 font-medium">
       <svg class="w-12 h-12 mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
       <p class="font-medium">No monthly reports submitted yet.</p>
       <p class="text-sm mt-1">Reports submitted by tutors will appear here.</p>
@@ -1520,7 +1524,7 @@
  <div id="tutor-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('tutor-modal')"></div>
  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[90vh] overflow-y-auto">
- <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
+ <div class="glass-card rounded-2xl p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="tutor-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Tutor</h3>
  <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('tutor-modal')">
@@ -1534,7 +1538,7 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Full Name *</label>
  <input type="text" id="tutor-name" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="Tutor's full name">
  </div>
 
@@ -1542,13 +1546,13 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Email *</label>
  <input type="email" id="tutor-email" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="tutor@stemuluskidstech.com">
  </div>
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Phone</label>
  <input type="tel" id="tutor-phone"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="+234...">
  </div>
  </div>
@@ -1556,14 +1560,14 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Subjects / Specialisation</label>
  <input type="text" id="tutor-subjects"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="e.g. Python, Robotics, Web Design">
  </div>
 
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Login Password *</label>
  <input type="password" id="tutor-password" minlength="8"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="Min. 8 characters">
  <p class="text-xs text-slate-500 mt-1">Share this with the tutor so they can log in.</p>
  </div>
@@ -1585,7 +1589,7 @@
  <div id="parent-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('parent-modal')"></div>
  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[90vh] overflow-y-auto">
- <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
+ <div class="glass-card rounded-2xl p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-xl font-nunito font-bold text-slate-800">Add Parent Account</h3>
  <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('parent-modal')">
@@ -1597,28 +1601,28 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Full Name *</label>
  <input type="text" id="new-parent-name" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="Parent's full name">
  </div>
 
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Email *</label>
  <input type="email" id="new-parent-email" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="parent@example.com">
  </div>
 
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Phone</label>
  <input type="tel" id="new-parent-phone"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="+234...">
  </div>
 
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Login Password *</label>
  <input type="password" id="new-parent-password" required minlength="6"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="Min. 6 characters">
  <p class="text-xs text-slate-500 mt-1">Share this with the parent so they can access their portal.</p>
  </div>
@@ -1640,7 +1644,7 @@
  <div id="student-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('student-modal')"></div>
  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
- <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
+ <div class="glass-card rounded-2xl p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="student-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Student</h3>
  <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('student-modal')">
@@ -1655,13 +1659,13 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Student Name *</label>
  <input type="text" id="student-name" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="Full name">
  </div>
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Age *</label>
  <input type="number" id="student-age" required min="5" max="18"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="e.g.12">
  </div>
  </div>
@@ -1670,13 +1674,13 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Student Email</label>
  <input type="email" id="student-email"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="student@stemuluskidstech.com">
  </div>
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Phone</label>
  <input type="tel" id="student-phone"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="+234...">
  </div>
  </div>
@@ -1687,20 +1691,20 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Parent Name *</label>
  <input type="text" id="parent-name" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="Parent's full name">
  </div>
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Parent Email *</label>
  <input type="email" id="parent-email" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="parent@stemuluskidstech.com">
  </div>
  </div>
  <div class="mt-4">
  <label class="block text-sm font-medium text-gray-500 mb-2">Parent Phone</label>
  <input type="tel" id="parent-phone"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="+234...">
  </div>
  </div>
@@ -1742,13 +1746,13 @@
  <div style="margin-bottom:1rem;">
    <label style="display:block;font-size:0.82rem;font-weight:600;color:#374151;margin-bottom:4px;" for="student-classroom-link">Google Classroom Link <span style="font-size:0.75rem;color:#9ca3af;font-weight:400;">(optional — share with parent on enrolment)</span></label>
    <input type="url" id="student-classroom-link" name="classroomLink" placeholder="https://classroom.google.com/c/..."
-     class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors">
+     class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors">
  </div>
 
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Notes</label>
  <textarea id="student-notes" rows="3"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors resize-none"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors resize-none"
  placeholder="Any additional notes about the student..."></textarea>
  </div>
  
@@ -1769,7 +1773,7 @@
  <div id="schedule-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('schedule-modal')"></div>
  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl max-h-[90vh] overflow-y-auto">
- <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
+ <div class="glass-card rounded-2xl p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="schedule-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Session</h3>
  <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('schedule-modal')">
@@ -1836,7 +1840,7 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Zoom/Meeting Link</label>
  <input type="url" id="schedule-link"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="https://zoom.us/j/...">
  </div>
  
@@ -1857,7 +1861,7 @@
  <div id="project-modal" class="fixed inset-0 z-50 hidden">
  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('project-modal')"></div>
  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
- <div class="glass-card rounded-none p-8 m-4 animate-fadeIn">
+ <div class="glass-card rounded-2xl p-8 m-4 animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <h3 id="project-modal-title" class="text-xl font-nunito font-bold text-slate-800">Add New Project</h3>
  <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('project-modal')">
@@ -1872,7 +1876,7 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Project Title *</label>
  <input type="text" id="project-title" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="e.g. Space Raiders">
  </div>
  <div>
@@ -1895,13 +1899,13 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Student Name *</label>
  <input type="text" id="project-student-name" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="e.g. Tunde">
  </div>
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Student Age *</label>
  <input type="number" id="project-student-age" required min="5" max="18"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="e.g. 11">
  </div>
  </div>
@@ -1909,7 +1913,7 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Milestone Description *</label>
  <textarea id="project-description" required rows="3"
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors resize-none"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors resize-none"
  placeholder="Daniel explains his conditional branch checks, variable tracking, and loops..."></textarea>
  </div>
  
@@ -1917,13 +1921,13 @@
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Video File Name *</label>
  <input type="text" id="project-image" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="e.g. Robot.mp4">
  </div>
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Badge Overlay Text *</label>
  <input type="text" id="project-tags" required
- class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-gray-400/40 focus:outline-none focus:border-admin-accent transition-colors"
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="e.g. Daniel's SpaceX Flight Simulator">
  </div>
  </div>

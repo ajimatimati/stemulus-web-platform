@@ -726,3 +726,18 @@ body:has(.sidebar-overlay.show) .pill-toolbar {
     .kpi-grid { grid-template-columns: 1fr; }
     .hero-band .hero-3d-object { width: 100px; height: 100px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   ADMIN PORTAL UTILITY TOKENS & FALLBACKS
+   ═══════════════════════════════════════════════════════════════ */
+.bg-admin-accent { background-color: #2563eb !important; }
+.text-admin-accent { color: #2563eb !important; }
+.border-admin-accent { border-color: #2563eb !important; }
+.border-admin-border { border-color: #e2e8f0 !important; }
+.bg-admin-success { background-color: #16a34a !important; }
+.text-admin-success { color: #16a34a !important; }
+.bg-admin-warning { background-color: #d97706 !important; }
+.text-admin-warning { color: #d97706 !important; }
+.bg-admin-danger { background-color: #dc2626 !important; }
+.text-admin-danger { color: #dc2626 !important; }
+
