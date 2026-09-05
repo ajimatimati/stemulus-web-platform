@@ -175,6 +175,11 @@
     Cache-Control = "no-store"
 
 [[headers]]
+  for = "/tutor-students.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
   for = "/admin-login.html"
   [headers.values]
     Cache-Control = "no-store"
