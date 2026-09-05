@@ -1499,9 +1499,9 @@ section[class*="min-h-\[70vh\]"] {
 }
 
 /* Light greys that were fine on white — now need lifting on dark */
-.text-gray-300,
-.text-slate-300,
-.text-gray-200 {
+body:not(.dashboard-page) .text-gray-300,
+body:not(.dashboard-page) .text-slate-300,
+body:not(.dashboard-page) .text-gray-200 {
   color: rgba(10, 10, 10, 0.8) !important;
 }
 
@@ -1511,10 +1511,10 @@ section[class*="min-h-\[70vh\]"] {
 
 /* Use a container query approach: any text-white inside bg sections
  that ended up light gets forced to ink. */
-.bg-gray-50 .text-white,
-.bg-slate-50 .text-white,
-[style*="background:#faf9f7"] .text-white,
-[style*="background:#f5f0e8"] .text-white,
+body:not(.dashboard-page) .bg-gray-50 .text-white:not(button):not(button *):not(a.btn):not(a.btn *):not(.btn):not(.btn *),
+body:not(.dashboard-page) .bg-slate-50 .text-white:not(button):not(button *):not(a.btn):not(a.btn *):not(.btn):not(.btn *),
+[style*="background:#faf9f7"] .text-white:not(button):not(button *):not(a.btn):not(a.btn *):not(.btn):not(.btn *),
+[style*="background:#f5f0e8"] .text-white:not(button):not(button *):not(a.btn):not(a.btn *):not(.btn):not(.btn *),
 .difference-section .text-white,
 .skill-statement .text-white {
   color: var(--ink) !important;
@@ -1542,7 +1542,7 @@ section[class*="min-h-\[70vh\]"] {
 .bg-slate-50\/80 .text-gray-700,
 .bg-slate-50\/80 .text-slate-700,
 .bg-slate-50\/80 .text-slate-800,
-.bg-slate-50\/80 .text-white, /* fixes white-on-light overview labels */
+body:not(.dashboard-page) .bg-slate-50\/80 .text-white, /* fixes white-on-light overview labels */
 .bg-gray-50 .text-gray-900,
 .bg-gray-50 .text-gray-800,
 .bg-gray-50 .text-gray-700,
@@ -2365,40 +2365,40 @@ div[style*="background: #F3F4F6"] {
 }
 
 /* Force all child text elements of overridden dark sections to be readable dark slate */
-[class*="bg-slate-9"] h1, [class*="bg-slate-9"] h2, [class*="bg-slate-9"] h3, [class*="bg-slate-9"] h4, [class*="bg-slate-9"] h5, [class*="bg-slate-9"] h6,
-[class*="bg-cosmic-blue"] h1, [class*="bg-cosmic-blue"] h2, [class*="bg-cosmic-blue"] h3, [class*="bg-cosmic-blue"] h4, [class*="bg-cosmic-blue"] h5, [class*="bg-cosmic-blue"] h6,
-.section--dark h1, .section--dark h2, .section--dark h3, .section--dark h4, .section--dark h5, .section--dark h6,
-.showcase-directory h1, .showcase-directory h2, .showcase-directory h3, .showcase-directory h4,
-.timeline-section h1, .timeline-section h2, .timeline-section h3, .timeline-section h4,
-.cta-section h1, .cta-section h2, .cta-section h3, .cta-section h4,
-[class*="bg-slate-9"] p, [class*="bg-cosmic-blue"] p, .section--dark p, .showcase-directory p, .timeline-section p, .cta-section p,
-[class*="bg-slate-9"] span, [class*="bg-cosmic-blue"] span, .section--dark span, .showcase-directory span, .timeline-section span, .cta-section span,
-[class*="bg-slate-9"] li, [class*="bg-cosmic-blue"] li, .section--dark li, .showcase-directory li, .timeline-section li, .cta-section li,
-[class*="bg-slate-9"] a, [class*="bg-cosmic-blue"] a, .section--dark a, .showcase-directory a, .timeline-section a, .cta-section a,
-[class*="bg-slate-9"] div, [class*="bg-cosmic-blue"] div, .section--dark div, .showcase-directory div, .timeline-section div, .cta-section div,
-[class*="bg-slate-9"] i, [class*="bg-cosmic-blue"] i, .section--dark i, .showcase-directory i, .timeline-section i, .cta-section i {
+body:not(.dashboard-page) [class*="bg-slate-9"] h1, body:not(.dashboard-page) [class*="bg-slate-9"] h2, body:not(.dashboard-page) [class*="bg-slate-9"] h3, body:not(.dashboard-page) [class*="bg-slate-9"] h4, body:not(.dashboard-page) [class*="bg-slate-9"] h5, body:not(.dashboard-page) [class*="bg-slate-9"] h6,
+body:not(.dashboard-page) [class*="bg-cosmic-blue"] h1, body:not(.dashboard-page) [class*="bg-cosmic-blue"] h2, body:not(.dashboard-page) [class*="bg-cosmic-blue"] h3, body:not(.dashboard-page) [class*="bg-cosmic-blue"] h4, body:not(.dashboard-page) [class*="bg-cosmic-blue"] h5, body:not(.dashboard-page) [class*="bg-cosmic-blue"] h6,
+body:not(.dashboard-page) .section--dark h1, body:not(.dashboard-page) .section--dark h2, body:not(.dashboard-page) .section--dark h3, body:not(.dashboard-page) .section--dark h4, body:not(.dashboard-page) .section--dark h5, body:not(.dashboard-page) .section--dark h6,
+body:not(.dashboard-page) .showcase-directory h1, body:not(.dashboard-page) .showcase-directory h2, body:not(.dashboard-page) .showcase-directory h3, body:not(.dashboard-page) .showcase-directory h4,
+body:not(.dashboard-page) .timeline-section h1, body:not(.dashboard-page) .timeline-section h2, body:not(.dashboard-page) .timeline-section h3, body:not(.dashboard-page) .timeline-section h4,
+body:not(.dashboard-page) .cta-section h1, body:not(.dashboard-page) .cta-section h2, body:not(.dashboard-page) .cta-section h3, body:not(.dashboard-page) .cta-section h4,
+body:not(.dashboard-page) [class*="bg-slate-9"] p, body:not(.dashboard-page) [class*="bg-cosmic-blue"] p, body:not(.dashboard-page) .section--dark p, body:not(.dashboard-page) .showcase-directory p, body:not(.dashboard-page) .timeline-section p, body:not(.dashboard-page) .cta-section p,
+body:not(.dashboard-page) [class*="bg-slate-9"] span, body:not(.dashboard-page) [class*="bg-cosmic-blue"] span, body:not(.dashboard-page) .section--dark span, body:not(.dashboard-page) .showcase-directory span, body:not(.dashboard-page) .timeline-section span, body:not(.dashboard-page) .cta-section span,
+body:not(.dashboard-page) [class*="bg-slate-9"] li, body:not(.dashboard-page) [class*="bg-cosmic-blue"] li, body:not(.dashboard-page) .section--dark li, body:not(.dashboard-page) .showcase-directory li, body:not(.dashboard-page) .timeline-section li, body:not(.dashboard-page) .cta-section li,
+body:not(.dashboard-page) [class*="bg-slate-9"] a, body:not(.dashboard-page) [class*="bg-cosmic-blue"] a, body:not(.dashboard-page) .section--dark a, body:not(.dashboard-page) .showcase-directory a, body:not(.dashboard-page) .timeline-section a, body:not(.dashboard-page) .cta-section a,
+body:not(.dashboard-page) [class*="bg-slate-9"] div, body:not(.dashboard-page) [class*="bg-cosmic-blue"] div, body:not(.dashboard-page) .section--dark div, body:not(.dashboard-page) .showcase-directory div, body:not(.dashboard-page) .timeline-section div, body:not(.dashboard-page) .cta-section div,
+body:not(.dashboard-page) [class*="bg-slate-9"] i, body:not(.dashboard-page) [class*="bg-cosmic-blue"] i, body:not(.dashboard-page) .section--dark i, body:not(.dashboard-page) .showcase-directory i, body:not(.dashboard-page) .timeline-section i, body:not(.dashboard-page) .cta-section i {
   color: var(--slate, #1a2332) !important;
 }
 
 /* Scope text utility color overrides to light/overridden sections */
-[class*="bg-slate-9"] [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
-[class*="bg-slate-9"] [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
-[class*="bg-slate-9"] [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
-[class*="bg-cosmic-blue"] [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
-[class*="bg-cosmic-blue"] [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
-[class*="bg-cosmic-blue"] [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
-.section--dark [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
-.section--dark [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
-.section--dark [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
-.showcase-directory [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
-.showcase-directory [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
-.showcase-directory [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
-.timeline-section [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
-.timeline-section [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
-.timeline-section [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
-.cta-section [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
-.cta-section [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
-.cta-section [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid) {
+body:not(.dashboard-page) [class*="bg-slate-9"] [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
+body:not(.dashboard-page) [class*="bg-slate-9"] [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
+body:not(.dashboard-page) [class*="bg-slate-9"] [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
+body:not(.dashboard-page) [class*="bg-cosmic-blue"] [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
+body:not(.dashboard-page) [class*="bg-cosmic-blue"] [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
+body:not(.dashboard-page) [class*="bg-cosmic-blue"] [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
+body:not(.dashboard-page) .section--dark [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
+body:not(.dashboard-page) .section--dark [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
+body:not(.dashboard-page) .section--dark [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
+body:not(.dashboard-page) .showcase-directory [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
+body:not(.dashboard-page) .showcase-directory [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
+body:not(.dashboard-page) .showcase-directory [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
+body:not(.dashboard-page) .timeline-section [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
+body:not(.dashboard-page) .timeline-section [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
+body:not(.dashboard-page) .timeline-section [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
+body:not(.dashboard-page) .cta-section [class*="text-white"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid):not(.wa-float),
+body:not(.dashboard-page) .cta-section [class*="text-slate-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid),
+body:not(.dashboard-page) .cta-section [class*="text-gray-"]:not(.btn-pill-solid):not(button):not(a.btn-pill-solid) {
   color: var(--slate, #1a2332) !important;
 }
 
@@ -3838,31 +3838,31 @@ body:not(.borderless-homepage) .hero-parallax-scene {
   color: #1a2332!important; /* Premium dark slate headings */
 }
 
-.bg-slate-900 .text-white,
-.bg-slate-950 .text-white,
-.bg-gray-900 .text-white,
-.bg-indigo-900 .text-white,
-.bg-indigo-950 .text-white,
-.bg-indigo-50 .text-white,
-[class*="bg-slate-9"] .text-white,
-[class*="bg-gray-9"] .text-white,
-[class*="bg-indigo-9"] .text-white,
-.bg-slate-900 .text-gray-200,
-.bg-slate-950 .text-gray-200,
-.bg-gray-900 .text-gray-200,
-.bg-indigo-50 .text-gray-500,
-.bg-indigo-50 .text-slate-500 {
+body:not(.dashboard-page) .bg-slate-900 .text-white,
+body:not(.dashboard-page) .bg-slate-950 .text-white,
+body:not(.dashboard-page) .bg-gray-900 .text-white,
+body:not(.dashboard-page) .bg-indigo-900 .text-white,
+body:not(.dashboard-page) .bg-indigo-950 .text-white,
+body:not(.dashboard-page) .bg-indigo-50 .text-white,
+body:not(.dashboard-page) [class*="bg-slate-9"] .text-white,
+body:not(.dashboard-page) [class*="bg-gray-9"] .text-white,
+body:not(.dashboard-page) [class*="bg-indigo-9"] .text-white,
+body:not(.dashboard-page) .bg-slate-900 .text-gray-200,
+body:not(.dashboard-page) .bg-slate-950 .text-gray-200,
+body:not(.dashboard-page) .bg-gray-900 .text-gray-200,
+body:not(.dashboard-page) .bg-indigo-50 .text-gray-500,
+body:not(.dashboard-page) .bg-indigo-50 .text-slate-500 {
   color: #2d3748!important; /* Premium dark readable text */
 }
 
-.bg-slate-900 .text-white\/90,
-.bg-slate-950 .text-white\/90,
-.bg-slate-900 .text-white\/80,
-.bg-slate-950 .text-white\/80,
-.bg-slate-900 .text-white\/55,
-.bg-slate-950 .text-white\/55,
-.bg-slate-900 .text-white\/65,
-.bg-slate-950 .text-white\/65 {
+body:not(.dashboard-page) .bg-slate-900 .text-white\/90,
+body:not(.dashboard-page) .bg-slate-950 .text-white\/90,
+body:not(.dashboard-page) .bg-slate-900 .text-white\/80,
+body:not(.dashboard-page) .bg-slate-950 .text-white\/80,
+body:not(.dashboard-page) .bg-slate-900 .text-white\/55,
+body:not(.dashboard-page) .bg-slate-950 .text-white\/55,
+body:not(.dashboard-page) .bg-slate-900 .text-white\/65,
+body:not(.dashboard-page) .bg-slate-950 .text-white\/65 {
   color: #4a5568!important; /* Dark grey for secondary descriptors */
 }
 

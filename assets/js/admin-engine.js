@@ -512,7 +512,7 @@ function navigateToSection(sectionName) {
         switchRosterTab('parents');
     }
 
-    document.querySelectorAll('.nav-link').forEach(link => {
+    document.querySelectorAll('#sidebar .nav-link').forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('data-section') === sectionName) link.classList.add('active');
     });
@@ -1367,12 +1367,20 @@ function loadEmailQueue() {
   if (navBadge) { navBadge.textContent = queue.length; navBadge.classList.toggle('hidden', queue.length === 0); }
 
   if (!queue.length) {
-    queueList.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">No emails pending review.</p>';
+    queueList.innerHTML = '<p class="text-slate-600 text-sm text-center py-8">No emails pending review.</p>';
   } else {
+    var typeLabels = { 
+      welcome: 'Parent Welcome', 
+      'tutor-welcome': 'Tutor Welcome', 
+      'tutor_welcome': 'Tutor Welcome',
+      'student-enrolled': 'Student Enrolled',
+      'certificate-delivery': 'Certificate', 
+      'credentials-reset': 'Password Reset', 
+      custom: 'Custom Message' 
+    };
     queueList.innerHTML = queue.map(function(item) {
-      var typeLabels = { welcome: 'Parent Welcome', 'tutor-welcome': 'Tutor Welcome', 'certificate-delivery': 'Certificate', 'credentials-reset': 'Password Reset', custom: 'Custom Message' };
       var typeLabel = typeLabels[item.type] || item.type;
-      var typeColor = item.type === 'welcome' || item.type === 'tutor-welcome' ? 'bg-blue-100 text-blue-700' : item.type === 'certificate-delivery' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700';
+      var typeColor = (item.type === 'welcome' || item.type === 'tutor-welcome' || item.type === 'tutor_welcome' || item.type === 'student-enrolled') ? 'bg-blue-100 text-blue-700' : item.type === 'certificate-delivery' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700';
       return '<div class="bg-white border border-gray-200 rounded-xl p-4 flex items-start justify-between gap-4 shadow-sm">' +
         '<div class="flex-1 min-w-0">' +
           '<div class="flex items-center gap-2 mb-1">' +
@@ -1384,9 +1392,9 @@ function loadEmailQueue() {
           '<p class="text-xs text-gray-400 mt-0.5">Triggered by: ' + (item.triggeredBy || 'manual') + '</p>' +
         '</div>' +
         '<div class="flex items-center gap-2 shrink-0">' +
-          '<button onclick="previewQueuedEmail(\'' + item.id + '\')" class="text-xs font-medium text-blue-600 hover:text-blue-800 px-3 py-1.5 border border-blue-200 rounded-lg transition-colors">Preview</button>' +
-          '<button onclick="sendQueuedEmail(\'' + item.id + '\')" class="text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-lg transition-colors">Send Now</button>' +
-          '<button onclick="cancelQueuedEmail(\'' + item.id + '\')" class="text-xs font-medium text-red-500 hover:text-red-700 px-3 py-1.5 border border-red-200 rounded-lg transition-colors">Cancel</button>' +
+          '<button onclick="previewQueuedEmail(\'' + item.id + '\')" class="text-xs font-semibold text-blue-700 hover:text-blue-900 px-3 py-1.5 border border-blue-200 rounded-lg transition-colors">Preview</button>' +
+          '<button onclick="sendQueuedEmail(\'' + item.id + '\')" class="text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 px-3 py-1.5 rounded-lg transition-colors" style="background-color: #047857 !important;">Send Now</button>' +
+          '<button onclick="cancelQueuedEmail(\'' + item.id + '\')" class="text-xs font-semibold text-red-700 hover:text-red-900 px-3 py-1.5 border border-red-200 rounded-lg transition-colors">Cancel</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -1394,14 +1402,14 @@ function loadEmailQueue() {
 
   if (historyList) {
     if (!history.length) {
-      historyList.innerHTML = '<p class="text-gray-400 text-sm">No emails sent yet.</p>';
+      historyList.innerHTML = '<p class="text-slate-600 text-sm">No emails sent yet.</p>';
     } else {
       historyList.innerHTML = history.slice(-20).reverse().map(function(item) {
-        var statusClass = item.status === 'sent' ? 'text-emerald-600' : 'text-gray-400';
+        var statusClass = item.status === 'sent' ? 'text-emerald-800 font-bold' : 'text-slate-600';
         return '<div class="flex items-center gap-3 py-2 border-b border-gray-100 last:border-0">' +
           '<span class="text-xs font-bold ' + statusClass + ' w-16 shrink-0">' + item.status.toUpperCase() + '</span>' +
-          '<span class="text-sm text-gray-600 flex-1 truncate">' + (item.recipientName||item.to) + ' — ' + (item.editedSubject||item.subject) + '</span>' +
-          '<span class="text-xs text-gray-400 shrink-0">' + (item.sentAt ? new Date(item.sentAt).toLocaleDateString('en-GB') : '') + '</span>' +
+          '<span class="text-sm text-gray-700 flex-1 truncate">' + (item.recipientName||item.to) + ' — ' + (item.editedSubject||item.subject) + '</span>' +
+          '<span class="text-xs text-slate-500 shrink-0">' + (item.sentAt ? new Date(item.sentAt).toLocaleDateString('en-GB') : '') + '</span>' +
         '</div>';
       }).join('');
     }
@@ -1421,6 +1429,8 @@ window.sendQueuedEmail = async function(id) {
     var payload;
     if (item.type === 'welcome') {
       payload = { type: 'welcome', data: item.data };
+    } else if (item.type === 'tutor-welcome' || item.type === 'tutor_welcome') {
+      payload = { type: 'tutor-welcome', data: item.data };
     } else if (item.type === 'certificate-delivery') {
       payload = { type: 'certificate-delivery', data: item.data };
     } else if (item.type === 'credentials-reset') {
@@ -1640,7 +1650,7 @@ function renderPendingRegistrations() {
                             </p>
                         </div>
                         <button onclick="AdminEngine.approveRegistration('${e.id}')"
-                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all self-end md:self-auto shadow-md">
+                            class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all self-end md:self-auto shadow-md" style="background-color: #047857 !important;">
                             Approve Registration
                         </button>
                     </div>
@@ -1692,7 +1702,7 @@ function renderRescheduleRequests() {
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                             <div class="bg-white p-2.5 rounded-lg border border-slate-200">
                                 <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Current Schedule</span>
-                                <span class="line-through text-rose-500 font-medium">${r.currentDate} at ${r.currentTime}</span>
+                                <span class="line-through text-rose-700 font-medium">${r.currentDate} at ${r.currentTime}</span>
                             </div>
                             <div class="bg-emerald-50/70 p-2.5 rounded-lg border border-emerald-200">
                                 <span class="text-emerald-700 block text-[10px] uppercase font-bold tracking-wider">Requested Change</span>
@@ -1701,7 +1711,7 @@ function renderRescheduleRequests() {
                         </div>
                         <div class="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-200/60 mt-1 flex-wrap">
                             <button onclick="AdminEngine.approveScheduleAdjust('${r.id}')"
-                                class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all shadow-sm flex-1 sm:flex-none text-center inline-flex items-center justify-center gap-1.5">
+                                class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all shadow-sm flex-1 sm:flex-none text-center inline-flex items-center justify-center gap-1.5" style="background-color: #047857 !important;">
                                 <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve
                             </button>
                             <button onclick="AdminEngine.declineScheduleAdjust('${r.id}')"
@@ -1874,7 +1884,7 @@ function renderParentsTable(parents) {
             ? p.children.map(c => `
                 <span class="inline-flex items-center gap-1 text-xs bg-indigo-50 border border-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded-lg">
                     <span>${c.name}</span>
-                    <span class="text-[10px] text-indigo-500 font-normal">(${c.program || 'STEM'})</span>
+                    <span class="text-[10px] text-indigo-800 font-medium">(${c.program || 'STEM'})</span>
                 </span>
             `).join(' ')
             : `<span class="text-xs text-slate-400 italic">No enrolled children</span>`;
@@ -2030,7 +2040,7 @@ function renderStudentsTable(students) {
             <tr class="hover:bg-gray-50 border-b border-gray-200 text-gray-800">
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-full ${s.avatarColor || 'bg-blue-600'} flex items-center justify-center text-white font-bold text-xs">
+                        <div class="w-9 h-9 rounded-full ${s.avatarColor ? s.avatarColor.replace('-500', '-700').replace('-600', '-700') : 'bg-blue-700'} flex items-center justify-center text-white font-bold text-xs">
                             ${s.firstName[0]}
                         </div>
                         <div>
@@ -2221,6 +2231,23 @@ function saveStudent(e) {
                         });
                         showToast('Student added. Welcome email queued for review — check Email Queue.', 'success');
                     }
+                } else if (DashboardEngine.addToEmailQueue) {
+                    DashboardEngine.addToEmailQueue({
+                        type: 'student-enrolled',
+                        to: studentData.parentEmail,
+                        recipientName: studentData.parentName || 'Parent',
+                        subject: 'STEMulus Enrollment Update — ' + (studentData.firstName||'') + ' has been enrolled!',
+                        htmlPreview: 'Enrollment confirmation for ' + (studentData.firstName||'') + ' ' + (studentData.lastName||'') + ' in ' + (studentData.program||''),
+                        data: {
+                            parentEmail: studentData.parentEmail,
+                            parentName: studentData.parentName || 'Parent',
+                            studentName: (studentData.firstName||'') + ' ' + (studentData.lastName||''),
+                            courseName: studentData.program || '',
+                            classroomLink: studentData.classroomLink || ''
+                        },
+                        triggeredBy: 'manual_student_add_existing_parent'
+                    });
+                    showToast('Student added. Enrollment confirmation email queued — check Email Queue.', 'success');
                 }
             }
             var savedStudent = (typeof added === 'object' && added) ? added : studentData;
@@ -2247,7 +2274,7 @@ function saveStudent(e) {
 }
 
 function getRandomAvatarColor() {
-    const colors = ['bg-blue-500', 'bg-sky-500', 'bg-orange-500', 'bg-emerald-500', 'bg-rose-500', 'bg-pink-500', 'bg-amber-500', 'bg-indigo-500'];
+    const colors = ['bg-blue-700', 'bg-sky-800', 'bg-orange-700', 'bg-emerald-700', 'bg-rose-700', 'bg-purple-700', 'bg-indigo-700', 'bg-teal-800'];
     return colors[Math.floor(Math.random() * colors.length)];
 }
 
@@ -2996,7 +3023,19 @@ async function saveTutor(e) {
         const result = await DashboardEngine.addUser({ email, password: tempPwd, role: 'tutor', name });
         if (!result.success) { showToast(result.message || 'Could not create tutor account.', 'error'); return; }
         showToast(`Tutor account created! Login: <strong>${email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${tempPwd}</span>`, 'success', 10000);
-        // Send tutor welcome email
+        // Queue tutor welcome email for admin review
+        if (DashboardEngine.addToEmailQueue) {
+            DashboardEngine.addToEmailQueue({
+                type: 'tutor-welcome',
+                to: email,
+                recipientName: name || 'Tutor',
+                subject: 'Welcome to STEMulus Faculty — Your Tutor Portal Access',
+                htmlPreview: 'Welcome ' + (name || 'Tutor') + '! Tutor portal credentials: Login: ' + email + ' | Temp Password: ' + tempPwd,
+                data: { tutorEmail: email, tutorName: name || 'Tutor', tempPassword: tempPwd, subjects: subjects ? subjects.join(', ') : '' },
+                triggeredBy: 'manual_tutor_add'
+            });
+        }
+        // Send tutor welcome email directly if EmailService is active
         if (typeof EmailService !== 'undefined' && EmailService.sendTutorWelcomeEmail) {
             var tutorEmailData = { tutorEmail: email, tutorName: name, tempPassword: tempPwd, subjects: subjects || '' };
             EmailService.sendTutorWelcomeEmail(tutorEmailData)
@@ -3032,6 +3071,19 @@ async function saveParent(e) {
     const tempPwd = password || (Math.random().toString(36).slice(2, 9) + Math.random().toString(36).slice(2, 9).toUpperCase() + Math.floor(Math.random()*90+10));
     const result = await DashboardEngine.addUser({ email, password: tempPwd, role: 'parent', name });
     if (!result.success) { showToast(result.message || 'Could not create parent account.', 'error'); return; }
+
+    // Queue parent welcome email for admin review
+    if (DashboardEngine.addToEmailQueue) {
+        DashboardEngine.addToEmailQueue({
+            type: 'welcome',
+            to: email,
+            recipientName: name || 'Parent',
+            subject: 'Welcome to STEMulus — Your Parent Portal Access',
+            htmlPreview: 'Welcome ' + (name || 'Parent') + '! Parent portal credentials: Login: ' + email + ' | Temp Password: ' + tempPwd,
+            data: { parentEmail: email, parentName: name || 'Parent', tempPassword: tempPwd, classroomLink: '' },
+            triggeredBy: 'manual_parent_add'
+        });
+    }
 
     showToast(`Parent account created! Login: <strong>${email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${tempPwd}</span>`, 'success', 10000);
     closeModal('parent-modal');

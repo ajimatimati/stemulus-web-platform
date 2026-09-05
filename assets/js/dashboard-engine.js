@@ -43,7 +43,7 @@ const DashboardEngine = (function() {
                 parentPhone: "+2347052466716",
                 birthday: "2015-06-01",
                 progress: 65, // percent
-                avatarColor: "bg-blue-500",
+                avatarColor: "bg-blue-700",
                 tutorName: "Sarah Jane",
                 classroomLink: '',
                 skills: { logic: 85, loops: 80, variables: 90, syntax: 75, projects: 70 },
@@ -64,7 +64,7 @@ const DashboardEngine = (function() {
                 parentPhone: "+2347052466716",
                 birthday: "2018-05-31", // Today!
                 progress: 40,
-                avatarColor: "bg-orange-500",
+                avatarColor: "bg-orange-700",
                 tutorName: "Sarah Jane",
                 classroomLink: '',
                 skills: { logic: 60, loops: 70, variables: 40, syntax: 55, projects: 75 },
@@ -1118,21 +1118,28 @@ const DashboardEngine = (function() {
                 });
 
                 // Queue welcome email with portal credentials
-                addToEmailQueue({
+                db.emailQueue = db.emailQueue || [];
+                db.emailQueue.push({
+                    id: 'eq-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
                     type: 'welcome',
+                    status: 'draft',
                     to: enr.email || enr.parentEmail,
-                    recipientName: enr.parentName,
+                    recipientName: enr.parentName || 'Parent',
                     subject: 'Welcome to STEMulus — ' + (enr.studentFirstName||'') + "'s coding journey starts!",
-                    htmlPreview: 'Welcome email for ' + (enr.parentName||'') + ' — contains portal login credentials',
+                    htmlPreview: 'Welcome email for ' + (enr.parentName||'Parent') + ' — contains portal login credentials. Temp password: ' + randomPassword,
                     data: {
                         parentEmail: enr.email || enr.parentEmail,
-                        parentName: enr.parentName,
+                        parentName: enr.parentName || 'Parent',
                         studentName: (enr.studentFirstName||'') + ' ' + (enr.studentLastName||''),
-                        courseName: enr.program || enr.course,
+                        courseName: enr.program || enr.course || '',
                         tempPassword: randomPassword,
                         classroomLink: enr.classroomLink || ''
                     },
-                    triggeredBy: 'enrollment_approval:' + (enr.id||id)
+                    triggeredBy: 'enrollment_approval:' + (enr.id||id),
+                    createdAt: new Date().toISOString(),
+                    sentAt: null,
+                    editedSubject: null,
+                    editedBody: null
                 });
 
                 // Initialize parent onboarding
@@ -1148,6 +1155,7 @@ const DashboardEngine = (function() {
             }
 
             saveDB(db);
+            dispatchEvent(new CustomEvent('stemulusDbUpdated'));
             return true;
         }
         return false;
@@ -1474,16 +1482,24 @@ const DashboardEngine = (function() {
                 read: false,
                 userEmail: tutorEmail
             });
-            addToEmailQueue({
-                type: 'tutor_welcome',
+            db.emailQueue = db.emailQueue || [];
+            db.emailQueue.push({
+                id: 'eq-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+                type: 'tutor-welcome',
+                status: 'draft',
                 to: tutorEmail,
                 recipientName: params.name || 'Tutor',
                 subject: 'Welcome to STEMulus Faculty — Your Tutor Portal Access',
                 htmlPreview: 'Welcome ' + (params.name || 'Tutor') + '! Your tutor portal credentials: Login: ' + tutorEmail + ' | Temp Password: ' + tempPwd,
                 data: { tutorEmail: tutorEmail, tutorName: params.name || 'Tutor', tempPassword: tempPwd, subjects: params.program || '' },
-                triggeredBy: 'quick_onboard_tutor'
+                triggeredBy: 'quick_onboard_tutor',
+                createdAt: new Date().toISOString(),
+                sentAt: null,
+                editedSubject: null,
+                editedBody: null
             });
             saveDB(db);
+            dispatchEvent(new CustomEvent('stemulusDbUpdated'));
             return { success: true, type: 'tutor', email: tutorEmail, tempPassword: tempPwd, name: params.name || 'Tutor' };
         } else {
             // Student + Parent
@@ -1566,8 +1582,11 @@ const DashboardEngine = (function() {
                 userEmail: parentEmail
             });
 
-            addToEmailQueue({
+            db.emailQueue = db.emailQueue || [];
+            db.emailQueue.push({
+                id: 'eq-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
                 type: 'welcome',
+                status: 'draft',
                 to: parentEmail,
                 recipientName: params.name || 'Parent',
                 subject: 'Welcome to STEMulus — ' + fName + '\'s coding journey starts!',
@@ -1580,10 +1599,15 @@ const DashboardEngine = (function() {
                     tempPassword: tempPwd,
                     classroomLink: newStudent.classroomLink
                 },
-                triggeredBy: 'quick_onboard_student'
+                triggeredBy: 'quick_onboard_student',
+                createdAt: new Date().toISOString(),
+                sentAt: null,
+                editedSubject: null,
+                editedBody: null
             });
 
             saveDB(db);
+            dispatchEvent(new CustomEvent('stemulusDbUpdated'));
             return {
                 success: true,
                 type: 'student_parent',
@@ -1592,7 +1616,8 @@ const DashboardEngine = (function() {
                 childName: fName + ' ' + lName,
                 program: newStudent.program,
                 tutorName: newStudent.tutorName,
-                tempPassword: tempPwd
+                tempPassword: tempPwd,
+                classroomLink: newStudent.classroomLink
             };
         }
     }
@@ -1602,14 +1627,14 @@ const DashboardEngine = (function() {
         // item: { type, to, recipientName, subject, htmlPreview, data, triggeredBy }
         var db = getDB();
         if (!db.emailQueue) db.emailQueue = [];
-        var entry = Object.assign({}, item, {
-            id: 'eq-' + Date.now(),
+        var entry = Object.assign({
+            id: 'eq-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
             status: 'draft',
             createdAt: new Date().toISOString(),
             sentAt: null,
             editedSubject: null,
             editedBody: null
-        });
+        }, item);
         db.emailQueue.push(entry);
         saveDB(db);
         dispatchEvent(new CustomEvent('stemulusDbUpdated'));

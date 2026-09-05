@@ -54,9 +54,9 @@
 }
  
  /* Sidebar Active State */
- .nav-link.active {
+ #sidebar .nav-link.active {
  background: rgba(244,96,12,0.18) !important;
- color: #f4600c !important;
+ color: #fb923c !important;
  border-left: none;
  }
  
@@ -67,12 +67,15 @@
  ::-webkit-scrollbar-thumb:hover { background: #64748b; }
  
  /* Table Styles */
- .data-table th { 
- background: rgba(51,65,85,0.5);
+ .data-table th, th { 
+ background: #f8fafc !important;
+ color: #334155 !important;
+ font-weight: 700 !important;
+ border-bottom: 1px solid #e2e8f0 !important;
  position: sticky;
  top:0;
  }
- .data-table tr:hover { background: rgba(59,130,246,0.1); }
+ .data-table tr:hover { background: rgba(59,130,246,0.05); }
  
  /* Modal */
  .modal-overlay {
@@ -128,22 +131,95 @@
  input::placeholder {
  color: #94a3b8!important;
  }
-  /* Action Buttons (Keep text high-contrast) */
-  .btn-pill-solid, .bg-admin-accent, .bg-supernova-orange, .bg-blue-600, .bg-orange-500, .bg-emerald-600, .bg-green-600, .btn-primary {
+  /* Action Buttons & Badges (High-Contrast White Text) */
+  .btn-pill-solid, 
+  .bg-admin-accent, .bg-admin-accent *,
+  .bg-supernova-orange, .bg-supernova-orange *,
+  .bg-blue-600, .bg-blue-600 *,
+  .bg-blue-500, .bg-blue-500 *,
+  .bg-orange-500, .bg-orange-500 *,
+  .bg-orange-600, .bg-orange-600 *,
+  .bg-emerald-600, .bg-emerald-600 *,
+  .bg-green-600, .bg-green-600 *,
+  .bg-indigo-600, .bg-indigo-600 *,
+  .bg-indigo-700, .bg-indigo-700 *,
+  .bg-purple-600, .bg-purple-600 *,
+  .bg-slate-700, .bg-slate-700 *,
+  .bg-slate-800, .bg-slate-800 *,
+  .bg-slate-900, .bg-slate-900 *,
+  .bg-red-600, .bg-red-600 *,
+  .btn-primary, .btn-primary *,
+  button.text-white, button.text-white *,
+  a.text-white, a.text-white *,
+  span.text-white {
+    color: #ffffff !important;
+  }
+  /* High-Contrast Button Backgrounds */
+  .bg-emerald-600, .bg-emerald-500 {
+    background-color: #047857 !important;
+  }
+  .bg-emerald-600:hover, .bg-emerald-500:hover {
+    background-color: #065f46 !important;
+  }
+  .bg-supernova-orange, .bg-orange-500 {
+    background-color: #c2410c !important;
+  }
+  .bg-supernova-orange:hover, .bg-orange-500:hover {
+    background-color: #9a3412 !important;
+  }
+  #open-quick-onboard-btn {
+    background-color: #c2410c !important;
+    background-image: linear-gradient(to right, #ea580c, #c2410c) !important;
+  }
+  /* Dashboard Hero Band & KPI Pills */
+  .hero-band {
+    background-color: #1A2332 !important;
+    background-image: linear-gradient(135deg, #1A2332 0%, #0F172A 100%) !important;
+  }
+  .hero-band h1 {
+    color: #ffffff !important;
+  }
+  .hero-band p {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+  .kpi-pill {
+    background-color: rgba(0, 0, 0, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+  }
+  .kpi-pill * {
     color: #ffffff !important;
   }
   .btn-secondary, button.bg-gray-100, button.bg-slate-100, .bg-slate-100, .bg-gray-100 {
-    color: #334155 !important;
+    color: #1e293b !important;
     background-color: #f1f5f9 !important;
     border: 1px solid #cbd5e1 !important;
+  }
+  /* High-Contrast Dark Sidebar Rules */
+  #sidebar {
+    background: #0f1117 !important;
+  }
+  #sidebar .nav-link {
+    color: #e2e8f0 !important;
+    font-weight: 600 !important;
+  }
+  #sidebar .nav-link:hover {
+    color: #fb923c !important;
+    background-color: rgba(244, 96, 12, 0.15) !important;
+  }
+  #sidebar .nav-link.active {
+    background-color: rgba(244, 96, 12, 0.22) !important;
+    color: #fb923c !important;
+    font-weight: 700 !important;
   }
   /* Table borders */
   table, tr, td, th {
     border-color: #e2e8f0 !important;
   }
   th {
-    background-color: #f1f5f9 !important;
-    color: #475569 !important;
+    background-color: #f8fafc !important;
+    color: #334155 !important;
+    font-weight: 700 !important;
   }
 </style>
 
@@ -295,147 +371,147 @@
  
  <!-- Navigation -->
  <nav class="flex-1 py-6 overflow-y-auto">
- <div class="px-4 mb-2 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.70);">Main</div>
+ <div class="px-4 mb-2 text-xs font-semibold uppercase tracking-wider text-slate-300">Main</div>
  <ul class="space-y-1 px-3">
  <li>
- <a href="#" data-section="dashboard" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-2xl transition-colors" style="background:rgba(244,96,12,0.18);color:#f4600c;">
+ <a href="#" data-section="dashboard" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-2xl transition-colors">
  <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
  <span>Dashboard</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="students" data-roster-tab="students" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="students" data-roster-tab="students" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="graduation-cap" class="w-5 h-5"></i>
  <span>Students</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="students" data-roster-tab="parents" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="students" data-roster-tab="parents" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="users" class="w-5 h-5"></i>
  <span>Parents Directory</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="schedules" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="schedules" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="calendar" class="w-5 h-5"></i>
  <span>Schedules</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="attendance" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="attendance" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="clipboard-check" class="w-5 h-5"></i>
  <span>Attendance Logs</span>
- <span id="pending-attendance-badge" class="ml-auto bg-amber-500/20 text-amber-600 text-xs font-bold px-2 py-0.5 rounded-xl hidden">0</span>
+ <span id="pending-attendance-badge" class="ml-auto bg-amber-500/20 text-amber-300 text-xs font-bold px-2 py-0.5 rounded-xl hidden">0</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="courses" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="courses" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="book-open" class="w-5 h-5"></i>
  <span>Courses</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="projects" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="projects" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="folder-kanban" class="w-5 h-5"></i>
  <span>Projects</span>
- <span class="ml-auto bg-supernova-orange/20 text-supernova-orange text-xs font-bold px-2 py-0.5 rounded-xl">New</span>
+ <span class="ml-auto bg-orange-500/20 text-orange-300 text-xs font-bold px-2 py-0.5 rounded-xl border border-orange-500/30">New</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="certificates" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="certificates" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="award" class="w-5 h-5"></i>
  <span>Certificates</span>
- <span class="ml-auto bg-emerald-500/20 text-emerald-600 text-xs font-bold px-2 py-0.5 rounded-xl">New</span>
+ <span class="ml-auto bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2 py-0.5 rounded-xl border border-emerald-500/30">New</span>
  </a>
  </li>
  <li>
- <a href="tutor-evaluation.html" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="tutor-evaluation.html" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-200 hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="star" class="w-5 h-5"></i>
  <span>View Evaluations</span>
  </a>
  </li>
  </ul>
 
- <div class="px-4 mb-2 mt-6 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.70);">Workflows</div>
+ <div class="px-4 mb-2 mt-6 text-xs font-semibold uppercase tracking-wider text-slate-300">Workflows</div>
  <ul class="space-y-1 px-3">
  <li>
- <a href="#" data-section="onboarding" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="onboarding" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="user-plus" class="w-5 h-5"></i>
  <span>Onboard</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="assignments" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="assignments" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="git-branch" class="w-5 h-5"></i>
  <span>Assignments</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="schedule-wf" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="schedule-wf" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="calendar-days" class="w-5 h-5"></i>
  <span>Schedule</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="approvals" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="approvals" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="check-square" class="w-5 h-5"></i>
  <span>Approvals</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="notifications" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="notifications" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="bell" class="w-5 h-5"></i>
  <span>Notifications</span>
  </a>
  </li>
  </ul>
 
- <div class="px-4 mb-2 mt-6 text-xs font-semibold uppercase tracking-wider" style="color:rgba(255,255,255,0.70);">Communications</div>
+ <div class="px-4 mb-2 mt-6 text-xs font-semibold uppercase tracking-wider text-slate-300">Communications</div>
  <ul class="space-y-1 px-3">
  <li>
- <a href="#" data-section="emails" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="emails" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="mail" class="w-5 h-5"></i>
  <span>Email Center</span>
- <span class="ml-auto bg-admin-accent/20 text-admin-accent text-xs font-bold px-2 py-0.5 rounded-xl">New</span>
+ <span class="ml-auto bg-blue-500/20 text-blue-300 text-xs font-bold px-2 py-0.5 rounded-xl border border-blue-500/30">New</span>
  </a>
  </li>
  <li>
- <a href="#" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors group" data-section="email-queue">
-  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+ <a href="#" data-section="email-queue" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
+  <i data-lucide="mail-check" class="w-5 h-5"></i>
   <span>Email Queue</span>
   <span id="nav-queue-badge" class="ml-auto bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full hidden">0</span>
  </a>
  </li>
  <li>
- <a href="#" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors" data-section="password-resets">
-  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+ <a href="#" data-section="password-resets" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
+  <i data-lucide="key" class="w-5 h-5"></i>
   <span>Password Resets</span>
   <span id="nav-reset-badge" class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full hidden">0</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="logs" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="logs" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="file-text" class="w-5 h-5"></i>
  <span>Email Logs</span>
  </a>
  </li>
  <li>
- <a href="#" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors" data-section="reports">
-  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+ <a href="#" data-section="reports" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
+  <i data-lucide="file-bar-chart" class="w-5 h-5"></i>
   <span>Reports</span>
   <span id="reports-nav-badge" class="ml-auto hidden bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
  </a>
  </li>
  <li>
- <a href="#" data-section="whatsapp-bot" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.65);">
+ <a href="#" data-section="whatsapp-bot" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="message-square" class="w-5 h-5"></i>
  <span>WhatsApp Bot</span>
- <span class="ml-auto bg-blue-500/20 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-xl">Active</span>
+ <span class="ml-auto bg-blue-500/20 text-blue-400 text-xs font-bold px-2 py-0.5 rounded-xl">Active</span>
  </a>
  </li>
  <li>
- <a href="#" class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors" data-section="settings">
-  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+ <a href="#" data-section="settings" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
+  <i data-lucide="settings" class="w-5 h-5"></i>
   <span>Settings</span>
  </a>
  </li>
@@ -479,7 +555,7 @@
  class="bg-white border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent w-64 transition-colors">
  </div>
  <!-- Quick Actions -->
- <button id="open-quick-onboard-btn" onclick="AdminEngine.openQuickOnboardModal()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-3.5 py-2 rounded-lg transition-all flex items-center gap-2 text-sm shadow-sm">
+ <button id="open-quick-onboard-btn" onclick="AdminEngine.openQuickOnboardModal()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-3.5 py-2 rounded-lg transition-all flex items-center gap-2 text-sm shadow-sm" style="background-color: #c2410c !important;">
  <i data-lucide="zap" class="w-4 h-4"></i>
  <span>Quick Onboard</span>
  </button>
@@ -497,7 +573,7 @@
  <!-- ===== DASHBOARD SECTION ===== -->
  <section id="section-dashboard" class="admin-section active animate-fadeIn">
  <!-- Hero Band -->
- <div class="hero-band rounded-2xl mb-8" style="background: linear-gradient(135deg, #1A2332, #4B49AC);">
+ <div class="hero-band rounded-2xl mb-8" style="background-color: #1A2332; background-image: linear-gradient(135deg, #1A2332, #4B49AC);">
    <div class="hero-band-content">
      <h1 style="color:white!important;">Admin Command Center</h1>
      <p>Manage students, schedules, certificates, and communications</p>
@@ -517,7 +593,7 @@
  <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
 <i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
 </div>
-<span class="text-emerald-600 text-sm font-semibold flex items-center gap-1 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
+<span class="text-emerald-800 text-sm font-bold flex items-center gap-1 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
 <i data-lucide="trending-up" class="w-4 h-4"></i> +12%
 </span>
  </div>
@@ -567,19 +643,19 @@
     <div id="this-week-summary" class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="bg-indigo-50 rounded-xl p-4 text-center">
         <div id="week-sessions" class="text-2xl font-bold text-indigo-700">—</div>
-        <div class="text-xs text-indigo-500 font-semibold uppercase tracking-wide mt-1">Sessions</div>
+        <div class="text-xs text-indigo-700 font-bold uppercase tracking-wide mt-1">Sessions</div>
       </div>
       <div class="bg-emerald-50 rounded-xl p-4 text-center">
         <div id="week-present" class="text-2xl font-bold text-emerald-700">—</div>
-        <div class="text-xs text-emerald-500 font-semibold uppercase tracking-wide mt-1">Present</div>
+        <div class="text-xs text-emerald-800 font-bold uppercase tracking-wide mt-1">Present</div>
       </div>
       <div class="bg-rose-50 rounded-xl p-4 text-center">
         <div id="week-absent" class="text-2xl font-bold text-rose-700">—</div>
-        <div class="text-xs text-rose-500 font-semibold uppercase tracking-wide mt-1">Absent</div>
+        <div class="text-xs text-rose-700 font-bold uppercase tracking-wide mt-1">Absent</div>
       </div>
       <div class="bg-amber-50 rounded-xl p-4 text-center">
         <div id="week-pending" class="text-2xl font-bold text-amber-700">—</div>
-        <div class="text-xs text-amber-500 font-semibold uppercase tracking-wide mt-1">Pending Review</div>
+        <div class="text-xs text-amber-800 font-bold uppercase tracking-wide mt-1">Pending Review</div>
       </div>
     </div>
   </div>
@@ -626,7 +702,7 @@
  <div class="lg:col-span-2 glass-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-lg font-semibold text-slate-800">Recent Students</h3>
- <a href="#" data-section="students" class="nav-link text-admin-accent text-sm hover:underline">View All</a>
+ <a href="#" onclick="AdminEngine.navigateToSection('students'); return false;" class="text-blue-600 hover:text-blue-800 text-sm font-bold hover:underline">View All</a>
  </div>
  <div id="recent-students-list" class="space-y-4">
  <p class="text-slate-500 font-medium text-center py-8">No students yet. Add your first student!</p>
@@ -637,7 +713,7 @@
  <div class="glass-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-6">
  <h3 class="text-lg font-semibold text-slate-800">Today's Classes</h3>
- <a href="#" data-section="schedules" class="nav-link text-admin-accent text-sm hover:underline">Full Calendar</a>
+ <a href="#" onclick="AdminEngine.navigateToSection('schedules'); return false;" class="text-blue-600 hover:text-blue-800 text-sm font-bold hover:underline">Full Calendar</a>
  </div>
  <div id="today-schedule-list" class="space-y-3">
  <p class="text-slate-500 font-medium text-center py-8">No classes scheduled for today.</p>
@@ -716,7 +792,7 @@
    <button type="button" id="tab-btn-students" onclick="AdminEngine.switchRosterTab('students')" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm bg-blue-600 text-white shadow-sm transition-all">
      <i data-lucide="graduation-cap" class="w-4 h-4"></i>
      <span>Students Roster</span>
-     <span id="badge-students-count" class="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full font-mono">0</span>
+     <span id="badge-students-count" class="bg-blue-900 text-white text-xs px-2 py-0.5 rounded-full font-mono font-bold">0</span>
    </button>
    <button type="button" id="tab-btn-parents" onclick="AdminEngine.switchRosterTab('parents')" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all">
      <i data-lucide="users" class="w-4 h-4"></i>
@@ -767,7 +843,7 @@
  </thead>
  <tbody id="students-table-body" class="divide-y divide-admin-border">
  <tr>
- <td colspan="6" class="px-6 py-12 text-center text-gray-800/55">
+ <td colspan="6" class="px-6 py-12 text-center text-slate-600">
  <i data-lucide="users" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
  <p>No students found. Click "Add Student" to get started.</p>
  </td>
@@ -796,7 +872,7 @@
  <option value="United States">United States</option>
  <option value="Canada">Canada</option>
  </select>
- <button type="button" onclick="AdminWorkflows.OnboardingWizard.openParentOnboarding()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm">
+ <button type="button" onclick="AdminWorkflows.OnboardingWizard.openParentOnboarding()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm" style="background-color: #047857 !important;">
  <i data-lucide="user-plus" class="w-4 h-4"></i>
  <span>Onboard Parent</span>
  </button>
@@ -904,7 +980,7 @@
  <h2 class="text-2xl font-nunito font-bold text-slate-800">Student Projects</h2>
  <p class="text-slate-500">Manage the "Built by our students" showcase on the homepage</p>
  </div>
- <button id="add-project-btn" class="bg-supernova-orange hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
+ <button id="add-project-btn" class="bg-orange-700 hover:bg-orange-800 text-white font-bold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm shadow-sm" style="background-color: #c2410c !important;">
  <i data-lucide="plus" class="w-4 h-4"></i>
  <span>Add Project</span>
  </button>
@@ -989,7 +1065,7 @@
  </div>
 
  <div class="pt-4">
- <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+ <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm" style="background-color: #047857 !important;">
  <i data-lucide="award" class="w-5 h-5"></i>
  <span>Issue Certificate</span>
  </button>
@@ -1019,7 +1095,7 @@
  </thead>
  <tbody id="certs-table-body" class="divide-y divide-admin-border">
  <tr>
- <td colspan="4" class="px-4 py-8 text-center text-gray-800/55">
+ <td colspan="4" class="px-4 py-8 text-center text-slate-600">
  <i data-lucide="award" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
  <p>Loading certificate ledger...</p>
  </td>
@@ -1262,7 +1338,7 @@
         <label class="block text-sm font-semibold text-gray-600 mb-1.5">Confirm New Password</label>
         <input type="password" id="confirm-password" placeholder="Repeat new password" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
       </div>
-      <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-2.5 rounded-lg transition-colors">Update Password</button>
+      <button type="submit" class="bg-orange-700 hover:bg-orange-800 text-white font-bold px-6 py-2.5 rounded-lg transition-colors shadow-sm" style="background-color: #c2410c !important;">Update Password</button>
       <p id="password-change-msg" class="text-sm hidden"></p>
     </form>
   </div>
@@ -1338,7 +1414,7 @@
  </thead>
  <tbody id="email-logs-body" class="divide-y divide-admin-border">
  <tr>
- <td colspan="5" class="px-6 py-12 text-center text-gray-800/55">
+ <td colspan="5" class="px-6 py-12 text-center text-slate-600">
  <i data-lucide="mail" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
  <p>No emails sent yet.</p>
  </td>
@@ -1372,13 +1448,13 @@
         All Reports (<span id="rep-count-all">0</span>)
       </button>
       <button type="button" class="admin-report-filter px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-filter="pending_review">
-        Pending Review (<span id="rep-count-pending" class="text-amber-600 font-extrabold">0</span>)
+        Pending Review (<span id="rep-count-pending" class="text-amber-800 font-extrabold">0</span>)
       </button>
       <button type="button" class="admin-report-filter px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-filter="sent_to_parent">
-        Sent to Parents (<span id="rep-count-sent" class="text-emerald-600">0</span>)
+        Sent to Parents (<span id="rep-count-sent" class="text-emerald-800 font-extrabold">0</span>)
       </button>
       <button type="button" class="admin-report-filter px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-filter="rejected">
-        Needs Revision (<span id="rep-count-rejected" class="text-rose-600">0</span>)
+        Needs Revision (<span id="rep-count-rejected" class="text-rose-700 font-extrabold">0</span>)
       </button>
     </div>
     <div class="relative w-full md:w-64">
@@ -2382,7 +2458,7 @@
              tr.className = 'border-b border-admin-border hover:bg-slate-50';
              tr.innerHTML = `
                <td class="py-3 font-semibold text-slate-800">+${chat.phone}</td>
-               <td class="py-3 text-amber-600 font-semibold text-xs">BOT PAUSED</td>
+               <td class="py-3 text-amber-800 font-bold text-xs">BOT PAUSED</td>
                <td class="py-3">
                  <button class="text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded transition-colors" onclick="resumeChat('${chat.phone}')">
                    Resume Bot
