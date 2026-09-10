@@ -1793,8 +1793,12 @@ function renderAttendanceApprovals() {
                     <td class="p-3 text-sm font-semibold">${r.tutorName}</td>
                     <td class="p-3 text-sm font-semibold">${r.studentName}</td>
                     <td class="p-3 text-sm">
-                        <div class="font-medium">${r.topic}</div>
+                        <div class="font-medium text-slate-800">${r.topic}</div>
                         <div class="text-xs text-slate-400">${r.coursesCovered.join(', ')}</div>
+                        ${r.homeworkAssigned ? `<div class="mt-1 text-xs text-amber-700 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-md font-medium inline-block"><span class="font-bold text-amber-800">Assignment:</span> ${r.homeworkAssigned}</div>` : ''}
+                        ${r.whatBuilt ? `<div class="text-[11px] text-slate-500 mt-0.5"><span class="font-semibold text-slate-600">Built:</span> ${r.whatBuilt}</div>` : ''}
+                        ${r.tutorComment ? `<div class="text-[11px] text-slate-500 italic mt-0.5 line-clamp-1" title="${r.tutorComment}">&ldquo;${r.tutorComment}&rdquo;</div>` : ''}
+                        ${r.conceptGrasp ? `<div class="text-[11px] text-amber-500 font-semibold mt-0.5">${'★'.repeat(r.conceptGrasp)}${'☆'.repeat(5 - r.conceptGrasp)} <span class="text-slate-400 font-normal">(${r.conceptGrasp}/5 grasp)</span></div>` : ''}
                     </td>
                     <td class="p-3 text-sm">${r.duration} mins</td>
                     <td class="p-3 text-sm">${typeLabel}</td>
@@ -2196,10 +2200,25 @@ function saveStudent(e) {
             showToast('Failed to update student.', 'error');
         }
     } else {
+        // Prevent exact duplicate students from being registered (Requirement 5b)
+        const duplicateStudent = studentsCache.find(s => 
+            s.firstName.toLowerCase().trim() === firstName.toLowerCase().trim() &&
+            s.lastName.toLowerCase().trim() === lastName.toLowerCase().trim()
+        );
+        if (duplicateStudent) {
+            showToast(`A student named "${firstName} ${lastName}" is already registered (assigned to ${duplicateStudent.tutorName || 'Unassigned'}). Exact duplicates cannot be assigned to any tutor. Please reassign the existing student instead.`, 'warning');
+            return;
+        }
+
         studentData.progress = 0;
         studentData.avatarColor = getRandomAvatarColor();
         studentData.skills = { logic: 50, loops: 50, variables: 50, syntax: 50, projects: 50 };
-        studentData.metrics = { attended: 0, total: 12, projects: 0, lines: 0 };
+        studentData.metrics = { 
+            attended: 0, 
+            total: (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateMonthlySessionTarget) ? DashboardEngine.calculateMonthlySessionTarget(studentData) : 8, 
+            projects: 0, 
+            lines: 0 
+        };
 
         const added = DashboardEngine.addStudent(studentData);
         if (added) {
@@ -3071,6 +3090,27 @@ async function saveParent(e) {
     const tempPwd = password || (Math.random().toString(36).slice(2, 9) + Math.random().toString(36).slice(2, 9).toUpperCase() + Math.floor(Math.random()*90+10));
     const result = await DashboardEngine.addUser({ email, password: tempPwd, role: 'parent', name });
     if (!result.success) { showToast(result.message || 'Could not create parent account.', 'error'); return; }
+
+    // Ensure at least one linked student record exists so parent dashboard is populated
+    var currentDb = DashboardEngine.getDB ? DashboardEngine.getDB() : null;
+    if (currentDb && (!currentDb.students || !currentDb.students.some(function(s) { return s.parentEmail && s.parentEmail.toLowerCase() === email; }))) {
+        var nameParts = name.split(/\s+/);
+        var childLastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : 'Student';
+        DashboardEngine.addStudent({
+            firstName: nameParts[0] + "'s Child",
+            lastName: childLastName,
+            age: 10,
+            gender: 'Not specified',
+            experience: 'Beginner',
+            program: 'Python Programming Foundations',
+            status: 'active',
+            parentEmail: email,
+            parentName: name,
+            parentPhone: phone,
+            tutorName: 'Sarah Jane',
+            progress: 0
+        });
+    }
 
     // Queue parent welcome email for admin review
     if (DashboardEngine.addToEmailQueue) {

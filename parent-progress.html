@@ -915,7 +915,9 @@
         document.getElementById('metric-progress-bar').style.width = `${student.progress}%`;
         
         const attended = student.metrics ? student.metrics.attended : 0;
-        const total = student.metrics ? student.metrics.total : 0;
+        const total = (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateMonthlySessionTarget)
+            ? DashboardEngine.calculateMonthlySessionTarget(student)
+            : ((student.metrics && student.metrics.total) ? student.metrics.total : 8);
         document.getElementById('metric-attended').textContent = `${attended} / ${total}`;
         document.getElementById('metric-projects').textContent = student.metrics ? student.metrics.projects : 0;
         document.getElementById('metric-lines').textContent = (student.metrics && student.metrics.lines) ? student.metrics.lines.toLocaleString() : '0';
@@ -958,6 +960,23 @@
         if (attTable && typeof DashboardEngine !== "undefined") {
           var allSchedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
           var studentSessions = allSchedules.filter(function(s) { return s.studentId === student.id || s.studentName === (student.firstName + " " + student.lastName); });
+          
+          if (DashboardEngine.getAttendanceRecords) {
+            var attRecs = DashboardEngine.getAttendanceRecords().filter(function(r) {
+              return (r.studentId === student.id || r.studentName === (student.firstName + " " + student.lastName)) && r.status === 'approved';
+            });
+            attRecs.forEach(function(r) {
+              if (!studentSessions.some(function(s) { return s.date === r.classDate && (s.attendanceStatus === 'present' || s.status === 'approved'); })) {
+                studentSessions.push({
+                  date: r.classDate,
+                  topic: r.topic + (r.homeworkAssigned ? ' (HW: ' + r.homeworkAssigned + ')' : ''),
+                  mentor: r.tutorName || "Faculty Instructor",
+                  attendanceStatus: 'present'
+                });
+              }
+            });
+          }
+
           if (!studentSessions.length) { attTable.innerHTML = "<p style='color:#6b6b8a;font-size:0.875rem;'>No sessions recorded yet.</p>"; }
           else {
             studentSessions.sort(function(a,b) { return new Date(b.date) - new Date(a.date); });

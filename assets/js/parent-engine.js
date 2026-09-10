@@ -190,25 +190,67 @@ const ParentEngine = (function() {
     }
 
     function renderLatestSessionData(student) {
-        var schedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
-        var studentSessions = schedules.filter(function(s) {
-            return (s.studentId === student.id || s.studentName === (student.firstName + ' ' + student.lastName)) && s.attendanceStatus === 'present' && s.tutorComment;
-        }).sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+        var records = [];
+        var fullName = ((student.firstName || '') + ' ' + (student.lastName || '')).toLowerCase().trim();
 
-        if (!studentSessions.length) return '';
-        var latest = studentSessions[0];
+        // 1. Query approved attendance records from db.attendanceRecords
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getAttendanceRecords) {
+            var allAtt = DashboardEngine.getAttendanceRecords();
+            var attRecords = allAtt.filter(function(r) {
+                var rName = (r.studentName || '').toLowerCase().trim();
+                return (r.studentId === student.id || rName === fullName || (student.firstName && rName.startsWith(student.firstName.toLowerCase()))) && r.status === 'approved';
+            }).map(function(r) {
+                return {
+                    date: r.classDate,
+                    topic: r.topic,
+                    conceptGrasp: r.conceptGrasp || 0,
+                    tutorComment: r.tutorComment || r.notes || '',
+                    homeworkAssigned: r.homeworkAssigned || r.homework || '',
+                    whatBuilt: r.whatBuilt || ''
+                };
+            });
+            records = records.concat(attRecords);
+        }
+
+        // 2. Query schedules in db.schedules
+        var schedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
+        var schedRecords = schedules.filter(function(s) {
+            var sName = (s.studentName || '').toLowerCase().trim();
+            return (s.studentId === student.id || sName === fullName || (student.firstName && sName.startsWith(student.firstName.toLowerCase()))) && 
+                   (s.attendanceStatus === 'present' || s.status === 'approved') &&
+                   (s.tutorComment || s.topic || s.homeworkAssigned || s.homework);
+        }).map(function(s) {
+            return {
+                date: s.date,
+                topic: s.topic,
+                conceptGrasp: s.conceptGrasp || 0,
+                tutorComment: s.tutorComment || '',
+                homeworkAssigned: s.homeworkAssigned || s.homework || '',
+                whatBuilt: s.whatBuilt || ''
+            };
+        });
+        records = records.concat(schedRecords);
+
+        // Sort descending by date
+        records.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+        if (!records.length) return '';
+        var latest = records[0];
 
         var stars = '';
         for (var i = 1; i <= 5; i++) {
             stars += '<span style="color:' + (i <= (latest.conceptGrasp || 0) ? '#f59e0b' : '#d1d5db') + '">&#9733;</span>';
         }
 
-        return '<div style="background:linear-gradient(135deg,#f0f4ff,#e8f4fd);border-radius:12px;padding:1rem;margin-top:0.75rem;border-left:3px solid #6366F1;">' +
-            '<p style="font-size:0.7rem;font-weight:700;color:#6366F1;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 0.5rem;">Latest Session — ' + (latest.date || '') + '</p>' +
-            (latest.topic ? '<p style="font-size:0.82rem;font-weight:600;color:#1e293b;margin:0 0 0.25rem;">Topic: ' + latest.topic + '</p>' : '') +
-            (latest.conceptGrasp ? '<p style="font-size:0.8rem;margin:0.25rem 0;">Concept Grasp: ' + stars + '</p>' : '') +
-            (latest.tutorComment ? '<p style="font-size:0.8rem;color:#374151;margin:0.25rem 0;font-style:italic;">&ldquo;' + latest.tutorComment + '&rdquo;</p>' : '') +
-            (latest.homeworkAssigned ? '<div style="background:#fff7ed;border-radius:8px;padding:0.5rem 0.75rem;margin-top:0.5rem;"><p style="font-size:0.72rem;font-weight:700;color:#ea580c;margin:0 0 0.2rem;">Homework</p><p style="font-size:0.8rem;color:#374151;margin:0;">' + latest.homeworkAssigned + '</p></div>' : '') +
+        return '<div style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:14px;padding:1.1rem;margin-top:0.85rem;border:1px solid #e2e8f0;border-left:4px solid #F4600C;box-shadow:0 2px 8px rgba(0,0,0,0.03);">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">' +
+              '<p style="font-size:0.7rem;font-weight:800;color:#F4600C;text-transform:uppercase;letter-spacing:0.08em;margin:0;">Latest Verified Session &bull; ' + (latest.date || 'Recent') + '</p>' +
+              '<span style="background:#dcfce7;color:#15803d;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:9999px;">Approved</span>' +
+            '</div>' +
+            (latest.topic ? '<p style="font-size:0.88rem;font-weight:700;color:#0f172a;margin:0 0 0.35rem;">Topic: ' + latest.topic + '</p>' : '') +
+            (latest.whatBuilt ? '<p style="font-size:0.8rem;color:#475569;margin:0 0 0.3rem;"><span style="font-weight:600;color:#1e293b;">Built:</span> ' + latest.whatBuilt + '</p>' : '') +
+            (latest.conceptGrasp ? '<p style="font-size:0.8rem;color:#475569;margin:0.2rem 0 0.35rem;">Concept Grasp: ' + stars + ' <span style="font-size:0.75rem;color:#64748b;">(' + latest.conceptGrasp + '/5)</span></p>' : '') +
+            (latest.tutorComment ? '<p style="font-size:0.8rem;color:#334155;margin:0.25rem 0 0.4rem;font-style:italic;background:#ffffff;padding:0.5rem 0.75rem;border-radius:8px;border-left:2px solid #cbd5e1;">&ldquo;' + latest.tutorComment + '&rdquo;</p>' : '') +
+            (latest.homeworkAssigned ? '<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:0.6rem 0.85rem;margin-top:0.5rem;"><p style="font-size:0.72rem;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:0.06em;margin:0 0 0.2rem;">Assignment Given</p><p style="font-size:0.82rem;font-weight:600;color:#7c2d12;margin:0;">' + latest.homeworkAssigned + '</p></div>' : '') +
             '</div>';
     }
 
@@ -662,6 +704,7 @@ const ParentEngine = (function() {
     return {
         init,
         renderDashboard,
+        renderLatestSessionData,
         completeStep,
         openRescheduleModal,
         closeRescheduleModal,

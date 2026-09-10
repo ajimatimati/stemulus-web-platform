@@ -38,8 +38,8 @@
   </script>
   <style>
     body, html {
-      background-color: #0f1117 !important;
-      color: #e2e8f0;
+      background-color: #f8fafc !important;
+      color: #0f172a;
       font-family: 'Nunito', sans-serif;
     }
     #sidebar { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
@@ -49,11 +49,12 @@
     #sidebar-overlay.show { display:block; }
     #sidebar nav a:hover { background:rgba(244,96,12,0.12) !important; color:#f4600c !important; }
 
-    /* Dark card base */
+    /* Light card base */
     .dark-card {
-      background: #181c27;
-      border: 1px solid rgba(255,255,255,0.08);
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
       border-radius: 20px;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
     }
 
     /* Progress steps */
@@ -77,11 +78,11 @@
       left: 50%;
       width: 100%;
       height: 2px;
-      background: rgba(255,255,255,0.1);
+      background: #e2e8f0;
       z-index: 0;
     }
     .step-item.done:not(:last-child)::after {
-      background: #4B49AC;
+      background: #10b981;
     }
     .step-dot {
       width: 36px;
@@ -94,33 +95,33 @@
       font-size: 0.85rem;
       position: relative;
       z-index: 1;
-      border: 2px solid rgba(255,255,255,0.1);
-      background: #1e2330;
-      color: rgba(255,255,255,0.35);
+      border: 2px solid #cbd5e1;
+      background: #ffffff;
+      color: #64748b;
       transition: all 0.3s;
     }
     .step-item.active .step-dot {
-      background: linear-gradient(135deg, #4B49AC, #7978E9);
-      border-color: #7978E9;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      border-color: #4f46e5;
       color: #fff;
-      box-shadow: 0 0 16px rgba(121,120,233,0.45);
+      box-shadow: 0 0 16px rgba(99,102,241,0.35);
     }
     .step-item.done .step-dot {
-      background: #22c55e;
-      border-color: #16a34a;
+      background: #10b981;
+      border-color: #059669;
       color: #fff;
     }
     .step-label {
       font-size: 0.65rem;
       font-weight: 600;
       margin-top: 6px;
-      color: rgba(255,255,255,0.35);
+      color: #64748b;
       text-align: center;
       line-height: 1.2;
       max-width: 72px;
     }
-    .step-item.active .step-label { color: #a5b4fc; }
-    .step-item.done .step-label { color: #86efac; }
+    .step-item.active .step-label { color: #4f46e5; font-weight: 700; }
+    .step-item.done .step-label { color: #059669; }
 
     /* Section panels */
     .form-section { display: none; }
@@ -133,7 +134,7 @@
       gap: 12px;
       margin-bottom: 1.5rem;
       padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid #f1f5f9;
     }
     .section-header-icon {
       width: 42px; height: 42px;
@@ -145,11 +146,11 @@
     .section-header h3 {
       font-size: 1.05rem;
       font-weight: 700;
-      color: #f1f5f9;
+      color: #0f172a;
     }
     .section-header p {
       font-size: 0.75rem;
-      color: rgba(255,255,255,0.4);
+      color: #64748b;
       margin-top: 1px;
     }
 
@@ -157,28 +158,28 @@
     .form-label {
       display: block;
       font-size: 0.82rem;
-      font-weight: 600;
-      color: #94a3b8;
+      font-weight: 700;
+      color: #334155;
       margin-bottom: 6px;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
     }
     .form-input {
       width: 100%;
       padding: 0.75rem 1rem;
-      background: #0f1117;
-      border: 1.5px solid rgba(255,255,255,0.1);
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
       border-radius: 12px;
-      color: #f1f5f9;
+      color: #0f172a;
       font-size: 0.88rem;
       font-family: 'Nunito', sans-serif;
       transition: border-color 0.2s, box-shadow 0.2s;
       outline: none;
     }
     .form-input:focus {
-      border-color: #7978E9;
-      box-shadow: 0 0 0 3px rgba(121,120,233,0.2);
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
     }
-    .form-input::placeholder { color: rgba(255,255,255,0.2); }
+    .form-input::placeholder { color: #94a3b8; }
     textarea.form-input { resize: vertical; }
 
     /* Radio attendance cards */
@@ -187,32 +188,32 @@
       flex: 1; min-width: 100px;
       padding: 0.7rem 0.9rem;
       border-radius: 12px;
-      border: 1.5px solid rgba(255,255,255,0.1);
-      background: #0f1117;
+      border: 1.5px solid #e2e8f0;
+      background: #ffffff;
       cursor: pointer;
       transition: all 0.2s;
       display: flex; flex-direction: column; align-items: center; gap: 4px;
       text-align: center;
     }
-    .radio-card:hover { border-color: rgba(121,120,233,0.5); background: rgba(121,120,233,0.07); }
+    .radio-card:hover { border-color: rgba(79,70,229,0.5); background: rgba(79,70,229,0.04); }
     .radio-card input[type="radio"] { display: none; }
-    .radio-card.selected-present { border-color: #22c55e; background: rgba(34,197,94,0.1); }
-    .radio-card.selected-absent { border-color: #ef4444; background: rgba(239,68,68,0.1); }
-    .radio-card.selected-rescheduled { border-color: #f59e0b; background: rgba(245,158,11,0.1); }
-    .radio-card.selected-punctual { border-color: #7978E9; background: rgba(121,120,233,0.12); }
+    .radio-card.selected-present { border-color: #22c55e; background: #f0fdf4; }
+    .radio-card.selected-absent { border-color: #ef4444; background: #fef2f2; }
+    .radio-card.selected-rescheduled { border-color: #f59e0b; background: #fffbeb; }
+    .radio-card.selected-punctual { border-color: #4f46e5; background: #eef2ff; }
     .radio-card-icon { font-size: 1.3rem; }
-    .radio-card-label { font-size: 0.75rem; font-weight: 700; color: #94a3b8; }
-    .radio-card.selected-present .radio-card-label { color: #4ade80; }
-    .radio-card.selected-absent .radio-card-label { color: #f87171; }
-    .radio-card.selected-rescheduled .radio-card-label { color: #fcd34d; }
-    .radio-card.selected-punctual .radio-card-label { color: #a5b4fc; }
+    .radio-card-label { font-size: 0.75rem; font-weight: 700; color: #64748b; }
+    .radio-card.selected-present .radio-card-label { color: #16a34a; }
+    .radio-card.selected-absent .radio-card-label { color: #dc2626; }
+    .radio-card.selected-rescheduled .radio-card-label { color: #d97706; }
+    .radio-card.selected-punctual .radio-card-label { color: #4338ca; }
 
     /* Star rating */
     .star-group { display: flex; gap: 8px; align-items: center; }
     .star-btn {
       font-size: 2rem;
       cursor: pointer;
-      color: rgba(255,255,255,0.15);
+      color: #cbd5e1;
       transition: color 0.15s, transform 0.1s;
       background: none; border: none; padding: 0; line-height: 1;
     }
@@ -220,7 +221,7 @@
     .star-feedback {
       font-size: 0.78rem;
       font-weight: 600;
-      color: #f59e0b;
+      color: #d97706;
       margin-left: 8px;
       min-width: 120px;
     }
@@ -230,23 +231,23 @@
     .pill-radio {
       padding: 0.5rem 1rem;
       border-radius: 20px;
-      border: 1.5px solid rgba(255,255,255,0.1);
-      background: #0f1117;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
       cursor: pointer;
       font-size: 0.78rem;
       font-weight: 600;
-      color: #64748b;
+      color: #475569;
       transition: all 0.2s;
       user-select: none;
     }
-    .pill-radio:hover { border-color: rgba(121,120,233,0.5); color: #a5b4fc; }
-    .pill-radio.selected { border-color: #7978E9; background: rgba(121,120,233,0.18); color: #c7d2fe; }
+    .pill-radio:hover { border-color: rgba(79,70,229,0.4); color: #4f46e5; }
+    .pill-radio.selected { border-color: #4f46e5; background: #eef2ff; color: #3730a3; }
     .pill-radio input { display: none; }
 
     /* Nav buttons */
     .btn-primary {
       padding: 0.75rem 1.75rem;
-      background: linear-gradient(135deg, #4B49AC, #7978E9);
+      background: linear-gradient(135deg, #4f46e5, #4338ca);
       color: #fff;
       border-radius: 12px;
       font-weight: 700;
@@ -255,24 +256,25 @@
       cursor: pointer;
       transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
       display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 12px rgba(79,70,229,0.3);
     }
-    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(121,120,233,0.35); }
+    .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(79,70,229,0.4); }
     .btn-secondary {
       padding: 0.75rem 1.5rem;
-      background: rgba(255,255,255,0.06);
-      color: #94a3b8;
+      background: #ffffff;
+      color: #475569;
       border-radius: 12px;
       font-weight: 600;
       font-size: 0.9rem;
-      border: 1.5px solid rgba(255,255,255,0.08);
+      border: 1.5px solid #cbd5e1;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.2s, border-color 0.2s;
       display: inline-flex; align-items: center; gap: 8px;
     }
-    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+    .btn-secondary:hover { background: #f8fafc; border-color: #94a3b8; color: #0f172a; }
     .btn-submit {
       padding: 0.85rem 2rem;
-      background: linear-gradient(135deg, #f4600c, #ff8c42);
+      background: linear-gradient(135deg, #f4600c, #ea580c);
       color: #fff;
       border-radius: 12px;
       font-weight: 700;
@@ -281,21 +283,22 @@
       cursor: pointer;
       transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
       display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 16px rgba(244,96,12,0.35);
     }
-    .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(244,96,12,0.4); }
+    .btn-submit:hover { opacity: 0.95; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(244,96,12,0.45); }
 
     /* Confirm checkbox */
     .confirm-check {
       display: flex; align-items: flex-start; gap: 12px;
       padding: 1rem 1.25rem;
-      background: rgba(34,197,94,0.07);
-      border: 1.5px solid rgba(34,197,94,0.25);
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
       border-radius: 12px;
       cursor: pointer;
     }
     .confirm-check input[type="checkbox"] {
       width: 20px; height: 20px;
-      accent-color: #22c55e;
+      accent-color: #16a34a;
       margin-top: 1px;
       flex-shrink: 0;
       cursor: pointer;
@@ -303,7 +306,7 @@
     .confirm-check span {
       font-size: 0.83rem;
       font-weight: 600;
-      color: #86efac;
+      color: #166534;
       line-height: 1.45;
     }
 
@@ -347,7 +350,7 @@
 </head>
 <body class="min-h-screen">
   <!-- Loading Screen -->
-  <div id="loading-screen" class="fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500" style="background:#0f1117;">
+  <div id="loading-screen" class="fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500" style="background:#f8fafc;">
     <div class="text-center">
       <div class="loader mx-auto mb-8 relative" style="height:30px;">
         <span><span></span><span></span><span></span><span></span></span>
@@ -417,15 +420,15 @@
   <main class="lg:ml-64 p-4 md:p-8 relative z-10" style="min-height:100vh;">
     <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
       <div class="flex items-center gap-3">
-        <button id="menu-btn" class="lg:hidden p-2 focus:outline-none" style="color:rgba(255,255,255,0.6);" aria-label="Toggle menu">
+        <button id="menu-btn" class="lg:hidden p-2 focus:outline-none" style="color:#64748b;" aria-label="Toggle menu">
           <i data-lucide="menu" class="w-6 h-6"></i>
         </button>
         <div>
-          <h1 class="text-2xl font-bold font-nunito" style="color:#f1f5f9;">Log New Session</h1>
-          <p style="color:rgba(255,255,255,0.75);font-size:0.85rem;">Record progress, attendance, and feedback for your student</p>
+          <h1 class="text-2xl font-bold font-nunito" style="color:#0f172a;">Log New Session</h1>
+          <p style="color:#64748b;font-size:0.85rem;">Record progress, attendance, and feedback for your student</p>
         </div>
       </div>
-      <a href="tutor-attendance.html" class="inline-flex items-center gap-2 text-sm font-semibold self-start sm:self-auto" style="color:rgba(255,255,255,0.85);">
+      <a href="tutor-attendance.html" class="inline-flex items-center gap-2 text-sm font-semibold self-start sm:self-auto hover:text-slate-900 transition-colors" style="color:#475569;">
         <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to History
       </a>
     </header>
@@ -649,9 +652,10 @@
 
             <!-- Homework Assigned -->
             <div class="mb-5">
-              <label class="form-label">Homework Assigned</label>
-              <textarea id="homework_assigned" name="homework_assigned" class="form-input" rows="4" maxlength="1500"
+              <label class="form-label">Homework Assigned <span style="color:#ef4444;">*</span></label>
+              <textarea id="homework_assigned" name="homework_assigned" class="form-input" rows="4" maxlength="1500" required
                         placeholder="Clear instructions for student &amp; parents, e.g. Complete Scratch project Level 3, due next class"></textarea>
+              <p class="error-msg" id="err-homework">Please specify the homework/assignment given for this class.</p>
             </div>
 
             <!-- Review & Confirm -->
@@ -664,14 +668,14 @@
             </div>
 
             <!-- Info notice -->
-            <div class="p-4 rounded-xl text-xs mb-4" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.35);">
-              <i data-lucide="info" style="display:inline;width:14px;height:14px;vertical-align:middle;margin-right:6px;"></i>
-              Attendance entries are submitted as <strong style="color:rgba(255,255,255,0.5);">Pending</strong> and will notify the Admin dashboard instantly. Upon approval, parent portal metrics will update.
+            <div class="p-4 rounded-xl text-xs mb-4" style="background:#f1f5f9;border:1px solid #e2e8f0;color:#64748b;">
+              <i data-lucide="info" style="display:inline;width:14px;height:14px;vertical-align:middle;margin-right:6px;color:#f4600c;"></i>
+              Attendance entries are submitted as <strong style="color:#0f172a;">Pending</strong> and will notify the Admin dashboard instantly. Upon approval, parent portal metrics will update.
             </div>
           </div>
 
           <!-- Navigation Buttons -->
-          <div class="flex items-center justify-between mt-6 pt-4" style="border-top:1px solid rgba(255,255,255,0.07);">
+          <div class="flex items-center justify-between mt-6 pt-4" style="border-top:1px solid #e2e8f0;">
             <button type="button" id="btn-back" class="btn-secondary" style="display:none;" onclick="navigateSection(-1)">
               <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
             </button>
@@ -691,8 +695,8 @@
     <div id="success-screen" class="max-w-2xl dark-card" style="display:none;">
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 2rem;text-align:center;">
         <div class="success-check-circle" style="display:flex;align-items:center;justify-content:center;margin-bottom:1rem;"><span data-icon-3d="check" data-icon-size="52"></span></div>
-        <h2 style="font-size:1.6rem;font-weight:800;color:#f1f5f9;margin-bottom:0.75rem;">Session Logged Successfully!</h2>
-        <p style="color:rgba(255,255,255,0.5);font-size:0.95rem;max-width:400px;margin-bottom:2rem;">
+        <h2 style="font-size:1.6rem;font-weight:800;color:#0f172a;margin-bottom:0.75rem;">Session Logged Successfully!</h2>
+        <p style="color:#64748b;font-size:0.95rem;max-width:400px;margin-bottom:2rem;">
           Parents will see this in their portal once the admin approves the record.
         </p>
         <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
@@ -907,7 +911,15 @@
 
   // ─── Submit ───────────────────────────────────────────────────────────
   function submitDailyLog(){
-    // Validate section 4
+    // Validate section 4 homework
+    var hwVal = document.getElementById('homework_assigned').value.trim();
+    if(!hwVal){
+      document.getElementById('err-homework').classList.add('show');
+      return;
+    }
+    document.getElementById('err-homework').classList.remove('show');
+
+    // Validate section 4 confirmation
     var confirmCheck = document.getElementById('confirm_accuracy');
     if(!confirmCheck.checked){
       document.getElementById('err-confirm').classList.add('show'); return;
@@ -994,15 +1006,14 @@
       }
       
       var students = [];
-      if(typeof DashboardEngine !== 'undefined'){
-        if(DashboardEngine.getTutorStudents) students = DashboardEngine.getTutorStudents();
-        if(!students.length && DashboardEngine.getStudents) students = DashboardEngine.getStudents();
+      if(typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutorStudents){
+        students = DashboardEngine.getTutorStudents();
       }
       
+      document.getElementById('student-display-wrap').style.display = 'none';
+      document.getElementById('student-dropdown-wrap').style.display = 'block';
+      var sel = document.getElementById('student_id_select');
       if(students && students.length){
-        document.getElementById('student-display-wrap').style.display = 'none';
-        document.getElementById('student-dropdown-wrap').style.display = 'block';
-        var sel = document.getElementById('student_id_select');
         sel.innerHTML = '<option value="">Choose student...</option>';
         students.forEach(function(s){
           var fullName = (s.firstName && s.lastName) ? (s.firstName + ' ' + s.lastName) : (s.firstName || s.name || s.display_name || s.email || 'Student');
@@ -1029,11 +1040,10 @@
           }
         };
         return;
+      } else {
+        sel.innerHTML = '<option value="">No assigned students found (Contact Admin)</option>';
       }
     } catch(e){ console.warn('Student populate error', e); }
-    // Fallback: show dropdown empty
-    document.getElementById('student-display-wrap').style.display = 'none';
-    document.getElementById('student-dropdown-wrap').style.display = 'block';
   }
 
   // ─── Init ─────────────────────────────────────────────────────────────

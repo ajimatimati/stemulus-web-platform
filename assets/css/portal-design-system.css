@@ -561,34 +561,165 @@ body:has(.sidebar-overlay.active) .pill-toolbar {
 }
 
 /* ==========================================================================
-   BUTTONS
+   BUTTONS — 3D TACTILE BUTTON DESIGN SYSTEM
+   Each variant features matching color layers: top surface, 3D bottom shelf bevel,
+   ambient colored glow, interactive hover elevation, and responsive active press-down.
    ========================================================================== */
 .btn-3d {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    border-radius: var(--radius-btn);
+    border-radius: 14px;
     font-family: 'Nunito', sans-serif;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 0.9rem;
     text-decoration: none;
     border: none;
     cursor: pointer;
-    box-shadow: var(--shadow-btn);
-    transition: all 0.15s ease;
+    background: #f4600c;
+    color: #ffffff !important;
+    box-shadow: 0 4px 0 #c2410c, 0 8px 16px rgba(244, 96, 12, 0.35);
+    transform: translateY(0);
+    transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    will-change: transform, box-shadow;
+}
+
+.btn-3d:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #9a3412, 0 12px 20px rgba(244, 96, 12, 0.45);
 }
 
 .btn-3d:active {
     transform: translateY(3px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 0 #9a3412, 0 3px 6px rgba(244, 96, 12, 0.25);
 }
 
-.btn-3d.brand { background-color: var(--brand-indigo); color: white; }
-.btn-3d.orange { background-color: var(--brand-orange); color: white; }
-.btn-3d.green { background-color: var(--status-green); color: white; }
-.btn-3d.teal { background-color: var(--stage-admin-1); color: white; }
+/* Orange / Primary Accent */
+.btn-3d.orange, .btn-3d-orange {
+    background: linear-gradient(180deg, #f97316 0%, #ea580c 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 0 #c2410c, 0 8px 16px rgba(234, 88, 12, 0.35) !important;
+}
+.btn-3d.orange:hover, .btn-3d-orange:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #9a3412, 0 12px 22px rgba(234, 88, 12, 0.45) !important;
+}
+.btn-3d.orange:active, .btn-3d-orange:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #9a3412, 0 3px 6px rgba(234, 88, 12, 0.25) !important;
+}
+
+/* Brand / Indigo / Mentor */
+.btn-3d.brand, .btn-3d-brand, .btn-3d.indigo {
+    background: linear-gradient(180deg, #4f46e5 0%, #4338ca 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 0 #3730a3, 0 8px 16px rgba(79, 70, 229, 0.35) !important;
+}
+.btn-3d.brand:hover, .btn-3d-brand:hover, .btn-3d.indigo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #312e81, 0 12px 22px rgba(79, 70, 229, 0.45) !important;
+}
+.btn-3d.brand:active, .btn-3d-brand:active, .btn-3d.indigo:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #312e81, 0 3px 6px rgba(79, 70, 229, 0.25) !important;
+}
+
+/* Blue / Join Class */
+.btn-3d.blue, .btn-3d-blue {
+    background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 0 #1d4ed8, 0 8px 16px rgba(37, 99, 235, 0.35) !important;
+}
+.btn-3d.blue:hover, .btn-3d-blue:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #1e40af, 0 12px 22px rgba(37, 99, 235, 0.45) !important;
+}
+.btn-3d.blue:active, .btn-3d-blue:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #1e40af, 0 3px 6px rgba(37, 99, 235, 0.25) !important;
+}
+
+/* Green / Success */
+.btn-3d.green, .btn-3d-green {
+    background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 0 #15803d, 0 8px 16px rgba(22, 163, 74, 0.35) !important;
+}
+.btn-3d.green:hover, .btn-3d-green:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #166534, 0 12px 22px rgba(22, 163, 74, 0.45) !important;
+}
+.btn-3d.green:active, .btn-3d-green:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #166534, 0 3px 6px rgba(22, 163, 74, 0.25) !important;
+}
+
+/* Teal / Admin */
+.btn-3d.teal, .btn-3d-teal {
+    background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 0 #0f766e, 0 8px 16px rgba(13, 148, 136, 0.35) !important;
+}
+.btn-3d.teal:hover, .btn-3d-teal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #115e59, 0 12px 22px rgba(13, 148, 136, 0.45) !important;
+}
+.btn-3d.teal:active, .btn-3d-teal:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #115e59, 0 3px 6px rgba(13, 148, 136, 0.25) !important;
+}
+
+/* Purple / Violet */
+.btn-3d.purple, .btn-3d-purple {
+    background: linear-gradient(180deg, #a855f7 0%, #8b5cf6 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 0 #7c3aed, 0 8px 16px rgba(139, 92, 246, 0.35) !important;
+}
+.btn-3d.purple:hover, .btn-3d-purple:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #6d28d9, 0 12px 22px rgba(139, 92, 246, 0.45) !important;
+}
+.btn-3d.purple:active, .btn-3d-purple:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #6d28d9, 0 3px 6px rgba(139, 92, 246, 0.25) !important;
+}
+
+/* Red / Danger */
+.btn-3d.red, .btn-3d-red, .btn-3d.danger {
+    background: linear-gradient(180deg, #f87171 0%, #ef4444 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 0 #dc2626, 0 8px 16px rgba(239, 68, 68, 0.35) !important;
+}
+.btn-3d.red:hover, .btn-3d-red:hover, .btn-3d.danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #b91c1c, 0 12px 22px rgba(239, 68, 68, 0.45) !important;
+}
+.btn-3d.red:active, .btn-3d-red:active, .btn-3d.danger:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #b91c1c, 0 3px 6px rgba(239, 68, 68, 0.25) !important;
+}
+
+/* Secondary / Light / Neutral */
+.btn-3d.secondary, .btn-3d-secondary {
+    background: #ffffff !important;
+    color: #1e293b !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 4px 0 #cbd5e1, 0 8px 16px rgba(15, 23, 42, 0.06) !important;
+}
+.btn-3d.secondary:hover, .btn-3d-secondary:hover {
+    transform: translateY(-2px);
+    border-color: #94a3b8 !important;
+    box-shadow: 0 6px 0 #94a3b8, 0 12px 20px rgba(15, 23, 42, 0.1) !important;
+}
+.btn-3d.secondary:active, .btn-3d-secondary:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #94a3b8, 0 3px 6px rgba(15, 23, 42, 0.05) !important;
+}
 
 /* ==========================================================================
    STATUS CUBES (Attendance badges)

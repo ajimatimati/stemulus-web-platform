@@ -517,10 +517,16 @@
         const schedules = DashboardEngine.getSchedules().filter(s => studentIds.includes(s.studentId));
 
         let certCount = 0;
-        students.forEach(s => { certCount += DashboardEngine.getCertificates(s.firstName).length; });
+        let monthlySessionsTarget = 0;
+        students.forEach(s => { 
+            certCount += DashboardEngine.getCertificates(s.firstName).length; 
+            monthlySessionsTarget += (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateMonthlySessionTarget)
+                ? DashboardEngine.calculateMonthlySessionTarget(s)
+                : (s.metrics && s.metrics.total ? s.metrics.total : 8);
+        });
 
         document.getElementById('kpi-children').textContent = students.length;
-        document.getElementById('kpi-sessions').textContent = schedules.length;
+        document.getElementById('kpi-sessions').textContent = monthlySessionsTarget;
         document.getElementById('kpi-certs').textContent = certCount;
       } catch(e) {}
     }

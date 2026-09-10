@@ -103,6 +103,43 @@
     /* Bottom dock / pill toolbar: iOS safe-area inset */
     .pill-toolbar { padding-bottom: env(safe-area-inset-bottom, 0); }
 
+    /* Collapsible Desktop Sidebar */
+    @media (min-width: 1024px) {
+      body.sidebar-collapsed #sidebar {
+        width: 80px !important;
+      }
+      body.sidebar-collapsed #sidebar .sidebar-text,
+      body.sidebar-collapsed #sidebar .nav-text,
+      body.sidebar-collapsed #sidebar #sidebar-avatar + div,
+      body.sidebar-collapsed #sidebar #sidebar-logout-btn span {
+        display: none !important;
+      }
+      body.sidebar-collapsed #sidebar .px-5 {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+        justify-content: center !important;
+      }
+      body.sidebar-collapsed #sidebar nav a {
+        justify-content: center !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        gap: 0 !important;
+      }
+      body.sidebar-collapsed #sidebar .p-4 {
+        padding: 0.75rem 0.5rem !important;
+      }
+      body.sidebar-collapsed #sidebar #sidebar-logout-btn {
+        padding: 0.5rem !important;
+      }
+      body.sidebar-collapsed .lg\:ml-64,
+      body.sidebar-collapsed .tutor-nav {
+        margin-left: 80px !important;
+      }
+      .tutor-nav, .lg\:ml-64, #sidebar {
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    }
+
     /* Full-width tutor-nav on all mobile breakpoints */
     @media (max-width: 1023px) {
       .tutor-nav { width: 100%; box-sizing: border-box; }
@@ -117,6 +154,12 @@
       // Not logged in as tutor or admin - redirect to login
       window.location.replace('parent-login.html?role=tutor');
     }
+    if(localStorage.getItem('stemulus_tutor_sidebar_collapsed') === 'true'){
+      document.documentElement.classList.add('sidebar-collapsed');
+      document.addEventListener('DOMContentLoaded', function(){
+        document.body.classList.add('sidebar-collapsed');
+      });
+    }
   } catch(e){}
 })();
 </script>
@@ -127,9 +170,9 @@
   <!-- Tutor Sidebar -->
   <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 flex flex-col z-50" style="position:fixed;width:256px;height:100%;top:0;left:0;z-index:50;background:#0f1117;border-right:1px solid rgba(255,255,255,0.07);border-radius:0 24px 24px 0;">
     <div class="px-5 py-6 flex items-center justify-between gap-3" style="border-bottom:1px solid rgba(255,255,255,0.07);">
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 min-w-0">
         <img src="favicon.png" width="36" height="36" style="border-radius:10px;object-fit:contain;flex-shrink:0;" alt="STEMulus">
-        <div class="min-w-0">
+        <div class="min-w-0 sidebar-text">
           <span class="font-nunito font-bold text-lg whitespace-nowrap block" style="color:#ffffff;line-height:1.2;">STEMulus</span>
           <p class="text-xs font-medium" style="color:rgba(255,255,255,0.80);letter-spacing:0.02em;">Tutor Portal</p>
         </div>
@@ -137,37 +180,40 @@
       <button type="button" id="sidebar-close-btn" class="lg:hidden p-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors" aria-label="Close sidebar">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
+      <button type="button" id="desktop-sidebar-collapse-btn" onclick="toggleTutorSidebar()" class="hidden lg:inline-flex p-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors" title="Toggle Sidebar">
+        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+      </button>
     </div>
     <nav class="flex-1 p-4 space-y-1" style="overflow-y:auto;">
-      <a href="tutor-dashboard.html" class="flex items-center gap-3 px-4 py-3 font-semibold" style="border-radius:16px;background:rgba(244,96,12,0.18);color:#f4600c;">
-        <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
+      <a href="tutor-dashboard.html" class="flex items-center gap-3 px-4 py-3 font-semibold" style="border-radius:16px;background:rgba(244,96,12,0.18);color:#f4600c;" title="Dashboard">
+        <i data-lucide="layout-dashboard" class="w-5 h-5 shrink-0"></i> <span class="nav-text">Dashboard</span>
       </a>
-      <a href="tutor-students.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
-        <i data-lucide="users" class="w-5 h-5"></i> My Students
+      <a href="tutor-students.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="My Students">
+        <i data-lucide="users" class="w-5 h-5 shrink-0"></i> <span class="nav-text">My Students</span>
       </a>
-      <a href="tutor-attendance.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
-        <i data-lucide="clipboard-list" class="w-5 h-5"></i> Attendance History
+      <a href="tutor-attendance.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="Attendance History">
+        <i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i> <span class="nav-text">Attendance History</span>
       </a>
-      <a href="tutor-attendance-create.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
-        <i data-lucide="clipboard-check" class="w-5 h-5"></i> Class Log
+      <a href="tutor-attendance-create.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="Class Log">
+        <i data-lucide="clipboard-check" class="w-5 h-5 shrink-0"></i> <span class="nav-text">Class Log</span>
       </a>
-      <a href="tutor-monthly-report.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
-        <i data-lucide="file-bar-chart" class="w-5 h-5"></i> My Reports
+      <a href="tutor-monthly-report.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="My Reports">
+        <i data-lucide="file-bar-chart" class="w-5 h-5 shrink-0"></i> <span class="nav-text">My Reports</span>
       </a>
-      <a href="#schedule-list" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
-        <i data-lucide="calendar" class="w-5 h-5"></i> My Schedule
+      <a href="#schedule-list" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="My Schedule">
+        <i data-lucide="calendar" class="w-5 h-5 shrink-0"></i> <span class="nav-text">My Schedule</span>
       </a>
     </nav>
     <div class="p-4" style="border-top:1px solid rgba(255,255,255,0.07);">
       <div class="flex items-center gap-3 mb-3 px-2">
         <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs" style="background:rgba(244,96,12,0.25);color:#f4600c;" id="sidebar-avatar">T</div>
-        <div class="flex-1 min-w-0">
+        <div class="flex-1 min-w-0 sidebar-text">
           <p class="text-sm font-bold truncate" style="color:rgba(255,255,255,0.9);" id="sidebar-tutor-name">Tutor Name</p>
           <p class="text-xs truncate" style="color:rgba(255,255,255,0.75);">Instructor</p>
         </div>
       </div>
-      <button id="sidebar-logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=tutor';" class="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors" style="border:none;background:rgba(255,255,255,0.05);cursor:pointer;">
-        <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+      <button id="sidebar-logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=tutor';" class="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors" style="border:none;background:rgba(255,255,255,0.05);cursor:pointer;" title="Sign Out">
+        <i data-lucide="log-out" class="w-4 h-4"></i> <span class="sidebar-text">Sign Out</span>
       </button>
     </div>
   </aside>
@@ -186,6 +232,9 @@
       <div style="display:flex; align-items:center; gap:12px;">
         <button id="menu-btn" class="lg:hidden" style="background:none;border:none;cursor:pointer;padding:8px;color:#64748b;" aria-label="Toggle sidebar">
           <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <button type="button" id="desktop-sidebar-toggle" onclick="toggleTutorSidebar()" class="hidden lg:inline-flex items-center justify-center p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors" title="Toggle Sidebar">
+          <i data-lucide="panel-left-close" class="w-5 h-5"></i>
         </button>
         <div id="avatar-initials" style="width:36px; height:36px; border-radius:50%; background:var(--stage-tutor-1); color:white; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">T</div>
         <div>
@@ -427,6 +476,16 @@
       if(closeBtn) closeBtn.onclick=closeDrawer;
       sb.querySelectorAll('a').forEach(function(a){ a.onclick=closeDrawer; });
     }
+
+    window.toggleTutorSidebar = function() {
+      var isCollapsed = document.body.classList.toggle('sidebar-collapsed');
+      localStorage.setItem('stemulus_tutor_sidebar_collapsed', isCollapsed ? 'true' : 'false');
+      var btnIcon = document.querySelector('#desktop-sidebar-collapse-btn i');
+      var navIcon = document.querySelector('#desktop-sidebar-toggle i');
+      if (btnIcon) btnIcon.setAttribute('data-lucide', isCollapsed ? 'chevron-right' : 'chevron-left');
+      if (navIcon) navIcon.setAttribute('data-lucide', isCollapsed ? 'panel-left-open' : 'panel-left-close');
+      if (window.lucide) lucide.createIcons();
+    };
   })();
   </script>
   <script src="assets/js/class-reminder-engine.js" defer></script>

@@ -126,20 +126,63 @@ const TutorEngine = (function() {
 
     function renderStats() {
         if (!currentTutor) return;
-        const schedules = DashboardEngine.getSchedules().filter(s => s.mentor === currentTutor.name && s.attendanceStatus === 'pending');
-        const students = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(currentTutor.email) : DashboardEngine.getStudents().filter(s => s.tutorName === currentTutor.name);
+        const schedules = DashboardEngine.getSchedules().filter(s => 
+            (s.mentor === currentTutor.name || (s.tutorEmail && s.tutorEmail.toLowerCase() === currentTutor.email.toLowerCase())) && 
+            s.attendanceStatus === 'pending'
+        );
+        const students = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(currentTutor.email) : [];
 
         const upcomingEl = document.getElementById('stat-upcoming');
         const studentsEl = document.getElementById('stat-students');
         if (upcomingEl) upcomingEl.textContent = schedules.length;
         if (studentsEl) studentsEl.textContent = students.length;
+        const kpiUpcoming = document.getElementById('kpi-upcoming');
+        if (kpiUpcoming) kpiUpcoming.textContent = schedules.length;
+        const kpiStudents = document.getElementById('kpi-students');
+        if (kpiStudents) kpiStudents.textContent = students.length;
+
+        // Teaching hours: calculate from approved attendance records and approved schedules
+        var db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
+        var tutorNameLower = (currentTutor.name || '').toLowerCase();
+        var tutorEmailLower = (currentTutor.email || '').toLowerCase();
+
+        var approvedAttendance = (db.attendanceRecords || []).filter(function(r) {
+            var mName = (r.tutorName || r.mentor || '').toLowerCase();
+            var mEmail = (r.tutorEmail || '').toLowerCase();
+            var isTutor = (tutorNameLower && mName === tutorNameLower) || (tutorEmailLower && mEmail === tutorEmailLower);
+            return isTutor && (r.status === 'approved' || r.status === 'present');
+        });
+
         var allSchedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
-        var completedSessions = allSchedules.filter(function(s) { return (s.mentor === currentTutor.name || s.tutorEmail === currentTutor.email) && s.attendanceStatus === 'present'; });
-        var totalMins = completedSessions.reduce(function(sum, s) { return sum + (parseInt(s.duration) || 60); }, 0);
-        var hoursVal = Math.round(totalMins / 60);
-        var hoursEl = document.getElementById('stat-hours'); if (hoursEl) hoursEl.textContent = hoursVal + 'h';
+        var approvedSchedules = allSchedules.filter(function(s) {
+            var mName = (s.mentor || '').toLowerCase();
+            var mEmail = (s.tutorEmail || '').toLowerCase();
+            var isTutor = (tutorNameLower && mName === tutorNameLower) || (tutorEmailLower && mEmail === tutorEmailLower);
+            return isTutor && (s.attendanceStatus === 'present' || s.status === 'approved');
+        });
+
+        var approvedSessionMinutes = 0;
+        var countedScheduleIds = {};
+
+        approvedAttendance.forEach(function(r) {
+            if (r.scheduleId) countedScheduleIds[r.scheduleId] = true;
+            approvedSessionMinutes += (parseInt(r.duration) || 60);
+        });
+
+        approvedSchedules.forEach(function(s) {
+            if (!countedScheduleIds[s.id]) {
+                approvedSessionMinutes += (parseInt(s.duration) || 60);
+            }
+        });
+
+        var hoursVal = Math.round((approvedSessionMinutes / 60) * 10) / 10;
+        var hoursDisplay = (hoursVal % 1 === 0) ? (hoursVal + 'h') : (hoursVal.toFixed(1) + 'h');
+        var hoursNum = (hoursVal % 1 === 0) ? hoursVal : hoursVal.toFixed(1);
+
+        var hoursEl = document.getElementById('stat-hours'); 
+        if (hoursEl) hoursEl.textContent = hoursDisplay;
         var kh = document.getElementById('kpi-hours');
-        if (kh && hoursEl) kh.textContent = hoursEl.textContent.replace('h','');
+        if (kh) kh.textContent = hoursNum;
     }
 
     function renderSchedule() {

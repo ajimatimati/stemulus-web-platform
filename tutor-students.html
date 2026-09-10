@@ -208,12 +208,12 @@
       }
 
       function loadStudents() {
-        const identifier = currentTutor.email || currentTutor.name || 'tutor';
-        let rawStudents = DashboardEngine.getStudentsByTutor ? DashboardEngine.getStudentsByTutor(identifier) : [];
-        
-        // If demo/admin viewing or no tutor assigned, load all active students
-        if (!rawStudents || rawStudents.length === 0) {
+        let rawStudents = [];
+        if (currentTutor && currentTutor.role === 'admin') {
           rawStudents = DashboardEngine.getStudents ? DashboardEngine.getStudents() : [];
+        } else {
+          const identifier = (currentTutor && (currentTutor.email || currentTutor.name)) || '';
+          rawStudents = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(identifier) : (DashboardEngine.getStudentsByTutor ? DashboardEngine.getStudentsByTutor(identifier) : []);
         }
 
         studentsList = rawStudents;

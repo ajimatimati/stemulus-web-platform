@@ -168,6 +168,12 @@
     </div>
   </div>
 
+  <!-- Firebase SDK (Compat) for Real-time Multi-Device Auth Sync -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="assets/js/firebase-config.min.js" defer></script>
+
   <!-- Scripts -->
   <script src="assets/js/dashboard-engine.min.js" defer></script>
   <script src="assets/js/portal-scene-engine.min.js" defer></script>
@@ -292,8 +298,8 @@
       var submitBtn = document.querySelector('#login-form button[type="submit"]') || document.querySelector('.btn-login');
       var originalText = submitBtn ? submitBtn.textContent : '';
       if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Signing in...'; }
-      const email = document.getElementById('email').value;
-      const pwd = document.getElementById('password').value;
+      const email = (document.getElementById('email').value || '').trim();
+      const pwd = (document.getElementById('password').value || '');
       const role = document.getElementById('login-role').value;
       const errorBox = document.getElementById('error-box');
 

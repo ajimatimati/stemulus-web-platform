@@ -2638,26 +2638,88 @@ a, button,
   box-shadow: 0 0 0 #94a3b8, 0 2px 4px rgba(15, 23, 42, 0.03);
 }
 
-.btn-3d-blue {
+.btn-3d-blue, .btn-3d.blue {
   background: #2563eb;
-  box-shadow: 0 4px 0 #1e40af, 0 8px 16px rgba(37, 99, 235, 0.3);
+  color: #ffffff !important;
+  box-shadow: 0 4px 0 #1e40af, 0 8px 16px rgba(37, 99, 235, 0.35);
 }
-.btn-3d-blue:hover {
-  box-shadow: 0 6px 0 #1e40af, 0 12px 20px rgba(37, 99, 235, 0.4);
+.btn-3d-blue:hover, .btn-3d.blue:hover {
+  box-shadow: 0 6px 0 #1e40af, 0 12px 20px rgba(37, 99, 235, 0.45);
 }
-.btn-3d-blue:active {
-  box-shadow: 0 0 0 #1e40af, 0 2px 4px rgba(37, 99, 235, 0.3);
+.btn-3d-blue:active, .btn-3d.blue:active {
+  box-shadow: 0 1px 0 #1e40af, 0 2px 4px rgba(37, 99, 235, 0.25);
 }
 
-.btn-3d-green {
+.btn-3d-green, .btn-3d.green {
   background: #16a34a;
-  box-shadow: 0 4px 0 #166534, 0 8px 16px rgba(22, 163, 74, 0.3);
+  color: #ffffff !important;
+  box-shadow: 0 4px 0 #166534, 0 8px 16px rgba(22, 163, 74, 0.35);
 }
-.btn-3d-green:hover {
-  box-shadow: 0 6px 0 #166534, 0 12px 20px rgba(22, 163, 74, 0.4);
+.btn-3d-green:hover, .btn-3d.green:hover {
+  box-shadow: 0 6px 0 #166534, 0 12px 20px rgba(22, 163, 74, 0.45);
 }
-.btn-3d-green:active {
-  box-shadow: 0 0 0 #166534, 0 2px 4px rgba(22, 163, 74, 0.3);
+.btn-3d-green:active, .btn-3d.green:active {
+  box-shadow: 0 1px 0 #166534, 0 2px 4px rgba(22, 163, 74, 0.25);
+}
+
+.btn-3d-brand, .btn-3d.brand, .btn-3d.indigo {
+  background: #4f46e5;
+  color: #ffffff !important;
+  box-shadow: 0 4px 0 #3730a3, 0 8px 16px rgba(79, 70, 229, 0.35);
+}
+.btn-3d-brand:hover, .btn-3d.brand:hover, .btn-3d.indigo:hover {
+  box-shadow: 0 6px 0 #312e81, 0 12px 20px rgba(79, 70, 229, 0.45);
+}
+.btn-3d-brand:active, .btn-3d.brand:active, .btn-3d.indigo:active {
+  box-shadow: 0 1px 0 #312e81, 0 2px 4px rgba(79, 70, 229, 0.25);
+}
+
+.btn-3d-orange, .btn-3d.orange {
+  background: #ea580c;
+  color: #ffffff !important;
+  box-shadow: 0 4px 0 #c2410c, 0 8px 16px rgba(234, 88, 12, 0.35);
+}
+.btn-3d-orange:hover, .btn-3d.orange:hover {
+  box-shadow: 0 6px 0 #9a3412, 0 12px 20px rgba(234, 88, 12, 0.45);
+}
+.btn-3d-orange:active, .btn-3d.orange:active {
+  box-shadow: 0 1px 0 #9a3412, 0 2px 4px rgba(234, 88, 12, 0.25);
+}
+
+.btn-3d-purple, .btn-3d.purple {
+  background: #8b5cf6;
+  color: #ffffff !important;
+  box-shadow: 0 4px 0 #7c3aed, 0 8px 16px rgba(139, 92, 246, 0.35);
+}
+.btn-3d-purple:hover, .btn-3d.purple:hover {
+  box-shadow: 0 6px 0 #6d28d9, 0 12px 20px rgba(139, 92, 246, 0.45);
+}
+.btn-3d-purple:active, .btn-3d.purple:active {
+  box-shadow: 0 1px 0 #6d28d9, 0 2px 4px rgba(139, 92, 246, 0.25);
+}
+
+.btn-3d-teal, .btn-3d.teal {
+  background: #0d9488;
+  color: #ffffff !important;
+  box-shadow: 0 4px 0 #0f766e, 0 8px 16px rgba(13, 148, 136, 0.35);
+}
+.btn-3d-teal:hover, .btn-3d.teal:hover {
+  box-shadow: 0 6px 0 #115e59, 0 12px 20px rgba(13, 148, 136, 0.45);
+}
+.btn-3d-teal:active, .btn-3d.teal:active {
+  box-shadow: 0 1px 0 #115e59, 0 2px 4px rgba(13, 148, 136, 0.25);
+}
+
+.btn-3d-red, .btn-3d.red, .btn-3d.danger {
+  background: #ef4444;
+  color: #ffffff !important;
+  box-shadow: 0 4px 0 #dc2626, 0 8px 16px rgba(239, 68, 68, 0.35);
+}
+.btn-3d-red:hover, .btn-3d.red:hover, .btn-3d.danger:hover {
+  box-shadow: 0 6px 0 #b91c1c, 0 12px 20px rgba(239, 68, 68, 0.45);
+}
+.btn-3d-red:active, .btn-3d.red:active, .btn-3d.danger:active {
+  box-shadow: 0 1px 0 #b91c1c, 0 2px 4px rgba(239, 68, 68, 0.25);
 }
 
 /* ═══════════════════════════════════════════════

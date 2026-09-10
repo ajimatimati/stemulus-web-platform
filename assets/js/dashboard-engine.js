@@ -394,19 +394,39 @@ const DashboardEngine = (function() {
 
     async function login(email, password) {
         try {
-        const db = getDB();
-        const key = email.toLowerCase().trim();
-        const user = db.users[key];
+        let db = getDB();
+        const key = (email || '').toLowerCase().trim();
+        let user = db.users ? db.users[key] : null;
+
+        // Cloud fallback: If user not present in local store, fetch latest snapshot from Firestore
+        if (!user && typeof firebase !== 'undefined' && firebase.apps.length) {
+            try {
+                const snap = await firebase.firestore().collection('state').doc('current').get();
+                if (snap.exists) {
+                    const cloudData = snap.data();
+                    if (cloudData && cloudData.users) {
+                        db = cloudData;
+                        localStorage.setItem('stemulus_db', JSON.stringify(db));
+                        user = db.users[key];
+                    }
+                }
+            } catch (cloudErr) {
+                console.warn('[DashboardEngine] Cloud user fallback check failed:', cloudErr);
+            }
+        }
+
         if (!user) return { success: false, message: "Invalid email or password." };
 
+        const trimmedPwd = (password || '').trim();
         const inputHash = await hashPassword(password);
+        const trimmedHash = trimmedPwd !== password ? await hashPassword(trimmedPwd) : inputHash;
 
         let match = false;
         if (isHashed(user.password)) {
-            match = user.password === inputHash;
+            match = (user.password === inputHash || user.password === trimmedHash);
         } else {
             // Plaintext still in store — compare directly, then upgrade
-            match = user.password === password;
+            match = (user.password === password || user.password === trimmedPwd);
             if (match) {
                 db.users[key].password = inputHash;
                 saveDB(db);
@@ -438,14 +458,13 @@ const DashboardEngine = (function() {
     function getStudentsByTutor(tutorIdentifier) {
         var db = getDB ? getDB() : JSON.parse(localStorage.getItem('stemulus_db') || '{}');
         var students = db.students || [];
-        if (!tutorIdentifier) return students;
+        if (!tutorIdentifier) return [];
         var q = tutorIdentifier.toLowerCase().trim();
         return students.filter(function(s) {
             var tEmail = (s.tutorEmail || '').toLowerCase().trim();
             var tName = (s.tutorName || '').toLowerCase().trim();
             if (tEmail && tEmail === q) return true;
-            if (tName && (tName === q || q.includes(tName) || tName.includes(q))) return true;
-            if (q.includes('tutor') && (!tEmail || tEmail.includes('tutor') || tName.includes('tutor') || tName.includes('sarah'))) return true;
+            if (tName && tName === q) return true;
             return false;
         });
     }
@@ -664,6 +683,74 @@ const DashboardEngine = (function() {
         return record;
     }
 
+    function calculateMonthlySessionTarget(studentOrId, targetDate) {
+        const db = getDB();
+        const d = targetDate ? new Date(targetDate) : new Date();
+        const year = d.getFullYear();
+        const month = d.getMonth(); // 0-indexed (0 = Jan, 11 = Dec)
+        
+        let student = null;
+        if (typeof studentOrId === 'object' && studentOrId !== null) {
+            student = studentOrId;
+        } else if (typeof studentOrId === 'string') {
+            student = (db.students || []).find(s => s.id === studentOrId);
+        }
+
+        const studentSchedules = (db.schedules || []).filter(s => {
+            if (!student) return false;
+            return s.studentId === student.id || 
+                (s.studentName && s.studentName.toLowerCase().trim() === ((student.firstName || '') + ' ' + (student.lastName || '')).toLowerCase().trim());
+        });
+
+        const bookedDaysOfWeek = new Set();
+        
+        // 1. Check explicit scheduleDays on student record (e.g. ['Monday', 'Wednesday'] or [1, 3])
+        if (student && Array.isArray(student.scheduleDays) && student.scheduleDays.length > 0) {
+            const dayNames = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
+            student.scheduleDays.forEach(day => {
+                if (typeof day === 'number' && day >= 0 && day <= 6) bookedDaysOfWeek.add(day);
+                else if (typeof day === 'string' && dayNames[day.toLowerCase()] !== undefined) {
+                    bookedDaysOfWeek.add(dayNames[day.toLowerCase()]);
+                }
+            });
+        }
+
+        // 2. Check recurring booked days from all student schedules in db.schedules
+        studentSchedules.forEach(s => {
+            if (s.date) {
+                const schedDate = new Date(s.date + 'T00:00:00');
+                if (!isNaN(schedDate.getTime())) {
+                    bookedDaysOfWeek.add(schedDate.getDay());
+                }
+            }
+        });
+
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        if (bookedDaysOfWeek.size > 0) {
+            let sessionCount = 0;
+            for (let day = 1; day <= daysInMonth; day++) {
+                const checkDate = new Date(year, month, day);
+                if (bookedDaysOfWeek.has(checkDate.getDay())) {
+                    sessionCount++;
+                }
+            }
+            return sessionCount;
+        }
+
+        // 3. Fallback to weeklyFrequency (default 2x weekly booked sessions)
+        const weeklyFrequency = (student && student.weeklyFrequency) ? parseInt(student.weeklyFrequency) : 2;
+        const defaultDays = weeklyFrequency === 1 ? [6] : (weeklyFrequency === 2 ? [2, 4] : [1, 3, 5]);
+        let sessionCount = 0;
+        for (let day = 1; day <= daysInMonth; day++) {
+            const checkDate = new Date(year, month, day);
+            if (defaultDays.includes(checkDate.getDay())) {
+                sessionCount++;
+            }
+        }
+        return sessionCount;
+    }
+
     function updateAttendanceStatus(id, status) {
         const db = getDB();
         db.attendanceRecords = db.attendanceRecords || [];
@@ -674,22 +761,49 @@ const DashboardEngine = (function() {
             // If approved, update matching schedule and student metrics
             if (status === 'approved') {
                 const record = db.attendanceRecords[idx];
+                db.schedules = db.schedules || [];
                 const schedIdx = db.schedules.findIndex(s => 
                     s.studentId === record.studentId && 
                     s.date === record.classDate
                 );
                 if (schedIdx !== -1) {
                     db.schedules[schedIdx].attendanceStatus = 'present';
+                    db.schedules[schedIdx].topic = record.topic;
+                    db.schedules[schedIdx].homework = record.homeworkAssigned;
+                    db.schedules[schedIdx].homeworkAssigned = record.homeworkAssigned;
+                    db.schedules[schedIdx].tutorComment = record.tutorComment || record.notes;
+                    db.schedules[schedIdx].conceptGrasp = record.conceptGrasp || 0;
+                    db.schedules[schedIdx].whatBuilt = record.whatBuilt || '';
+                } else {
+                    // Create an approved schedule entry so tutor hours & calendar reflect it
+                    db.schedules.push({
+                        id: "sch-" + Date.now(),
+                        studentId: record.studentId,
+                        studentName: record.studentName,
+                        course: (Array.isArray(record.coursesCovered) && record.coursesCovered.length > 0 ? record.coursesCovered[0] : (record.course || 'STEM Program')),
+                        date: record.classDate,
+                        time: record.classTime || "16:00",
+                        duration: record.duration || "60",
+                        mentor: record.tutorName || "Faculty Instructor",
+                        link: "",
+                        attendanceStatus: 'present',
+                        topic: record.topic,
+                        homework: record.homeworkAssigned,
+                        homeworkAssigned: record.homeworkAssigned,
+                        tutorComment: record.tutorComment || record.notes,
+                        conceptGrasp: record.conceptGrasp || 0,
+                        whatBuilt: record.whatBuilt || ''
+                    });
                 }
                 
-                // Update student metrics (attended count)
+                // Update student metrics (attended count and per-month total sessions)
                 const studIdx = db.students.findIndex(s => s.id === record.studentId);
                 if (studIdx !== -1) {
                     if (!db.students[studIdx].metrics) {
                         db.students[studIdx].metrics = { attended: 0, total: 0, projects: 0, lines: 0 };
                     }
                     db.students[studIdx].metrics.attended = (db.students[studIdx].metrics.attended || 0) + 1;
-                    db.students[studIdx].metrics.total = (db.students[studIdx].metrics.total || 0) + 1;
+                    db.students[studIdx].metrics.total = calculateMonthlySessionTarget(db.students[studIdx], record.classDate);
                 }
 
                 // Add progress report
@@ -698,13 +812,32 @@ const DashboardEngine = (function() {
                     id: "rep-" + Date.now(),
                     studentId: record.studentId,
                     studentName: record.studentName,
-                    program: record.coursesCovered.join(", "),
+                    program: Array.isArray(record.coursesCovered) ? record.coursesCovered.join(", ") : (record.course || "STEM Program"),
                     date: record.classDate,
                     tutorName: record.tutorName,
                     module: record.topic,
-                    grade: "A",
-                    feedback: record.notes
+                    grade: (record.conceptGrasp >= 4 ? "A" : (record.conceptGrasp >= 3 ? "B" : "Satisfactory")),
+                    feedback: record.tutorComment || record.notes || (record.whatBuilt ? 'Built: ' + record.whatBuilt : 'Active class participation.'),
+                    homework: record.homeworkAssigned,
+                    homeworkAssigned: record.homeworkAssigned,
+                    whatBuilt: record.whatBuilt,
+                    attendanceRecordId: record.id
                 });
+
+                // Send immediate notification to Parent
+                const student = db.students.find(s => s.id === record.studentId);
+                const parentEmail = (student && student.parentEmail) ? student.parentEmail : null;
+                if (parentEmail) {
+                    db.notifications = db.notifications || [];
+                    db.notifications.push({
+                        id: "not-" + Date.now(),
+                        title: `Class Verified: ${record.studentName}`,
+                        message: `${record.studentName}'s session for ${record.classDate} has been verified by admin. Topic: "${record.topic}". Assignment given: "${record.homeworkAssigned || 'Review class project'}".`,
+                        timestamp: new Date().toISOString(),
+                        read: false,
+                        userEmail: parentEmail.toLowerCase()
+                    });
+                }
             }
             
             saveDB(db);
@@ -978,17 +1111,21 @@ const DashboardEngine = (function() {
 
     function getTutorStudents(tutorEmail = null) {
         const session = getSession();
-        const email = tutorEmail || (session && session.email);
-        const name = session && session.name;
+        const email = (tutorEmail || (session && session.email) || '').toLowerCase().trim();
+        const name = (session && session.name || '').toLowerCase().trim();
         const db = getDB();
         const students = db.students || [];
-        if (!email && !name) return students;
+        if (!email && !name) return [];
         if (session && session.role === 'admin') return students;
-        const filtered = students.filter(s => 
-            (email && s.tutorEmail && s.tutorEmail.toLowerCase() === email.toLowerCase()) ||
-            (name && s.tutorName && s.tutorName.toLowerCase() === name.toLowerCase())
-        );
-        return filtered.length > 0 ? filtered : students;
+        const filtered = students.filter(s => {
+            const sEmail = (s.tutorEmail || '').toLowerCase().trim();
+            const sName = (s.tutorName || '').toLowerCase().trim();
+            if (email && sEmail && sEmail === email) return true;
+            if (name && sName && sName === name) return true;
+            if (email && sName && sName === email) return true;
+            return false;
+        });
+        return filtered;
     }
 
 
@@ -1513,34 +1650,54 @@ const DashboardEngine = (function() {
                     password: hashed,
                     createdAt: new Date().toISOString()
                 };
+            } else {
+                db.users[parentEmail].password = hashed;
+                db.users[parentEmail].role = 'parent';
+                if (params.name) db.users[parentEmail].name = params.name;
             }
             var childAge = parseInt(params.childAge) || 10;
             var parts = (params.childName || 'Student').trim().split(/\s+/);
             var fName = parts[0] || 'Student';
             var lName = parts.slice(1).join(' ') || (params.name ? params.name.split(' ').slice(-1)[0] : 'S.');
             
-            var newStudent = {
-                id: 'std-' + Date.now(),
-                firstName: fName,
-                lastName: lName,
-                age: childAge,
-                gender: params.gender || 'Not specified',
-                experience: params.experience || 'Beginner',
-                program: params.program || 'Python Programming Foundations',
-                status: 'active',
-                remindersPaused: false,
-                parentEmail: parentEmail,
-                parentName: params.name || 'Parent',
-                parentPhone: params.phone || '',
-                birthday: (params.birthday && typeof params.birthday === 'string' && params.birthday.trim().length >= 10) ? params.birthday.trim() : '',
-                hasExplicitBirthday: !!(params.birthday && params.birthday.trim()),
-                progress: 0,
-                avatarColor: ['#4F46E5', '#059669', '#D97706', '#DC2626', '#7C3AED', '#2563EB', '#0891B2'][Math.floor(Math.random() * 7)],
-                tutorName: params.tutorName || 'Sarah Jane',
-                classroomLink: params.classroomLink || 'https://zoom.us/j/stemulus-class'
-            };
             db.students = db.students || [];
-            db.students.push(newStudent);
+            var existingStudIdx = db.students.findIndex(function(s) {
+                return (s.parentEmail && s.parentEmail.toLowerCase() === parentEmail) &&
+                       (s.firstName && s.firstName.toLowerCase() === fName.toLowerCase()) &&
+                       (s.lastName && s.lastName.toLowerCase() === lName.toLowerCase());
+            });
+
+            var newStudent;
+            if (existingStudIdx !== -1) {
+                // Reassign existing student without duplicating
+                db.students[existingStudIdx].tutorName = params.tutorName || 'Sarah Jane';
+                db.students[existingStudIdx].program = params.program || db.students[existingStudIdx].program;
+                db.students[existingStudIdx].age = childAge;
+                if (params.phone) db.students[existingStudIdx].parentPhone = params.phone;
+                newStudent = db.students[existingStudIdx];
+            } else {
+                newStudent = {
+                    id: 'std-' + Date.now(),
+                    firstName: fName,
+                    lastName: lName,
+                    age: childAge,
+                    gender: params.gender || 'Not specified',
+                    experience: params.experience || 'Beginner',
+                    program: params.program || 'Python Programming Foundations',
+                    status: 'active',
+                    remindersPaused: false,
+                    parentEmail: parentEmail,
+                    parentName: params.name || 'Parent',
+                    parentPhone: params.phone || '',
+                    birthday: (params.birthday && typeof params.birthday === 'string' && params.birthday.trim().length >= 10) ? params.birthday.trim() : '',
+                    hasExplicitBirthday: !!(params.birthday && params.birthday.trim()),
+                    progress: 0,
+                    avatarColor: ['#4F46E5', '#059669', '#D97706', '#DC2626', '#7C3AED', '#2563EB', '#0891B2'][Math.floor(Math.random() * 7)],
+                    tutorName: params.tutorName || 'Sarah Jane',
+                    classroomLink: params.classroomLink || 'https://zoom.us/j/stemulus-class'
+                };
+                db.students.push(newStudent);
+            }
 
             // Auto-create initial schedule slot 3 days from now at 16:30
             var schedDate = new Date();
@@ -1944,6 +2101,7 @@ const DashboardEngine = (function() {
         addAttendanceRecord,
         updateAttendanceStatus,
         checkDuplicateAttendance,
+        calculateMonthlySessionTarget,
         getStudentsByTutor,
         getTutorStudents,
         getCurrentScheduledStudent,
@@ -1974,17 +2132,16 @@ const DashboardEngine = (function() {
         addUser: async function(userData) {
             const db = getDB();
             const key = userData.email.toLowerCase().trim();
-            if (db.users[key]) return { success: false, message: 'A user with this email already exists.' };
             if (!userData.password) { throw new Error('Password is required for addUser()'); }
             const plain = userData.password;
             db.users[key] = {
-                email: userData.email.toLowerCase().trim(),
+                email: key,
                 password: await hashPassword(plain),
                 role: userData.role || 'parent',
-                name: userData.name
+                name: userData.name || 'Parent'
             };
             saveDB(db);
-            return { success: true };
+            return { success: true, updated: true };
         },
         updateUserPassword: async function(email, newPassword) {
             const db = getDB();
