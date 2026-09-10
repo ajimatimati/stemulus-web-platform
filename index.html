@@ -51,7 +51,7 @@
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fredoka:wght@600;700&family=Nunito:wght@400;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
 
   <!-- Tailwind CSS (local build) -->
@@ -342,16 +342,16 @@
 
         <div class="hero-stats-strip-new" aria-label="Key statistics" style="margin-top:1.5rem;display:flex;gap:1.5rem;flex-wrap:wrap;">
           <div class="hero-stat-item" style="background:none!important;box-shadow:none!important;border:none!important;padding:0 8px!important;">
-            <div class="hero-stat-num" style="color:#fff;font-size:1.9rem!important;font-weight:800!important;line-height:1!important;">14<span style="font-size:1.1rem;opacity:0.85;">+</span></div>
-            <div class="hero-stat-label" style="color:rgba(255,255,255,0.75);font-size:0.68rem!important;letter-spacing:0.06em;text-transform:uppercase;font-weight:700!important;">Programs</div>
+            <div class="hero-stat-num">14<span style="font-size:1.1rem;opacity:0.85;">+</span></div>
+            <div class="hero-stat-label">Programs</div>
           </div>
           <div class="hero-stat-item" style="background:none!important;box-shadow:none!important;border:none!important;padding:0 8px!important;">
-            <div class="hero-stat-num" style="color:#fff;font-size:1.9rem!important;font-weight:800!important;line-height:1!important;">500<span style="font-size:1.1rem;opacity:0.85;">h</span></div>
-            <div class="hero-stat-label" style="color:rgba(255,255,255,0.75);font-size:0.68rem!important;letter-spacing:0.06em;text-transform:uppercase;font-weight:700!important;">Curriculum</div>
+            <div class="hero-stat-num">500<span style="font-size:1.1rem;opacity:0.85;">h</span></div>
+            <div class="hero-stat-label">Curriculum</div>
           </div>
           <div class="hero-stat-item" style="background:none!important;box-shadow:none!important;border:none!important;padding:0 8px!important;">
-            <div class="hero-stat-num" style="color:#fff;font-size:1.9rem!important;font-weight:800!important;line-height:1!important;">4.9<span style="font-size:1.1rem;opacity:0.85;">/5</span></div>
-            <div class="hero-stat-label" style="color:rgba(255,255,255,0.75);font-size:0.68rem!important;letter-spacing:0.06em;text-transform:uppercase;font-weight:700!important;">Parent Rating</div>
+            <div class="hero-stat-num">4.9<span style="font-size:1.1rem;opacity:0.85;">/5</span></div>
+            <div class="hero-stat-label">Parent Rating</div>
           </div>
         </div>
 
@@ -1058,48 +1058,139 @@
         .testi-grid { grid-template-columns: 1fr; }
       }
       @media (max-width: 540px) {
-        .showcase-new-grid { grid-template-columns: 1fr; }
         .programs-grid { grid-template-columns: 1fr; border-radius: 8px; }
         .stats-band-new__grid { grid-template-columns: 1fr 1fr; }
         .why-card { padding: 1.5rem; }
       }
     
-      /* ── Custom Transparent Gradients for Zone B ── */
+      /* ── Hero Stats Adaptive Contrast (Desktop: crisp white / Mobile: deep navy) ── */
+      .hero-stat-num {
+        color: #ffffff;
+        font-size: 1.9rem;
+        font-weight: 800;
+        line-height: 1;
+      }
+      .hero-stat-label {
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 0.68rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      @media (max-width: 768px) {
+        .hero-stat-num {
+          color: #0d1b2a !important;
+        }
+        .hero-stat-label {
+          color: #475569 !important;
+        }
+      }
+
+      /* ── Modern Hardware-Accelerated Logo Marquee Edge Fade ── */
+      .skills-marquee-container {
+        mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+      }
+      .skills-marquee-container::before,
+      .skills-marquee-container::after {
+        display: none !important;
+      }
+
+      /* ── Zone B Layered Frosted Glass & Atmospheric Depth ── */
       #skills-section {
-        background: rgba(255, 255, 255, 0.45) !important;
+        background: rgba(255, 255, 255, 0.55) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
       }
       #stats-section, #stats-section .stats-band-new__grid {
-        background: rgba(255, 255, 255, 0.52) !important;
+        background: rgba(255, 255, 255, 0.70) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
       }
       #why-section {
-        background: rgba(255, 255, 255, 0.60) !important;
+        background: rgba(255, 255, 255, 0.82) !important;
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
       }
       #showcase-section {
-        background: rgba(255, 251, 247, 0.68) !important;
+        background: rgba(255, 251, 247, 0.88) !important;
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
       }
       #programs-section {
-        background: rgba(255, 255, 255, 0.76) !important;
+        background: rgba(255, 255, 255, 0.92) !important;
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
       }
       #timeline-section {
-        background: rgba(255, 255, 255, 0.84) !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
       }
       #mentors-section {
-        background: rgba(255, 255, 255, 0.90) !important;
+        background: rgba(255, 255, 255, 0.96) !important;
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
       }
       #testimonials-section {
-        background: rgba(255, 251, 247, 0.95) !important;
+        background: rgba(255, 251, 247, 0.98) !important;
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
       }
       #cta-section {
         background: rgba(255, 255, 255, 0.98) !important;
       }
 
-      /* ── Issue 7: Ages banner — reduce height on very small screens ── */
+      /* ── Student Showcase Responsive Grid ── */
+      .showcase-new-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        margin-top: 2.5rem;
+      }
+      @media (max-width: 1024px) {
+        .showcase-new-grid {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+      }
+      @media (max-width: 640px) {
+        .showcase-new-grid {
+          grid-template-columns: 1fr !important;
+        }
+      }
+
+      /* ── Programs Grid Responsive Polish ── */
+      @media (max-width: 640px) {
+        .programs-grid {
+          grid-template-columns: 1fr !important;
+        }
+        .prog-cell[style*="grid-column"] {
+          grid-column: span 1 !important;
+        }
+      }
+
+      /* ── Timeline Section Accessibility & High-Contrast Typography ── */
+      #timeline-section .zb-eyebrow {
+        color: #f4600c !important;
+      }
+      .timeline-step-age {
+        color: #c2410c !important;
+        font-weight: 800 !important;
+      }
+      .timeline-step-title {
+        color: #0d1b2a !important;
+      }
+      .timeline-step-desc {
+        color: #334155 !important;
+      }
+
+      /* ── Ages banner — reduce height on very small screens ── */
       @media (max-width: 480px) {
         #ages-banner-wrap { max-height: 200px !important; }
         .ages-banner-img  { height: 200px !important; }
       }
 
-      /* ── Issue 8: Prevent text overflow on 320px screens ── */
+      /* ── Prevent text overflow on 320px screens ── */
       .zb-h2,
       .zb-h2--white,
       .hero-headline,
@@ -1316,6 +1407,10 @@
               <div class="card-shell">
                 <div class="card-core">
                   <img src="assets/images/scratch_game_creators.png" alt="Scratch Game Creators" class="card-img" style="object-fit:cover;padding:0;" loading="lazy">
+                  <div class="card-overlay">
+                    <span class="card-badge">Ages 5–10 · Scratch 3.0</span>
+                    <h3 class="card-title">Scratch Game Creators</h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1324,7 +1419,11 @@
             <div class="carousel-card" data-index="1" data-link="python-programming.html" data-title="Python Programming">
               <div class="card-shell">
                 <div class="card-core">
-                  <img src="assets/images/python_programming.jpg" alt="Python" class="card-img" loading="lazy">
+                  <img src="assets/images/python_programming.jpg" alt="Python" class="card-img" style="object-fit:cover;padding:0;" loading="lazy">
+                  <div class="card-overlay">
+                    <span class="card-badge">Ages 10–14 · Text Coding</span>
+                    <h3 class="card-title">Python Programming</h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1333,7 +1432,11 @@
             <div class="carousel-card" data-index="2" data-link="web-wizards.html" data-title="Web Wizards (HTML/CSS)">
               <div class="card-shell">
                 <div class="card-core">
-                  <img src="assets/images/web_development.png" alt="HTML/CSS" class="card-img" loading="lazy">
+                  <img src="assets/images/web_development.png" alt="HTML/CSS" class="card-img" style="object-fit:cover;padding:0;" loading="lazy">
+                  <div class="card-overlay">
+                    <span class="card-badge">Ages 12–16 · HTML/CSS/JS</span>
+                    <h3 class="card-title">Web Wizards</h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1342,7 +1445,11 @@
             <div class="carousel-card" data-index="3" data-link="fullstack-web-dev.html" data-title="Fullstack Development">
               <div class="card-shell">
                 <div class="card-core">
-                  <img src="assets/images/javascript.jpg" alt="JavaScript" class="card-img" loading="lazy">
+                  <img src="assets/images/javascript.jpg" alt="JavaScript" class="card-img" style="object-fit:cover;padding:0;" loading="lazy">
+                  <div class="card-overlay">
+                    <span class="card-badge">Ages 14–17 · Modern JS</span>
+                    <h3 class="card-title">Fullstack Development</h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1351,7 +1458,11 @@
             <div class="carousel-card" data-index="4" data-link="ai-machine-learning.html" data-title="AI & Machine Learning">
               <div class="card-shell">
                 <div class="card-core">
-                  <img src="assets/images/aiml.jpg" alt="AI & ML" class="card-img" loading="lazy">
+                  <img src="assets/images/aiml.jpg" alt="AI & ML" class="card-img" style="object-fit:cover;padding:0;" loading="lazy">
+                  <div class="card-overlay">
+                    <span class="card-badge">Ages 13–17 · Neural Nets</span>
+                    <h3 class="card-title">AI & Machine Learning</h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1360,7 +1471,11 @@
             <div class="carousel-card" data-index="5" data-link="arduino-robotics.html" data-title="Arduino Robotics">
               <div class="card-shell">
                 <div class="card-core">
-                  <img src="assets/images/robotic.jpg" alt="Robotics" class="card-img" loading="lazy">
+                  <img src="assets/images/robotic.jpg" alt="Robotics" class="card-img" style="object-fit:cover;padding:0;" loading="lazy">
+                  <div class="card-overlay">
+                    <span class="card-badge">Ages 8–14 · Physical Hardware</span>
+                    <h3 class="card-title">Arduino Robotics</h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1369,7 +1484,11 @@
             <div class="carousel-card" data-index="6" data-link="programs.html" data-title="Roblox Scripting">
               <div class="card-shell">
                 <div class="card-core">
-                  <img src="assets/images/roblox.jpg" alt="Roblox" class="card-img" loading="lazy">
+                  <img src="assets/images/roblox.jpg" alt="Roblox" class="card-img" style="object-fit:cover;padding:0;" loading="lazy">
+                  <div class="card-overlay">
+                    <span class="card-badge">Ages 8–14 · Lua Game Dev</span>
+                    <h3 class="card-title">Roblox Scripting</h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1378,7 +1497,11 @@
             <div class="carousel-card" data-index="7" data-link="python-programming.html" data-title="Game Dev with Pygame">
               <div class="card-shell">
                 <div class="card-core">
-                  <img src="assets/images/pygame.jpg" alt="Pygame" class="card-img" loading="lazy">
+                  <img src="assets/images/pygame.jpg" alt="Pygame" class="card-img" style="object-fit:cover;padding:0;" loading="lazy">
+                  <div class="card-overlay">
+                    <span class="card-badge">Ages 10–15 · Python Games</span>
+                    <h3 class="card-title">Game Dev with Pygame</h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1387,7 +1510,11 @@
             <div class="carousel-card" data-index="8" data-link="programs.html" data-title="Unity 3D Game Engine">
               <div class="card-shell">
                 <div class="card-core">
-                  <img src="assets/images/unity.jpg" alt="Unity" class="card-img" loading="lazy">
+                  <img src="assets/images/unity.jpg" alt="Unity" class="card-img" style="object-fit:cover;padding:0;" loading="lazy">
+                  <div class="card-overlay">
+                    <span class="card-badge">Ages 12–17 · C# & 3D</span>
+                    <h3 class="card-title">Unity 3D Game Engine</h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1396,7 +1523,11 @@
             <div class="carousel-card" data-index="9" data-link="programs.html" data-title="Mathematics & Logic">
               <div class="card-shell">
                 <div class="card-core">
-                  <img src="assets/images/mathematics.jpg" alt="Mathematics" class="card-img" loading="lazy">
+                  <img src="assets/images/mathematics.jpg" alt="Mathematics" class="card-img" style="object-fit:cover;padding:0;" loading="lazy">
+                  <div class="card-overlay">
+                    <span class="card-badge">Ages 7–16 · Applied STEM</span>
+                    <h3 class="card-title">Mathematics & Logic</h3>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1501,7 +1632,7 @@
             <p class="zb-lead">Not templates. Not exercises. Things they built from scratch, named themselves, and showed their friends.</p>
           </div>
         </div>
-        <div class="showcase-new-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="showcase-new-grid">
 
           <!-- Real card 1: Daniel — from blog post -->
           <div class="showcase-new-card">
@@ -1844,6 +1975,11 @@
 </footer>
       <script>
         window.addEventListener('load', function () {
+          // Register ScrollTrigger plugin
+          if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+          }
+
           // Scroll-reveal observer
           (function () {
             var els = document.querySelectorAll('.card-warm, .showcase-item, .testimonial-card, .flow-card, .stat-block, .prog-card');
@@ -1851,24 +1987,6 @@
             var obs = new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('reveal-on-scroll', 'is-visible'); obs.unobserve(e.target); } }); }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
             els.forEach(function (el) { el.classList.add('reveal-on-scroll'); obs.observe(el); });
           })();
-
-          //3D card tilt
-          document.querySelectorAll('.card-3d-tilt').forEach(function (card) {
-            card.addEventListener('mousemove', function (e) {
-              var r = card.getBoundingClientRect();
-              var x = (e.clientX - r.left) / r.width - 0.5;
-              var y = (e.clientY - r.top) / r.height - 0.5;
-              card.style.transform = 'perspective(600px) rotateY(' + (x * 12) + 'deg) rotateX(' + (-y * 8) + 'deg) translateY(-4px)';
-            });
-            card.addEventListener('mouseleave', function () {
-              card.style.transform = card.dataset.baseTransform || '';
-              setTimeout(function () { card.style.transition = 'transform 0.5s ease'; }, 50);
-            });
-            card.addEventListener('mouseenter', function () {
-              card.dataset.baseTransform = card.style.transform;
-              card.style.transition = 'transform 0.1s ease';
-            });
-          });
 
           // 3D Curved Carousel Engine - Continuous Smooth Linear Rotation
           (function() {
@@ -1887,6 +2005,8 @@
             const radius = 420; // Cylinder radius (px)
             
             let isDragging = false;
+            let hasDragged = false;
+            let isHovered = false;
             let startX = 0;
             let currentRotation = 0;
             let dragRotationOffset = 0;
@@ -1894,6 +2014,12 @@
             let animId = null;
             let isButtonAnimating = false;
             let buttonTween = null;
+
+            // Hover pause for desktop
+            if (perspectiveContainer) {
+              perspectiveContainer.addEventListener('mouseenter', () => { isHovered = true; });
+              perspectiveContainer.addEventListener('mouseleave', () => { isHovered = false; });
+            }
 
             // Positioning cards around the cylinder
             function initCardPositions() {
@@ -1942,7 +2068,7 @@
 
             // Core animation loop
             function animate() {
-              if (!isDragging && !isButtonAnimating && window.innerWidth >= 768) {
+              if (!isDragging && !isButtonAnimating && !isHovered && window.innerWidth >= 768) {
                 // Smoothly increment rotation
                 currentRotation += rotationSpeed;
                 if (currentRotation >= 360) currentRotation -= 360;
@@ -1964,14 +2090,18 @@
               }
               isButtonAnimating = false;
               isDragging = true;
-              startX = e.clientX || (e.touches && e.touches[0].clientX);
+              hasDragged = false;
+              startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
               track.style.transition = 'none';
             }
 
             function handleDragMove(e) {
               if (!isDragging) return;
-              const x = e.clientX || (e.touches && e.touches[0].clientX);
+              const x = e.clientX || (e.touches && e.touches[0].clientX) || 0;
               const dx = x - startX;
+              if (Math.abs(dx) > 6) {
+                hasDragged = true;
+              }
               dragRotationOffset = dx * 0.16;
               track.style.transform = `rotateY(${currentRotation + dragRotationOffset}deg)`;
             }
@@ -1981,13 +2111,18 @@
               isDragging = false;
               currentRotation = currentRotation + dragRotationOffset;
               dragRotationOffset = 0;
+              setTimeout(() => { hasDragged = false; }, 120);
             }
 
-            // Click to direct link directly (since we rotate continuously)
-            cards.forEach((card, i) => {
+            // Click to direct link directly (guarded against drag)
+            cards.forEach((card) => {
               card.addEventListener('click', (e) => {
                 if (window.innerWidth < 768) return; // Default behavior on mobile
-                // Navigate directly to course detail page on click
+                if (hasDragged) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
                 window.location.href = card.dataset.link;
               });
             });
@@ -2163,9 +2298,6 @@
         });
       </script>
 
-      <script defer src="step-canvas.js"></script>
-      <script defer src="testimonial-rotator.js"></script>
-      <script defer src="connector-paths.js"></script>
       <script defer src="mobile-nav.js"></script>
       
       <script defer src="video-scrub.js"></script>

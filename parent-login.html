@@ -144,6 +144,11 @@
           </button>
         </form>
 
+        <div style="margin-top: 1.5rem; text-align: center; font-size: 0.82rem; color: #64748b;">
+          Looking for administrator access?
+          <a href="admin-login.html" style="color: #6366f1; font-weight: 600; text-decoration: none; margin-left: 4px;">Staff &amp; Admin Sign In &rarr;</a>
+        </div>
+
       </div>
     </div>
 
@@ -171,7 +176,7 @@
       if (typeof DashboardEngine !== 'undefined') {
         var existingSession = DashboardEngine.getSession ? DashboardEngine.getSession() : null;
         if (existingSession && existingSession.role) {
-          var redirectMap = { admin: 'admin-login.html', tutor: 'tutor-dashboard.html', parent: 'parent-dashboard.html' };
+          var redirectMap = { admin: 'admin-dashboard.html', tutor: 'tutor-dashboard.html', parent: 'parent-dashboard.html' };
           if (redirectMap[existingSession.role]) { window.location.href = redirectMap[existingSession.role]; return; }
         }
       }
@@ -300,10 +305,16 @@
         }
 
         const res = await DashboardEngine.login(email, pwd);
-        if (res.success && res.user.role === role) {
-          if (role === 'parent') window.location.href = 'parent-dashboard.html';
-          if (role === 'tutor') window.location.href = 'tutor-dashboard.html';
-        } else if (res.success && res.user && res.user.role !== role) {
+        if (res.success) {
+          if (res.user && res.user.role === 'admin') {
+            window.location.href = 'admin-dashboard.html';
+            return;
+          }
+          if (res.user.role === role) {
+            if (role === 'parent') window.location.href = 'parent-dashboard.html';
+            if (role === 'tutor') window.location.href = 'tutor-dashboard.html';
+            return;
+          }
           showError('Your credentials are correct but you selected the ' + role + ' tab. Please switch to the ' + res.user.role + ' tab and try again.');
         } else {
           errorBox.style.display = 'flex';

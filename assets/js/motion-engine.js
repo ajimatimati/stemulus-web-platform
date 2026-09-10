@@ -8,13 +8,19 @@
 (function () {
   'use strict';
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function boot() {
     initCustomCursor();
     initScrollReveals();
     initMagneticButtons();
     initKPICounterRolls();
     initCard3DTilt();
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
 
   /* ── 1. Magnetic Custom Cursor Tracker ── */
   function initCustomCursor() {

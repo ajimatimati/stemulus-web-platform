@@ -1996,8 +1996,16 @@ const DashboardEngine = (function() {
         },
         checkAuth: function(requiredRole) {
             var session = this.getSession ? this.getSession() : JSON.parse(sessionStorage.getItem('stemulus_session') || 'null');
-            if (!session || !session.role) { window.location.href = 'parent-login.html'; return null; }
-            if (requiredRole && session.role !== requiredRole) { window.location.href = 'parent-login.html?role=' + requiredRole; return null; }
+            if (!session || !session.role) {
+                if (requiredRole === 'admin') { window.location.href = 'admin-login.html'; return null; }
+                window.location.href = 'parent-login.html';
+                return null;
+            }
+            if (requiredRole && session.role !== requiredRole) {
+                if (requiredRole === 'admin') { window.location.href = 'admin-login.html'; return null; }
+                window.location.href = 'parent-login.html?role=' + requiredRole;
+                return null;
+            }
             return session;
         },
         initDefaultAccounts

@@ -1,26 +1,18 @@
 # Netlify Build Configuration for STEMulus
 
 [build]
-  command = "npm install && cd tools && npm install && cd .. && npm run build"
+  command = "cd tools && npm install && cd .. && npm run build"
   publish = "."
   functions = "netlify/functions"
-
-[build.environment]
-  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
-  SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES = "ADMIN_WHATSAPP,ADMIN_EMAIL,FIREBASE_API_KEY"
 
 [functions]
   directory = "netlify/functions"
 
-# Morning run: 07:00 WAT (06:00 UTC) — tutor digests + birthday alerts
-[[scheduled_functions]]
-  name = "scheduled-notifications"
-  cron = "0 6 * * *"
-
-# Evening run: 18:00 WAT (17:00 UTC) — parent 24h reminders
-[[scheduled_functions]]
-  name = "scheduled-notifications"
-  cron = "0 17 * * *"
+# Scheduled notification runs:
+# 06:00 UTC (07:00 WAT) — tutor digests + birthday alerts
+# 17:00 UTC (18:00 WAT) — parent 24h reminders
+[functions."scheduled-notifications"]
+  schedule = "0 6,17 * * *"
 
 # ── Redirects ────────────────────────────────────────────────────────────────
 
@@ -83,6 +75,31 @@
   from = "/index.html"
   to = "/"
   status = 301
+
+# ── Portal Gateway Routing ──────────────────────────────────────────────────
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/"
+  to = "/parent-login.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/login"
+  to = "/parent-login.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://stemulus-portal-web.netlify.app/"
+  to = "/parent-login.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://stemulus-portal-web.netlify.app/login"
+  to = "/parent-login.html"
+  status = 200
+  force = true
 
 # Custom 404 catch-all (must be last redirect rule)
 [[redirects]]

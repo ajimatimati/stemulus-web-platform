@@ -619,7 +619,7 @@
 
     </div>
 
-    <p class="footer-note">STEMulus KidsTech &mdash; Internal use only</p>
+    <p class="footer-note">STEMulus KidsTech &mdash; Internal use only &bull; <a href="parent-login.html" style="color: rgba(255,255,255,0.5); text-decoration: underline;">Parent / Tutor Portal</a></p>
   </div>
 
   <!-- Dashboard Engine (provides DashboardEngine.login()) -->
@@ -710,6 +710,9 @@
       /* ── 1. Pre-redirect: if valid admin session already exists, skip login ── */
       try {
         if (typeof DashboardEngine !== 'undefined') {
+          if (DashboardEngine.initDefaultAccounts) {
+            DashboardEngine.initDefaultAccounts().catch(function(e) { console.warn('Account init failed:', e); });
+          }
           var session = DashboardEngine.getSession ? DashboardEngine.getSession() : null;
           // Also check localStorage/sessionStorage fallback
           if (!session) {
