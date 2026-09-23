@@ -301,7 +301,7 @@ AdminWorkflows.OnboardingWizard = {
       }
 
       else if (step === 4) {
-        const childList = data.children.map(c => `<li class="text-sm text-slate-600">${c.name}, Age ${c.age} — ${c.program} (${c.level})</li>`).join('');
+        const childList = data.children.map(c => `<li class="text-sm text-slate-600">${c.name}, Age ${c.age} - ${c.program} (${c.level})</li>`).join('');
         body.innerHTML = `
           <div class="bg-slate-50 rounded-xl p-5 border border-slate-100 space-y-3 mb-5">
             <div class="flex items-center gap-2 mb-2"><i data-lucide="user" class="w-4 h-4 text-blue-600"></i><span class="font-semibold text-slate-800">Parent: ${data.parent.name}</span></div>
@@ -332,7 +332,7 @@ AdminWorkflows.OnboardingWizard = {
     const programs = ['Python', 'Scratch', 'Robotics', 'Web Dev', 'AI/ML', 'Digital Art', 'Unity/Roblox'];
     const ageGroups = ['5-8', '9-12', '13-17'];
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const slots = [{ label: 'Morning (8am–12pm)', val: 'morning' }, { label: 'Afternoon (12pm–5pm)', val: 'afternoon' }, { label: 'Evening (5pm–9pm)', val: 'evening' }];
+    const slots = [{ label: 'Morning (8am-12pm)', val: 'morning' }, { label: 'Afternoon (12pm-5pm)', val: 'afternoon' }, { label: 'Evening (5pm-9pm)', val: 'evening' }];
 
     const render = () => {
       this._renderStepper(id, steps, step);
@@ -765,7 +765,7 @@ AdminWorkflows.ScheduleManager = {
 
     const schedules = (typeof DashboardEngine !== 'undefined') ? DashboardEngine.getSchedules() : [];
 
-    const weekLabel = `${days[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${days[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+    const weekLabel = `${days[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${days[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
 
     const slotMap = {};
     schedules.forEach(s => {

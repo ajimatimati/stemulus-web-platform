@@ -153,16 +153,16 @@ exports.handler = async (event) => {
     const parentEmail = s.parentEmail;
     const tutorEmail = s.tutorEmail;
 
-    // ── Milestone 1: 6 Hours Before Class (345 to 375 minutes window) ──
-    if (diffMinutes >= 345 && diffMinutes <= 375) {
+    // ── Milestone 1: 24 Hours Before Class (1410 to 1470 minutes window) ──
+    if (diffMinutes >= 1410 && diffMinutes <= 1470) {
       // 1. Alert to Parent
       if (parentEmail) {
         await sendEmail(
           parentEmail,
-          `[Prep Reminder] 6 Hours Until ${studentName}'s Coding Class`,
+          `[24h Reminder] Tomorrow: ${studentName}'s Coding Class`,
           buildEmailTemplate({
-            title: '6-Hour Class Preparation Briefing',
-            subtitle: `Preparation Reminder: ${studentName}'s 1-on-1 Class`,
+            title: '24-Hour Class Reminder',
+            subtitle: `Tomorrow: ${studentName}'s 1-on-1 Class at ${s.time} (WAT)`,
             studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: false
           })
         );
@@ -172,32 +172,67 @@ exports.handler = async (event) => {
       if (tutorEmail) {
         await sendEmail(
           tutorEmail,
-          `[Mentor Briefing] 6 Hours Until Session with ${studentName}`,
+          `[24h Reminder] Tomorrow: Session with ${studentName} at ${s.time}`,
           buildEmailTemplate({
-            title: 'Mentor Class Briefing',
-            subtitle: `Upcoming 1-on-1 Class with ${studentName}`,
+            title: '24-Hour Tutor Session Reminder',
+            subtitle: `Tomorrow: 1-on-1 Session with ${studentName}`,
             studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: false
           })
         );
       }
 
       // 3. NTFY Push Alert
-      await pushNtfy(enrollTopic, `[6h Prep Alert] ${studentName} &bull; ${course}`, `Class in 6 hours (${s.time} WAT).\nTutor: ${tutorName}\nLink: ${link}`, { priority: 'high', tags: 'clock,computer' });
-      await pushNtfy(tutorTopic, `[Tutor Prep Alert] Session with ${studentName}`, `Starts in 6 hours at ${s.time} WAT.\nCourse: ${course}`, { priority: 'high', tags: 'mortar_board' });
+      await pushNtfy(enrollTopic, `[24h Alert] ${studentName} &bull; ${course}`, `Class tomorrow at ${s.time} WAT.\nTutor: ${tutorName}\nLink: ${link}`, { priority: 'high', tags: 'clock,calendar' });
+      await pushNtfy(tutorTopic, `[24h Alert] Tomorrow: ${studentName}`, `Starts tomorrow at ${s.time} WAT.\nCourse: ${course}`, { priority: 'high', tags: 'mortar_board,calendar' });
 
-      dispatched.push({ milestone: '6h', scheduleId: s.id, studentName });
+      dispatched.push({ milestone: '24h', scheduleId: s.id, studentName });
     }
 
-    // ── Milestone 2: 5 Minutes Before Class (0 to 10 minutes window) ──
-    if (diffMinutes >= 0 && diffMinutes <= 10) {
+    // ── Milestone 2: 1 Hour Before Class (50 to 75 minutes window) ──
+    if (diffMinutes >= 50 && diffMinutes <= 75) {
       // 1. Alert to Parent
       if (parentEmail) {
         await sendEmail(
           parentEmail,
-          `[Immediate Alert] 5 Minutes Until Class Starts — ${studentName}`,
+          `[1-Hour Alert] Class Starts in 60 Minutes - ${studentName}`,
           buildEmailTemplate({
-            title: 'Starting in 5 Minutes!',
-            subtitle: `Urgent: ${studentName}'s Classroom is Launching`,
+            title: '1-Hour Class Briefing',
+            subtitle: `Preparation Reminder: ${studentName}'s Class begins in 1 hour`,
+            studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: false
+          })
+        );
+      }
+
+      // 2. Alert to Tutor
+      if (tutorEmail) {
+        await sendEmail(
+          tutorEmail,
+          `[1-Hour Alert] Session with ${studentName} in 60 Minutes`,
+          buildEmailTemplate({
+            title: '1-Hour Mentor Briefing',
+            subtitle: `Upcoming Session with ${studentName} begins in 1 hour`,
+            studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: false
+          })
+        );
+      }
+
+      // 3. NTFY Push Alert
+      await pushNtfy(enrollTopic, `[1h Alert] ${studentName} Class in 1h`, `Session begins in 60 minutes (${s.time} WAT).\nJoin: ${link}`, { priority: 'high', tags: 'bell,computer' });
+      await pushNtfy(tutorTopic, `[1h Alert] Session in 1h with ${studentName}`, `Class at ${s.time} WAT.\nLink: ${link}`, { priority: 'high', tags: 'teacher,bell' });
+
+      dispatched.push({ milestone: '1h', scheduleId: s.id, studentName });
+    }
+
+    // ── Milestone 3: 10 Minutes Before Class (0 to 15 minutes window) ──
+    if (diffMinutes >= 0 && diffMinutes <= 15) {
+      // 1. Alert to Parent
+      if (parentEmail) {
+        await sendEmail(
+          parentEmail,
+          `[Starting in 10 Mins] Classroom Launching Now - ${studentName}`,
+          buildEmailTemplate({
+            title: 'Starting in 10 Minutes!',
+            subtitle: `Urgent: ${studentName}'s Classroom is Launching Now`,
             studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: true
           })
         );
@@ -207,20 +242,20 @@ exports.handler = async (event) => {
       if (tutorEmail) {
         await sendEmail(
           tutorEmail,
-          `[Class Starting] 5 Minutes Until Session with ${studentName}`,
+          `[Starting in 10 Mins] Launch Session with ${studentName}`,
           buildEmailTemplate({
             title: 'Class Launching Now!',
-            subtitle: `Urgent: Your session with ${studentName} begins in 5 minutes`,
+            subtitle: `Urgent: Your session with ${studentName} begins in 10 minutes`,
             studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: true
           })
         );
       }
 
       // 3. NTFY Urgent Push
-      await pushNtfy(enrollTopic, `[5m Urgent Alert] ${studentName} Class Starting`, `Classroom open now!\nJoin Link: ${link}`, { priority: 'urgent', tags: 'alarm_clock,zap' });
-      await pushNtfy(tutorTopic, `[Tutor Launch Alert] 5m until ${studentName}`, `Please join classroom:\n${link}`, { priority: 'urgent', tags: 'alarm_clock,zap' });
+      await pushNtfy(enrollTopic, `[10m Urgent Alert] ${studentName} Class Starting`, `Classroom open now!\nJoin Link: ${link}`, { priority: 'urgent', tags: 'alarm_clock,zap' });
+      await pushNtfy(tutorTopic, `[Tutor Launch Alert] 10m until ${studentName}`, `Please join classroom:\n${link}`, { priority: 'urgent', tags: 'alarm_clock,zap' });
 
-      dispatched.push({ milestone: '5m', scheduleId: s.id, studentName });
+      dispatched.push({ milestone: '10m', scheduleId: s.id, studentName });
     }
   }
 

@@ -93,7 +93,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--ink);
 }
 
-/* Section headings — break out of containers */
+/* Section headings - break out of containers */
 .editorial-heading {
   font-family: var(--heading);
   font-weight: 700;
@@ -250,7 +250,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ---------------------------------------------------------------
- 8. NAV — EDITORIAL STYLE
+ 8. NAV - EDITORIAL STYLE
 --------------------------------------------------------------- */
 .nav-editorial {
   position: fixed;
@@ -526,7 +526,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--ink);
 }
 
-/* Program card — elite raw style */
+/* Program card - elite raw style */
 .prog-card {
   background: transparent;
   border: 1px solid #e5e7eb;
@@ -767,7 +767,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ---------------------------------------------------------------
- 15. FINAL CTA — Full bleed dark
+ 15. FINAL CTA - Full bleed dark
 --------------------------------------------------------------- */
 .cta-section {
   background: #FFF8EE;
@@ -838,7 +838,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ---------------------------------------------------------------
- 16. FOOTER — Newspaper-style
+ 16. FOOTER - Newspaper-style
 --------------------------------------------------------------- */
 .footer-editorial {
   background: #F3F4F6;
@@ -1243,7 +1243,7 @@ a[class*="rounded-full"][class*="bg-orange"]:hover {
   transform: translateX(3px) !important;
 }
 
-/* ── 19g. IMAGES — SLIGHT DESATURATION ───────────────────────── */
+/* ── 19g. IMAGES - SLIGHT DESATURATION ───────────────────────── */
 
 main img,
 section img {
@@ -1467,7 +1467,7 @@ section[class*="min-h-\[70vh\]"] {
 }
 
 /* ================================================================
- 21. CONTRAST FIXES — WCAG AA COMPLIANT
+ 21. CONTRAST FIXES - WCAG AA COMPLIANT
  Corrects every contrast failure introduced by the global overrides.
  Ensures minimum 4.5:1 for body text, 3:1 for large/UI text.
  ================================================================ */
@@ -1489,7 +1489,7 @@ section[class*="min-h-\[70vh\]"] {
   /* chalk 90% */
 }
 
-/* Medium greys — lift to readable contrast on dark */
+/* Medium greys - lift to readable contrast on dark */
 .text-gray-500,
 .text-gray-400,
 .text-slate-500,
@@ -1498,7 +1498,7 @@ section[class*="min-h-\[70vh\]"] {
   /* 5.8:1 on #0a0a0a*/
 }
 
-/* Light greys that were fine on white — now need lifting on dark */
+/* Light greys that were fine on white - now need lifting on dark */
 body:not(.dashboard-page) .text-gray-300,
 body:not(.dashboard-page) .text-slate-300,
 body:not(.dashboard-page) .text-gray-200 {
@@ -1583,7 +1583,7 @@ option {
 }
 
 /* ── 21c. ORANGE CONTRAST FIX ────────────────────────────────── */
-/* #f4600con white (#faf9f7) = 3.1:1 — fails for small body text.
+/* #f4600con white (#faf9f7) = 3.1:1 - fails for small body text.
  Only allow orange for headings (18px+ bold) and UI labels.
  Force body-sized orange text to a darker burnt orange. */
 
@@ -1594,7 +1594,7 @@ li .text-supernova-orange,
   /* #c94d00on white = 5.1:1 [Pass] */
 }
 
-/* Orange on dark bg is fine — restore */
+/* Orange on dark bg is fine - restore */
 .bg-slate-900 .text-supernova-orange,
 .bg-slate-950 .text-supernova-orange,
 [class*="bg-slate-9"] .text-supernova-orange,
@@ -1609,7 +1609,7 @@ section.hero-preai .text-supernova-orange,
   /* full #f4600con dark = 4.7:1 [Pass] */
 }
 
-/* ── 21d. LOW-OPACITY TEXT — RAISE FLOOR ─────────────────────── */
+/* ── 21d. LOW-OPACITY TEXT - RAISE FLOOR ─────────────────────── */
 /* rgba(255,255,255,0.3) = only 2.8:1 on #0a0a0a, fails AA.
  All ghosted labels must be at least 0.48 opacity on dark. */
 
@@ -1635,10 +1635,10 @@ section.hero-preai .text-supernova-orange,
   color: rgba(10, 10, 10, 0.8) !important;
 }
 
-/* ── 21e. NAV LINKS — ALWAYS READABLE ────────────────────────── */
+/* ── 21e. NAV LINKS - ALWAYS READABLE ────────────────────────── */
 /* mix-blend-mode: difference works on dark hero but becomes
  invisible on some mid-tone sections. After first scroll the
- nav switches to solid dark glass (handled in JS) — but keep
+ nav switches to solid dark glass (handled in JS) - but keep
  the blend-mode links visible either way. */
 
 .nav-editorial a {
@@ -1691,8 +1691,8 @@ section[class*="bg-gray-50"] input {
   border-color: rgba(0, 0, 0, 0.15) !important;
 }
 
-/* ── 21h. STATS SECTION — INK TEXT ON CHALK BG ───────────────── */
-/* stats-section has bg: var(--chalk) — text must be dark ink,
+/* ── 21h. STATS SECTION - INK TEXT ON CHALK BG ───────────────── */
+/* stats-section has bg: var(--chalk) - text must be dark ink,
  not white (which our global overrides may have introduced). */
 
 .stats-section,
@@ -1706,7 +1706,7 @@ section[class*="bg-gray-50"] input {
   color: var(--orange) !important;
 }
 
-/* ── 21i. SKILL STATEMENT — INK ON WARM-WHITE ────────────────── */
+/* ── 21i. SKILL STATEMENT - INK ON WARM-WHITE ────────────────── */
 
 .skill-statement,
 .skill-statement .skill-tag {
@@ -1717,7 +1717,7 @@ section[class*="bg-gray-50"] input {
   color: var(--orange) !important;
 }
 
-/* ── 21j. DIFFERENCE SECTION — INK ON WARM-WHITE ────────────── */
+/* ── 21j. DIFFERENCE SECTION - INK ON WARM-WHITE ────────────── */
 
 .difference-section,
 .difference-section .feature-title,
@@ -1730,7 +1730,7 @@ section[class*="bg-gray-50"] input {
   /* 6.8:1 on #faf9f7 [Pass] */
 }
 
-/* ── 21k. FOOTER EDITORIAL — CONSISTENT LEGIBILITY ───────────── */
+/* ── 21k. FOOTER EDITORIAL - CONSISTENT LEGIBILITY ───────────── */
 
 .footer-editorial {
   color: rgba(10, 10, 10, 0.8) !important;
@@ -1787,7 +1787,7 @@ section[class*="bg-gray-50"] input {
   color: #f5f0e8!important;
 }
 
-/* ── 21n. BLOG / CONTENT PAGES — BODY READABLE ───────────────── */
+/* ── 21n. BLOG / CONTENT PAGES - BODY READABLE ───────────────── */
 /* Long-form prose must be warm-white on dark, not ghost-grey */
 
 article p,
@@ -1858,7 +1858,7 @@ article h3 {
 }
 
 /* ================================================================
- 22. PRE-AI EDITORIAL HERO — SPLIT LAYOUT
+ 22. PRE-AI EDITORIAL HERO - SPLIT LAYOUT
  Full-screen, asymmetric, magazine-grade entrance
  ================================================================ */
 
@@ -1916,7 +1916,7 @@ article h3 {
   opacity: 0.5;
 }
 
-/* ── H1 — three-line Nunito ──────────────────────────────── */
+/* ── H1 - three-line Nunito ──────────────────────────────── */
 .preai-hero-h1 {
   font-family: var(--heading);
   font-weight: 700;
@@ -2131,7 +2131,7 @@ article h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Transparent — WebGL renderer clears to fully transparent so the
+  /* Transparent - WebGL renderer clears to fully transparent so the
      cream page background bleeds naturally through the model geometry */
   background: transparent;
 }
@@ -2145,7 +2145,7 @@ article h3 {
   inset: 0;
 }
 
-/* Ultra-subtle scanline shimmer — depth cue, does not darken bg */
+/* Ultra-subtle scanline shimmer - depth cue, does not darken bg */
 .three-canvas-wrap::after {
   content: '';
   position: absolute;
@@ -2505,7 +2505,7 @@ svg[viewBox="0 0 1200 120"] path {
  and ensures all interactive elements use GPU-composited props.
  ═══════════════════════════════════════════════════════════════ */
 
-/* Cursor — no blend mode (was causing button hover flicker) */
+/* Cursor - no blend mode (was causing button hover flicker) */
 #cursor-ring,
 #cursor-dot,
 .custom-cursor,
@@ -2559,7 +2559,7 @@ body.cursor-cta #cursor-ring {
   transform: translate(-50%, -50%) rotate(45deg) !important;
 }
 
-/* All buttons — prevent flicker with backface + translateZ */
+/* All buttons - prevent flicker with backface + translateZ */
 a, button,
 .btn-pill-solid,
 .btn-pill-outline,
@@ -2570,7 +2570,7 @@ a, button,
 .btn-hero-secondary {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  /* translateZ(0) promotes to GPU layer — prevents repaints during transitions */
+  /* translateZ(0) promotes to GPU layer - prevents repaints during transitions */
   transform: translateZ(0);
   will-change: transform;
 }
@@ -2723,7 +2723,7 @@ a, button,
 }
 
 /* ═══════════════════════════════════════════════
- DESIGN ITERATION — PREMIUM ADDITIONS
+ DESIGN ITERATION - PREMIUM ADDITIONS
  3D tilt cards, scroll reveal, micro-animations
 ═══════════════════════════════════════════════ */
 
@@ -2764,7 +2764,7 @@ a, button,
 .reveal-on-scroll:nth-child(3) { transition-delay: 0.2s; }
 .reveal-on-scroll:nth-child(4) { transition-delay: 0.3s; }
 
-/* Card warm — improved contrast & depth */
+/* Card warm - improved contrast & depth */
 .card-warm {
   background: #fff;
   border: 1px solid rgba(244,96,12,0.12);
@@ -2803,7 +2803,7 @@ a, button,
   color: #475569;
 }
 
-/* Flow grid — masonry-like stagger */
+/* Flow grid - masonry-like stagger */
 .flow-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -2819,7 +2819,7 @@ a, button,
   .flow-grid .flow-card { transform: none !important; }
 }
 
-/* Showcase directory — bento grid */
+/* Showcase directory - bento grid */
 .showcase-directory {
   padding: 8rem 5vw;
   background: #0f172a;
@@ -3205,7 +3205,7 @@ body.borderless-homepage .divider-line {
 #video-bg {
   position: fixed;
   inset: 0;
-  z-index: 0;  /* Lowest layer — everything sits above */
+  z-index: 0;  /* Lowest layer - everything sits above */
   overflow: hidden;
   pointer-events: none;
   background: #080c1c;
@@ -3232,7 +3232,7 @@ body.borderless-homepage .divider-line {
     rgba(168, 172, 176, 1.0) 32%,
     rgba(168, 172, 176, 0.0) 58%
   ),
-  /* Right gray feather — mirrors left, fills empty right-side space */
+  /* Right gray feather - mirrors left, fills empty right-side space */
   linear-gradient(
     to left,
     rgba(168, 172, 176, 1.0) 0%,
@@ -3258,7 +3258,7 @@ body.borderless-homepage .divider-line {
 #page-content {
   position: relative;
   z-index: 10;  /* Scrolls over the fixed video */
-  /* NO background here — the scrub spacer section is transparent
+  /* NO background here - the scrub spacer section is transparent
  to let the fixed video show through */
 }
 
@@ -3268,7 +3268,7 @@ body.borderless-homepage .divider-line {
   }
 }
 
-/* ── Scrub Spacer — container for the hero section ────── */
+/* ── Scrub Spacer - container for the hero section ────── */
 #scrub-spacer {
   position: relative;
   width: 100%;
@@ -3282,24 +3282,24 @@ body.borderless-homepage .divider-line {
 
 @media (max-width: 768px) {
   #scrub-spacer {
- height: auto !important; /* Collapses to natural height on mobile */
- padding-top: 80px !important;
- padding-bottom: 40px !important;
- padding-left: 1rem !important;
- padding-right: 1rem !important;
+    height: auto !important; /* Collapses to natural height on mobile */
+    padding-top: 80px !important;
+    padding-bottom: calc(95px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 }
 
-/* ── Hero Panel — left column layout, avoids overlapping centered robot ── */
+/* ── Hero Panel - left column layout, avoids overlapping centered robot ── */
 #hero-panel {
   width: 100%;
   max-width: 600px !important; /* Keep text in the left column, robot has room */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start !important;
   text-align: left !important;
-  padding: calc(70px + 4vh) 6vw 4vh !important; /* Clear slim nav, compact top/bottom padding to respect 100vh */
+  padding: clamp(100px, 12vh, 140px) 6vw 4vh !important; /* Clear slim nav with generous headroom */
   pointer-events: auto;
   z-index: 2;
   box-sizing: border-box;
@@ -3307,29 +3307,31 @@ body.borderless-homepage .divider-line {
 
 @media (min-width: 769px) {
   #hero-panel {
- position: sticky !important;
- top: 0 !important;
- height: 100vh !important;
- min-height: 100vh !important;
- background: transparent !important;
+    position: sticky !important;
+    top: 0 !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    background: transparent !important;
+    justify-content: flex-start !important;
+    padding-top: clamp(100px, 12vh, 140px) !important;
   }
 }
 
 @media (max-width: 768px) {
   #hero-panel {
- position: relative !important;
- top: auto !important;
- height: auto !important;
- min-height: auto !important;
- background: rgba(255, 248, 238, 0.85) !important; /* Frosted glass warm white panel */
- backdrop-filter: blur(16px) !important;
- -webkit-backdrop-filter: blur(16px) !important;
- border: 1px solid rgba(255, 255, 255, 0.45) !important;
- border-radius: 24px !important;
- padding: 2.5rem 1.75rem !important;
- margin: 1rem auto !important;
- max-width: calc(100% - 2rem) !important;
- box-shadow: 0 20px 45px rgba(0, 0, 0, 0.05) !important;
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    min-height: auto !important;
+    background: rgba(255, 248, 238, 0.88) !important; /* Frosted glass warm white panel */
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 24px !important;
+    padding: 2.25rem 1.75rem calc(2.25rem + 12px) !important;
+    margin: 1rem auto !important;
+    max-width: calc(100% - 2rem) !important;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.05) !important;
   }
 }
 
@@ -3495,7 +3497,7 @@ body.video-loading-lock {
   background: #ffffff!important;
 }
 
-/* Old scrub-container / scrub-overlay styles — removed (sticky approach deprecated) */
+/* Old scrub-container / scrub-overlay styles - removed (sticky approach deprecated) */
 
 .btn-pill-outline:hover {
   border-color: rgba(26, 35, 126, 0.8) !important;
@@ -3610,7 +3612,7 @@ body.borderless-homepage .hero-stats-strip-new {
 
 
 /* ── Navigation Overrides for Homepage ── */
-/* (Consolidated — handled by general .nav-editorial rules above) */
+/* (Consolidated - handled by general .nav-editorial rules above) */
 
 /* ── Prevent fixed navigation bar clipping content across all pages ── */
 /* Nav is now ~70px tall. Hero panel gets extra breathing room due to sticky layout */
@@ -3624,14 +3626,14 @@ main > section:first-of-type,
 
 /* #hero-panel padding is handled by its own rule above using calc() */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   main > section:first-of-type,
   #page-content > section:first-of-type,
   .hero-with-bg,
   .subpage-header,
   .subpage-hero,
   #hero-panel {
- padding-top: 90px !important;
+    padding-top: 90px !important;
   }
 }
 
@@ -3727,7 +3729,7 @@ main > section:first-of-type,
   transform-origin: center center !important;
 }
 
-/* Fixed position for desktop — robot sits right-of-center, slightly smaller for quality feel */
+/* Fixed position for desktop - robot sits right-of-center, slightly smaller for quality feel */
 @media (min-width: 769px) {
   #scrub-video,
   #blink-video {
@@ -4374,7 +4376,7 @@ body.borderless-homepage .testi-avatar {
   animation: marquee-scroll-right 45s linear infinite;
 }
 
-/* Marquee runs continuously — hover shows button interactivity, not pause */
+/* Marquee runs continuously - hover shows button interactivity, not pause */
 /* .skills-marquee-container:hover .logo-marquee-track { animation-play-state: paused; } */
 
 @keyframes marquee-scroll-left {
@@ -5486,7 +5488,7 @@ a:hover .roadmap-button-trail {
 }
 
 /* ═══════════════════════════════════════════════
-   3D CAROUSEL HOVER — subtle only, no Y offset, no glow
+   3D CAROUSEL HOVER - subtle only, no Y offset, no glow
    The JS 3D transform handles placement; CSS only
    refines the active state feedback.
    ═══════════════════════════════════════════════ */
@@ -5507,14 +5509,14 @@ a:hover .roadmap-button-trail {
   box-shadow: 0 4px 14px rgba(0,0,0,.06) !important;
 }
 
-/* NO Y-axis offset on hover at all – JS handles positioning */
+/* NO Y-axis offset on hover at all - JS handles positioning */
 .carousel-card:hover,
 .carousel-card:focus {
-  /* intentionally empty – do NOT add translateY here */
+  /* intentionally empty - do NOT add translateY here */
   outline: none !important;
 }
 
-/* Card image fill – no crop */
+/* Card image fill - no crop */
 .card-img {
   width: 100% !important;
   height: 100% !important;
@@ -5524,9 +5526,9 @@ a:hover .roadmap-button-trail {
 }
 
 /* ================================================================
-   FIXES — 2026-08-11
-   1. Lucide SVG icons — guarantee visible size independent of Tailwind
-   2. Hero stat cards — restore dark text on mobile/tablet (warm-white panel bg)
+   FIXES - 2026-08-11
+   1. Lucide SVG icons - guarantee visible size independent of Tailwind
+   2. Hero stat cards - restore dark text on mobile/tablet (warm-white panel bg)
    ================================================================ */
 
 /* 1. Lucide icons: w-4/w-5 Tailwind classes may not resolve if Tailwind build
@@ -5572,7 +5574,7 @@ a:hover .roadmap-button-trail {
     color: #1A237E !important;
     opacity: 1 !important;
   }
-  /* Stat container — restore subtle border on warm-white panel */
+  /* Stat container - restore subtle border on warm-white panel */
   #hero-panel .hero-stat-item {
     padding: 8px 10px !important;
     border-radius: 10px !important;
@@ -5581,7 +5583,7 @@ a:hover .roadmap-button-trail {
   }
 }
 
-/* Tablet 769–1024px: panel is transparent over video — add text-shadow to
+/* Tablet 769-1024px: panel is transparent over video - add text-shadow to
    guarantee stat legibility against any video frame colour */
 @media (min-width: 769px) and (max-width: 1024px) {
   #hero-panel .hero-stat-num {
@@ -5596,7 +5598,7 @@ a:hover .roadmap-button-trail {
    BUTTON RESPONSIVENESS FIXES
    ================================================================ */
 
-/* hero-cta-group — stack vertically on mobile, row on desktop */
+/* hero-cta-group - stack vertically on mobile, row on desktop */
 @media (max-width: 768px) {
   .hero-cta-group {
     flex-direction: column !important;
@@ -5634,7 +5636,7 @@ nav .nav-cta-btn:active {
   transform: translateY(0) !important;
 }
 
-/* btn-pill-solid / btn-pill-outline — full-width on small screens */
+/* btn-pill-solid / btn-pill-outline - full-width on small screens */
 @media (max-width: 480px) {
   .btn-pill-solid,
   .btn-pill-outline {
@@ -5643,7 +5645,7 @@ nav .nav-cta-btn:active {
     text-align: center !important;
     box-sizing: border-box !important;
   }
-  /* CTA band button row — stack on mobile */
+  /* CTA band button row - stack on mobile */
   .cta-band-new .cta-btn-solid,
   .cta-band-new .cta-btn-ghost-white,
   .cta-band .btn-pill-solid,

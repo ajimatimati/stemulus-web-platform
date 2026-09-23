@@ -55,7 +55,7 @@ const SuccessFeedback = (function() {
             animation: checkmark-scale 0.3s ease-out;
         }
         
-        .success-checkmark .check-icon::before {
+        .success-checkmark .check-icon:before {
             content: '';
             position: absolute;
             width: 35px;

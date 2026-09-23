@@ -19,11 +19,9 @@
   <!-- STEMulus Portal Design System -->
   <link rel="stylesheet" href="assets/css/tailwind-output.css">
   <link rel="stylesheet" href="dist/combined.css">
+  <link rel="stylesheet" href="assets/css/stemulus-luxury.css">
   <link rel="stylesheet" href="assets/css/portal-design-system.css">
   <link rel="stylesheet" href="assets/css/portal-animations.css">
-  <link rel="stylesheet" href="assets/css/3d-svg-icons.css">
-  <script src="assets/js/3d-icons.js" defer></script>
-
   <style>
     body { background-color: var(--bg-page); min-height: 100vh; font-family: 'Nunito', sans-serif; margin: 0; padding-bottom: 5rem; }
 
@@ -51,19 +49,19 @@
     .action-btn-item:hover { background: #FFF5F2; border-color: var(--brand-orange); color: var(--brand-orange); }
 
     @keyframes spin { to { transform: rotate(360deg); } }
-    #sidebar { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+    #sidebar { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); z-index: 50 !important; }
     #sidebar.open { transform: translateX(0); }
     @media(min-width:1024px){ #sidebar { transform: translateX(0) !important; } }
-    #sidebar-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:40;display:none; }
+    #sidebar-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:45;display:none; }
     #sidebar-overlay.show { display:block; }
     #sidebar nav a:hover { background:rgba(244,96,12,0.12) !important; color:#f4600c !important; }
 
     /* ═══════════════════════════════════════════════════════════════
-       PARENT DASHBOARD — COMPREHENSIVE MOBILE RESPONSIVENESS
+       PARENT DASHBOARD - COMPREHENSIVE MOBILE RESPONSIVENESS
        Covers sidebar, layout, hero, cards, toolbar, tables, touch targets
        ═══════════════════════════════════════════════════════════════ */
 
-    /* 1. SIDEBAR — explicitly hidden on mobile, desktop offset for content */
+    /* 1. SIDEBAR: explicitly hidden on mobile, desktop offset for content */
     @media (max-width: 1023px) {
       #sidebar {
         transform: translateX(-100%) !important;
@@ -71,10 +69,13 @@
       #sidebar.open {
         transform: translateX(0) !important;
       }
-      /* 2. CONTENT LAYOUT — remove sidebar left offset on mobile */
+      /* 2. CONTENT LAYOUT: remove sidebar left offset on mobile */
       .portal-nav,
-      .portal-nav.lg\:pl-64 {
+      .portal-nav.lg\:pl-64,
+      .portal-nav.lg\:ml-64 {
         padding-left: 0 !important;
+        margin-left: 0 !important;
+        width: 100% !important;
       }
       .lg\:ml-64 {
         margin-left: 0 !important;
@@ -84,10 +85,12 @@
       }
     }
 
-    /* Desktop sidebar offset — polyfill for missing Tailwind */
+    /* Desktop sidebar offset: polyfill for missing Tailwind */
     @media (min-width: 1024px) {
       .portal-nav {
-        padding-left: 16rem !important;
+        margin-left: 16rem !important;
+        padding-left: 0 !important;
+        width: calc(100% - 16rem) !important;
       }
       .lg\:ml-64 {
         margin-left: 16rem !important;
@@ -100,14 +103,14 @@
       }
     }
 
-    /* 3. STUDENT CARDS — stack to 1 column on narrow screens */
+    /* 3. STUDENT CARDS: stack to 1 column on narrow screens */
     @media (max-width: 640px) {
       #children-container {
         flex-direction: column !important;
         gap: 10px !important;
       }
 
-      /* 5. FONT SIZES — hero title > 24px reduce to ≤ 20px */
+      /* 5. FONT SIZES: hero title > 24px reduce to ≤ 20px */
       .hero-title {
         font-size: 20px !important;
         line-height: 1.25 !important;
@@ -124,7 +127,7 @@
         margin-bottom: 1.25rem !important;
       }
 
-      /* 8. STAT NUMBERS — KPI chips on small phones */
+      /* 8. STAT NUMBERS: KPI chips on small phones */
       .kpi-chip {
         font-size: 12px !important;
         padding: 6px 10px !important;
@@ -154,7 +157,7 @@
         padding-right: 0.875rem !important;
       }
 
-      /* 6. QUICK ACTIONS — ensure full-width tap targets on mobile */
+      /* 6. QUICK ACTIONS: ensure full-width tap targets on mobile */
       .action-btn-item {
         width: 100% !important;
         min-height: 44px !important;
@@ -162,13 +165,13 @@
         font-size: 13px !important;
       }
 
-      /* 9. ALL BUTTONS — 44px touch target minimum */
+      /* 9. ALL BUTTONS: 44px touch target minimum */
       .btn-3d,
       button {
         min-height: 44px !important;
       }
 
-      /* Nav bar — reduce right-side button text on very small screens */
+      /* Nav bar: reduce right-side button text on very small screens */
       .nav-inner a.btn-3d {
         font-size: 12px !important;
         padding: 6px 10px !important;
@@ -203,14 +206,14 @@
       }
     }
 
-    /* 4. BOTTOM TOOLBAR — safe-area insets so it never overlaps content */
+    /* 4. BOTTOM TOOLBAR: safe-area insets so it never overlaps content */
     .pill-toolbar {
       bottom: max(1.5rem, calc(0.75rem + env(safe-area-inset-bottom, 0px))) !important;
       padding-left: max(1.25rem, env(safe-area-inset-left, 1.25rem)) !important;
       padding-right: max(1.25rem, env(safe-area-inset-right, 1.25rem)) !important;
     }
 
-    /* 7. SESSION HISTORY TABLE — horizontal scroll for any dynamic tables */
+    /* 7. SESSION HISTORY TABLE: horizontal scroll for any dynamic tables */
     #sessions-container table,
     #children-container table,
     #schedule-container table,
@@ -233,7 +236,7 @@
         min-width: 500px;
       }
 
-      /* Hero 3D accent images — hide on mobile to prevent overflow */
+      /* Hero 3D accent images: hide on mobile to prevent overflow */
       .hero-accent {
         display: none !important;
       }
@@ -309,7 +312,7 @@
   </div>
 
   <!-- Navbar -->
-  <nav class="portal-nav lg:pl-64" style="transition:padding 0.3s;">
+  <nav class="portal-nav lg:ml-64" style="transition:margin-left 0.3s;">
     <div class="nav-inner">
       <div style="display:flex; align-items:center; gap:12px;">
         <button id="menu-btn" class="lg:hidden" style="background:none;border:none;cursor:pointer;padding:8px;color:#64748b;" aria-label="Toggle sidebar">
@@ -385,10 +388,31 @@
             <img src="images/portal/standalone/girl-avatar-3d.png" alt="" width="32" height="32" style="object-fit:contain;">
             Enrolled Children
           </h2>
-          <a href="enroll.html" style="font-size:13px; font-weight:700; color:var(--brand-orange); text-decoration:none;">+ Add Another</a>
+          <button type="button" onclick="ParentEngine.openAddChildModal()" class="btn-3d text-xs py-1.5 px-3 flex items-center gap-1.5 font-bold" style="cursor:pointer; border-radius:12px;">
+            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Add Child
+          </button>
         </div>
         <div id="children-container" style="display:flex; flex-direction:column; gap:12px;">
           <!-- Rendered by parent-engine.js -->
+        </div>
+      </div>
+
+      <!-- Student Project Showcase & 1-Click WhatsApp Share -->
+      <div class="dash-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <img src="images/portal/standalone/star-badge-3d.png" alt="" width="28" height="28" style="object-fit:contain;">
+            Student Project Showcase
+          </h2>
+          <a href="parent-progress.html" class="text-xs text-indigo-600 font-bold hover:underline flex items-center gap-1">
+            Full Portfolio &rarr;
+          </a>
+        </div>
+        <p class="text-xs text-slate-500 -mt-2 mb-3 leading-relaxed">
+          Certified games, software apps, and algorithms coded by your child. Share their verified milestones with family on WhatsApp!
+        </p>
+        <div id="parent-projects-showcase" style="display:flex; flex-direction:column; gap:14px;">
+          <!-- Rendered dynamically by parent-engine.js -->
         </div>
       </div>
 
@@ -531,6 +555,93 @@
       } catch(e) {}
     }
   </script>
+  <!-- Add Child Modal for Parents -->
+  <div id="parent-add-child-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" style="z-index:9000 !important;">
+    <div class="modal-overlay absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="ParentEngine.closeAddChildModal()" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9000;"></div>
+    <div class="relative min-h-screen flex items-center justify-center p-4" style="position:relative;z-index:9001;">
+      <div class="bg-white border border-[#e2e8f0] p-6 sm:p-8 max-w-lg w-full shadow-2xl rounded-2xl relative my-8 animate-fadeIn" style="background:#ffffff;border-radius:24px;max-width:520px;width:100%;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+        <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-5" style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f1f5f9;padding-bottom:1rem;margin-bottom:1.25rem;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:12px;background:#ffedd5;color:#ea580c;display:flex;align-items:center;justify-content:center;font-weight:800;">
+              <i data-lucide="user-plus" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 style="font-family:'Fredoka One', cursive;font-size:1.25rem;color:#0f172a;margin:0;font-weight:normal;">Add Child to Portal</h3>
+              <p style="font-size:12px;color:#64748b;margin:2px 0 0;">Track learning progress, milestones, and projects</p>
+            </div>
+          </div>
+          <button type="button" onclick="ParentEngine.closeAddChildModal()" style="background:none;border:none;cursor:pointer;color:#94a3b8;padding:8px;" aria-label="Close modal">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <form id="parent-add-child-form" onsubmit="ParentEngine.saveChild(event)" style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <label style="display:block;font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">First Name *</label>
+              <input type="text" id="add-child-first-name" required placeholder="e.g. Daniel" style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px 14px;font-size:13px;color:#0f172a;outline:none;">
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Last Name *</label>
+              <input type="text" id="add-child-last-name" required placeholder="e.g. Adeyemi" style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px 14px;font-size:13px;color:#0f172a;outline:none;">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <label style="display:block;font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Age *</label>
+              <input type="number" id="add-child-age" min="4" max="18" value="10" required style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px 14px;font-size:13px;color:#0f172a;outline:none;">
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Birthday (Optional)</label>
+              <input type="date" id="add-child-birthday" style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px 14px;font-size:13px;color:#0f172a;outline:none;">
+            </div>
+          </div>
+
+          <div>
+            <label style="display:block;font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Course / Track *</label>
+            <select id="add-child-course" required style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px 14px;font-size:13px;color:#0f172a;outline:none;font-weight:600;">
+              <option value="Python Programming Foundations">Python Programming Foundations</option>
+              <option value="Scratch Creators">Scratch Creators (Ages 6-9)</option>
+              <option value="Full-Stack Web Development">Full-Stack Web Development</option>
+              <option value="Robotics &amp; Arduino IoT">Robotics &amp; Arduino IoT</option>
+              <option value="AI &amp; Machine Learning for Kids">AI &amp; Machine Learning for Kids</option>
+              <option value="Digital Art &amp; Game Design">Digital Art &amp; Game Design</option>
+            </select>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <label style="display:block;font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Prior Experience</label>
+              <select id="add-child-experience" style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px 14px;font-size:13px;color:#0f172a;outline:none;font-weight:600;">
+                <option value="Beginner">None / Beginner</option>
+                <option value="Intermediate">Some Scratch or Blocks</option>
+                <option value="Advanced">Has Written Code</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Assigned Tutor</label>
+              <select id="add-child-tutor" style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px 14px;font-size:13px;color:#0f172a;outline:none;font-weight:600;">
+                <option value="Sarah Jane">Sarah Jane</option>
+                <option value="David Okon">David Okon</option>
+                <option value="Faculty Instructor">Faculty Instructor</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px;margin-top:10px;padding-top:10px;border-top:1px solid #f1f5f9;">
+            <button type="submit" class="btn-3d" style="flex:1;padding:12px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;cursor:pointer;">
+              <i data-lucide="check" class="w-4 h-4"></i> Save &amp; Enroll Child
+            </button>
+            <button type="button" onclick="ParentEngine.closeAddChildModal()" style="padding:12px 20px;font-size:13px;font-weight:700;color:#64748b;background:none;border:none;cursor:pointer;">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed top-5 right-5 sm:top-6 sm:right-6 z-[999999] pointer-events-none space-y-3 max-w-md w-[calc(100vw-2.5rem)] sm:w-auto"></div>
 
@@ -568,5 +679,10 @@
       }
     });
   </script>
+
+<script src="assets/js/stemulus-icons.js" defer></script>
+<script src="assets/js/scroll-choreography.js" defer></script>
+<script src="assets/js/stemulus-interactive.js" defer></script>
+
 </body>
 </html>

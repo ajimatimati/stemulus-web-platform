@@ -39,7 +39,7 @@ const ParentEngine = (function() {
                                     showLoginOverlay();
                                 }
                             } else {
-                                // User exists in Firebase Auth but no Firestore record — create one and prompt password reset
+                                // User exists in Firebase Auth but no Firestore record: create one and prompt password reset
                                 await firebase.firestore().collection('users').doc(user.email.toLowerCase()).set({
                                     email: user.email,
                                     role: 'parent',
@@ -134,6 +134,7 @@ const ParentEngine = (function() {
         renderChildren();
         renderUpcomingClasses();
         renderNotifications();
+        renderProjectShowcase();
         injectModals();
     }
 
@@ -270,9 +271,9 @@ const ParentEngine = (function() {
                     </div>
                     <h3 class="text-lg font-bold text-gray-800 font-nunito mb-1">Ready to begin?</h3>
                     <p class="text-gray-500 font-medium text-sm mb-5 max-w-sm mx-auto">Enroll your child to start tracking their coding journey, curriculum milestones, and interactive projects.</p>
-                    <a href="enroll.html" class="btn-3d">
-                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Enroll your first child
-                    </a>
+                    <button type="button" onclick="ParentEngine.openAddChildModal()" class="btn-3d" style="cursor:pointer;">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Your Child Now
+                    </button>
                 </div>
             `;
             if (window.lucide) lucide.createIcons();
@@ -687,6 +688,316 @@ const ParentEngine = (function() {
             `;
             document.body.appendChild(certModal);
         }
+
+        // Inject Project Showcase Modal
+        if (!document.getElementById('parent-project-modal')) {
+            const projModal = document.createElement('div');
+            projModal.id = 'parent-project-modal';
+            projModal.style.display = 'none';
+            projModal.className = 'fixed inset-0 z-50 items-center justify-center p-4 bg-black/80 backdrop-blur-sm';
+            projModal.innerHTML = `
+                <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full border border-slate-200 shadow-2xl relative animate-fadeIn flex flex-col space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+                                <i data-lucide="sparkles" class="w-5 h-5"></i>
+                            </span>
+                            <div>
+                                <span id="modal-proj-category" class="text-[10px] font-extrabold uppercase tracking-wider text-orange-600 block">Category</span>
+                                <h3 id="modal-proj-title" class="text-base font-extrabold text-slate-800 font-nunito">Project Title</h3>
+                            </div>
+                        </div>
+                        <button type="button" onclick="ParentEngine.closeProjectModal()" class="text-slate-400 hover:text-slate-700 transition-colors p-1.5" aria-label="Close modal">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+
+                    <div id="modal-proj-media-container" class="w-full h-56 rounded-2xl bg-slate-950 overflow-hidden relative flex items-center justify-center shadow-inner">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs text-slate-500">
+                            <span id="modal-proj-author" class="font-bold text-slate-700">Built by Daniel, Age 10</span>
+                            <span class="inline-flex items-center gap-1 font-semibold text-emerald-600">
+                                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg> Verified by Mentor
+                            </span>
+                        </div>
+                        <p id="modal-proj-desc" class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100"></p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-2 pt-2">
+                        <button type="button" id="modal-proj-whatsapp-btn" class="w-full sm:flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.053-.984-.067-.58-.201-1.398-.636-2.316-1.554-.919-.918-1.353-1.736-1.554-2.316-.12-.35-.112-.672-.067-.984.05-.333.419-1.026.824-1.17.135-.048.281-.03.392.041.353.228.847 1.114.922 1.258.075.144.075.255.015.375-.06.12-.135.21-.24.315-.105.105-.18.18-.285.285-.105.105-.225.225-.105.435.12.21.536.883 1.155 1.502.619.619 1.292 1.035 1.502 1.155.21.12.33.105.435-.001.105-.105.18-.18.285-.285.105-.105.195-.18.315-.24.12-.06.231-.06.375.015.144.075 1.03.569 1.258.922.071.111.089.257.041.392z"/></svg> Share with Family on WhatsApp
+                        </button>
+                        <button type="button" onclick="ParentEngine.closeProjectModal()" class="w-full sm:w-auto px-5 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 transition-colors cursor-pointer">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(projModal);
+        }
+    }
+
+    function getStudentProjects(student) {
+        const projects = [];
+        const sFirst = (student.firstName || '').toLowerCase().trim();
+        const sFull = ((student.firstName || '') + ' ' + (student.lastName || '')).toLowerCase().trim();
+
+        // 1. Check DashboardEngine.getMilestones()
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getMilestones) {
+            const milestones = DashboardEngine.getMilestones();
+            milestones.forEach(m => {
+                const mName = (m.studentName || '').toLowerCase().trim();
+                if (mName === sFull || mName.startsWith(sFirst) || sFirst.startsWith(mName.split(' ')[0])) {
+                    projects.push({
+                        id: m.id || 'mil-' + Math.random().toString(36).substr(2, 6),
+                        title: m.title || 'Coding Milestone',
+                        description: m.description || '',
+                        category: m.category || student.program || 'Programming',
+                        image: m.image || '',
+                        isVideo: m.image && (m.image.endsWith('.mp4') || m.image.endsWith('.webm')),
+                        studentName: student.firstName,
+                        studentAge: m.studentAge || student.age || 10,
+                        date: m.date || 'Recent Session',
+                        source: 'milestone'
+                    });
+                }
+            });
+        }
+
+        // 2. Check approved attendance records with whatBuilt
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getAttendanceRecords) {
+            const records = DashboardEngine.getAttendanceRecords().filter(r => 
+                (r.studentId === student.id || (r.studentName && r.studentName.toLowerCase().trim() === sFull)) &&
+                r.status === 'approved' &&
+                (r.whatBuilt || r.topic)
+            );
+
+            records.forEach(r => {
+                const title = r.whatBuilt || r.topic;
+                if (!projects.some(p => p.title.toLowerCase() === title.toLowerCase())) {
+                    projects.push({
+                        id: 'att-proj-' + r.id,
+                        title: title,
+                        description: r.tutorComment ? `"${r.tutorComment}"` : `Completed in mentored session on ${r.classDate}.`,
+                        category: student.program || 'Coding Track',
+                        image: '',
+                        isVideo: false,
+                        studentName: student.firstName,
+                        studentAge: student.age || 10,
+                        date: r.classDate || 'Recent',
+                        source: 'attendance'
+                    });
+                }
+            });
+        }
+
+        // 3. Fallback default project if none yet
+        if (projects.length === 0) {
+            let defaultTitle = "Space Raider Arcade Launch";
+            let defaultCat = "Game Dev & Python";
+            let defaultDesc = `${student.firstName} is currently programming player movement, boundary checks, and collision detection algorithms.`;
+            if (student.program && student.program.includes("Scratch")) {
+                defaultTitle = "Interactive Quest & Sprite Animation";
+                defaultCat = "Scratch Creators";
+                defaultDesc = `${student.firstName} is building multi-level game loops with sound broadcast and score trackers.`;
+            } else if (student.program && student.program.includes("Robotics")) {
+                defaultTitle = "Autonomous Obstacle Avoidance Rover";
+                defaultCat = "Robotics & IoT";
+                defaultDesc = `${student.firstName} is programming ultrasonic sonar sensors and motor steering sequences.`;
+            }
+
+            projects.push({
+                id: 'starter-' + student.id,
+                title: defaultTitle,
+                description: defaultDesc,
+                category: defaultCat,
+                image: 'Robot.mp4',
+                isVideo: true,
+                studentName: student.firstName,
+                studentAge: student.age || 10,
+                date: 'In Progress',
+                source: 'starter'
+            });
+        }
+
+        return projects;
+    }
+
+    function renderProjectShowcase() {
+        const container = document.getElementById('parent-projects-showcase');
+        if (!container) return;
+
+        const students = (currentParent.role === 'admin' && DashboardEngine.getStudents(currentParent.email).length === 0)
+            ? DashboardEngine.getStudents()
+            : DashboardEngine.getStudents(currentParent.email);
+
+        if (students.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-6 bg-slate-50/70 border border-slate-200/80 rounded-2xl p-5">
+                    <i data-lucide="folder-code" class="w-8 h-8 text-slate-400 mx-auto mb-2"></i>
+                    <p class="text-xs font-bold text-slate-700">No student projects found.</p>
+                    <p class="text-[11px] text-slate-500 mt-1">Once your child begins classes and builds projects, their digital showcase will appear here.</p>
+                </div>
+            `;
+            if (window.lucide) lucide.createIcons();
+            return;
+        }
+
+        let allProjects = [];
+        students.forEach(s => {
+            const studentProjs = getStudentProjects(s);
+            studentProjs.forEach(p => {
+                allProjects.push({ ...p, student: s });
+            });
+        });
+
+        container.innerHTML = allProjects.map(p => {
+            const safeTitle = encodeURIComponent(p.title);
+            const safeName = encodeURIComponent(p.studentName);
+            const safeCat = encodeURIComponent(p.category);
+            const safeDesc = encodeURIComponent(p.description);
+
+            return `
+                <div class="bg-gradient-to-br from-white to-slate-50/60 border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row gap-5 items-start">
+                    <!-- Media Preview -->
+                    <div class="w-full md:w-44 h-32 rounded-xl bg-slate-900 overflow-hidden relative shrink-0 flex items-center justify-center group shadow-inner">
+                        ${p.isVideo ? `
+                            <video src="${p.image}" class="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause()"></video>
+                            <div class="absolute inset-0 bg-black/30 flex items-center justify-center pointer-events-none">
+                                <div class="w-9 h-9 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
+                                    <i data-lucide="play" class="w-4 h-4 text-white ml-0.5"></i>
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="w-full h-full bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center text-white p-3 text-center">
+                                <i data-lucide="code-2" class="w-8 h-8 text-indigo-400 mb-1"></i>
+                                <span class="text-[10px] font-mono text-indigo-200 uppercase font-bold tracking-wider">${p.category}</span>
+                            </div>
+                        `}
+                        <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase tracking-wider bg-orange-600 text-white shadow">
+                            ${p.category}
+                        </span>
+                    </div>
+
+                    <!-- Details -->
+                    <div class="flex-1 space-y-2 w-full">
+                        <div class="flex items-center justify-between gap-2 flex-wrap">
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200">
+                                <i data-lucide="check-circle" class="w-3 h-3 text-emerald-600"></i> STEMulus Verified Build
+                            </span>
+                            <span class="text-[11px] text-slate-500 font-medium">${p.studentName}, Age ${p.studentAge}</span>
+                        </div>
+                        <h4 class="font-extrabold text-slate-800 text-sm font-nunito leading-snug">${p.title}</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">${p.description}</p>
+                        
+                        <!-- Viral WhatsApp Share & Interactive Preview -->
+                        <div class="pt-2 flex flex-wrap items-center gap-2.5">
+                            <button type="button" onclick="ParentEngine.shareProjectOnWhatsApp('${safeTitle}', '${safeName}', '${safeCat}', '${safeDesc}')" class="flex-1 min-w-[200px] bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-2.5 px-3.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i> Share with Family on WhatsApp
+                            </button>
+                            <button type="button" onclick="ParentEngine.openProjectModal('${p.id}')" class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+                                <i data-lucide="eye" class="w-3.5 h-3.5"></i> View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function shareProjectOnWhatsApp(safeTitle, safeStudentName, safeCategory, safeDescription) {
+        const title = decodeURIComponent(safeTitle);
+        const studentName = decodeURIComponent(safeStudentName);
+        const category = decodeURIComponent(safeCategory);
+        const description = safeDescription ? decodeURIComponent(safeDescription) : '';
+
+        const message = 
+            `🌟 *Proud Parent Moment!* 🌟\n\n` +
+            `My child *${studentName}* just coded and launched their tech project: *${title}* (${category}) at *STEMulus Kids Tech Academy*! 🚀💻\n\n` +
+            (description ? `"${description}"\n\n` : '') +
+            `STEMulus is building the next generation of African tech innovators. Check them out: https://stemuluskidstech.com`;
+
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+
+        if (typeof showToast === 'function') {
+            showToast(`Opening WhatsApp! Share text ready for family and friends.`, 'success');
+        }
+    }
+
+    function openProjectModal(projectId) {
+        const modal = document.getElementById('parent-project-modal');
+        if (!modal) return;
+
+        const students = (currentParent.role === 'admin' && DashboardEngine.getStudents(currentParent.email).length === 0)
+            ? DashboardEngine.getStudents()
+            : DashboardEngine.getStudents(currentParent.email);
+
+        let foundProj = null;
+        for (const s of students) {
+            const list = getStudentProjects(s);
+            const match = list.find(p => p.id === projectId);
+            if (match) {
+                foundProj = match;
+                break;
+            }
+        }
+
+        if (!foundProj) return;
+
+        const titleEl = document.getElementById('modal-proj-title');
+        const catEl = document.getElementById('modal-proj-category');
+        const authorEl = document.getElementById('modal-proj-author');
+        const descEl = document.getElementById('modal-proj-desc');
+        const mediaContainer = document.getElementById('modal-proj-media-container');
+        const waBtn = document.getElementById('modal-proj-whatsapp-btn');
+
+        if (titleEl) titleEl.textContent = foundProj.title;
+        if (catEl) catEl.textContent = foundProj.category;
+        if (authorEl) authorEl.textContent = `Coded by ${foundProj.studentName}, Age ${foundProj.studentAge}`;
+        if (descEl) descEl.textContent = foundProj.description;
+
+        if (mediaContainer) {
+            if (foundProj.isVideo) {
+                mediaContainer.innerHTML = `<video src="${foundProj.image}" controls autoplay muted loop playsinline class="w-full h-full object-cover"></video>`;
+            } else {
+                mediaContainer.innerHTML = `
+                    <div class="flex flex-col items-center justify-center text-white p-6 text-center space-y-2">
+                        <div class="w-14 h-14 rounded-2xl bg-indigo-600/30 border border-indigo-400/30 flex items-center justify-center">
+                            <i data-lucide="code-2" class="w-8 h-8 text-indigo-400"></i>
+                        </div>
+                        <h4 class="text-sm font-bold">${foundProj.title}</h4>
+                        <span class="text-[11px] text-indigo-300 font-mono">${foundProj.category}</span>
+                    </div>
+                `;
+            }
+        }
+
+        if (waBtn) {
+            const safeTitle = encodeURIComponent(foundProj.title);
+            const safeName = encodeURIComponent(foundProj.studentName);
+            const safeCat = encodeURIComponent(foundProj.category);
+            const safeDesc = encodeURIComponent(foundProj.description);
+            waBtn.onclick = function() {
+                shareProjectOnWhatsApp(safeTitle, safeName, safeCat, safeDesc);
+            };
+        }
+
+        modal.style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function closeProjectModal() {
+        const modal = document.getElementById('parent-project-modal');
+        if (modal) {
+            const video = modal.querySelector('video');
+            if (video) video.pause();
+            modal.style.display = 'none';
+        }
     }
 
     function viewMonthlyReport(reportId) {
@@ -701,6 +1012,90 @@ const ParentEngine = (function() {
         alert('Evaluation document is loading or could not be found.');
     }
 
+    function openAddChildModal() {
+        const modal = document.getElementById('parent-add-child-modal');
+        const form = document.getElementById('parent-add-child-form');
+        if (form) form.reset();
+        const tutorSel = document.getElementById('add-child-tutor');
+        if (tutorSel && typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutors) {
+            const tutors = DashboardEngine.getTutors();
+            if (tutors && tutors.length > 0) {
+                tutorSel.innerHTML = tutors.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+            }
+        }
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeAddChildModal() {
+        const modal = document.getElementById('parent-add-child-modal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    async function saveChild(e) {
+        if (e) e.preventDefault();
+        if (!currentParent) return;
+
+        const fName = (document.getElementById('add-child-first-name') ? document.getElementById('add-child-first-name').value : '').trim();
+        const lName = (document.getElementById('add-child-last-name') ? document.getElementById('add-child-last-name').value : '').trim();
+        const age = parseInt(document.getElementById('add-child-age') ? document.getElementById('add-child-age').value : '10') || 10;
+        const bday = (document.getElementById('add-child-birthday') ? document.getElementById('add-child-birthday').value : '').trim();
+        const prog = (document.getElementById('add-child-course') ? document.getElementById('add-child-course').value : 'Python Programming Foundations');
+        const exp = (document.getElementById('add-child-experience') ? document.getElementById('add-child-experience').value : 'Beginner');
+        const tutor = (document.getElementById('add-child-tutor') ? document.getElementById('add-child-tutor').value : 'Sarah Jane');
+
+        if (!fName || !lName) {
+            if (typeof showToast === 'function') showToast('Please enter both child first and last name', 'warning');
+            return;
+        }
+
+        const newStudent = DashboardEngine.addStudent({
+            firstName: fName,
+            lastName: lName,
+            age: age,
+            birthday: bday,
+            hasExplicitBirthday: !!(bday && bday.length >= 10),
+            gender: 'Not specified',
+            experience: exp,
+            program: prog,
+            status: 'active',
+            parentEmail: currentParent.email,
+            parentName: currentParent.name || 'Parent',
+            parentPhone: currentParent.phone || '',
+            tutorName: tutor,
+            progress: 0,
+            skills: { logic: 60, loops: 60, variables: 60, syntax: 60, projects: 60 },
+            metrics: { attended: 0, total: 8, projects: 0, lines: 0 }
+        });
+
+        // Add initial schedule slot 3 days from now
+        const schedDate = new Date();
+        schedDate.setDate(schedDate.getDate() + 3);
+        const db = DashboardEngine.getDB ? DashboardEngine.getDB() : null;
+        if (db && newStudent) {
+            db.schedules = db.schedules || [];
+            db.schedules.push({
+                id: "sch-" + Date.now(),
+                studentId: newStudent.id,
+                studentName: fName + ' ' + lName,
+                course: prog,
+                date: schedDate.toISOString().split('T')[0],
+                time: "16:30",
+                duration: "60",
+                mentor: tutor,
+                link: "https://zoom.us/j/stemulus-class",
+                attendanceStatus: "pending"
+            });
+            if (DashboardEngine.saveDB) DashboardEngine.saveDB(db);
+        }
+
+        closeAddChildModal();
+        if (typeof showToast === 'function') {
+            showToast(`Successfully enrolled ${fName}!`, 'success');
+        }
+        renderChildren();
+        if (typeof updateKPIs === 'function') updateKPIs();
+    }
+
     return {
         init,
         renderDashboard,
@@ -710,7 +1105,14 @@ const ParentEngine = (function() {
         closeRescheduleModal,
         viewCertificate,
         closeCertModal,
-        viewMonthlyReport
+        viewMonthlyReport,
+        openAddChildModal,
+        closeAddChildModal,
+        saveChild,
+        renderProjectShowcase,
+        shareProjectOnWhatsApp,
+        openProjectModal,
+        closeProjectModal
     };
 })();
 
@@ -719,5 +1121,12 @@ document.addEventListener('DOMContentLoaded', ParentEngine.init);
 window.addEventListener('stemulusDbUpdated', function() {
     if (ParentEngine && typeof ParentEngine.renderDashboard === 'function') {
         ParentEngine.renderDashboard();
+    }
+});
+window.addEventListener('storage', function(e) {
+    if (!e.key || e.key === 'stemulus_db' || e.key === 'stemulus_monthly_reports') {
+        if (ParentEngine && typeof ParentEngine.renderDashboard === 'function') {
+            ParentEngine.renderDashboard();
+        }
     }
 });

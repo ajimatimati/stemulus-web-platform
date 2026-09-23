@@ -8,7 +8,7 @@ const BLOG_CONTENT_PART2 = {
         readTime: "6 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Before microchips, "computers" were women. Katherine Johnson calculated trajectories by hand. Margaret Hamilton wrote the code that landed Apollo 11. Coding has no gender—it never did.
+                Before microchips, "computers" were women. Katherine Johnson calculated trajectories by hand. Margaret Hamilton wrote the code that landed Apollo 11. Coding has no gender: it never did.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Hidden Figures</h2>
@@ -22,14 +22,14 @@ const BLOG_CONTENT_PART2 = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "There is no such thing as a math person. The idea that some people are naturally good at math and others aren't is a myth." — Jo Boaler, Stanford
+                "There is no such thing as a math person. The idea that some people are naturally good at math and others aren't is a myth." - Jo Boaler, Stanford
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">Breaking the Stereotype</h3>
-                    <p class="text-gray-300">At STEMulus, girls make up 45% of our students. We don't teach "coding for girls"—we just teach coding, and let the results speak for themselves.</p>
+                    <p class="text-gray-300">At STEMulus, girls make up 45% of our students. We don't teach "coding for girls"-we just teach coding, and let the results speak for themselves.</p>
                 </div>
             </div>
         `
@@ -39,7 +39,7 @@ const BLOG_CONTENT_PART2 = {
         readTime: "7 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                The world's biggest tech companies are looking at Africa. Microsoft, Google, and Meta are all building offices in Lagos and Nairobi. Your child isn't just learning to code—they're training for a global workforce that's moving here.
+                The world's biggest tech companies are looking at Africa. Microsoft, Google, and Meta are all building offices in Lagos and Nairobi. Your child isn't just learning to code: they're training for a global workforce that's moving here.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Numbers Don't Lie</h2>
@@ -50,17 +50,17 @@ const BLOG_CONTENT_PART2 = {
             </ul>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Why Now?</h2>
-            <p>Africa has the youngest population on Earth. By 2050, one in four humans will be African. Tech companies are betting on this demographic—and investing heavily in local talent.</p>
+            <p>Africa has the youngest population on Earth. By 2050, one in four humans will be African. Tech companies are betting on this demographic: and investing heavily in local talent.</p>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "Africa's tech scene isn't emerging—it has emerged. The question is whether your child will be ready to lead it."
+                "Africa's tech scene isn't emerging: it has emerged. The question is whether your child will be ready to lead it."
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">Future-Proofing</h3>
-                    <p class="text-gray-300">Every skill we teach—Python, JavaScript, robotics—is globally applicable. Your child isn't learning for Nigeria alone. They're learning for the world.</p>
+                    <p class="text-gray-300">Every skill we teach: Python, JavaScript, robotics: is globally applicable. Your child isn't learning for Nigeria alone. They're learning for the world.</p>
                 </div>
             </div>
         `
@@ -83,7 +83,7 @@ const BLOG_CONTENT_PART2 = {
             </ul>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">What She Learned</h2>
-            <p>This wasn't just about the cat. Ada learned electronics, programming, networking, and project management—all to solve a real problem in her life.</p>
+            <p>This wasn't just about the cat. Ada learned electronics, programming, networking, and project management: all to solve a real problem in her life.</p>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
                 "The best projects come from real problems. Kids are natural problem-solvers when you give them the right tools."
@@ -93,7 +93,7 @@ const BLOG_CONTENT_PART2 = {
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">What's Your Tedious Task?</h3>
-                    <p class="text-gray-300">Every annoyance is a project waiting to happen. Help your child identify a problem at home—then guide them toward building the solution.</p>
+                    <p class="text-gray-300">Every annoyance is a project waiting to happen. Help your child identify a problem at home: then guide them toward building the solution.</p>
                 </div>
             </div>
         `
@@ -103,7 +103,7 @@ const BLOG_CONTENT_PART2 = {
         readTime: "6 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Seymour Papert, MIT legend and inventor of the LOGO programming language, believed code is just another form of expression—like writing or drawing. At STEMulus, we ask kids to "tell stories" with their loops.
+                Seymour Papert, MIT legend and inventor of the LOGO programming language, believed code is just another form of expression: like writing or drawing. At STEMulus, we ask kids to "tell stories" with their loops.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Code as Language</h2>
@@ -115,7 +115,7 @@ const BLOG_CONTENT_PART2 = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "Everything is easier to learn if it's personally meaningful. A child who writes code to make art is learning the same logic as a child who writes code to calculate—but with more joy."
+                "Everything is easier to learn if it's personally meaningful. A child who writes code to make art is learning the same logic as a child who writes code to calculate: but with more joy."
             </blockquote>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Storytelling Method</h2>
@@ -149,7 +149,7 @@ const BLOG_CONTENT_PART2 = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "High-quality work produced = (Time Spent) × (Intensity of Focus). You can't fake deep work. And kids can do it—if we give them worthy challenges." — Cal Newport
+                "High-quality work produced = (Time Spent) × (Intensity of Focus). You can't fake deep work. And kids can do it: if we give them worthy challenges." - Cal Newport
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
@@ -186,7 +186,7 @@ const BLOG_CONTENT_PART2 = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "Roblox is the tricycle. Unity is the bicycle. You don't skip the tricycle—you graduate from it."
+                "Roblox is the tricycle. Unity is the bicycle. You don't skip the tricycle: you graduate from it."
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
@@ -203,11 +203,11 @@ const BLOG_CONTENT_PART2 = {
         readTime: "5 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                The best debuggers aren't the best typists—they're the best communicators. The "Rubber Duck" method proves it: explaining your problem out loud often reveals the solution.
+                The best debuggers aren't the best typists: they're the best communicators. The "Rubber Duck" method proves it: explaining your problem out loud often reveals the solution.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">What is Rubber Duck Debugging?</h2>
-            <p>When stuck on a bug, experienced programmers explain their code line-by-line to an inanimate object (traditionally a rubber duck). The act of explaining forces clarity—and often reveals the mistake.</p>
+            <p>When stuck on a bug, experienced programmers explain their code line-by-line to an inanimate object (traditionally a rubber duck). The act of explaining forces clarity: and often reveals the mistake.</p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Why It Works</h2>
             <ul class="list-disc pl-6 space-y-3">
@@ -217,7 +217,7 @@ const BLOG_CONTENT_PART2 = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "If you can't explain it simply, you don't understand it well enough." — Albert Einstein
+                "If you can't explain it simply, you don't understand it well enough." - Albert Einstein
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
@@ -234,7 +234,7 @@ const BLOG_CONTENT_PART2 = {
         readTime: "5 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Java is powerful. Python is readable. For beginners, readability wins every time. Here's why we start with Python—and when we introduce other languages.
+                Java is powerful. Python is readable. For beginners, readability wins every time. Here's why we start with Python: and when we introduce other languages.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Case for Python First</h2>
@@ -266,7 +266,7 @@ const BLOG_CONTENT_PART2 = {
         readTime: "6 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Reshma Saujani founded Girls Who Code because she noticed something broken: women were leaving tech faster than they were entering. Diversity isn't just a buzzword—it's an optimization strategy.
+                Reshma Saujani founded Girls Who Code because she noticed something broken: women were leaving tech faster than they were entering. Diversity isn't just a buzzword: it's an optimization strategy.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Business Case</h2>
@@ -280,7 +280,7 @@ const BLOG_CONTENT_PART2 = {
             <p>Girls don't leave tech because they can't code. They leave because of culture, imposter syndrome, and lack of visible role models. Fixing this starts in childhood.</p>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "Bravery, not perfection. Girls are taught to avoid failure; boys are taught to embrace it. We need to teach all kids to code bravely." — Reshma Saujani
+                "Bravery, not perfection. Girls are taught to avoid failure; boys are taught to embrace it. We need to teach all kids to code bravely." - Reshma Saujani
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
@@ -311,14 +311,14 @@ const BLOG_CONTENT_PART2 = {
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">What to Do</h2>
             <p>The worst thing you can do? Ban the internet. That just makes kids hide problems. Instead:</p>
             <ul class="list-disc pl-6 space-y-3">
-                <li>Keep communication open—no judgment, no "I told you so"</li>
+                <li>Keep communication open: no judgment, no "I told you so"</li>
                 <li>Document everything (screenshots)</li>
-                <li>Report to platforms—they have real policies</li>
+                <li>Report to platforms: they have real policies</li>
                 <li>Involve school if it's classmates</li>
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "The most dangerous thing isn't the internet—it's your child feeling like they can't come to you when something goes wrong."
+                "The most dangerous thing isn't the internet: it's your child feeling like they can't come to you when something goes wrong."
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
@@ -339,7 +339,7 @@ const BLOG_CONTENT_PART2 = {
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">What is Generative Art?</h2>
-            <p>Generative art is created through algorithms. The artist doesn't draw each line—they write rules that create patterns. The computer becomes a collaborator.</p>
+            <p>Generative art is created through algorithms. The artist doesn't draw each line: they write rules that create patterns. The computer becomes a collaborator.</p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">How Math Becomes Magic</h2>
             <ul class="list-disc pl-6 space-y-3">
@@ -367,12 +367,12 @@ const BLOG_CONTENT_PART2 = {
         readTime: "5 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Imagine walking on Mars without leaving Lagos. Virtual Reality isn't just gaming—it's the future of education, and it increases retention rates by up to 75%.
+                Imagine walking on Mars without leaving Lagos. Virtual Reality isn't just gaming: it's the future of education, and it increases retention rates by up to 75%.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Why VR Works</h2>
             <ul class="list-disc pl-6 space-y-3">
-                <li><strong>Experiential learning:</strong> You don't read about ancient Rome—you walk through it</li>
+                <li><strong>Experiential learning:</strong> You don't read about ancient Rome: you walk through it</li>
                 <li><strong>Emotional engagement:</strong> Immersion creates lasting memories</li>
                 <li><strong>Safe experimentation:</strong> Make mistakes without consequences</li>
             </ul>
@@ -381,14 +381,14 @@ const BLOG_CONTENT_PART2 = {
             <p>Medical students practice surgery. Engineers inspect virtual prototypes. Astronauts train for space walks. And students? They take field trips to places that no longer exist.</p>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "Tell me and I forget. Show me and I remember. Involve me and I understand." — Confucius
+                "Tell me and I forget. Show me and I remember. Involve me and I understand." - Confucius
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">Building for VR</h3>
-                    <p class="text-gray-300">Our advanced students learn to build VR experiences—not just consume them. They're creating the future of education, one scene at a time.</p>
+                    <p class="text-gray-300">Our advanced students learn to build VR experiences: not just consume them. They're creating the future of education, one scene at a time.</p>
                 </div>
             </div>
         `

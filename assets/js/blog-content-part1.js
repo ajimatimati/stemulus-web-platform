@@ -9,17 +9,17 @@ const BLOG_CONTENT_DATABASE = {
         readTime: "8 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Every parent has felt the guilt. Your child is glued to a screen, and you wonder: am I ruining their childhood? Here's the truth most "experts" won't tell you—it's not about HOW LONG, it's about WHAT they're doing.
+                Every parent has felt the guilt. Your child is glued to a screen, and you wonder: am I ruining their childhood? Here's the truth most "experts" won't tell you: it's not about HOW LONG, it's about WHAT they're doing.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Two Types of Screen Time</h2>
             <p>
-                Researchers at the University of Michigan found that children who <strong>create</strong> content on screens—coding games, editing videos, building digital art—show improved problem-solving skills and creativity. Meanwhile, passive consumption (scrolling social media, watching random videos) correlates with decreased attention spans.
+                Researchers at the University of Michigan found that children who <strong>create</strong> content on screens: coding games, editing videos, building digital art: show improved problem-solving skills and creativity. Meanwhile, passive consumption (scrolling social media, watching random videos) correlates with decreased attention spans.
             </p>
             <p>The key difference? <em>Active engagement vs. passive consumption.</em></p>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "When a child codes, they're not consuming content—they're producing it. They're solving puzzles, debugging logic, and exercising creative muscles."
+                "When a child codes, they're not consuming content: they're producing it. They're solving puzzles, debugging logic, and exercising creative muscles."
             </blockquote>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">How to Tell the Difference</h2>
@@ -53,7 +53,7 @@ const BLOG_CONTENT_DATABASE = {
         readTime: "6 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                "AI will write all the code soon. Why bother teaching kids programming?" We hear this a lot. Here's why that thinking is backwards—and why creativity is more valuable than ever.
+                "AI will write all the code soon. Why bother teaching kids programming?" We hear this a lot. Here's why that thinking is backwards: and why creativity is more valuable than ever.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">AI is a Tool, Not a Replacement</h2>
@@ -71,7 +71,7 @@ const BLOG_CONTENT_DATABASE = {
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The New Skills Hierarchy</h2>
             <ul class="list-disc pl-6 space-y-3">
-                <li><strong>Tier 3 (Commoditized):</strong> Basic syntax, simple scripts—AI handles this.</li>
+                <li><strong>Tier 3 (Commoditized):</strong> Basic syntax, simple scripts: AI handles this.</li>
                 <li><strong>Tier 2 (Valuable):</strong> System design, architecture, debugging complex systems.</li>
                 <li><strong>Tier 1 (Irreplaceable):</strong> Problem formulation, creativity, user empathy, ethics.</li>
             </ul>
@@ -109,7 +109,7 @@ const BLOG_CONTENT_DATABASE = {
             </blockquote>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Why This Matters for Kids</h2>
-            <p>Children who learn prompt engineering develop metacognitive skills—they learn to think about their thinking. When an AI gives a bad answer, they learn to ask: "What was wrong with my question?"</p>
+            <p>Children who learn prompt engineering develop metacognitive skills: they learn to think about their thinking. When an AI gives a bad answer, they learn to ask: "What was wrong with my question?"</p>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
@@ -125,7 +125,7 @@ const BLOG_CONTENT_DATABASE = {
         readTime: "7 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                You've seen it: your child gaming for hours, completely zoned in, immune to distraction. That's not addiction—it's something psychologists call "Flow State." And coding triggers the exact same phenomenon.
+                You've seen it: your child gaming for hours, completely zoned in, immune to distraction. That's not addiction: it's something psychologists call "Flow State." And coding triggers the exact same phenomenon.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">What is Flow State?</h2>
@@ -138,11 +138,11 @@ const BLOG_CONTENT_DATABASE = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "The best moments usually occur when a person's body or mind is stretched to its limits in a voluntary effort to accomplish something difficult and worthwhile." — Mihaly Csikszentmihalyi
+                "The best moments usually occur when a person's body or mind is stretched to its limits in a voluntary effort to accomplish something difficult and worthwhile." - Mihaly Csikszentmihalyi
             </blockquote>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Why Gamers Become Great Coders</h2>
-            <p>Gaming trains the brain to seek flow. Coding provides a healthier outlet for that same dopamine loop—but instead of consuming content, kids create it. They experience the same satisfaction of "leveling up" when their code finally works.</p>
+            <p>Gaming trains the brain to seek flow. Coding provides a healthier outlet for that same dopamine loop: but instead of consuming content, kids create it. They experience the same satisfaction of "leveling up" when their code finally works.</p>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
@@ -158,7 +158,7 @@ const BLOG_CONTENT_DATABASE = {
         readTime: "5 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                AI sounds scary until you build one yourself. In this post, we'll show you how to create a simple "Homework Helper" bot with your child—no coding required. It takes 10 minutes.
+                AI sounds scary until you build one yourself. In this post, we'll show you how to create a simple "Homework Helper" bot with your child: no coding required. It takes 10 minutes.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">What You'll Build</h2>
@@ -195,25 +195,25 @@ const BLOG_CONTENT_DATABASE = {
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Incident</h2>
-            <p>Tunde, 14, was excited to deploy his weather app. He skipped the testing phase ("it works on my computer!") and pushed directly to production. Within minutes, the app crashed—taking down other students' projects with it.</p>
+            <p>Tunde, 14, was excited to deploy his weather app. He skipped the testing phase ("it works on my computer!") and pushed directly to production. Within minutes, the app crashed: taking down other students' projects with it.</p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">What He Learned</h2>
             <ul class="list-disc pl-6 space-y-3">
                 <li><strong>Testing matters:</strong> "Works on my machine" is never enough</li>
-                <li><strong>Responsibility:</strong> Your code affects others—take it seriously</li>
+                <li><strong>Responsibility:</strong> Your code affects others: take it seriously</li>
                 <li><strong>Recovery skills:</strong> How to stay calm, diagnose, and fix under pressure</li>
                 <li><strong>Documentation:</strong> Why you write down what you did</li>
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "Failure is simply the opportunity to begin again, this time more intelligently." — Henry Ford
+                "Failure is simply the opportunity to begin again, this time more intelligently." - Henry Ford
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">Why Safe Failure Matters</h3>
-                    <p class="text-gray-300">In a classroom, a bug is a learning moment. In the real world, it could cost millions. We give students a sandbox where they can break things, learn from it, and develop resilience—safely.</p>
+                    <p class="text-gray-300">In a classroom, a bug is a learning moment. In the real world, it could cost millions. We give students a sandbox where they can break things, learn from it, and develop resilience: safely.</p>
                 </div>
             </div>
         `
@@ -223,7 +223,7 @@ const BLOG_CONTENT_DATABASE = {
         readTime: "6 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Carol Dweck coined the term "Growth Mindset"—the belief that abilities can be developed through dedication. Coding is the perfect laboratory for this mindset.
+                Carol Dweck coined the term "Growth Mindset"-the belief that abilities can be developed through dedication. Coding is the perfect laboratory for this mindset.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Fixed vs. Growth</h2>
@@ -237,7 +237,7 @@ const BLOG_CONTENT_DATABASE = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "In a growth mindset, challenges are exciting rather than threatening. So rather than thinking, oh, I'm going to reveal my weaknesses, you say, wow, here's a chance to grow." — Carol Dweck
+                "In a growth mindset, challenges are exciting rather than threatening. So rather than thinking, oh, I'm going to reveal my weaknesses, you say, wow, here's a chance to grow." - Carol Dweck
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
@@ -254,11 +254,11 @@ const BLOG_CONTENT_DATABASE = {
         readTime: "5 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                When a child builds a robot that helps a disabled person or cleans a park, instructions become impact. Robotics isn't just about motors and sensors—it's about empathy in action.
+                When a child builds a robot that helps a disabled person or cleans a park, instructions become impact. Robotics isn't just about motors and sensors: it's about empathy in action.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Empathy Connection</h2>
-            <p>The best robotics projects start with a question: "Who needs help?" When students design for others—not just for grades—they develop user empathy that carries into every aspect of life.</p>
+            <p>The best robotics projects start with a question: "Who needs help?" When students design for others: not just for grades: they develop user empathy that carries into every aspect of life.</p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Real Projects, Real Impact</h2>
             <ul class="list-disc pl-6 space-y-3">
@@ -268,14 +268,14 @@ const BLOG_CONTENT_DATABASE = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "Technology is best when it brings people together." — Matt Mullenweg
+                "Technology is best when it brings people together." - Matt Mullenweg
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">The Social Good Challenge</h3>
-                    <p class="text-gray-300">We challenge every robotics student to design for someone else. It's not just engineering—it's learning to see the world through another person's eyes.</p>
+                    <p class="text-gray-300">We challenge every robotics student to design for someone else. It's not just engineering: it's learning to see the world through another person's eyes.</p>
                 </div>
             </div>
         `
@@ -289,7 +289,7 @@ const BLOG_CONTENT_DATABASE = {
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The #1 Trait: Learning Ability</h2>
-            <p>Not knowledge—the ability to <em>acquire</em> knowledge quickly. In tech, yesterday's skills are obsolete tomorrow. Google wants people who can adapt on the fly.</p>
+            <p>Not knowledge: the ability to <em>acquire</em> knowledge quickly. In tech, yesterday's skills are obsolete tomorrow. Google wants people who can adapt on the fly.</p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Also Important</h2>
             <ul class="list-disc pl-6 space-y-3">
@@ -299,7 +299,7 @@ const BLOG_CONTENT_DATABASE = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "Academic environments are artificial environments. People who succeed there are fine-tuned for success in that environment." — Laszlo Bock
+                "Academic environments are artificial environments. People who succeed there are fine-tuned for success in that environment." - Laszlo Bock
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
@@ -354,7 +354,7 @@ const BLOG_CONTENT_DATABASE = {
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Five Conversations</h2>
             <ul class="list-disc pl-6 space-y-3">
                 <li><strong>1. Digital Footprint:</strong> Everything you post is permanent. Screenshots exist.</li>
-                <li><strong>2. Password Hygiene:</strong> Passwords are like toothbrushes—don't share, change regularly.</li>
+                <li><strong>2. Password Hygiene:</strong> Passwords are like toothbrushes: don't share, change regularly.</li>
                 <li><strong>3. Stranger Danger 2.0:</strong> Online friends aren't always who they say they are.</li>
                 <li><strong>4. The Screenshot Rule:</strong> Never send anything you wouldn't want on a billboard.</li>
                 <li><strong>5. When to Tell an Adult:</strong> Making it safe to come to you when things go wrong.</li>

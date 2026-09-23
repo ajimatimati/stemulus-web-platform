@@ -21,7 +21,7 @@
 }
 
 /* ── 1. Wave ─────────────────────────────────────────────────
- Smooth sine wave — great for hero → next section
+ Smooth sine wave - great for hero → next section
  ──────────────────────────────────────────────────────────── */
 .divider-wave {
  height: 70px;
@@ -34,7 +34,7 @@
 }
 
 /* ── 2. Tilt ─────────────────────────────────────────────────
- Diagonal angled cut — modern and sharp
+ Diagonal angled cut - modern and sharp
  ──────────────────────────────────────────────────────────── */
 .divider-tilt {
  height: 60px;
@@ -42,7 +42,7 @@
 }
 
 /* ── 3. Peaks ────────────────────────────────────────────────
- Mountain peaks — dynamic, energetic
+ Mountain peaks - dynamic, energetic
  ──────────────────────────────────────────────────────────── */
 .divider-peaks {
  height: 70px;
@@ -50,7 +50,7 @@
 }
 
 /* ── 4. Drip ─────────────────────────────────────────────────
- Organic blob drip — playful, friendly
+ Organic blob drip - playful, friendly
  ──────────────────────────────────────────────────────────── */
 .divider-drip {
  height: 80px;
@@ -58,7 +58,7 @@
 }
 
 /* ── 5. Zigzag ───────────────────────────────────────────────
- Zigzag teeth — technical, circuit-board feel
+ Zigzag teeth - technical, circuit-board feel
  ──────────────────────────────────────────────────────────── */
 .divider-zigzag {
  height: 50px;
@@ -66,7 +66,7 @@
 }
 
 /* ── 6. Curves ───────────────────────────────────────────────
- Multi-layered curves — elegant, premium
+ Multi-layered curves - elegant, premium
  ──────────────────────────────────────────────────────────── */
 .divider-curves {
  height: 70px;
@@ -74,7 +74,7 @@
 }
 
 /* ── 7. Arrow ────────────────────────────────────────────────
- Centered chevron arrow — directional, purposeful
+ Centered chevron arrow - directional, purposeful
  ──────────────────────────────────────────────────────────── */
 .divider-arrow {
  height: 60px;
@@ -82,7 +82,7 @@
 }
 
 /* ── 8. Fade ─────────────────────────────────────────────────
- Gradient mist dissolve — subtle, soft
+ Gradient mist dissolve - subtle, soft
  ──────────────────────────────────────────────────────────── */
 .divider-fade {
  height: 60px;

@@ -1,0 +1,628 @@
+/**
+ * STEMulus Kids Tech — Quiet Luxury & Architectural Design System
+ * $150k Agency Tier: Apple/Linear/Stripe caliber.
+ * Strict Anti-Pattern Eradication: Zero pulsing nodes, zero pill buttons/badges, zero border accents, zero 3D tilt cards, zero big-bezel frames.
+ */
+
+/* ==========================================================================
+   1. GLOBAL RESETS & ANTI-PATTERN REMOVAL
+   ========================================================================== */
+
+/* Eradicate pulsing glow / animations */
+.dot-pulse,
+.pulse-dot,
+.animate-pulse,
+[class*="pulse-"] {
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+/* Eradicate neon green/orange box shadows */
+[style*="box-shadow: 0 0 8px #10b981"],
+[style*="box-shadow:0 0 8px #10b981"],
+[style*="box-shadow: 0 0 8px #f4600c"],
+[style*="box-shadow:0 0 8px #f4600c"] {
+  box-shadow: none !important;
+}
+
+/* Eradicate 3D tilt / perspective effects */
+.tilt-card,
+.card-3d-tilt,
+[data-tilt] {
+  transform: none !important;
+  perspective: none !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.tilt-card:hover,
+.card-3d-tilt:hover,
+[data-tilt]:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* Eradicate big-bezel neobrutalist borders and heavy drop shadows */
+.fp-dash-mock,
+[style*="border: 2px solid"],
+[style*="box-shadow: 8px 8px 0"] {
+  border-width: 1px !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Eradicate colored edge border accents */
+.border-l-4,
+.border-t-4,
+[style*="border-left:4px"],
+[style*="border-left: 4px"] {
+  border-left-width: 1px !important;
+  border-left-color: rgba(15, 23, 42, 0.12) !important;
+}
+
+/* ==========================================================================
+   2. ARCHITECTURAL BUTTON ARCHITECTURE (Zero Pills)
+   ========================================================================== */
+
+.btn-stem-primary,
+.btn-pill-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #0F172A;
+  color: #FFFFFF !important;
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: 8px !important; /* Architectural radius - NO PILL */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
+}
+.btn-stem-primary:hover,
+.btn-pill-solid:hover {
+  background-color: #1E293B;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+.btn-stem-primary:active,
+.btn-pill-solid:active {
+  transform: translateY(0);
+}
+
+.btn-stem-secondary,
+.btn-pill-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #FFFFFF;
+  color: #0F172A !important;
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: 8px !important; /* Architectural radius - NO PILL */
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, transform 0.2s;
+}
+.btn-stem-secondary:hover,
+.btn-pill-outline:hover {
+  background-color: #F8FAFC;
+  border-color: rgba(15, 23, 42, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-stem-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #F4600C;
+  color: #FFFFFF !important;
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(244, 96, 12, 0.25);
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.2s;
+}
+.btn-stem-accent:hover {
+  background-color: #D95308;
+  transform: translateY(-1px);
+}
+
+/* Architectural Micro-Badges (Replaces rounded-full pills) */
+.badge-stem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px !important; /* Clean rectangular bevel */
+  background: rgba(15, 23, 42, 0.04);
+  color: #334155;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+.badge-stem-accent {
+  background: rgba(244, 96, 12, 0.08);
+  color: #C2410C;
+  border: 1px solid rgba(244, 96, 12, 0.2);
+}
+.badge-stem-emerald {
+  background: rgba(16, 185, 129, 0.08);
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+.badge-stem-dark {
+  background: rgba(255, 255, 255, 0.08);
+  color: #E2E8F0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* ==========================================================================
+   3. STRUCTURAL CARDS & MACRO-WHITESPACE
+   ========================================================================== */
+
+.stem-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 8px 24px -4px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.stem-card:hover {
+  border-color: rgba(15, 23, 42, 0.18);
+  transform: translateY(-2px);
+}
+
+/* Dark mode surface card */
+.stem-card-dark {
+  background: #0B1120;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* ==========================================================================
+   4. INTERACTIVE CODE SPECIMEN VIEWPORT (Curriculum Hero Wow)
+   ========================================================================== */
+
+.specimen-wrap {
+  width: 100%;
+  max-width: 1000px;
+  margin: 3rem auto 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #080C16;
+  box-shadow: 0 20px 50px rgba(8, 12, 22, 0.3), 0 1px 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.specimen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background: #0B1120;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.specimen-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.specimen-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.specimen-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.specimen-tab {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #94A3B8;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.specimen-tab:hover {
+  color: #E2E8F0;
+  background: rgba(255, 255, 255, 0.04);
+}
+.specimen-tab.active {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.specimen-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+@media (min-width: 860px) {
+  .specimen-body {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+}
+
+.specimen-code-pane {
+  padding: 1.5rem;
+  background: #080C16;
+  color: #E2E8F0;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-x: auto;
+}
+
+.specimen-terminal-pane {
+  padding: 1.5rem;
+  background: #050811;
+  color: #38BDF8;
+  display: flex;
+  flex-direction: column;
+}
+.terminal-label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748B;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.terminal-output {
+  color: #A7F3D0;
+  font-size: 0.8125rem;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+/* Code tokens */
+.tok-kw { color: #F472B6; font-weight: 600; }
+.tok-fn { color: #60A5FA; font-weight: 500; }
+.tok-str { color: #34D399; }
+.tok-num { color: #FBBF24; }
+.tok-cm { color: #64748B; font-style: italic; }
+.tok-var { color: #E2E8F0; }
+
+/* ==========================================================================
+   5. ARCHITECTURAL SYLLABUS ACCORDION (4-Phase Dossier)
+   ========================================================================== */
+
+.syllabus-dossier {
+  width: 100%;
+  max-width: 960px;
+  margin: 3.5rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.syllabus-phase-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.syllabus-phase-card:hover {
+  border-color: rgba(15, 23, 42, 0.16);
+}
+
+.syllabus-phase-header {
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background: #FFFFFF;
+  user-select: none;
+}
+
+.syllabus-phase-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.syllabus-phase-num {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: #64748B;
+  background: #F1F5F9;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+}
+
+.syllabus-phase-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0;
+}
+.syllabus-phase-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8125rem;
+  color: #64748B;
+  margin-top: 0.15rem;
+}
+
+.syllabus-phase-toggle {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #F8FAFC;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s;
+}
+.syllabus-phase-card.open .syllabus-phase-toggle {
+  transform: rotate(180deg);
+  background: #0F172A;
+  color: #FFFFFF;
+}
+
+.syllabus-phase-body {
+  display: none;
+  padding: 0 1.75rem 1.75rem;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+  background: #FAFAF9;
+}
+.syllabus-phase-card.open .syllabus-phase-body {
+  display: block;
+}
+
+.syllabus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.syllabus-item {
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+.syllabus-item-wk {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #F4600C;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+.syllabus-item-h {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 0.35rem;
+}
+.syllabus-item-p {
+  font-size: 0.8125rem;
+  color: #64748B;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==========================================================================
+   6. QUIET SCROLL CHOREOGRAPHY (IntersectionObserver Animations)
+   ========================================================================== */
+
+.scroll-reveal-item {
+  opacity: 0;
+  transform: translateY(16px);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal-item.revealed,
+.scroll-reveal-item.is-visible,
+[data-reveal].revealed,
+[data-reveal].is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* ==========================================================================
+   7. EXECUTIVE TOP HAIRLINE LOADER (Replaces 2.5s Curtain)
+   ========================================================================== */
+
+#site-loader {
+  display: none !important; /* Remove old blocking curtain */
+}
+
+#stem-top-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 100000;
+  pointer-events: none;
+  background: transparent;
+}
+
+#stem-top-loader-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #F4600C, #38BDF8);
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+
+/* Desktop & Mobile Sticky Floating CTA Overrides (Architectural, No Pulsing Glow) */
+#desktop-sticky-cta a {
+  border-radius: 8px !important; /* No pill 9999px */
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 8px 24px rgba(10, 25, 50, 0.2) !important;
+}
+#desktop-sticky-cta span[style*="border-radius:50%"] {
+  border-radius: 3px !important;
+  box-shadow: none !important; /* Remove pulse glow */
+}
+
+.docked-cta-island {
+  border-radius: 12px !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+.docked-cta-btn {
+  border-radius: 8px !important;
+}
+
+/* ==========================================================================
+   ARCHITECTURAL ENGINEERING TRACK (ROADMAP ELEVATION)
+   ========================================================================== */
+.roadmap-svg-road path {
+  filter: none !important;
+}
+.roadmap-svg-road path.road-path {
+  fill: none !important;
+}
+.roadmap-svg-road path[stroke-width="3"],
+.roadmap-svg-road path[stroke-width="96"] {
+  stroke: #E2E8F0 !important;
+  stroke-width: 2px !important;
+  fill: none !important;
+  filter: none !important;
+}
+.roadmap-svg-road path[stroke-width="1"],
+.roadmap-svg-road path[stroke-width="84"] {
+  stroke: rgba(226, 232, 240, 0.6) !important;
+  stroke-width: 1px !important;
+  fill: none !important;
+  filter: none !important;
+}
+.roadmap-svg-road path[stroke-dasharray] {
+  stroke: #2563eb !important;
+  stroke-width: 2px !important;
+  stroke-dasharray: 6 8 !important;
+  opacity: 0.95 !important;
+  fill: none !important;
+  filter: none !important;
+}
+.roadmap-svg-road {
+  filter: drop-shadow(0 1px 4px rgba(37, 99, 235, 0.04)) !important;
+}
+
+/* Roadmap Segmented Filter Controls */
+.roadmap-filter-btn {
+  border-radius: 6px !important;
+}
+
+/* ==========================================================================
+   PARENT PORTAL MOCKUP ARCHITECTURAL ELEVATION (for-parents.html)
+   ========================================================================== */
+.fp-dash-mock {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.04) !important;
+}
+.fp-dash-mock__bar {
+  background: #0B1120 !important;
+  padding: 0.75rem 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.fp-dash-row {
+  border-radius: 8px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+}
+
+/* ==========================================================================
+   HIGH-CONTRAST LIGHT SURFACE TYPOGRAPHY (Anti-Faint Text System)
+   Restores deep, authoritative slate typography on light backgrounds.
+   ========================================================================== */
+body:not(.dark) h1.text-slate-900,
+body:not(.dark) h2.text-slate-900,
+body:not(.dark) h3.text-slate-900,
+body:not(.dark) h4.text-slate-900,
+body:not(.dark) p.text-slate-900,
+body:not(.dark) span.text-slate-900,
+body:not(.dark) div.text-slate-900,
+.bg-white .text-slate-900,
+.bg-white .text-slate-800,
+.bg-slate-50 .text-slate-900,
+.bg-slate-50 .text-slate-800,
+.bg-slate-100 .text-slate-900,
+.bg-slate-100 .text-slate-800,
+[class*="bg-[#FAFA"] .text-slate-900,
+[class*="bg-[#FAFA"] .text-slate-800,
+.stem-card .text-slate-900,
+.stem-card .text-slate-800,
+.syllabus-phase-card .text-slate-900,
+.syllabus-phase-card .text-slate-800,
+.specimen-header .text-slate-900 {
+  color: #0F172A !important;
+}
+
+body:not(.dark) h1.text-slate-800,
+body:not(.dark) h2.text-slate-800,
+body:not(.dark) h3.text-slate-800,
+body:not(.dark) h4.text-slate-800,
+body:not(.dark) p.text-slate-800,
+body:not(.dark) span.text-slate-800 {
+  color: #1E293B !important;
+}
+
+body:not(.dark) p.text-slate-600,
+body:not(.dark) span.text-slate-600,
+.bg-white .text-slate-600,
+.bg-slate-50 .text-slate-600,
+[class*="bg-[#FAFA"] .text-slate-600,
+.stem-card .text-slate-600,
+.syllabus-phase-card .text-slate-600 {
+  color: #475569 !important;
+}
+
+body:not(.dark) p.text-slate-500,
+body:not(.dark) span.text-slate-500,
+.bg-white .text-slate-500,
+.bg-slate-50 .text-slate-500,
+[class*="bg-[#FAFA"] .text-slate-500 {
+  color: #64748B !important;
+}
+
+

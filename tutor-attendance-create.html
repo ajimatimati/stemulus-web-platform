@@ -5,6 +5,7 @@
   <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
   <link rel="stylesheet" href="assets/css/tailwind-output.css">
   <link rel="stylesheet" href="dist/combined.css">
+  <link rel="stylesheet" href="assets/css/stemulus-luxury.css">
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <meta charset="UTF-8">
   <link rel="manifest" href="/site.webmanifest">
@@ -20,8 +21,6 @@
   <link rel="stylesheet" href="assets/css/portal-design-system.css">
   <link rel="stylesheet" href="assets/css/portal-animations.css">
   <link rel="stylesheet" href="assets/css/tutor-styles.css">
-  <link rel="stylesheet" href="assets/css/3d-svg-icons.css">
-  <script src="assets/js/3d-icons.js" defer></script>
   <link rel="icon" type="image/png" href="favicon.png">
 
   <script>if(window.tailwind){tailwind.config={theme:{extend:{}}}}</script>
@@ -71,7 +70,7 @@
       flex: 1;
       position: relative;
     }
-    .step-item:not(:last-child)::after {
+    .step-item:not(:last-child):after {
       content: '';
       position: absolute;
       top: 18px;
@@ -81,7 +80,7 @@
       background: #e2e8f0;
       z-index: 0;
     }
-    .step-item.done:not(:last-child)::after {
+    .step-item.done:not(:last-child):after {
       background: #10b981;
     }
     .step-dot {
@@ -179,7 +178,7 @@
       border-color: #4f46e5;
       box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
     }
-    .form-input::placeholder { color: #94a3b8; }
+    .form-input:placeholder { color: #94a3b8; }
     textarea.form-input { resize: vertical; }
 
     /* Radio attendance cards */
@@ -343,9 +342,9 @@
     #punctuality-group { transition: opacity 0.3s; }
 
     /* Scrollbar */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+    :-webkit-scrollbar { width: 5px; }
+    :-webkit-scrollbar-track { background: transparent; }
+    :-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
   </style>
 </head>
 <body class="min-h-screen">
@@ -362,8 +361,8 @@
 
   <!-- Animated Background -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="absolute -top-40 -left-40 w-96 h-96 rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-float" style="background:#4B49AC;"></div>
-    <div class="absolute -bottom-40 right-20 w-96 h-96 rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-float" style="background:#f4600c;animation-delay:3s;"></div>
+    
+    
   </div>
 
   <div id="sidebar-overlay" class="sidebar-overlay lg:hidden"></div>
@@ -437,7 +436,7 @@
     <div class="rounded-2xl mb-8" style="background:linear-gradient(135deg,#AB47BC,#F4600C);min-height:130px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;overflow:hidden;position:relative;">
       <div>
         <h2 style="font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:4px;">Daily Session Log</h2>
-        <p style="color:rgba(255,255,255,0.75);font-size:0.85rem;">4 quick sections — takes about 2 minutes</p>
+        <p style="color:rgba(255,255,255,0.75);font-size:0.85rem;">4 quick sections - takes about 2 minutes</p>
       </div>
       <img src="images/portal/standalone/register-papers-3d.png" alt="Log" class="animate-float-band" style="width:120px;height:120px;object-fit:contain;" loading="lazy">
     </div>
@@ -513,17 +512,17 @@
               <div class="radio-card-group" id="attendance-cards">
                 <label class="radio-card" data-value="present" data-style="selected-present">
                   <input type="radio" name="attendance_status" value="present">
-                  <div class="radio-card-icon" data-icon-3d="check" data-icon-size="28"></div>
+                  <div class="radio-card-icon" data-stem-icon="stem-check" data-icon-size="28"></div>
                   <div class="radio-card-label">Present</div>
                 </label>
                 <label class="radio-card" data-value="absent" data-style="selected-absent">
                   <input type="radio" name="attendance_status" value="absent">
-                  <div class="radio-card-icon" data-icon-3d="cross" data-icon-size="28"></div>
+                  <div class="radio-card-icon" data-stem-icon="stem-cross" data-icon-size="28"></div>
                   <div class="radio-card-label">Absent</div>
                 </label>
                 <label class="radio-card" data-value="rescheduled" data-style="selected-rescheduled">
                   <input type="radio" name="attendance_status" value="rescheduled">
-                  <div class="radio-card-icon" data-icon-3d="refresh" data-icon-size="28"></div>
+                  <div class="radio-card-icon" data-stem-icon="stem-refresh" data-icon-size="28"></div>
                   <div class="radio-card-label">Rescheduled</div>
                 </label>
               </div>
@@ -536,17 +535,17 @@
               <div class="radio-card-group" id="punctuality-cards">
                 <label class="radio-card" data-value="on_time" data-style="selected-punctual">
                   <input type="radio" name="punctuality" value="on_time">
-                  <div class="radio-card-icon" data-icon-3d="lightning" data-icon-size="28"></div>
+                  <div class="radio-card-icon" data-stem-icon="stem-lightning" data-icon-size="28"></div>
                   <div class="radio-card-label">On Time</div>
                 </label>
                 <label class="radio-card" data-value="5_10_late" data-style="selected-punctual">
                   <input type="radio" name="punctuality" value="5_10_late">
-                  <div class="radio-card-icon" data-icon-3d="clock" data-icon-size="28"></div>
-                  <div class="radio-card-label">5–10 min Late</div>
+                  <div class="radio-card-icon" data-stem-icon="stem-clock" data-icon-size="28"></div>
+                  <div class="radio-card-label">5-10 min Late</div>
                 </label>
                 <label class="radio-card" data-value="15_plus_late" data-style="selected-punctual">
                   <input type="radio" name="punctuality" value="15_plus_late">
-                  <div class="radio-card-icon" data-icon-3d="clock" data-icon-size="28"></div>
+                  <div class="radio-card-icon" data-stem-icon="stem-clock" data-icon-size="28"></div>
                   <div class="radio-card-label">&gt;15 min Late</div>
                 </label>
               </div>
@@ -569,7 +568,7 @@
             <div class="mb-5">
               <label class="form-label">Topic / Module <span style="color:#f87171;">*</span></label>
               <input type="text" id="topic" name="topic" class="form-input" maxlength="255"
-                     placeholder="e.g. JavaScript Events – input &amp; submit">
+                     placeholder="e.g. JavaScript Events - input &amp; submit">
               <p class="error-msg" id="err-topic">Please enter the topic covered.</p>
             </div>
 
@@ -694,7 +693,7 @@
     <!-- Success Screen -->
     <div id="success-screen" class="max-w-2xl dark-card" style="display:none;">
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 2rem;text-align:center;">
-        <div class="success-check-circle" style="display:flex;align-items:center;justify-content:center;margin-bottom:1rem;"><span data-icon-3d="check" data-icon-size="52"></span></div>
+        <div class="success-check-circle" style="display:flex;align-items:center;justify-content:center;margin-bottom:1rem;"><span data-stem-icon="stem-check" data-icon-size="52"></span></div>
         <h2 style="font-size:1.6rem;font-weight:800;color:#0f172a;margin-bottom:0.75rem;">Session Logged Successfully!</h2>
         <p style="color:#64748b;font-size:0.95rem;max-width:400px;margin-bottom:2rem;">
           Parents will see this in their portal once the admin approves the record.
@@ -939,12 +938,16 @@
 
     var courseVal = (document.getElementById('course_covered') && document.getElementById('course_covered').value) || 'STEM Coding';
     var record = {
+      studentId: finalStudentId,
       student_id: finalStudentId,
+      studentName: finalStudentName,
       student_name: finalStudentName,
       course: courseVal,
       coursesCovered: [courseVal],
+      classDate: document.getElementById('class_date').value,
       class_date: document.getElementById('class_date').value,
-      attendance_status: atStatus ? atStatus.value : '',
+      attendanceStatus: atStatus ? atStatus.value : 'present',
+      attendance_status: atStatus ? atStatus.value : 'present',
       punctuality: punctuality ? punctuality.value : '',
       topic: document.getElementById('topic').value.trim(),
       whatBuilt: document.getElementById('what_built').value.trim(),
@@ -953,6 +956,7 @@
       tutorComment: document.getElementById('tutor_comment').value.trim(),
       homeworkAssigned: document.getElementById('homework_assigned').value.trim(),
       confirmed: true,
+      scheduleId: window.currentScheduleId || '',
       submitted_at: new Date().toISOString()
     };
 
@@ -970,6 +974,13 @@
 
     Promise.resolve(submitFn)
       .then(function(result){
+        if (result && result.success === false) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i data-lucide="send" class="w-4 h-4"></i> Submit Session Log';
+          if(window.lucide) lucide.createIcons();
+          alert('Submission Error: ' + (result.message || 'Validation failed. Please verify required fields.'));
+          return;
+        }
         showSuccess();
       })
       .catch(function(err){
@@ -990,14 +1001,48 @@
   }
 
   // ─── Populate student from schedule or dropdown ───────────────────────
+  window.currentScheduleId = '';
+
   function populateStudentField(){
     try {
+      var urlParams = new URLSearchParams(window.location.search);
+      var paramStudentId = urlParams.get('studentId') || urlParams.get('student_id');
+      var paramScheduleId = urlParams.get('scheduleId') || urlParams.get('schedule_id');
+      var paramDate = urlParams.get('date') || urlParams.get('classDate');
+      var paramCourse = urlParams.get('course');
+
+      if (paramScheduleId) {
+        window.currentScheduleId = paramScheduleId;
+      }
+      if (paramDate && document.getElementById('class_date')) {
+        document.getElementById('class_date').value = paramDate;
+      }
+
+      if (paramStudentId && typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) {
+        var allStudents = DashboardEngine.getStudents() || [];
+        var matched = allStudents.find(function(st){ return st.id === paramStudentId; });
+        if (matched) {
+          var fName = ((matched.firstName || '') + ' ' + (matched.lastName || '')).trim();
+          document.getElementById('student_name_display').value = fName;
+          document.getElementById('student_id').value = matched.id;
+          document.getElementById('student_name').value = fName;
+          if (document.getElementById('course_covered')) {
+            document.getElementById('course_covered').value = paramCourse || matched.program || 'STEM Coding';
+          }
+          document.getElementById('student-display-wrap').style.display = 'block';
+          document.getElementById('student-dropdown-wrap').style.display = 'none';
+          return;
+        }
+      }
+
       if(typeof DashboardEngine !== 'undefined' && DashboardEngine.getCurrentScheduledStudent){
         var sched = DashboardEngine.getCurrentScheduledStudent();
         if(sched && sched.name){
           document.getElementById('student_name_display').value = sched.name;
           document.getElementById('student_id').value = sched.id || '';
           document.getElementById('student_name').value = sched.name;
+          if (sched.scheduleId) window.currentScheduleId = sched.scheduleId;
+          if (sched.date && document.getElementById('class_date')) document.getElementById('class_date').value = sched.date;
           if (sched.course && document.getElementById('course_covered')) {
             document.getElementById('course_covered').value = sched.course;
           }
@@ -1056,5 +1101,10 @@
   </script>
 
   <script src="assets/js/mulu-widget.min.js" defer></script>
+
+<script src="assets/js/stemulus-icons.js" defer></script>
+<script src="assets/js/scroll-choreography.js" defer></script>
+<script src="assets/js/stemulus-interactive.js" defer></script>
+
 </body>
 </html>

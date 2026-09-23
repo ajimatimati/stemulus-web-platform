@@ -6,7 +6,7 @@
 
 const DashboardEngine = (function() {
 
-    // ---- Password hashing (SHA-256 via Web Crypto — no library needed) ----
+    // ---- Password hashing (SHA-256 via Web Crypto: no library needed) ----
     async function hashPassword(plain) {
         const encoded = new TextEncoder().encode(plain);
         const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
@@ -425,7 +425,7 @@ const DashboardEngine = (function() {
         if (isHashed(user.password)) {
             match = (user.password === inputHash || user.password === trimmedHash);
         } else {
-            // Plaintext still in store — compare directly, then upgrade
+            // Plaintext still in store: compare directly, then upgrade
             match = (user.password === password || user.password === trimmedPwd);
             if (match) {
                 db.users[key].password = inputHash;
@@ -449,10 +449,16 @@ const DashboardEngine = (function() {
     // --- Students Controller ---
     function getStudents(parentEmail = null) {
         const db = getDB();
+        const students = db.students || [];
         if (parentEmail) {
-            return db.students.filter(s => s.parentEmail && s.parentEmail.toLowerCase() === parentEmail.toLowerCase());
+            const clean = String(parentEmail).toLowerCase().trim();
+            return students.filter(s => {
+                if (s.parentEmail && String(s.parentEmail).toLowerCase().trim() === clean) return true;
+                if (s.parentName && String(s.parentName).toLowerCase().trim() === clean) return true;
+                return false;
+            });
         }
-        return db.students;
+        return students;
     }
 
     function getStudentsByTutor(tutorIdentifier) {
@@ -543,21 +549,37 @@ const DashboardEngine = (function() {
 
     function addStudent(student) {
         const db = getDB();
-        student.id = "std-" + Date.now();
+        student.id = student.id || ("std-" + Date.now());
+        if (student.parentEmail) student.parentEmail = String(student.parentEmail).toLowerCase().trim();
+        if (student.parentName) student.parentName = String(student.parentName).trim();
         if (student.status === undefined) student.status = 'active';
         if (student.remindersPaused === undefined) student.remindersPaused = false;
+        if (student.progress === undefined) student.progress = 0;
+        if (!student.skills) student.skills = { logic: 60, loops: 60, variables: 60, syntax: 60, projects: 60 };
+        if (!student.metrics) student.metrics = { attended: 0, total: 8, projects: 0, lines: 0 };
         student.birthday = (student.birthday && typeof student.birthday === 'string' && student.birthday.trim().length >= 10) ? student.birthday.trim() : '';
         student.hasExplicitBirthday = !!(student.birthday);
+        db.students = db.students || [];
         db.students.push(student);
         saveDB(db);
         return student;
     }
 
-    function updateStudent(studentData) {
+    function updateStudent(studentDataOrId, optionalUpdates) {
         const db = getDB();
-        const idx = db.students.findIndex(s => s.id === studentData.id);
+        let id, updates;
+        if (typeof studentDataOrId === 'string') {
+            id = studentDataOrId;
+            updates = optionalUpdates || {};
+        } else if (studentDataOrId && typeof studentDataOrId === 'object') {
+            id = studentDataOrId.id;
+            updates = studentDataOrId;
+        } else {
+            return null;
+        }
+        const idx = db.students.findIndex(s => s.id === id);
         if (idx !== -1) {
-            db.students[idx] = { ...db.students[idx], ...studentData };
+            db.students[idx] = { ...db.students[idx], ...updates, id: id };
             saveDB(db);
             return db.students[idx];
         }
@@ -663,24 +685,109 @@ const DashboardEngine = (function() {
     }
 
     function addAttendanceRecord(record) {
-        if (!record || !record.studentId || !record.topic || !Array.isArray(record.coursesCovered) || record.coursesCovered.length === 0) {
-            return { success: false, message: 'Missing required fields: studentId, topic, and coursesCovered (array).' };
+        if (!record || typeof record !== 'object') {
+            return { success: false, message: 'Invalid attendance record data.' };
         }
+
+        // Normalize snake_case and aliases from form wizards
+        record.studentId = record.studentId || record.student_id;
+        record.studentName = record.studentName || record.student_name || '';
+        record.classDate = record.classDate || record.class_date || new Date().toISOString().split('T')[0];
+        record.classTime = record.classTime || record.class_time || '16:00';
+        record.attendanceStatus = record.attendanceStatus || record.attendance_status || 'present';
+        record.duration = record.duration || record.duration_minutes || '60';
+        record.whatBuilt = record.whatBuilt !== undefined ? record.whatBuilt : (record.what_built !== undefined ? record.what_built : '');
+        record.homeworkAssigned = record.homeworkAssigned !== undefined ? record.homeworkAssigned : (record.homework_assigned !== undefined ? record.homework_assigned : '');
+        record.conceptGrasp = record.conceptGrasp !== undefined ? record.conceptGrasp : (record.concept_grasp !== undefined ? record.concept_grasp : 0);
+        record.assignmentStatus = record.assignmentStatus !== undefined ? record.assignmentStatus : (record.assignment_status !== undefined ? record.assignment_status : '');
+        record.tutorComment = record.tutorComment !== undefined ? record.tutorComment : (record.tutor_comment !== undefined ? record.tutor_comment : (record.notes || ''));
+
+        if (!Array.isArray(record.coursesCovered) || record.coursesCovered.length === 0) {
+            if (record.course) {
+                record.coursesCovered = [record.course];
+            } else {
+                record.coursesCovered = ['STEM Coding'];
+            }
+        }
+        if (!record.topic && record.whatBuilt) {
+            record.topic = record.whatBuilt;
+        }
+
+        if (!record.studentId || !record.topic) {
+            return { success: false, message: 'Missing required fields: studentId and topic are mandatory.' };
+        }
+
         const db = getDB();
+        if (!record.studentName && record.studentId) {
+            const st = (db.students || []).find(s => s.id === record.studentId);
+            if (st) record.studentName = ((st.firstName || '') + ' ' + (st.lastName || '')).trim();
+        }
+
+        const sess = getSession();
+        if (!record.tutorName && sess) record.tutorName = sess.name || 'Tutor';
+        if (!record.tutorEmail && sess) record.tutorEmail = sess.email || '';
+
         db.attendanceRecords = db.attendanceRecords || [];
-        record.id = "att-" + Date.now();
+        record.id = record.id || ("att-" + Date.now());
         record.status = "pending";
-        record.timestamp = new Date().toISOString();
-        // Optional fields from 4-section attendance form (undefined means not provided — old records are unaffected)
+        record.timestamp = record.timestamp || new Date().toISOString();
+
+        // Optional fields from 4-section attendance form
         if (record.punctuality       === undefined) record.punctuality       = '';
         if (record.whatBuilt         === undefined) record.whatBuilt         = '';
         if (record.assignmentStatus  === undefined) record.assignmentStatus  = '';
         if (record.conceptGrasp      === undefined) record.conceptGrasp      = 0;
         if (record.tutorComment      === undefined) record.tutorComment      = '';
         if (record.homeworkAssigned  === undefined) record.homeworkAssigned  = '';
+
         db.attendanceRecords.push(record);
+
+        // Notify Admin of new attendance submission
+        db.notifications = db.notifications || [];
+        db.notifications.push({
+            id: "not-" + Date.now(),
+            title: "New Attendance Submitted",
+            message: `${record.tutorName || 'A tutor'} submitted attendance for ${record.studentName || 'a student'} (${record.classDate}). Topic: "${record.topic}". Pending admin approval.`,
+            timestamp: new Date().toISOString(),
+            read: false,
+            userEmail: "admin@stemuluskidstech.com"
+        });
+
         saveDB(db);
-        return record;
+        return Object.assign({ success: true }, record);
+    }
+
+    function getOverdueAttendance(tutorEmail = null) {
+        const db = getDB();
+        const schedules = db.schedules || [];
+        const attendanceRecords = db.attendanceRecords || [];
+        const todayStr = new Date().toISOString().split('T')[0];
+
+        let overdue = schedules.filter(s => {
+            if (!s.date) return false;
+            const isPastOrToday = s.date <= todayStr;
+            const isPendingSchedule = s.attendanceStatus === 'pending';
+            if (!isPastOrToday || !isPendingSchedule) return false;
+
+            // Check if attendance has already been submitted for this session
+            const hasSubmitted = attendanceRecords.some(r =>
+                (r.scheduleId && r.scheduleId === s.id) ||
+                (r.studentId === s.studentId && (r.classDate === s.date || r.date === s.date))
+            );
+            return !hasSubmitted;
+        });
+
+        if (tutorEmail) {
+            const tutorLower = tutorEmail.toLowerCase().trim();
+            const sess = getSession();
+            const tutorNameLower = (sess && sess.name ? sess.name : '').toLowerCase().trim();
+            overdue = overdue.filter(s =>
+                (s.tutorEmail && s.tutorEmail.toLowerCase().trim() === tutorLower) ||
+                (s.mentor && s.mentor.toLowerCase().trim() === tutorNameLower)
+            );
+        }
+
+        return overdue;
     }
 
     function calculateMonthlySessionTarget(studentOrId, targetDate) {
@@ -1030,6 +1137,7 @@ const DashboardEngine = (function() {
                     grade_level: cert.grade_level,
                     issue_date: cert.issue_date,
                     tutor_name: cert.tutor_name || 'STEMulus Faculty',
+                    template_type: cert.template_type || 'explorers',
                     status: cert.status || 'issued',
                     director_note: cert.director_note || '',
                     issued_at: cert.issued_at || new Date().toISOString()
@@ -1086,6 +1194,16 @@ const DashboardEngine = (function() {
             return db.certificates[idx];
         }
         return null;
+    }
+
+    function verifyCertificate(id) {
+        if (!id) return null;
+        const db = getDB();
+        const cleanId = String(id).trim().toUpperCase();
+        return (db.certificates || []).find(c => 
+            (c.credential_id && c.credential_id.trim().toUpperCase() === cleanId) ||
+            (c.id && c.id.trim().toUpperCase() === cleanId)
+        ) || null;
     }
 
     function getCurrentScheduledStudent() {
@@ -1248,7 +1366,7 @@ const DashboardEngine = (function() {
                 db.notifications.push({
                     id: "not-" + (Date.now() + 1),
                     title: "Your Portal Login Credentials",
-                    message: `Welcome ${enr.parentName}! Your STEMulus parent portal login: Email: ${enr.email} | Temporary Password: ${randomPassword} — Please change this after your first login.`,
+                    message: `Welcome ${enr.parentName}! Your STEMulus parent portal login: Email: ${enr.email} | Temporary Password: ${randomPassword} - Please change this after your first login.`,
                     timestamp: new Date().toISOString(),
                     read: false,
                     userEmail: enr.email
@@ -1262,8 +1380,8 @@ const DashboardEngine = (function() {
                     status: 'draft',
                     to: enr.email || enr.parentEmail,
                     recipientName: enr.parentName || 'Parent',
-                    subject: 'Welcome to STEMulus — ' + (enr.studentFirstName||'') + "'s coding journey starts!",
-                    htmlPreview: 'Welcome email for ' + (enr.parentName||'Parent') + ' — contains portal login credentials. Temp password: ' + randomPassword,
+                    subject: 'Welcome to STEMulus - ' + (enr.studentFirstName||'') + "'s coding journey starts!",
+                    htmlPreview: 'Welcome email for ' + (enr.parentName||'Parent') + ' - contains portal login credentials. Temp password: ' + randomPassword,
                     data: {
                         parentEmail: enr.email || enr.parentEmail,
                         parentName: enr.parentName || 'Parent',
@@ -1292,7 +1410,7 @@ const DashboardEngine = (function() {
             }
 
             saveDB(db);
-            dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+            if (typeof window !== 'undefined' && window.dispatchEvent) window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
             return true;
         }
         return false;
@@ -1409,6 +1527,15 @@ const DashboardEngine = (function() {
         if (!db.monthlyReports) db.monthlyReports = [];
         
         // Link student profile if student exists in database
+        if (report.studentId && (!report.parentEmail || !report.studentName)) {
+            var matchedById = (db.students || []).find(function(s) { return s.id === report.studentId; });
+            if (matchedById) {
+                report.studentName = report.studentName || ((matchedById.firstName || '') + ' ' + (matchedById.lastName || '')).trim();
+                report.parentEmail = report.parentEmail || matchedById.parentEmail;
+                report.parentName = report.parentName || matchedById.parentName;
+                if (!report.course && matchedById.program) report.course = matchedById.program;
+            }
+        }
         if (report.studentName && (!report.studentId || !report.parentEmail)) {
             var sNameLower = report.studentName.toLowerCase().trim();
             var matched = (db.students || []).find(function(s) {
@@ -1432,7 +1559,7 @@ const DashboardEngine = (function() {
             db.monthlyReports[existingIdx] = Object.assign({}, db.monthlyReports[existingIdx], report);
             saveDB(db);
             syncLegacyMonthlyReports(db.monthlyReports);
-            return { success: true, id: report.id, isUpdate: true };
+            return Object.assign({ success: true, isUpdate: true }, report);
         }
 
         report.id = report.id || ('mrep-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5));
@@ -1456,7 +1583,7 @@ const DashboardEngine = (function() {
 
         saveDB(db);
         syncLegacyMonthlyReports(db.monthlyReports);
-        return { success: true, id: report.id };
+        return Object.assign({ success: true }, report);
     }
 
     function updateMonthlyReport(id, updates) {
@@ -1559,8 +1686,8 @@ const DashboardEngine = (function() {
                 type: 'monthly_report',
                 to: parentEmail.toLowerCase(),
                 recipientName: r.parentName || 'Parent',
-                subject: 'STEMulus Official Monthly Academic Evaluation — ' + (r.studentName || 'Student') + ' (' + (r.month || '') + ')',
-                htmlPreview: 'Official progress report for ' + (r.studentName || 'Student') + ' — Grade: ' + (r.overallGrade || 'A') + '. Available to download and print in your Parent Portal.',
+                subject: 'STEMulus Official Monthly Academic Evaluation - ' + (r.studentName || 'Student') + ' (' + (r.month || '') + ')',
+                htmlPreview: 'Official progress report for ' + (r.studentName || 'Student') + ' - Grade: ' + (r.overallGrade || 'A') + '. Available to download and print in your Parent Portal.',
                 data: {
                     reportId: r.id,
                     studentName: r.studentName,
@@ -1588,6 +1715,7 @@ const DashboardEngine = (function() {
 
         saveDB(db);
         syncLegacyMonthlyReports(db.monthlyReports);
+        r.success = true;
         return r;
     }
 
@@ -1626,7 +1754,7 @@ const DashboardEngine = (function() {
                 status: 'draft',
                 to: tutorEmail,
                 recipientName: params.name || 'Tutor',
-                subject: 'Welcome to STEMulus Faculty — Your Tutor Portal Access',
+                subject: 'Welcome to STEMulus Faculty - Your Tutor Portal Access',
                 htmlPreview: 'Welcome ' + (params.name || 'Tutor') + '! Your tutor portal credentials: Login: ' + tutorEmail + ' | Temp Password: ' + tempPwd,
                 data: { tutorEmail: tutorEmail, tutorName: params.name || 'Tutor', tempPassword: tempPwd, subjects: params.program || '' },
                 triggeredBy: 'quick_onboard_tutor',
@@ -1636,7 +1764,7 @@ const DashboardEngine = (function() {
                 editedBody: null
             });
             saveDB(db);
-            dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+            if (typeof window !== 'undefined' && window.dispatchEvent) window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
             return { success: true, type: 'tutor', email: tutorEmail, tempPassword: tempPwd, name: params.name || 'Tutor' };
         } else {
             // Student + Parent
@@ -1746,7 +1874,7 @@ const DashboardEngine = (function() {
                 status: 'draft',
                 to: parentEmail,
                 recipientName: params.name || 'Parent',
-                subject: 'Welcome to STEMulus — ' + fName + '\'s coding journey starts!',
+                subject: 'Welcome to STEMulus - ' + fName + '\'s coding journey starts!',
                 htmlPreview: 'Welcome ' + (params.name || 'Parent') + '! Portal credentials: Email: ' + parentEmail + ' | Temp Password: ' + tempPwd,
                 data: {
                     parentEmail: parentEmail,
@@ -1764,7 +1892,7 @@ const DashboardEngine = (function() {
             });
 
             saveDB(db);
-            dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+            if (typeof window !== 'undefined' && window.dispatchEvent) window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
             return {
                 success: true,
                 type: 'student_parent',
@@ -1794,7 +1922,7 @@ const DashboardEngine = (function() {
         }, item);
         db.emailQueue.push(entry);
         saveDB(db);
-        dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+        if (typeof window !== 'undefined' && window.dispatchEvent) window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
         return entry.id;
     }
 
@@ -1836,7 +1964,7 @@ const DashboardEngine = (function() {
         var req = { id: 'pwr-'+Date.now(), email: email.toLowerCase().trim(), status: 'pending', requestedAt: new Date().toISOString() };
         db.passwordResetRequests.push(req);
         saveDB(db);
-        dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+        if (typeof window !== 'undefined' && window.dispatchEvent) window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
         return req.id;
     }
 
@@ -2101,11 +2229,13 @@ const DashboardEngine = (function() {
         addAttendanceRecord,
         updateAttendanceStatus,
         checkDuplicateAttendance,
+        getOverdueAttendance,
         calculateMonthlySessionTarget,
         getStudentsByTutor,
         getTutorStudents,
         getCurrentScheduledStudent,
         updateCertificate,
+        verifyCertificate,
         getDB,
         saveDB,
         getMonthlyReports,

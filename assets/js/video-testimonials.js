@@ -16,7 +16,7 @@ const LearningOutcomes = (function() {
         {
             icon: `<svg class="w-8 h-8" viewBox="0 0 32 32" fill="none"><rect x="3" y="6" width="26" height="18" rx="3" stroke="#f97316" stroke-width="2"/><path d="M10 14l3 3 6-6" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
             title: 'Real Programming Languages',
-            description: 'Not just drag-and-drop. Scratch, Python, JavaScript, and C++ — the same tools professionals use.',
+            description: 'Not just drag-and-drop. Scratch, Python, JavaScript, and C++ - the same tools professionals use.',
             color: '#f97316'
         },
         {
@@ -28,13 +28,13 @@ const LearningOutcomes = (function() {
         {
             icon: `<svg class="w-8 h-8" viewBox="0 0 32 32" fill="none"><path d="M16 4v24M4 16h24" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="16" r="11" stroke="#10b981" stroke-width="2"/><path d="M10 10l12 12M22 10L10 22" stroke="#10b981" stroke-width="1" stroke-linecap="round" opacity=".3"/></svg>`,
             title: 'Problem Solving',
-            description: 'Debugging, testing, and iteration — the engineering mindset that makes kids fearless learners.',
+            description: 'Debugging, testing, and iteration: the engineering mindset that makes kids fearless learners.',
             color: '#10b981'
         },
         {
             icon: `<svg class="w-8 h-8" viewBox="0 0 32 32" fill="none"><rect x="5" y="5" width="10" height="10" rx="2" fill="#ec4899" opacity=".3"/><rect x="17" y="5" width="10" height="10" rx="2" fill="#ec4899" opacity=".5"/><rect x="5" y="17" width="10" height="10" rx="2" fill="#ec4899" opacity=".5"/><rect x="17" y="17" width="10" height="10" rx="2" fill="#ec4899" opacity=".8"/></svg>`,
             title: 'Creative Projects',
-            description: 'Games, websites, animations, and apps — kids build a real portfolio they can show off.',
+            description: 'Games, websites, animations, and apps: kids build a real portfolio they can show off.',
             color: '#ec4899'
         },
         {
@@ -149,7 +149,7 @@ const LearningOutcomes = (function() {
             border-color: #334155;
         }
         
-        .lo-card::before {
+        .lo-card:before {
             content: '';
             position: absolute;
             top: 0;
@@ -167,7 +167,7 @@ const LearningOutcomes = (function() {
             border-color: var(--card-color);
         }
         
-        .lo-card:hover::before {
+        .lo-card:hover:before {
             opacity: 1;
         }
         
@@ -249,7 +249,7 @@ const LearningOutcomes = (function() {
                 <div class="lo-header">
                     <span class="lo-badge">Curriculum Highlights</span>
                     <h2 class="lo-title">What Your Child Will <span>Actually Learn</span></h2>
-                    <p class="lo-subtitle">Not abstract theories — concrete skills they'll use to build real things and think like engineers.</p>
+                    <p class="lo-subtitle">Not abstract theories: concrete skills they'll use to build real things and think like engineers.</p>
                 </div>
                 
                 <div class="lo-grid">

@@ -1,5 +1,5 @@
 /**
- * STEMulus v2.0 — Connector Paths
+ * STEMulus v2.0: Connector Paths
  * Dynamically draws an SVG dotted path weaving between grid items
  * in the .flow-grid layout. Calculates coordinates on load and resize.
  */

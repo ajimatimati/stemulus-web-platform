@@ -1,5 +1,5 @@
 /**
- * STEMulus v2.0 — Testimonial Rotator
+ * STEMulus v2.0: Testimonial Rotator
  * Auto-cycles testimonial cards every 4500ms with a synchronized gold
  * progress bar fill. Pauses on hover/focus. Supports touch swipe.
  * Announces changes via aria-live for screen readers.

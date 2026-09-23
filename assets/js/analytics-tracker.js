@@ -22,7 +22,7 @@ const AnalyticsTracker = (function () {
     function initClarity() {
         // Warn and bail if placeholder ID is still set
         if (!CLARITY_ID || CLARITY_ID === 'your-clarity-id') {
-            console.warn('Clarity ID not configured — analytics disabled');
+            console.warn('Clarity ID not configured: analytics disabled');
             return;
         }
         // Skip if already loaded

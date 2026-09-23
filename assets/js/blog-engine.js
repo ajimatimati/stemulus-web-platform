@@ -15,7 +15,7 @@ const BlogEngine = (function() {
       {
         "id": "feat-1",
         "title": "The 'Screen Time' Myth: Why Creation Beats Consumption",
-        "description": "Stop counting minutes. Start counting maker moments. Why 3 hours of coding Minecraft mods is healthier than 30 minutes of YouTube—and how to tell the difference.",
+        "description": "Stop counting minutes. Start counting maker moments. Why 3 hours of coding Minecraft mods is healthier than 30 minutes of YouTube: and how to tell the difference.",
         "image": "https://images.unsplash.com/photo-1516627145497-ae69d0d39e4d?q=80&w=1600&auto=format&fit=crop",
         "category": "Parent Corner",
         "date": "Jan 20, 2026",
@@ -48,7 +48,7 @@ const BlogEngine = (function() {
       {
         "id": "post-3",
         "title": "The 'Flow State' Advantage: Why Gamers Make Great Coders",
-        "description": "Mihaly Csikszentmihalyi called it 'Flow.' We call it the 'Zone.' Learn how coding triggers the same dopamine loops as video games—but for creation, not consumption.",
+        "description": "Mihaly Csikszentmihalyi called it 'Flow.' We call it the 'Zone.' Learn how coding triggers the same dopamine loops as video games: but for creation, not consumption.",
         "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop",
         "category": "Insights",
         "date": "Oct 15, 2025",

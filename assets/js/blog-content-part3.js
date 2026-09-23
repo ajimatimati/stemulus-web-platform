@@ -8,7 +8,7 @@ const BLOG_CONTENT_PART3 = {
         readTime: "5 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Writing code is half the battle. Selling your idea is the other half. That's why every STEMulus project includes "Demo Day"—because the best engineers are also great communicators.
+                Writing code is half the battle. Selling your idea is the other half. That's why every STEMulus project includes "Demo Day"-because the best engineers are also great communicators.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Why Demo Skills Matter</h2>
@@ -22,7 +22,7 @@ const BLOG_CONTENT_PART3 = {
             <p>Every course ends with students presenting their projects. They explain the problem, the solution, the tech stack, and what they learned. Parents are invited. Nerves are confronted.</p>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "The ability to articulate a complex idea simply is a sign of true understanding—and a skill every tech career requires."
+                "The ability to articulate a complex idea simply is a sign of true understanding: and a skill every tech career requires."
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
@@ -66,7 +66,7 @@ const BLOG_CONTENT_PART3 = {
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">Our Path</h3>
-                    <p class="text-gray-300">Junior Robotics uses similar block-based approaches, then graduates to Arduino for older students. The concepts transfer—only the tools change.</p>
+                    <p class="text-gray-300">Junior Robotics uses similar block-based approaches, then graduates to Arduino for older students. The concepts transfer: only the tools change.</p>
                 </div>
             </div>
         `
@@ -76,11 +76,11 @@ const BLOG_CONTENT_PART3 = {
         readTime: "5 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Why do programmers share their secrets for free? Because in the open-source world, giving away work makes you richer—in reputation, in skills, and often in actual money.
+                Why do programmers share their secrets for free? Because in the open-source world, giving away work makes you richer: in reputation, in skills, and often in actual money.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Paradox of Sharing</h2>
-            <p>Linux runs 90% of the internet. It's free. The creators didn't lose—they built careers, companies, and communities around their generosity.</p>
+            <p>Linux runs 90% of the internet. It's free. The creators didn't lose: they built careers, companies, and communities around their generosity.</p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Why Open Source Works</h2>
             <ul class="list-disc pl-6 space-y-3">
@@ -98,7 +98,7 @@ const BLOG_CONTENT_PART3 = {
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">Teaching Collaboration</h3>
-                    <p class="text-gray-300">We teach students to contribute to open-source projects, even small ones. It's not just coding—it's learning that sharing makes everyone better.</p>
+                    <p class="text-gray-300">We teach students to contribute to open-source projects, even small ones. It's not just coding: it's learning that sharing makes everyone better.</p>
                 </div>
             </div>
         `
@@ -112,7 +112,7 @@ const BLOG_CONTENT_PART3 = {
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">What is Accessibility?</h2>
-            <p>Accessibility means building products that work for everyone—including people with disabilities. It's not charity; it's good design. Curb cuts help wheelchairs AND strollers AND suitcases.</p>
+            <p>Accessibility means building products that work for everyone: including people with disabilities. It's not charity; it's good design. Curb cuts help wheelchairs AND strollers AND suitcases.</p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Practical Lessons</h2>
             <ul class="list-disc pl-6 space-y-3">
@@ -130,7 +130,7 @@ const BLOG_CONTENT_PART3 = {
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">The Empathy Check</h3>
-                    <p class="text-gray-300">Every student project goes through an accessibility review. "Would this work for everyone?" It's not a checklist—it's a mindset we're building.</p>
+                    <p class="text-gray-300">Every student project goes through an accessibility review. "Would this work for everyone?" It's not a checklist: it's a mindset we're building.</p>
                 </div>
             </div>
         `
@@ -155,7 +155,7 @@ const BLOG_CONTENT_PART3 = {
             <p>We show students real-world examples of misleading data. Then we ask: "What's wrong with this picture?" Learning to question data is learning to think critically.</p>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "It's not about memorizing statistics—it's about asking 'Where did this number come from?' That question changes everything."
+                "It's not about memorizing statistics: it's about asking 'Where did this number come from?' That question changes everything."
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
@@ -176,7 +176,7 @@ const BLOG_CONTENT_PART3 = {
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Postal Analogy</h2>
-            <p>Imagine you're sending a letter. You need an address (IP address), a postal service (ISP), and sorting facilities (routers). The internet works the same way—just faster.</p>
+            <p>Imagine you're sending a letter. You need an address (IP address), a postal service (ISP), and sorting facilities (routers). The internet works the same way: just faster.</p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Key Moments</h2>
             <ul class="list-disc pl-6 space-y-3">
@@ -188,14 +188,14 @@ const BLOG_CONTENT_PART3 = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "The internet isn't magic—it's cables, protocols, and clever engineering. Understanding how it works removes the mystery and adds respect."
+                "The internet isn't magic: it's cables, protocols, and clever engineering. Understanding how it works removes the mystery and adds respect."
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">Why History Matters</h3>
-                    <p class="text-gray-300">When students understand how the internet was built, they realize someone built it—which means they can build the next version.</p>
+                    <p class="text-gray-300">When students understand how the internet was built, they realize someone built it: which means they can build the next version.</p>
                 </div>
             </div>
         `
@@ -225,14 +225,14 @@ const BLOG_CONTENT_PART3 = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "Passion is good. Compulsion is not. The difference is whether they're playing because they want to—or because they have to."
+                "Passion is good. Compulsion is not. The difference is whether they're playing because they want to: or because they have to."
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">The Redirect Strategy</h3>
-                    <p class="text-gray-300">If you're worried, don't ban gaming—redirect it. "You love Fortnite? Let's learn to build games like Fortnite." Same passion, productive channel.</p>
+                    <p class="text-gray-300">If you're worried, don't ban gaming: redirect it. "You love Fortnite? Let's learn to build games like Fortnite." Same passion, productive channel.</p>
                 </div>
             </div>
         `
@@ -242,11 +242,11 @@ const BLOG_CONTENT_PART3 = {
         readTime: "6 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Bits can be 1 or 0. Qubits can be both at once. Welcome to quantum computing—the technology that might make today's encryption obsolete, explained simply.
+                Bits can be 1 or 0. Qubits can be both at once. Welcome to quantum computing: the technology that might make today's encryption obsolete, explained simply.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Coin Analogy</h2>
-            <p>A regular coin is heads OR tails. A quantum coin spinning in the air is both heads AND tails until you catch it. That's superposition—and it's how qubits work.</p>
+            <p>A regular coin is heads OR tails. A quantum coin spinning in the air is both heads AND tails until you catch it. That's superposition: and it's how qubits work.</p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Why It Matters</h2>
             <ul class="list-disc pl-6 space-y-3">
@@ -256,14 +256,14 @@ const BLOG_CONTENT_PART3 = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "Quantum computing isn't just faster computers—it's a fundamentally different way of computing. The kids learning today will be the adults working with it."
+                "Quantum computing isn't just faster computers: it's a fundamentally different way of computing. The kids learning today will be the adults working with it."
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">Future-Proofing</h3>
-                    <p class="text-gray-300">Quantum computers won't replace regular computers—they'll handle specific problems. The fundamentals we teach (logic, algorithms, problem-solving) remain essential.</p>
+                    <p class="text-gray-300">Quantum computers won't replace regular computers: they'll handle specific problems. The fundamentals we teach (logic, algorithms, problem-solving) remain essential.</p>
                 </div>
             </div>
         `
@@ -277,7 +277,7 @@ const BLOG_CONTENT_PART3 = {
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Code Analogy</h2>
-            <p>DNA is just four letters: A, T, G, C. Different sequences create different proteins. CRISPR lets scientists cut and paste these sequences—like find-and-replace in a document.</p>
+            <p>DNA is just four letters: A, T, G, C. Different sequences create different proteins. CRISPR lets scientists cut and paste these sequences: like find-and-replace in a document.</p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Real Applications</h2>
             <ul class="list-disc pl-6 space-y-3">
@@ -294,7 +294,7 @@ const BLOG_CONTENT_PART3 = {
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">Computational Thinking Transfers</h3>
-                    <p class="text-gray-300">The logic learned in coding—sequences, conditionals, loops—applies directly to understanding biological systems. It's all pattern recognition.</p>
+                    <p class="text-gray-300">The logic learned in coding: sequences, conditionals, loops: applies directly to understanding biological systems. It's all pattern recognition.</p>
                 </div>
             </div>
         `
@@ -336,7 +336,7 @@ const BLOG_CONTENT_PART3 = {
         readTime: "5 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Forget the crypto hype. Forget the coins. At its core, blockchain is just a fancy ledger—and the concept of "distributed trust" is genuinely revolutionary.
+                Forget the crypto hype. Forget the coins. At its core, blockchain is just a fancy ledger: and the concept of "distributed trust" is genuinely revolutionary.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Ledger Analogy</h2>
@@ -351,14 +351,14 @@ const BLOG_CONTENT_PART3 = {
             </ul>
 
             <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                "The interesting thing about blockchain isn't the coins—it's the computer science concept of trustless systems. That's the lesson worth teaching."
+                "The interesting thing about blockchain isn't the coins: it's the computer science concept of trustless systems. That's the lesson worth teaching."
             </blockquote>
 
             <div class="bg-gray-900 text-white p-8 rounded-3xl my-12 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-indigo-500/20 opacity-50"></div>
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold mb-4">Understanding the Tech</h3>
-                    <p class="text-gray-300">We teach the concepts behind blockchain—cryptographic hashing, distributed systems—without the speculation. The fundamentals matter more than the hype.</p>
+                    <p class="text-gray-300">We teach the concepts behind blockchain: cryptographic hashing, distributed systems: without the speculation. The fundamentals matter more than the hype.</p>
                 </div>
             </div>
         `
@@ -368,11 +368,11 @@ const BLOG_CONTENT_PART3 = {
         readTime: "6 min read",
         content: `
             <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                Malcolm Gladwell famously said 10,000 hours makes an expert. Science says that's wrong. What actually matters is "deliberate practice"—and 100 focused hours beat 1,000 mindless ones.
+                Malcolm Gladwell famously said 10,000 hours makes an expert. Science says that's wrong. What actually matters is "deliberate practice"-and 100 focused hours beat 1,000 mindless ones.
             </p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Real Research</h2>
-            <p>Anders Ericsson (whose research Gladwell popularized) actually found that it's not time—it's <em>how</em> you practice. Deliberate practice means working on weaknesses, not repeating strengths.</p>
+            <p>Anders Ericsson (whose research Gladwell popularized) actually found that it's not time: it's <em>how</em> you practice. Deliberate practice means working on weaknesses, not repeating strengths.</p>
 
             <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">What Deliberate Practice Looks Like</h2>
             <ul class="list-disc pl-6 space-y-3">

@@ -1,12 +1,12 @@
 /**
- * STEMulus — Cinematic 3D WebGL Hologram Component  v3.1  (Blend Edition)
+ * STEMulus: Cinematic 3D WebGL Hologram Component  v3.1  (Blend Edition)
  *
  * Design principle: every model must harmonise with the light #FAFBFC chalk
- * background — warm orange / gold / amber palette, open geometry, transparent
+ * background: warm orange / gold / amber palette, open geometry, transparent
  * materials, additive-blended particles. No dark fills, no hard edges.
  *
  * Pages:
- *  programs → Orrery of Knowledge   (orbital atom — thin rings + pulsing electrons)
+ *  programs → Orrery of Knowledge   (orbital atom: thin rings + pulsing electrons)
  *  parents  → Nested Gyroscope      (warm amber core + 3 tilted tori + diamonds)
  *  blog     → DNA Wisdom Column     (smooth warm-strand helix + gold rungs)
  *  contact  → Neural Constellation  (open icosphere + orange-gold node web)
@@ -34,7 +34,7 @@
     }
   }
 
-  // ─── Colour palette — all warm, editorial ─────────────────────────────────
+  // ─── Colour palette: all warm, editorial ─────────────────────────────────
   const C = {
     orange:  0xf4600c,   // brand orange
     orangeD: 0xb84407,   // dark orange (emissive)
@@ -126,13 +126,13 @@
   }
 
   // ══════════════════════════════════════════════════════════════════════════
-  //  PROGRAMS  —  Orrery of Knowledge
+  //  PROGRAMS: Orrery of Knowledge
   //  Warm amber nucleus · three colour-coded orbital rings · pulsing electrons
   // ══════════════════════════════════════════════════════════════════════════
   function buildPrograms(group, scene) {
     lights(scene, C.orange, C.gold);
 
-    // Core — pulsing golden-orange octahedron + wire sphere
+    // Core: pulsing golden-orange octahedron + wire sphere
     const core = new THREE.Mesh(
       new THREE.OctahedronGeometry(0.36, 0),
       phong(C.orange, C.orangeD, 180, 0.95)
@@ -154,7 +154,7 @@
     );
     group.add(outerBox, innerBox);
 
-    // Vertex nodes — small spheres on outer box corners
+    // Vertex nodes: small spheres on outer box corners
     const nodesGroup = new THREE.Group();
     const size = 0.95;
     const vertices = [
@@ -179,7 +179,7 @@
     });
     group.add(nodesGroup);
 
-    // Orbital coordinate ring — thin torus
+    // Orbital coordinate ring: thin torus
     const orbitRing = new THREE.Mesh(
       new THREE.TorusGeometry(2.3, 0.012, 8, 80),
       phong(C.violet || 0xc4b5fd, C.violet || 0xc4b5fd, 100, 0.5)
@@ -224,13 +224,13 @@
   }
 
   // ══════════════════════════════════════════════════════════════════════════
-  //  PARENTS  —  Nested Gyroscope Orrery  (reference blend — keep close)
+  //  PARENTS: Nested Gyroscope Orrery  (reference blend: keep close)
   //  Warm amber core · three tilted nested tori · orbiting diamond satellites
   // ══════════════════════════════════════════════════════════════════════════
   function buildParents(group, scene) {
     lights(scene, C.gold, C.orange);
 
-    // Core — small layered sphere
+    // Core: small layered sphere
     const coreIn = new THREE.Mesh(
       new THREE.SphereGeometry(0.36, 56, 56),
       phong(C.orange, C.orangeD, 180, 0.95)
@@ -241,7 +241,7 @@
     );
     group.add(coreIn, coreGlow);
 
-    // Gyroscopic rings — three nested tori spinning independently
+    // Gyroscopic rings: three nested tori spinning independently
     const ringCfg = [
       { r: 1.28, tube: 0.020, color: C.gold,   rx: 0,           ry: 0,           spZ: 0.013,  spY: 0.009  },
       { r: 1.66, tube: 0.016, color: C.orange,  rx: Math.PI/2,  ry: 0,           spZ: -0.008, spY: 0.005  },
@@ -308,7 +308,7 @@
   }
 
   // ══════════════════════════════════════════════════════════════════════════
-  //  BLOG  —  DNA Wisdom Column
+  //  BLOG: DNA Wisdom Column
   //  CatmullRom tube strands in orange + amber (warm, no violet)
   //  Gold rung lines · glowing node spheres · cylindrical particle halo
   // ══════════════════════════════════════════════════════════════════════════
@@ -332,7 +332,7 @@
     const curve1 = new THREE.CatmullRomCurve3(s1pts);
     const curve2 = new THREE.CatmullRomCurve3(s2pts);
 
-    // Strands as smooth tubes — warm palette, slightly transparent
+    // Strands as smooth tubes: warm palette, slightly transparent
     const strand1 = new THREE.Mesh(
       new THREE.TubeGeometry(curve1, 220, 0.034, 8, false),
       phong(C.orange, C.orangeD, 140, 0.78)
@@ -399,14 +399,14 @@
   }
 
   // ══════════════════════════════════════════════════════════════════════════
-  //  CONTACT  —  Neural Constellation
+  //  CONTACT: Neural Constellation
   //  Open icosahedron globe (orange/amber) · warm-toned synaptic node field
   //  Amber spark lines · orange breathing core
   // ══════════════════════════════════════════════════════════════════════════
   function buildContact(group, scene) {
     lights(scene, C.orange, C.amber);
 
-    // Double-nested open wireframe spheres — very transparent
+    // Double-nested open wireframe spheres: very transparent
     const outerGlobe = new THREE.Mesh(
       new THREE.IcosahedronGeometry(1.52, 3),
       wire(C.orange, 0.20)
@@ -424,7 +424,7 @@
     );
     group.add(core);
 
-    // Synaptic nodes — warm 4-colour palette
+    // Synaptic nodes: warm 4-colour palette
     const rawPos = outerGlobe.geometry.attributes.position.array;
     const seen   = new Set();
     const verts  = [];
@@ -447,7 +447,7 @@
     });
     group.add(nodeGroup);
 
-    // Spark lines — short amber connections between nearby nodes
+    // Spark lines: short amber connections between nearby nodes
     const lineGroup = new THREE.Group();
     for (let i = 0; i < verts.length; i++) {
       for (let j = i + 1; j < verts.length; j++) {
@@ -490,14 +490,14 @@
   }
 
   // ══════════════════════════════════════════════════════════════════════════
-  //  DEFAULT  —  Quantum Torus Knot
+  //  DEFAULT: Quantum Torus Knot
   //  Orange Phong knot (semi-transparent) · gold ghost overlay
   //  Amber inner sphere · dual-direction warm particle nebula
   // ══════════════════════════════════════════════════════════════════════════
   function buildDefault(group, scene) {
     lights(scene, C.orange, C.gold);
 
-    // Knot — semi-transparent so bg cream glows through
+    // Knot: semi-transparent so bg cream glows through
     const knot = new THREE.Mesh(
       new THREE.TorusKnotGeometry(1.28, 0.28, 180, 22, 2, 3),
       phong(C.orange, C.orangeD, 110, 0.70)
@@ -508,7 +508,7 @@
     );
     group.add(knot, knotWire);
 
-    // Inner sphere — golden, breathing
+    // Inner sphere: golden, breathing
     const core = new THREE.Mesh(
       new THREE.SphereGeometry(0.50, 56, 56),
       phong(C.gold, C.goldD, 180, 0.80)
@@ -519,7 +519,7 @@
     );
     group.add(core, coreWire);
 
-    // Dual particle nebula — orange inward, amber outward
+    // Dual particle nebula: orange inward, amber outward
     const neb1 = halo(280, 2.4, C.orange, 0.042, 0.22);
     const neb2 = halo(200, 3.0, C.amber,  0.035, 0.16);
     group.add(neb1, neb2);

@@ -9,10 +9,16 @@
   directory = "netlify/functions"
 
 # Scheduled notification runs:
-# 06:00 UTC (07:00 WAT) — tutor digests + birthday alerts
-# 17:00 UTC (18:00 WAT) — parent 24h reminders
+# 06:00 UTC (07:00 WAT) - tutor digests + birthday alerts
+# 17:00 UTC (18:00 WAT) - parent & tutor 24h reminders
 [functions."scheduled-notifications"]
   schedule = "0 6,17 * * *"
+
+# Automated Class Reminders (runs every 10 minutes):
+# Evaluates 24h, 1h, and 10m windows and sends email + push alerts to both parents and tutors
+[functions."class-reminders"]
+  schedule = "*/10 * * * *"
+
 
 # ── Redirects ────────────────────────────────────────────────────────────────
 
@@ -35,7 +41,7 @@
   status = 404
   force = true
 
-# Hall of Fame retired — redirect to Programs
+# Hall of Fame retired - redirect to Programs
 [[redirects]]
   from = "/hall-of-fame.html"
   to = "/programs.html"
@@ -90,6 +96,56 @@
   force = true
 
 [[redirects]]
+  from = "https://portal.stemuluskidstech.com/parent"
+  to = "/parent-dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/parent-dashboard"
+  to = "/parent-dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/tutor"
+  to = "/tutor-dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/tutor-dashboard"
+  to = "/tutor-dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/admin"
+  to = "/admin-dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/admin-dashboard"
+  to = "/admin-dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/progress"
+  to = "/parent-progress.html"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/attendance"
+  to = "/tutor-attendance.html"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/students"
+  to = "/tutor-students.html"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/logout"
+  to = "/parent-login.html"
+  status = 302
+
+[[redirects]]
   from = "https://stemulus-portal-web.netlify.app/"
   to = "/parent-login.html"
   status = 200
@@ -100,6 +156,52 @@
   to = "/parent-login.html"
   status = 200
   force = true
+
+# ── Clean URL Rewrites for International & Pathway Hubs ─────────────────────
+[[redirects]]
+  from = "/coding-classes-for-kids-usa"
+  to = "/coding-classes-for-kids-usa.html"
+  status = 200
+
+[[redirects]]
+  from = "/coding-classes-for-kids-uk"
+  to = "/coding-classes-for-kids-uk.html"
+  status = 200
+
+[[redirects]]
+  from = "/coding-classes-for-kids-canada"
+  to = "/coding-classes-for-kids-canada.html"
+  status = 200
+
+[[redirects]]
+  from = "/coding-classes-for-kids-australia"
+  to = "/coding-classes-for-kids-australia.html"
+  status = 200
+
+[[redirects]]
+  from = "/child-safety"
+  to = "/child-safety.html"
+  status = 200
+
+[[redirects]]
+  from = "/coding-for-kids-ages-5-7"
+  to = "/coding-for-kids-ages-5-7.html"
+  status = 200
+
+[[redirects]]
+  from = "/coding-for-kids-ages-8-10"
+  to = "/coding-for-kids-ages-8-10.html"
+  status = 200
+
+[[redirects]]
+  from = "/coding-for-kids-ages-11-13"
+  to = "/coding-for-kids-ages-11-13.html"
+  status = 200
+
+[[redirects]]
+  from = "/coding-for-kids-ages-14-17"
+  to = "/coding-for-kids-ages-14-17.html"
+  status = 200
 
 # Custom 404 catch-all (must be last redirect rule)
 [[redirects]]
@@ -156,13 +258,13 @@
   [headers.values]
     Cache-Control = "public, max-age=2592000"
 
-# HTML pages — short cache so updates deploy quickly
+# HTML pages - short cache so updates deploy quickly
 [[headers]]
   for = "/*.html"
   [headers.values]
     Cache-Control = "public, max-age=3600, must-revalidate"
 
-# Dashboard pages — never cache (always serve fresh)
+# Dashboard pages - never cache (always serve fresh)
 [[headers]]
   for = "/admin-dashboard.html"
   [headers.values]

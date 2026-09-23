@@ -3,7 +3,7 @@ const path = require('path');
 const assert = require('assert');
 
 console.log('======================================================================');
-console.log('STEMulus Kids Tech — Comprehensive Verification Suite');
+console.log('STEMulus Kids Tech - Comprehensive Verification Suite');
 console.log('1. Emoji Banishment & 3D SVGs with Motion');
 console.log('2. WebMCP Protocol & Agent Booking/Enrollment Engine');
 console.log('3. Dual Class Reminder Engine (6h & 5m for Parents & Tutors)');

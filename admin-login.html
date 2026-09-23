@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <link rel="canonical" href="https://stemuluskidstech.com/admin-login.html" />
-  <title>Admin Login — STEMulus KidsTech</title>
+  <title>Admin Login | STEMulus KidsTech</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,7 +15,7 @@
 
   <style>
     /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *:before, *:after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --orange:        #F4600C;
@@ -51,7 +51,7 @@
     }
 
     /* ── Animated background particles ── */
-    body::before {
+    body:before {
       content: '';
       position: fixed;
       inset: 0;
@@ -176,7 +176,7 @@
     }
 
     /* Re-order so icon-left comes after input for :focus + adjacent sibling trick */
-    /* Instead we use JS approach — just style the parent on focus-within */
+    /* Instead we use JS approach - just style the parent on focus-within */
     .input-icon-wrap:focus-within .icon-left {
       color: var(--orange);
     }
@@ -194,13 +194,13 @@
       transition: border-color 0.22s, background 0.22s, box-shadow 0.22s;
     }
 
-    /* password field — no right padding needed if no toggle? We add it for toggle */
+    /* password field: no right padding needed if no toggle? We add it for toggle */
     .input-icon-wrap input[type="password"],
     .input-icon-wrap input[type="text"] {
       padding-right: 50px;
     }
 
-    .input-icon-wrap input::placeholder {
+    .input-icon-wrap input:placeholder {
       color: var(--text-subtle);
     }
 
@@ -262,7 +262,7 @@
       border-color: var(--orange);
     }
 
-    .checkbox-row input[type="checkbox"]:checked::after {
+    .checkbox-row input[type="checkbox"]:checked:after {
       content: '';
       position: absolute;
       left: 3px;
@@ -613,13 +613,13 @@
 
         <button class="btn-reset" id="resetSubmitBtn" type="button">Request Reset</button>
         <p class="reset-msg" id="resetMsg">
-          Request logged — the academy admin will contact you shortly.
+          Request logged - the academy admin will contact you shortly.
         </p>
       </div>
 
     </div>
 
-    <p class="footer-note">STEMulus KidsTech &mdash; Internal use only &bull; <a href="parent-login.html" style="color: rgba(255,255,255,0.5); text-decoration: underline;">Parent / Tutor Portal</a></p>
+    <p class="footer-note">STEMulus KidsTech  -  Internal use only &bull; <a href="parent-login.html" style="color: rgba(255,255,255,0.5); text-decoration: underline;">Parent / Tutor Portal</a></p>
   </div>
 
   <!-- Dashboard Engine (provides DashboardEngine.login()) -->
@@ -693,7 +693,7 @@
             }
           }
         } catch (err) {
-          // Fail silently — still show confirmation
+          // Fail silently: still show confirmation
         }
 
         resetBtn.disabled = true;
@@ -725,7 +725,7 @@
           }
         }
       } catch (sessionErr) {
-        // No session — continue to show login form
+        // No session: continue to show login form
       }
 
       /* ── 2. Wire up form submission ── */
@@ -776,7 +776,7 @@
 
         try {
           if (typeof DashboardEngine === 'undefined') {
-            throw new Error('System error — engine not loaded. Please refresh.');
+            throw new Error('System error: engine not loaded. Please refresh.');
           }
 
           var result = await DashboardEngine.login(email, password);
@@ -806,7 +806,7 @@
             try { localStorage.setItem('stemulus_keep_signed_in', '1'); } catch (_) {}
           }
 
-          // Success — redirect
+          // Success: redirect
           window.location.href = 'admin-dashboard.html';
 
         } catch (err) {

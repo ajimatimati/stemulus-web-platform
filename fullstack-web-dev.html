@@ -5,6 +5,7 @@
  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
  <link rel="stylesheet" href="assets/css/tailwind-output.css">
   <link rel="stylesheet" href="dist/combined.css">
+  <link rel="stylesheet" href="assets/css/stemulus-luxury.css">
  <meta charset="UTF-8">
   <meta name="theme-color" content="#F4600C">
   <!-- SEO: CORE -->
@@ -22,7 +23,7 @@
   <meta property="og:image" content="https://stemuluskidstech.com/assets/images/pet_portfolio_website.webp">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="STEMulus Kids Tech — Online Coding Academy Logo">
+  <meta property="og:image:alt" content="STEMulus Kids Tech: Online Coding Academy Logo">
   <meta property="og:locale" content="en_US">
   <!-- SEO: TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image">
@@ -143,7 +144,7 @@
  "category": "Subscription",
  "priceCurrency": "USD",
  "price": "80.00",
- "description": "Private 1-on-1 weekly sessions, curriculum, and portfolio reviews included. Ideal for Ages 14–18."
+ "description": "Private 1-on-1 weekly sessions, curriculum, and portfolio reviews included. Ideal for Ages 14-18."
  }
   },
   {
@@ -198,274 +199,376 @@
 
  <!-- Navigation -->
 
- <main id="main-content">
- 
- <!-- --- HERO - Pre-AI Editorial --- -->
- <section class="preai-hero-split" style="--accent-1:#f97316;--accent-2:#6366f1;">
+  <main id="main-content">
+  
+  <!-- HERO: Architectural Curriculum Header -->
+  <section class="py-24 bg-[#FAFAF8] border-b border-slate-200/80 relative overflow-hidden" data-reveal>
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+        <!-- Left Column: Curriculum Info -->
+        <div class="lg:col-span-7">
+          <div class="inline-flex items-center gap-2 badge-stem badge-stem-accent mb-5">
+            <i data-stem-icon="terminal" data-size="14"></i>
+            <span>Level 03 · Advanced Software Systems</span>
+          </div>
 
- <!-- LEFT: Text column -->
- <div class="preai-hero-text">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-black font-outfit text-slate-900 tracking-tight leading-[1.08] mb-6">
+            Frontend.<br>
+            Backend.<br>
+            <span class="text-[#F4600C]">Shipped to Production.</span>
+          </h1>
 
- <!-- Chapter label -->
- <p class="preai-hero-chapter"><i data-lucide="layers" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px;"></i>Full-Stack Dev</p>
+          <p class="text-slate-600 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
+            For teens aged 14 to 18. Move beyond simple websites into full-stack software engineering. Students architect production applications with React, Node.js, Express, and PostgreSQL, mastering REST APIs, authentication, and cloud deployment.
+          </p>
 
- <!-- H1 -->
- <h1 class="preai-hero-h1">
- <span class="preai-hero-h1-line-1">Frontend.</span>
- <span class="preai-hero-h1-line-2">Backend.</span>
- <span class="preai-hero-h1-line-3">Live apps.<br><em>Shipped.</em></span>
- </h1>
+          <!-- CTAs -->
+          <div class="flex flex-wrap items-center gap-4 mb-10">
+            <a href="enroll.html" class="btn-stem-primary">
+              Enroll Your Teen
+              <i data-stem-icon="arrow-right" data-size="14"></i>
+            </a>
+            <a href="#curriculum-specimen" class="btn-stem-secondary">
+              View Architecture &amp; Syllabus
+            </a>
+          </div>
 
- <!-- Divider -->
- <div class="preai-hero-rule"></div>
+          <!-- Metadata Dossier Strip -->
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200/70 max-w-lg">
+            <div>
+              <div class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Duration</div>
+              <div class="text-base font-bold text-slate-800 font-outfit">16 Weeks</div>
+            </div>
+            <div>
+              <div class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Format</div>
+              <div class="text-base font-bold text-slate-800 font-outfit">1-on-1 Mentorship</div>
+            </div>
+            <div>
+              <div class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Ideal For</div>
+              <div class="text-base font-bold text-slate-800 font-outfit">Ages 14 to 18</div>
+            </div>
+          </div>
+        </div>
 
- <!-- Subtitle -->
- <p class="preai-hero-sub">HTML, CSS, JavaScript, Node.js, and databases. Students graduate with a live portfolio site and two full-stack projects under their belt.</p>
+        <!-- Right Column: Visual Specimen Card -->
+        <div class="lg:col-span-5">
+          <div class="stem-card p-4 bg-white">
+            <img src="assets/images/pet_portfolio_website.webp" alt="Full-stack web application by a STEMulus student" class="w-full h-auto rounded-lg object-cover" loading="eager" decoding="async">
+            <div class="p-4">
+              <div class="flex items-center justify-between text-xs text-slate-600 font-mono mb-2">
+                <span>COURSE: STEM-FSW-03</span>
+                <span class="text-emerald-700 font-bold">1-ON-1 ACTIVE</span>
+              </div>
+              <h4 class="font-bold text-slate-800 font-outfit text-sm">Production Multi-Tier Web Application Deliverables</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
- <!-- CTAs -->
- <div class="preai-hero-ctas">
- <a href="enroll.html" class="btn-pill-solid">Enroll Your Child
- <i data-lucide="arrow-right" class="w-3.5 h-3.5 inline-block align-middle ml-1"></i>
- </a>
- <a href="#curriculum" class="btn-pill-outline">View Curriculum</a>
- </div>
+  <!-- INTERACTIVE FULL-STACK CODE SPECIMEN VIEWPORT (Curriculum Wow) -->
+  <section id="curriculum-specimen" class="py-24 bg-[#0B1120] text-white relative overflow-hidden" data-reveal>
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="badge-stem badge-stem-dark mb-4">Multi-Tier Architecture Specimen</span>
+        <h2 class="text-3xl md:text-4xl font-black font-outfit text-white tracking-tight">Real Full-Stack Engineering Code</h2>
+        <p class="text-slate-400 text-sm mt-3 leading-relaxed">Students build genuine three-tier applications: responsive React frontends, robust Node.js middleware APIs, and structured relational databases.</p>
+      </div>
 
- <!-- Stats row -->
- <div class="preai-hero-stats">
- <div class="preai-hero-stat">
- <span class="preai-hero-stat-num">16 Weeks</span>
- <span class="preai-hero-stat-lbl">Duration</span>
- </div>
- <div class="preai-hero-stat-div"></div>
- <div class="preai-hero-stat">
- <span class="preai-hero-stat-num">2 Apps</span>
- <span class="preai-hero-stat-lbl">Shipped</span>
- </div>
- <div class="preai-hero-stat-div"></div>
- <div class="preai-hero-stat">
- <span class="preai-hero-stat-num">Ages 14–18</span>
- <span class="preai-hero-stat-lbl">Ideal For</span>
- </div>
- </div>
+      <!-- Specimen Viewport Window -->
+      <div class="specimen-wrap">
+        <div class="specimen-header">
+          <div class="specimen-dots">
+            <div class="specimen-dot"></div>
+            <div class="specimen-dot"></div>
+            <div class="specimen-dot"></div>
+            <span class="text-slate-400 text-xs font-mono ml-2">stemulus-fullstack-repo/production-specimen</span>
+          </div>
+          <div class="specimen-tabs">
+            <button class="specimen-tab active" data-tab="tab-react">App.tsx (Frontend)</button>
+            <button class="specimen-tab" data-tab="tab-node">server.js (API)</button>
+            <button class="specimen-tab" data-tab="tab-sql">schema.sql (Database)</button>
+          </div>
+        </div>
 
- <!-- Editorial footer bar -->
- <div class="preai-hero-bar">
- <span>STEMulus Academy</span>
- <span>&middot; 15</span>
- </div>
+        <div class="specimen-body">
+          <!-- Code Left Pane -->
+          <div class="specimen-code-pane">
+            <div data-specimen-pane="tab-react">
+              <pre><code><span class="tok-cm">// React + TypeScript: Dynamic Project Data Fetching</span>
+<span class="tok-kw">import</span> React, { useState, useEffect } <span class="tok-kw">from</span> <span class="tok-str">'react'</span>;
 
- </div><!-- /text -->
+<span class="tok-kw">export const</span> <span class="tok-fn">ProjectDashboard</span> = () =&gt; {
+  <span class="tok-kw">const</span> [projects, setProjects] = <span class="tok-fn">useState</span>([]);
+  <span class="tok-kw">const</span> [loading, setLoading] = <span class="tok-fn">useState</span>(<span class="tok-kw">true</span>);
 
- <!-- RIGHT: Image column -->
- <div class="preai-hero-img-col">
- <img src="assets/images/pet_portfolio_website.webp" alt="Full-stack development code" class="preai-hero-img" loading="eager" decoding="async">
- <div class="preai-hero-img-overlay"></div>
- <!-- Corner accent -->
- <div class="preai-hero-img-corner"></div>
- </div>
+  <span class="tok-fn">useEffect</span>(() =&gt; {
+    <span class="tok-fn">fetch</span>(<span class="tok-str">'/api/v1/projects'</span>)
+      .<span class="tok-fn">then</span>(res =&gt; res.<span class="tok-fn">json</span>())
+      .<span class="tok-fn">then</span>(data =&gt; {
+        <span class="tok-fn">setProjects</span>(data);
+        <span class="tok-fn">setLoading</span>(<span class="tok-kw">false</span>);
+      });
+  }, []);
 
- </section>
+  <span class="tok-kw">return</span> (
+    &lt;<span class="tok-tag">div</span> <span class="tok-fn">className</span>=<span class="tok-str">"project-feed"</span>&gt;
+      {loading ? &lt;<span class="tok-tag">span</span>&gt;Synchronizing...&lt;/<span class="tok-tag">span</span>&gt; :
+        projects.<span class="tok-fn">map</span>(p =&gt; &lt;<span class="tok-tag">Card</span> <span class="tok-fn">key</span>={p.id} <span class="tok-fn">title</span>={p.name} /&gt;)
+      }
+    &lt;/<span class="tok-tag">div</span>&gt;
+  );
+};</code></pre>
+            </div>
 
- <!-- Program Overview -->
- <section class="py-20 bg-white">
- <div class="container mx-auto px-6">
- <div class="grid lg:grid-cols-2 gap-12 items-center" data-stagger>
-  <div class="order-2 lg:order-1">
-  <img loading="lazy" src="assets/images/fullstack_restaurant_analogy.webp" alt="Frontend, Backend, and API explained as a Restaurant analogy" class="rounded-none w-full border border-slate-200 shadow-md">
-  </div>
- <div class="order-1 lg:order-2">
- <span class="inline-block px-3 py-1 rounded-xl bg-supernova-orange/10 text-supernova-orange text-sm font-bold mb-4">PROGRAM OVERVIEW</span>
- <h2 class="text-4xl md:text-5xl font-bold font-nunito text-slate-800 mb-6">
- From HTML to <span class="text-supernova-orange">React</span>
- </h2>
- <p class="text-lg text-slate-600 leading-relaxed mb-8">
- This comprehensive program takes students from web basics to building full interactive applications. They'll learn HTML, CSS, JavaScript, and modern frameworks like React  |  the same tools used by professional developers at top tech companies.
- </p>
- 
- <div class="grid sm:grid-cols-2 gap-4" data-stagger>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
- <i data-lucide="calendar" class="w-6 h-6 text-supernova-orange"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Duration</p>
- <p class="font-bold text-slate-700">16 Weeks</p>
- </div>
- </div>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
- <i data-lucide="clock" class="w-6 h-6 text-supernova-orange"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Sessions</p>
- <p class="font-bold text-slate-700">3 hrs/week</p>
- </div>
- </div>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
- <i data-lucide="rocket" class="w-6 h-6 text-supernova-orange"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Projects</p>
- <p class="font-bold text-slate-700">5+ Live Websites</p>
- </div>
- </div>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center">
- <i data-lucide="laptop" class="w-6 h-6 text-supernova-orange"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Format</p>
- <p class="font-bold text-slate-700">Online 1-on-1 Sessions</p>
- </div>
- </div>
- </div>
- </div>
- </div>
- </div>
- </section>
+            <div data-specimen-pane="tab-node" style="display:none;">
+              <pre><code><span class="tok-cm">// Node.js / Express REST API Controller</span>
+<span class="tok-kw">const</span> express = <span class="tok-fn">require</span>(<span class="tok-str">'express'</span>);
+<span class="tok-kw">const</span> { pool } = <span class="tok-fn">require</span>(<span class="tok-str">'./db'</span>);
+<span class="tok-kw">const</span> router = express.<span class="tok-fn">Router</span>();
 
- <!-- Curriculum -->
- <section id="curriculum" class="py-20 bg-white">
- <div class="container mx-auto px-6">
- <div class="text-center mb-16">
- <h2 class="text-4xl md:text-5xl font-bold font-nunito text-slate-800 mb-4">
- The Tech Stack You'll Master
- </h2>
- </div>
+router.<span class="tok-fn">get</span>(<span class="tok-str">'/projects'</span>, <span class="tok-kw">async</span> (req, res) =&gt; {
+  <span class="tok-kw">try</span> {
+    <span class="tok-kw">const</span> query = <span class="tok-str">'SELECT id, name, status, created_at FROM projects ORDER BY created_at DESC'</span>;
+    <span class="tok-kw">const</span> { rows } = <span class="tok-kw">await</span> pool.<span class="tok-fn">query</span>(query);
+    res.<span class="tok-fn">status</span>(<span class="tok-num">200</span>).<span class="tok-fn">json</span>(rows);
+  } <span class="tok-kw">catch</span> (err) {
+    res.<span class="tok-fn">status</span>(<span class="tok-num">500</span>).<span class="tok-fn">json</span>({ error: <span class="tok-str">'Database query fault'</span> });
+  }
+});
 
- <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto" data-stagger>
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group">
- <div class="text-4xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="file-code" class="w-10 h-10 text-orange-500"></i></div>
- <h3 class="text-xl font-bold text-slate-800 mb-2">HTML5</h3>
- <p class="text-slate-600 text-sm">Structure & semantics of the web</p>
- <p class="text-xs text-supernova-orange font-bold mt-2">Weeks 12</p>
- </div>
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group">
- <div class="text-4xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="palette" class="w-10 h-10 text-blue-500"></i></div>
- <h3 class="text-xl font-bold text-slate-800 mb-2">CSS3 & Tailwind</h3>
- <p class="text-slate-600 text-sm">Beautiful, responsive styling</p>
- <p class="text-xs text-supernova-orange font-bold mt-2">Weeks3-5</p>
- </div>
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group">
- <div class="text-4xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="code" class="w-10 h-10 text-yellow-500"></i></div>
- <h3 class="text-xl font-bold text-slate-800 mb-2">JavaScript</h3>
- <p class="text-slate-600 text-sm">Interactivity & logic</p>
- <p class="text-xs text-supernova-orange font-bold mt-2">Weeks6-10</p>
- </div>
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group">
- <div class="text-4xl mb-4 group-hover:scale-110 transition-transform"><i data-lucide="atom" class="w-10 h-10 text-cyan-500"></i></div>
- <h3 class="text-xl font-bold text-slate-800 mb-2">React</h3>
- <p class="text-slate-600 text-sm">Modern web applications</p>
- <p class="text-xs text-supernova-orange font-bold mt-2">Weeks11-16</p>
- </div>
- </div>
+module.exports = router;</code></pre>
+            </div>
 
- <div class="mt-16 max-w-4xl mx-auto">
- <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">What You'll Build</h3>
- <div class="grid md:grid-cols-3 gap-6" data-stagger>
- <div class="bg-white p-6 rounded-none text-center">
- <div class="text-3xl mb-3"><i data-lucide="image" class="w-8 h-8 text-supernova-orange"></i></div>
- <h4 class="font-bold text-slate-800">Portfolio Website</h4>
- <p class="text-sm text-slate-500">Your personal brand online</p>
- </div>
- <div class="bg-white p-6 rounded-none text-center">
- <div class="text-3xl mb-3"><i data-lucide="check-square" class="w-8 h-8 text-supernova-orange"></i></div>
- <h4 class="font-bold text-slate-800">Todo App</h4>
- <p class="text-sm text-slate-500">Full CRUD functionality</p>
- </div>
- <div class="bg-white p-6 rounded-none text-center">
- <div class="text-3xl mb-3"><i data-lucide="shopping-cart" class="w-8 h-8 text-supernova-orange"></i></div>
- <h4 class="font-bold text-slate-800">E-commerce Site</h4>
- <p class="text-sm text-slate-500">Full shopping experience</p>
- </div>
- </div>
- </div>
- </div>
- </section>
+            <div data-specimen-pane="tab-sql" style="display:none;">
+              <pre><code><span class="tok-cm">-- PostgreSQL Relational Schema Architecture</span>
+<span class="tok-kw">CREATE TABLE</span> users (
+    id <span class="tok-fn">UUID PRIMARY KEY DEFAULT gen_random_uuid</span>(),
+    username <span class="tok-fn">VARCHAR(64) UNIQUE NOT NULL</span>,
+    email <span class="tok-fn">VARCHAR(128) UNIQUE NOT NULL</span>,
+    created_at <span class="tok-fn">TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP</span>
+);
 
- <!-- Pricing -->
- <section class="py-20 bg-indigo-50 text-slate-800">
- <div class="container mx-auto px-6">
- <div class="max-w-2xl mx-auto text-center">
- <h2 class="text-4xl font-bold font-nunito mb-8 text-center text-slate-800">Investment</h2>
- <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto" data-stagger>
- <!-- Basic Plan -->
- <div class="bg-white rounded-none p-8 border border-gray-200 flex flex-col relative overflow-hidden group transition-all">
- <div class="absolute top-0 right-0 bg-orange-900/30 text-orange-600 px-4 py-1 rounded-bl-xl font-bold text-xs uppercase tracking-wide">Starter</div>
- <h3 class="text-2xl font-bold font-nunito text-slate-800 mb-2">Basic Plan</h3>
- <div class="mb-6">
- <span class="text-4xl font-bold text-slate-800">$50</span>
- <span class="text-slate-600">/month</span>
- </div>
- <p class="text-slate-600 text-sm mb-6">Structured 1-on-1 sessions tailored to each student's level and goals.</p>
- <ul class="space-y-3 mb-8 flex-grow text-sm text-gray-600">
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-orange-500 mr-3"></i>4 Hours / Month</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-orange-500 mr-3"></i>1-on-1 Mentorship</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-orange-500 mr-3"></i>Flexible Scheduling</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-orange-500 mr-3"></i>Fullstack Basics</li>
- </ul>
- <a href="enroll.html" target="_blank" rel="noopener noreferrer" class="block w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 rounded-none transition-colors text-center shadow-md hover:shadow-lg">
- Choose Basic
- </a>
- </div>
+<span class="tok-kw">CREATE TABLE</span> projects (
+    id <span class="tok-fn">SERIAL PRIMARY KEY</span>,
+    user_id <span class="tok-fn">UUID REFERENCES users(id) ON DELETE CASCADE</span>,
+    name <span class="tok-fn">VARCHAR(128) NOT NULL</span>,
+    status <span class="tok-fn">VARCHAR(32) DEFAULT 'development'</span>,
+    created_at <span class="tok-fn">TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP</span>
+);</code></pre>
+            </div>
+          </div>
 
- <!-- Advanced Plan -->
- <div class="bg-gradient-to-br from-indigo-600 to-violet-600 rounded-none p-8 text-white scale-105 relative flex flex-col">
- <div class="absolute top-0 right-0 bg-yellow-400 text-yellow-900 px-4 py-1 rounded-bl-xl font-bold text-xs uppercase tracking-wide">Most Popular</div>
- <h3 class="text-2xl font-bold font-nunito text-white mb-2">Advanced Plan</h3>
- <div class="mb-6">
- <span class="text-4xl font-bold text-white">$80</span>
- <span class="text-indigo-200">/month</span>
- </div>
- <p class="text-indigo-100 text-sm mb-6">Accelerated learning with priority support and advanced projects.</p>
- <ul class="space-y-3 mb-8 flex-grow text-sm text-indigo-100">
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-yellow-400 mr-3"></i>8 Hours / Month</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-yellow-400 mr-3"></i>Priority 1-on-1 Mentorship</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-yellow-400 mr-3"></i>Advanced Project Portfolio</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-yellow-400 mr-3"></i>Direct Tutor Access (Chat)</li>
- </ul>
- <a href="enroll.html" target="_blank" rel="noopener noreferrer" class="block w-full bg-white text-indigo-400 font-bold py-3 rounded-none hover:bg-indigo-900/20 transition-colors text-center">
- Choose Advanced
- </a>
- </div>
- </div>
- </div>
- </div>
- </section>
+          <!-- Architecture & Telemetry Right Pane -->
+          <div class="specimen-terminal-pane">
+            <div class="terminal-label">
+              <i data-stem-icon="terminal" data-size="14"></i>
+              <span>System Telemetry &amp; HTTP Monitor</span>
+            </div>
+            <div data-terminal-pane="tab-react">
+              <div class="terminal-output">$ vite --host
+VITE v5.2.0 ready in 240 ms
+➜ Local: http://localhost:5173/
+➜ Network: use --host to expose
+[HMR] connected.
+GET /api/v1/projects 200 OK (18ms)
+[State] 4 records mounted into React virtual DOM.</div>
+            </div>
+            <div data-terminal-pane="tab-node" style="display:none;">
+              <div class="terminal-output">$ node server.js
+[Express 4.19] Backend microservice running on port 5000
+[PostgreSQL Pool] Connection established (ssl: true)
+[Middleware] CORS enabled for http://localhost:5173
+[HTTP GET] /api/v1/projects 200 - 18.423 ms - 412 bytes</div>
+            </div>
+            <div data-terminal-pane="tab-sql" style="display:none;">
+              <div class="terminal-output">psql (PostgreSQL 16.2)
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384)
+Type "help" for help.
 
- <!-- CTA -->
- <section class="py-20 bg-gradient-to-br from-supernova-orange to-orange-600 text-white">
- <div class="container mx-auto px-6 text-center">
- <h2 class="text-4xl md:text-5xl font-bold font-nunito mb-6">
- Start Building the Web
- </h2>
- <p class="text-xl mb-8 max-w-2xl mx-auto opacity-90">
- The most in-demand skill in tech. Start your web development journey today.
- </p>
- <a href="enroll.html" target="_blank" rel="noopener noreferrer" class="bg-indigo-600 text-white font-bold py-4 px-8 rounded-xl text-lg hover:bg-gray-100 transition-transform transform hover:scale-105">
- Enroll Now
- </a>
- </div>
- </section>
- <!-- Flat Pricing Card -->
-<section class="py-16 bg-slate-50 border-t border-slate-200">
-  <div class="max-w-2xl mx-auto px-6 text-center">
-    <p class="text-xs font-bold tracking-widest uppercase text-slate-600 mb-2">Advanced Programme</p>
-    <h2 class="text-3xl font-black text-slate-900 font-nunito mb-2">Programme Fee</h2>
-    <p class="text-5xl font-black text-slate-900 font-nunito my-4">$80<span class="text-lg font-semibold text-slate-600">/month</span></p>
-    <p class="text-slate-500 text-sm mb-8">4 x 1-hour 1-on-1 sessions per month &nbsp;·&nbsp; No lock-in contracts</p>
-    <ul class="text-left space-y-3 mb-8 text-sm text-slate-700 max-w-sm mx-auto">
-      <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Between-session tutor chat access</li>
-      <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Project code review and portfolio feedback</li>
-      <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Monthly progress report sent to parents</li>
-      <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Certificate awarded on course completion</li>
-      <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Pause or cancel any month — no fees</li>
-    </ul>
-    <a href="enroll.html" class="inline-block bg-slate-900 text-white font-bold py-3 px-10 text-sm tracking-wide hover:bg-slate-800 transition-colors">Enroll Now</a>
-    <p class="text-xs text-slate-600 font-medium mt-4">Questions? <a href="programs.html#pricing" class="underline hover:text-slate-800">View full pricing &amp; FAQ</a></p>
-  </div>
-</section>
+stemulus_db=&gt; \d projects
+Table "public.projects"
+Column     | Type                        | Modifiers
+-----------+-----------------------------+---------------------------------------------------
+id         | integer                     | not null default nextval('projects_id_seq'::regclass)
+user_id    | uuid                        | not null
+name       | character varying(128)      | not null
+status     | character varying(32)       | default 'development'::character varying
+created_at | timestamp with time zone    | default CURRENT_TIMESTAMP
+Indexes:
+    "projects_pkey" PRIMARY KEY, btree (id)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURAL 16-WEEK SYLLABUS DOSSIER -->
+  <section class="py-28 bg-[#FAFAF8] border-t border-slate-200/80" data-reveal>
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="badge-stem badge-stem-accent mb-3">Structured Software Engineering Pathway</span>
+        <h2 class="text-3xl md:text-4xl font-black font-outfit text-slate-900 tracking-tight">16-Week Full-Stack Syllabus</h2>
+        <p class="text-slate-600 text-sm mt-3 leading-relaxed">Students build, integrate, and deploy two production web applications with 1-on-1 mentor guidance, comprehensive code reviews, and industry toolchains.</p>
+      </div>
+
+      <div class="syllabus-dossier">
+        <!-- Phase 01 -->
+        <div class="syllabus-phase-card open">
+          <div class="syllabus-phase-header">
+            <div class="syllabus-phase-left">
+              <span class="syllabus-phase-num">PHASE 01</span>
+              <div>
+                <h3 class="syllabus-phase-title">Modern JavaScript (ES6+) &amp; React Fundamentals</h3>
+                <p class="syllabus-phase-sub">Weeks 1 to 4 · Asynchronous operations, component hierarchy, props, and state</p>
+              </div>
+            </div>
+            <div class="syllabus-phase-toggle"><i data-stem-icon="chevron-down" data-size="16"></i></div>
+          </div>
+          <div class="syllabus-phase-body">
+            <div class="syllabus-grid">
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Weeks 01-02</div>
+                <div class="syllabus-item-h">Advanced JavaScript &amp; DOM</div>
+                <p class="syllabus-item-p">Promises, async/await, closures, array methods (map, filter, reduce), and modern modular architecture.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Weeks 03-04</div>
+                <div class="syllabus-item-h">React Components &amp; Hooks</div>
+                <p class="syllabus-item-p">JSX syntax, useState, useEffect, controlled inputs, and decomposing UIs into reusable component hierarchies.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 02 -->
+        <div class="syllabus-phase-card">
+          <div class="syllabus-phase-header">
+            <div class="syllabus-phase-left">
+              <span class="syllabus-phase-num">PHASE 02</span>
+              <div>
+                <h3 class="syllabus-phase-title">Backend Architecture, Node.js &amp; REST APIs</h3>
+                <p class="syllabus-phase-sub">Weeks 5 to 8 · Server runtime, routing protocols, middleware, and request lifecycles</p>
+              </div>
+            </div>
+            <div class="syllabus-phase-toggle"><i data-stem-icon="chevron-down" data-size="16"></i></div>
+          </div>
+          <div class="syllabus-phase-body">
+            <div class="syllabus-grid">
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Weeks 05-06</div>
+                <div class="syllabus-item-h">Node.js Runtime &amp; Express</div>
+                <p class="syllabus-item-p">Event-driven architecture, npm package management, building HTTP endpoints, and request/response pipelines.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Weeks 07-08</div>
+                <div class="syllabus-item-h">RESTful Architecture &amp; CRUD</div>
+                <p class="syllabus-item-p">Standard HTTP methods (GET, POST, PUT, DELETE), status codes, body validation, and error-handling middleware.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 03 -->
+        <div class="syllabus-phase-card">
+          <div class="syllabus-phase-header">
+            <div class="syllabus-phase-left">
+              <span class="syllabus-phase-num">PHASE 03</span>
+              <div>
+                <h3 class="syllabus-phase-title">Relational Databases &amp; PostgreSQL Modeling</h3>
+                <p class="syllabus-phase-sub">Weeks 9 to 12 · SQL syntax, schema design, table relationships, and data persistence</p>
+              </div>
+            </div>
+            <div class="syllabus-phase-toggle"><i data-stem-icon="chevron-down" data-size="16"></i></div>
+          </div>
+          <div class="syllabus-phase-body">
+            <div class="syllabus-grid">
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Weeks 09-10</div>
+                <div class="syllabus-item-h">Relational Schemas &amp; SQL</div>
+                <p class="syllabus-item-p">Designing database tables, primary/foreign keys, one-to-many relationships, and complex JOIN queries.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Weeks 11-12</div>
+                <div class="syllabus-item-h">Database Integration &amp; Security</div>
+                <p class="syllabus-item-p">Connecting Node.js to PostgreSQL via connection pooling, parameterized queries to prevent SQL injection.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 04 -->
+        <div class="syllabus-phase-card">
+          <div class="syllabus-phase-header">
+            <div class="syllabus-phase-left">
+              <span class="syllabus-phase-num">PHASE 04</span>
+              <div>
+                <h3 class="syllabus-phase-title">Authentication, Cloud Deployment &amp; Capstone</h3>
+                <p class="syllabus-phase-sub">Weeks 13 to 16 · JWT auth, cloud hosting, CI/CD, and shipping the final web application</p>
+              </div>
+            </div>
+            <div class="syllabus-phase-toggle"><i data-stem-icon="chevron-down" data-size="16"></i></div>
+          </div>
+          <div class="syllabus-phase-body">
+            <div class="syllabus-grid">
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Weeks 13-14</div>
+                <div class="syllabus-item-h">User Authentication &amp; Sessions</div>
+                <p class="syllabus-item-p">Password hashing with bcrypt, JSON Web Tokens (JWT), protected routes, and role-based access control.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Weeks 15-16</div>
+                <div class="syllabus-item-h">Cloud Deployment &amp; Portfolio Defense</div>
+                <p class="syllabus-item-p">Deploying to Render/Vercel with managed PostgreSQL, custom domain configuration, and portfolio presentation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TUITION & MENTORSHIP INCLUSIONS -->
+  <section id="pricing-section" class="py-20 bg-white border-t border-slate-200/80" data-reveal>
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <span class="badge-stem badge-stem-accent mb-3">Transparent Tuition</span>
+      <h2 class="text-3xl font-black text-slate-900 font-outfit mb-2">Full-Stack Programme Fee</h2>
+      <p class="text-5xl font-black text-slate-900 font-outfit my-4">$80<span class="text-lg font-semibold text-slate-600">/month</span></p>
+      <p class="text-slate-500 text-sm mb-8">4 x 1-hour 1-on-1 sessions per month · No lock-in contracts</p>
+      
+      <div class="stem-card p-6 text-left max-w-md mx-auto mb-8">
+        <ul class="space-y-3 text-sm text-slate-700">
+          <li class="flex items-start gap-2.5">
+            <span class="text-emerald-700 font-bold">✓</span>
+            <span>Dedicated 1-on-1 senior software engineering mentor</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-emerald-700 font-bold">✓</span>
+            <span>2 Deployed full-stack web applications on public URLs</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-emerald-700 font-bold">✓</span>
+            <span>Professional GitHub repository code reviews between sessions</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-emerald-700 font-bold">✓</span>
+            <span>Monthly progress report and technical evaluation sent to parents</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-emerald-700 font-bold">✓</span>
+            <span>Pause, reschedule, or cancel any month with zero penalty</span>
+          </li>
+        </ul>
+      </div>
+
+      <a href="enroll.html" class="btn-stem-primary px-10 py-3.5 text-sm tracking-wide">
+        Enroll Your Teen Now
+      </a>
+      <p class="text-xs text-slate-600 font-medium mt-4">Questions? <a href="programs.html#pricing" class="underline hover:text-slate-800">View full roadmap &amp; FAQ</a></p>
+    </div>
+  </section>
 </main>
 
  <!-- -----------------------------------------------
@@ -507,7 +610,7 @@
             <p class="footer-brand-name">STEMulus</p>
             <p class="footer-brand-tag">Global Coding Academy · Est. 2025</p>
             <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;line-height:1.75;color:#475569;max-width:320px;">
-                Turning screen time into build time for kids aged 5–17, across three continents. Expert mentors. Real projects. Permanent skills.
+                Turning screen time into build time for kids aged 5-17, across three continents. Expert mentors. Real projects. Permanent skills.
             </p>
         </div>
 
@@ -580,18 +683,18 @@ window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger
 <script src="assets/js/organization-schema.min.js" defer></script>
 <script src="assets/js/course-schema.min.js" defer></script>
 
-<!-- CONVERSION FUNNEL: Mobile Sticky Booking Bar -->
-<div id="mobile-booking-bar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:8000;padding:0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0));background:linear-gradient(135deg,#f4600c,#d4520a);box-shadow:0 -4px 20px rgba(244,96,12,0.35);">
-  <div style="display:flex;gap:8px;align-items:center;">
-    <a href="#" onclick="event.preventDefault();if(typeof QuickBooking!=='undefined'){QuickBooking.open();}else{window.location.href='book-class.html';}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:0.4rem;background:#ffffff;color:#f4600c;font-weight:800;font-size:0.85rem;padding:0.7rem 0.5rem;border-radius:10px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-      Book Free Trial
-    </a>
-    <a href="https://wa.me/2347052466716?text=Hello%20STEMulus%2C%20I'd%20like%20to%20book%20a%20free%20trial%20class%20for%20my%20child" target="_blank" rel="noopener noreferrer" style="flex:1;display:flex;align-items:center;justify-content:center;gap:0.4rem;background:#25D366;color:#ffffff;font-weight:800;font-size:0.85rem;padding:0.7rem 0.5rem;border-radius:10px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      WhatsApp Chat
+<!-- CONVERSION FUNNEL: Mobile Sticky Floating Island -->
+<div id="mobile-booking-bar" class="docked-cta-island">
+  <div class="docked-cta-inner">
+    <div class="docked-cta-label">
+      <span class="docked-cta-title">Free Discovery Session</span>
+      <span class="docked-cta-sub"><span style="display:inline-block;width:6px;height:6px;border-radius:2px;background:#10b981;margin-right:6px;"></span>45 min &middot; 1-on-1 with mentor</span>
+    </div>
+    <a href="#" onclick="event.preventDefault();if(typeof QuickBooking!=='undefined'){QuickBooking.open();}else{window.location.href='book-class.html';}" class="docked-cta-btn">
+      Book Free <span>&rarr;</span>
     </a>
   </div>
+</div>
 </div>
 <script>
   (function(){
@@ -603,21 +706,33 @@ window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger
 </script>
 
 <!-- CONVERSION FUNNEL: Desktop Sticky Floating CTA -->
-<div id="desktop-sticky-cta" style="display:none;position:fixed;bottom:32px;right:90px;z-index:8000;">
-  <a href="#" onclick="event.preventDefault();if(typeof QuickBooking!=='undefined'){QuickBooking.open();}" style="display:inline-flex;align-items:center;gap:0.6rem;background:linear-gradient(135deg,#f4600c,#d4520a);color:#fff;font-weight:800;font-size:0.85rem;padding:0.75rem 1.25rem;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px rgba(244,96,12,0.4);transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 28px rgba(244,96,12,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(244,96,12,0.4)'">
-    Book Free Trial Class →
+<div id="desktop-sticky-cta" style="display:none;position:fixed;bottom:32px;right:96px;z-index:8000;">
+  <a href="#" onclick="event.preventDefault();if(typeof QuickBooking!=='undefined'){QuickBooking.open();}" style="display:inline-flex;align-items:center;gap:0.65rem;background:rgba(11,17,32,0.96);color:#ffffff;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.84rem;padding:0.75rem 1.35rem;border-radius:8px;text-decoration:none;border:1px solid rgba(255,255,255,0.14);box-shadow:0 12px 32px rgba(10,25,50,0.22);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:transform 0.2s cubic-bezier(0.16,1,0.3,1),box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 16px 36px rgba(10,25,50,0.35)'" onmouseout="this.style.transform='';this.style.boxShadow='0 12px 32px rgba(10,25,50,0.22)'">
+    <span style="display:inline-block;width:6px;height:6px;border-radius:2px;background:#10b981;"></span>
+    <span>Free Discovery Session</span>
+    <span style="color:#f4600c;font-weight:800;">→</span>
   </a>
 </div>
 <script>
   (function(){
     var btn = document.getElementById('desktop-sticky-cta');
-    function checkDesktop(){ btn.style.display = window.innerWidth>768?'block':'none'; }
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-    var shown = false;
-    window.addEventListener('scroll', function(){ if(window.scrollY>300&&!shown){ btn.style.display=window.innerWidth>768?'block':'none'; shown=true; } else if(window.scrollY<100){ shown=false; btn.style.display='none'; } }, {passive:true});
+    if (!btn) return;
+    function updateVisibility(){
+      if (window.innerWidth > 1024 && window.scrollY > 500) {
+        btn.style.display = 'block';
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+    window.addEventListener('scroll', updateVisibility, {passive: true});
+    window.addEventListener('resize', updateVisibility);
   })();
 </script>
+
+<!-- STEMulus High-End Scripts -->
+<script src="assets/js/stemulus-icons.js" defer></script>
+<script src="assets/js/scroll-choreography.js" defer></script>
+<script src="assets/js/stemulus-interactive.js" defer></script>
 </body>
 </html>
 

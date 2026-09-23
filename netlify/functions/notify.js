@@ -1,16 +1,16 @@
 /**
- * STEMulus NTFY Proxy — Netlify Function
+ * STEMulus NTFY Proxy: Netlify Function
  *
  * Keeps ntfy topic names and auth token server-side in environment variables.
  * Client JS sends a structured payload here; this function resolves the real
  * topic and forwards to ntfy.sh with authentication.
  *
  * Required Netlify environment variables:
- *   NTFY_TOKEN          — ntfy access token (from ntfy.sh account → Access Tokens)
- *   NTFY_TOPIC_ENROLL   — enrollment + booking notifications (e.g. stm-enr-lx7k9w2mq8vp4tz)
- *   NTFY_TOPIC_CONTACT  — contact form notifications (e.g. stemulus-messages-admin2026)
- *   NTFY_TOPIC_TUTOR    — tutor application notifications (e.g. stm-ttr-nb3r5y6jd1cx8ws)
- *   NTFY_TOPIC_BIRTHDAY — birthday alerts (e.g. stm-bday-qm4p7s9ke2ax1nf)
+ *   NTFY_TOKEN: ntfy access token (from ntfy.sh account → Access Tokens)
+ *   NTFY_TOPIC_ENROLL: enrollment + booking notifications (e.g. stm-enr-lx7k9w2mq8vp4tz)
+ *   NTFY_TOPIC_CONTACT: contact form notifications (e.g. stemulus-messages-admin2026)
+ *   NTFY_TOPIC_TUTOR: tutor application notifications (e.g. stm-ttr-nb3r5y6jd1cx8ws)
+ *   NTFY_TOPIC_BIRTHDAY: birthday alerts (e.g. stm-bday-qm4p7s9ke2ax1nf)
  *
  * Request body (JSON):
  *   {
@@ -37,7 +37,7 @@ const TOPIC_MAP = {
   schedule_digest: 'NTFY_TOPIC_BIRTHDAY',
 };
 
-// Fallback topic values — used when env vars are not set in Netlify dashboard
+// Fallback topic values: used when env vars are not set in Netlify dashboard
 const TOPIC_FALLBACKS = {
   NTFY_TOPIC_ENROLL:   'stm-enr-lx7k9w2mq8vp4tz',
   NTFY_TOPIC_CONTACT:  'stemulus-messages-admin2026',
@@ -80,7 +80,7 @@ exports.handler = async (event) => {
   const token = process.env.NTFY_TOKEN;
 
   if (!topic) {
-    console.warn(`[notify] ${topicKey} not configured — skipping`);
+    console.warn(`[notify] ${topicKey} not configured: skipping`);
     return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true, skipped: true, reason: 'topic not configured' }) };
   }
 

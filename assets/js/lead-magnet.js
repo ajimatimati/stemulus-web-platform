@@ -65,7 +65,7 @@ const LeadMagnet = (function() {
             position: relative;
         }
         
-        .lead-magnet-header::before {
+        .lead-magnet-header:before {
             content: '';
             position: absolute;
             top: -50%;
@@ -199,7 +199,7 @@ const LeadMagnet = (function() {
             color: #9CA3AF;
         }
         
-        .lead-magnet-benefits li::before {
+        .lead-magnet-benefits li:before {
             content: '';
             color: #10B981;
             font-weight: bold;
@@ -234,7 +234,7 @@ const LeadMagnet = (function() {
             box-shadow: 0 0 0 4px rgba(255, 109, 0, 0.1);
         }
         
-        .lead-magnet-input::placeholder {
+        .lead-magnet-input:placeholder {
             color: #9CA3AF;
         }
         

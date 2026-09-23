@@ -55,7 +55,7 @@ const MicroInteractions = (function() {
             text-decoration: none;
         }
         
-        .link-underline::after {
+        .link-underline:after {
             content: '';
             position: absolute;
             bottom: -2px;
@@ -66,7 +66,7 @@ const MicroInteractions = (function() {
             transition: width 0.3s ease;
         }
         
-        .link-underline:hover::after {
+        .link-underline:hover:after {
             width: 100%;
         }
         

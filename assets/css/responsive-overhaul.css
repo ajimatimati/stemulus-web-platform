@@ -40,17 +40,20 @@ a.wa-float svg, .wa-float svg {
 }
 
 @media (max-width: 768px) {
-  a.wa-float, .wa-float {
-    bottom: 16px !important;
+  a.wa-float, .wa-float, .whatsapp-float, #whatsapp-widget {
+    bottom: calc(76px + max(0.5rem, env(safe-area-inset-bottom, 0.5rem))) !important;
     right: 16px !important;
-    width: 50px !important;
-    height: 50px !important;
-    min-width: 50px !important;
-    min-height: 50px !important;
-    max-width: 50px !important;
-    max-height: 50px !important;
+    left: auto !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    max-width: 48px !important;
+    max-height: 48px !important;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4) !important;
+    z-index: 7990 !important;
   }
-  a.wa-float svg, .wa-float svg {
+  a.wa-float svg, .wa-float svg, .whatsapp-float svg {
     width: 24px !important;
     height: 24px !important;
     max-width: 24px !important;
@@ -188,20 +191,15 @@ aside img[src*="logo"] {
     padding: 8px 12px !important;
   }
 
-  /* WhatsApp Float Button: Shifted to bottom-left to avoid Mulu & Toolbar */
+  /* WhatsApp Float Button: Positioned neatly above the docked CTA island */
   .whatsapp-float,
   #whatsapp-widget {
-    left: 16px !important;
-    right: auto !important;
-    bottom: 16px !important;
-    width: 50px !important;
-    height: 50px !important;
-    z-index: 90 !important;
-  }
-
-  .whatsapp-float svg {
-    width: 26px !important;
-    height: 26px !important;
+    right: 16px !important;
+    left: auto !important;
+    bottom: calc(76px + max(0.5rem, env(safe-area-inset-bottom, 0.5rem))) !important;
+    width: 48px !important;
+    height: 48px !important;
+    z-index: 7990 !important;
   }
 }
 
@@ -279,7 +277,7 @@ aside img[src*="logo"] {
 }
 
 /* ================================================================
-   PORTAL MOBILE-FIRST RESPONSIVE — All Portals
+   PORTAL MOBILE-FIRST RESPONSIVE - All Portals
    ================================================================ */
 
 /* Sidebar: force off-screen on mobile for all portals */
@@ -368,8 +366,132 @@ aside img[src*="logo"] {
   .flex.items-start.justify-between > .flex { flex-wrap: wrap !important; }
 }
 
+/* ================================================================
+   HIGH-END DOCKED CTA ISLAND (Mobile Luxury Floating Action)
+   ================================================================ */
+.docked-cta-island,
+#mobile-booking-bar {
+  display: none;
+  position: fixed !important;
+  bottom: max(1rem, env(safe-area-inset-bottom, 1rem)) !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  width: calc(100% - 1.75rem) !important;
+  max-width: 390px !important;
+  z-index: 8000 !important;
+  background: rgba(11, 17, 32, 0.92) !important;
+  backdrop-filter: blur(20px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  border-radius: 9999px !important;
+  padding: 0.45rem 0.55rem 0.45rem 1.15rem !important;
+  box-sizing: border-box !important;
+  animation: islandFloatIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (max-width: 768px) {
+  .docked-cta-island,
+  #mobile-booking-bar {
+    display: flex !important;
+  }
+  body:has(#quick-booking-modal.open) .docked-cta-island,
+  body:has(#quick-booking-modal.open) #mobile-booking-bar,
+  .docked-cta-island.is-hidden,
+  #mobile-booking-bar.is-hidden {
+    display: none !important;
+  }
+}
+@media (min-width: 769px) {
+  .docked-cta-island,
+  #mobile-booking-bar {
+    display: none !important;
+  }
+}
+
+@keyframes islandFloatIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.docked-cta-inner {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  width: 100% !important;
+}
+
+.docked-cta-label {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+  flex: 1 !important;
+  text-align: left !important;
+}
+
+.docked-cta-title {
+  font-family: 'Fredoka', -apple-system, sans-serif !important;
+  font-size: 0.84rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.docked-cta-sub {
+  font-family: 'Outfit', 'DM Sans', -apple-system, sans-serif !important;
+  font-size: 0.68rem !important;
+  color: #94a3b8 !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+}
+
+.docked-cta-sub .dot-pulse {
+  display: inline-block !important;
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 50% !important;
+  background: #10b981 !important;
+  box-shadow: 0 0 6px #10b981 !important;
+}
+
+.docked-cta-btn {
+  flex-shrink: 0 !important;
+  background: linear-gradient(135deg, #f4600c, #ea580c) !important;
+  color: #ffffff !important;
+  font-family: 'Outfit', 'DM Sans', -apple-system, sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 9999px !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  box-shadow: 0 4px 14px rgba(244, 96, 12, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+.docked-cta-btn:active {
+  transform: scale(0.96) !important;
+}
+
 /* Safe-area padding for iOS bottom bar */
-.pill-toolbar, [id*="mobile-booking-bar"] {
+.pill-toolbar {
   padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0)) !important;
 }
 

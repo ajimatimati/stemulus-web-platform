@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Public content pages only — portal/admin/dev pages excluded -->
+  <!-- Public content pages only - portal/admin/dev pages excluded -->
 
   <!-- Core Conversion Funnel -->
   <url>
@@ -29,21 +29,27 @@
   </url>
   <url>
     <loc>https://stemuluskidstech.com/for-parents.html</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
+    <loc>https://stemuluskidstech.com/child-safety.html</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  <url>
     <loc>https://stemuluskidstech.com/contact.html</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://stemuluskidstech.com/join-as-tutor.html</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.40</priority>
+    <priority>0.30</priority>
   </url>
   <url>
     <loc>https://stemuluskidstech.com/verify-certificate.html</loc>
@@ -56,6 +62,58 @@
     <lastmod>2026-09-04</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.30</priority>
+  </url>
+
+  <!-- International / Country-Specific Hubs (Targeted GEO) -->
+  <url>
+    <loc>https://stemuluskidstech.com/coding-classes-for-kids-usa.html</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.92</priority>
+  </url>
+  <url>
+    <loc>https://stemuluskidstech.com/coding-classes-for-kids-uk.html</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.92</priority>
+  </url>
+  <url>
+    <loc>https://stemuluskidstech.com/coding-classes-for-kids-canada.html</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.92</priority>
+  </url>
+  <url>
+    <loc>https://stemuluskidstech.com/coding-classes-for-kids-australia.html</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.92</priority>
+  </url>
+
+  <!-- Age-Specific Learning Pathways -->
+  <url>
+    <loc>https://stemuluskidstech.com/coding-for-kids-ages-5-7.html</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://stemuluskidstech.com/coding-for-kids-ages-8-10.html</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://stemuluskidstech.com/coding-for-kids-ages-11-13.html</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://stemuluskidstech.com/coding-for-kids-ages-14-17.html</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
   </url>
 
   <!-- Blog & Thought Leadership -->

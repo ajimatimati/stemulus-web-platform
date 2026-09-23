@@ -1,5 +1,5 @@
 /**
- * STEMulus Hero Parallax — Mouse-tracking depth illusion
+ * STEMulus Hero Parallax: Mouse-tracking depth illusion
  * 
  * Creates a premium multi-layer parallax effect where:
  * - Background blobs move at 2% of mouse offset (slowest)
@@ -91,7 +91,7 @@
     var cx = current.x;
     var cy = current.y;
 
-    // Blob layer — gentle shift
+    // Blob layer: gentle shift
     if (blobLayer) {
       var bx = cx * CONFIG.blob.x * 100;
       var by = cy * CONFIG.blob.y * 100;
@@ -99,7 +99,7 @@
         'translate3d(' + bx + 'px, ' + by + 'px, 0)';
     }
 
-    // Hero image — medium shift + subtle tilt
+    // Hero image: medium shift + subtle tilt
     if (heroImg) {
       var ix = cx * CONFIG.image.x * 100;
       var iy = cy * CONFIG.image.y * 100;
@@ -112,7 +112,7 @@
         'rotateX(' + tiltX + 'deg)';
     }
 
-    // Floating badges — fastest (most pronounced depth)
+    // Floating badges: fastest (most pronounced depth)
     if (badges.length) {
       var oddEven = 1;
       badges.forEach(function(badge) {

@@ -5,8 +5,9 @@
  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
  <link rel="stylesheet" href="assets/css/tailwind-output.css">
   <link rel="stylesheet" href="dist/combined.css">
+ <link rel="stylesheet" href="assets/css/stemulus-luxury.css">
  <meta charset="UTF-8">
-  <meta name="theme-color" content="#F4600C">
+  <meta name="theme-color" content="#0B1120">
   <!-- SEO: CORE -->
   <meta name="description" content="Private 1-on-1 online Arduino Robotics for kids aged 10-13. Expert mentors teach physical robot building, Arduino coding and sensors via Zoom. Free trial.">
   <meta name="keywords" content="robotics for kids, Arduino kids, robot programming children, STEM robotics class">
@@ -22,7 +23,7 @@
   <meta property="og:image" content="https://stemuluskidstech.com/assets/images/arduino_robotics_lab.webp">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="STEMulus Kids Tech — Online Coding Academy Logo">
+  <meta property="og:image:alt" content="STEMulus Kids Tech - Online Coding Academy Logo">
   <meta property="og:locale" content="en_US">
   <!-- SEO: TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image">
@@ -176,7 +177,7 @@
  <link rel="icon" type="image/png" href="favicon.png">
  <link rel="apple-touch-icon" href="/favicon.png">
   <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#F4600C">
+  <meta name="theme-color" content="#0B1120">
  <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Course","name":"Arduino Robotics Lab","description":"Private 1-on-1 online Arduino Robotics for kids aged 10-13. Expert mentors teach physical robot building, Arduino coding and sensors via Zoom. Free trial.","provider":{"@type":"Organization","name":"STEMulus KidsTech","url":"https://stemuluskidstech.com"},"educationalLevel":"Beginner to Advanced","typicalAgeRange":"10-13","teaches":"Arduino programming, physical robot building, sensors, servo motors and electronics","availableLanguage":"English","courseMode":"Online","url":"https://stemuluskidstech.com/arduino-robotics.html","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free first trial class"}}
  </script>
@@ -206,446 +207,503 @@
 
  <!-- Navigation -->
 
- <main id="main-content">
- 
- <!-- --- HERO - Pre-AI Editorial --- -->
- <section class="preai-hero-split" style="--accent-1:#3b82f6;--accent-2:#10B981;">
+  <main id="main-content">
+  
+  <!-- HERO: Architectural Curriculum Header -->
+  <section class="py-24 bg-[#FAFAF8] border-b border-slate-200/80 relative overflow-hidden" data-reveal>
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+        <!-- Left Column: Curriculum Info -->
+        <div class="lg:col-span-7">
+          <div class="inline-flex items-center gap-2 badge-stem badge-stem-accent mb-5">
+            <i data-stem-icon="arduino" data-size="14"></i>
+            <span>Level 02 · Embedded Systems &amp; C++ Firmware</span>
+          </div>
 
- <!-- LEFT: Text column -->
- <div class="preai-hero-text">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-black font-outfit text-slate-900 tracking-tight leading-[1.08] mb-6">
+            Circuits &amp; Silicon.<br>
+            C++ Firmware.<br>
+            <span class="text-[#F4600C]">Robots in Real Space.</span>
+          </h1>
 
- <!-- Chapter label -->
- <p class="preai-hero-chapter"><i data-lucide="cpu" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px;"></i>Robotics Lab</p>
+          <p class="text-slate-600 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
+            For students aged 10 to 16. Where code commands physical current. Students wire real breadboards, calibrate ultrasonic sensors, and write genuine C/C++ firmware to bring autonomous rovers and robotic arms to life.
+          </p>
 
- <!-- H1 -->
- <h1 class="preai-hero-h1">
- <span class="preai-hero-h1-line-1">Circuits.</span>
- <span class="preai-hero-h1-line-2">Code. Motion.</span>
- <span class="preai-hero-h1-line-3">Build robots<br>that actually <em>move.</em></span>
- </h1>
+          <!-- CTAs -->
+          <div class="flex flex-wrap items-center gap-4 mb-10">
+            <a href="enroll.html" class="btn-stem-primary">
+              Enroll Your Student
+              <i data-stem-icon="arrow-right" data-size="14"></i>
+            </a>
+            <a href="#curriculum-specimen" class="btn-stem-secondary">
+              View C++ Firmware &amp; Syllabus
+            </a>
+          </div>
 
- <!-- Divider -->
- <div class="preai-hero-rule"></div>
+          <!-- Metadata Dossier Strip -->
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200/70 max-w-lg">
+            <div>
+              <div class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Duration</div>
+              <div class="text-base font-bold text-slate-800 font-outfit">12 Weeks</div>
+            </div>
+            <div>
+              <div class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Format</div>
+              <div class="text-base font-bold text-slate-800 font-outfit">1-on-1 Mentorship</div>
+            </div>
+            <div>
+              <div class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Ideal For</div>
+              <div class="text-base font-bold text-slate-800 font-outfit">Ages 10 to 16</div>
+            </div>
+          </div>
+        </div>
 
- <!-- Subtitle -->
- <p class="preai-hero-sub">Arduino, sensors, and motors. Students wire, code, and test physical hardware. The most tactile, satisfying program we offer.</p>
-
- <!-- CTAs -->
- <div class="preai-hero-ctas">
- <a href="enroll.html" class="btn-pill-solid">Enroll Your Child
- <i data-lucide="arrow-right" class="w-3.5 h-3.5 inline-block align-middle ml-1"></i>
- </a>
- <a href="#curriculum" class="btn-pill-outline">View Curriculum</a>
- </div>
-
- <!-- Stats row -->
- <div class="preai-hero-stats">
- <div class="preai-hero-stat">
- <span class="preai-hero-stat-num">12 Weeks</span>
- <span class="preai-hero-stat-lbl">Duration</span>
- </div>
- <div class="preai-hero-stat-div"></div>
- <div class="preai-hero-stat">
- <span class="preai-hero-stat-num">3 Robots</span>
- <span class="preai-hero-stat-lbl">Built</span>
- </div>
- <div class="preai-hero-stat-div"></div>
- <div class="preai-hero-stat">
- <span class="preai-hero-stat-num">Ages10-16</span>
- <span class="preai-hero-stat-lbl">Ideal For</span>
- </div>
- </div>
-
- <!-- Editorial footer bar -->
- <div class="preai-hero-bar">
- <span>STEMulus Academy</span>
- <span>·13</span>
- </div>
-
- </div><!-- /text -->
-
- <!-- RIGHT: Image column -->
- <div class="preai-hero-img-col">
- <img src="assets/images/arduino_robotics_lab.webp" alt="Arduino robot building" class="preai-hero-img" loading="eager" decoding="async">
- <div class="preai-hero-img-overlay"></div>
- <!-- Corner accent -->
- <div class="preai-hero-img-corner"></div>
- </div>
-
- </section>
-
- <!-- Program Overview -->
- <section class="py-20 bg-white">
- <div class="container mx-auto px-6">
- <div class="grid lg:grid-cols-2 gap-12 items-center" data-stagger>
- <div>
- <span class="inline-block px-3 py-1 rounded-xl bg-rocket-yellow/10 text-rocket-yellow text-sm font-bold mb-4">PROGRAM OVERVIEW</span>
- <h2 class="text-4xl md:text-5xl font-bold font-nunito text-slate-800 mb-6">
- Where Code Meets <span class="text-rocket-yellow">Hardware</span>
- </h2>
- <p class="text-lg text-slate-600 leading-relaxed mb-8">
- Arduino is an open-source electronics platform that makes robotics accessible to everyone. Students learn to build circuits, connect sensors and motors, and program their creations using C/C++. By the end, they'll have built multiple working robots!
- </p>
- 
- <div class="grid sm:grid-cols-2 gap-4" data-stagger>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-rocket-yellow/10 rounded-none flex items-center justify-center">
- <i data-lucide="calendar" class="w-6 h-6 text-rocket-yellow"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Duration</p>
- <p class="font-bold text-slate-700">12 Weeks</p>
- </div>
- </div>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-rocket-yellow/10 rounded-none flex items-center justify-center">
- <i data-lucide="clock" class="w-6 h-6 text-rocket-yellow"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Sessions</p>
- <p class="font-bold text-slate-700">2.5 hrs/week</p>
- </div>
- </div>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-rocket-yellow/10 rounded-none flex items-center justify-center">
- <i data-lucide="package" class="w-6 h-6 text-rocket-yellow"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Kit Included</p>
- <p class="font-bold text-slate-700">Take Home Robot</p>
- </div>
- </div>
- <div class="flex items-center space-x-3 bg-slate-50/80 border border-slate-100 p-4 rounded-none">
- <div class="w-12 h-12 bg-rocket-yellow/10 rounded-none flex items-center justify-center">
- <i data-lucide="map-pin" class="w-6 h-6 text-rocket-yellow"></i>
- </div>
- <div>
- <p class="text-sm text-slate-500">Format</p>
- <p class="font-bold text-slate-700">Online 1-on-1 Sessions</p>
- </div>
- </div>
- </div>
- </div>
-  <div class="relative">
-  <video autoplay loop muted playsinline class="rounded-none w-full shadow-lg" src="assets/images/treehouse_project.mp4"></video>
-  <div class="absolute -bottom-6 -left-6 bg-rocket-yellow text-white p-6 rounded-none">
-  <p class="text-4xl font-bold">100%</p>
-  <p class="text-sm">Interactive Prototypes</p>
-  </div>
-  </div>
- </div>
- </div>
- </section>
-
- <!-- What They'll Build -->
- <section id="curriculum" class="py-20 bg-white relative overflow-hidden">
- <div class="container mx-auto px-6">
- <div class="text-center mb-16">
- <span class="inline-block px-3 py-1 rounded-xl bg-rocket-yellow/10 text-rocket-yellow text-sm font-bold mb-4">CURRICULUM</span>
- <h2 class="text-4xl md:text-5xl font-bold font-nunito text-slate-800 mb-4">12 Weeks of Robot Building
- </h2>
- <p class="text-lg text-slate-600 max-w-2xl mx-auto">
- Each week brings a new challenge and new robot components
- </p>
- </div>
-
- <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-stagger>
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group">
- <div class="w-14 h-14 bg-gradient-to-br from-rocket-yellow to-yellow-400 rounded-none flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
- <span class="text-slate-800 font-bold text-xl">12</span>
- </div>
- <h3 class="text-xl font-bold font-nunito text-slate-800 mb-3">Electronics Basics</h3>
- <ul class="text-slate-600 space-y-2 text-sm">
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-rocket-yellow mr-2 mt-1 flex-shrink-0"></i>Understanding circuits & electricity</li>
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-rocket-yellow mr-2 mt-1 flex-shrink-0"></i>LEDs, resistors, breadboards</li>
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-rocket-yellow mr-2 mt-1 flex-shrink-0"></i>First Arduino program (Blink!)</li>
- </ul>
- </div>
-
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group">
- <div class="w-14 h-14 bg-gradient-to-br from-supernova-orange to-orange-400 rounded-none flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
- <span class="text-white font-bold text-xl">34</span>
- </div>
- <h3 class="text-xl font-bold font-nunito text-slate-800 mb-3">Sensors & Input</h3>
- <ul class="text-slate-600 space-y-2 text-sm">
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-supernova-orange mr-2 mt-1 flex-shrink-0"></i>Buttons, potentiometers</li>
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-supernova-orange mr-2 mt-1 flex-shrink-0"></i>Ultrasonic distance sensors</li>
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-supernova-orange mr-2 mt-1 flex-shrink-0"></i>Light and temperature sensors</li>
- </ul>
- </div>
-
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group">
- <div class="w-14 h-14 bg-gradient-to-br from-circuit-green to-green-400 rounded-none flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
- <span class="text-white font-bold text-xl">56</span>
- </div>
- <h3 class="text-xl font-bold font-nunito text-slate-800 mb-3">Motors & Movement</h3>
- <ul class="text-slate-600 space-y-2 text-sm">
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-circuit-green mr-2 mt-1 flex-shrink-0"></i>DC motors and servos</li>
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-circuit-green mr-2 mt-1 flex-shrink-0"></i>Motor drivers and control</li>
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-circuit-green mr-2 mt-1 flex-shrink-0"></i>Building a moving robot base</li>
- </ul>
- </div>
-
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group">
- <div class="w-14 h-14 bg-gradient-to-br from-galaxy-purple to-purple-400 rounded-none flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
- <span class="text-white font-bold text-xl">78</span>
- </div>
- <h3 class="text-xl font-bold font-nunito text-slate-800 mb-3">Obstacle Avoidance</h3>
- <ul class="text-slate-600 space-y-2 text-sm">
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-galaxy-purple mr-2 mt-1 flex-shrink-0"></i>Programming sensor logic</li>
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-galaxy-purple mr-2 mt-1 flex-shrink-0"></i>Autonomous navigation</li>
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-galaxy-purple mr-2 mt-1 flex-shrink-0"></i>Building obstacle-avoiding robot</li>
- </ul>
- </div>
-
- <div class="bg-white rounded-none p-6 border border-slate-200 hover:-translate-y-1 transition-all duration-300 group">
- <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-400 rounded-none flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
- <span class="text-white font-bold text-xl">910</span>
- </div>
- <h3 class="text-xl font-bold font-nunito text-slate-800 mb-3">Line Following</h3>
- <ul class="text-slate-600 space-y-2 text-sm">
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-blue-500 mr-2 mt-1 flex-shrink-0"></i>IR sensors for line detection</li>
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-blue-500 mr-2 mt-1 flex-shrink-0"></i>PID control basics</li>
- <li class="flex items-start"><i data-lucide="check" class="w-4 h-4 text-blue-500 mr-2 mt-1 flex-shrink-0"></i>Building a line-following robot</li>
- </ul>
- </div>
-
- <div class="bg-gradient-to-br from-supernova-orange to-rocket-yellow rounded-none p-6 text-white hover:-translate-y-1 hover: transition-all duration-300 group">
- <div class="w-14 h-14 bg-slate-100 rounded-none flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
- <span class="font-bold text-xl">1112</span>
- </div>
- <h3 class="text-xl font-bold font-nunito mb-3">Final Robot Challenge</h3>
- <ul class="space-y-2 text-sm opacity-90">
- <li class="flex items-start"><i data-lucide="trophy" class="w-4 h-4 mr-2 mt-1 flex-shrink-0"></i>Design your ultimate robot</li>
- <li class="flex items-start"><i data-lucide="trophy" class="w-4 h-4 mr-2 mt-1 flex-shrink-0"></i>Robot competition day</li>
- <li class="flex items-start"><i data-lucide="trophy" class="w-4 h-4 mr-2 mt-1 flex-shrink-0"></i>Take home your creation!</li>
- </ul>
- </div>
- </div>
- </div>
- </section>
-
- <!-- Skills Section -->
- <section class="py-20 bg-indigo-50 text-white">
- <div class="container mx-auto px-6">
- <div class="text-center mb-16">
- <h2 class="text-4xl md:text-5xl font-bold font-nunito mb-4">
- Skills Beyond <span class="text-rocket-yellow">Coding</span>
- </h2>
- </div>
- <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" data-stagger>
- <div class="bg-slate-50 p-6 rounded-none border border-slate-200 text-center">
- <div class="w-16 h-16 bg-rocket-yellow/20 rounded-none flex items-center justify-center mx-auto mb-4">
- <i data-lucide="cog" class="w-8 h-8 text-rocket-yellow"></i>
- </div>
- <h3 class="font-bold text-slate-800 text-lg mb-2">Engineering</h3>
- <p class="text-slate-600 text-sm">Mechanical design & construction</p>
- </div>
- <div class="bg-slate-50 p-6 rounded-none border border-slate-200 text-center">
- <div class="w-16 h-16 bg-circuit-green/20 rounded-none flex items-center justify-center mx-auto mb-4">
- <i data-lucide="zap" class="w-8 h-8 text-circuit-green"></i>
- </div>
- <h3 class="font-bold text-slate-800 text-lg mb-2">Electronics</h3>
- <p class="text-slate-600 text-sm">Circuits, sensors, and components</p>
- </div>
- <div class="bg-slate-50 p-6 rounded-none border border-slate-200 text-center">
- <div class="w-16 h-16 bg-galaxy-purple/20 rounded-none flex items-center justify-center mx-auto mb-4">
- <i data-lucide="code" class="w-8 h-8 text-galaxy-purple"></i>
- </div>
- <h3 class="font-bold text-slate-800 text-lg mb-2">Programming</h3>
- <p class="text-slate-600 text-sm">C/C++ fundamentals for hardware</p>
- </div>
- <div class="bg-slate-50 p-6 rounded-none border border-slate-200 text-center">
- <div class="w-16 h-16 bg-supernova-orange/20 rounded-none flex items-center justify-center mx-auto mb-4">
- <i data-lucide="wrench" class="w-8 h-8 text-supernova-orange"></i>
- </div>
- <h3 class="font-bold text-slate-800 text-lg mb-2">Problem Solving</h3>
- <p class="text-slate-600 text-sm">Debugging both code and hardware</p>
- </div>
- </div>
- </div>
- </section>
-
- <!-- Pricing -->
- <section class="py-20 bg-white">
- <div class="container mx-auto px-6">
- <div class="max-w-2xl mx-auto text-center">
-  <h2 class="text-4xl md:text-5xl font-bold font-nunito text-slate-800 mb-4">
-  Everything Included
-  </h2>
-  <p class="text-lg text-slate-600 mb-8">
-  Full robotics kit included  |  yours to keep!
-  </p>
-
- <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto" data-stagger>
- <!-- Basic Plan -->
- <div class="bg-white rounded-none p-8 border border-gray-200 flex flex-col relative overflow-hidden group transition-all">
- <div class="absolute top-0 right-0 bg-orange-900/30 text-orange-600 px-4 py-1 rounded-bl-xl font-bold text-xs uppercase tracking-wide">Starter</div>
- <h3 class="text-2xl font-bold font-nunito text-slate-800 mb-2">Basic Plan</h3>
- <div class="mb-6">
- <span class="text-4xl font-bold text-slate-800">$50</span>
- <span class="text-slate-500">/month</span>
- </div>
- <p class="text-slate-600 text-sm mb-6">Structured 1-on-1 sessions tailored to each student's level and goals.</p>
- <ul class="space-y-3 mb-8 flex-grow text-sm text-slate-600">
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-orange-500 mr-3"></i>4 Hours / Month</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-orange-500 mr-3"></i>1-on-1 Mentorship</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-orange-500 mr-3"></i>Flexible Scheduling</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-orange-500 mr-3"></i>Virtual Simulator Access</li>
- </ul>
- <a href="enroll.html" target="_blank" rel="noopener noreferrer" class="block w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-none transition-colors text-center shadow-md hover:shadow-lg">
- Choose Basic
- </a>
- </div>
-
- <!-- Advanced Plan -->
- <div class="bg-gradient-to-br from-indigo-600 to-violet-600 rounded-none p-8 text-white scale-105 relative flex flex-col">
- <div class="absolute top-0 right-0 bg-yellow-400 text-yellow-900 px-4 py-1 rounded-bl-xl font-bold text-xs uppercase tracking-wide">Most Popular</div>
- <h3 class="text-2xl font-bold font-nunito text-white mb-2">Advanced Plan</h3>
- <div class="mb-6">
- <span class="text-4xl font-bold text-white">$80</span>
- <span class="text-indigo-200">/month</span>
- </div>
- <p class="text-indigo-100 text-sm mb-6">Accelerated learning with priority support and advanced projects.</p>
- <ul class="space-y-3 mb-8 flex-grow text-sm text-indigo-100">
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-yellow-400 mr-3"></i>8 Hours / Month</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-yellow-400 mr-3"></i>Priority 1-on-1 Mentorship</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-yellow-400 mr-3"></i>Advanced Project Portfolio</li>
- <li class="flex items-center"><i data-lucide="check-circle" class="w-5 h-5 text-yellow-400 mr-3"></i>Direct Tutor Access (Chat)</li>
- </ul>
- <a href="enroll.html" target="_blank" rel="noopener noreferrer" class="block w-full bg-white text-indigo-400 font-bold py-3 rounded-none hover:bg-indigo-900/20 transition-colors text-center">
- Choose Advanced
- </a>
- </div>
- </div>
- </div>
- </div>
- </section>
-
-  <!-- GEO TRUST & ACADEMIC CITATION BLOCK -->
-  <section class="py-16 section--cream-warm border-y border-gray-200/40 relative overflow-hidden" aria-label="Academic Citations and Trust Signals">
- <div style="max-width:1200px; margin:0 auto; padding:0 2rem;">
- <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:3rem; align-items: center;">
- <!-- Stat -->
- <div style="background: white; border:1px solid rgba(10,10,10,0.08); padding:2.5rem; text-align: center; border-radius:4px; box-shadow:0 4px 20px rgba(10,10,10,0.02);">
- <p style="font-family: var(--heading); font-size:3.5rem; font-weight:800; color: var(--orange); margin:0 0 0.5rem; line-height:1;">48h+</p>
- <p style="font-family: var(--body); font-size:0.85rem; color: var(--slate); margin:0; line-height:1.6; font-weight:500;">of hands-on physical breadboarding and circuit design, resulting in zero-error autonomous robot builds.</p>
- </div>
- <!-- Quote & Citation -->
- <div style="grid-column: span 2; display: flex; flex-direction: column; gap:1.5rem;">
- <blockquote style="font-family: var(--heading); font-size: clamp(1.2rem,2vw,1.6rem); font-style: italic; color: var(--ink); margin:0; line-height:1.5; border-left:4px solid var(--orange); padding-left:1.5rem;">
- "Connecting C++ code to physical motors and sensors transforms abstract logic into physical action, giving kids a tangible grasp of engineering."
- </blockquote>
- <p style="font-family: var(--heading); font-size:0.9rem; font-weight:700; color: var(--slate); margin:0;"> |  Prof. Marcus Vance, Robotics Lab Director</p>
- <div style="border-top:1px dashed rgba(10,10,10,0.15); padding-top:1rem;">
- <p style="font-family: var(--heading); font-size:0.72rem; color: rgba(10,10,10,0.5); margin:0; line-height:1.6;">
- <strong style="text-transform: uppercase; letter-spacing:0.08em; color: var(--slate); font-size:0.65rem; display: block; margin-bottom:0.25rem;">Academic Citation & RAG Signal:</strong>
- A study in the Journal of STEM Education reveals that combining microcontroller programming with physical assembly increases engineering self-efficacy by4-5% in students aged10-14 (J. STEM Ed,2024).
- </p>
- </div>
- </div>
- </div>
- </div>
+        <!-- Right Column: Visual Specimen Card -->
+        <div class="lg:col-span-5">
+          <div class="stem-card p-4 bg-white">
+            <img src="assets/images/arduino_robotics_lab.webp" alt="Arduino robotics engineering by a STEMulus student" class="w-full h-auto rounded-lg object-cover" loading="eager" decoding="async">
+            <div class="p-4">
+              <div class="flex items-center justify-between text-xs text-slate-600 font-mono mb-2">
+                <span>COURSE: STEM-ARDUINO-02</span>
+                <span class="text-emerald-700 font-bold">1-ON-1 ACTIVE</span>
+              </div>
+              <h4 class="font-bold text-slate-800 font-outfit text-sm">Working C++ Firmware &amp; Autonomous Hardware Units</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
-<!-- FAQ -->
- <section class="py-20 bg-white">
- <div class="container mx-auto px-6">
- <div class="max-w-3xl mx-auto">
- <div class="text-center mb-12">
- <h2 class="text-4xl font-bold font-nunito text-slate-800 mb-4">FAQ</h2>
- </div>
- <div class="space-y-4">
- <details class="group bg-slate-50 p-6 rounded-none border border-slate-200/80">
- <summary class="flex justify-between items-center cursor-pointer list-none">
- <span class="font-bold text-slate-800">Do I need to buy any equipment?</span>
- <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 transform group-open:rotate-180 transition-transform"></i>
- </summary>
- <p class="mt-4 text-slate-600 leading-relaxed">No! The fee includes a complete Arduino robotics kit with all components. Your child keeps the kit at the end of the program to continue building at home.</p>
- </details>
- <details class="group bg-slate-50 p-6 rounded-none border border-slate-200/80">
- <summary class="flex justify-between items-center cursor-pointer list-none">
- <span class="font-bold text-slate-800">Is prior coding experience needed?</span>
- <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 transform group-open:rotate-180 transition-transform"></i>
- </summary>
- <p class="mt-4 text-slate-600 leading-relaxed">Basic coding experience (like Scratch) is helpful but not required. We teach the programming concepts alongside the robotics. The hands-on nature makes learning code easier!</p>
- </details>
- <details class="group bg-slate-50 p-6 rounded-none border border-slate-200/80">
- <summary class="flex justify-between items-center cursor-pointer list-none">
- <span class="font-bold text-slate-800">How do we learn robotics online?</span>
- <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 transform group-open:rotate-180 transition-transform"></i>
- </summary>
- <p class="mt-4 text-slate-600 leading-relaxed">We use a combination of virtual simulators (like Tinkercad) and physical kits delivered to your doorstep. Your personal tutor guides you step-by-step through circuit building and coding via high-definition video calls.</p>
- </details>
- </div>
- </div>
- </div>
- </section>
+  <!-- INTERACTIVE EMBEDDED C++ SPECIMEN VIEWPORT (Curriculum Wow) -->
+  <section id="curriculum-specimen" class="py-24 bg-[#0B1120] text-white relative overflow-hidden" data-reveal>
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="badge-stem badge-stem-dark mb-4">Embedded Firmware Specimen</span>
+        <h2 class="text-3xl md:text-4xl font-black font-outfit text-white tracking-tight">Real C++ Code Written for Hardware Microcontrollers</h2>
+        <p class="text-slate-400 text-sm mt-3 leading-relaxed">No toy blocks or pseudocode. Students write industry-standard C/C++ firmware in the Arduino IDE, handling pin interrupts, PWM signals, and analog sensor calibration.</p>
+      </div>
 
- <!-- CTA -->
- <section class="py-20 bg-gradient-to-br from-rocket-yellow to-yellow-500 text-slate-900">
- <div class="container mx-auto px-6 text-center">
- <h2 class="text-4xl md:text-5xl font-bold font-nunito mb-6 text-slate-900">
- Ready to Build Robots?
- </h2>
- <p class="text-xl mb-8 max-w-2xl mx-auto text-slate-800 font-medium">
- Limited spots available. Equipment kits are ordered per class!
- </p>
- <a href="enroll.html" target="_blank" rel="noopener noreferrer" class="inline-block bg-slate-900 text-white font-bold py-4 px-8 rounded-xl text-lg hover:bg-slate-800 transition-transform transform hover:scale-105 shadow-lg">
- Enroll Now <i data-lucide="arrow-right" class="inline w-5 h-5 ml-2"></i>
- </a>
- </div>
- </section>
+      <!-- Specimen Viewport Window -->
+      <div class="specimen-wrap">
+        <div class="specimen-header">
+          <div class="specimen-dots">
+            <div class="specimen-dot"></div>
+            <div class="specimen-dot"></div>
+            <div class="specimen-dot"></div>
+            <span class="text-slate-400 text-xs font-mono ml-2">arduino-ide/firmware-specimen</span>
+          </div>
+          <div class="specimen-tabs">
+            <button class="specimen-tab active" data-tab="tab-rover">01_sonar_rover.ino</button>
+            <button class="specimen-tab" data-tab="tab-line">02_line_follower.ino</button>
+            <button class="specimen-tab" data-tab="tab-arm">03_robotic_arm.ino</button>
+          </div>
+        </div>
 
- <!-- Related Programs -->
- <section class="py-20 bg-white">
- <div class="container mx-auto px-6">
- <div class="text-center mb-12">
- <h2 class="text-3xl font-bold font-nunito text-slate-800 mb-4">Explore More Programs</h2>
- </div>
- <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto" data-stagger>
- <a href="junior-robotics.html" class="group bg-slate-50 rounded-none p-6 border border-slate-200 hover:border-supernova-orange transition-colors">
- <div class="w-12 h-12 bg-supernova-orange/10 rounded-none flex items-center justify-center mb-4">
- <i data-lucide="bot" class="w-6 h-6 text-supernova-orange"></i>
- </div>
- <h3 class="font-bold text-slate-800 mb-2 group-hover:text-supernova-orange transition-colors">Junior Robotics Lab</h3>
- <p class="text-sm text-gray-500">Ages5-9 | Beginner</p>
- </a>
- <a href="python-programming.html" class="group bg-slate-50 rounded-none p-6 border border-slate-200 hover:border-galaxy-purple transition-colors">
- <div class="w-12 h-12 bg-galaxy-purple/10 rounded-none flex items-center justify-center mb-4">
- <i data-lucide="code" class="w-6 h-6 text-galaxy-purple"></i>
- </div>
- <h3 class="font-bold text-slate-800 mb-2 group-hover:text-galaxy-purple transition-colors">Python for Game Dev</h3>
- <p class="text-sm text-gray-500">Ages10-13 | Intermediate</p>
- </a>
- <a href="ai-machine-learning.html" class="group bg-slate-50 rounded-none p-6 border border-slate-200 hover:border-blue-500 transition-colors">
- <div class="w-12 h-12 bg-blue-900/30 rounded-none flex items-center justify-center mb-4">
- <i data-lucide="cpu" class="w-6 h-6 text-blue-500"></i>
- </div>
- <h3 class="font-bold text-slate-800 mb-2 group-hover:text-blue-500 transition-colors">Intro to AI & ML</h3>
- <p class="text-sm text-slate-500">Ages14-17 | Intermediate</p>
- </a>
- </div>
- </div>
- </section>
- <!-- Flat Pricing Card -->
-<section class="py-16 bg-slate-50 border-t border-slate-200">
-  <div class="max-w-2xl mx-auto px-6 text-center">
-    <p class="text-xs font-bold tracking-widest uppercase text-slate-600 mb-2">Advanced Programme</p>
-    <h2 class="text-3xl font-black text-slate-900 font-nunito mb-2">Programme Fee</h2>
-    <p class="text-5xl font-black text-slate-900 font-nunito my-4">$80<span class="text-lg font-semibold text-slate-600">/month</span></p>
-    <p class="text-slate-500 text-sm mb-8">4 x 1-hour 1-on-1 sessions per month &nbsp;·&nbsp; No lock-in contracts</p>
-    <ul class="text-left space-y-3 mb-8 text-sm text-slate-700 max-w-sm mx-auto">
-      <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Between-session tutor chat access</li>
-      <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Project code review and portfolio feedback</li>
-      <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Monthly progress report sent to parents</li>
-      <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Certificate awarded on course completion</li>
-      <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Pause or cancel any month — no fees</li>
-    </ul>
-    <a href="enroll.html" class="inline-block bg-slate-900 text-white font-bold py-3 px-10 text-sm tracking-wide hover:bg-slate-800 transition-colors">Enroll Now</a>
-    <p class="text-xs text-slate-600 font-medium mt-4">Questions? <a href="programs.html#pricing" class="underline hover:text-slate-800">View full pricing &amp; FAQ</a></p>
-  </div>
-</section>
+        <div class="specimen-body">
+          <!-- Code Left Pane -->
+          <div class="specimen-code-pane">
+            <div data-specimen-pane="tab-rover">
+              <pre><code><span class="tok-cm">// Autonomous Sonar Obstacle Avoidance Rover</span>
+<span class="tok-kw">const int</span> TRIG_PIN = <span class="tok-num">9</span>;
+<span class="tok-kw">const int</span> ECHO_PIN = <span class="tok-num">10</span>;
+<span class="tok-kw">const int</span> MOTOR_L_PWM = <span class="tok-num">5</span>;
+<span class="tok-kw">const int</span> MOTOR_R_PWM = <span class="tok-num">6</span>;
+
+<span class="tok-kw">void</span> <span class="tok-fn">setup</span>() {
+  Serial.<span class="tok-fn">begin</span>(<span class="tok-num">115200</span>);
+  <span class="tok-fn">pinMode</span>(TRIG_PIN, OUTPUT);
+  <span class="tok-fn">pinMode</span>(ECHO_PIN, INPUT);
+}
+
+<span class="tok-kw">void</span> <span class="tok-fn">loop</span>() {
+  <span class="tok-fn">digitalWrite</span>(TRIG_PIN, LOW);
+  <span class="tok-fn">delayMicroseconds</span>(<span class="tok-num">2</span>);
+  <span class="tok-fn">digitalWrite</span>(TRIG_PIN, HIGH);
+  <span class="tok-fn">delayMicroseconds</span>(<span class="tok-num">10</span>);
+  <span class="tok-fn">digitalWrite</span>(TRIG_PIN, LOW);
+
+  <span class="tok-kw">long</span> duration = <span class="tok-fn">pulseIn</span>(ECHO_PIN, HIGH);
+  <span class="tok-kw">float</span> distanceCM = duration * <span class="tok-num">0.034</span> / <span class="tok-num">2.0</span>;
+
+  <span class="tok-kw">if</span> (distanceCM &lt; <span class="tok-num">20.0</span>) {
+    <span class="tok-fn">executeAvoidance</span>();
+  } <span class="tok-kw">else</span> {
+    <span class="tok-fn">analogWrite</span>(MOTOR_L_PWM, <span class="tok-num">180</span>);
+    <span class="tok-fn">analogWrite</span>(MOTOR_R_PWM, <span class="tok-num">180</span>);
+  }
+}</code></pre>
+            </div>
+
+            <div data-specimen-pane="tab-line" style="display:none;">
+              <pre><code><span class="tok-cm">// Dual IR Photodiode Course Correction Loop</span>
+<span class="tok-kw">const int</span> SENSOR_LEFT = A0;
+<span class="tok-kw">const int</span> SENSOR_RIGHT = A1;
+<span class="tok-kw">const int</span> THRESHOLD = <span class="tok-num">550</span>;
+
+<span class="tok-kw">void</span> <span class="tok-fn">loop</span>() {
+  <span class="tok-kw">int</span> valLeft = <span class="tok-fn">analogRead</span>(SENSOR_LEFT);
+  <span class="tok-kw">int</span> valRight = <span class="tok-fn">analogRead</span>(SENSOR_RIGHT);
+
+  <span class="tok-kw">if</span> (valLeft &gt; THRESHOLD &amp;&amp; valRight &gt; THRESHOLD) {
+    <span class="tok-fn">driveForward</span>(<span class="tok-num">200</span>);
+  } <span class="tok-kw">else if</span> (valLeft &lt;= THRESHOLD) {
+    <span class="tok-fn">steerRight</span>(<span class="tok-num">160</span>);
+  } <span class="tok-kw">else if</span> (valRight &lt;= THRESHOLD) {
+    <span class="tok-fn">steerLeft</span>(<span class="tok-num">160</span>);
+  }
+}</code></pre>
+            </div>
+
+            <div data-specimen-pane="tab-arm" style="display:none;">
+              <pre><code><span class="tok-cm">// 4-Axis Articulated Servo Manipulator</span>
+<span class="tok-kw">#include</span> <span class="tok-str">&lt;Servo.h&gt;</span>
+
+Servo baseServo;
+Servo elbowServo;
+Servo wristServo;
+Servo clawServo;
+
+<span class="tok-kw">void</span> <span class="tok-fn">pickupSequence</span>() {
+  baseServo.<span class="tok-fn">write</span>(<span class="tok-num">90</span>);   <span class="tok-cm">// Center azimuth</span>
+  elbowServo.<span class="tok-fn">write</span>(<span class="tok-num">45</span>);  <span class="tok-cm">// Lower arm</span>
+  clawServo.<span class="tok-fn">write</span>(<span class="tok-num">120</span>);  <span class="tok-cm">// Clamp payload</span>
+  <span class="tok-fn">delay</span>(<span class="tok-num">300</span>);
+  elbowServo.<span class="tok-fn">write</span>(<span class="tok-num">110</span>); <span class="tok-cm">// Lift arm</span>
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- Serial Monitor Right Pane -->
+          <div class="specimen-terminal-pane">
+            <div class="terminal-label">
+              <i data-stem-icon="terminal" data-size="14"></i>
+              <span>Arduino Serial Monitor (COM4 · 115200 baud)</span>
+            </div>
+            <div data-terminal-pane="tab-rover">
+              <div class="terminal-output">[BOOT] ATmega328P clock initialized: 16.0 MHz
+[I/O] Pin 9: OUTPUT (HC-SR04 Trig) | Pin 10: INPUT (Echo)
+[I/O] Timer 1 configured for dual 490Hz PWM (Pins 5, 6)
+[LOOP #1042] Sonar echo: 31.4 cm -> CLEAR -> Speed: 180 PWM
+[LOOP #1043] Sonar echo: 18.2 cm -> OBSTACLE DETECTED!
+>> Executing avoidance maneuver: Counter-rotate 350ms
+[LOOP #1044] Sonar echo: 44.8 cm -> CLEAR -> Re-engaging cruising speed</div>
+            </div>
+            <div data-terminal-pane="tab-line" style="display:none;">
+              <div class="terminal-output">[ADC Calibration] ADC Prescaler 128 -> 125 kHz sample rate
+Reflectance Left (A0): 684 (White surface)
+Reflectance Right (A1): 691 (White surface)
+Status: CENTERED ON TRACK
+[Event] Left sensor dropped to 210 (Black line crossed)
+Course Correction: Differential steer applied -> PWM L: 80 | PWM R: 160
+Feedback: Track locked.</div>
+            </div>
+            <div data-terminal-pane="tab-arm" style="display:none;">
+              <div class="terminal-output">[Servo Kinematics Engine]
+Axis 0 (Base): 90.0°
+Axis 1 (Shoulder): 110.0°
+Axis 2 (Elbow): 45.0° (LOWERED)
+Axis 3 (Claw): 120.0° (PAYLOAD ACQUIRED)
+Current Draw: 480mA @ 5.0V (Within USB limit)
+Trajectory interpolation: Complete</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURAL 12-WEEK SYLLABUS DOSSIER -->
+  <section class="py-28 bg-[#FAFAF8] border-t border-slate-200/80" data-reveal>
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="badge-stem badge-stem-accent mb-3">Structured Robotics Engineering Pathway</span>
+        <h2 class="text-3xl md:text-4xl font-black font-outfit text-slate-900 tracking-tight">12-Week Arduino Robotics Syllabus</h2>
+        <p class="text-slate-600 text-sm mt-3 leading-relaxed">Students build physical circuit prototypes and write genuine C++ firmware in private 1-on-1 sessions, graduating with multiple working autonomous machines.</p>
+      </div>
+
+      <div class="syllabus-dossier">
+        <!-- Phase 01 -->
+        <div class="syllabus-phase-card open">
+          <div class="syllabus-phase-header">
+            <div class="syllabus-phase-left">
+              <span class="syllabus-phase-num">PHASE 01</span>
+              <div>
+                <h3 class="syllabus-phase-title">Microcontroller Architecture &amp; Electronic Circuits</h3>
+                <p class="syllabus-phase-sub">Weeks 1 to 3 · Breadboarding, Ohm's Law, digital I/O pins, and first C++ programs</p>
+              </div>
+            </div>
+            <div class="syllabus-phase-toggle"><i data-stem-icon="chevron-down" data-size="16"></i></div>
+          </div>
+          <div class="syllabus-phase-body">
+            <div class="syllabus-grid">
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 01</div>
+                <div class="syllabus-item-h">The Microcontroller Core</div>
+                <p class="syllabus-item-p">Arduino board architecture, USB communication, flashing firmware, and understanding digital HIGH/LOW states.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 02</div>
+                <div class="syllabus-item-h">Breadboard Circuits &amp; Resistors</div>
+                <p class="syllabus-item-p">Ohm's Law, current limits, wiring LEDs in series and parallel, and reading schematic wiring diagrams.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 03</div>
+                <div class="syllabus-item-h">Buttons &amp; Digital Debouncing</div>
+                <p class="syllabus-item-p">Pull-up/pull-down resistors, mechanical switch bounce, and software debouncing in C++ conditional loops.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 02 -->
+        <div class="syllabus-phase-card">
+          <div class="syllabus-phase-header">
+            <div class="syllabus-phase-left">
+              <span class="syllabus-phase-num">PHASE 02</span>
+              <div>
+                <h3 class="syllabus-phase-title">Sensors, Analog Signals &amp; PWM Actuation</h3>
+                <p class="syllabus-phase-sub">Weeks 4 to 6 · Potentiometers, photocells, ultrasonic sonar, and servo motors</p>
+              </div>
+            </div>
+            <div class="syllabus-phase-toggle"><i data-stem-icon="chevron-down" data-size="16"></i></div>
+          </div>
+          <div class="syllabus-phase-body">
+            <div class="syllabus-grid">
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 04</div>
+                <div class="syllabus-item-h">Analog-to-Digital Conversion (ADC)</div>
+                <p class="syllabus-item-p">10-bit resolution readings, calibrating light-dependent resistors (LDR), and mapping values with the map() function.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 05</div>
+                <div class="syllabus-item-h">Servo Actuation &amp; PWM Signals</div>
+                <p class="syllabus-item-p">Pulse-width modulation, controlling servo shaft angles with precision timing, and engineering articulated joints.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 06</div>
+                <div class="syllabus-item-h">Ultrasonic Echolocation Sensors</div>
+                <p class="syllabus-item-p">Calculating distance using sonic pulse round-trip times and building an interactive parking sensor with buzzer feedback.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 03 -->
+        <div class="syllabus-phase-card">
+          <div class="syllabus-phase-header">
+            <div class="syllabus-phase-left">
+              <span class="syllabus-phase-num">PHASE 03</span>
+              <div>
+                <h3 class="syllabus-phase-title">Autonomous Mobile Robotics &amp; Motor H-Bridges</h3>
+                <p class="syllabus-phase-sub">Weeks 7 to 9 · DC motors, L298N motor drivers, differential steering, and navigation algorithms</p>
+              </div>
+            </div>
+            <div class="syllabus-phase-toggle"><i data-stem-icon="chevron-down" data-size="16"></i></div>
+          </div>
+          <div class="syllabus-phase-body">
+            <div class="syllabus-grid">
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 07</div>
+                <div class="syllabus-item-h">DC Motors &amp; H-Bridge Drivers</div>
+                <p class="syllabus-item-p">High-current isolation, controlling speed and rotational direction of dual DC geared motors using L298N drivers.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 08</div>
+                <div class="syllabus-item-h">Autonomous Obstacle Avoidance</div>
+                <p class="syllabus-item-p">Mounting sonar onto a scanning servo to look left and right before committing to navigational turns in real space.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 09</div>
+                <div class="syllabus-item-h">IR Infrared Line Tracking</div>
+                <p class="syllabus-item-p">Differential course correction using infrared reflectance sensors to follow high-contrast track pathways at speed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 04 -->
+        <div class="syllabus-phase-card">
+          <div class="syllabus-phase-header">
+            <div class="syllabus-phase-left">
+              <span class="syllabus-phase-num">PHASE 04</span>
+              <div>
+                <h3 class="syllabus-phase-title">Complex Integration, Capstone Robot &amp; Showcase</h3>
+                <p class="syllabus-phase-sub">Weeks 10 to 12 · 4-axis robotic arm or hybrid autonomous vehicle defense and certification</p>
+              </div>
+            </div>
+            <div class="syllabus-phase-toggle"><i data-stem-icon="chevron-down" data-size="16"></i></div>
+          </div>
+          <div class="syllabus-phase-body">
+            <div class="syllabus-grid">
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 10</div>
+                <div class="syllabus-item-h">Multi-Sensor Robot Architecture</div>
+                <p class="syllabus-item-p">Integrating sensory input with multi-motor actuation into a unified state-machine C++ firmware architecture.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 11</div>
+                <div class="syllabus-item-h">Hardware Debugging &amp; Optimization</div>
+                <p class="syllabus-item-p">Troubleshooting electrical loose connections, voltage drops, and profiling loop execution cycles using Serial logs.</p>
+              </div>
+              <div class="syllabus-item">
+                <div class="syllabus-item-wk">Week 12</div>
+                <div class="syllabus-item-h">Final Robotic Demonstration &amp; Defense</div>
+                <p class="syllabus-item-p">The student demonstrates their fully operational robot live, presenting their circuit diagrams and firmware code.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TUITION & MENTORSHIP INCLUSIONS -->
+  <section id="pricing-section" class="py-20 bg-white border-t border-slate-200/80" data-reveal>
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <span class="badge-stem badge-stem-accent mb-3">Transparent Tuition</span>
+      <h2 class="text-3xl font-black text-slate-900 font-outfit mb-2">Arduino Robotics Programme Fee</h2>
+      <p class="text-5xl font-black text-slate-900 font-outfit my-4">$80<span class="text-lg font-semibold text-slate-600">/month</span></p>
+      <p class="text-slate-500 text-sm mb-8">4 x 1-hour 1-on-1 sessions per month · No lock-in contracts</p>
+      
+      <div class="stem-card p-6 text-left max-w-md mx-auto mb-8">
+        <ul class="space-y-3 text-sm text-slate-700">
+          <li class="flex items-start gap-2.5">
+            <span class="text-emerald-700 font-bold">✓</span>
+            <span>Dedicated 1-on-1 embedded systems &amp; robotics engineer</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-emerald-700 font-bold">✓</span>
+            <span>Physical Arduino hardware simulator and circuit breadboard lab</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-emerald-700 font-bold">✓</span>
+            <span>3 Working autonomous robots programmed in C++ by the student</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-emerald-700 font-bold">✓</span>
+            <span>Monthly progress report and hardware schematic evaluations</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-emerald-700 font-bold">✓</span>
+            <span>Pause, reschedule, or cancel any month with zero fees</span>
+          </li>
+        </ul>
+      </div>
+
+      <a href="enroll.html" class="btn-stem-primary px-10 py-3.5 text-sm tracking-wide">
+        Enroll Your Student Now
+      </a>
+      <p class="text-xs text-slate-600 font-medium mt-4">Questions? <a href="programs.html#pricing" class="underline hover:text-slate-800">View full roadmap &amp; FAQ</a></p>
+    </div>
+  </section>
+
+  <!-- PEDAGOGICAL APPROACH -->
+  <section class="py-20 bg-[#FAFAF8] border-t border-slate-200/80" aria-label="Pedagogical Approach" data-reveal>
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="grid md:grid-cols-12 gap-8 items-center">
+        <div class="md:col-span-5 stem-card text-center p-8">
+          <p class="text-5xl font-black font-outfit text-[#F4600C] mb-2">Physical</p>
+          <p class="text-xs uppercase tracking-widest font-bold text-slate-600 mb-3">Hardware Computing</p>
+          <p class="text-xs text-slate-600 leading-relaxed">Hands-on physical breadboarding, ultrasonic sensors, and microcontroller circuits integrated with real C++ programming logic.</p>
+        </div>
+        <div class="md:col-span-7 pl-0 md:pl-6">
+          <blockquote class="text-lg md:text-xl font-outfit text-slate-800 italic leading-relaxed pl-6 border-l-2 border-slate-300">
+            "Connecting code to physical motors, sensors, and circuits transforms abstract logic into physical action, giving kids an intuitive understanding of robotics engineering."
+          </blockquote>
+          <p class="text-xs font-bold text-slate-600 uppercase tracking-wider mt-4 pl-6">STEMulus Robotics &amp; Embedded Systems Faculty</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONVERSION CTA -->
+  <section class="py-24 bg-[#0B1120] text-white border-t border-slate-800 text-center" data-reveal>
+    <div class="max-w-3xl mx-auto px-6">
+      <span class="badge-stem badge-stem-dark mb-4">Start Your Journey</span>
+      <h2 class="text-3xl md:text-5xl font-black font-outfit tracking-tight mb-4">
+        Ready to Build Robots?
+      </h2>
+      <p class="text-slate-400 text-base mb-8 max-w-xl mx-auto leading-relaxed">
+        Join private 1-on-1 sessions. Hardware kits are delivered directly to your doorstep with expert mentorship.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="enroll.html" class="btn-stem-primary px-8 py-3.5">
+          Enroll Now
+          <i data-stem-icon="arrow-right" data-size="14"></i>
+        </a>
+        <a href="book-class.html" class="btn-stem-secondary px-8 py-3.5">
+          Book Free Discovery Class
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Programs -->
+  <section class="py-20 bg-white border-t border-slate-200/80">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold font-nunito text-slate-800 mb-4">Explore More Programs</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto" data-stagger>
+        <a href="junior-robotics.html" class="stem-card p-6 block group hover:border-slate-400 transition-colors">
+          <div class="w-10 h-10 bg-slate-100 flex items-center justify-center mb-4 rounded-md">
+            <i data-stem-icon="robotics" data-size="20"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 mb-1 group-hover:text-[#F4600C] transition-colors">Junior Robotics Lab</h3>
+          <p class="text-xs text-slate-500">Ages 5-9 &middot; Beginner &middot; micro:bit &amp; Sensors</p>
+        </a>
+        <a href="python-programming.html" class="stem-card p-6 block group hover:border-slate-400 transition-colors">
+          <div class="w-10 h-10 bg-slate-100 flex items-center justify-center mb-4 rounded-md">
+            <i data-stem-icon="python" data-size="20"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 mb-1 group-hover:text-[#F4600C] transition-colors">Python Programming</h3>
+          <p class="text-xs text-slate-500">Ages 10-14 &middot; Intermediate &middot; Logic &amp; Pygame</p>
+        </a>
+        <a href="ai-machine-learning.html" class="stem-card p-6 block group hover:border-slate-400 transition-colors">
+          <div class="w-10 h-10 bg-slate-100 flex items-center justify-center mb-4 rounded-md">
+            <i data-stem-icon="ai-brain" data-size="20"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 mb-1 group-hover:text-[#F4600C] transition-colors">Intro to AI &amp; ML</h3>
+          <p class="text-xs text-slate-500">Ages 14-17 &middot; Advanced &middot; Neural Networks</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 bg-slate-50 border-t border-slate-200/80">
+    <div class="container mx-auto px-6">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold font-outfit text-slate-900 mb-4">Frequently Asked Questions</h2>
+        </div>
+        <div class="space-y-4">
+          <details class="group bg-white p-6 border border-slate-200/80 rounded-md">
+            <summary class="flex justify-between items-center cursor-pointer list-none">
+              <span class="font-bold text-slate-800">Do I need to buy any equipment?</span>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 transform group-open:rotate-180 transition-transform"></i>
+            </summary>
+            <p class="mt-4 text-slate-600 leading-relaxed">No. We can recommend complete Arduino kits that can be ordered directly, or students can begin with virtual circuit simulation in Autodesk Tinkercad before touching physical microcontrollers.</p>
+          </details>
+          <details class="group bg-white p-6 border border-slate-200/80 rounded-md">
+            <summary class="flex justify-between items-center cursor-pointer list-none">
+              <span class="font-bold text-slate-800">Is prior coding experience needed?</span>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 transform group-open:rotate-180 transition-transform"></i>
+            </summary>
+            <p class="mt-4 text-slate-600 leading-relaxed">Basic coding experience (like Scratch or Python) is helpful but not mandatory. We teach C++ syntax and embedded electronics concepts step-by-step alongside circuit schematics.</p>
+          </details>
+          <details class="group bg-white p-6 border border-slate-200/80 rounded-md">
+            <summary class="flex justify-between items-center cursor-pointer list-none">
+              <span class="font-bold text-slate-800">How do we learn robotics online?</span>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 transform group-open:rotate-180 transition-transform"></i>
+            </summary>
+            <p class="mt-4 text-slate-600 leading-relaxed">We use interactive circuit simulation environments alongside direct overhead webcam video guidance during 1-on-1 sessions. Your mentor reviews wiring connections and code line by line.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
  <!-- -----------------------------------------------
@@ -661,7 +719,7 @@
             <p class="footer-brand-name">STEMulus</p>
             <p class="footer-brand-tag">Global Coding Academy · Est. 2025</p>
             <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;line-height:1.75;color:#475569;max-width:320px;">
-                Turning screen time into build time for kids aged 5–17, across three continents. Expert mentors. Real projects. Permanent skills.
+                Turning screen time into build time for kids aged 5-17, across three continents. Expert mentors. Real projects. Permanent skills.
             </p>
         </div>
 
@@ -734,16 +792,15 @@ window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger
 <script src="assets/js/organization-schema.min.js" defer></script>
 <script src="assets/js/course-schema.min.js" defer></script>
 
-<!-- CONVERSION FUNNEL: Mobile Sticky Booking Bar -->
-<div id="mobile-booking-bar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:8000;padding:0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0));background:linear-gradient(135deg,#f4600c,#d4520a);box-shadow:0 -4px 20px rgba(244,96,12,0.35);">
-  <div style="display:flex;gap:8px;align-items:center;">
-    <a href="#" onclick="event.preventDefault();if(typeof QuickBooking!=='undefined'){QuickBooking.open();}else{window.location.href='book-class.html';}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:0.4rem;background:#ffffff;color:#f4600c;font-weight:800;font-size:0.85rem;padding:0.7rem 0.5rem;border-radius:10px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-      Book Free Trial
-    </a>
-    <a href="https://wa.me/2347052466716?text=Hello%20STEMulus%2C%20I'd%20like%20to%20book%20a%20free%20trial%20class%20for%20my%20child" target="_blank" rel="noopener noreferrer" style="flex:1;display:flex;align-items:center;justify-content:center;gap:0.4rem;background:#25D366;color:#ffffff;font-weight:800;font-size:0.85rem;padding:0.7rem 0.5rem;border-radius:10px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      WhatsApp Chat
+<!-- CONVERSION FUNNEL: Mobile Sticky Floating Island -->
+<div id="mobile-booking-bar" class="docked-cta-island">
+  <div class="docked-cta-inner">
+    <div class="docked-cta-label">
+      <span class="docked-cta-title">Free Discovery Session</span>
+      <span class="docked-cta-sub"><span style="display:inline-block;width:6px;height:6px;border-radius:2px;background:#10b981;margin-right:6px;"></span>45 min &middot; 1-on-1 with mentor</span>
+    </div>
+    <a href="#" onclick="event.preventDefault();if(typeof QuickBooking!=='undefined'){QuickBooking.open();}else{window.location.href='book-class.html';}" class="docked-cta-btn">
+      Book Free <span>&rarr;</span>
     </a>
   </div>
 </div>
@@ -757,21 +814,31 @@ window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger
 </script>
 
 <!-- CONVERSION FUNNEL: Desktop Sticky Floating CTA -->
-<div id="desktop-sticky-cta" style="display:none;position:fixed;bottom:32px;right:90px;z-index:8000;">
-  <a href="#" onclick="event.preventDefault();if(typeof QuickBooking!=='undefined'){QuickBooking.open();}" style="display:inline-flex;align-items:center;gap:0.6rem;background:linear-gradient(135deg,#f4600c,#d4520a);color:#fff;font-weight:800;font-size:0.85rem;padding:0.75rem 1.25rem;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px rgba(244,96,12,0.4);transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 28px rgba(244,96,12,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(244,96,12,0.4)'">
-    Book Free Trial Class →
+<div id="desktop-sticky-cta" style="display:none;position:fixed;bottom:32px;right:96px;z-index:8000;">
+  <a href="#" onclick="event.preventDefault();if(typeof QuickBooking!=='undefined'){QuickBooking.open();}" style="display:inline-flex;align-items:center;gap:0.65rem;background:rgba(11,17,32,0.94);color:#ffffff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.84rem;padding:0.75rem 1.35rem;border-radius:8px;text-decoration:none;border:1px solid rgba(255,255,255,0.18);box-shadow:0 12px 32px rgba(10,25,50,0.22);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:transform 0.2s cubic-bezier(0.16,1,0.3,1),box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px) scale(1.02)';this.style.boxShadow='0 16px 36px rgba(10,25,50,0.35)'" onmouseout="this.style.transform='';this.style.boxShadow='0 12px 32px rgba(10,25,50,0.22)'">
+    <span style="display:inline-block;width:6px;height:6px;border-radius:2px;background:#10b981;"></span>
+    <span>Free Discovery Session</span>
+    <span style="color:#f4600c;font-weight:800;">&rarr;</span>
   </a>
 </div>
 <script>
   (function(){
     var btn = document.getElementById('desktop-sticky-cta');
-    function checkDesktop(){ btn.style.display = window.innerWidth>768?'block':'none'; }
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-    var shown = false;
-    window.addEventListener('scroll', function(){ if(window.scrollY>300&&!shown){ btn.style.display=window.innerWidth>768?'block':'none'; shown=true; } else if(window.scrollY<100){ shown=false; btn.style.display='none'; } }, {passive:true});
+    if (!btn) return;
+    function updateVisibility(){
+      if (window.innerWidth > 1024 && window.scrollY > 500) {
+        btn.style.display = 'block';
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+    window.addEventListener('scroll', updateVisibility, {passive: true});
+    window.addEventListener('resize', updateVisibility);
   })();
 </script>
+<script src="assets/js/stemulus-icons.js" defer></script>
+<script src="assets/js/scroll-choreography.js" defer></script>
+<script src="assets/js/stemulus-interactive.js" defer></script>
 </body>
 </html>
 

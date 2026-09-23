@@ -30,15 +30,15 @@
             var gradeDesc = 'Exceptional Performance';
             if (grade === 'A+' || grade === 'A') gradeDesc = 'Distinction & Outstanding Progress';
             else if (grade === 'B+' || grade === 'B') gradeDesc = 'Good Competency & Steady Growth';
-            else if (grade === 'C+' || grade === 'C') gradeDesc = 'Satisfactory Progress — Reinforcement Needed';
+            else if (grade === 'C+' || grade === 'C') gradeDesc = 'Satisfactory Progress - Reinforcement Needed';
             else if (grade === 'D' || grade === 'F') gradeDesc = 'Focus Support Required';
 
             var engagement = raw.engagementLevel || 'engaged';
             var engagementLabels = {
-                'highly-engaged': 'Highly Engaged — Proactive & Enthusiastic',
-                'engaged': 'Engaged — Actively Participates',
-                'moderate': 'Moderate — Paced & Steady',
-                'low': 'Needs Prompting — Developing Focus',
+                'highly-engaged': 'Highly Engaged: Proactive & Enthusiastic',
+                'engaged': 'Engaged - Actively Participates',
+                'moderate': 'Moderate: Paced & Steady',
+                'low': 'Needs Prompting - Developing Focus',
                 'declining': 'Attention Needed'
             };
             var engagementText = engagementLabels[engagement] || 'Consistently Engaged';
@@ -109,7 +109,7 @@
                                 '<img src="favicon.png" alt="STEMulus" width="44" height="44" style="border-radius:10px;display:block;object-fit:contain;">' +
                                 '<div>' +
                                     '<div style="font-size:1.45rem;font-weight:900;letter-spacing:-0.02em;color:#0f172a;line-height:1.1;">STEMulus Kids Academy</div>' +
-                                    '<div style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#f97316;">Official Monthly Student Evaluation</div>' +
+                                    '<div style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#f97316;">OFFICIAL ACADEMIC PROGRESS REPORT</div>' +
                                 '</div>' +
                             '</div>' +
                             '<p style="margin:0;font-size:0.8rem;color:#64748b;line-height:1.4;">STEMulus Innovations Ltd &middot; Global Computing, AI & Robotics Education</p>' +
@@ -160,7 +160,7 @@
 
                         '<div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:12px;padding:1rem;text-align:center;">' +
                             '<div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;color:#64748b;letter-spacing:0.05em;margin-bottom:0.35rem;">Engagement</div>' +
-                            '<div style="font-size:1.15rem;font-weight:800;color:#4f46e5;margin-top:0.3rem;line-height:1.2;">' + (data.engagementText.split('—')[0] || 'High') + '</div>' +
+                            '<div style="font-size:1.15rem;font-weight:800;color:#4f46e5;margin-top:0.3rem;line-height:1.2;">' + (data.engagementText.split('-')[0] || 'High') + '</div>' +
                             '<div style="font-size:0.68rem;font-weight:600;color:#64748b;margin-top:0.35rem;">Active participation</div>' +
                         '</div>' +
                     '</div>' +
@@ -241,6 +241,14 @@
 
                 '</div>'
             );
+        },
+
+        /**
+         * Returns HTML string of the publication-grade report
+         */
+        generate: function(report) {
+            var formatted = this.formatReportData(report);
+            return this.buildDocumentHTML(formatted);
         },
 
         /**
@@ -327,6 +335,15 @@
         }
     };
 
-    window.StemulusReportPDF = StemulusReportPDF;
+    if (typeof window !== 'undefined') {
+        window.StemulusReportPDF = StemulusReportPDF;
+    }
+    if (typeof global !== 'undefined') {
+        global.StemulusReportPDF = StemulusReportPDF;
+    }
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = StemulusReportPDF;
+    }
 
-})(window);
+})(typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : this));
+

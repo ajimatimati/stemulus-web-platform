@@ -1,7 +1,7 @@
 /**
- * STEMulus Email Proxy — Netlify Function
+ * STEMulus Email Proxy: Netlify Function
  * Routes all transactional email through Resend API.
- * RESEND_API_KEY is stored as a Netlify environment variable — never in client JS.
+ * RESEND_API_KEY is stored as a Netlify environment variable: never in client JS.
  *
  * Supported types:
  *   enrollment  → admin alert + parent confirmation
@@ -65,7 +65,7 @@ function shell(title, bodyHtml) {
   <div class="header-rule"></div>
   <div class="body">${bodyHtml}</div>
   <div class="footer">
-    STEMulus Kids Tech &mdash; Private 1-on-1 Coding for Kids &bull; <a href="${SITE_URL}">${SITE_URL.replace('https://', '')}</a><br>
+    STEMulus Kids Tech  -  Private 1-on-1 Coding for Kids &bull; <a href="${SITE_URL}">${SITE_URL.replace('https://', '')}</a><br>
     <a href="mailto:${ADMIN_EMAIL}">${ADMIN_EMAIL}</a>
   </div>
 </div>
@@ -77,11 +77,11 @@ function shell(title, bodyHtml) {
 
 function tplEnrollmentAdmin(d) {
   const children = (d.children || []).map((c, i) =>
-    `<tr><td>#${i + 1} Child</td><td><strong>${c.firstName} ${c.lastName}</strong> &mdash; Age ${c.age}, ${c.program}</td></tr>`
+    `<tr><td>#${i + 1} Child</td><td><strong>${c.firstName} ${c.lastName}</strong>  -  Age ${c.age}, ${c.program}</td></tr>`
   ).join('');
 
   return {
-    subject: `[New Enrollment] ${d.studentFirstName} ${d.studentLastName} &mdash; ${d.enrollmentId}`,
+    subject: `[New Enrollment] ${d.studentFirstName} ${d.studentLastName}  -  ${d.enrollmentId}`,
     html: shell('New Enrollment', `
       <h2>New Enrollment Received</h2>
       <p>A new enrollment has just been submitted via the website.</p>
@@ -124,7 +124,7 @@ function tplEnrollmentParent(d) {
 
 function tplBookingAdmin(d) {
   return {
-    subject: `[Quick Booking] ${d.studentName} &mdash; ${d.bookingId}`,
+    subject: `[Quick Booking] ${d.studentName}  -  ${d.bookingId}`,
     html: shell('Quick Booking', `
       <h2>New Trial Class Booking</h2>
       <div class="id-badge">${d.bookingId}</div>
@@ -145,7 +145,7 @@ function tplBookingAdmin(d) {
 
 function tplBookingParent(d) {
   return {
-    subject: `Free Trial Class Requested — STEMulus`,
+    subject: `Free Trial Class Requested: STEMulus`,
     html: shell('Trial Class Booked', `
       <h2>Booking Received!</h2>
       <p>Hi <strong>${d.parentName}</strong>,</p>
@@ -189,7 +189,7 @@ function tplWelcome(d) {
   const steps = [
     { n:'1', t:'Log in to your portal', d:'Use the credentials below to access your Parent Dashboard' },
     { n:'2', t:'Change your password', d:'Go to Settings in your portal and set a personal password' },
-    d.classroomLink ? { n:'3', t:'Join Google Classroom', d:`Click the Google Classroom button above — ${d.studentName} will find class materials there` } : { n:'3', t:'Watch for your session invite', d:'Your first Zoom session link will be sent within 24 hours' },
+    d.classroomLink ? { n:'3', t:'Join Google Classroom', d:`Click the Google Classroom button above - ${d.studentName} will find class materials there` } : { n:'3', t:'Watch for your session invite', d:'Your first Zoom session link will be sent within 24 hours' },
     { n:'4', t:'Track progress', d:"After every session you'll receive a progress update in your portal" }
   ];
 
@@ -206,7 +206,7 @@ function tplWelcome(d) {
   `).join('');
 
   return {
-    subject: `Welcome to STEMulus — ${d.studentName}'s coding journey starts now!`,
+    subject: `Welcome to STEMulus - ${d.studentName}'s coding journey starts now!`,
     html: shell(`Welcome, ${d.parentName}!`, `
       <h2 style="font-size:1.5rem;margin:0 0 8px;">Welcome to STEMulus KidsTech!</h2>
       <p style="font-size:1rem;color:${C.textMuted};margin:0 0 24px;">Hi <strong style="color:#1e293b;">${d.parentName}</strong>, we're thrilled to have <strong style="color:${C.navy};">${d.studentName}</strong> join us for <strong>${d.courseName || 'their coding programme'}</strong>.</p>
@@ -324,7 +324,7 @@ function tplTutorWelcome(d) {
       </table>
 
       <div style="background:#f8fafc;border-radius:10px;padding:20px;margin-bottom:20px;border:1px solid #e2e8f0;">
-        <p style="margin:0 0 12px;font-weight:700;color:${C.navy};font-size:0.92rem;">Getting started — 5 steps</p>
+        <p style="margin:0 0 12px;font-weight:700;color:${C.navy};font-size:0.92rem;">Getting started: 5 steps</p>
         <table style="width:100%;border-collapse:collapse;">${stepRows}</table>
       </div>
 
@@ -333,7 +333,7 @@ function tplTutorWelcome(d) {
         <table style="width:100%;border-collapse:collapse;">
           ${[
             ['[Students]','View assigned students','Profiles, programs, and full session history'],
-            ['[Attendance]','Log attendance & reports','After every class — topic covered, performance notes'],
+            ['[Attendance]','Log attendance & reports','After every class: topic covered, performance notes'],
             ['[Reports]','Submit monthly reports','Detailed progress summaries for admin review'],
             ['[Schedule]','Track your schedule','All upcoming sessions in one place']
           ].map(([icon, title, sub]) => `<tr>
@@ -353,23 +353,59 @@ function tplTutorWelcome(d) {
 }
 
 function tplReminder(d) {
-  const label = d.reminderType === '24h' ? '24-Hour' : '1-Hour';
+  const label = d.reminderType === '24h' ? '24-Hour' : (d.reminderType === '10m' ? '10-Minute' : '1-Hour');
+  const isUrgent = d.reminderType === '10m';
   return {
-    subject: `${label} Reminder: ${d.studentName}'s class at ${d.classTime}`,
+    subject: `[${label} Reminder] ${d.studentName}'s coding session at ${d.classTime}`,
     html: shell(`${label} Class Reminder`, `
-      <h2>${label} Class Reminder</h2>
-      <p>Hi <strong>${d.parentName}</strong>,</p>
-      <p>This is a friendly reminder that <strong>${d.studentName}</strong> has a class coming up.</p>
+      <h2>${isUrgent ? 'Starting in 10 Minutes!' : label + ' Class Reminder'}</h2>
+      <p>Hi <strong>${d.parentName || 'Parent'}</strong>,</p>
+      <p>${isUrgent ? `The classroom for <strong>${d.studentName}</strong> is launching now!` : `This is a reminder that <strong>${d.studentName}</strong> has an upcoming 1-on-1 coding class.`}</p>
       <div class="info-box">
         <table>
-          <tr><td>Course</td><td>${d.courseName}</td></tr>
-          <tr><td>Date</td><td>${d.classDate}</td></tr>
-          <tr><td>Time</td><td><strong>${d.classTime}</strong></td></tr>
+          <tr><td>Student</td><td><strong>${d.studentName}</strong></td></tr>
+          <tr><td>Course</td><td>${d.courseName || d.course}</td></tr>
+          <tr><td>Date</td><td>${d.classDate || d.date}</td></tr>
+          <tr><td>Time</td><td><strong style="color:${C.orange};">${d.classTime || d.time} (WAT)</strong></td></tr>
           <tr><td>Duration</td><td>${d.duration || 60} minutes</td></tr>
-          <tr><td>Instructor</td><td>${d.mentorName}</td></tr>
+          <tr><td>Mentor</td><td>${d.mentorName || 'Your Instructor'}</td></tr>
         </table>
       </div>
-      <a class="btn" href="${d.zoomLink || SITE_URL}">Join Class on Zoom</a>
+      <div style="text-align:center;margin:24px 0;">
+        <a class="btn" style="background:${isUrgent ? C.orange : C.navy};font-size:1rem;" href="${d.zoomLink || d.link || SITE_URL}">
+          ${isUrgent ? 'Launch Classroom Now &rarr;' : 'Open Class on Zoom &rarr;'}
+        </a>
+      </div>
+      <p style="font-size:0.85rem;color:${C.textMuted};">Please ensure the student's laptop, webcam, and microphone are ready.</p>
+    `)
+  };
+}
+
+function tplTutorReminder(d) {
+  const label = d.reminderType === '24h' ? '24-Hour' : (d.reminderType === '10m' ? '10-Minute' : '1-Hour');
+  const isUrgent = d.reminderType === '10m';
+  return {
+    subject: `[${label} Reminder] Upcoming session with ${d.studentName} at ${d.classTime}`,
+    html: shell(`${label} Tutor Session Reminder`, `
+      <h2>${isUrgent ? 'Class Launching in 10 Minutes!' : label + ' Session Reminder'}</h2>
+      <p>Hi <strong>${d.tutorName || d.mentorName || 'Mentor'}</strong>,</p>
+      <p>${isUrgent ? `Your 1-on-1 session with <strong>${d.studentName}</strong> begins in 10 minutes!` : `This is your automated reminder for your upcoming 1-on-1 session with <strong>${d.studentName}</strong>.`}</p>
+      <div class="info-box">
+        <table>
+          <tr><td>Student</td><td><strong>${d.studentName}</strong></td></tr>
+          <tr><td>Course</td><td>${d.courseName || d.course}</td></tr>
+          <tr><td>Date</td><td>${d.classDate || d.date}</td></tr>
+          <tr><td>Time</td><td><strong style="color:${C.orange};">${d.classTime || d.time} (WAT)</strong></td></tr>
+          <tr><td>Duration</td><td>${d.duration || 60} minutes</td></tr>
+          <tr><td>Parent Email</td><td>${d.parentEmail || 'On file'}</td></tr>
+        </table>
+      </div>
+      <div style="text-align:center;margin:24px 0;">
+        <a class="btn" style="background:${isUrgent ? C.orange : C.navy};font-size:1rem;" href="${d.zoomLink || d.link || SITE_URL}">
+          ${isUrgent ? 'Open Classroom Now &rarr;' : 'Join Class on Zoom &rarr;'}
+        </a>
+      </div>
+      <p style="font-size:0.85rem;color:${C.textMuted};">Reminder: Please submit attendance and class notes immediately after the session at <a href="${SITE_URL}/tutor-attendance-create.html" style="color:${C.orange};">Attendance Portal</a>.</p>
     `)
   };
 }
@@ -485,7 +521,8 @@ function buildEmail(type, data) {
     case 'booking_parent':     return { ...tplBookingParent(data),    to: data.email };
     case 'contact':            return { ...tplContactAdmin(data),     to: ADMIN_EMAIL };
     case 'welcome':            return { ...tplWelcome(data),          to: data.parentEmail };
-    case 'reminder':           return { ...tplReminder(data),         to: data.parentEmail };
+    case 'reminder':           return { ...tplReminder(data),         to: data.recipientEmail || data.parentEmail };
+    case 'tutor-reminder':     return { ...tplTutorReminder(data),    to: data.tutorEmail || data.recipientEmail };
     case 'schedule':           return { ...tplScheduleChange(data),   to: data.parentEmail };
     case 'certificate':        return { ...tplCertificate(data),      to: data.parentEmail };
     case 'tutor-welcome':       return { ...tplTutorWelcome(data),    to: data.tutorEmail };
@@ -587,3 +624,6 @@ exports.handler = async (event) => {
     body: JSON.stringify({ ok: allOk, results }),
   };
 };
+
+exports.buildEmail = buildEmail;
+

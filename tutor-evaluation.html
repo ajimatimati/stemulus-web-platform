@@ -49,7 +49,7 @@
       --muted: #64748b;
     }
 
-    *, *::before, *::after { box-sizing: border-box; }
+    *, *:before, *:after { box-sizing: border-box; }
     body, html { background-color: var(--bg) !important; color: var(--text) !important; font-family: 'DM Sans', sans-serif; margin: 0; }
 
     /* ── NAV ── */
@@ -90,7 +90,7 @@
       padding: 3rem 1.5rem 2.5rem;
       text-align: center; position: relative; overflow: hidden;
     }
-    .eval-hero::before {
+    .eval-hero:before {
       content: '';
       position: absolute; inset: 0;
       background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.08) 0%, transparent 60%);
@@ -215,7 +215,7 @@
       width: 100%; height: 8px; appearance: none;
       border-radius: 4px; outline: none; cursor: pointer;
     }
-    input[type="range"].nps-range::-webkit-slider-thumb {
+    input[type="range"].nps-range:-webkit-slider-thumb {
       appearance: none; width: 22px; height: 22px; border-radius: 50%;
       background: white; border: 3px solid var(--orange);
       box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer;
@@ -371,7 +371,7 @@
     </div>
 
     <!-- ════════════════════════════════════════
-         SECTION 1 — Evaluator Info
+         SECTION 1 - Evaluator Info
     ════════════════════════════════════════ -->
     <div class="eval-card">
       <h2 class="section-heading">
@@ -419,7 +419,7 @@
     </div>
 
     <!-- ════════════════════════════════════════
-         SECTION 2 — Star Ratings
+         SECTION 2 - Star Ratings
     ════════════════════════════════════════ -->
     <div class="eval-card">
       <h2 class="section-heading">
@@ -514,14 +514,14 @@
 
       <!-- Average badge -->
       <div id="avg-badge" role="status" aria-live="polite">
-        Average Score: <span id="avg-val">—</span> / 5.0
+        Average Score: <span id="avg-val">-</span> / 5.0
       </div>
       <input type="hidden" name="averageRating" id="avg-hidden-val" value="">
       <span class="field-error" id="err-ratings" style="display:none;">Please rate at least 3 criteria.</span>
     </div>
 
     <!-- ════════════════════════════════════════
-         SECTION 3 — Skill Assessment
+         SECTION 3: Skill Assessment
     ════════════════════════════════════════ -->
     <div class="eval-card">
       <h2 class="section-heading">
@@ -546,7 +546,7 @@
     </div>
 
     <!-- ════════════════════════════════════════
-         SECTION 4 — Written Feedback
+         SECTION 4 - Written Feedback
     ════════════════════════════════════════ -->
     <div class="eval-card">
       <h2 class="section-heading">
@@ -592,7 +592,7 @@
     </div>
 
     <!-- ════════════════════════════════════════
-         SECTION 5 — Overall Experience
+         SECTION 5 - Overall Experience
     ════════════════════════════════════════ -->
     <div class="eval-card">
       <h2 class="section-heading">
@@ -610,11 +610,11 @@
           <input type="range" id="nps-slider" name="npsScore" class="nps-range" min="0" max="10" value="7" aria-valuemin="0" aria-valuemax="10" aria-valuenow="7">
         </div>
         <div class="nps-labels">
-          <span>0 — Not at all</span>
+          <span>0 - Not at all</span>
           <div>
             <span id="nps-val-display" style="color:#16a34a; border-color:#16a34a;">7</span>
           </div>
-          <span>10 — Absolutely!</span>
+          <span>10: Absolutely!</span>
         </div>
       </div>
 
@@ -968,14 +968,14 @@
         submittedAt: new Date().toISOString()
       };
 
-      // 1 — Netlify Forms (native form POST)
+      // 1: Netlify Forms (native form POST)
       var netlifyPromise = fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(new FormData(form)).toString()
       }).catch(function(err) { console.warn('Netlify form post failed:', err); });
 
-      // 2 — Netlify Function email alert
+      // 2: Netlify Function email alert
       var emailPromise = fetch('/.netlify/functions/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -984,13 +984,13 @@
           data: {
             to: 'admin@stemuluskidstech.com',
             subject: '[Tutor Evaluation] ' + (evalData.tutorName || 'Unknown Tutor') +
-                     ' — by ' + evalData.yourName,
+                     ' - by ' + evalData.yourName,
             body: JSON.stringify(evalData, null, 2)
           }
         })
       }).catch(function(err) { console.warn('Email function failed:', err); });
 
-      // 3 — Firestore (if Firebase loaded)
+      // 3: Firestore (if Firebase loaded)
       var firestorePromise = Promise.resolve();
       if (typeof firebase !== 'undefined' && firebase.firestore) {
         firestorePromise = firebase.firestore()

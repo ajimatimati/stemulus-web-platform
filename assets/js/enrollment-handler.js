@@ -317,7 +317,7 @@ Time: ${new Date().toLocaleTimeString()}
         });
         
         // Treat only server-side errors as failures. Netlify Forms returns 3xx
-        // redirects on success, and fetch follows them to a 200 homepage — both
+        // redirects on success, and fetch follows them to a 200 homepage: both
         // are acceptable outcomes, so only throw on 5xx.
         if (response.status >= 500) throw new Error('Netlify form submission failed');
         return { success: true };

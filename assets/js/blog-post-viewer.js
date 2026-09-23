@@ -10,26 +10,26 @@ const BlogPostViewer = (function() {
         {
             "id": "feat-1",
             "title": "The 'Screen Time' Myth: Why Creation Beats Consumption",
-            "description": "Stop counting minutes. Start counting maker moments. Why 3 hours of coding Minecraft mods is healthier than 30 minutes of YouTube—and how to tell the difference.",
+            "description": "Stop counting minutes. Start counting maker moments. Why 3 hours of coding Minecraft mods is healthier than 30 minutes of YouTube: and how to tell the difference.",
             "image": "https://images.unsplash.com/photo-1516627145497-ae69d0d39e4d?q=80&w=1600&auto=format&fit=crop",
             "category": "Parent Corner",
             "date": "Jan 20, 2026",
             "readTime": "8 min read",
             "content": `
                 <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                    Every parent has felt the guilt. Your child is glued to a screen, and you wonder: am I ruining their childhood? Here's the truth most "experts" won't tell you—it's not about HOW LONG, it's about WHAT they're doing.
+                    Every parent has felt the guilt. Your child is glued to a screen, and you wonder: am I ruining their childhood? Here's the truth most "experts" won't tell you: it's not about HOW LONG, it's about WHAT they're doing.
                 </p>
 
                 <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">The Two Types of Screen Time</h2>
                 <p>
-                    Researchers at the University of Michigan found that children who <strong>create</strong> content on screens—coding games, editing videos, building digital art—show improved problem-solving skills and creativity. Meanwhile, passive consumption (scrolling social media, watching random videos) correlates with decreased attention spans.
+                    Researchers at the University of Michigan found that children who <strong>create</strong> content on screens: coding games, editing videos, building digital art: show improved problem-solving skills and creativity. Meanwhile, passive consumption (scrolling social media, watching random videos) correlates with decreased attention spans.
                 </p>
                 <p>
                     The key difference? <em>Active engagement vs. passive consumption.</em>
                 </p>
 
                 <blockquote class="text-2xl font-poppins font-semibold text-[#1A237E] text-center px-8 py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-                    "When a child codes, they're not consuming content—they're producing it. They're solving puzzles, debugging logic, and exercising creative muscles."
+                    "When a child codes, they're not consuming content: they're producing it. They're solving puzzles, debugging logic, and exercising creative muscles."
                 </blockquote>
 
                 <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">How to Tell the Difference</h2>
@@ -60,7 +60,7 @@ const BlogPostViewer = (function() {
                 <ul class="list-disc pl-6 space-y-3">
                     <li><strong>Schedule "Maker Hours":</strong> Designate specific times for creative digital work, separate from entertainment.</li>
                     <li><strong>Ask to see their work:</strong> Regular show-and-tell builds accountability and pride.</li>
-                    <li><strong>Celebrate the struggle:</strong> When they hit a bug and work through it, that's a win—regardless of the final result.</li>
+                    <li><strong>Celebrate the struggle:</strong> When they hit a bug and work through it, that's a win: regardless of the final result.</li>
                     <li><strong>Join them:</strong> Try a coding tutorial together. It's harder than you think, and they'll respect your effort.</li>
                 </ul>
 
@@ -79,7 +79,7 @@ const BlogPostViewer = (function() {
             "readTime": "6 min read",
             "content": `
                 <p class="text-xl text-gray-600 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-lg">
-                    "AI will write all the code soon. Why bother teaching kids programming?" We hear this a lot. Here's why that thinking is backwards—and why creativity is more valuable than ever.
+                    "AI will write all the code soon. Why bother teaching kids programming?" We hear this a lot. Here's why that thinking is backwards: and why creativity is more valuable than ever.
                 </p>
 
                 <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">AI is a Tool, Not a Replacement</h2>
@@ -102,7 +102,7 @@ const BlogPostViewer = (function() {
                     In the AI age, skills stack differently:
                 </p>
                 <ul class="list-disc pl-6 space-y-3">
-                    <li><strong>Tier 3 (Commoditized):</strong> Basic syntax, simple scripts—AI handles this.</li>
+                    <li><strong>Tier 3 (Commoditized):</strong> Basic syntax, simple scripts: AI handles this.</li>
                     <li><strong>Tier 2 (Valuable):</strong> System design, architecture, debugging complex systems.</li>
                     <li><strong>Tier 1 (Irreplaceable):</strong> Problem formulation, creativity, user empathy, ethics.</li>
                 </ul>
@@ -157,7 +157,7 @@ const BlogPostViewer = (function() {
 
                 <h2 class="text-3xl font-bold text-[#1A237E] font-poppins pt-8">Why This Matters for Kids</h2>
                 <p>
-                    Children who learn prompt engineering develop metacognitive skills—they learn to think about their thinking. When an AI gives a bad answer, they learn to ask: "What was wrong with my question?"
+                    Children who learn prompt engineering develop metacognitive skills: they learn to think about their thinking. When an AI gives a bad answer, they learn to ask: "What was wrong with my question?"
                 </p>
                 <p>
                     This is the same debugging mindset that makes great programmers. The medium has changed (AI instead of compilers), but the mental model is identical.

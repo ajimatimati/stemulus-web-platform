@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   STEMulus — 3D Minimalist UI Layer  v1.0
+   STEMulus - 3D Minimalist UI Layer  v1.0
    ─────────────────────────────────────────────────────────────────────────
    Design language: floating frosted planes · thin geometric borders ·
    warm-white depth system · long soft shadows · micro-relief on every
@@ -27,7 +27,7 @@
   --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ── 1. Navigation — frosted bar with geometric underline ────────────────── */
+/* ── 1. Navigation - frosted bar with geometric underline ────────────────── */
 .nav-editorial {
   background: rgba(250, 249, 247, 0.82) !important;
   backdrop-filter: blur(18px) saturate(1.4) !important;
@@ -53,7 +53,7 @@
   box-shadow: var(--d-orange-lg) !important;
 }
 
-/* ── 2. Hero split — canvas column frosted panel ────────────────────────── */
+/* ── 2. Hero split - canvas column frosted panel ────────────────────────── */
 .preai-hero-split {
   position: relative;
 }
@@ -79,7 +79,7 @@
   filter: blur(20px);
 }
 
-/* Hero stat chips — 3D pill look */
+/* Hero stat chips - 3D pill look */
 .preai-hero-stat {
   background: var(--surface) !important;
   border: 1px solid var(--border-hair) !important;
@@ -427,7 +427,7 @@
   box-shadow: var(--d3) !important;
 }
 
-/* Floating card number label — 3D embossed */
+/* Floating card number label - 3D embossed */
 .fp-safety-card__num {
   background: linear-gradient(135deg, rgba(244,96,12,0.06), rgba(244,96,12,0.02)) !important;
   border: 1px solid rgba(244,96,12,0.12) !important;
@@ -587,9 +587,9 @@
   box-shadow: var(--d0) !important;
 }
 
-/* ── 22. Section backgrounds — subtle warm depth planes ─────────────────── */
+/* ── 22. Section backgrounds - subtle warm depth planes ─────────────────── */
 
-/* Alternate section tint — gives page layered depth */
+/* Alternate section tint - gives page layered depth */
 section.bg-slate-50,
 section.py-20.bg-slate--50,
 .fp-split + .fp-split {
@@ -602,7 +602,7 @@ section.bg-white,
   background: var(--surface) !important;
 }
 
-/* ── 23. CTA band — elevated warm glass ──────────────────────────────────── */
+/* ── 23. CTA band - elevated warm glass ──────────────────────────────────── */
 .cta-band, .cta-band-new, .fp-cta {
   background: linear-gradient(
     135deg,
@@ -614,13 +614,13 @@ section.bg-white,
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), inset 0 -1px 0 rgba(244,96,12,0.06) !important;
 }
 
-/* ── 24. Footer — subtle bottom plane ────────────────────────────────────── */
+/* ── 24. Footer - subtle bottom plane ────────────────────────────────────── */
 .footer-editorial {
   border-top: 1px solid var(--border-hair) !important;
   box-shadow: 0 -1px 0 rgba(255,255,255,0.6) !important;
 }
 
-/* ── 25. Global section headings — depth underline ───────────────────────── */
+/* ── 25. Global section headings - depth underline ───────────────────────── */
 .fp-section-h em,
 .preai-hero-h1 em,
 .zb-h2 em,
@@ -632,7 +632,7 @@ section.bg-white,
   font-style: italic;
 }
 
-/* ── 26. 3D hero canvas wrap — ambient glow ──────────────────────────────── */
+/* ── 26. 3D hero canvas wrap - ambient glow ──────────────────────────────── */
 .three-canvas-wrap {
   position: relative !important;
   filter: drop-shadow(0 0 40px rgba(244,96,12,0.06)) !important;
@@ -645,7 +645,7 @@ section.bg-white,
   height: 2.5px !important;
 }
 
-/* ── 28. Eyebrow labels — pill treatment ─────────────────────────────────── */
+/* ── 28. Eyebrow labels - pill treatment ─────────────────────────────────── */
 .fp-eyebrow,
 .preai-hero-chapter,
 .cta-band__eyebrow,
@@ -654,7 +654,7 @@ section.bg-white,
   letter-spacing: 0.12em !important;
 }
 
-/* ── 29. Stats section values — kinetic weight ───────────────────────────── */
+/* ── 29. Stats section values - kinetic weight ───────────────────────────── */
 .fp-dash-row__val,
 .stat-num,
 .hero-stat-num,

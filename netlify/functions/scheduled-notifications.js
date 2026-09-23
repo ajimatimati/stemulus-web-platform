@@ -1,9 +1,9 @@
 /**
- * STEMulus Scheduled Notifications — Netlify Scheduled Function
+ * STEMulus Scheduled Notifications: Netlify Scheduled Function
  *
  * Runs twice daily via netlify.toml cron:
- *   07:00 WAT (06:00 UTC) — morning run: tutor daily schedule digests + birthday alerts
- *   18:00 WAT (17:00 UTC) — evening run: parent 24-hour session reminders
+ *   07:00 WAT (06:00 UTC) - morning run: tutor daily schedule digests + birthday alerts
+ *   18:00 WAT (17:00 UTC) - evening run: parent 24-hour session reminders
  *
  * Required Netlify environment variables (same as notify.js):
  *   NTFY_TOKEN
@@ -11,19 +11,19 @@
  *   NTFY_TOPIC_CONTACT
  *   NTFY_TOPIC_TUTOR
  *   NTFY_TOPIC_BIRTHDAY
- *   FIREBASE_PROJECT_ID       — e.g. stemulus-kidstech
- *   FIREBASE_API_KEY          — Web API key (for REST access)
- *   RESEND_API_KEY            — for sending emails
- *   ADMIN_EMAIL               — admin@stemuluskidstech.com
- *   ADMIN_WHATSAPP            — 2347052466716
+ *   FIREBASE_PROJECT_ID: e.g. stemulus-kidstech
+ *   FIREBASE_API_KEY: Web API key (for REST access)
+ *   RESEND_API_KEY: for sending emails
+ *   ADMIN_EMAIL: admin@stemuluskidstech.com
+ *   ADMIN_WHATSAPP: 2347052466716
  *
  * Data contract (Firestore collections read by this function):
- *   schedules/{id}  — { studentId, studentName, course, date, time, duration,
+ *   schedules/{id}  - { studentId, studentName, course, date, time, duration,
  *                       mentor, tutorEmail, tutorBirthday, link,
  *                       parentEmail, parentName, attendanceStatus }
- *   students/{id}   — { firstName, lastName, birthday, parentEmail, parentName,
+ *   students/{id}   - { firstName, lastName, birthday, parentEmail, parentName,
  *                       tutorName, tutorEmail }
- *   users/{email}   — { role, name, email, birthday }   (tutors have role:'tutor')
+ *   users/{email}   - { role, name, email, birthday }   (tutors have role:'tutor')
  */
 
 const ADMIN_EMAIL    = process.env.ADMIN_EMAIL    || 'admin@stemuluskidstech.com';
@@ -95,7 +95,7 @@ async function sendEmail(to, subject, html) {
 // ─── Date helpers ─────────────────────────────────────────────────────────────
 
 function todayStr() {
-  // WAT is UTC+1 — offset so midnight WAT aligns
+  // WAT is UTC+1: offset so midnight WAT aligns
   const d = new Date(Date.now() + 60 * 60 * 1000);
   return d.toISOString().slice(0, 10); // YYYY-MM-DD
 }
@@ -151,13 +151,13 @@ async function sendTutorDailyDigests(schedules, tutorTopic) {
   for (const [email, { name, sessions }] of Object.entries(byTutor)) {
     const sessionLines = sessions
       .sort((a, b) => (a.time || '').localeCompare(b.time || ''))
-      .map((s, i) => `${i + 1}. ${formatTime(s.time)} — ${s.studentName} (${s.course})${s.link ? '\n   Link: ' + s.link : ''}`)
+      .map((s, i) => `${i + 1}. ${formatTime(s.time)} - ${s.studentName} (${s.course})${s.link ? '\n   Link: ' + s.link : ''}`)
       .join('\n');
 
     const ntfyMsg = `Hi ${name}! Your sessions for today (${formatDate(today)}):\n\n${sessionLines}\n\nHave a great teaching day! `;
     const waClick = `https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(`Hi STEMulus! Just confirming my ${sessions.length} session(s) for today.`)}`;
 
-    // ntfy push to admin channel (tutor-specific topics would need one per tutor — not practical)
+    // ntfy push to admin channel (tutor-specific topics would need one per tutor: not practical)
     await ntfyPush(
       tutorTopic,
       `[Daily Digest]: ${name} has ${sessions.length} session${sessions.length > 1 ? 's' : ''} today`,
@@ -173,14 +173,14 @@ async function sendTutorDailyDigests(schedules, tutorTopic) {
           <td style="padding:10px 0;border-bottom:1px solid #e2e8f0;font-weight:700;color:#0d1b2a">${formatTime(s.time)}</td>
           <td style="padding:10px 8px;border-bottom:1px solid #e2e8f0;color:#374151">${s.studentName}</td>
           <td style="padding:10px 0;border-bottom:1px solid #e2e8f0;color:#64748b">${s.course}</td>
-          <td style="padding:10px 0;border-bottom:1px solid #e2e8f0">${s.link ? `<a href="${s.link}" style="color:#f4600c;font-weight:700">Join</a>` : '—'}</td>
+          <td style="padding:10px 0;border-bottom:1px solid #e2e8f0">${s.link ? `<a href="${s.link}" style="color:#f4600c;font-weight:700">Join</a>` : '-'}</td>
         </tr>`).join('');
 
     await sendEmail(email,
       `Your STEMulus Sessions for ${formatDate(today)}`,
       `<!DOCTYPE html><html><body style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f8fafc;margin:0;padding:0">
       <div style="max-width:580px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0">
-        <div style="background:#1A237E;padding:24px 32px"><h2 style="color:#fff;margin:0;font-size:1.2rem">Your Teaching Schedule — Today</h2></div>
+        <div style="background:#1A237E;padding:24px 32px"><h2 style="color:#fff;margin:0;font-size:1.2rem">Your Teaching Schedule: Today</h2></div>
         <div style="height:4px;background:#F4600C"></div>
         <div style="padding:28px 32px">
           <p style="color:#374151;margin:0 0 8px">Hi <strong>${name}</strong>,</p>
@@ -206,9 +206,9 @@ async function sendTutorDailyDigests(schedules, tutorTopic) {
   }
 }
 
-// ─── Task 2: Parent 24-hour Reminders (18:00 WAT) ────────────────────────────
+// ─── Task 2: Parent & Tutor 24-hour Reminders (18:00 WAT) ─────────────────────
 
-async function sendParentReminders(schedules, enrollTopic) {
+async function sendParentReminders(schedules, enrollTopic, tutorTopic) {
   const tomorrow = tomorrowStr();
 
   const tomorrowSessions = schedules.filter(s => s.date === tomorrow && s.attendanceStatus !== 'cancelled');
@@ -219,51 +219,93 @@ async function sendParentReminders(schedules, enrollTopic) {
 
   for (const s of tomorrowSessions) {
     const parentEmail = s.parentEmail;
-    if (!parentEmail) continue;
+    if (parentEmail) {
+      const msg = `Hi ${s.parentName || 'there'}! Reminder: ${s.studentName} has a ${s.course} session tomorrow (${formatDate(tomorrow)}) at ${formatTime(s.time)} with ${s.mentor}.${s.link ? ' Join: ' + s.link : ''} See you then! `;
 
-    const msg = `Hi ${s.parentName || 'there'}! Reminder: ${s.studentName} has a ${s.course} session tomorrow (${formatDate(tomorrow)}) at ${formatTime(s.time)} with ${s.mentor}.${s.link ? ' Join: ' + s.link : ''} See you then! `;
+      // ntfy push (admin sees it too as a heads-up)
+      await ntfyPush(
+        enrollTopic,
+        `⏰ Reminder: ${s.studentName}'s class tomorrow at ${formatTime(s.time)}`,
+        msg,
+        { tags: 'bell,calendar', click: s.link || `https://wa.me/${ADMIN_WA}` }
+      );
 
-    // ntfy push (admin sees it too as a heads-up)
-    await ntfyPush(
-      enrollTopic,
-      `⏰ Reminder: ${s.studentName}'s class tomorrow at ${formatTime(s.time)}`,
-      msg,
-      { tags: 'bell,calendar', click: s.link || `https://wa.me/${ADMIN_WA}` }
-    );
-
-    // Email to parent
-    await sendEmail(parentEmail,
-      `Reminder: ${s.studentName}'s ${s.course} class tomorrow`,
-      `<!DOCTYPE html><html><body style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f8fafc;margin:0;padding:0">
-      <div style="max-width:580px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0">
-        <div style="background:#1A237E;padding:24px 32px"><h2 style="color:#fff;margin:0;font-size:1.2rem">⏰ Class Reminder — Tomorrow</h2></div>
-        <div style="height:4px;background:#F4600C"></div>
-        <div style="padding:28px 32px">
-          <p style="color:#374151;margin:0 0 24px">Hi <strong>${s.parentName || 'there'}</strong>,</p>
-          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:24px">
-            <table style="width:100%;border-collapse:collapse">
-              <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem;width:40%">Student</td><td style="padding:6px 0;font-weight:700;color:#0d1b2a">${s.studentName}</td></tr>
-              <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Program</td><td style="padding:6px 0;color:#0d1b2a">${s.course}</td></tr>
-              <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Date</td><td style="padding:6px 0;color:#0d1b2a">${formatDate(tomorrow)}</td></tr>
-              <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Time</td><td style="padding:6px 0;font-weight:700;color:#F4600C;font-size:1.1rem">${formatTime(s.time)}</td></tr>
-              <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Mentor</td><td style="padding:6px 0;color:#0d1b2a">${s.mentor}</td></tr>
-              ${s.duration ? `<tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Duration</td><td style="padding:6px 0;color:#0d1b2a">${s.duration} min</td></tr>` : ''}
-            </table>
+      // Email to parent
+      await sendEmail(parentEmail,
+        `Reminder: ${s.studentName}'s ${s.course} class tomorrow`,
+        `<!DOCTYPE html><html><body style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f8fafc;margin:0;padding:0">
+        <div style="max-width:580px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0">
+          <div style="background:#1A237E;padding:24px 32px"><h2 style="color:#fff;margin:0;font-size:1.2rem">⏰ Class Reminder: Tomorrow</h2></div>
+          <div style="height:4px;background:#F4600C"></div>
+          <div style="padding:28px 32px">
+            <p style="color:#374151;margin:0 0 24px">Hi <strong>${s.parentName || 'there'}</strong>,</p>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:24px">
+              <table style="width:100%;border-collapse:collapse">
+                <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem;width:40%">Student</td><td style="padding:6px 0;font-weight:700;color:#0d1b2a">${s.studentName}</td></tr>
+                <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Program</td><td style="padding:6px 0;color:#0d1b2a">${s.course}</td></tr>
+                <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Date</td><td style="padding:6px 0;color:#0d1b2a">${formatDate(tomorrow)}</td></tr>
+                <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Time</td><td style="padding:6px 0;font-weight:700;color:#F4600C;font-size:1.1rem">${formatTime(s.time)}</td></tr>
+                <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Mentor</td><td style="padding:6px 0;color:#0d1b2a">${s.mentor}</td></tr>
+                ${s.duration ? `<tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Duration</td><td style="padding:6px 0;color:#0d1b2a">${s.duration} min</td></tr>` : ''}
+              </table>
+            </div>
+            ${s.link ? `<div style="text-align:center;margin-bottom:24px"><a href="${s.link}" style="display:inline-block;background:#F4600C;color:#fff;font-weight:700;padding:12px 28px;border-radius:12px;text-decoration:none;font-size:0.9rem">Join Class on Zoom →</a></div>` : ''}
+            <p style="color:#94a3b8;font-size:0.78rem">Need to reschedule? Reply to this email at least 12 hours before the session.</p>
           </div>
-          ${s.link ? `<div style="text-align:center;margin-bottom:24px"><a href="${s.link}" style="display:inline-block;background:#F4600C;color:#fff;font-weight:700;padding:12px 28px;border-radius:12px;text-decoration:none;font-size:0.9rem">Join Class on Zoom →</a></div>` : ''}
-          <p style="color:#94a3b8;font-size:0.78rem">Need to reschedule? Reply to this email at least 12 hours before the session.</p>
-        </div>
-        <div style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;text-align:center;font-size:0.75rem;color:#94a3b8">
-          STEMulus Kids Tech · <a href="https://stemuluskidstech.com" style="color:#f4600c">stemuluskidstech.com</a>
-        </div>
-      </div></body></html>`
-    );
+          <div style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;text-align:center;font-size:0.75rem;color:#94a3b8">
+            STEMulus Kids Tech · <a href="https://stemuluskidstech.com" style="color:#f4600c">stemuluskidstech.com</a>
+          </div>
+        </div></body></html>`
+      );
+      console.log(`[reminders] Sent reminder to parent: ${parentEmail} for ${s.studentName}`);
+    }
 
-    console.log(`[reminders] Sent reminder to parent: ${parentEmail} for ${s.studentName}`);
+    const tutorEmail = s.tutorEmail;
+    if (tutorEmail) {
+      const tutorMsg = `Hi ${s.mentor || 'Mentor'}! Reminder: You have an upcoming session with ${s.studentName} tomorrow (${formatDate(tomorrow)}) at ${formatTime(s.time)}.${s.link ? ' Join: ' + s.link : ''}`;
+
+      if (tutorTopic) {
+        await ntfyPush(
+          tutorTopic,
+          `⏰ [24h Reminder]: Session with ${s.studentName} tomorrow at ${formatTime(s.time)}`,
+          tutorMsg,
+          { tags: 'teacher,calendar', click: s.link || `https://wa.me/${ADMIN_WA}` }
+        );
+      }
+
+      await sendEmail(tutorEmail,
+        `[24h Reminder] Tomorrow: Session with ${s.studentName} at ${formatTime(s.time)}`,
+        `<!DOCTYPE html><html><body style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f8fafc;margin:0;padding:0">
+        <div style="max-width:580px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0">
+          <div style="background:#1A237E;padding:24px 32px"><h2 style="color:#fff;margin:0;font-size:1.2rem">⏰ 24-Hour Tutor Session Reminder</h2></div>
+          <div style="height:4px;background:#F4600C"></div>
+          <div style="padding:28px 32px">
+            <p style="color:#374151;margin:0 0 24px">Hi <strong>${s.mentor || 'Mentor'}</strong>,</p>
+            <p style="color:#374151;margin:0 0 20px">This is a reminder that you have an upcoming 1-on-1 coding session tomorrow:</p>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:24px">
+              <table style="width:100%;border-collapse:collapse">
+                <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem;width:40%">Student</td><td style="padding:6px 0;font-weight:700;color:#0d1b2a">${s.studentName}</td></tr>
+                <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Program</td><td style="padding:6px 0;color:#0d1b2a">${s.course}</td></tr>
+                <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Date</td><td style="padding:6px 0;color:#0d1b2a">${formatDate(tomorrow)}</td></tr>
+                <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Time</td><td style="padding:6px 0;font-weight:700;color:#F4600C;font-size:1.1rem">${formatTime(s.time)} (WAT)</td></tr>
+                <tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Parent Email</td><td style="padding:6px 0;color:#0d1b2a">${s.parentEmail || 'On file'}</td></tr>
+                ${s.duration ? `<tr><td style="padding:6px 0;color:#64748b;font-size:0.85rem">Duration</td><td style="padding:6px 0;color:#0d1b2a">${s.duration} min</td></tr>` : ''}
+              </table>
+            </div>
+            ${s.link ? `<div style="text-align:center;margin-bottom:24px"><a href="${s.link}" style="display:inline-block;background:#1A237E;color:#fff;font-weight:700;padding:12px 28px;border-radius:12px;text-decoration:none;font-size:0.9rem">Open Zoom Classroom →</a></div>` : ''}
+            <p style="color:#94a3b8;font-size:0.78rem">Remember to log attendance and session notes immediately following the class.</p>
+          </div>
+          <div style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;text-align:center;font-size:0.75rem;color:#94a3b8">
+            STEMulus Kids Tech · <a href="https://stemuluskidstech.com" style="color:#f4600c">stemuluskidstech.com</a>
+          </div>
+        </div></body></html>`
+      );
+      console.log(`[reminders] Sent 24h reminder to tutor: ${tutorEmail} for ${s.studentName}`);
+    }
   }
 }
 
-// ─── Task 3: Birthday Alerts — Students AND Tutors ────────────────────────────
+// ─── Task 3: Birthday Alerts: Students AND Tutors ────────────────────────────
 
 async function sendBirthdayAlerts(students, tutors, birthdayTopic) {
   const today = todayStr();
@@ -292,7 +334,7 @@ async function sendBirthdayAlerts(students, tutors, birthdayTopic) {
             <h2 style="color:#fff;margin:8px 0 0;font-size:1.5rem">Happy Birthday, ${s.firstName}!</h2>
           </div>
           <div style="padding:32px;text-align:center">
-            <p style="color:#374151;font-size:1rem;line-height:1.7">The entire STEMulus team wishes <strong>${s.firstName}</strong> a wonderful ${age}th birthday! Keep building amazing things — the world needs more young coders like you! </p>
+            <p style="color:#374151;font-size:1rem;line-height:1.7">The entire STEMulus team wishes <strong>${s.firstName}</strong> a wonderful ${age}th birthday! Keep building amazing things: the world needs more young coders like you! </p>
             <p style="color:#64748b;font-size:0.85rem">From all of us at STEMulus Kids Tech</p>
           </div>
           <div style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;text-align:center;font-size:0.75rem;color:#94a3b8">
@@ -328,7 +370,7 @@ async function sendBirthdayAlerts(students, tutors, birthdayTopic) {
             <h2 style="color:#fff;margin:8px 0 0;font-size:1.5rem">Happy Birthday, ${name}!</h2>
           </div>
           <div style="padding:32px;text-align:center">
-            <p style="color:#374151;font-size:1rem;line-height:1.7">Thank you for being an incredible mentor and making a real difference in the lives of our students. Today is your day — we appreciate everything you do! </p>
+            <p style="color:#374151;font-size:1rem;line-height:1.7">Thank you for being an incredible mentor and making a real difference in the lives of our students. Today is your day: we appreciate everything you do! </p>
             <p style="color:#64748b;font-size:0.85rem">With love from the entire STEMulus family</p>
           </div>
           <div style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;text-align:center;font-size:0.75rem;color:#94a3b8">
@@ -349,32 +391,35 @@ async function sendClassReminder(schedule, minutesBefore, type) {
   const classDate = schedule.date || '';
   const joinLink = schedule.link || 'https://meet.google.com/new';
 
-  const labelMap = { 360: '6 hours', 5: '5 minutes' };
+  const reminderType = minutesBefore >= 1400 ? '24h' : (minutesBefore >= 50 ? '1h' : '10m');
+  const labelMap = { 1440: '24 hours', 60: '1 hour', 10: '10 minutes' };
   const label = labelMap[minutesBefore] || (minutesBefore + ' minutes');
 
   const title = label + ' until ' + studentName + "'s coding class";
   const message = "Tutor: " + tutorName + "\nTime: " + classTime + " on " + classDate + "\nJoin: " + joinLink;
 
-  // NTFY to admin
+  // NTFY to admin & tutor
   const enroll_topic = process.env.NTFY_TOPIC_ENROLL || 'stm-enr-lx7k9w2mq8vp4tz';
+  const tutor_topic  = process.env.NTFY_TOPIC_TUTOR  || 'stm-ttr-nb3r5y6jd1cx8ws';
   const ntfy_token = process.env.NTFY_TOKEN;
-  const ntfyHeaders = { 'Content-Type': 'text/plain', 'Title': title, 'Priority': minutesBefore <= 5 ? 'urgent' : 'high', 'Tags': 'alarm_clock,computer' };
+  const ntfyHeaders = { 'Content-Type': 'text/plain', 'Title': title, 'Priority': minutesBefore <= 10 ? 'urgent' : 'high', 'Tags': 'alarm_clock,computer' };
   if (ntfy_token) ntfyHeaders['Authorization'] = 'Bearer ' + ntfy_token;
 
   try {
     await fetch('https://ntfy.sh/' + enroll_topic, { method: 'POST', headers: ntfyHeaders, body: message });
+    await fetch('https://ntfy.sh/' + tutor_topic,  { method: 'POST', headers: ntfyHeaders, body: message });
   } catch(e) { console.warn('[Reminder] NTFY failed:', e.message); }
 
   // Email to BOTH parent and tutor
   const SEND_EMAIL = process.env.URL ? process.env.URL + '/.netlify/functions/send-email' : null;
   if (SEND_EMAIL) {
     if (schedule.parentEmail) {
-      const emailData = { studentName, tutorName, classDate, classTime, duration: schedule.duration||60, zoomLink: joinLink, mentorName: tutorName, reminderType: minutesBefore <= 5 ? '5min' : '6h', parentEmail: schedule.parentEmail, parentName: schedule.parentName||'Parent' };
+      const emailData = { studentName, tutorName, classDate, classTime, duration: schedule.duration||60, zoomLink: joinLink, mentorName: tutorName, reminderType, parentEmail: schedule.parentEmail, parentName: schedule.parentName||'Parent' };
       fetch(SEND_EMAIL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ type:'reminder', data: emailData }) }).catch(()=>{});
     }
     if (schedule.tutorEmail) {
-      const tutorData = { studentName, tutorName, classDate, classTime, duration: schedule.duration||60, zoomLink: joinLink, mentorName: tutorName, reminderType: minutesBefore <= 5 ? '5min' : '6h', parentEmail: schedule.tutorEmail, parentName: tutorName };
-      fetch(SEND_EMAIL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ type:'reminder', data: tutorData }) }).catch(()=>{});
+      const tutorData = { studentName, tutorName, classDate, classTime, duration: schedule.duration||60, zoomLink: joinLink, mentorName: tutorName, reminderType, tutorEmail: schedule.tutorEmail, parentEmail: schedule.parentEmail };
+      fetch(SEND_EMAIL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ type:'tutor-reminder', data: tutorData }) }).catch(()=>{});
     }
   }
 }
@@ -385,7 +430,7 @@ async function processClassReminders(db) {
   const students = db.students || [];
   const now = new Date();
 
-  const reminderWindows = [360, 5]; // 6 hours (360m) and 5 minutes (5m) before class
+  const reminderWindows = [1440, 60, 10]; // 24 hours (1440m), 1 hour (60m), and 10 minutes (10m) before class
 
   for (const schedule of schedules) {
     if (!schedule.date || !schedule.time) continue;
@@ -419,7 +464,7 @@ async function sendWeeklyReportReminder() {
   const headers = { 'Content-Type': 'text/plain', 'Title': 'Weekly Reports Ready to Generate', 'Priority': 'high', 'Tags': 'clipboard' };
   if (token) headers['Authorization'] = 'Bearer ' + token;
   try {
-    await fetch('https://ntfy.sh/' + topic, { method: 'POST', headers, body: "It's Sunday — time to generate weekly parent reports in the admin portal." });
+    await fetch('https://ntfy.sh/' + topic, { method: 'POST', headers, body: "It's Sunday: time to generate weekly parent reports in the admin portal." });
   } catch(e) {}
 }
 
@@ -456,22 +501,22 @@ exports.handler = async (event) => {
   }
 
   if (isEvening) {
-    await sendParentReminders(schedules, enrollTopic);
+    await sendParentReminders(schedules, enrollTopic, tutorTopic);
     console.log('[scheduled-notifications] Evening tasks complete');
   }
 
   if (!isMorning && !isEvening) {
-    console.log('[scheduled-notifications] Outside scheduled windows — no tasks run');
+    console.log('[scheduled-notifications] Outside scheduled windows: no tasks run');
   }
 
-  // Class reminders — check on every invocation using Firestore data already loaded
+  // Class reminders: check on every invocation using Firestore data already loaded
   try {
     const db = { schedules, students, sentReminders: {} };
     await processClassReminders(db);
     console.log('[Notifications] Class reminder check complete');
   } catch(e) { console.warn('Reminder check error:', e.message); }
 
-  // Sunday evening — send weekly report reminder to admin
+  // Sunday evening: send weekly report reminder to admin
   const now = new Date();
   if (now.getDay() === 0 && now.getHours() >= 20) {
     await sendWeeklyReportReminder();

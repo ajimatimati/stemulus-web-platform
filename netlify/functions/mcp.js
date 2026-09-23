@@ -1,5 +1,5 @@
 /**
- * STEMulus WebMCP Serverless Endpoint — Netlify Function
+ * STEMulus WebMCP Serverless Endpoint: Netlify Function
  * Implements the Model Context Protocol (MCP) over JSON-RPC 2.0.
  *
  * Allows external AI agents (Claude, ChatGPT, Cursor, Copilot, Antigravity) to:
@@ -371,7 +371,7 @@ async function readResource(uri) {
       }, null, 2);
 
     case "curriculum://stemulus/faqs":
-      return `# STEMulus Kids Tech — Frequently Asked Questions
+      return `# STEMulus Kids Tech: Frequently Asked Questions
 
 ### What equipment does my child need?
 A working laptop or desktop (Windows, Mac, or Chromebook), a stable internet connection, and working audio/video. We provide all coding software, cloud IDEs, and browser-based tooling.

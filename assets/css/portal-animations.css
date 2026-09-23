@@ -1,10 +1,10 @@
 /* ==========================================================================
    PORTAL ANIMATIONS v4
-   STEMulus — Physics-inspired 3D Object Motion System
+   STEMulus - Physics-inspired 3D Object Motion System
    ========================================================================== */
 
 /* ==========================================================================
-   1. LISSAJOUS ORBITS — Figure-8 paths via independent X/Y sine waves
+   1. LISSAJOUS ORBITS - Figure-8 paths via independent X/Y sine waves
    Each variant uses different frequency ratios so objects never sync up.
    ========================================================================== */
 
@@ -36,7 +36,7 @@
 }
 
 /* ==========================================================================
-   2. HERO OBJECT HOVER — Weightless levitation with subtle 3D tilt
+   2. HERO OBJECT HOVER - Weightless levitation with subtle 3D tilt
    ========================================================================== */
 
 @keyframes hero-levitate {
@@ -55,7 +55,7 @@
 }
 
 /* ==========================================================================
-   3. ACCENT FLOAT VARIANTS — Different depth layers move differently
+   3. ACCENT FLOAT VARIANTS - Different depth layers move differently
    ========================================================================== */
 
 /* Near layer (larger accents): bigger range, faster */
@@ -73,7 +73,7 @@
     100% { transform: translate(0, 0) rotate(0deg) scale(1); }
 }
 
-/* Far layer (small blurred accents): slow, tiny movement — parallax depth */
+/* Far layer (small blurred accents): slow, tiny movement - parallax depth */
 @keyframes accent-far {
     0%   { transform: translate(0, 0) rotate(0deg); }
     50%  { transform: translate(2px, -3px) rotate(1deg); }
@@ -81,7 +81,7 @@
 }
 
 /* ==========================================================================
-   4. BLOB MORPH — Organic shape breathing
+   4. BLOB MORPH - Organic shape breathing
    ========================================================================== */
 
 @keyframes blob-morph {
@@ -97,41 +97,41 @@
 }
 
 /* ==========================================================================
-   5. PUBLIC CLASSES — Drop-in replacements (same class names, richer motion)
+   5. PUBLIC CLASSES - Drop-in replacements (same class names, richer motion)
    ========================================================================== */
 
-/* Main hero object float — now with 3D tilt */
+/* Main hero object float - now with 3D tilt */
 .animate-float {
     animation: hero-levitate 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
     will-change: transform;
     transform-style: preserve-3d;
 }
 
-/* Hero band variant — tuned for objects inside gradient bands */
+/* Hero band variant - tuned for objects inside gradient bands */
 .animate-float-band {
     animation: hero-levitate-band 7s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
     will-change: transform;
 }
 
-/* Simple float for background orbs — gentle, non-distracting */
+/* Simple float for background orbs - gentle, non-distracting */
 .animate-float-simple {
     animation: accent-mid 10s ease-in-out infinite;
     will-change: transform;
 }
 
-/* Drift — replaced with Lissajous orbit A (figure-8 path) */
+/* Drift - replaced with Lissajous orbit A (figure-8 path) */
 .animate-drift {
     animation: lissajous-a 12s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
     will-change: transform;
 }
 
-/* Drift reverse — Lissajous orbit B (different phase) */
+/* Drift reverse - Lissajous orbit B (different phase) */
 .animate-drift-reverse {
     animation: lissajous-b 14s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
     will-change: transform;
 }
 
-/* Orbit — Lissajous C for larger accent pieces */
+/* Orbit - Lissajous C for larger accent pieces */
 .animate-orbit {
     animation: lissajous-c 16s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
     will-change: transform;
@@ -149,7 +149,7 @@
 }
 
 /* ==========================================================================
-   6. TIMING OFFSETS — Desync identical animations on the same page
+   6. TIMING OFFSETS - Desync identical animations on the same page
    Each object gets a unique delay so nothing pulses in lockstep.
    ========================================================================== */
 
@@ -165,7 +165,7 @@
 .float-accent:nth-child(4) { animation-delay: -10.5s; }
 
 /* ==========================================================================
-   7. CARD REVEAL — Stagger enter from below
+   7. CARD REVEAL - Stagger enter from below
    ========================================================================== */
 
 @keyframes card-enter {
@@ -309,7 +309,7 @@
 }
 
 /* ==========================================================================
-   16. REDUCED MOTION — Respect user preference
+   16. REDUCED MOTION - Respect user preference
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {

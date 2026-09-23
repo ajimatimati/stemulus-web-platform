@@ -10,7 +10,7 @@
   <title>Certificate Manager | STEMulus Kids Tech</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:ital,wght@0,600;0,700;0,800;1,700&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Nunito:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Great+Vibes&family=Alex+Brush&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/tailwind-output.css">
   <link rel="stylesheet" href="dist/combined.css">
   <script src="https://unpkg.com/lucide@latest" defer></script>
@@ -192,7 +192,7 @@
       font-family: 'DM Sans', sans-serif;
     }
     /* Outer decorative frame */
-    .cert-paper::before {
+    .cert-paper:before {
       content: '';
       position: absolute;
       inset: 14px;
@@ -202,7 +202,7 @@
       z-index: 1;
     }
     /* Inner gold accent line */
-    .cert-paper::after {
+    .cert-paper:after {
       content: '';
       position: absolute;
       inset: 19px;
@@ -428,8 +428,355 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+
+    /* ── TEMPLATE SELECTOR BUTTONS ── */
+    .template-choice-btn {
+      background: rgba(255,255,255,0.04);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: block;
+      text-align: left;
+    }
+    .template-choice-btn:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.25);
+    }
+    .template-choice-btn.active {
+      border-color: var(--orange);
+      background: rgba(244,96,12,0.12);
+      box-shadow: 0 0 20px rgba(244,96,12,0.2);
+    }
+
+    /* ── EXPLORERS TEMPLATE (AGES 5-12) ── */
+    .cert-explorers-wrap {
+      position: relative;
+      background: #fed338;
+      padding: 28px 30px 32px;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+      font-family: 'Nunito', sans-serif;
+      color: #1e293b;
+      width: 840px;
+      max-width: 100%;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+    .explorers-doodle {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .explorers-card {
+      position: relative;
+      background: #ffffff !important;
+      border-radius: 18px;
+      padding: 34px 44px 26px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      overflow: hidden;
+      z-index: 2;
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.04);
+      color: #1e293b !important;
+    }
+    .explorers-guilloche-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.75;
+    }
+    .explorers-card-inner {
+      position: relative;
+      z-index: 3;
+    }
+    .explorers-head-crest {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+    .explorers-arch-svg {
+      width: 300px;
+      height: 56px;
+      margin-bottom: -10px;
+    }
+    .explorers-main-title {
+      font-family: 'Playfair Display', serif !important;
+      font-size: 3.3rem !important;
+      font-weight: 800 !important;
+      color: #1e3a8a !important;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      margin: 2px 0 8px;
+    }
+    .explorers-subtext {
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 0.88rem !important;
+      font-weight: 600 !important;
+      color: #64748b !important;
+      margin-bottom: 10px;
+    }
+    .explorers-student-name {
+      font-family: 'Playfair Display', Georgia, serif !important;
+      font-size: 2.85rem !important;
+      font-weight: 800 !important;
+      font-style: italic !important;
+      color: #1e3a8a !important;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      white-space: nowrap;
+    }
+    .explorers-narrative {
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 0.84rem !important;
+      font-weight: 500 !important;
+      color: #475569 !important;
+      line-height: 1.65;
+      max-width: 580px;
+      margin: 0 auto 20px;
+    }
+    .explorers-narrative strong {
+      color: #0f172a !important;
+      font-weight: 800 !important;
+    }
+    .explorers-footer-row {
+      display: grid;
+      grid-template-columns: 82px 1fr 82px;
+      align-items: flex-end;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .explorers-sig-grid {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      gap: 12px;
+    }
+    .explorers-sig-item {
+      text-align: center;
+      min-width: 100px;
+    }
+    .explorers-sig-line {
+      border-top: 1.5px solid #cbd5e1;
+      padding-top: 4px;
+      margin-top: 4px;
+    }
+    .explorers-sig-name {
+      font-size: 0.78rem !important;
+      font-weight: 800 !important;
+      color: #1e293b !important;
+    }
+    .explorers-sig-label {
+      font-size: 0.62rem !important;
+      color: #94a3b8 !important;
+      font-weight: 700 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── VANGUARD TEMPLATE (AGES 12-18) ── */
+    .cert-vanguard-wrap {
+      position: relative;
+      background: #eef2f6;
+      padding: 42px 42px;
+      border-radius: 6px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      font-family: 'DM Sans', sans-serif;
+      width: 840px;
+      max-width: 100%;
+      margin: 0 auto;
+      color: #111827;
+      box-sizing: border-box;
+    }
+    .vanguard-tab-top {
+      position: absolute;
+      top: 0; left: 88px;
+      width: 240px; height: 58px;
+      background: #111827;
+      z-index: 1;
+      border-radius: 2px;
+    }
+    .vanguard-tab-bottom {
+      position: absolute;
+      bottom: 0; left: 88px;
+      width: 240px; height: 58px;
+      background: #111827;
+      z-index: 1;
+      border-radius: 2px;
+    }
+    .vanguard-tab-left {
+      position: absolute;
+      top: 50%; left: 0;
+      transform: translateY(-50%);
+      width: 58px; height: 210px;
+      background: #111827;
+      z-index: 1;
+      border-radius: 2px;
+    }
+    .vanguard-tab-right {
+      position: absolute;
+      top: 50%; right: 0;
+      transform: translateY(-50%);
+      width: 58px; height: 210px;
+      background: #111827;
+      z-index: 1;
+      border-radius: 2px;
+    }
+    .vanguard-card {
+      position: relative;
+      background: #ffffff !important;
+      padding: 40px 48px 32px;
+      min-height: 480px;
+      z-index: 2;
+      overflow: hidden;
+      color: #111827 !important;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.18);
+    }
+    .vanguard-skyline-svg {
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 460px;
+      height: 280px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.24;
+    }
+    .vanguard-inner {
+      position: relative;
+      z-index: 2;
+    }
+    .vanguard-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+    .vanguard-bracket-box {
+      border-top: 3.5px solid #111827;
+      border-left: 3.5px solid #111827;
+      padding: 12px 22px 14px 16px;
+      position: relative;
+      display: inline-block;
+      text-align: left;
+    }
+    .vanguard-bracket-box::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 50px; height: 3.5px;
+      background: #111827;
+    }
+    .vanguard-bracket-title {
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 1.6rem !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.22em !important;
+      color: #111827 !important;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .vanguard-bracket-sub {
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 0.74rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.28em !important;
+      color: #374151 !important;
+      text-transform: uppercase;
+    }
+    .vanguard-brand-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .vanguard-brand-name {
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 1.35rem !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.12em !important;
+      color: #111827 !important;
+      line-height: 1.1;
+    }
+    .vanguard-brand-url {
+      font-size: 0.64rem !important;
+      color: #6b7280 !important;
+      letter-spacing: 0.08em;
+    }
+    .vanguard-center-wrap {
+      text-align: center;
+      margin: 6px 0 14px;
+    }
+    .vanguard-student-name {
+      font-family: 'Alex Brush', cursive !important;
+      font-size: 4.4rem !important;
+      color: #111827 !important;
+      line-height: 1.1;
+      margin: 14px 0 14px;
+      font-weight: 400 !important;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .vanguard-date-pill {
+      display: inline-block;
+      background: #111827 !important;
+      color: #ffffff !important;
+      padding: 7px 32px;
+      font-family: 'Outfit', sans-serif !important;
+      font-weight: 800 !important;
+      font-size: 0.86rem !important;
+      letter-spacing: 0.2em !important;
+      text-transform: uppercase;
+      border-radius: 2px;
+      margin-bottom: 18px;
+    }
+    .vanguard-narrative {
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 0.82rem !important;
+      color: #4b5563 !important;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.7;
+      text-align: center;
+    }
+    .vanguard-narrative strong {
+      color: #111827 !important;
+      font-weight: 700 !important;
+    }
+    .vanguard-bottom-row {
+      display: grid;
+      grid-template-columns: 1fr 120px 1fr;
+      align-items: flex-end;
+      margin-top: 24px;
+      padding-top: 14px;
+      border-top: 1px solid #f3f4f6;
+    }
+    .vanguard-sign-col {
+      font-size: 0.78rem;
+    }
+    .vanguard-sign-left { text-align: left; }
+    .vanguard-sign-right { text-align: right; }
+    .vanguard-sign-title {
+      font-weight: 800 !important;
+      color: #111827 !important;
+      font-size: 0.76rem !important;
+      margin-bottom: 2px;
+    }
+    .vanguard-sign-name {
+      color: #6b7280 !important;
+      font-size: 0.72rem !important;
+    }
+    .vanguard-seal-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      background: rgba(16,185,129,0.05);
     }
 
     /* ── MODAL ── */
@@ -448,9 +795,9 @@
       background: #141527;
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 24px;
-      width: 100%;
-      max-width: 860px;
-      max-height: 92vh;
+      width: 96vw;
+      max-width: 1220px;
+      max-height: 94vh;
       overflow-y: auto;
       padding: 32px;
       position: relative;
@@ -506,6 +853,25 @@
       .dashboard-grid { grid-template-columns: 1fr !important; }
     }
 
+    /* ── QR CODE RENDERING ── */
+    #exp-qr-box, #van-qr-box {
+      position: relative;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      overflow: hidden !important;
+    }
+    #exp-qr-box canvas, #exp-qr-box img,
+    #van-qr-box canvas, #van-qr-box img {
+      width: 100% !important;
+      height: 100% !important;
+      display: block !important;
+      object-fit: contain !important;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      image-rendering: pixelated;
+    }
+
     /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -557,15 +923,15 @@
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:28px;" id="stats-row">
     <div class="glass-card" style="padding:18px 20px;">
       <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;">Total Issued</span>
-      <div style="font-size:2rem;font-weight:800;color:#fff;margin-top:4px;" id="stat-total">—</div>
+      <div style="font-size:2rem;font-weight:800;color:#fff;margin-top:4px;" id="stat-total">-</div>
     </div>
     <div class="glass-card" style="padding:18px 20px;">
       <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;">Pending Review</span>
-      <div style="font-size:2rem;font-weight:800;color:#fbbf24;margin-top:4px;" id="stat-pending">—</div>
+      <div style="font-size:2rem;font-weight:800;color:#fbbf24;margin-top:4px;" id="stat-pending">-</div>
     </div>
     <div class="glass-card" style="padding:18px 20px;">
       <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;">Active Certs</span>
-      <div style="font-size:2rem;font-weight:800;color:#34d399;margin-top:4px;" id="stat-active">—</div>
+      <div style="font-size:2rem;font-weight:800;color:#34d399;margin-top:4px;" id="stat-active">-</div>
     </div>
   </div>
 
@@ -579,6 +945,29 @@
         Issue New Certificate
       </div>
       <form id="issue-form">
+        <!-- TRACK & TEMPLATE SELECTOR -->
+        <div style="margin-bottom:16px;">
+          <label class="field-label" style="display:flex;align-items:center;justify-content:space-between;">
+            <span>Certificate Track &amp; Design</span>
+            <span id="auto-detect-badge" style="font-size:0.65rem;color:#38bdf8;font-weight:700;text-transform:none;">Auto-detected by course</span>
+          </label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;">
+            <div id="btn-tmpl-explorers" class="template-choice-btn active" onclick="setFormTemplate('explorers')">
+              <input type="radio" name="tmpl_choice" id="radio-explorers" value="explorers" checked class="sr-only">
+              <div style="display:flex;align-items:center;gap:6px;font-weight:800;font-size:0.8rem;color:#facc15;">
+                <span>🧒</span> Explorers Track
+              </div>
+              <p style="font-size:0.68rem;color:rgba(255,255,255,0.65);margin-top:3px;line-height:1.3;">Ages 5–12 · Wave guilloche, playful doodles, cap &amp; rosette</p>
+            </div>
+            <div id="btn-tmpl-vanguard" class="template-choice-btn" onclick="setFormTemplate('vanguard')">
+              <input type="radio" name="tmpl_choice" id="radio-vanguard" value="vanguard" class="sr-only">
+              <div style="display:flex;align-items:center;gap:6px;font-weight:800;font-size:0.8rem;color:#e2e8f0;">
+                <span>🚀</span> Vanguard Track
+              </div>
+              <p style="font-size:0.68rem;color:rgba(255,255,255,0.65);margin-top:3px;line-height:1.3;">Ages 12–18 · Sleek tech skyline, black framing &amp; gear seal</p>
+            </div>
+          </div>
+        </div>
 
         <div style="margin-bottom:14px;">
           <label class="field-label">Student Full Name</label>
@@ -709,129 +1098,346 @@
 
     <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;">
 
-      <!-- CERTIFICATE PREVIEW -->
-      <div style="flex:1;min-width:280px;">
-        <p style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;margin-bottom:10px;">Certificate Preview</p>
-        <div id="cert-preview-paper" class="cert-paper" style="box-shadow:0 16px 60px rgba(0,0,0,0.5);">
+      <!-- CERTIFICATE PREVIEW WRAPPER -->
+      <div style="flex:1;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <p style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;margin:0;">
+            Live Certificate Canvas
+          </p>
+          <span id="preview-template-tag" style="font-size:0.68rem;padding:3px 12px;border-radius:20px;background:rgba(234,179,8,0.2);color:#facc15;font-weight:700;border:1px solid rgba(234,179,8,0.3);">
+            Explorers Track (Ages 5–12)
+          </span>
+        </div>
 
-          <!-- Corner ornaments -->
-          <svg class="cert-corner tl" viewBox="0 0 48 48" fill="none"><path d="M4 44 L4 4 L44 4" stroke="#1A237E" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/><circle cx="4" cy="4" r="3.5" fill="#1A237E" opacity="0.4"/></svg>
-          <svg class="cert-corner tr" viewBox="0 0 48 48" fill="none"><path d="M4 44 L4 4 L44 4" stroke="#1A237E" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/><circle cx="4" cy="4" r="3.5" fill="#1A237E" opacity="0.4"/></svg>
-          <svg class="cert-corner bl" viewBox="0 0 48 48" fill="none"><path d="M4 44 L4 4 L44 4" stroke="#1A237E" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/><circle cx="4" cy="4" r="3.5" fill="#1A237E" opacity="0.4"/></svg>
-          <svg class="cert-corner br" viewBox="0 0 48 48" fill="none"><path d="M4 44 L4 4 L44 4" stroke="#1A237E" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/><circle cx="4" cy="4" r="3.5" fill="#1A237E" opacity="0.4"/></svg>
+        <div id="cert-preview-container" style="width:840px;margin:0 auto;">
 
-          <div class="cert-content">
-            <!-- Logo -->
-            <div class="cert-logo-row">
-              <img src="favicon.png" alt="STEMulus" style="height:36px;object-fit:contain;">
-              <div>
-                <div class="cert-brand-name">STEMulus KidsTech</div>
-                <div class="cert-brand-sub">Certified Achievement</div>
-              </div>
-            </div>
-            <div class="cert-divider"></div>
-            <div class="cert-presents">This Certificate is Proudly Awarded to</div>
-            <div class="cert-student-name" id="p-student-name">Student Name</div>
-            <div class="cert-has-completed">who has successfully completed</div>
-            <div class="cert-program-badge" id="p-program-badge">PROGRAM</div>
-            <div class="cert-program-name" id="p-program-name">Program Title</div>
-            <div style="margin-bottom:18px;">
-              <span class="cert-grade-chip">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-6 5.87 1.77 6.86L12 18.89l-5.77 3.11L7.72 15.14 1.73 9.27l6.91-1.01L12 2z"/></svg>
-                <span id="p-grade">Distinction</span>
-              </span>
+          <!-- ═══════════════════════════════════════════════════ -->
+          <!-- 1. EXPLORERS TEMPLATE (AGES 5-12)                  -->
+          <!-- ═══════════════════════════════════════════════════ -->
+          <div id="view-explorers" class="cert-explorers-wrap">
+            <!-- Playful Doodles on yellow surround -->
+            <!-- Top Right: Cyan Cloud Outline + Yellow Sun/Bubble -->
+            <svg class="explorers-doodle" style="top:-14px;right:-10px;width:180px;" viewBox="0 0 180 100" fill="none">
+              <path d="M25,75 C10,75 5,55 18,44 C16,26 40,15 62,26 C78,10 112,10 128,26 C148,15 170,28 168,48 C182,60 172,75 155,75 Z" stroke="#0284c7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <circle cx="145" cy="22" r="16" fill="#fed338" stroke="#0284c7" stroke-width="4"/>
+            </svg>
+
+            <!-- Top Center: 3 Cute Floating Hearts -->
+            <div class="explorers-doodle" style="top:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#f43f5e" style="transform:rotate(-14deg);filter:drop-shadow(0 2px 4px rgba(244,63,94,0.3));"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="#fb7185" style="transform:rotate(6deg);"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#f43f5e" style="transform:rotate(16deg);filter:drop-shadow(0 2px 4px rgba(244,63,94,0.3));"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </div>
 
-            <!-- Details -->
-            <div class="cert-details-row">
-              <div class="cert-detail-item">
-                <span class="cert-detail-label">Date Awarded</span>
-                <span class="cert-detail-value" id="p-date">—</span>
-              </div>
-              <div class="cert-detail-item">
-                <span class="cert-detail-label">Credential ID</span>
-                <span class="cert-detail-value" id="p-cred-id" style="font-family:monospace;font-size:0.78rem;">—</span>
-              </div>
-              <div class="cert-detail-item">
-                <span class="cert-detail-label">Instructor</span>
-                <span class="cert-detail-value" id="p-tutor">—</span>
-              </div>
-            </div>
+            <!-- Bottom Left: Sunny Petal Doodle -->
+            <svg class="explorers-doodle" style="bottom:-20px;left:-16px;width:130px;" viewBox="0 0 130 130" fill="none">
+              <circle cx="35" cy="95" r="50" fill="#fde047" stroke="#eab308" stroke-width="3.5"/>
+            </svg>
 
-            <!-- Signatures -->
-            <div class="cert-sig-row">
-              <div class="cert-sig-block">
-                <div style="height:44px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:6px;">
-                  <img src="assets/images/signature_director.png" class="cert-sig-img" alt="Director signature" onerror="this.style.display='none'">
-                </div>
-                <div class="cert-sig-line">
-                  <div class="cert-sig-name">Ajimati Olalekan</div>
-                  <div class="cert-sig-title">Director, STEMulus KidsTech</div>
-                </div>
-              </div>
-              <div class="cert-sig-block">
-                <div style="height:44px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:6px;">
-                  <span id="p-tutor-sig-text" style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:#2d2d4e;"></span>
-                </div>
-                <div class="cert-sig-line">
-                  <div class="cert-sig-name" id="p-tutor-sig-name">Tutor Name</div>
-                  <div class="cert-sig-title">Class Instructor</div>
-                </div>
-              </div>
-            </div>
+            <!-- Bottom Center: Hot Pink Looping Swirl Ribbon -->
+            <svg class="explorers-doodle" style="bottom:-14px;left:48%;transform:translateX(-50%);width:140px;" viewBox="0 0 150 75" fill="none">
+              <path d="M10,25 C45,-12 95,-6 80,38 C68,70 115,70 140,32" stroke="#f43f5e" stroke-width="7" stroke-linecap="round" fill="none"/>
+            </svg>
 
-            <!-- Seal row -->
-            <div class="cert-seal-row">
-              <div class="cert-id-block">
-                <span class="cert-id-label">Certificate ID</span><br>
-                <span class="cert-id-value" id="p-cred-id-bottom">—</span><br>
-                <span style="font-size:0.58rem;color:#b0b0d0;letter-spacing:0.1em;">Verify: stemuluskidstech.com/verify-certificate.html</span>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-                <span class="cert-verify-text">Scan to verify</span>
-                <div id="cert-qr-preview" style="width:52px;height:52px;background:#f0f0f0;border-radius:4px;display:flex;align-items:center;justify-content:center;">
-                  <i data-lucide="qr-code" style="width:28px;height:28px;color:#aaa;"></i>
+            <!-- Right Edge: Vivid Blue Splash Wave -->
+            <svg class="explorers-doodle" style="bottom:-10px;right:-18px;width:130px;" viewBox="0 0 130 150" fill="none">
+              <path d="M25,140 C12,95 45,65 75,75 C108,85 130,42 130,140 Z" fill="#0284c7"/>
+            </svg>
+
+            <!-- White Certificate Card -->
+            <div class="explorers-card">
+              <!-- SVG Wave Guilloche Security Linework -->
+              <svg class="explorers-guilloche-svg" viewBox="0 0 760 520" preserveAspectRatio="none">
+                <g stroke="rgba(125, 185, 245, 0.4)" fill="none" stroke-width="1.3">
+                  <path d="M0,60 C160,10 240,140 400,50 C560,-30 630,120 760,65" />
+                  <path d="M0,75 C165,22 235,152 410,62 C570,-18 640,132 760,78" />
+                  <path d="M0,90 C170,35 230,165 420,75 C580,-5 650,145 760,90" />
+                  <path d="M0,105 C175,48 225,178 430,88 C590,8 660,158 760,102" />
+                  <path d="M0,120 C180,60 220,190 440,100 C600,20 670,170 760,115" />
+                  <path d="M0,450 C160,510 240,380 400,465 C560,545 630,400 760,445" />
+                  <path d="M0,435 C165,498 235,368 410,452 C570,532 640,388 760,432" />
+                  <path d="M0,420 C170,485 230,355 420,440 C580,520 650,375 760,420" />
+                  <path d="M0,405 C175,472 225,342 430,428 C590,508 660,362 760,408" />
+                  <path d="M0,390 C180,460 220,330 440,415 C600,495 670,350 760,395" />
+                </g>
+              </svg>
+
+              <div class="explorers-card-inner">
+                <!-- Header: Arched Text & Laurel Crest -->
+                <div class="explorers-head-crest">
+                  <svg class="explorers-arch-svg" viewBox="0 0 320 58">
+                    <path id="archCurve" d="M 24,48 Q 160,14 296,48" fill="none"/>
+                    <g transform="translate(160, 30)">
+                      <!-- Golden circular laurel wreath -->
+                      <path d="M-2,13 C-10,11 -16,4 -14,-6 C-12,-11 -6,-14 -1,-15" fill="none" stroke="#d97706" stroke-width="1.8"/>
+                      <path d="M2,13 C10,11 16,4 14,-6 C12,-11 6,-14 1,-15" fill="none" stroke="#d97706" stroke-width="1.8"/>
+                      <ellipse cx="-13" cy="5" rx="3.2" ry="2" transform="rotate(-30 -13 5)" fill="#eab308"/>
+                      <ellipse cx="-15" cy="-2" rx="3.2" ry="2" transform="rotate(-60 -15 -2)" fill="#eab308"/>
+                      <ellipse cx="-11" cy="-9" rx="3.2" ry="2" transform="rotate(-80 -11 -9)" fill="#eab308"/>
+                      <ellipse cx="-5" cy="-14" rx="3.2" ry="2" transform="rotate(-110 -5 -14)" fill="#eab308"/>
+                      <ellipse cx="13" cy="5" rx="3.2" ry="2" transform="rotate(30 13 5)" fill="#eab308"/>
+                      <ellipse cx="15" cy="-2" rx="3.2" ry="2" transform="rotate(60 15 -2)" fill="#eab308"/>
+                      <ellipse cx="11" cy="-9" rx="3.2" ry="2" transform="rotate(80 11 -9)" fill="#eab308"/>
+                      <ellipse cx="5" cy="-14" rx="3.2" ry="2" transform="rotate(110 5 -14)" fill="#eab308"/>
+                      <circle cx="0" cy="13" r="2.2" fill="#d97706"/>
+                    </g>
+                    <text font-family="'Nunito', sans-serif" font-weight="900" font-size="16" fill="#1e3a8a" letter-spacing="2">
+                      <textPath href="#archCurve" startOffset="50%" text-anchor="middle">Certificate of</textPath>
+                    </text>
+                  </svg>
+                  <div class="explorers-main-title">Achievement</div>
                 </div>
-              </div>
-              <div class="cert-seal-circle">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                <span style="font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;color:#10b981;font-weight:700;margin-top:2px;">VALID</span>
+
+                <p class="explorers-subtext">This is to certify that</p>
+                <div class="explorers-student-name" id="exp-student-name">Student Name</div>
+
+                <p class="explorers-narrative">
+                  has completed all the requirements at <strong>STEMulus Kids Tech</strong> in <strong id="exp-program-name">Program Title</strong> with the distinction grade of <strong id="exp-grade" style="color:#d97706;">Distinction</strong> and is awarded this Certificate of Achievement. Great job! We're so proud of your hard work—keep learning, growing, and shining bright!
+                </p>
+
+                <!-- Footer: Graduation Cap, Signatures, Golden Rosette & QR -->
+                <div class="explorers-footer-row">
+                  <!-- Left Accent: 3D Graduation Cap on Rolled Scroll -->
+                  <div style="flex-shrink:0;width:80px;display:flex;flex-direction:column;align-items:center;">
+                    <svg width="80" height="70" viewBox="0 0 95 85">
+                      <ellipse cx="48" cy="74" rx="36" ry="7" fill="#000000" opacity="0.12"/>
+                      <rect x="14" y="52" width="68" height="15" rx="7.5" fill="#fffdfa" stroke="#e2e8f0" stroke-width="1.5"/>
+                      <rect x="14" y="54" width="68" height="11" fill="#fefae0"/>
+                      <rect x="44" y="52" width="8" height="15" fill="#f59e0b"/>
+                      <path d="M48,59 C44,53 38,55 44,63 C46,65 48,60 48,59 Z" fill="#d97706"/>
+                      <path d="M48,59 C52,53 58,55 52,63 C50,65 48,60 48,59 Z" fill="#d97706"/>
+                      <path d="M46,61 L41,72 L45,71 L47,62 Z" fill="#f59e0b"/>
+                      <path d="M50,61 L55,72 L51,71 L49,62 Z" fill="#f59e0b"/>
+                      <polygon points="48,8 88,23 48,38 8,23" fill="#1e293b"/>
+                      <polygon points="48,10 84,23 48,36 12,23" fill="#2d3748"/>
+                      <path d="M26,27 L26,42 Q48,53 70,42 L70,27 Q48,38 26,27 Z" fill="#1a202c"/>
+                      <circle cx="48" cy="23" r="3.5" fill="#fbbf24"/>
+                      <path d="M48,23 C58,26 68,29 70,45" stroke="#fbbf24" stroke-width="2.2" fill="none"/>
+                      <circle cx="70" cy="46" r="2.8" fill="#f59e0b"/>
+                      <path d="M68,48 L72,48 L73,58 L67,58 Z" fill="#fbbf24"/>
+                    </svg>
+                  </div>
+
+                  <!-- Center: Instructor, QR, Director, Date -->
+                  <div class="explorers-sig-grid">
+                    <div class="explorers-sig-item">
+                      <div id="exp-tutor-sig" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:#1e293b;min-height:24px;">Instructor</div>
+                      <div class="explorers-sig-line">
+                        <div class="explorers-sig-name" id="exp-tutor-name">Instructor</div>
+                        <div class="explorers-sig-label">Teacher's Name</div>
+                      </div>
+                    </div>
+
+                    <!-- Authentic Verification QR -->
+                    <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;">
+                      <div id="exp-qr-box" style="width:44px;height:44px;background:#ffffff;border-radius:6px;display:flex;align-items:center;justify-content:center;border:1px solid #e2e8f0;margin-bottom:2px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.06);">
+                        <i data-lucide="qr-code" style="width:24px;height:24px;color:#0284c7;"></i>
+                      </div>
+                      <span id="exp-cred-id" style="font-family:monospace;font-size:0.56rem;color:#64748b;font-weight:700;">STEM-2026</span>
+                    </div>
+
+                    <div class="explorers-sig-item">
+                      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:#1e293b;min-height:24px;">Ajimati Olalekan</div>
+                      <div class="explorers-sig-line">
+                        <div class="explorers-sig-name">Ajimati Olalekan</div>
+                        <div class="explorers-sig-label">Director</div>
+                      </div>
+                    </div>
+
+                    <div class="explorers-sig-item">
+                      <div id="exp-date-sig" style="font-family:'DM Sans',sans-serif;font-size:0.84rem;font-weight:700;color:#1e293b;min-height:24px;display:flex;align-items:flex-end;justify-content:center;">-</div>
+                      <div class="explorers-sig-line">
+                        <div class="explorers-sig-name">Date Awarded</div>
+                        <div class="explorers-sig-label">Date</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right Accent: Golden Rosette Medal -->
+                  <div style="flex-shrink:0;width:80px;display:flex;flex-direction:column;align-items:center;">
+                    <svg width="78" height="74" viewBox="0 0 85 85">
+                      <polygon points="32,48 20,82 35,74 41,80 38,48" fill="#dc2626"/>
+                      <polygon points="53,48 44,80 50,74 65,82 54,48" fill="#b91c1c"/>
+                      <g transform="translate(42,38)">
+                        <circle cx="0" cy="0" r="32" fill="#d97706"/>
+                        <circle cx="0" cy="0" r="30" fill="#f59e0b"/>
+                        <circle cx="0" cy="0" r="25" fill="#fbbf24"/>
+                        <circle cx="0" cy="0" r="21" fill="#fef08a" stroke="#d97706" stroke-width="1.2" stroke-dasharray="2.5,1.5"/>
+                        <path d="M0,-14 L3.8,-4 L14,-3 L6.5,4 L8.8,14 L0,8.5 L-8.8,14 L-6.5,4 L-14,-3 L-3.8,-4 Z" fill="#d97706"/>
+                      </g>
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+          <!-- ═══════════════════════════════════════════════════ -->
+          <!-- 2. VANGUARD TEMPLATE (AGES 12-18)                  -->
+          <!-- ═══════════════════════════════════════════════════ -->
+          <div id="view-vanguard" class="cert-vanguard-wrap" style="display:none;">
+            <!-- Outer Geometric Black Overlapping Blocks -->
+            <div class="vanguard-tab-top"></div>
+            <div class="vanguard-tab-bottom"></div>
+            <div class="vanguard-tab-left"></div>
+            <div class="vanguard-tab-right"></div>
+
+            <div class="vanguard-card">
+              <!-- Architectural Skyline Silhouette Background -->
+              <svg class="vanguard-skyline-svg" viewBox="0 0 460 270" fill="none">
+                <g fill="#9ca3af" opacity="0.25">
+                  <rect x="25" y="110" width="45" height="160" />
+                  <rect x="32" y="125" width="6" height="8" fill="#ffffff" opacity="0.9"/>
+                  <rect x="44" y="125" width="6" height="8" fill="#ffffff" opacity="0.9"/>
+                  <rect x="56" y="125" width="6" height="8" fill="#ffffff" opacity="0.9"/>
+                  <rect x="32" y="145" width="6" height="8" fill="#ffffff" opacity="0.9"/>
+                  <rect x="44" y="145" width="6" height="8" fill="#ffffff" opacity="0.9"/>
+                  <rect x="56" y="145" width="6" height="8" fill="#ffffff" opacity="0.9"/>
+                  <rect x="85" y="45" width="62" height="225" />
+                  <line x1="116" y1="12" x2="116" y2="45" stroke="#9ca3af" stroke-width="2.5"/>
+                  <circle cx="116" cy="12" r="2.5" fill="#9ca3af"/>
+                  <rect x="94" y="60" width="7" height="9" fill="#ffffff" opacity="0.85"/>
+                  <rect x="105" y="60" width="7" height="9" fill="#ffffff" opacity="0.85"/>
+                  <rect x="116" y="60" width="7" height="9" fill="#ffffff" opacity="0.85"/>
+                  <rect x="127" y="60" width="7" height="9" fill="#ffffff" opacity="0.85"/>
+                  <rect x="94" y="80" width="7" height="9" fill="#ffffff" opacity="0.85"/>
+                  <rect x="105" y="80" width="7" height="9" fill="#ffffff" opacity="0.85"/>
+                  <rect x="160" y="130" width="48" height="140" />
+                  <rect x="166" y="105" width="36" height="25" />
+                  <rect x="174" y="85" width="20" height="20" />
+                  <rect x="220" y="55" width="75" height="215" />
+                  <polygon points="220,55 257.5,22 295,55" fill="#9ca3af"/>
+                  <rect x="232" y="70" width="8" height="10" fill="#ffffff" opacity="0.85"/>
+                  <rect x="245" y="70" width="8" height="10" fill="#ffffff" opacity="0.85"/>
+                  <rect x="258" y="70" width="8" height="10" fill="#ffffff" opacity="0.85"/>
+                  <rect x="271" y="70" width="8" height="10" fill="#ffffff" opacity="0.85"/>
+                  <rect x="305" y="115" width="55" height="155" />
+                  <polygon points="305,115 360,85 360,115" fill="#9ca3af"/>
+                  <rect x="370" y="75" width="68" height="195" />
+                  <line x1="404" y1="42" x2="404" y2="75" stroke="#9ca3af" stroke-width="2"/>
+                  <circle cx="404" cy="42" r="2" fill="#9ca3af"/>
+                </g>
+              </svg>
+
+              <div class="vanguard-inner">
+                <!-- Top Row: Open Bracket Header + STEMulus Logo -->
+                <div class="vanguard-header-row">
+                  <div class="vanguard-bracket-box">
+                    <div class="vanguard-bracket-title">CERTIFICATE</div>
+                    <div class="vanguard-bracket-sub">OF COMPLETION &amp; MASTERY</div>
+                  </div>
+
+                  <div class="vanguard-brand-wrap">
+                    <svg width="38" height="30" viewBox="0 0 40 32" style="margin-bottom:3px;">
+                      <rect x="2" y="16" width="6" height="16" fill="#111827"/>
+                      <rect x="11" y="11" width="6" height="21" fill="#111827"/>
+                      <rect x="20" y="6" width="6" height="26" fill="#111827"/>
+                      <rect x="29" y="0" width="6" height="32" fill="#111827"/>
+                    </svg>
+                    <div class="vanguard-brand-name">STEMULUS</div>
+                    <div class="vanguard-brand-url">stemuluskidstech.com</div>
+                  </div>
+                </div>
+
+                <!-- Center Block: Signature Name, Date Pill, Narrative -->
+                <div class="vanguard-center-wrap">
+                  <div class="vanguard-student-name" id="van-student-name">Student Name</div>
+                  <div>
+                    <span class="vanguard-date-pill" id="van-date-pill">COMPLETED — SEPTEMBER 22, 2026</span>
+                  </div>
+                  <p class="vanguard-narrative">
+                    A verified credential certifying that the candidate has demonstrated proficiency in <strong id="van-program-name">Program Title</strong> with the distinction grade of <strong id="van-grade" style="color:var(--orange);">Distinction</strong>, fulfilling all rigorous algorithmic benchmarks, code reviews, and capstone production projects under STEMulus Kids Tech.
+                  </p>
+                </div>
+
+                <!-- Bottom Row: Director Signature, Gear Seal with QR, Awarded By -->
+                <div class="vanguard-bottom-row">
+                  <div class="vanguard-sign-col vanguard-sign-left">
+                    <div style="font-family:'Alex Brush',cursive;font-size:2.2rem;color:#111827;line-height:1;margin-bottom:3px;">
+                      Ajimati Olalekan
+                    </div>
+                    <div class="vanguard-sign-title">Director by:</div>
+                    <div class="vanguard-sign-name">Mr. Ajimati Olalekan · STEMulus</div>
+                  </div>
+
+                  <!-- Gear Guilloche Seal with QR code -->
+                  <div class="vanguard-seal-wrap">
+                    <div style="position:relative;width:80px;height:80px;display:flex;align-items:center;justify-content:center;">
+                      <svg width="80" height="80" viewBox="0 0 100 100" style="position:absolute;inset:0;">
+                        <path d="M50,2 L54,10 L63,6 L65,15 L74,13 L74,22 L83,23 L80,32 L89,35 L84,43 L91,48 L84,53 L89,61 L80,64 L83,73 L74,74 L74,83 L65,81 L63,90 L54,86 L50,94 L46,86 L37,90 L35,81 L26,83 L26,74 L17,73 L20,64 L11,61 L16,53 L9,48 L16,43 L11,35 L20,32 L17,23 L26,22 L26,13 L35,15 L37,6 L46,10 Z" fill="#111827"/>
+                        <circle cx="50" cy="50" r="41" fill="#111827" stroke="#ffffff" stroke-width="1.5"/>
+                        <circle cx="50" cy="50" r="37" fill="none" stroke="#ffffff" stroke-width="1" stroke-dasharray="2.5,2"/>
+                        <path d="M30,50 Q32,32 50,30 Q68,32 70,50 Q68,68 50,70 Q32,68 30,50" fill="none" stroke="#ffffff" stroke-width="0.8" opacity="0.6"/>
+                      </svg>
+                      <!-- Center QR code embedded inside gear seal -->
+                      <div id="van-qr-box" style="position:relative;z-index:2;width:36px;height:36px;background:#ffffff;border-radius:3px;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.2);">
+                        <i data-lucide="qr-code" style="width:22px;height:22px;color:#111827;"></i>
+                      </div>
+                    </div>
+                    <span id="van-cred-id" style="font-family:monospace;font-size:0.6rem;color:#111827;font-weight:800;margin-top:4px;">STEM-2026</span>
+                  </div>
+
+                  <div class="vanguard-sign-col vanguard-sign-right">
+                    <div id="van-tutor-sig" style="font-family:'Alex Brush',cursive;font-size:2.2rem;color:#111827;line-height:1;margin-bottom:3px;">
+                      Mr. Ola
+                    </div>
+                    <div class="vanguard-sign-title">Awarded by:</div>
+                    <div class="vanguard-sign-name" id="van-tutor-name">Mr. Ola · Lead Instructor</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
         </div>
       </div>
 
       <!-- RIGHT: Review actions -->
-      <div style="width:240px;flex-shrink:0;">
+      <div style="width:250px;flex-shrink:0;">
         <p style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;margin-bottom:12px;">Director Actions</p>
 
-        <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:14px;margin-bottom:16px;">
-          <p style="font-size:0.75rem;color:#fbbf24;font-weight:700;margin-bottom:6px;">Awaiting Your Review</p>
-          <p style="font-size:0.72rem;color:rgba(255,255,255,0.85);line-height:1.5;">Review the certificate preview. Make any edits to the fields on the left, then approve to generate and send.</p>
+        <!-- Dynamic Template Track Switcher -->
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;margin-bottom:16px;">
+          <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);font-weight:700;display:block;margin-bottom:8px;">Switch Template Track</span>
+          <div style="display:flex;gap:6px;">
+            <button type="button" id="toggle-tmpl-explorers" onclick="switchPreviewTemplate('explorers')" class="btn-ghost active" style="flex:1;padding:6px;font-size:0.72rem;justify-content:center;border-color:var(--orange);">
+              🧒 Explorers
+            </button>
+            <button type="button" id="toggle-tmpl-vanguard" onclick="switchPreviewTemplate('vanguard')" class="btn-ghost" style="flex:1;padding:6px;font-size:0.72rem;justify-content:center;">
+              🚀 Vanguard
+            </button>
+          </div>
+        </div>
+
+        <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:12px;padding:12px;margin-bottom:14px;">
+          <p style="font-size:0.75rem;color:#fbbf24;font-weight:700;margin-bottom:4px;">Awaiting Your Review</p>
+          <p style="font-size:0.7rem;color:rgba(255,255,255,0.85);line-height:1.4;">Review and fine-tune fields below before issuing.</p>
         </div>
 
         <!-- Edit fields inline -->
-        <div style="margin-bottom:12px;">
+        <div style="margin-bottom:10px;">
           <label class="field-label">Edit Student Name</label>
           <input type="text" id="edit-name" class="admin-input" style="font-size:0.82rem;">
         </div>
-        <div style="margin-bottom:12px;">
+        <div style="margin-bottom:10px;">
           <label class="field-label">Edit Grade</label>
           <select id="edit-grade" class="admin-input" style="background:#141527;font-size:0.82rem;">
             <option>Distinction</option><option>Honors</option><option>Merit</option><option>Pass</option>
           </select>
         </div>
-        <div style="margin-bottom:16px;">
+        <div style="margin-bottom:14px;">
           <label class="field-label">Director's Note (optional)</label>
-          <textarea id="edit-director-note" rows="2" class="admin-input" style="font-size:0.78rem;resize:none;" placeholder="Personal achievement note…"></textarea>
+          <textarea id="edit-director-note" rows="2" class="admin-input" style="font-size:0.76rem;resize:none;" placeholder="Achievement note…"></textarea>
         </div>
 
         <button onclick="applyEdits()" class="btn-ghost" style="width:100%;margin-bottom:8px;justify-content:center;">
-          <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> Apply Edits to Preview
+          <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> Apply Edits
         </button>
-        <button onclick="approveCertificate()" class="btn-approve" style="width:100%;justify-content:center;padding:12px;border-radius:12px;font-size:0.82rem;margin-bottom:8px;">
-          <i data-lucide="check-circle" style="width:15px;height:15px;"></i> Approve &amp; Issue Certificate
+        <button onclick="approveCertificate()" class="btn-approve" style="width:100%;justify-content:center;padding:11px;border-radius:12px;font-size:0.82rem;margin-bottom:8px;">
+          <i data-lucide="check-circle" style="width:15px;height:15px;"></i> Approve &amp; Issue
         </button>
         <button onclick="downloadCertPNG()" class="btn-ghost" style="width:100%;justify-content:center;margin-bottom:8px;">
           <i data-lucide="download" style="width:14px;height:14px;"></i> Download as PNG
@@ -847,35 +1453,54 @@
 <!-- ──────────── QR SUCCESS MODAL ──────────── -->
 <div id="qr-modal" class="modal-bg" style="display:none;">
   <div class="modal-card" style="max-width:440px;text-align:center;">
-    <button onclick="closeQRModal()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.08);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);">
+    <button onclick="closeQRModal()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.08);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
       <i data-lucide="x" style="width:16px;height:16px;"></i>
     </button>
 
     <div style="width:56px;height:56px;background:rgba(16,185,129,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
       <i data-lucide="check-circle" style="width:28px;height:28px;color:#10b981;"></i>
     </div>
-    <span style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:#10b981;font-weight:700;">Certificate Issued</span>
-    <h3 style="font-size:1.2rem;font-weight:800;color:#fff;margin:8px 0 4px;" id="qr-student-name">—</h3>
-    <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);margin-bottom:20px;" id="qr-program-name">—</p>
+    <span style="font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:#10b981;font-weight:700;">Certificate Issued &amp; Verified</span>
+    <h3 style="font-size:1.2rem;font-weight:800;color:#fff;margin:8px 0 4px;" id="qr-student-name">-</h3>
+    <p style="font-size:0.78rem;color:rgba(255,255,255,0.65);margin-bottom:16px;" id="qr-program-name">-</p>
 
-    <div style="background:#fff;padding:16px;border-radius:16px;display:inline-block;margin-bottom:16px;">
-      <div id="qr-canvas"></div>
+    <!-- Scannable QR Code Canvas -->
+    <div style="background:#fff;padding:14px;border-radius:16px;display:inline-block;margin-bottom:14px;box-shadow:0 8px 30px rgba(0,0,0,0.35);">
+      <div id="qr-canvas" style="display:flex;align-items:center;justify-content:center;"></div>
+    </div>
+    <p style="font-size:0.72rem;color:rgba(255,255,255,0.5);margin:0 0 16px;">
+      <i data-lucide="smartphone" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:2px;"></i>
+      Scan with any phone camera to verify instantly
+    </p>
+
+    <!-- Credential Details Box -->
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px 14px;margin-bottom:16px;text-align:left;">
+      <div style="display:flex;align-items:center;justify-content:between;margin-bottom:4px;">
+        <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;">Credential ID</span>
+        <span style="font-family:monospace;font-size:0.88rem;font-weight:700;color:var(--orange);" id="qr-cred-id">-</span>
+      </div>
+      <div style="font-size:0.68rem;color:rgba(255,255,255,0.5);word-break:break-all;font-family:monospace;background:rgba(0,0,0,0.25);padding:6px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.05);" id="qr-verify-url">
+        https://stemuluskidstech.com/verify-certificate.html
+      </div>
     </div>
 
-    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;margin-bottom:20px;">
-      <span style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700;display:block;margin-bottom:4px;">Credential ID</span>
-      <span style="font-family:monospace;font-size:0.95rem;font-weight:700;color:var(--orange);" id="qr-cred-id">—</span>
-    </div>
+    <!-- Direct Verification Link Button -->
+    <a id="qr-verify-btn" href="#" target="_blank" class="btn-primary" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;width:100%;margin-bottom:10px;text-decoration:none;border-radius:12px;background:linear-gradient(135deg,#10b981,#059669);font-weight:700;color:#fff;font-size:0.84rem;box-shadow:0 4px 14px rgba(16,185,129,0.3);transition:transform 0.15s,box-shadow 0.15s;">
+      <i data-lucide="external-link" style="width:15px;height:15px;"></i> Test Live Verification Page
+    </a>
 
-    <div style="display:flex;gap:8px;">
-      <button onclick="downloadQRCode()" class="btn-primary" style="flex:1;justify-content:center;">
+    <!-- Action Buttons: Download QR, Copy Link, Share WhatsApp -->
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <button onclick="downloadQRCode()" class="btn-ghost" style="flex:1;justify-content:center;padding:10px 8px;font-size:0.75rem;">
         <i data-lucide="download" style="width:14px;height:14px;"></i> Download QR
       </button>
-      <button onclick="copyVerifyLink()" class="btn-ghost" style="flex:1;justify-content:center;">
+      <button onclick="copyVerifyLink()" class="btn-ghost" style="flex:1;justify-content:center;padding:10px 8px;font-size:0.75rem;" id="btn-copy-modal-link">
         <i data-lucide="copy" style="width:14px;height:14px;"></i> Copy Link
       </button>
+      <button onclick="shareQRWhatsApp()" class="btn-ghost" style="flex:1;justify-content:center;padding:10px 8px;font-size:0.75rem;background:rgba(37,211,102,0.1);color:#25d366;border-color:rgba(37,211,102,0.25);">
+        <i data-lucide="message-circle" style="width:14px;height:14px;"></i> WhatsApp
+      </button>
     </div>
-    <p style="font-size:0.72rem;color:rgba(255,255,255,0.75);margin-top:12px;">Share the QR or link with the parent to access and verify the certificate.</p>
   </div>
 </div>
 
@@ -890,6 +1515,68 @@
 let allCerts = [];
 let currentFilter = 'all';
 let pendingCert = null;   // cert being previewed / awaiting approval
+let currentTemplate = 'explorers'; // 'explorers' (ages 5-12) or 'vanguard' (ages 12-18)
+
+// ── Template Selection (Form & Modal) ──────────────────────────────
+function setFormTemplate(type, isManual = true) {
+  currentTemplate = type;
+  const btnExp = document.getElementById('btn-tmpl-explorers');
+  const btnVan = document.getElementById('btn-tmpl-vanguard');
+  const radExp = document.getElementById('radio-explorers');
+  const radVan = document.getElementById('radio-vanguard');
+  const badge = document.getElementById('auto-detect-badge');
+
+  if (type === 'explorers') {
+    btnExp.classList.add('active');
+    btnVan.classList.remove('active');
+    radExp.checked = true;
+    if (isManual) badge.textContent = "Manual: Explorers Track (Ages 5–12)";
+  } else {
+    btnVan.classList.add('active');
+    btnExp.classList.remove('active');
+    radVan.checked = true;
+    if (isManual) badge.textContent = "Manual: Vanguard Track (Ages 12–18)";
+  }
+}
+
+function switchPreviewTemplate(type) {
+  currentTemplate = type;
+  if (pendingCert) pendingCert.template_type = type;
+
+  const viewExp = document.getElementById('view-explorers');
+  const viewVan = document.getElementById('view-vanguard');
+  const tag = document.getElementById('preview-template-tag');
+  const btnExp = document.getElementById('toggle-tmpl-explorers');
+  const btnVan = document.getElementById('toggle-tmpl-vanguard');
+
+  if (type === 'explorers') {
+    viewExp.style.display = 'block';
+    viewVan.style.display = 'none';
+    tag.textContent = 'Explorers Track (Ages 5–12)';
+    tag.style.background = 'rgba(234,179,8,0.2)';
+    tag.style.color = '#facc15';
+    tag.style.borderColor = 'rgba(234,179,8,0.3)';
+    btnExp.classList.add('active');
+    btnExp.style.borderColor = 'var(--orange)';
+    btnVan.classList.remove('active');
+    btnVan.style.borderColor = 'rgba(255,255,255,0.1)';
+  } else {
+    viewExp.style.display = 'none';
+    viewVan.style.display = 'block';
+    tag.textContent = 'Vanguard Track (Ages 12–18)';
+    tag.style.background = 'rgba(255,255,255,0.15)';
+    tag.style.color = '#f8fafc';
+    tag.style.borderColor = 'rgba(255,255,255,0.25)';
+    btnVan.classList.add('active');
+    btnVan.style.borderColor = 'var(--orange)';
+    btnExp.classList.remove('active');
+    btnExp.style.borderColor = 'rgba(255,255,255,0.1)';
+  }
+  if (pendingCert && pendingCert.credential_id) {
+    generatePreviewQR(pendingCert.credential_id);
+  }
+  if (window.lucide) lucide.createIcons();
+}
 
 // ── Init ───────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -897,10 +1584,24 @@ document.addEventListener('DOMContentLoaded', () => {
   loadLedger();
   updateStats();
 
-  // Program select: show custom field
+  // Program select: show custom field + auto-detect template track
   document.getElementById('f-program').addEventListener('change', e => {
+    const val = e.target.value;
     document.getElementById('custom-program-wrap').style.display =
-      e.target.value === 'custom' ? 'block' : 'none';
+      val === 'custom' ? 'block' : 'none';
+
+    // Auto-detect age/track
+    const explorersKeywords = ['scratch', 'junior', 'creative', 'art', 'roblox', '3d', 'explorers'];
+    const isExplorers = explorersKeywords.some(kw => val.toLowerCase().includes(kw));
+    const badge = document.getElementById('auto-detect-badge');
+
+    if (isExplorers) {
+      setFormTemplate('explorers', false);
+      badge.textContent = "Auto-detected: Explorers Track (Ages 5–12)";
+    } else {
+      setFormTemplate('vanguard', false);
+      badge.textContent = "Auto-detected: Vanguard Track (Ages 12–18)";
+    }
   });
 
   // Search
@@ -957,9 +1658,16 @@ function renderLedger(certs) {
     const badgeHtml = status === 'pending'
       ? '<span class="badge-pending">Pending</span>'
       : '<span class="badge-issued">Issued</span>';
+    const tmplBadge = (c.template_type === 'vanguard')
+      ? '<span style="background:rgba(255,255,255,0.1);color:#e2e8f0;padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:700;">🚀 Vanguard</span>'
+      : '<span style="background:rgba(234,179,8,0.15);color:#facc15;padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:700;">🧒 Explorers</span>';
+
     return `
       <tr style="border-bottom:1px solid rgba(255,255,255,0.05);transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
-        <td style="padding:14px 8px;font-weight:600;color:#fff;font-size:0.85rem;">${escHtml(c.student_name)}</td>
+        <td style="padding:14px 8px;font-weight:600;color:#fff;font-size:0.85rem;">
+          ${escHtml(c.student_name)}
+          <div style="margin-top:3px;">${tmplBadge}</div>
+        </td>
         <td style="padding:14px 8px;font-size:0.75rem;color:rgba(255,255,255,0.55);max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escHtml(c.program_name)}</td>
         <td style="padding:14px 8px;font-family:monospace;font-size:0.75rem;color:var(--orange);font-weight:700;">${escHtml(c.credential_id)}</td>
         <td style="padding:14px 8px;">${badgeHtml}</td>
@@ -984,8 +1692,6 @@ function renderLedger(certs) {
 
 function updateStats() {
   const certs = DashboardEngine.getCertificates();
-  const pending = certs.filter(c => c.status === 'pending' || !c.status || c.status !== 'issued').length;
-  // count only truly pending (no status or status=pending)
   const trulyPending = certs.filter(c => !c.status || c.status === 'pending').length;
   const active = certs.filter(c => c.status === 'issued').length;
   document.getElementById('stat-total').textContent = certs.length;
@@ -1002,41 +1708,98 @@ function handleFormSubmit(e) {
     : programSel;
   const studentName = document.getElementById('f-name').value.trim();
   const grade = document.getElementById('f-grade').value;
-  const issueDate = document.getElementById('f-date').value;
+  const issueDate = document.getElementById('f-date').value || new Date().toISOString().split('T')[0];
   const tutor = document.getElementById('f-tutor').value.trim() || 'STEMulus Instructor';
   const credId = 'STEM-' + new Date().getFullYear() + '-' + Math.random().toString(36).substring(2,6).toUpperCase();
 
-  pendingCert = { student_name: studentName, program_name: programName, grade_level: grade, issue_date: issueDate, tutor_name: tutor, credential_id: credId, status: 'pending' };
+  pendingCert = {
+    student_name: studentName,
+    program_name: programName,
+    grade_level: grade,
+    issue_date: issueDate,
+    tutor_name: tutor,
+    credential_id: credId,
+    status: 'pending',
+    template_type: currentTemplate
+  };
 
-  // Populate preview
-  document.getElementById('p-student-name').textContent = studentName;
-  document.getElementById('p-program-badge').textContent = 'STEMulus Program';
-  document.getElementById('p-program-name').textContent = programName;
-  document.getElementById('p-grade').textContent = grade;
-  document.getElementById('p-date').textContent = formatDate(issueDate);
-  document.getElementById('p-cred-id').textContent = credId;
-  document.getElementById('p-cred-id-bottom').textContent = credId;
-  document.getElementById('p-tutor').textContent = tutor;
-  document.getElementById('p-tutor-sig-text').textContent = tutor;
-  document.getElementById('p-tutor-sig-name').textContent = tutor;
+  // Populate Explorers template elements
+  document.getElementById('exp-student-name').textContent = studentName;
+  document.getElementById('exp-program-name').textContent = programName;
+  document.getElementById('exp-grade').textContent = grade;
+  document.getElementById('exp-tutor-name').textContent = tutor;
+  document.getElementById('exp-tutor-sig').textContent = tutor;
+  document.getElementById('exp-date-sig').textContent = formatDate(issueDate);
+  document.getElementById('exp-cred-id').textContent = credId;
+
+  // Populate Vanguard template elements
+  document.getElementById('van-student-name').textContent = studentName;
+  document.getElementById('van-program-name').textContent = programName;
+  document.getElementById('van-grade').textContent = grade;
+  document.getElementById('van-date-pill').textContent = ('COMPLETED — ' + formatDate(issueDate)).toUpperCase();
+  document.getElementById('van-tutor-name').textContent = tutor;
+  document.getElementById('van-tutor-sig').textContent = tutor;
+  document.getElementById('van-cred-id').textContent = credId;
 
   // Populate edit fields
   document.getElementById('edit-name').value = studentName;
   document.getElementById('edit-grade').value = grade;
 
-  // Generate QR in preview
+  // Generate QR in preview for both templates
   generatePreviewQR(credId);
+
+  // Set active template view
+  switchPreviewTemplate(currentTemplate);
 
   document.getElementById('preview-modal').style.display = 'flex';
   if (window.lucide) lucide.createIcons();
 }
 
+function getVerificationUrl(credId, forceLocal = false) {
+  if (forceLocal && window.location.origin && !window.location.origin.includes('file:') && window.location.origin !== 'null') {
+    return window.location.origin.replace(/\/+$/, '') + '/verify-certificate.html?id=' + encodeURIComponent(credId);
+  }
+  let base = window.location.origin;
+  if (!base || base.includes('file:') || base === 'null' || base === 'undefined' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    base = 'https://stemuluskidstech.com';
+  }
+  base = base.replace(/\/+$/, '');
+  return `${base}/verify-certificate.html?id=${encodeURIComponent(credId)}`;
+}
+
 function generatePreviewQR(credId) {
-  const container = document.getElementById('cert-qr-preview');
-  container.innerHTML = '';
-  const url = window.location.origin + '/verify-certificate.html?id=' + credId;
-  if (window.QRCode) {
-    new QRCode(container, { text: url, width: 52, height: 52, colorDark: '#1A237E', colorLight: '#fffef8', correctLevel: QRCode.CorrectLevel.H });
+  const url = getVerificationUrl(credId, false);
+
+  // Explorers QR (rendered at high-DPI 140x140 for crispness and reliable phone scanning)
+  const expContainer = document.getElementById('exp-qr-box');
+  if (expContainer) {
+    expContainer.innerHTML = '';
+    if (window.QRCode) {
+      new QRCode(expContainer, {
+        text: url,
+        width: 140,
+        height: 140,
+        colorDark: '#1e3a8a',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+  }
+
+  // Vanguard QR (rendered at high-DPI 140x140 for crispness and reliable phone scanning)
+  const vanContainer = document.getElementById('van-qr-box');
+  if (vanContainer) {
+    vanContainer.innerHTML = '';
+    if (window.QRCode) {
+      new QRCode(vanContainer, {
+        text: url,
+        width: 140,
+        height: 140,
+        colorDark: '#111827',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
   }
 }
 
@@ -1044,46 +1807,55 @@ function applyEdits() {
   const name = document.getElementById('edit-name').value.trim();
   const grade = document.getElementById('edit-grade').value;
   if (name) {
-    document.getElementById('p-student-name').textContent = name;
-    pendingCert.student_name = name;
+    document.getElementById('exp-student-name').textContent = name;
+    document.getElementById('van-student-name').textContent = name;
+    if (pendingCert) pendingCert.student_name = name;
   }
-  document.getElementById('p-grade').textContent = grade;
-  pendingCert.grade_level = grade;
-  document.getElementById('p-tutor-sig-text').textContent = pendingCert.tutor_name;
+  document.getElementById('exp-grade').textContent = grade;
+  document.getElementById('van-grade').textContent = grade;
+  if (pendingCert) pendingCert.grade_level = grade;
 }
 
 function approveCertificate() {
   if (!pendingCert) return;
+  applyEdits();
   const directorNote = document.getElementById('edit-director-note').value.trim();
   if (directorNote) pendingCert.director_note = directorNote;
   pendingCert.status = 'issued';
   pendingCert.issued_at = new Date().toISOString();
   pendingCert.approved_by = 'Director';
+  pendingCert.template_type = currentTemplate;
 
   DashboardEngine.addCertificate({ ...pendingCert });
   loadLedger();
+  const credId = pendingCert.credential_id;
+  const studentName = pendingCert.student_name;
+  const programName = pendingCert.program_name;
   closeModal();
-  openQRModal(pendingCert.credential_id, pendingCert.student_name, pendingCert.program_name);
+  openQRModal(credId, studentName, programName);
 }
 
 function quickApprove(certId) {
+  let updatedCert = null;
   if (typeof DashboardEngine !== 'undefined' && DashboardEngine.updateCertificate) {
-    DashboardEngine.updateCertificate(certId, {
+    updatedCert = DashboardEngine.updateCertificate(certId, {
       status: 'issued',
       issued_at: new Date().toISOString(),
       approved_by: 'Director'
     });
-    loadLedger();
-    showToast('Certificate approved and issued!');
   } else {
     const db_certs = DashboardEngine.getCertificates();
-    const cert = db_certs.find(c => c.id === certId);
+    const cert = db_certs.find(c => c.id === certId || c.credential_id === certId);
     if (cert) {
       cert.status = 'issued';
       cert.issued_at = new Date().toISOString();
-      DashboardEngine.addCertificate({ ...cert });
-      loadLedger();
+      updatedCert = DashboardEngine.addCertificate({ ...cert });
     }
+  }
+  loadLedger();
+  showToast('Certificate approved and issued!');
+  if (updatedCert) {
+    openQRModal(updatedCert.credential_id, updatedCert.student_name, updatedCert.program_name);
   }
 }
 
@@ -1091,18 +1863,35 @@ function revokeCert(certId) {
   if (!confirm('Revoke this certificate? The QR code will stop verifying.')) return;
   DashboardEngine.deleteCertificate(certId);
   loadLedger();
+  showToast('Certificate revoked.');
 }
 
 // ── QR Modal ───────────────────────────────────────────────────────
 function openQRModal(credId, studentName, programName) {
-  document.getElementById('qr-student-name').textContent = studentName;
-  document.getElementById('qr-program-name').textContent = programName;
+  document.getElementById('qr-student-name').textContent = studentName || 'Student Graduate';
+  document.getElementById('qr-program-name').textContent = programName || 'STEMulus Program';
   document.getElementById('qr-cred-id').textContent = credId;
+
+  const publicUrl = getVerificationUrl(credId, false);
+  const localTestUrl = getVerificationUrl(credId, true);
+
+  const urlDisplay = document.getElementById('qr-verify-url');
+  if (urlDisplay) urlDisplay.textContent = publicUrl;
+
+  const verifyBtn = document.getElementById('qr-verify-btn');
+  if (verifyBtn) verifyBtn.href = localTestUrl;
+
   const canvas = document.getElementById('qr-canvas');
   canvas.innerHTML = '';
-  const url = window.location.origin + '/verify-certificate.html?id=' + credId;
   if (window.QRCode) {
-    new QRCode(canvas, { text: url, width: 160, height: 160, colorDark: '#1A237E', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+    new QRCode(canvas, {
+      text: publicUrl,
+      width: 180,
+      height: 180,
+      colorDark: '#1A237E',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
   }
   document.getElementById('qr-modal').style.display = 'flex';
   if (window.lucide) lucide.createIcons();
@@ -1110,7 +1899,7 @@ function openQRModal(credId, studentName, programName) {
 
 function viewQR(credId, studentName) {
   const all = DashboardEngine.getCertificates();
-  const c = all.find(x => x.credential_id === credId);
+  const c = all.find(x => (x.credential_id && x.credential_id.toUpperCase() === credId.toUpperCase()) || x.id === credId);
   openQRModal(credId, studentName, c ? c.program_name : '');
 }
 
@@ -1127,13 +1916,37 @@ function downloadQRCode() {
 }
 
 function copyLink(credId) {
-  const url = window.location.origin + '/verify-certificate.html?id=' + credId;
-  navigator.clipboard.writeText(url).then(() => showToast('Link copied!')).catch(() => prompt('Copy this link:', url));
+  const url = getVerificationUrl(credId, false);
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('Verification link copied to clipboard!');
+      const btn = document.getElementById('btn-copy-modal-link');
+      if (btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> Copied!';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => { btn.innerHTML = orig; if (window.lucide) lucide.createIcons(); }, 2000);
+      }
+    }).catch(() => prompt('Copy this verification link:', url));
+  } else {
+    prompt('Copy this verification link:', url);
+  }
 }
 
 function copyVerifyLink() {
   const credId = document.getElementById('qr-cred-id').textContent;
   copyLink(credId);
+}
+
+function shareQRWhatsApp() {
+  const credId = document.getElementById('qr-cred-id').textContent;
+  const name = document.getElementById('qr-student-name').textContent;
+  const prog = document.getElementById('qr-program-name').textContent;
+  const url = getVerificationUrl(credId, false);
+  const msg = `🎓 *STEMulus Certificate of Completion*\n\n` +
+    `Congratulations to *${name}* for completing *${prog}* with Distinction at STEMulus Kids Tech Academy! 🚀\n\n` +
+    `Verify this official credential online:\n${url}`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
 // ── PNG Download ───────────────────────────────────────────────────
@@ -1146,19 +1959,34 @@ function downloadCertPNG() {
   } else renderPNG();
 }
 function renderPNG() {
-  const el = document.getElementById('cert-preview-paper');
-  html2canvas(el, { scale: 3, useCORS: true, backgroundColor: null }).then(canvas => {
-    const a = document.createElement('a');
-    const name = (pendingCert?.student_name || 'certificate').replace(/\s+/g,'_');
-    a.download = 'STEMulus_Certificate_' + name + '.png';
-    a.href = canvas.toDataURL('image/png');
-    a.click();
+  const targetId = currentTemplate === 'explorers' ? 'view-explorers' : 'view-vanguard';
+  const el = document.getElementById(targetId);
+  if (!el) return;
+
+  const fontReady = document.fonts ? document.fonts.ready : Promise.resolve();
+  fontReady.then(() => {
+    html2canvas(el, {
+      scale: 3,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: currentTemplate === 'explorers' ? '#fed338' : '#eef2f6',
+      logging: false
+    }).then(canvas => {
+      const a = document.createElement('a');
+      const name = (pendingCert?.student_name || 'certificate').replace(/\s+/g,'_');
+      a.download = 'STEMulus_Certificate_' + currentTemplate + '_' + name + '.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    }).catch(err => {
+      console.error('PNG render error:', err);
+      showToast('Error rendering certificate PNG');
+    });
   });
 }
 
 // ── Utils ──────────────────────────────────────────────────────────
 function formatDate(d) {
-  if (!d) return '—';
+  if (!d) return '-';
   return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
 }
 

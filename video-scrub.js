@@ -1,16 +1,16 @@
 /**
- * STEMulus — Cinematic Video Scrub Controller
+ * STEMulus: Cinematic Video Scrub Controller
  *
  * ARCHITECTURE:
- *   #video-bg   → position:fixed, z-index:0 — the permanent background canvas
- *   #page-content → position:relative, z-index:10 — scrolls over the fixed video
- *   #scrub-spacer → height:400vh — provides scroll room for the reverse scrub
- *   #hero-panel → position:sticky inside scrub-spacer — stays visible while scrub plays
+ *   #video-bg   → position:fixed, z-index:0: the permanent background canvas
+ *   #page-content → position:relative, z-index:10: scrolls over the fixed video
+ *   #scrub-spacer → height:400vh: provides scroll room for the reverse scrub
+ *   #hero-panel → position:sticky inside scrub-spacer: stays visible while scrub plays
  *
- * PHASE 1 — LOADER: body overflow:hidden, video plays forward (robot assembles)
- * PHASE 2 — HANDOFF: video ends → overflow unlocked, GSAP ScrollTrigger initialised
- * PHASE 3 — SCRUB: scroll progress maps inversely to video.currentTime
- * PHASE 4 — PAST SCRUB: sections with solid backgrounds cover the fixed video naturally
+ * PHASE 1: LOADER: body overflow:hidden, video plays forward (robot assembles)
+ * PHASE 2: HANDOFF: video ends → overflow unlocked, GSAP ScrollTrigger initialised
+ * PHASE 3: SCRUB: scroll progress maps inversely to video.currentTime
+ * PHASE 4: PAST SCRUB: sections with solid backgrounds cover the fixed video naturally
  */
 
 (function () {
@@ -78,14 +78,14 @@
       onHandoff();
     }
     video.addEventListener('error', () => {
-      console.warn('[VideoScrub] Video failed to load — unlocking page.');
+      console.warn('[VideoScrub] Video failed to load: unlocking page.');
       body.classList.remove('video-loading-lock');
       handoffCalled = true; // suppress scrub setup, no video to scrub
     }, { once: true });
     // Hard timeout: 8s max wait regardless of network
     setTimeout(() => {
       if (!handoffCalled) {
-        console.warn('[VideoScrub] Video load timeout — unlocking page.');
+        console.warn('[VideoScrub] Video load timeout: unlocking page.');
         safeHandoff();
       }
     }, 15000);
@@ -144,7 +144,7 @@
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        // Autoplay blocked (e.g. no interaction yet) — unlock immediately
+        // Autoplay blocked (e.g. no interaction yet) - unlock immediately
         console.warn('[VideoScrub] Autoplay blocked. Unlocking immediately.');
         onHandoff();
       });
@@ -155,9 +155,9 @@
 
     // Suspend the safety deadline while video is buffering
     video.addEventListener('waiting', function onWaiting() {
-      // video stalled — temporarily disable safeHandoff by extending deadline
-      // The 'playing' event will fire when it resumes — watchIntro continues naturally
-      console.log('[VideoScrub] Buffering mid-intro — waiting for data...');
+      // video stalled: temporarily disable safeHandoff by extending deadline
+      // The 'playing' event will fire when it resumes: watchIntro continues naturally
+      console.log('[VideoScrub] Buffering mid-intro: waiting for data...');
     });
     video.addEventListener('playing', function onResumed() {
       console.log('[VideoScrub] Resumed after buffer.');
@@ -165,7 +165,7 @@
   }
 
   function watchIntro() {
-    // Trigger handoff 0.08s before absolute end — avoids blank-frame flash
+    // Trigger handoff 0.08s before absolute end: avoids blank-frame flash
     if (video.duration && video.currentTime >= video.duration - 0.08) {
       video.removeEventListener('timeupdate', watchIntro);
       onHandoff();
@@ -193,12 +193,12 @@
 
   function initScrollTrigger() {
     if (!window.gsap || !window.ScrollTrigger) {
-      // Retry up to 10× every 400ms — covers slow CDN loads
+      // Retry up to 10× every 400ms: covers slow CDN loads
       window._scrubRetries = (window._scrubRetries || 0) + 1;
       if (window._scrubRetries < 10) {
         setTimeout(initScrollTrigger, 400);
       } else {
-        console.error('[VideoScrub] GSAP never loaded after retries — scrub disabled.');
+        console.error('[VideoScrub] GSAP never loaded after retries: scrub disabled.');
       }
       return;
     }
@@ -222,7 +222,7 @@
 
       const playhead = { time: video.duration };
 
-      // ── Track 1: Video frame scrub — scrub:true = zero lag, frame-perfect ──
+      // ── Track 1: Video frame scrub: scrub:true = zero lag, frame-perfect ──
       const tlScrub = gsap.timeline({
         scrollTrigger: {
           trigger: '#scrub-spacer',
@@ -251,7 +251,7 @@
         }
       }, 0);
 
-      // ── Track 2: Visual fades — scrub:0.8 = smooth, cinematic feel ──
+      // ── Track 2: Visual fades: scrub:0.8 = smooth, cinematic feel ──
       // Fades happen over the last 40% of the scrub window
       const tlFade = gsap.timeline({
         scrollTrigger: {
@@ -275,7 +275,7 @@
         duration: 0.4
       }, 0.45);
 
-      // Start the alive blink loop — desktop only
+      // Start the alive blink loop: desktop only
       initBlinkEngine();
     });
 
@@ -316,10 +316,10 @@
     // = glowing→dark→glowing (2.8s total)
     // Starts AND ends on the identical glowing frame as the frozen scrub video.
     // The overlay fades in over the frozen background → plays → fades out.
-    // The main scrub video is NEVER seeked — zero visible jump.
+    // The main scrub video is NEVER seeked: zero visible jump.
     const IDLE_MIN = 4500;   // ms minimum between blinks
     const IDLE_MAX = 10000;  // ms maximum between blinks
-    const FADE_MS  = 80;     // crossfade duration in ms (fast — imperceptible)
+    const FADE_MS  = 80;     // crossfade duration in ms (fast: imperceptible)
 
     const blinkVid = document.getElementById('blink-video');
     if (!blinkVid) return;
@@ -331,7 +331,7 @@
     let isHeroPast    = false;
     let fadeRaf       = null;
 
-    // ── Scroll guard — never play while scrubbing ──
+    // ── Scroll guard: never play while scrubbing ──
     window.addEventListener('scroll', () => {
       isScrolling = true;
       cancelBlink();
@@ -344,7 +344,7 @@
       }, 350);
     }, { passive: true });
 
-    // ── IntersectionObserver — suspend when hero is off screen ──
+    // ── IntersectionObserver: suspend when hero is off screen ──
     const heroEl = document.getElementById('hero-panel');
     if (heroEl) {
       new IntersectionObserver((entries) => {
@@ -406,7 +406,7 @@
     }
 
     function onBlinkEnded() {
-      // Fade overlay back out — scrub video underneath is already on the matching frame
+      // Fade overlay back out: scrub video underneath is already on the matching frame
       fadeTo(blinkVid, 0, FADE_MS, () => {
         isBlinking = false;
         scheduleBlink();

@@ -1,6 +1,6 @@
 /* ================================================================
- HERO PARALLAX — Mouse-tracking depth illusion
- STEMulus v 3.0 — cinematic immersive hero
+ HERO PARALLAX - Mouse-tracking depth illusion
+ STEMulus v 3.0 - cinematic immersive hero
  ================================================================ */
 
 /* ── Hero Scene Container ─────────────────────────────────────── */
@@ -49,7 +49,7 @@
   transition: transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Background gradient layer — slowest */
+/* Background gradient layer - slowest */
 .parallax-layer--bg {
   background: radial-gradient(ellipse at 60% 50%, rgba(244, 96, 12, 0.12) 0%, transparent 65%),
  radial-gradient(ellipse at 30% 80%, rgba(91, 45, 142, 0.08) 0%, transparent 55%),
@@ -57,7 +57,7 @@
   z-index: 1;
 }
 
-/* Floating blobs — medium speed */
+/* Floating blobs - medium speed */
 .parallax-layer--blobs {
   z-index: 2;
   pointer-events: none;
@@ -85,7 +85,7 @@
   top: 40%; right: 5%;
 }
 
-/* Main hero image — medium-fast */
+/* Main hero image - medium-fast */
 .parallax-layer--image {
   z-index: 5;
   display: flex;
@@ -106,7 +106,7 @@
   transform-origin: center center;
 }
 
-/* Floating badges — fastest (most depth) */
+/* Floating badges - fastest (most depth) */
 .parallax-layer--badges {
   z-index: 10;
   pointer-events: none;
@@ -241,7 +241,7 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  /* GPU-composite only properties — no flicker */
+  /* GPU-composite only properties - no flicker */
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transform: translateZ(0);
@@ -275,7 +275,7 @@
   text-decoration: none;
   border: 2px solid rgba(26, 35, 126, 0.35);
   cursor: pointer;
-  /* GPU-composite only — no flicker */
+  /* GPU-composite only - no flicker */
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transform: translateZ(0);

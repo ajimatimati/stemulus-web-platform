@@ -18,21 +18,24 @@
 
   // ── 2. Find the editorial nav ────────────────────────────────────
   var nav = document.querySelector('.nav-editorial');
-  if (!nav) return; // Not an editorial-nav page — bail gracefully
+  if (!nav) return; // Not an editorial-nav page: bail gracefully
 
   // ── 3. Collect all nav links except the logo ────────────────────
   var links = [];
   nav.querySelectorAll('a').forEach(function (a) {
     if (a.classList.contains('nav-logo-editorial')) return;
-    // Detect if it's the enroll CTA (orange button)
-    var isEnroll = (
-      a.href && a.href.indexOf('enroll') !== -1 &&
-      (a.style.background || a.style.backgroundColor || a.className.indexOf('enroll') !== -1)
+    // Detect if it's a CTA action (Booking or Enroll)
+    var isCTA = (
+      (a.href && (a.href.indexOf('enroll') !== -1 || a.href.indexOf('book-class') !== -1)) ||
+      a.classList.contains('nav-cta-btn') ||
+      a.classList.contains('nav-cta-btn-secondary') ||
+      /enroll|discovery/i.test(a.textContent)
     );
     links.push({
       href: a.getAttribute('href') || '#',
       text: a.textContent.trim(),
-      isEnroll: isEnroll
+      isCTA: isCTA,
+      isEnroll: a.href && a.href.indexOf('enroll') !== -1
     });
   });
 
@@ -63,9 +66,8 @@
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
   drawer.appendChild(closeBtn);
 
-  // Separate regular links from the enroll CTA
-  var regularLinks = links.filter(function (l) { return !l.isEnroll; });
-  var enrollLinks  = links.filter(function (l) { return  l.isEnroll; });
+  // Filter regular content links
+  var regularLinks = links.filter(function (l) { return !l.isCTA; });
 
   regularLinks.forEach(function (link) {
     var a = document.createElement('a');
@@ -74,22 +76,19 @@
     drawer.appendChild(a);
   });
 
-  enrollLinks.forEach(function (link) {
-    var a = document.createElement('a');
-    a.href = link.href;
-    a.textContent = link.text;
-    a.className = 'mnav-enroll';
-    drawer.appendChild(a);
-  });
+  // Primary action: Free Discovery Session
+  var discoveryBtn = document.createElement('a');
+  discoveryBtn.href = 'book-class.html';
+  discoveryBtn.textContent = 'Free Discovery Session →';
+  discoveryBtn.className = 'mnav-enroll';
+  drawer.appendChild(discoveryBtn);
 
-  // If no enroll link found, add a default one
-  if (enrollLinks.length === 0) {
-    var ea = document.createElement('a');
-    ea.href = 'enroll.html';
-    ea.textContent = 'Enroll Now';
-    ea.className = 'mnav-enroll';
-    drawer.appendChild(ea);
-  }
+  // Secondary action: Enroll in Full Course
+  var enrollLink = document.createElement('a');
+  enrollLink.href = 'enroll.html';
+  enrollLink.textContent = 'Enroll in Full Course';
+  enrollLink.style.cssText = 'font-size: 0.95rem; color: #64748b !important; margin-top: 0.25rem; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; padding: 0.4rem 1rem !important;';
+  drawer.appendChild(enrollLink);
 
   document.body.appendChild(drawer);
 
@@ -159,7 +158,7 @@
 
   // ── 8. Close drawer on resize to desktop ────────────────────────
   window.addEventListener('resize', function () {
-    if (window.innerWidth > 768 && drawer.classList.contains('open')) {
+    if (window.innerWidth > 1024 && drawer.classList.contains('open')) {
       closeDrawer();
     }
   });

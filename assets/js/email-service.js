@@ -27,7 +27,7 @@ const EmailService = (function () {
   // ── Public API (same shape as v1) ────────────────────────────────────────
 
   /**
-   * Generic send — used by admin compose, quick-booking, etc.
+   * Generic send: used by admin compose, quick-booking, etc.
    * options: { to, subject, body, studentName, ccParent? }
    */
   async function send(options) {
@@ -70,20 +70,43 @@ const EmailService = (function () {
 
   /**
    * Class reminder email.
-   * options: { student, schedule, type ('24h'|'1h') }
+   * options: { student, schedule, type ('24h'|'1h'|'10m') }
    */
   async function sendReminderEmail(options) {
     const { student, schedule, type } = options;
     return _post('reminder', {
-      parentEmail: student.parentEmail || student.email,
-      parentName: student.parentName || student.name,
-      studentName: student.name,
-      courseName: getCourseLabel(schedule.course),
-      classDate: formatDate(schedule.date),
-      classTime: schedule.time,
-      duration: schedule.duration || 60,
-      zoomLink: schedule.link || '',
-      mentorName: schedule.mentor || 'Your Instructor',
+      parentEmail: (student && (student.parentEmail || student.email)) || (schedule && schedule.parentEmail),
+      parentName: (student && (student.parentName || student.name)) || (schedule && schedule.parentName) || 'Parent',
+      studentName: (student && (student.name || (student.firstName + ' ' + student.lastName))) || (schedule && schedule.studentName),
+      courseName: getCourseLabel((schedule && schedule.course) || (student && student.course)),
+      classDate: formatDate((schedule && schedule.date) || new Date()),
+      classTime: (schedule && schedule.time) || '',
+      duration: (schedule && schedule.duration) || 60,
+      zoomLink: (schedule && schedule.link) || '',
+      mentorName: (schedule && schedule.mentor) || 'Your Instructor',
+      reminderType: type,
+    });
+  }
+
+  /**
+   * Tutor class reminder email (24h, 1h, 10m).
+   * options: { tutor, student, schedule, type ('24h'|'1h'|'10m') }
+   */
+  async function sendTutorReminderEmail(options) {
+    const { tutor, student, schedule, type } = options;
+    const tutorEmail = (tutor && (tutor.email || tutor.tutorEmail)) || (schedule && schedule.tutorEmail);
+    const tutorName = (tutor && (tutor.name || tutor.tutorName)) || (schedule && schedule.mentor) || 'Mentor';
+    const studentName = (student && (student.name || (student.firstName + ' ' + student.lastName))) || (schedule && schedule.studentName);
+    return _post('tutor-reminder', {
+      tutorEmail,
+      tutorName,
+      studentName,
+      parentEmail: (student && student.parentEmail) || (schedule && schedule.parentEmail) || '',
+      courseName: getCourseLabel((schedule && schedule.course) || (student && student.course)),
+      classDate: formatDate((schedule && schedule.date) || new Date()),
+      classTime: (schedule && schedule.time) || '',
+      duration: (schedule && schedule.duration) || 60,
+      zoomLink: (schedule && schedule.link) || '',
       reminderType: type,
     });
   }
@@ -150,9 +173,9 @@ const EmailService = (function () {
     });
   }
 
-  return { init, send, sendWelcomeEmail, sendTutorWelcomeEmail, sendReminderEmail, sendScheduleChangeEmail, sendCertificateEmail };
+  return { init, send, sendWelcomeEmail, sendTutorWelcomeEmail, sendReminderEmail, sendTutorReminderEmail, sendScheduleChangeEmail, sendCertificateEmail };
 
 })();
 
-// Kept for backwards-compat — no actual initialisation needed
+// Kept for backwards-compat: no actual initialisation needed
 document.addEventListener('DOMContentLoaded', EmailService.init);

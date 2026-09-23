@@ -25,7 +25,7 @@ const OrganizationSchema = (function() {
             "height": "192"
         },
         "image": "https://stemuluskidstech.com/assets/images/og-image.jpg",
-        "description": "STEMulus KidsTech is the leading private 1-on-1 online coding, robotics, AI, and STEM education academy for children and teens ages 5–17 across Nigeria (Lagos, Abuja, Port Harcourt) and the international diaspora (UK, US, Canada, EU).",
+        "description": "STEMulus KidsTech is the leading private 1-on-1 online coding, robotics, AI, and STEM education academy for children and teens ages 5-17 across Nigeria (Lagos, Abuja, Port Harcourt) and the international diaspora (UK, US, Canada, EU).",
         "slogan": "Building Tomorrow's Tech Leaders Today",
         "foundingDate": "2025",
         "founder": {

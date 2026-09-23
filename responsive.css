@@ -1,11 +1,11 @@
 /* ================================================================
- STEMULUS — GLOBAL RESPONSIVE STYLESHEET
+ STEMULUS - GLOBAL RESPONSIVE STYLESHEET
  Mobile-first overrides for all 27 pages
  Breakpoints: 480px (phone) | 768px (tablet) | 1024px (desktop+)
  ================================================================ */
 
 /* ----------------------------------------------------------------
- 0. BASE — prevent horizontal overflow site-wide
+ 0. BASE - prevent horizontal overflow site-wide
  ---------------------------------------------------------------- */
 html,
 body {
@@ -23,7 +23,7 @@ canvas {
 }
 
 /* ----------------------------------------------------------------
- 1. CUSTOM CURSOR — disable completely on touch devices
+ 1. CUSTOM CURSOR - disable completely on touch devices
  ---------------------------------------------------------------- */
 @media (hover: none) and (pointer: coarse) {
  body {
@@ -167,7 +167,7 @@ canvas {
 #mobile-nav-drawer.open a:nth-child(7) { transition-delay: 0.35s; }
 
 #mobile-nav-drawer a:hover,
-#mobile-nav-drawer a:focus {
+#mobile-nav-drawer a:focus-visible {
   background: rgba(244, 96, 12, 0.08) !important;
   color: var(--orange, #f4600c) !important;
 }
@@ -215,60 +215,51 @@ body.mobile-nav-open .nav-editorial #nav-hamburger span {
 
 
 /* ----------------------------------------------------------------
- 4. NAV — COLLAPSE LINKS ON MOBILE, SHOW HAMBURGER
- ---------------------------------------------------------------- */
-@media (max-width: 768px) {
- #nav-hamburger {
- display: flex !important;
- }
+   4. NAV - COLLAPSE LINKS ON MOBILE & TABLET, SHOW HAMBURGER
+   ---------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  #nav-hamburger {
+    display: flex !important;
+  }
 
- /* Hide the two flex children (links + buttons) of nav-editorial,
- but NOT the logo anchor and NOT our injected hamburger */
- .nav-editorial>div {
- display: none !important;
- }
+  /* Hide the two flex children (links + buttons) of nav-editorial,
+     but NOT the logo anchor and NOT our injected hamburger */
+  .nav-editorial > div {
+    display: none !important;
+  }
 
- .nav-editorial {
- padding: 0 1.2rem !important;
- height: 60px !important;
- display: flex !important;
- align-items: center !important;
- justify-content: space-between !important;
- mix-blend-mode: normal !important;
- z-index: 100002 !important; /* Ensure nav sits above the drawer */
- }
+  .nav-editorial {
+    padding: 0 clamp(1.2rem, 3vw, 2.5rem) !important;
+    height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    mix-blend-mode: normal !important;
+    z-index: 100002 !important; /* Ensure nav sits above the drawer */
+  }
 
- body:not(.borderless-homepage) .nav-editorial,
- body.borderless-homepage .nav-editorial.nav-light {
- background: rgba(250, 249, 247, 0.95) !important;
- backdrop-filter: blur(12px) !important;
- -webkit-backdrop-filter: blur(12px) !important;
- border-bottom: 1px solid rgba(10, 10, 10, 0.06) !important;
- }
+  .nav-editorial {
+    background: rgba(250, 249, 247, 0.94) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid rgba(10, 10, 10, 0.07) !important;
+  }
 
- body.borderless-homepage .nav-editorial:not(.nav-light) {
- background: transparent !important;
- backdrop-filter: none !important;
- -webkit-backdrop-filter: none !important;
- border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
- box-shadow: none !important;
- }
+  /* Crisp dark slate hamburger lines for guaranteed 100% contrast on all devices */
+  #nav-hamburger span {
+    background: var(--slate, #1a2332) !important;
+  }
 
- /* White hamburger lines on transparent home nav */
- body.borderless-homepage .nav-editorial:not(.nav-light) #nav-hamburger span {
- background: #ffffff!important;
- }
-
- /* Logo: don't over-filter */
- .nav-logo-editorial img {
- width: 32px !important;
- height: 32px !important;
- filter: none !important;
- }
+  /* Logo: don't over-filter */
+  .nav-logo-editorial img {
+    width: 32px !important;
+    height: 32px !important;
+    filter: none !important;
+  }
 }
 
 /* ----------------------------------------------------------------
- 5. TYPOGRAPHY — tighten minimum sizes for small screens
+ 5. TYPOGRAPHY - tighten minimum sizes for small screens
  ---------------------------------------------------------------- */
 @media (max-width: 768px) {
  .editorial-heading {
@@ -446,7 +437,7 @@ body.mobile-nav-open .nav-editorial #nav-hamburger span {
 }
 
 /* ----------------------------------------------------------------
- 10. SECTIONS — reduce excessive padding on mobile
+ 10. SECTIONS - reduce excessive padding on mobile
  ---------------------------------------------------------------- */
 @media (max-width: 768px) {
  .curriculum-section {
@@ -565,7 +556,7 @@ body.mobile-nav-open .nav-editorial #nav-hamburger span {
 }
 
 /* ----------------------------------------------------------------
- 14. ENROLL PAGE — sidebar + form stack on tablet/mobile
+ 14. ENROLL PAGE - sidebar + form stack on tablet/mobile
  ---------------------------------------------------------------- */
 @media (max-width: 1024px) {
 
@@ -683,7 +674,7 @@ body.mobile-nav-open .nav-editorial #nav-hamburger span {
 }
 
 /* ----------------------------------------------------------------
- 18. TABLES — prevent horizontal blowout
+ 18. TABLES - prevent horizontal blowout
  ---------------------------------------------------------------- */
 table {
  display: block;
@@ -693,7 +684,7 @@ table {
 }
 
 /* ----------------------------------------------------------------
- 19. SCROLL HINT — hide on mobile (saves space)
+ 19. SCROLL HINT - hide on mobile (saves space)
  ---------------------------------------------------------------- */
 @media (max-width: 640px) {
  .hero-scroll-hint {
@@ -702,7 +693,7 @@ table {
 }
 
 /* ----------------------------------------------------------------
- 20. GRAIN ANIMATION — lower frequency on mobile
+ 20. GRAIN ANIMATION - lower frequency on mobile
  ---------------------------------------------------------------- */
 @media (max-width: 768px) {
  #grain {
@@ -759,7 +750,7 @@ table {
 }
 
 /* ----------------------------------------------------------------
- 23. PREAI-HERO SPLIT — already has responsive CSS in preai-overhaul.css
+ 23. PREAI-HERO SPLIT - already has responsive CSS in preai-overhaul.css
  but add extra phone-specific touch
  ---------------------------------------------------------------- */
 @media (max-width: 480px) {
@@ -816,7 +807,7 @@ table {
 }
 
 /* ----------------------------------------------------------------
- INDEX PAGE — inline-style element overrides
+ INDEX PAGE - inline-style element overrides
  ---------------------------------------------------------------- */
 
 /* Hero stats strip: 3-col → stack on very small screens */
@@ -851,7 +842,7 @@ table {
  }
 }
 
-/* CTA buttons in the "Ready to Start?" section — stack on phone */
+/* CTA buttons in the "Ready to Start?" section - stack on phone */
 @media (max-width: 640px) {
  .hero-cta-stacked {
  flex-direction: column !important;
@@ -1044,7 +1035,7 @@ table {
 }
 
 /* ----------------------------------------------------------------
- 16b. STUDENT SHOWCASE — BASE STYLES (DESKTOP FIRST)
+ 16b. STUDENT SHOWCASE - BASE STYLES (DESKTOP FIRST)
  ---------------------------------------------------------------- */
 
 /* Section wrapper */
@@ -1088,7 +1079,7 @@ table {
  background: rgba(255, 255, 255, 0.03);
 }
 
-/* Image wrapper — fixed aspect ratio */
+/* Image wrapper - fixed aspect ratio */
 .showcase-wrapper {
  width: 100%;
  aspect-ratio: 16 / 9;
@@ -1172,7 +1163,7 @@ table {
 }
 
 /* ----------------------------------------------------------------
- TABLET (max-width: 1024px) — 2-column grid but header stacks
+ TABLET (max-width: 1024px) - 2-column grid but header stacks
  ---------------------------------------------------------------- */
 @media (max-width: 1024px) {
  .showcase-header-grid {
@@ -1182,7 +1173,7 @@ table {
 }
 
 /* ----------------------------------------------------------------
- TABLET SMALL (max-width: 768px) — Handled in Section 17 below
+ TABLET SMALL (max-width: 768px) - Handled in Section 17 below
  ---------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------

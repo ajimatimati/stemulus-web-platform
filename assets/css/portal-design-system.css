@@ -1,6 +1,6 @@
 /* ==========================================================================
    PORTAL DESIGN SYSTEM v3
-   STEMulus — Blob + Standalone 3D Object Architecture
+   STEMulus - Blob + Standalone 3D Object Architecture
    Reference: videotemp.mp4 layout
    ========================================================================== */
 
@@ -141,7 +141,7 @@ h1, h2, h3, h4 { font-weight: 800; color: var(--text-main); margin-top: 0; }
 }
 
 /* ==========================================================================
-   HERO 3D OBJECT (Breaks boundary — the videotemp "pop")
+   HERO 3D OBJECT (Breaks boundary - the videotemp "pop")
    ========================================================================== */
 .hero-3d-object {
     position: absolute;
@@ -234,7 +234,7 @@ h1, h2, h3, h4 { font-weight: 800; color: var(--text-main); margin-top: 0; }
 }
 
 /* ==========================================================================
-   PILL TOOLBAR (Floating bottom bar — videotemp style)
+   PILL TOOLBAR (Floating bottom bar - videotemp style)
    ========================================================================== */
 .pill-toolbar {
     position: fixed;
@@ -561,7 +561,7 @@ body:has(.sidebar-overlay.active) .pill-toolbar {
 }
 
 /* ==========================================================================
-   BUTTONS — 3D TACTILE BUTTON DESIGN SYSTEM
+   BUTTONS - 3D TACTILE BUTTON DESIGN SYSTEM
    Each variant features matching color layers: top surface, 3D bottom shelf bevel,
    ambient colored glow, interactive hover elevation, and responsive active press-down.
    ========================================================================== */

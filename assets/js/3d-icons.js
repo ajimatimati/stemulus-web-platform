@@ -1,5 +1,5 @@
 /**
- * STEMulus Kids Tech — 3D SVG Motion System & Vector Registry
+ * STEMulus Kids Tech: 3D SVG Motion System & Vector Registry
  * Ultra-high-fidelity isometric, gradient-depth 3D SVGs with micro-motion.
  */
 

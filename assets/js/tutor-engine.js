@@ -118,6 +118,7 @@ const TutorEngine = (function() {
         }
 
         // Load content
+        renderOverdueAttendanceAlert();
         renderStats();
         renderSchedule();
         renderNotifications();
@@ -126,10 +127,16 @@ const TutorEngine = (function() {
 
     function renderStats() {
         if (!currentTutor) return;
-        const schedules = DashboardEngine.getSchedules().filter(s => 
-            (s.mentor === currentTutor.name || (s.tutorEmail && s.tutorEmail.toLowerCase() === currentTutor.email.toLowerCase())) && 
-            s.attendanceStatus === 'pending'
-        );
+        const tutorNameLower = (currentTutor.name || '').toLowerCase().trim();
+        const tutorEmailLower = (currentTutor.email || '').toLowerCase().trim();
+
+        const schedules = DashboardEngine.getSchedules().filter(s => {
+            const m = (s.mentor || '').toLowerCase().trim();
+            const e = (s.tutorEmail || '').toLowerCase().trim();
+            const matchesTutor = (tutorNameLower && (m === tutorNameLower || m.includes(tutorNameLower) || tutorNameLower.includes(m))) ||
+                                (tutorEmailLower && e === tutorEmailLower);
+            return matchesTutor && s.attendanceStatus === 'pending';
+        });
         const students = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(currentTutor.email) : [];
 
         const upcomingEl = document.getElementById('stat-upcoming');
@@ -143,8 +150,6 @@ const TutorEngine = (function() {
 
         // Teaching hours: calculate from approved attendance records and approved schedules
         var db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
-        var tutorNameLower = (currentTutor.name || '').toLowerCase();
-        var tutorEmailLower = (currentTutor.email || '').toLowerCase();
 
         var approvedAttendance = (db.attendanceRecords || []).filter(function(r) {
             var mName = (r.tutorName || r.mentor || '').toLowerCase();
@@ -190,39 +195,58 @@ const TutorEngine = (function() {
         const listContainer = document.getElementById('schedule-list');
         if (!listContainer) return;
 
-        const schedules = DashboardEngine.getSchedules().filter(s => s.mentor === currentTutor.name);
+        const tutorNameLower = (currentTutor.name || '').toLowerCase().trim();
+        const tutorEmailLower = (currentTutor.email || '').toLowerCase().trim();
+
+        const schedules = DashboardEngine.getSchedules().filter(s => {
+            const m = (s.mentor || '').toLowerCase().trim();
+            const e = (s.tutorEmail || '').toLowerCase().trim();
+            const matchesTutor = (tutorNameLower && (m === tutorNameLower || m.includes(tutorNameLower) || tutorNameLower.includes(m))) ||
+                                (tutorEmailLower && e === tutorEmailLower);
+            return matchesTutor && s.attendanceStatus !== 'cancelled';
+        });
 
         if (schedules.length === 0) {
             listContainer.innerHTML = `
                 <div class="p-8 text-center text-gray-500">
-                    <p>No classes scheduled in your calendar.</p>
+                    <p>No upcoming classes scheduled in your calendar.</p>
                 </div>
             `;
             return;
         }
 
+        // Sort upcoming first (by date and time)
+        schedules.sort((a, b) => {
+            const timeA = new Date(`${a.date}T${a.time || '00:00'}`).getTime();
+            const timeB = new Date(`${b.date}T${b.time || '00:00'}`).getTime();
+            return timeA - timeB;
+        });
+
         listContainer.innerHTML = schedules.map(s => {
-            const dateFormatted = new Date(s.date).toLocaleDateString('en-GB', {
+            const dateObj = new Date(s.date + 'T12:00:00');
+            const dateFormatted = !isNaN(dateObj) ? dateObj.toLocaleDateString('en-GB', {
                 weekday: 'short',
                 day: 'numeric',
                 month: 'short'
-            });
+            }) : s.date;
+
+            const isToday = s.date === new Date().toISOString().split('T')[0];
 
             const attendanceBadge = s.attendanceStatus === 'pending'
-                ? `<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Scheduled</span>`
+                ? `<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">${isToday ? 'Today • Scheduled' : 'Scheduled'}</span>`
                 : (s.attendanceStatus === 'present'
                     ? `<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Present</span>`
                     : `<span class="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Absent</span>`);
 
             const actionBtn = s.attendanceStatus === 'pending'
-                ? `<button onclick="TutorEngine.openReportModal('${s.id}')"
-                        class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition-all shadow-md">
-                        Log Attendance & Report
-                   </button>`
-                : `<span class="text-xs text-gray-400 font-medium">Logged</span>`;
+                ? `<a href="tutor-attendance-create.html?scheduleId=${s.id}&studentId=${s.studentId || ''}&date=${s.date || ''}&course=${encodeURIComponent(s.course || '')}"
+                        class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition-all shadow-md inline-flex items-center gap-1.5 no-underline">
+                        <i data-lucide="clipboard-check" style="width:14px;height:14px;"></i> Log Class & Attendance
+                   </a>`
+                : `<span class="text-xs text-emerald-600 font-bold bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">Logged</span>`;
 
             return `
-                <div class="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50 transition-colors">
+                <div class="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
                     <div class="flex items-start gap-4">
                         <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
                             <i data-lucide="video" class="w-5 h-5 text-blue-600"></i>
@@ -232,14 +256,14 @@ const TutorEngine = (function() {
                             <div class="flex flex-wrap gap-x-3 text-xs text-gray-500 mt-1">
                                 <span>${dateFormatted}</span>
                                 <span>•</span>
-                                <span>${s.time} (${s.duration} mins)</span>
+                                <span>${s.time} (${s.duration || 60} mins)</span>
                                 <span>•</span>
                                 ${attendanceBadge}
                             </div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-                        <a href="${s.link}" target="_blank" rel="noopener noreferrer" 
+                        <a href="${s.link || 'https://meet.google.com'}" target="_blank" rel="noopener noreferrer" 
                             class="border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold text-xs px-3 py-2 rounded-xl transition-colors flex items-center gap-1">
                             <i data-lucide="external-link" class="w-3 h-3"></i> Zoom
                         </a>
@@ -248,6 +272,52 @@ const TutorEngine = (function() {
                 </div>
             `;
         }).join('');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function renderOverdueAttendanceAlert() {
+        if (!currentTutor) return;
+        const bannerContainer = document.getElementById('overdue-attendance-banner');
+        if (!bannerContainer) return;
+
+        const overdue = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getOverdueAttendance)
+            ? DashboardEngine.getOverdueAttendance(currentTutor.email)
+            : [];
+
+        if (!overdue.length) {
+            bannerContainer.innerHTML = '';
+            bannerContainer.style.display = 'none';
+            return;
+        }
+
+        bannerContainer.style.display = 'block';
+        bannerContainer.innerHTML = `
+            <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 sm:p-5 mb-6 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-fadeIn">
+                <div class="flex items-start gap-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 font-black text-lg">
+                        ⚠️
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm font-bold text-amber-900">Action Required: Compulsory Class Attendance</h3>
+                            <span class="bg-amber-200 text-amber-900 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">${overdue.length} Unlogged</span>
+                        </div>
+                        <p class="text-xs text-amber-800 mt-0.5 leading-relaxed">
+                            You have <strong>${overdue.length} completed session${overdue.length > 1 ? 's' : ''}</strong> pending attendance submission. STEMulus requires every session log to be filed for admin verification and parent updates.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 self-end md:self-auto shrink-0 flex-wrap">
+                    ${overdue.slice(0, 2).map(s => `
+                        <a href="tutor-attendance-create.html?scheduleId=${s.id}&studentId=${s.studentId || ''}&date=${s.date || ''}&course=${encodeURIComponent(s.course || '')}"
+                           class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1.5 no-underline">
+                            Log ${s.studentName.split(' ')[0]} (${s.date})
+                        </a>
+                    `).join('')}
+                    ${overdue.length > 2 ? `<a href="tutor-attendance.html" class="text-xs font-bold text-amber-800 underline">View all (${overdue.length})</a>` : ''}
+                </div>
+            </div>
+        `;
         if (window.lucide) lucide.createIcons();
     }
 

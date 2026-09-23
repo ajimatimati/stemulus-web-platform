@@ -7,8 +7,8 @@ const cssFile = path.join(rootDir, 'style.css');
 const jsDir = path.join(rootDir, 'assets', 'js');
 
 const binDir = path.join(__dirname, 'node_modules', '.bin');
-const cleanCssBin = path.join(binDir, 'cleancss');
-const terserBin = path.join(binDir, 'terser');
+const cleanCssBin = path.join(binDir, process.platform === 'win32' ? 'cleancss.cmd' : 'cleancss');
+const terserBin = path.join(binDir, process.platform === 'win32' ? 'terser.cmd' : 'terser');
 
 // Minify CSS
 console.log('Minifying style.css...');

@@ -318,7 +318,7 @@ const TutorAttendanceEngine = (function() {
         if (selectEl) {
             populateStudentDropdown();
 
-            // ATT-004: Alpine v3 compatible — use direct event listeners instead of body.__x (v2 only)
+            // ATT-004: Alpine v3 compatible: use direct event listeners instead of body.__x (v2 only)
             var standInCheckbox = document.getElementById('stand-in-toggle')
                 || document.querySelector('[x-model*="standIn"]')
                 || document.querySelector('[x-on\\:change*="standIn"]');
@@ -462,7 +462,7 @@ const TutorAttendanceEngine = (function() {
                 if (student && student.parentEmail && DashboardEngine.addNotification) {
                     DashboardEngine.addNotification({
                         userEmail: student.parentEmail.toLowerCase(),
-                        title: 'Class Missed — ' + (student.firstName || pendingSubmissionData.studentName),
+                        title: 'Class Missed - ' + (student.firstName || pendingSubmissionData.studentName),
                         message: (student.firstName || 'Your child') + ' missed their coding session on ' + (pendingSubmissionData.classDate || 'today') + '. Please contact us to reschedule or discuss make-up options.',
                         timestamp: new Date().toISOString(),
                         read: false

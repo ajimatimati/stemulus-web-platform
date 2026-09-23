@@ -1,5 +1,5 @@
 /**
- * STEMulus — 3D Tactile Card Tilt Effect
+ * STEMulus: 3D Tactile Card Tilt Effect
  * Applies hardware-accelerated 3D transforms to elements with class .card-tilt-3d on hover.
  */
 

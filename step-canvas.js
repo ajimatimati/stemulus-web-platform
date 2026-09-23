@@ -1,5 +1,5 @@
 /**
- * STEMulus v2.0 — Step Accordion + Canvas Animator
+ * STEMulus v2.0: Step Accordion + Canvas Animator
  * Manages the "How It Works" two-column layout.
  * Left: accordion that advances every 5s.
  * Right: canvas that draws a dot grid and the current step number.

@@ -10,7 +10,7 @@ const HowItWorks = (function() {
         {
             number: '01',
             title: 'Pick Your Track',
-            description: 'Choose from Robotics, Game Dev, Web Design, Python, or AI — matched to your child\'s age and interests.',
+            description: 'Choose from Robotics, Game Dev, Web Design, Python, or AI: matched to your child\'s age and interests.',
             icon: `<svg class="w-10 h-10" viewBox="0 0 40 40" fill="none"><path d="M20 5l-2 6h-6l5 4-2 6 5-4 5 4-2-6 5-4h-6l-2-6z" fill="#f97316"/><rect x="6" y="24" width="28" height="12" rx="4" stroke="#f97316" stroke-width="2"/><path d="M14 30h12" stroke="#f97316" stroke-width="2" stroke-linecap="round"/></svg>`,
             gradient: 'from-orange-500 to-amber-500',
             glow: 'rgba(249, 115, 22, 0.15)'
@@ -18,7 +18,7 @@ const HowItWorks = (function() {
         {
             number: '02',
             title: 'Start Learning',
-            description: 'Live 1-on-1 or small-group sessions with a dedicated mentor. Real projects from week one — no boring lectures.',
+            description: 'Live 1-on-1 or small-group sessions with a dedicated mentor. Real projects from week one: no boring lectures.',
             icon: `<svg class="w-10 h-10" viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="22" rx="4" stroke="#6366f1" stroke-width="2"/><path d="M15 18l4 3 6-6" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="32" r="6" fill="#6366f1" opacity=".2"/><path d="M30 32l2 2 4-4" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round"/></svg>`,
             gradient: 'from-indigo-500 to-purple-500',
             glow: 'rgba(99, 102, 241, 0.15)'
@@ -116,7 +116,7 @@ const HowItWorks = (function() {
         }
         
         /* Connecting line between steps */
-        .hiw-steps::before {
+        .hiw-steps:before {
             content: '';
             position: absolute;
             top: 80px;
@@ -130,7 +130,7 @@ const HowItWorks = (function() {
         
         @media (max-width: 768px) {
             .hiw-steps { grid-template-columns: 1fr; gap: 40px; }
-            .hiw-steps::before {
+            .hiw-steps:before {
                 top: 0;
                 bottom: 0;
                 left: 39px;
@@ -177,7 +177,7 @@ const HowItWorks = (function() {
             font-family: 'Poppins', sans-serif;
         }
         
-        .hiw-number::after {
+        .hiw-number:after {
             content: '';
             position: absolute;
             inset: -4px;

@@ -35,22 +35,31 @@ const AdminEngine = (function () {
         const dashboardContainer = document.getElementById('dashboard-container');
 
         const proceedAsAdmin = (userData) => {
+            const alreadyAuthed = !!currentUser;
             currentUser = userData;
             if (loginScreen) loginScreen.classList.add('hidden');
             if (dashboardContainer) dashboardContainer.classList.remove('hidden');
             document.documentElement.style.visibility = 'visible';
 
             if (document.getElementById('user-email')) document.getElementById('user-email').textContent = currentUser.email;
-            if (document.getElementById('user-name')) document.getElementById('user-name').textContent = currentUser.name;
+            if (document.getElementById('user-name')) document.getElementById('user-name').textContent = currentUser.name || 'Admin';
             if (document.getElementById('user-avatar')) document.getElementById('user-avatar').textContent = (currentUser.name || 'A')[0].toUpperCase();
 
             loadDashboardData();
-            bindEvents();
+            if (!alreadyAuthed) {
+                bindEvents();
+            }
         };
 
         const redirectToLogin = () => {
             window.location.href = 'admin-login.html';
         };
+
+        // Immediate check: if active admin session already exists in sessionStorage, render immediately
+        const immediateSession = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSession) ? DashboardEngine.getSession() : null;
+        if (immediateSession && immediateSession.role === 'admin') {
+            proceedAsAdmin(immediateSession);
+        }
 
         if (hasFirebase) {
             firebase.auth().onAuthStateChanged(async (user) => {
@@ -3178,7 +3187,7 @@ return {
 document.addEventListener('DOMContentLoaded', AdminEngine.init);
 // On cloud sync: only reload data, don't re-run full auth check
 window.addEventListener('stemulusDbUpdated', function () {
-    if (document.getElementById('dashboard-container') && !document.getElementById('dashboard-container').classList.contains('hidden')) {
+    if (currentUser || document.getElementById('stat-total-students')) {
         AdminEngine.reloadData();
     }
 });

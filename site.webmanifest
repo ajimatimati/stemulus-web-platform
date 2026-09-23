@@ -1,7 +1,7 @@
 {
   "name": "STEMulus Kids Tech",
   "short_name": "STEMulus",
-  "description": "Private 1-on-1 online coding classes for kids aged 5–17. Scratch, Python, Robotics, Web Dev, AI & more.",
+  "description": "Private 1-on-1 online coding classes for kids aged 5-17. Scratch, Python, Robotics, Web Dev, AI & more.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",

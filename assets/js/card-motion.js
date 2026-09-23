@@ -1,5 +1,5 @@
 /**
- * STEMulus — Card Motion Engine
+ * STEMulus: Card Motion Engine
  * Scroll-reveal with stagger + interactive 3D tilt for all premium card surfaces.
  */
 (function () {
@@ -32,7 +32,7 @@
   }
 
   /* Card-level reveal for cards that are NOT inside a [data-reveal] ancestor.
-     Cards inside [data-reveal] containers use CSS stagger — no JS needed. */
+     Cards inside [data-reveal] containers use CSS stagger: no JS needed. */
   function initStandaloneCardReveal() {
     var cardSelectors = [
       '.fp-step',

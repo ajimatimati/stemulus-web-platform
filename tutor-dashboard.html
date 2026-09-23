@@ -19,12 +19,10 @@
   <!-- Tailwind utilities (required for sidebar positioning: fixed, w-64, h-full, etc.) -->
   <link rel="stylesheet" href="assets/css/tailwind-output.css">
   <link rel="stylesheet" href="dist/combined.css">
+  <link rel="stylesheet" href="assets/css/stemulus-luxury.css">
   <!-- STEMulus Portal Design System -->
   <link rel="stylesheet" href="assets/css/portal-design-system.css">
   <link rel="stylesheet" href="assets/css/portal-animations.css">
-  <link rel="stylesheet" href="assets/css/3d-svg-icons.css">
-  <script src="assets/js/3d-icons.js" defer></script>
-
   <style>
     body { background-color: var(--bg-page); min-height: 100vh; font-family: 'Nunito', sans-serif; margin: 0; padding-bottom: 5rem; }
 
@@ -81,7 +79,7 @@
       .stat-grid { grid-template-columns: 1fr; }
     }
 
-    /* stat-grid: 2 columns on tablets (481–768px) */
+    /* stat-grid: 2 columns on tablets (481-768px) */
     @media (min-width: 481px) and (max-width: 768px) {
       .stat-grid { grid-template-columns: repeat(2, 1fr); }
     }
@@ -377,6 +375,9 @@
     </div>
   </div>
 
+  <!-- OVERDUE ATTENDANCE COMPULSORY BANNER -->
+  <div id="overdue-attendance-banner" style="max-width:1200px; margin:1.5rem auto 0; padding:0 1.5rem; display:none;"></div>
+
   <!-- DASHBOARD GRID -->
   <div class="dash-grid">
 
@@ -387,7 +388,7 @@
         <div class="card-header">
           <h2 class="card-title">
             <img src="images/portal/standalone/pencil-3d.png" alt="" width="28" height="28" style="object-fit:contain;">
-            Today's Schedule
+            Upcoming Class Sessions
           </h2>
           <a href="tutor-attendance-create.html" style="font-size:13px; font-weight:700; color:var(--stage-tutor-1); text-decoration:none;">+ Log Attendance</a>
         </div>
@@ -556,5 +557,10 @@
       }
     });
   </script>
+
+<script src="assets/js/stemulus-icons.js" defer></script>
+<script src="assets/js/scroll-choreography.js" defer></script>
+<script src="assets/js/stemulus-interactive.js" defer></script>
+
 </body>
 </html>
