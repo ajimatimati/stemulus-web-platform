@@ -178,6 +178,22 @@ function tplContactAdmin(d) {
 }
 
 function tplWelcome(d) {
+  const meetLink = d.meetLink || d.googleMeetLink || 'https://meet.google.com/stm-prog-live';
+  const scheduleText = d.classSchedule || d.scheduleText || 'As agreed with your admissions coordinator';
+
+  const scheduleAndMeetSection = `
+    <tr>
+      <td style="padding:8px 12px;background:rgba(255,255,255,0.06);border-top:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);font-size:0.75rem;font-weight:600;text-transform:uppercase;">Agreed Schedule</td>
+      <td style="padding:8px 12px;background:rgba(255,255,255,0.06);border-top:1px solid rgba(255,255,255,0.1);color:#fff;font-size:0.85rem;font-weight:600;">${scheduleText}</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 12px;background:rgba(255,255,255,0.04);border-top:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);font-size:0.75rem;font-weight:600;text-transform:uppercase;">Live Class Meet</td>
+      <td style="padding:8px 12px;background:rgba(255,255,255,0.04);border-top:1px solid rgba(255,255,255,0.1);color:#fff;font-size:0.85rem;">
+        <a href="${meetLink}" style="color:#93c5fd;text-decoration:underline;font-weight:700;" target="_blank">Open Live Google Meet Session &rarr;</a>
+      </td>
+    </tr>
+  `;
+
   const classroomSection = d.classroomLink ? `
     <tr><td colspan="2" style="padding-top:12px;">
       <a href="${d.classroomLink}" style="display:inline-flex;align-items:center;gap:8px;background:#1a73e8;color:#fff;text-decoration:none;font-weight:700;padding:10px 20px;border-radius:8px;font-size:0.88rem;" target="_blank">
@@ -189,7 +205,7 @@ function tplWelcome(d) {
   const steps = [
     { n:'1', t:'Log in to your portal', d:'Use the credentials below to access your Parent Dashboard' },
     { n:'2', t:'Change your password', d:'Go to Settings in your portal and set a personal password' },
-    d.classroomLink ? { n:'3', t:'Join Google Classroom', d:`Click the Google Classroom button above - ${d.studentName} will find class materials there` } : { n:'3', t:'Watch for your session invite', d:'Your first Zoom session link will be sent within 24 hours' },
+    d.classroomLink ? { n:'3', t:'Join Google Classroom', d:`Click the Google Classroom button above - ${d.studentName} will find class materials there` } : { n:'3', t:'Join Live Coding Sessions', d:`Use the Google Meet link above at your scheduled class times` },
     { n:'4', t:'Track progress', d:"After every session you'll receive a progress update in your portal" }
   ];
 
@@ -212,8 +228,8 @@ function tplWelcome(d) {
       <p style="font-size:1rem;color:${C.textMuted};margin:0 0 24px;">Hi <strong style="color:#1e293b;">${d.parentName}</strong>, we're thrilled to have <strong style="color:${C.navy};">${d.studentName}</strong> join us for <strong>${d.courseName || 'their coding programme'}</strong>.</p>
 
       <div style="background:linear-gradient(135deg,${C.navy} 0%,#2d3f8c 100%);border-radius:12px;padding:24px;margin-bottom:24px;">
-        <p style="margin:0 0 4px;color:rgba(255,255,255,0.72);font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Parent Portal Login</p>
-        <p style="margin:0 0 16px;color:#fff;font-size:0.82rem;">Log in to track progress, view reports, and download certificates</p>
+        <p style="margin:0 0 4px;color:rgba(255,255,255,0.72);font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Parent Portal Login &amp; Class Details</p>
+        <p style="margin:0 0 16px;color:#fff;font-size:0.82rem;">Access your dashboard to track progress, download certificates, and view upcoming sessions</p>
         <table style="width:100%;border-collapse:collapse;">
           <tr>
             <td style="padding:6px 12px;background:rgba(255,255,255,0.1);border-radius:6px 0 0 0;color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:600;text-transform:uppercase;width:42%;">Email</td>
@@ -223,6 +239,7 @@ function tplWelcome(d) {
             <td style="padding:6px 12px;background:rgba(255,255,255,0.08);border-radius:0 0 0 6px;color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:600;text-transform:uppercase;">Temp Password</td>
             <td style="padding:6px 12px;background:rgba(255,255,255,0.08);border-radius:0 0 6px 0;font-family:monospace;font-weight:700;font-size:1rem;color:${C.orange};">${d.tempPassword}</td>
           </tr>
+          ${scheduleAndMeetSection}
           ${classroomSection}
         </table>
         <p style="margin:16px 0 0;color:rgba(255,255,255,0.55);font-size:0.75rem;">Please change your password after your first login.</p>

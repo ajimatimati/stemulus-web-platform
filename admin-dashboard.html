@@ -347,6 +347,12 @@
  </a>
  </li>
  <li>
+ <a href="#" data-section="tutors" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
+ <i data-lucide="briefcase" class="w-5 h-5"></i>
+ <span>Tutors Directory</span>
+ </a>
+ </li>
+ <li>
  <a href="#" data-section="schedules" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="calendar" class="w-5 h-5"></i>
  <span>Schedules</span>
@@ -490,40 +496,40 @@
 
  <!-- Main Content Area -->
  <main class="ml-0 lg:ml-64 min-h-screen">
- <!-- Top Bar -->
- <header class="sticky top-0 z-40 bg-gray-50/80 backdrop-blur-md border-b border-admin-border px-8 py-4">
- <div class="flex items-center justify-between">
- <div class="flex items-center gap-3">
- <button id="admin-menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-slate-800 focus:outline-none" aria-label="Toggle menu">
- <i data-lucide="menu" class="w-6 h-6"></i>
- </button>
- <div>
- <h1 id="page-title" class="text-xl font-nunito font-bold text-slate-800">Dashboard</h1>
- <p class="text-sm text-slate-500">Welcome back! Here's what's happening today.</p>
- </div>
- </div>
- <div class="flex items-center gap-4">
- <!-- Search -->
- <div class="relative">
- <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
- <input type="text" id="global-search" placeholder="Search students..."
- class="bg-white border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent w-64 transition-colors">
- </div>
- <!-- Quick Actions -->
- <button id="open-quick-onboard-btn" onclick="AdminEngine.openQuickOnboardModal()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-3.5 py-2 rounded-lg transition-all flex items-center gap-2 text-sm shadow-sm" style="background-color: #c2410c !important;">
- <i data-lucide="zap" class="w-4 h-4"></i>
- <span>Quick Onboard</span>
- </button>
- <button id="quick-add-student" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl shadow-sm transition-all flex items-center gap-2 text-sm">
- <i data-lucide="plus" class="w-4 h-4"></i>
- <span>Add Student</span>
- </button>
- </div>
- </div>
- </header>
+  <!-- Top Bar -->
+  <header class="sticky top-0 z-40 bg-gray-50/80 backdrop-blur-md border-b border-admin-border px-3 sm:px-6 lg:px-8 py-3">
+    <div class="flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+        <button id="admin-menu-btn" class="lg:hidden p-1.5 text-gray-600 hover:text-slate-800 focus:outline-none shrink-0" aria-label="Toggle menu">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        <div class="min-w-0">
+          <h1 id="page-title" class="text-base sm:text-xl font-nunito font-bold text-slate-800 truncate whitespace-nowrap">Dashboard</h1>
+          <p class="hidden sm:block text-xs sm:text-sm text-slate-500 truncate">Welcome back! Here's what's happening today.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <!-- Search (desktop only; mobile users have search in each section) -->
+        <div class="relative hidden md:block">
+          <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+          <input type="text" id="global-search" placeholder="Search students..."
+            class="bg-white border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent w-48 lg:w-64 transition-colors">
+        </div>
+        <!-- Quick Actions -->
+        <button id="open-quick-onboard-btn" onclick="AdminEngine.openQuickOnboardModal()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-2.5 sm:px-3.5 py-2 rounded-lg transition-all flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm shadow-sm" style="background-color: #c2410c !important;">
+          <i data-lucide="zap" class="w-4 h-4 shrink-0"></i>
+          <span class="hidden sm:inline">Quick Onboard</span>
+        </button>
+        <button id="quick-add-student" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 sm:px-4 py-2 rounded-xl shadow-sm transition-all flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm shrink-0">
+          <i data-lucide="plus" class="w-4 h-4 shrink-0"></i>
+          <span class="hidden sm:inline">Add Student</span>
+        </button>
+      </div>
+    </div>
+  </header>
 
- <!-- Content Sections -->
- <div class="p-8">
+  <!-- Content Sections -->
+  <div class="p-3 sm:p-6 lg:p-8">
  
  <!-- ===== DASHBOARD SECTION ===== -->
  <section id="section-dashboard" class="admin-section active animate-fadeIn">
@@ -827,7 +833,7 @@
  <option value="United States">United States</option>
  <option value="Canada">Canada</option>
  </select>
- <button type="button" onclick="AdminWorkflows.OnboardingWizard.openParentOnboarding()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm" style="background-color: #047857 !important;">
+ <button type="button" onclick="AdminEngine.openParentModal()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm" style="background-color: #047857 !important;">
  <i data-lucide="user-plus" class="w-4 h-4"></i>
  <span>Onboard Parent</span>
  </button>
@@ -860,6 +866,106 @@
  </div>
  </div>
  </section>
+
+  <!-- ===== TUTORS SECTION ===== -->
+  <section id="section-tutors" class="admin-section animate-fadeIn" style="display: none;">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-nunito font-bold text-slate-800">Tutors Directory & Faculty Operations</h2>
+        <p class="text-slate-500">Manage instructors, assign coders, monitor availability, and track engagement.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="AdminEngine.openTutorModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm" style="background-color: #059669 !important;">
+          <i data-lucide="user-plus" class="w-4 h-4"></i>
+          <span>+ Onboard New Tutor</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tutors Quick Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="admin-card rounded-2xl p-4 bg-white border border-admin-border">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 font-bold">
+            <i data-lucide="users" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 font-bold uppercase">Total Faculty</p>
+            <p id="tutor-stat-total" class="text-xl font-bold text-slate-800">0</p>
+          </div>
+        </div>
+      </div>
+      <div class="admin-card rounded-2xl p-4 bg-white border border-admin-border">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold">
+            <i data-lucide="check-circle" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 font-bold uppercase">Active Mentors</p>
+            <p id="tutor-stat-active" class="text-xl font-bold text-slate-800">0</p>
+          </div>
+        </div>
+      </div>
+      <div class="admin-card rounded-2xl p-4 bg-white border border-admin-border">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+            <i data-lucide="code" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 font-bold uppercase">Assigned Coders</p>
+            <p id="tutor-stat-coders" class="text-xl font-bold text-slate-800">0</p>
+          </div>
+        </div>
+      </div>
+      <div class="admin-card rounded-2xl p-4 bg-white border border-admin-border">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600 font-bold">
+            <i data-lucide="calendar" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 font-bold uppercase">Sessions Scheduled</p>
+            <p id="tutor-stat-sessions" class="text-xl font-bold text-slate-800">0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tutors Directory Table Container -->
+    <div class="admin-card rounded-2xl overflow-hidden border border-admin-border bg-white shadow-sm">
+      <div class="p-4 border-b border-admin-border bg-gray-50 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="relative w-full sm:w-80">
+          <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+          <input type="text" id="tutors-search" oninput="AdminEngine.filterTutors(this.value)" placeholder="Search tutors by name, email, subject..."
+            class="w-full bg-white border border-admin-border rounded-xl py-2 pl-9 pr-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-admin-accent transition-colors">
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+          <select id="tutors-status-filter" onchange="AdminEngine.filterTutors(undefined, this.value)" class="bg-white border border-admin-border rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none">
+            <option value="all">All Statuses</option>
+            <option value="active">Active Only</option>
+            <option value="disengaged">Disengaged Only</option>
+          </select>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-gray-50/75 border-b border-admin-border text-xs uppercase font-bold text-slate-500 tracking-wider">
+            <tr>
+              <th class="px-6 py-4">Tutor Profile</th>
+              <th class="px-6 py-4">Subjects / Tracks</th>
+              <th class="px-6 py-4">Assigned Coders</th>
+              <th class="px-6 py-4">Status</th>
+              <th class="px-6 py-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tutors-table-body" class="divide-y divide-admin-border text-sm">
+            <tr>
+              <td colspan="5" class="px-6 py-8 text-center text-slate-400 font-medium">Loading tutors directory...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
  <!-- ===== SCHEDULES SECTION ===== -->
  <section id="section-schedules" class="admin-section animate-fadeIn">
@@ -1546,7 +1652,7 @@
  <h2 class="text-2xl font-nunito font-bold text-slate-800">Enrollment Assignments</h2>
  <p class="text-slate-500">Assign tutors to unassigned enrollments</p>
  </div>
- <button onclick="AdminWorkflows.EnrollmentAssignment.renderAssignmentPanel('assignment-panel')"
+ <button onclick="AdminWorkflows.EnrollmentAssignment.renderAssignmentPanel('assignment-panel', true)"
  class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm">
  <i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh
  </button>
@@ -1822,6 +1928,137 @@
  </div>
  </div>
  </div>
+
+  <!-- Dedicated Add Child Modal -->
+  <div id="add-child-modal" class="fixed inset-0 z-50 hidden">
+    <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('add-child-modal')"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div class="admin-card rounded-2xl p-8 m-4 bg-white shadow-2xl animate-fadeIn">
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+              <i data-lucide="user-plus" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-nunito font-bold text-slate-800">Add Child to Parent</h3>
+              <p id="ac-parent-display" class="text-xs text-slate-500 font-medium truncate max-w-[280px]">Linking to parent account</p>
+            </div>
+          </div>
+          <button class="text-slate-400 hover:text-slate-700 transition-colors p-1" onclick="AdminEngine.closeModal('add-child-modal')">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <form id="add-child-form" onsubmit="AdminEngine.saveChildToParent(event)" class="space-y-4">
+          <input type="hidden" id="ac-parent-email">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Child First Name *</label>
+              <input type="text" id="ac-first-name" required placeholder="e.g. Modesire"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Child Last Name *</label>
+              <input type="text" id="ac-last-name" required placeholder="e.g. Shittu"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Age *</label>
+              <input type="number" id="ac-age" required min="4" max="18" value="10"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Gender</label>
+              <select id="ac-gender" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
+                <option value="Not specified">-- Select --</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Birthday</label>
+              <input type="date" id="ac-birthday"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Course / Program *</label>
+            <select id="ac-course" required class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
+              <option value="Python Programming Foundations">Python Programming Foundations</option>
+              <option value="Scratch Creators">Scratch Creators (Ages 6-9)</option>
+              <option value="Full-Stack Web Development">Full-Stack Web Development</option>
+              <option value="Robotics &amp; Arduino IoT">Robotics &amp; Arduino IoT</option>
+              <option value="AI &amp; Machine Learning for Kids">AI &amp; Machine Learning for Kids</option>
+              <option value="Digital Art &amp; Game Design">Digital Art &amp; Game Design</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Assigned Tutor *</label>
+            <select id="ac-tutor" required class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
+              <option value="Sarah Jane">Sarah Jane</option>
+              <option value="David Okon">David Okon</option>
+              <option value="Faculty Instructor">Faculty Instructor</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-3 pt-3">
+            <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition-all shadow-md text-sm">
+              Save Child to Parent
+            </button>
+            <button type="button" onclick="AdminEngine.closeModal('add-child-modal')" class="px-5 py-2.5 text-slate-500 hover:text-slate-800 font-semibold text-sm">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Assign Coders to Tutor -->
+  <div id="tutor-assign-coder-modal" class="fixed inset-0 z-50 hidden">
+    <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('tutor-assign-coder-modal')"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl max-h-[90vh] overflow-y-auto">
+      <div class="admin-card rounded-2xl p-6 sm:p-8 m-4 bg-white shadow-2xl animate-fadeIn">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+          <div>
+            <h3 class="text-lg font-nunito font-bold text-slate-800" id="tac-modal-title">Assign Coders to Tutor</h3>
+            <p class="text-xs text-slate-500" id="tac-modal-subtitle">Select which students are taught by this tutor</p>
+          </div>
+          <button class="text-slate-400 hover:text-slate-700 p-1" onclick="AdminEngine.closeModal('tutor-assign-coder-modal')">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <input type="hidden" id="tac-tutor-identifier">
+        <div class="mb-3">
+          <input type="text" id="tac-coder-search" oninput="AdminEngine.filterCoderAssignmentList(this.value)" placeholder="Search coders by name or course..."
+            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
+        </div>
+
+        <div id="tac-coders-list" class="space-y-2 max-h-72 overflow-y-auto pr-1">
+          <!-- Populated dynamically with checkboxes -->
+        </div>
+
+        <div class="flex items-center justify-between pt-5 border-t border-slate-100 mt-4">
+          <p class="text-xs text-slate-400"><span id="tac-selected-count">0</span> coders selected</p>
+          <div class="flex items-center gap-3">
+            <button type="button" onclick="AdminEngine.closeModal('tutor-assign-coder-modal')" class="px-4 py-2 text-slate-500 hover:text-slate-800 text-sm font-semibold">
+              Cancel
+            </button>
+            <button type="button" onclick="AdminEngine.saveTutorCoderAssignment()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow transition-all">
+              Save Assignments
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
  
  <!-- Add/Edit Student Modal -->
  <div id="student-modal" class="fixed inset-0 z-50 hidden">
@@ -1969,183 +2206,188 @@
 
  <!-- Add/Edit Schedule Modal -->
  <div id="schedule-modal" class="fixed inset-0 z-50 hidden">
- <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('schedule-modal')"></div>
- <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl max-h-[90vh] overflow-y-auto">
- <div class="admin-card rounded-2xl p-8 m-4 animate-fadeIn">
- <div class="flex items-center justify-between mb-6">
-  <div class="flex items-center justify-between mb-4">
-  <h3 id="schedule-modal-title" class="text-xl font-nunito font-bold text-slate-800">Class Scheduling</h3>
-  <button class="text-slate-500 hover:text-slate-800 transition-colors font-semibold" onclick="AdminEngine.closeModal('schedule-modal')">
-  <i data-lucide="x" class="w-6 h-6"></i>
-  </button>
-  </div>
-
-  <!-- Scheduling Mode Switcher -->
-  <div id="schedule-tab-switcher" class="flex items-center gap-1.5 mb-5 bg-slate-100 p-1 rounded-xl">
-    <button type="button" id="tab-sched-single" onclick="AdminEngine.switchScheduleTab('single')" class="flex-1 py-2 text-xs font-bold rounded-lg bg-white text-slate-800 shadow-sm transition-all flex items-center justify-center gap-1.5">
-      <i data-lucide="calendar" class="w-3.5 h-3.5 text-blue-600"></i> Single Session
-    </button>
-    <button type="button" id="tab-sched-recurring" onclick="AdminEngine.switchScheduleTab('recurring')" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition-all flex items-center justify-center gap-1.5">
-      <i data-lucide="repeat" class="w-3.5 h-3.5 text-indigo-600"></i> Batch Recurring (Full Month)
-    </button>
-  </div>
-  
-  <form id="schedule-form" class="space-y-4">
-  <input type="hidden" id="schedule-id">
-
-  <div>
-  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Student *</label>
-  <select id="schedule-student" required
-  class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors"
-  onchange="AdminEngine.handleScheduleStudentChange(this.value)">
-  <option value="">-- Select Student --</option>
-  </select>
-  </div>
-
-  <div>
-  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Course *</label>
-  <select id="schedule-course" required
-  class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
-  <option value="">-- Select Course --</option>
-  <option value="junior-robotics">Junior Robotics</option>
-  <option value="python-programming">Python Programming Foundations</option>
-  <option value="web-design">Web Design &amp; Development</option>
-  <option value="scratch-coding">Scratch Creators</option>
-  <option value="data-apps">Python Data App Academy</option>
-  </select>
-  </div>
-
-  <div>
-  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Mentor *</label>
-  <select id="schedule-mentor" required
-  class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
-  <option value="">-- Select Mentor --</option>
-  </select>
-  </div>
-
-  <div>
-  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Zoom / Classroom Link</label>
-  <input type="url" id="schedule-link"
-  class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-indigo-500 transition-colors"
-  placeholder="https://zoom.us/j/...">
-  </div>
-
-  <!-- SINGLE SESSION SECTION -->
-  <div id="single-schedule-fields" class="space-y-4">
-    <div class="grid grid-cols-2 gap-3">
-      <div>
-        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Date *</label>
-        <input type="date" id="schedule-date"
-        class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
-      </div>
-      <div>
-        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Time *</label>
-        <input type="time" id="schedule-time"
-        class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
-      </div>
-    </div>
-    <div>
-      <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Duration (mins)</label>
-      <select id="schedule-duration"
-      class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
-        <option value="60">60 minutes</option>
-        <option value="90">90 minutes</option>
-        <option value="120">120 minutes</option>
-      </select>
-    </div>
-    <div class="flex items-center gap-3 pt-3">
-      <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all shadow-md text-xs">
-        Save Single Session
-      </button>
-      <button type="button" class="px-5 py-3 text-slate-500 hover:text-slate-800 transition-colors font-bold text-xs" onclick="AdminEngine.closeModal('schedule-modal')">
-        Cancel
-      </button>
-    </div>
-  </div>
-
-  <!-- RECURRING BATCH SECTION -->
-  <div id="recurring-schedule-fields" class="space-y-4 hidden">
-    <div class="grid grid-cols-2 gap-3">
-      <div>
-        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Target Month *</label>
-        <input type="month" id="rec-schedule-month" onchange="AdminEngine.updateRecurringPreview()"
-        class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
-      </div>
-      <div>
-        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Class Time *</label>
-        <input type="time" id="rec-schedule-time" value="16:30" onchange="AdminEngine.updateRecurringPreview()"
-        class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
-      </div>
-    </div>
-
-    <div>
-      <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Duration</label>
-      <select id="rec-schedule-duration"
-      class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
-        <option value="60">60 minutes</option>
-        <option value="90">90 minutes</option>
-        <option value="120">120 minutes</option>
-      </select>
-    </div>
-
-    <div>
-      <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Class Days of the Week (Select all that apply)</label>
-      <div class="grid grid-cols-7 gap-1.5 text-center text-xs font-bold text-slate-600">
-        <label class="cursor-pointer border border-gray-200 rounded-xl p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
-          <input type="checkbox" value="1" class="rec-day-checkbox accent-indigo-600 w-4 h-4" onchange="AdminEngine.updateRecurringPreview()">
-          <span>Mon</span>
-        </label>
-        <label class="cursor-pointer border border-gray-200 rounded-xl p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
-          <input type="checkbox" value="2" class="rec-day-checkbox accent-indigo-600 w-4 h-4" onchange="AdminEngine.updateRecurringPreview()">
-          <span>Tue</span>
-        </label>
-        <label class="cursor-pointer border border-gray-200 rounded-xl p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
-          <input type="checkbox" value="3" class="rec-day-checkbox accent-indigo-600 w-4 h-4" onchange="AdminEngine.updateRecurringPreview()">
-          <span>Wed</span>
-        </label>
-        <label class="cursor-pointer border border-gray-200 rounded-xl p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
-          <input type="checkbox" value="4" class="rec-day-checkbox accent-indigo-600 w-4 h-4" onchange="AdminEngine.updateRecurringPreview()">
-          <span>Thu</span>
-        </label>
-        <label class="cursor-pointer border border-gray-200 rounded-xl p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
-          <input type="checkbox" value="5" class="rec-day-checkbox accent-indigo-600 w-4 h-4" onchange="AdminEngine.updateRecurringPreview()">
-          <span>Fri</span>
-        </label>
-        <label class="cursor-pointer border border-gray-200 rounded-xl p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
-          <input type="checkbox" value="6" class="rec-day-checkbox accent-indigo-600 w-4 h-4" onchange="AdminEngine.updateRecurringPreview()">
-          <span>Sat</span>
-        </label>
-        <label class="cursor-pointer border border-gray-200 rounded-xl p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
-          <input type="checkbox" value="0" class="rec-day-checkbox accent-indigo-600 w-4 h-4" onchange="AdminEngine.updateRecurringPreview()">
-          <span>Sun</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Calculated Preview Box -->
-    <div id="rec-schedule-preview-box" class="bg-indigo-50/70 border border-indigo-100 rounded-xl p-3.5 space-y-2">
-      <div class="flex items-center justify-between text-xs">
-        <span class="font-extrabold text-indigo-900 uppercase tracking-wider flex items-center gap-1.5">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-600"></i> Generated Sessions Preview
-        </span>
-        <span id="rec-count-badge" class="bg-indigo-600 text-white font-bold px-2 py-0.5 rounded-md text-[10px]">0 sessions</span>
-      </div>
-      <div id="rec-dates-chips" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto text-[11px] text-indigo-800">
-        <span class="text-slate-600 italic">Select weekdays and month to preview generated calendar sessions...</span>
-      </div>
-    </div>
-
-    <div class="flex items-center gap-3 pt-3">
-      <button type="button" onclick="AdminEngine.generateRecurringBatch()" class="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold py-3 rounded-xl transition-all shadow-md text-xs flex items-center justify-center gap-2">
-        <i data-lucide="calendar-plus" class="w-4 h-4"></i> Generate All Sessions for Month
-      </button>
-      <button type="button" class="px-5 py-3 text-slate-500 hover:text-slate-800 transition-colors font-bold text-xs" onclick="AdminEngine.closeModal('schedule-modal')">
-        Cancel
-      </button>
-    </div>
-  </div>
-  </form>
+ <div class="modal-overlay absolute inset-0 bg-black/75 backdrop-blur-sm" onclick="AdminEngine.closeModal('schedule-modal')"></div>
+ <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[92vh] overflow-y-auto p-3 sm:p-4">
+ <div class="admin-card rounded-2xl p-5 sm:p-7 bg-white shadow-2xl border border-slate-100 animate-fadeIn">
+ 
+ <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
+ <div>
+ <h3 id="schedule-modal-title" class="text-lg sm:text-xl font-nunito font-bold text-slate-800">Class Scheduling</h3>
+ <p class="text-xs text-slate-500">Configure single sessions or generate recurring monthly schedules</p>
  </div>
+ <button type="button" class="text-slate-400 hover:text-slate-700 transition-colors p-1.5 rounded-lg hover:bg-slate-100" onclick="AdminEngine.closeModal('schedule-modal')">
+ <i data-lucide="x" class="w-5 h-5"></i>
+ </button>
+ </div>
+
+ <!-- Scheduling Mode Switcher -->
+ <div id="schedule-tab-switcher" class="flex items-center gap-1.5 mb-5 bg-slate-100 p-1 rounded-xl">
+ <button type="button" id="tab-sched-single" onclick="AdminEngine.switchScheduleTab('single')" class="flex-1 py-2 text-xs font-bold rounded-lg bg-white text-slate-800 shadow-sm transition-all flex items-center justify-center gap-1.5">
+ <i data-lucide="calendar" class="w-3.5 h-3.5 text-blue-600"></i> Single Session
+ </button>
+ <button type="button" id="tab-sched-recurring" onclick="AdminEngine.switchScheduleTab('recurring')" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition-all flex items-center justify-center gap-1.5">
+ <i data-lucide="repeat" class="w-3.5 h-3.5 text-indigo-600"></i> Batch Recurring (Full Month)
+ </button>
+ </div>
+ 
+ <form id="schedule-form" class="space-y-4">
+ <input type="hidden" id="schedule-id">
+
+ <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+ <div>
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Student *</label>
+ <select id="schedule-student" required
+ class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors"
+ onchange="AdminEngine.handleScheduleStudentChange(this.value)">
+ <option value="">-- Select Student --</option>
+ </select>
+ </div>
+
+ <div>
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Course *</label>
+ <select id="schedule-course" required
+ class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
+ <option value="">-- Select Course --</option>
+ <option value="junior-robotics">Junior Robotics</option>
+ <option value="python-programming">Python Programming Foundations</option>
+ <option value="web-design">Web Design &amp; Development</option>
+ <option value="scratch-coding">Scratch Creators</option>
+ <option value="data-apps">Python Data App Academy</option>
+ </select>
+ </div>
+ </div>
+
+ <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+ <div>
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Mentor / Tutor *</label>
+ <select id="schedule-mentor" required
+ class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
+ <option value="">-- Select Mentor --</option>
+ </select>
+ </div>
+
+ <div>
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Zoom / Google Meet Link</label>
+ <input type="url" id="schedule-link"
+ class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-indigo-500 transition-colors"
+ placeholder="https://meet.google.com/...">
+ </div>
+ </div>
+
+ <!-- SINGLE SESSION SECTION -->
+ <div id="single-schedule-fields" class="space-y-4 pt-2 border-t border-slate-100">
+ <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+ <div>
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Date *</label>
+ <input type="date" id="schedule-date"
+ class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
+ </div>
+ <div>
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Time *</label>
+ <input type="time" id="schedule-time"
+ class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
+ </div>
+ <div>
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Duration</label>
+ <select id="schedule-duration"
+ class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
+ <option value="60">60 minutes</option>
+ <option value="90">90 minutes</option>
+ <option value="120">120 minutes</option>
+ </select>
+ </div>
+ </div>
+ <div class="flex items-center gap-3 pt-3">
+ <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all shadow-md text-xs">
+ Save Single Session
+ </button>
+ <button type="button" class="px-5 py-3 text-slate-500 hover:text-slate-800 transition-colors font-bold text-xs" onclick="AdminEngine.closeModal('schedule-modal')">
+ Cancel
+ </button>
+ </div>
+ </div>
+
+ <!-- RECURRING BATCH SECTION -->
+ <div id="recurring-schedule-fields" class="space-y-4 hidden pt-2 border-t border-slate-100">
+ <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+ <div>
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Target Month *</label>
+ <input type="month" id="rec-schedule-month" onchange="AdminEngine.updateRecurringPreview()"
+ class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
+ </div>
+ <div>
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Class Time *</label>
+ <input type="time" id="rec-schedule-time" value="16:30" onchange="AdminEngine.updateRecurringPreview()"
+ class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
+ </div>
+ <div>
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Duration</label>
+ <select id="rec-schedule-duration" onchange="AdminEngine.updateRecurringPreview()"
+ class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
+ <option value="60">60 minutes</option>
+ <option value="90">90 minutes</option>
+ <option value="120">120 minutes</option>
+ </select>
+ </div>
+ </div>
+
+ <div>
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Class Days of the Week (Select all that apply)</label>
+ <div class="grid grid-cols-7 gap-1 sm:gap-1.5 text-center text-xs font-bold text-slate-600">
+ <label class="cursor-pointer border border-gray-200 rounded-xl p-1.5 sm:p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
+ <input type="checkbox" value="1" class="rec-day-checkbox accent-indigo-600 w-3.5 h-3.5 sm:w-4 sm:h-4" onchange="AdminEngine.updateRecurringPreview()">
+ <span class="text-[10px] sm:text-xs">Mon</span>
+ </label>
+ <label class="cursor-pointer border border-gray-200 rounded-xl p-1.5 sm:p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
+ <input type="checkbox" value="2" class="rec-day-checkbox accent-indigo-600 w-3.5 h-3.5 sm:w-4 sm:h-4" onchange="AdminEngine.updateRecurringPreview()">
+ <span class="text-[10px] sm:text-xs">Tue</span>
+ </label>
+ <label class="cursor-pointer border border-gray-200 rounded-xl p-1.5 sm:p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
+ <input type="checkbox" value="3" class="rec-day-checkbox accent-indigo-600 w-3.5 h-3.5 sm:w-4 sm:h-4" onchange="AdminEngine.updateRecurringPreview()">
+ <span class="text-[10px] sm:text-xs">Wed</span>
+ </label>
+ <label class="cursor-pointer border border-gray-200 rounded-xl p-1.5 sm:p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
+ <input type="checkbox" value="4" class="rec-day-checkbox accent-indigo-600 w-3.5 h-3.5 sm:w-4 sm:h-4" onchange="AdminEngine.updateRecurringPreview()">
+ <span class="text-[10px] sm:text-xs">Thu</span>
+ </label>
+ <label class="cursor-pointer border border-gray-200 rounded-xl p-1.5 sm:p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
+ <input type="checkbox" value="5" class="rec-day-checkbox accent-indigo-600 w-3.5 h-3.5 sm:w-4 sm:h-4" onchange="AdminEngine.updateRecurringPreview()">
+ <span class="text-[10px] sm:text-xs">Fri</span>
+ </label>
+ <label class="cursor-pointer border border-gray-200 rounded-xl p-1.5 sm:p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
+ <input type="checkbox" value="6" class="rec-day-checkbox accent-indigo-600 w-3.5 h-3.5 sm:w-4 sm:h-4" onchange="AdminEngine.updateRecurringPreview()">
+ <span class="text-[10px] sm:text-xs">Sat</span>
+ </label>
+ <label class="cursor-pointer border border-gray-200 rounded-xl p-1.5 sm:p-2.5 hover:bg-slate-50 transition-colors flex flex-col items-center gap-1">
+ <input type="checkbox" value="0" class="rec-day-checkbox accent-indigo-600 w-3.5 h-3.5 sm:w-4 sm:h-4" onchange="AdminEngine.updateRecurringPreview()">
+ <span class="text-[10px] sm:text-xs">Sun</span>
+ </label>
+ </div>
+ </div>
+
+ <!-- Calculated Preview Box -->
+ <div id="rec-schedule-preview-box" class="bg-indigo-50/70 border border-indigo-100 rounded-xl p-3.5 space-y-2">
+ <div class="flex items-center justify-between text-xs">
+ <span class="font-extrabold text-indigo-900 uppercase tracking-wider flex items-center gap-1.5">
+ <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-600"></i> Generated Sessions Preview
+ </span>
+ <span id="rec-count-badge" class="bg-indigo-600 text-white font-bold px-2 py-0.5 rounded-md text-[10px]">0 sessions</span>
+ </div>
+ <div id="rec-dates-chips" class="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto text-[11px] text-indigo-800">
+ <span class="text-slate-600 italic">Select weekdays and target month to preview generated calendar sessions...</span>
+ </div>
+ </div>
+
+ <div class="flex items-center gap-3 pt-3">
+ <button type="button" onclick="AdminEngine.generateRecurringBatch()" class="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold py-3 rounded-xl transition-all shadow-md text-xs flex items-center justify-center gap-2">
+ <i data-lucide="calendar-plus" class="w-4 h-4"></i> Generate All Sessions for Month
+ </button>
+ <button type="button" class="px-5 py-3 text-slate-500 hover:text-slate-800 transition-colors font-bold text-xs" onclick="AdminEngine.closeModal('schedule-modal')">
+ Cancel
+ </button>
+ </div>
+ </div>
+ </form>
  </div>
  </div>
  </div>

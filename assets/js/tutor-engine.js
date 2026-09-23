@@ -501,11 +501,162 @@ const TutorEngine = (function() {
         document.getElementById('tutor-report-form').addEventListener('submit', submitReportForm);
     }
 
+    const DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const TIME_SLOTS = [
+        { id: 'morning', label: 'Morning' },
+        { id: 'afternoon', label: 'Afternoon' },
+        { id: 'evening', label: 'Evening' },
+        { id: 'night', label: 'Night' }
+    ];
+
+    function openProfileModal() {
+        const modal = document.getElementById('tutor-profile-modal');
+        if (!modal) return;
+
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
+        const session = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSession) ? DashboardEngine.getSession() : currentTutor;
+        const email = session ? (session.email || '').toLowerCase() : '';
+
+        // Find tutor record
+        let tutor = null;
+        if (db && db.tutors) {
+            tutor = db.tutors.find(t => t.email && t.email.toLowerCase() === email);
+        }
+        if (!tutor) tutor = session || {};
+
+        const nameInput = document.getElementById('tp-name');
+        const emailInput = document.getElementById('tp-email');
+        const phoneInput = document.getElementById('tp-phone');
+        const subjectsInput = document.getElementById('tp-subjects');
+        const bioInput = document.getElementById('tp-bio');
+
+        if (nameInput) nameInput.value = tutor.name || '';
+        if (emailInput) emailInput.value = tutor.email || email || '';
+        if (phoneInput) phoneInput.value = tutor.phone || tutor.whatsapp || '';
+        if (subjectsInput) {
+            subjectsInput.value = Array.isArray(tutor.subjects) ? tutor.subjects.join(', ') : (tutor.subjects || '');
+        }
+        if (bioInput) bioInput.value = tutor.bio || '';
+
+        // Render Availability Matrix
+        const matrixTbody = document.getElementById('tp-matrix-tbody');
+        if (matrixTbody) {
+            const avail = tutor.availability || {};
+            matrixTbody.innerHTML = DAYS_OF_WEEK.map(day => {
+                const dayKey = day.toLowerCase();
+                const daySlots = avail[dayKey] || [];
+                return `
+                    <tr class="hover:bg-slate-100/50 transition-colors">
+                        <td class="py-2.5 px-3 text-left font-bold text-slate-700">${day}</td>
+                        ${TIME_SLOTS.map(slot => {
+                            const isChecked = Array.isArray(daySlots) && daySlots.includes(slot.id);
+                            return `
+                                <td class="py-2.5 px-1">
+                                    <label class="inline-flex items-center justify-center p-1 cursor-pointer">
+                                        <input type="checkbox" name="avail-${dayKey}" value="${slot.id}" ${isChecked ? 'checked' : ''}
+                                            class="w-4 h-4 rounded text-orange-500 focus:ring-orange-400 border-slate-300">
+                                    </label>
+                                </td>
+                            `;
+                        }).join('')}
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        modal.classList.remove('hidden');
+    }
+
+    function closeProfileModal() {
+        const modal = document.getElementById('tutor-profile-modal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function saveProfile(e) {
+        if (e && e.preventDefault) e.preventDefault();
+
+        const name = (document.getElementById('tp-name').value || '').trim();
+        const email = (document.getElementById('tp-email').value || '').trim().toLowerCase();
+        const phone = (document.getElementById('tp-phone').value || '').trim();
+        const subjectsStr = (document.getElementById('tp-subjects').value || '').trim();
+        const bio = (document.getElementById('tp-bio').value || '').trim();
+        const subjects = subjectsStr ? subjectsStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+        // Build availability matrix object
+        const availability = {};
+        DAYS_OF_WEEK.forEach(day => {
+            const dayKey = day.toLowerCase();
+            const checkedBoxes = Array.from(document.querySelectorAll(`input[name="avail-${dayKey}"]:checked`)).map(cb => cb.value);
+            availability[dayKey] = checkedBoxes;
+        });
+
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
+        if (db) {
+            if (!db.tutors) db.tutors = [];
+            let tIdx = db.tutors.findIndex(t => t.email && t.email.toLowerCase() === email);
+            if (tIdx !== -1) {
+                db.tutors[tIdx].name = name;
+                db.tutors[tIdx].phone = phone;
+                db.tutors[tIdx].subjects = subjects;
+                db.tutors[tIdx].bio = bio;
+                db.tutors[tIdx].availability = availability;
+            } else {
+                db.tutors.push({
+                    name,
+                    email,
+                    phone,
+                    subjects,
+                    bio,
+                    availability,
+                    status: 'active'
+                });
+            }
+
+            // Sync user name
+            if (db.users) {
+                const u = db.users.find(user => user.email && user.email.toLowerCase() === email);
+                if (u) {
+                    u.name = name;
+                    u.phone = phone;
+                }
+            }
+
+            try {
+                localStorage.setItem('stemulus_db', JSON.stringify(db));
+                // Update session
+                const session = JSON.parse(sessionStorage.getItem('stemulus_session') || '{}');
+                session.name = name;
+                session.phone = phone;
+                sessionStorage.setItem('stemulus_session', JSON.stringify(session));
+                window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { source: 'tutor_profile_update' } }));
+            } catch(err) {}
+        }
+
+        // Update UI
+        const nameEl = document.getElementById('tutor-name');
+        if (nameEl) nameEl.textContent = name;
+        const avatarEl = document.getElementById('avatar-initials');
+        if (avatarEl) avatarEl.textContent = (name || 'T')[0].toUpperCase();
+        const sidebarName = document.getElementById('sidebar-tutor-name');
+        if (sidebarName) sidebarName.textContent = name;
+
+        if (typeof showToast === 'function') {
+            showToast('Profile & availability matrix updated successfully!', 'success');
+        } else if (typeof DashboardEngine !== 'undefined' && DashboardEngine.showToast) {
+            DashboardEngine.showToast('Profile & availability matrix updated successfully!', 'success');
+        }
+
+        closeProfileModal();
+    }
+
     return {
         init,
         renderDashboard,
         openReportModal,
-        closeReportModal
+        closeReportModal,
+        openProfileModal,
+        closeProfileModal,
+        saveProfile
     };
 })();
 

@@ -1250,6 +1250,7 @@ function loadDashboardData() {
     loadStats();
     loadStudents();
     loadParents();
+    loadTutors();
     loadSchedules();
     loadProjects();
     loadCertificates();
@@ -1947,7 +1948,7 @@ function renderParentsTable(parents) {
                 </td>
                 <td class="px-6 py-4 text-right">
                     <div class="flex items-center justify-end gap-2">
-                        <button class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors" onclick="AdminWorkflows.OnboardingWizard.openParentOnboarding({ name: '${p.name.replace(/'/g, "\\'")}', email: '${p.email}', phone: '${p.phone || ''}', country: '${p.country || ''}' })" title="Edit / Add Child">
+                        <button class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors" onclick="AdminEngine.openAddChildModal('${p.email}')" title="Add Child to this Parent">
                             + Child
                         </button>
                         <a href="mailto:${p.email}" class="text-slate-400 hover:text-blue-600 transition-colors p-1" title="Email Parent">
@@ -2096,15 +2097,50 @@ function renderStudentsTable(students) {
 }
 
 function populateTutorsDropdown() {
-    const select = document.getElementById('student-tutor');
+    const tutors = DashboardEngine.getTutors ? DashboardEngine.getTutors() : [];
+    const selects = ['student-tutor', 'schedule-mentor', 'new-child-tutor', 'add-child-tutor'];
+    selects.forEach(id => {
+        const select = document.getElementById(id);
+        if (!select) return;
+        const currentVal = select.value;
+        select.innerHTML = '<option value="">-- Select Tutor --</option>' +
+            tutors.map(t => `<option value="${t.name}" data-tutor-email="${t.email || ''}" data-tutor-id="${t.id || ''}">${t.name}</option>`).join('');
+        if (currentVal) select.value = currentVal;
+    });
+}
+
+function populateParentDropdowns() {
+    const select = document.getElementById('student-parent-select');
     if (!select) return;
-    const tutors = DashboardEngine.getTutors();
-    select.innerHTML = '<option value="">-- Select Tutor --</option>' +
-        tutors.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+    const parents = DashboardEngine.getParents ? DashboardEngine.getParents() : [];
+    const currentVal = select.value;
+    select.innerHTML = '<option value="">-- Select Existing Parent (or type new details below) --</option>' +
+        parents.map(p => `<option value="${p.id || p.email}" data-name="${(p.name || '').replace(/"/g, '&quot;')}" data-email="${p.email || ''}" data-phone="${p.phone || ''}">${p.name} (${p.email})</option>`).join('');
+    if (currentVal) select.value = currentVal;
+}
+
+function onParentSelectChange(val) {
+    if (!val) return;
+    const select = document.getElementById('student-parent-select');
+    if (!select) return;
+    const opt = select.options[select.selectedIndex];
+    if (!opt) return;
+    const name = opt.dataset.name || '';
+    const email = opt.dataset.email || '';
+    const phone = opt.dataset.phone || '';
+
+    const nameInput = document.getElementById('parent-name');
+    const emailInput = document.getElementById('parent-email');
+    const phoneInput = document.getElementById('parent-phone');
+
+    if (nameInput && name) nameInput.value = name;
+    if (emailInput && email) emailInput.value = email;
+    if (phoneInput && phone) phoneInput.value = phone;
 }
 
 function openStudentModal(studentId = null) {
     populateTutorsDropdown();
+    populateParentDropdowns();
     const modal = document.getElementById('student-modal');
     const title = document.getElementById('student-modal-title');
     const form = document.getElementById('student-form');
@@ -2133,6 +2169,13 @@ function openStudentModal(studentId = null) {
             if (document.getElementById('student-birthday')) document.getElementById('student-birthday').value = student.birthday || '';
             var classroomInput = document.getElementById('student-classroom-link');
             if (classroomInput) classroomInput.value = student.classroomLink || '';
+
+            // Set parent dropdown match if found
+            const parentSelect = document.getElementById('student-parent-select');
+            if (parentSelect && student.parentEmail) {
+                const opt = Array.from(parentSelect.options).find(o => (o.dataset.email || '').toLowerCase() === student.parentEmail.toLowerCase());
+                if (opt) parentSelect.value = opt.value;
+            }
         }
     } else {
         if (title) title.textContent = 'Add New Student';
@@ -2168,7 +2211,11 @@ function saveStudent(e) {
 
     const program = document.getElementById('student-course').value;
     const status = document.getElementById('student-status').value;
-    const tutorName = document.getElementById('student-tutor').value;
+    const tutorSelect = document.getElementById('student-tutor');
+    const selectedTutorOpt = tutorSelect ? tutorSelect.options[tutorSelect.selectedIndex] : null;
+    const tutorName = tutorSelect ? tutorSelect.value : '';
+    const tutorEmail = selectedTutorOpt ? (selectedTutorOpt.dataset.tutorEmail || '') : '';
+    const tutorId = selectedTutorOpt ? (selectedTutorOpt.dataset.tutorId || '') : '';
     const notes = document.getElementById('student-notes') ? document.getElementById('student-notes').value.trim() : '';
     const classroomLink = (document.getElementById('student-classroom-link') || {}).value || '';
 
@@ -2177,6 +2224,7 @@ function saveStudent(e) {
         return;
     }
 
+    const existingStudentObj = id ? studentsCache.find(s => s.id === id) : null;
     const studentData = {
         firstName,
         lastName,
@@ -2191,6 +2239,8 @@ function saveStudent(e) {
         program,
         status,
         tutorName,
+        tutorEmail: tutorEmail || (existingStudentObj ? existingStudentObj.tutorEmail : ''),
+        tutorId: tutorId || (existingStudentObj ? existingStudentObj.tutorId : ''),
         notes,
         classroomLink
     };
@@ -2578,6 +2628,167 @@ function deleteSchedule(id) {
     if (!confirm('Are you sure you want to cancel this scheduled session?')) return;
     DashboardEngine.deleteSchedule(id);
     showToast('Session cancelled.', 'success');
+    loadDashboardData();
+}
+
+function switchScheduleTab(tab) {
+    const singleFields = document.getElementById('single-schedule-fields');
+    const recFields = document.getElementById('recurring-schedule-fields');
+    const tabSingle = document.getElementById('tab-sched-single');
+    const tabRec = document.getElementById('tab-sched-recurring');
+
+    if (tab === 'single') {
+        if (singleFields) singleFields.classList.remove('hidden');
+        if (recFields) recFields.classList.add('hidden');
+        if (tabSingle) {
+            tabSingle.className = 'flex-1 py-2 text-xs font-bold rounded-lg bg-white text-slate-800 shadow-sm transition-all flex items-center justify-center gap-1.5';
+        }
+        if (tabRec) {
+            tabRec.className = 'flex-1 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition-all flex items-center justify-center gap-1.5';
+        }
+    } else {
+        if (singleFields) singleFields.classList.add('hidden');
+        if (recFields) recFields.classList.remove('hidden');
+        if (tabSingle) {
+            tabSingle.className = 'flex-1 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition-all flex items-center justify-center gap-1.5';
+        }
+        if (tabRec) {
+            tabRec.className = 'flex-1 py-2 text-xs font-bold rounded-lg bg-white text-indigo-700 shadow-sm transition-all flex items-center justify-center gap-1.5';
+        }
+        // Initialize target month if empty
+        const monthInput = document.getElementById('rec-schedule-month');
+        if (monthInput && !monthInput.value) {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            monthInput.value = `${y}-${m}`;
+        }
+        updateRecurringPreview();
+    }
+}
+
+function getRecurringCalculatedDates() {
+    const monthInput = document.getElementById('rec-schedule-month');
+    if (!monthInput || !monthInput.value) return [];
+    const parts = monthInput.value.split('-');
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+
+    const checkedBoxes = Array.from(document.querySelectorAll('.rec-day-checkbox:checked'));
+    const selectedDays = checkedBoxes.map(cb => parseInt(cb.value, 10)); // 0=Sun, 1=Mon, ..., 6=Sat
+
+    if (selectedDays.length === 0) return [];
+
+    const dates = [];
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    for (let day = 1; day <= daysInMonth; day++) {
+        const d = new Date(year, month, day);
+        if (selectedDays.includes(d.getDay())) {
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            dates.push({
+                dateStr: `${yyyy}-${mm}-${dd}`,
+                dateObj: d
+            });
+        }
+    }
+    return dates;
+}
+
+function updateRecurringPreview() {
+    const chipsContainer = document.getElementById('rec-dates-chips');
+    const badge = document.getElementById('rec-count-badge');
+    if (!chipsContainer) return;
+
+    const dates = getRecurringCalculatedDates();
+    const timeVal = (document.getElementById('rec-schedule-time') ? document.getElementById('rec-schedule-time').value : '16:30') || '16:30';
+
+    if (badge) badge.textContent = `${dates.length} sessions`;
+
+    if (dates.length === 0) {
+        chipsContainer.innerHTML = '<span class="text-slate-500 italic">Select weekdays and target month to preview generated calendar sessions...</span>';
+        return;
+    }
+
+    let displayTime = timeVal;
+    try {
+        const [hh, mm] = timeVal.split(':');
+        const h = parseInt(hh, 10);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        displayTime = `${h12}:${mm} ${ampm}`;
+    } catch(e) {}
+
+    chipsContainer.innerHTML = dates.map(d => {
+        const formatted = d.dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        return `<span class="inline-flex items-center gap-1 bg-white border border-indigo-200 text-indigo-900 px-2.5 py-1 rounded-lg text-xs font-semibold shadow-xs">
+            <i data-lucide="calendar" class="w-3 h-3 text-indigo-500"></i> ${formatted} • ${displayTime}
+        </span>`;
+    }).join('');
+
+    if (window.lucide) lucide.createIcons();
+}
+
+function generateRecurringBatch() {
+    const studentSelect = document.getElementById('schedule-student');
+    const studentId = studentSelect ? studentSelect.value : '';
+    const studentName = (studentSelect && studentSelect.selectedIndex >= 0) ? studentSelect.options[studentSelect.selectedIndex].text : '';
+
+    const courseSelect = document.getElementById('schedule-course');
+    const course = (courseSelect && courseSelect.selectedIndex >= 0) ? courseSelect.options[courseSelect.selectedIndex].text : '';
+
+    const mentorSelect = document.getElementById('schedule-mentor');
+    const mentor = (mentorSelect && mentorSelect.selectedIndex >= 0) ? mentorSelect.value : '';
+
+    const linkInput = document.getElementById('schedule-link');
+    const link = linkInput ? linkInput.value.trim() : '';
+
+    const timeVal = (document.getElementById('rec-schedule-time') ? document.getElementById('rec-schedule-time').value : '') || '16:30';
+    const duration = (document.getElementById('rec-schedule-duration') ? document.getElementById('rec-schedule-duration').value : '60') || '60';
+
+    if (!studentId || !course || !mentor) {
+        showToast('Please select Student, Course, and Mentor first.', 'warning');
+        return;
+    }
+
+    const dates = getRecurringCalculatedDates();
+    if (dates.length === 0) {
+        showToast('Please select at least one day of the week and target month.', 'warning');
+        return;
+    }
+
+    const selectedStudent = studentSelect ? studentSelect.options[studentSelect.selectedIndex] : null;
+    const parentEmail = selectedStudent ? (selectedStudent.dataset.parentEmail || '') : '';
+    const parentName = selectedStudent ? (selectedStudent.dataset.parentName || '') : '';
+
+    const selectedMentor = mentorSelect ? mentorSelect.options[mentorSelect.selectedIndex] : null;
+    const tutorEmail = selectedMentor ? (selectedMentor.dataset.tutorEmail || '') : '';
+    const tutorBirthday = selectedMentor ? (selectedMentor.dataset.tutorBirthday || '') : '';
+
+    let createdCount = 0;
+    dates.forEach(d => {
+        const sessionData = {
+            studentId,
+            studentName,
+            course,
+            date: d.dateStr,
+            time: timeVal,
+            duration,
+            mentor,
+            tutorEmail,
+            tutorBirthday,
+            parentEmail,
+            parentName,
+            link,
+            attendanceStatus: 'pending'
+        };
+        const added = DashboardEngine.addSchedule(sessionData);
+        if (added) createdCount++;
+    });
+
+    showToast(`Successfully scheduled ${createdCount} recurring sessions for ${studentName}!`, 'success');
+    closeModal('schedule-modal');
     loadDashboardData();
 }
 
@@ -3084,6 +3295,7 @@ function openParentModal() {
     const modal = document.getElementById('parent-modal');
     const form = document.getElementById('parent-form');
     if (form) form.reset();
+    populateTutorsDropdown('new-child-tutor');
     if (modal) modal.classList.remove('hidden');
 }
 
@@ -3100,26 +3312,43 @@ async function saveParent(e) {
     const result = await DashboardEngine.addUser({ email, password: tempPwd, role: 'parent', name });
     if (!result.success) { showToast(result.message || 'Could not create parent account.', 'error'); return; }
 
-    // Ensure at least one linked student record exists so parent dashboard is populated
+    // Read real child details from the onboarding form
+    const childFirstName = (document.getElementById('new-child-first-name') ? document.getElementById('new-child-first-name').value.trim() : '') || (name.split(/\s+/)[0] + "'s Child");
+    const childLastName = (document.getElementById('new-child-last-name') ? document.getElementById('new-child-last-name').value.trim() : '') || (name.split(/\s+/).slice(1).join(' ') || 'Student');
+    const childAge = parseInt(document.getElementById('new-child-age') ? document.getElementById('new-child-age').value : '10', 10) || 10;
+    const childBirthday = document.getElementById('new-child-birthday') ? document.getElementById('new-child-birthday').value : '';
+    const childCourse = (document.getElementById('new-child-course') ? document.getElementById('new-child-course').value : 'Python Programming Foundations');
+    const childTutorEl = document.getElementById('new-child-tutor');
+    const childTutorName = (childTutorEl ? childTutorEl.value : 'Sarah Jane');
+
     var currentDb = DashboardEngine.getDB ? DashboardEngine.getDB() : null;
-    if (currentDb && (!currentDb.students || !currentDb.students.some(function(s) { return s.parentEmail && s.parentEmail.toLowerCase() === email; }))) {
-        var nameParts = name.split(/\s+/);
-        var childLastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : 'Student';
-        DashboardEngine.addStudent({
-            firstName: nameParts[0] + "'s Child",
-            lastName: childLastName,
-            age: 10,
-            gender: 'Not specified',
-            experience: 'Beginner',
-            program: 'Python Programming Foundations',
-            status: 'active',
-            parentEmail: email,
-            parentName: name,
-            parentPhone: phone,
-            tutorName: 'Sarah Jane',
-            progress: 0
-        });
+    let childTutorEmail = '';
+    let childTutorId = '';
+    if (currentDb && currentDb.tutors) {
+        const tMatch = currentDb.tutors.find(t => (t.name && t.name.toLowerCase() === childTutorName.toLowerCase()) || (t.id && t.id === childTutorName));
+        if (tMatch) {
+            childTutorEmail = tMatch.email || '';
+            childTutorId = tMatch.id || '';
+        }
     }
+
+    DashboardEngine.addStudent({
+        firstName: childFirstName,
+        lastName: childLastName,
+        age: childAge,
+        birthday: childBirthday,
+        gender: 'Not specified',
+        experience: 'Beginner',
+        program: childCourse,
+        status: 'active',
+        parentEmail: email,
+        parentName: name,
+        parentPhone: phone,
+        tutorName: childTutorName,
+        tutorEmail: childTutorEmail,
+        tutorId: childTutorId,
+        progress: 0
+    });
 
     // Queue parent welcome email for admin review
     if (DashboardEngine.addToEmailQueue) {
@@ -3128,8 +3357,17 @@ async function saveParent(e) {
             to: email,
             recipientName: name || 'Parent',
             subject: 'Welcome to STEMulus — Your Parent Portal Access',
-            htmlPreview: 'Welcome ' + (name || 'Parent') + '! Parent portal credentials: Login: ' + email + ' | Temp Password: ' + tempPwd,
-            data: { parentEmail: email, parentName: name || 'Parent', tempPassword: tempPwd, classroomLink: '' },
+            htmlPreview: 'Welcome ' + (name || 'Parent') + '! Parent portal credentials: Login: ' + email + ' | Temp Password: ' + tempPwd + ' | Coder: ' + childFirstName + ' ' + childLastName + ' (' + childCourse + ')',
+            data: {
+                parentEmail: email,
+                parentName: name || 'Parent',
+                studentName: childFirstName + ' ' + childLastName,
+                courseName: childCourse,
+                tempPassword: tempPwd,
+                classroomLink: '',
+                meetLink: 'https://meet.google.com/stm-prog-live',
+                classSchedule: 'Agreed weekly sessions'
+            },
             triggeredBy: 'manual_parent_add'
         });
     }
@@ -3137,6 +3375,417 @@ async function saveParent(e) {
     showToast(`Parent account created! Login: <strong>${email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${tempPwd}</span>`, 'success', 10000);
     closeModal('parent-modal');
     loadDashboardData();
+}
+
+// ==================== DEDICATED ADD CHILD TO EXISTING PARENT ====================
+
+function openAddChildModal(parentEmail) {
+    const db = DashboardEngine.getDB ? DashboardEngine.getDB() : null;
+    const parent = db && db.parents ? db.parents.find(p => p.email.toLowerCase() === (parentEmail || '').toLowerCase()) : null;
+    const parentName = parent ? parent.name : (parentEmail || 'Parent');
+
+    const modal = document.getElementById('add-child-modal');
+    const form = document.getElementById('add-child-form');
+    if (form) form.reset();
+
+    const parentEmailInput = document.getElementById('ac-parent-email');
+    if (parentEmailInput) parentEmailInput.value = parentEmail || '';
+
+    const parentDisplay = document.getElementById('ac-parent-display');
+    if (parentDisplay) parentDisplay.textContent = `${parentName} (${parentEmail})`;
+
+    populateTutorsDropdown('ac-tutor');
+
+    if (modal) modal.classList.remove('hidden');
+}
+
+async function saveChildToParent(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const parentEmail = (document.getElementById('ac-parent-email').value || '').trim().toLowerCase();
+    const firstName = (document.getElementById('ac-first-name').value || '').trim();
+    const lastName = (document.getElementById('ac-last-name').value || '').trim();
+    const age = parseInt(document.getElementById('ac-age').value || '10', 10);
+    const birthday = document.getElementById('ac-birthday') ? document.getElementById('ac-birthday').value : '';
+    const gender = document.getElementById('ac-gender') ? document.getElementById('ac-gender').value : 'Not specified';
+    const course = document.getElementById('ac-course') ? document.getElementById('ac-course').value : 'Python Programming Foundations';
+    const tutorSelect = document.getElementById('ac-tutor');
+    const tutorName = tutorSelect ? tutorSelect.value : 'Sarah Jane';
+
+    if (!parentEmail || !firstName || !lastName) {
+        showToast('First name, last name, and parent email are required.', 'warning');
+        return;
+    }
+
+    const db = DashboardEngine.getDB ? DashboardEngine.getDB() : null;
+    const parent = db && db.parents ? db.parents.find(p => p.email.toLowerCase() === parentEmail) : null;
+    const parentName = parent ? parent.name : 'Parent';
+    const parentPhone = parent ? (parent.phone || '') : '';
+
+    let tutorEmail = '';
+    let tutorId = '';
+    if (db && db.tutors) {
+        const tMatch = db.tutors.find(t => (t.name && t.name.toLowerCase() === tutorName.toLowerCase()) || (t.id && t.id === tutorName));
+        if (tMatch) {
+            tutorEmail = tMatch.email || '';
+            tutorId = tMatch.id || '';
+        }
+    }
+
+    DashboardEngine.addStudent({
+        firstName,
+        lastName,
+        age: age || 10,
+        birthday,
+        gender,
+        experience: 'Beginner',
+        program: course,
+        status: 'active',
+        parentEmail,
+        parentName,
+        parentPhone,
+        tutorName,
+        tutorEmail,
+        tutorId,
+        progress: 0
+    });
+
+    showToast(`Added coder <strong>${firstName} ${lastName}</strong> to ${parentName}!`, 'success');
+    closeModal('add-child-modal');
+    loadDashboardData();
+}
+
+// ==================== TUTOR DIRECTORY & MANAGEMENT ====================
+
+let tutorSearchQuery = '';
+let tutorStatusFilter = 'all';
+
+function loadTutors() {
+    renderTutorsTable();
+}
+
+function filterTutors(searchQuery, statusFilter) {
+    if (searchQuery !== undefined) tutorSearchQuery = (searchQuery || '').trim().toLowerCase();
+    if (statusFilter !== undefined) tutorStatusFilter = statusFilter;
+    renderTutorsTable();
+}
+
+function renderTutorsTable() {
+    const tbody = document.getElementById('tutors-table-body');
+    if (!tbody) return;
+
+    const tutors = DashboardEngine.getTutors ? DashboardEngine.getTutors() : [];
+    const students = DashboardEngine.getStudents ? DashboardEngine.getStudents() : [];
+    const schedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
+
+    // Update Quick Stats
+    const totalTutors = tutors.length;
+    const activeTutors = tutors.filter(t => t.status !== 'inactive' && t.status !== 'disengaged').length;
+    let totalAssignedCoders = 0;
+    const assignedCoderSet = new Set();
+    students.forEach(s => {
+        if (s.tutorName && s.tutorName !== 'Unassigned' && s.tutorName.trim() !== '') {
+            assignedCoderSet.add(s.id || `${s.firstName}-${s.lastName}`);
+        }
+    });
+    totalAssignedCoders = assignedCoderSet.size;
+
+    const statTotalEl = document.getElementById('tutor-stat-total');
+    const statActiveEl = document.getElementById('tutor-stat-active');
+    const statCodersEl = document.getElementById('tutor-stat-coders');
+    const statSessionsEl = document.getElementById('tutor-stat-sessions');
+
+    if (statTotalEl) statTotalEl.textContent = totalTutors;
+    if (statActiveEl) statActiveEl.textContent = activeTutors;
+    if (statCodersEl) statCodersEl.textContent = totalAssignedCoders;
+    if (statSessionsEl) statSessionsEl.textContent = schedules.length;
+
+    let filtered = tutors.filter(t => {
+        const q = tutorSearchQuery;
+        const matchesSearch = !q || (t.name && t.name.toLowerCase().includes(q)) ||
+            (t.email && t.email.toLowerCase().includes(q)) ||
+            (Array.isArray(t.subjects) ? t.subjects.join(' ').toLowerCase().includes(q) : String(t.subjects || '').toLowerCase().includes(q));
+
+        const isDisengaged = t.status === 'inactive' || t.status === 'disengaged';
+        const matchesStatus = tutorStatusFilter === 'all' ||
+            (tutorStatusFilter === 'active' && !isDisengaged) ||
+            (tutorStatusFilter === 'disengaged' && isDisengaged);
+
+        return matchesSearch && matchesStatus;
+    });
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="px-6 py-8 text-center text-slate-400 font-medium">
+                    No tutors found matching the filter criteria.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = filtered.map(t => {
+        // Resolve assigned students for this tutor
+        const tEmail = (t.email || '').toLowerCase();
+        const tName = (t.name || '').toLowerCase();
+        const tFirst = tName.split(' ')[0] || '';
+        const tId = t.id || '';
+
+        const assignedStudents = students.filter(s => {
+            if (s.tutorId && tId && s.tutorId === tId) return true;
+            if (s.tutorEmail && tEmail && s.tutorEmail.toLowerCase() === tEmail) return true;
+            if (s.tutorName) {
+                const sTutorName = s.tutorName.toLowerCase();
+                if (sTutorName === tName) return true;
+                if (tFirst.length > 2 && sTutorName.includes(tFirst)) return true;
+            }
+            return false;
+        });
+
+        const isDisengaged = t.status === 'inactive' || t.status === 'disengaged';
+        const subjectsStr = Array.isArray(t.subjects) ? t.subjects.join(', ') : (t.subjects || 'General Coding');
+
+        const codersPills = assignedStudents.length > 0
+            ? assignedStudents.map(s => `
+                <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-lg">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                    ${s.firstName} ${s.lastName}
+                </span>`).join('')
+            : `<span class="text-xs text-slate-400 italic">No coders assigned</span>`;
+
+        const tutorIdentifier = t.id || t.email;
+
+        return `
+            <tr class="hover:bg-gray-50/50 transition-colors">
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${isDisengaged ? 'bg-slate-200 text-slate-600' : 'bg-orange-100 text-orange-600'}">
+                            ${(t.name || 'T')[0].toUpperCase()}
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">${t.name}</p>
+                            <p class="text-xs text-slate-500">${t.email || 'No email'}</p>
+                            ${t.phone ? `<p class="text-[11px] text-slate-400">${t.phone}</p>` : ''}
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="text-xs text-slate-700 font-medium">${subjectsStr}</span>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex flex-wrap gap-1.5 max-w-xs">
+                        ${codersPills}
+                    </div>
+                    <span class="text-[10px] text-slate-400 block mt-1">${assignedStudents.length} coder${assignedStudents.length !== 1 ? 's' : ''} total</span>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${isDisengaged ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
+                        ${isDisengaged ? 'Disengaged' : 'Active'}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                        <button onclick="AdminEngine.openAssignCodersModal('${tutorIdentifier}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors flex items-center gap-1" title="Assign / Reassign Coders">
+                            <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Assign Coders
+                        </button>
+                        <button onclick="AdminEngine.openMessageTutorModal('${t.email}', '${t.name.replace(/'/g, "\\'")}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors flex items-center gap-1" title="Send Message / Notice">
+                            <i data-lucide="mail" class="w-3.5 h-3.5"></i> Message
+                        </button>
+                        <button onclick="AdminEngine.toggleTutorStatus('${tutorIdentifier}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg ${isDisengaged ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100' : 'bg-rose-50 text-rose-700 hover:bg-rose-100'} transition-colors" title="${isDisengaged ? 'Re-activate Tutor' : 'Disengage Tutor'}">
+                            ${isDisengaged ? 'Re-engage' : 'Disengage'}
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    if (window.lucide) lucide.createIcons();
+}
+
+let activeAssignTutorId = null;
+
+function openAssignCodersModal(tutorIdOrEmail) {
+    activeAssignTutorId = tutorIdOrEmail;
+    const db = DashboardEngine.getDB ? DashboardEngine.getDB() : null;
+    const engineTutors = DashboardEngine.getTutors ? DashboardEngine.getTutors() : [];
+    const dbTutors = db && db.tutors ? db.tutors : [];
+    const tutors = engineTutors.concat(dbTutors);
+    const target = (tutorIdOrEmail || '').toLowerCase();
+    const tutor = tutors.find(t => (t.id && t.id.toLowerCase() === target) || (t.email && t.email.toLowerCase() === target) || (t.name && t.name.toLowerCase() === target));
+    if (!tutor) {
+        showToast('Tutor record not found.', 'error');
+        return;
+    }
+
+    const modal = document.getElementById('tutor-assign-coder-modal');
+    const titleEl = document.getElementById('tac-modal-title');
+    const subtitleEl = document.getElementById('tac-modal-subtitle');
+    const searchInput = document.getElementById('tac-coder-search');
+    const hiddenInput = document.getElementById('tac-tutor-identifier');
+
+    if (titleEl) titleEl.textContent = `Assign Coders to ${tutor.name}`;
+    if (subtitleEl) subtitleEl.textContent = `Subjects: ${Array.isArray(tutor.subjects) ? tutor.subjects.join(', ') : tutor.subjects || 'General'}`;
+    if (hiddenInput) hiddenInput.value = tutor.id || tutor.email;
+    if (searchInput) searchInput.value = '';
+
+    renderAssignCodersList('');
+    if (modal) modal.classList.remove('hidden');
+}
+
+function filterCoderAssignmentList(query) {
+    renderAssignCodersList(query || '');
+}
+
+function renderAssignCodersList(query) {
+    const container = document.getElementById('tac-coders-list');
+    if (!container) return;
+
+    const db = DashboardEngine.getDB ? DashboardEngine.getDB() : null;
+    const engineTutors = DashboardEngine.getTutors ? DashboardEngine.getTutors() : [];
+    const dbTutors = db && db.tutors ? db.tutors : [];
+    const tutors = engineTutors.concat(dbTutors);
+    const target = (activeAssignTutorId || '').toLowerCase();
+    const tutor = tutors.find(t => (t.id && t.id.toLowerCase() === target) || (t.email && t.email.toLowerCase() === target) || (t.name && t.name.toLowerCase() === target));
+    const students = db && db.students ? db.students : [];
+
+    const tEmail = tutor ? (tutor.email || '').toLowerCase() : '';
+    const tName = tutor ? (tutor.name || '').toLowerCase() : '';
+    const tFirst = tName.split(' ')[0] || '';
+    const tId = tutor ? (tutor.id || '') : '';
+
+    const q = (query || '').toLowerCase().trim();
+    const filtered = students.filter(s => {
+        if (!q) return true;
+        const fullName = `${s.firstName || ''} ${s.lastName || ''}`.toLowerCase();
+        const course = (s.program || '').toLowerCase();
+        return fullName.includes(q) || course.includes(q);
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">No students match "${query}".</p>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(s => {
+        let isAssigned = false;
+        if (s.tutorId && tId && s.tutorId === tId) isAssigned = true;
+        else if (s.tutorEmail && tEmail && s.tutorEmail.toLowerCase() === tEmail) isAssigned = true;
+        else if (s.tutorName) {
+            const sTutorName = s.tutorName.toLowerCase();
+            if (sTutorName === tName || (tFirst.length > 2 && sTutorName.includes(tFirst))) isAssigned = true;
+        }
+
+        const sid = s.id || `${s.firstName}_${s.lastName}`;
+        const hasOtherTutor = s.tutorName && !isAssigned && s.tutorName !== 'Unassigned';
+
+        return `
+            <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors ${isAssigned ? 'bg-blue-50/70 border-blue-300' : 'bg-white'}">
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" name="assign-coder-cb" value="${sid}" ${isAssigned ? 'checked' : ''} onchange="AdminEngine.updateSelectedCodersCount()"
+                        class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 border-slate-300">
+                    <div>
+                        <p class="text-sm font-bold text-slate-800">${s.firstName} ${s.lastName}</p>
+                        <p class="text-xs text-slate-500">${s.program || 'Coding Foundations'} &bull; Age ${s.age || '10'}</p>
+                    </div>
+                </div>
+                <div>
+                    ${isAssigned
+                        ? `<span class="text-[11px] font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">Assigned</span>`
+                        : hasOtherTutor
+                            ? `<span class="text-[11px] font-medium text-slate-400">Current: ${s.tutorName}</span>`
+                            : `<span class="text-[11px] font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Unassigned</span>`}
+                </div>
+            </label>
+        `;
+    }).join('');
+
+    updateSelectedCodersCount();
+}
+
+function updateSelectedCodersCount() {
+    const checked = document.querySelectorAll('input[name="assign-coder-cb"]:checked');
+    const countEl = document.getElementById('tac-selected-count');
+    if (countEl) countEl.textContent = checked.length;
+}
+
+function saveTutorCoderAssignment() {
+    const db = DashboardEngine.getDB ? DashboardEngine.getDB() : null;
+    if (!db || !db.students) return;
+
+    const engineTutors = DashboardEngine.getTutors ? DashboardEngine.getTutors() : [];
+    const dbTutors = db.tutors ? db.tutors : [];
+    const tutors = engineTutors.concat(dbTutors);
+    const target = (activeAssignTutorId || '').toLowerCase();
+    const tutor = tutors.find(t => (t.id && t.id.toLowerCase() === target) || (t.email && t.email.toLowerCase() === target) || (t.name && t.name.toLowerCase() === target));
+    if (!tutor) {
+        showToast('Tutor not found.', 'error');
+        return;
+    }
+
+    const checkedBoxes = Array.from(document.querySelectorAll('input[name="assign-coder-cb"]:checked')).map(cb => cb.value);
+    const allRenderedBoxes = Array.from(document.querySelectorAll('input[name="assign-coder-cb"]')).map(cb => cb.value);
+
+    let assignedCount = 0;
+    db.students.forEach(s => {
+        const sid = s.id || `${s.firstName}_${s.lastName}`;
+        if (checkedBoxes.includes(sid)) {
+            s.tutorName = tutor.name;
+            s.tutorEmail = tutor.email;
+            s.tutorId = tutor.id || '';
+            assignedCount++;
+        } else if (allRenderedBoxes.includes(sid)) {
+            // If was assigned to this tutor but now unchecked
+            if (s.tutorEmail && s.tutorEmail.toLowerCase() === (tutor.email || '').toLowerCase()) {
+                s.tutorName = 'Unassigned';
+                s.tutorEmail = '';
+                s.tutorId = '';
+            }
+        }
+    });
+
+    try {
+        localStorage.setItem('stemulus_db', JSON.stringify(db));
+        window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { source: 'tutor_coder_assignment' } }));
+    } catch(err) {}
+
+    showToast(`Assigned ${assignedCount} coders to ${tutor.name} successfully!`, 'success');
+    closeModal('tutor-assign-coder-modal');
+    loadDashboardData();
+}
+
+function toggleTutorStatus(tutorIdOrEmail) {
+    const db = DashboardEngine.getDB ? DashboardEngine.getDB() : null;
+    if (!db || !db.tutors) return;
+
+    const tutor = db.tutors.find(t => (t.id && t.id === tutorIdOrEmail) || (t.email && t.email.toLowerCase() === tutorIdOrEmail.toLowerCase()));
+    if (!tutor) return;
+
+    const wasActive = tutor.status !== 'inactive' && tutor.status !== 'disengaged';
+    tutor.status = wasActive ? 'disengaged' : 'active';
+
+    // Sync to db.users if present
+    if (db.users) {
+        const u = db.users.find(user => user.email && user.email.toLowerCase() === (tutor.email || '').toLowerCase());
+        if (u) u.status = tutor.status;
+    }
+
+    try {
+        localStorage.setItem('stemulus_db', JSON.stringify(db));
+        window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { source: 'tutor_status_toggle' } }));
+    } catch(err) {}
+
+    showToast(`${tutor.name} is now marked as ${tutor.status === 'active' ? 'Active' : 'Disengaged'}.`, wasActive ? 'warning' : 'success');
+    renderTutorsTable();
+}
+
+function openMessageTutorModal(tutorEmail, tutorName) {
+    navigateToSection('emails');
+    const toInput = document.getElementById('email-to');
+    const subjectInput = document.getElementById('email-subject');
+    if (toInput) toInput.value = tutorEmail;
+    if (subjectInput) subjectInput.value = `STEMulus Instruction Update - Attention ${tutorName}`;
+    showToast(`Composing email to ${tutorName}...`, 'info');
 }
 
 return {
@@ -3150,6 +3799,9 @@ return {
     openStudentModal,
     editStudent,
     openScheduleModal,
+    switchScheduleTab,
+    generateRecurringBatch,
+    updateRecurringPreview,
     deleteSchedule,
     handleScheduleStudentChange,
     closeModal,
@@ -3162,6 +3814,17 @@ return {
     processAttendance,
     openTutorModal,
     openParentModal,
+    openAddChildModal,
+    saveChildToParent,
+    loadTutors,
+    renderTutorsTable,
+    filterTutors,
+    openAssignCodersModal,
+    filterCoderAssignmentList,
+    updateSelectedCodersCount,
+    saveTutorCoderAssignment,
+    toggleTutorStatus,
+    openMessageTutorModal,
     exportStudentsCSV,
     exportParentsCSV,
     switchRosterTab,
@@ -3187,7 +3850,7 @@ return {
 document.addEventListener('DOMContentLoaded', AdminEngine.init);
 // On cloud sync: only reload data, don't re-run full auth check
 window.addEventListener('stemulusDbUpdated', function () {
-    if (currentUser || document.getElementById('stat-total-students')) {
+    if (document.getElementById('stat-total-students')) {
         AdminEngine.reloadData();
     }
 });

@@ -537,13 +537,17 @@
     }
     .explorers-student-name {
       font-family: 'Playfair Display', Georgia, serif !important;
-      font-size: 2.85rem !important;
+      font-size: 2.85rem;
       font-weight: 800 !important;
       font-style: italic !important;
       color: #1e3a8a !important;
       line-height: 1.15;
       margin-bottom: 12px;
-      white-space: nowrap;
+      max-width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
     .explorers-narrative {
       font-family: 'DM Sans', sans-serif !important;
@@ -727,13 +731,15 @@
     }
     .vanguard-student-name {
       font-family: 'Alex Brush', cursive !important;
-      font-size: 4.4rem !important;
+      font-size: 4.4rem;
       color: #111827 !important;
       line-height: 1.1;
-      margin: 14px 0 14px;
+      margin: 10px auto 14px;
       font-weight: 400 !important;
       text-align: center;
-      white-space: nowrap;
+      max-width: 95%;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
     .vanguard-date-pill {
       display: inline-block;
@@ -1570,7 +1576,7 @@
       activeVerifiedTemplate = tmpl;
 
       // Populate Explorers Template (Ages 5-12)
-      setText('vc-exp-name', studentName);
+      fitCertificateName(document.getElementById('vc-exp-name'), studentName, 2.85, 1.45, 16);
       setText('vc-exp-program', programName);
       setText('vc-exp-grade', grade);
       setText('vc-exp-tutor', tutorName);
@@ -1587,7 +1593,7 @@
           pillDate = months[d.getMonth()] + '-' + String(d.getDate()).padStart(2, '0') + '-' + d.getFullYear();
         } catch(e) { pillDate = (issueDate || '').toUpperCase(); }
       }
-      setText('vc-van-name', studentName);
+      fitCertificateName(document.getElementById('vc-van-name'), studentName, 4.4, 2.1, 14);
       setText('vc-van-date-pill', pillDate);
       setText('vc-van-program', programName);
       setText('vc-van-grade', grade);
@@ -1660,6 +1666,22 @@
     function setText(id, text) {
       var el = document.getElementById(id);
       if (el) el.textContent = text;
+    }
+
+    function fitCertificateName(el, name, baseRem, minRem, maxChars) {
+      if (!el || !name) return;
+      el.textContent = name;
+      baseRem = baseRem || 2.85;
+      minRem = minRem || 1.45;
+      maxChars = maxChars || 16;
+      var len = name.trim().length;
+      var fontSizeRem = baseRem;
+      if (len > maxChars) {
+        var scale = Math.max(minRem, baseRem - ((len - maxChars) * 0.09));
+        fontSizeRem = Math.round(scale * 100) / 100;
+      }
+      el.style.setProperty('font-size', fontSizeRem + 'rem', 'important');
+      el.style.lineHeight = '1.15';
     }
 
     /* ============================================

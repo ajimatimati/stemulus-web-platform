@@ -376,13 +376,14 @@ const DashboardEngine = (function() {
 
     // Get currently logged-in user from session
     function getSession() {
-        const sessionStr = sessionStorage.getItem("stemulus_session");
+        const sessionStr = sessionStorage.getItem("stemulus_session") || localStorage.getItem("stemulus_session");
         if (!sessionStr) return null;
         try {
             const session = JSON.parse(sessionStr);
             if (session && session.issuedAt) {
                 if (Date.now() - session.issuedAt > SESSION_TTL_MS) {
-                    sessionStorage.clear();
+                    sessionStorage.removeItem("stemulus_session");
+                    localStorage.removeItem("stemulus_session");
                     return null;
                 }
             }
@@ -436,6 +437,7 @@ const DashboardEngine = (function() {
         if (match) {
             const safeUser = { email: user.email, role: user.role, name: user.name, issuedAt: Date.now() };
             sessionStorage.setItem("stemulus_session", JSON.stringify(safeUser));
+            localStorage.setItem("stemulus_session", JSON.stringify(safeUser));
             return { success: true, user: safeUser };
         }
         return { success: false, message: "Invalid email or password." };
@@ -1231,18 +1233,72 @@ const DashboardEngine = (function() {
         const session = getSession();
         const email = (tutorEmail || (session && session.email) || '').toLowerCase().trim();
         const name = (session && session.name || '').toLowerCase().trim();
+        const tutorId = (session && (session.id || session.tutorId) || '').toLowerCase().trim();
         const db = getDB();
         const students = db.students || [];
-        if (!email && !name) return [];
+        if (!email && !name && !tutorId) return [];
         if (session && session.role === 'admin') return students;
+
+        const nameTokens = name ? name.split(/\s+/).filter(t => t.length > 2) : [];
+
         const filtered = students.filter(s => {
             const sEmail = (s.tutorEmail || '').toLowerCase().trim();
             const sName = (s.tutorName || '').toLowerCase().trim();
+            const sTutorId = (s.tutorId || '').toLowerCase().trim();
+
+            if (tutorId && sTutorId && sTutorId === tutorId) return true;
             if (email && sEmail && sEmail === email) return true;
             if (name && sName && sName === name) return true;
             if (email && sName && sName === email) return true;
+
+            // Resilient token match: e.g. "Olalekan" matches "Olalekan Israel Ajimat"
+            if (nameTokens.length > 0 && sName) {
+                if (nameTokens.some(token => sName.includes(token))) return true;
+                const sTokens = sName.split(/\s+/).filter(t => t.length > 2);
+                if (sTokens.some(token => name.includes(token))) return true;
+            }
+
             return false;
         });
+
+        // Also include any students assigned in active/pending schedules
+        const schedules = db.schedules || [];
+        const tutorSchedules = schedules.filter(sch => {
+            const schEmail = (sch.tutorEmail || '').toLowerCase().trim();
+            const schMentor = (sch.mentor || '').toLowerCase().trim();
+            if (email && schEmail && schEmail === email) return true;
+            if (name && schMentor && schMentor === name) return true;
+            if (nameTokens.length > 0 && schMentor && nameTokens.some(t => schMentor.includes(t))) return true;
+            return false;
+        });
+
+        tutorSchedules.forEach(sch => {
+            const matchIndex = filtered.findIndex(s => 
+                (s.id && sch.studentId && s.id === sch.studentId) ||
+                ((s.firstName + ' ' + s.lastName).trim().toLowerCase() === (sch.studentName || '').trim().toLowerCase())
+            );
+            if (matchIndex === -1) {
+                const foundStudent = students.find(s => 
+                    (s.id && sch.studentId && s.id === sch.studentId) ||
+                    ((s.firstName + ' ' + s.lastName).trim().toLowerCase() === (sch.studentName || '').trim().toLowerCase())
+                );
+                if (foundStudent) {
+                    filtered.push(foundStudent);
+                } else if (sch.studentName) {
+                    const parts = sch.studentName.split(' ');
+                    filtered.push({
+                        id: sch.studentId || ('synth-' + Math.random().toString(36).substr(2, 9)),
+                        firstName: parts[0] || sch.studentName,
+                        lastName: parts.slice(1).join(' ') || '',
+                        program: sch.course || 'Coding Track',
+                        status: 'active',
+                        tutorName: sch.mentor,
+                        tutorEmail: sch.tutorEmail
+                    });
+                }
+            }
+        });
+
         return filtered;
     }
 
@@ -1459,7 +1515,25 @@ const DashboardEngine = (function() {
     // --- Notifications Controller ---
     function getNotifications(email) {
         const db = getDB();
-        return db.notifications.filter(n => (n.userEmail||'').toLowerCase() === (email||'').toLowerCase()).sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const notifs = db.notifications || [];
+        if (!email) return notifs;
+        const clean = String(email).toLowerCase().trim();
+        const session = getSession();
+        const sessionRole = (session && session.role || '').toLowerCase();
+        const sessionName = (session && session.name || '').toLowerCase();
+
+        return notifs.filter(n => {
+            const target = (n.userEmail || n.recipientEmail || '').toLowerCase().trim();
+            const targetRole = (n.targetRole || n.recipientRole || '').toLowerCase().trim();
+            const targetName = (n.recipientName || n.targetName || '').toLowerCase().trim();
+
+            if (target === 'all' || target === 'everyone') return true;
+            if (sessionRole === 'tutor' && (target === 'tutors' || target === 'all-tutors' || targetRole === 'tutor' || targetRole === 'all-tutors')) return true;
+            if (sessionRole === 'parent' && (target === 'parents' || target === 'all-parents' || targetRole === 'parent' || targetRole === 'all-parents')) return true;
+            if (target === clean) return true;
+            if (sessionName && targetName && (targetName === sessionName || sessionName.includes(targetName) || targetName.includes(sessionName))) return true;
+            return false;
+        }).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     }
 
     function addNotification(notif) {
@@ -2261,17 +2335,69 @@ const DashboardEngine = (function() {
         getNtfyTopic: () => getDB().ntfyTopic,
         addUser: async function(userData) {
             const db = getDB();
-            const key = userData.email.toLowerCase().trim();
-            if (!userData.password) { throw new Error('Password is required for addUser()'); }
-            const plain = userData.password;
+            if (!db.users) db.users = {};
+            const key = (userData.email || '').toLowerCase().trim();
+            if (!key) return { success: false, message: 'Valid email is required.' };
+            if (!userData.password) return { success: false, message: 'Password is required.' };
+            const plain = String(userData.password).trim();
+            const role = (userData.role || 'parent').toLowerCase().trim();
+            const name = (userData.name || 'Parent').trim();
+            const phone = (userData.phone || '').trim();
+
+            const hashedPassword = isHashed(plain) ? plain : await hashPassword(plain);
+
             db.users[key] = {
                 email: key,
-                password: await hashPassword(plain),
-                role: userData.role || 'parent',
-                name: userData.name || 'Parent'
+                password: hashedPassword,
+                role: role,
+                name: name,
+                phone: phone,
+                createdAt: new Date().toISOString()
             };
+
+            // If role is parent, ensure record in db.parents
+            if (role === 'parent') {
+                if (!db.parents) db.parents = [];
+                const existingParent = db.parents.find(p => p.email && p.email.toLowerCase().trim() === key);
+                if (existingParent) {
+                    existingParent.name = name || existingParent.name;
+                    if (phone) existingParent.phone = phone;
+                } else {
+                    db.parents.push({
+                        id: 'par-' + Date.now(),
+                        name: name,
+                        email: key,
+                        phone: phone,
+                        country: userData.country || 'Nigeria',
+                        createdAt: new Date().toISOString(),
+                        status: 'active'
+                    });
+                }
+            }
+
+            // If role is tutor, ensure record in db.tutors
+            if (role === 'tutor') {
+                if (!db.tutors) db.tutors = [];
+                const existingTutor = db.tutors.find(t => t.email && t.email.toLowerCase().trim() === key);
+                if (existingTutor) {
+                    existingTutor.name = name || existingTutor.name;
+                    if (phone) existingTutor.phone = phone;
+                } else {
+                    db.tutors.push({
+                        id: 'tut-' + Date.now(),
+                        name: name,
+                        email: key,
+                        phone: phone,
+                        status: 'active',
+                        subjects: userData.subjects || ['Python Programming', 'Web Design'],
+                        availability: userData.availability || {},
+                        createdAt: new Date().toISOString()
+                    });
+                }
+            }
+
             saveDB(db);
-            return { success: true, updated: true };
+            return { success: true, updated: true, user: db.users[key] };
         },
         updateUserPassword: async function(email, newPassword) {
             const db = getDB();

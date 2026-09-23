@@ -47,10 +47,12 @@ const EmailService = (function () {
     return _post('welcome', {
       parentEmail: student.parentEmail || student.email,
       parentName: student.parentName || student.name,
-      studentName: student.name,
-      courseName: getCourseLabel(student.course),
+      studentName: student.name || student.studentName || 'Student',
+      courseName: getCourseLabel(student.course || student.program),
       tempPassword: student.tempPassword || '(see admin portal)',
       classroomLink: student.classroomLink || '',
+      meetLink: student.meetLink || student.googleMeetLink || 'https://meet.google.com/stm-prog-live',
+      classSchedule: student.classSchedule || student.scheduleText || 'As agreed with your admissions coordinator',
     });
   }
 

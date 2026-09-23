@@ -501,6 +501,30 @@ AdminWorkflows.OnboardingWizard = {
       });
     }
 
+    if (role === 'parent' && typeof DashboardEngine !== 'undefined') {
+      const children = Array.isArray(data.children) ? data.children : [];
+      children.forEach(c => {
+        if (!c.name) return;
+        const nameParts = (c.name || '').trim().split(/\s+/);
+        const firstName = nameParts[0] || 'Student';
+        const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : (data.parent.name ? data.parent.name.split(/\s+/).slice(1).join(' ') || 'Student' : 'Student');
+        DashboardEngine.addStudent({
+          firstName,
+          lastName,
+          age: parseInt(c.age, 10) || 10,
+          gender: c.gender || 'Not specified',
+          experience: c.level || 'Beginner',
+          program: c.program || 'Python Programming Foundations',
+          status: 'active',
+          parentEmail: email,
+          parentName: name,
+          parentPhone: data.parent.phone || '',
+          tutorName: 'Sarah Jane',
+          progress: 0
+        });
+      });
+    }
+
     await AdminWorkflows._sendEmail('welcome', { to: email, name, role, password: data.password });
 
     AdminWorkflows.showToast(`${role === 'parent' ? 'Parent' : 'Tutor'} account created! Welcome email sent.`, 'success');
@@ -514,9 +538,13 @@ AdminWorkflows.OnboardingWizard = {
 // ─────────────────────────────────────────────────────────────────────────────
 AdminWorkflows.EnrollmentAssignment = {
 
-  renderAssignmentPanel(containerId) {
+  renderAssignmentPanel(containerId, isManualRefresh) {
     const container = document.getElementById(containerId);
     if (!container) return;
+
+    if (isManualRefresh) {
+      AdminWorkflows.showToast('Enrollment assignments refreshed.', 'info');
+    }
 
     const enrollments = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getEnrollments)
       ? DashboardEngine.getEnrollments().filter(e => !e.tutorId || e.tutorId === '')
@@ -669,8 +697,38 @@ AdminWorkflows.EnrollmentAssignment = {
       const db = JSON.parse(localStorage.getItem('stemulus_db') || '{}');
       if (db.enrollments) {
         const idx = db.enrollments.findIndex(e => e.id === enrollmentId);
-        if (idx !== -1) { db.enrollments[idx] = enrollment; localStorage.setItem('stemulus_db', JSON.stringify(db)); }
+        if (idx !== -1) { db.enrollments[idx] = enrollment; }
       }
+      if (db.students) {
+        const sMatch = db.students.find(s =>
+          (s.id && (s.id === enrollment.studentId || s.id === enrollmentId)) ||
+          ((s.firstName || '').toLowerCase() === (enrollment.studentFirstName || '').toLowerCase() && (s.lastName || '').toLowerCase() === (enrollment.studentLastName || '').toLowerCase()) ||
+          (s.parentEmail && enrollment.email && s.parentEmail.toLowerCase() === enrollment.email.toLowerCase())
+        );
+        if (sMatch) {
+          sMatch.tutorName = tutor ? tutor.name : tutorId;
+          sMatch.tutorEmail = tutor ? tutor.email : '';
+          sMatch.tutorId = tutorId;
+        } else {
+          db.students.push({
+            id: enrollment.studentId || 'std_' + Date.now(),
+            firstName: enrollment.studentFirstName || 'Student',
+            lastName: enrollment.studentLastName || '',
+            age: parseInt(enrollment.studentAge, 10) || 10,
+            program: enrollment.program || 'Python',
+            status: 'active',
+            parentEmail: enrollment.email || '',
+            parentName: enrollment.parentName || '',
+            parentPhone: enrollment.phone || '',
+            tutorName: tutor ? tutor.name : tutorId,
+            tutorEmail: tutor ? tutor.email : '',
+            tutorId: tutorId,
+            progress: 0
+          });
+        }
+      }
+      localStorage.setItem('stemulus_db', JSON.stringify(db));
+      window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { source: 'enrollment_assigned' } }));
     } catch (e) {}
 
     DashboardEngine.addSchedule({

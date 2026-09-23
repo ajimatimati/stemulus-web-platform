@@ -525,13 +525,17 @@
     }
     .explorers-student-name {
       font-family: 'Playfair Display', Georgia, serif !important;
-      font-size: 2.85rem !important;
+      font-size: 2.85rem;
       font-weight: 800 !important;
       font-style: italic !important;
       color: #1e3a8a !important;
       line-height: 1.15;
       margin-bottom: 12px;
-      white-space: nowrap;
+      max-width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
     .explorers-narrative {
       font-family: 'DM Sans', sans-serif !important;
@@ -715,13 +719,15 @@
     }
     .vanguard-student-name {
       font-family: 'Alex Brush', cursive !important;
-      font-size: 4.4rem !important;
+      font-size: 4.4rem;
       color: #111827 !important;
       line-height: 1.1;
-      margin: 14px 0 14px;
+      margin: 10px auto 14px;
       font-weight: 400 !important;
       text-align: center;
-      white-space: nowrap;
+      max-width: 95%;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
     .vanguard-date-pill {
       display: inline-block;
@@ -1724,7 +1730,7 @@ function handleFormSubmit(e) {
   };
 
   // Populate Explorers template elements
-  document.getElementById('exp-student-name').textContent = studentName;
+  fitCertificateName(document.getElementById('exp-student-name'), studentName, 2.85, 1.45, 16);
   document.getElementById('exp-program-name').textContent = programName;
   document.getElementById('exp-grade').textContent = grade;
   document.getElementById('exp-tutor-name').textContent = tutor;
@@ -1733,7 +1739,7 @@ function handleFormSubmit(e) {
   document.getElementById('exp-cred-id').textContent = credId;
 
   // Populate Vanguard template elements
-  document.getElementById('van-student-name').textContent = studentName;
+  fitCertificateName(document.getElementById('van-student-name'), studentName, 4.4, 2.1, 14);
   document.getElementById('van-program-name').textContent = programName;
   document.getElementById('van-grade').textContent = grade;
   document.getElementById('van-date-pill').textContent = ('COMPLETED — ' + formatDate(issueDate)).toUpperCase();
@@ -1803,12 +1809,28 @@ function generatePreviewQR(credId) {
   }
 }
 
+function fitCertificateName(el, name, baseRem, minRem, maxChars) {
+  if (!el || !name) return;
+  el.textContent = name;
+  baseRem = baseRem || 2.85;
+  minRem = minRem || 1.45;
+  maxChars = maxChars || 16;
+  var len = name.trim().length;
+  var fontSizeRem = baseRem;
+  if (len > maxChars) {
+    var scale = Math.max(minRem, baseRem - ((len - maxChars) * 0.09));
+    fontSizeRem = Math.round(scale * 100) / 100;
+  }
+  el.style.setProperty('font-size', fontSizeRem + 'rem', 'important');
+  el.style.lineHeight = '1.15';
+}
+
 function applyEdits() {
   const name = document.getElementById('edit-name').value.trim();
   const grade = document.getElementById('edit-grade').value;
   if (name) {
-    document.getElementById('exp-student-name').textContent = name;
-    document.getElementById('van-student-name').textContent = name;
+    fitCertificateName(document.getElementById('exp-student-name'), name, 2.85, 1.45, 16);
+    fitCertificateName(document.getElementById('van-student-name'), name, 4.4, 2.1, 14);
     if (pendingCert) pendingCert.student_name = name;
   }
   document.getElementById('exp-grade').textContent = grade;
