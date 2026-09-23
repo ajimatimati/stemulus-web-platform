@@ -520,7 +520,7 @@
           <i data-lucide="zap" class="w-4 h-4 shrink-0"></i>
           <span class="hidden sm:inline">Quick Onboard</span>
         </button>
-        <button id="quick-add-student" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 sm:px-4 py-2 rounded-xl shadow-sm transition-all flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm shrink-0">
+        <button id="quick-add-student" onclick="AdminEngine.openStudentModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 sm:px-4 py-2 rounded-xl shadow-sm transition-all flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm shrink-0">
           <i data-lucide="plus" class="w-4 h-4 shrink-0"></i>
           <span class="hidden sm:inline">Add Student</span>
         </button>
@@ -704,7 +704,7 @@
  <p class="text-slate-500 font-medium text-xs">Enroll a new student</p>
  </div>
  </button>
- <button id="add-tutor-btn"
+ <button id="add-tutor-btn" onclick="AdminEngine.openTutorModal()"
  class="flex items-center gap-3 p-4 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 rounded-xl transition-colors text-left">
  <div class="w-9 h-9 rounded-lg bg-emerald-500/20 flex items-center justify-center shrink-0">
  <i data-lucide="briefcase" class="w-5 h-5 text-emerald-600"></i>
@@ -714,7 +714,7 @@
  <p class="text-slate-500 font-medium text-xs">Onboard a new tutor</p>
  </div>
  </button>
- <button id="add-parent-btn"
+ <button id="add-parent-btn" onclick="AdminEngine.openParentModal()"
  class="flex items-center gap-3 p-4 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 rounded-xl transition-colors text-left">
  <div class="w-9 h-9 rounded-lg bg-purple-500/20 flex items-center justify-center shrink-0">
  <i data-lucide="heart-handshake" class="w-5 h-5 text-purple-600"></i>
@@ -741,7 +741,7 @@
  <i data-lucide="download" class="w-4 h-4"></i>
  <span id="export-btn-label">Export CSV</span>
  </button>
- <button id="add-student-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm">
+ <button id="add-student-btn" onclick="AdminEngine.openStudentModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm">
  <i data-lucide="plus" class="w-4 h-4"></i>
  <span>Add Student</span>
  </button>
@@ -1622,7 +1622,7 @@
  </div>
  </div>
  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
- <button onclick="AdminWorkflows.OnboardingWizard.openParentOnboarding()"
+ <button onclick="AdminEngine.openParentModal()"
  class="flex items-center gap-4 p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-blue-200 transition-all text-left">
  <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
  <i data-lucide="user-plus" class="w-6 h-6 text-blue-600"></i>
@@ -1632,7 +1632,7 @@
  <p class="text-slate-500 text-xs mt-1">Register parent + children with guided wizard</p>
  </div>
  </button>
- <button onclick="AdminWorkflows.OnboardingWizard.openTutorOnboarding()"
+ <button onclick="AdminEngine.openTutorModal()"
  class="flex items-center gap-4 p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-200 transition-all text-left">
  <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0">
  <i data-lucide="briefcase" class="w-6 h-6 text-emerald-600"></i>
@@ -2001,10 +2001,8 @@
           <div>
             <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Assigned Tutor *</label>
             <select id="ac-tutor" required class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
-              <option value="Sarah Jane">Sarah Jane</option>
-              <option value="David Okon">David Okon</option>
-              <option value="Faculty Instructor">Faculty Instructor</option>
-            </select>
+ <option value="">-- Select Tutor --</option>
+ </select>
           </div>
 
           <div class="flex items-center gap-3 pt-3">
@@ -2365,6 +2363,16 @@
  </div>
  </div>
 
+ <!-- Smart Custom Times Per Selected Weekday -->
+ <div id="rec-per-day-times-section" class="hidden space-y-2 bg-slate-50 border border-slate-200/80 rounded-xl p-3 animate-fadeIn mb-3">
+ <div class="flex items-center justify-between">
+ <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Custom Times Per Day</label>
+ <span class="text-[10px] text-slate-500 font-medium">Customize times for specific weekdays (optional)</span>
+ </div>
+ <div id="rec-per-day-times-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+ </div>
+ </div>
+
  <!-- Calculated Preview Box -->
  <div id="rec-schedule-preview-box" class="bg-indigo-50/70 border border-indigo-100 rounded-xl p-3.5 space-y-2">
  <div class="flex items-center justify-between text-xs">
@@ -2379,7 +2387,7 @@
  </div>
 
  <div class="flex items-center gap-3 pt-3">
- <button type="button" onclick="AdminEngine.generateRecurringBatch()" class="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold py-3 rounded-xl transition-all shadow-md text-xs flex items-center justify-center gap-2">
+ <button type="button" id="btn-generate-recurring" onclick="AdminEngine.generateRecurringBatch()" style="background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important; color: #ffffff !important; box-shadow: 0 4px 14px rgba(79, 70, 229, 0.45), 0 2px 0 #3730a3 !important; font-weight: 700; border: none !important; cursor: pointer;" class="flex-1 py-3 px-4 rounded-xl transition-all text-xs flex items-center justify-center gap-2 hover:brightness-110 active:translate-y-0.5">
  <i data-lucide="calendar-plus" class="w-4 h-4"></i> Generate All Sessions for Month
  </button>
  <button type="button" class="px-5 py-3 text-slate-500 hover:text-slate-800 transition-colors font-bold text-xs" onclick="AdminEngine.closeModal('schedule-modal')">

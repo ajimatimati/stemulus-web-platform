@@ -27,7 +27,7 @@
   <script>
   (function(){
     try {
-      var s=JSON.parse(sessionStorage.getItem('stemulus_session')||'null');
+      var s=JSON.parse(sessionStorage.getItem('stemulus_session') || localStorage.getItem('stemulus_session') || 'null');
       var ttl=8*60*60*1000;
       if(!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
         window.location.replace('parent-login.html?role=tutor');

@@ -19,8 +19,18 @@
     .tutor-hero { background: linear-gradient(135deg, #4338ca 0%, #6366f1 50%, #818cf8 100%); border-radius: 1.5rem; color: #ffffff; padding: 2.25rem 2rem; position: relative; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(67, 56, 202, 0.25); }
     .kpi-chip { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.18); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 9999px; padding: 0.4rem 1rem; font-size: 0.85rem; font-weight: 700; color: #ffffff; }
     .student-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1.25rem; box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.04); transition: all 0.25s ease; }
-    .student-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08); border-color: #cbd5e1; }
   </style>
+  <script>
+  (function(){
+    try {
+      var s=JSON.parse(sessionStorage.getItem('stemulus_session') || localStorage.getItem('stemulus_session') || 'null');
+      var ttl=8*60*60*1000;
+      if(!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
+        window.location.replace('parent-login.html?role=tutor');
+      }
+    } catch(e){}
+  })();
+  </script>
 </head>
 <body class="antialiased bg-slate-50 text-slate-800">
   <div id="sidebar-overlay" class="sidebar-overlay lg:hidden"></div>
@@ -156,7 +166,7 @@
         if (typeof DashboardEngine === 'undefined') return;
 
         // Check authentication
-        const session = DashboardEngine.getSession ? DashboardEngine.getSession() : JSON.parse(sessionStorage.getItem('stemulus_session') || 'null');
+        const session = DashboardEngine.getSession ? DashboardEngine.getSession() : JSON.parse(sessionStorage.getItem('stemulus_session') || localStorage.getItem('stemulus_session') || 'null');
         if (!session || (session.role !== 'tutor' && session.role !== 'admin')) {
           window.location.href = 'parent-login.html?role=tutor';
           return;

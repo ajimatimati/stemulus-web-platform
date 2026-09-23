@@ -139,49 +139,20 @@ const ParentEngine = (function() {
     }
 
     function renderOnboardingPanel() {
-        const onboarding = DashboardEngine.getOnboarding(currentParent.email);
-        const main = document.querySelector('[id="main-content"]') || document.querySelector('.content-area') || document.querySelector('.lg\\:ml-64') || document.body;
+        if (!currentParent || !currentParent.email) return;
         
         // Remove existing onboarding section if any
         const existing = document.getElementById('onboarding-panel');
         if (existing) existing.remove();
 
-        if (onboarding.completed) return;
-
-        const panel = document.createElement('section');
-        panel.id = 'onboarding-panel';
-        panel.className = 'mb-8 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border-2 border-blue-500/20 rounded-2xl p-6 relative overflow-hidden';
-        
-        const stepsHTML = onboarding.steps.map(step => `
-            <div class="flex items-center gap-3 bg-white p-3.5 rounded-xl border border-gray-100 shadow-sm">
-                <button onclick="ParentEngine.completeStep('${step.id}')" 
-                    class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${step.done ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 hover:border-blue-500 bg-white'}"
-                    ${step.done ? 'disabled' : ''}>
-                    ${step.done ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>' : ''}
-                </button>
-                <span class="text-sm font-semibold ${step.done ? 'line-through text-gray-400' : 'text-gray-700'}">${step.label}</span>
-            </div>
-        `).join('');
-
-        panel.innerHTML = `
-            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div class="space-y-2">
-                    <span class="inline-block bg-blue-100 text-blue-700 text-xs font-extrabold px-3 py-1 rounded-xl uppercase tracking-wider">Onboarding Wizard</span>
-                    <h3 class="text-xl font-bold font-nunito text-gray-800">Welcome to STEMulus! Complete these quick steps to get started:</h3>
-                    <p class="text-sm text-gray-500">Setting up notifications allows you to receive automated birthday alerts and class link reminders.</p>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 shrink-0 md:max-w-xl w-full">
-                    ${stepsHTML}
-                </div>
-            </div>
-            <div class="absolute -right-10 -bottom-10 opacity-5">
-                <svg class="w-48 h-48 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                </svg>
-            </div>
-        `;
-        
-        if (main) { main.insertBefore(panel, main.firstChild); } else { document.body.insertBefore(panel, document.body.firstChild); }
+        const onboarding = DashboardEngine.getOnboarding(currentParent.email);
+        // Automatically accept/complete non-essential onboarding checks on login so parents have seamless access
+        if (onboarding && !onboarding.completed) {
+            if (typeof DashboardEngine !== 'undefined' && DashboardEngine.completeAllOnboarding) {
+                DashboardEngine.completeAllOnboarding(currentParent.email);
+            }
+            return;
+        }
     }
 
     function completeStep(stepId) {

@@ -289,6 +289,32 @@ const DashboardEngine = (function() {
             }
         ],
         ntfyTopic: "stm-bday-qm4p7s9ke2ax1nf",
+        tutors: [
+            {
+                id: "tut-101",
+                name: "Sarah Jane",
+                email: "tutor@stemuluskidstech.com",
+                phone: "+2348011223344",
+                subjects: ["Python Programming", "Scratch Creators"],
+                status: "active"
+            },
+            {
+                id: "tut-102",
+                name: "David Okon",
+                email: "david.okon@stemuluskidstech.com",
+                phone: "+2348022334455",
+                subjects: ["Web Development", "Robotics"],
+                status: "active"
+            },
+            {
+                id: "tut-103",
+                name: "Olalekan Israel Ajimati",
+                email: "olalekan@stemuluskidstech.com",
+                phone: "+2347052466716",
+                subjects: ["Python Programming", "Full-Stack Web Development", "AI & Machine Learning"],
+                status: "active"
+            }
+        ],
         attendanceRecords: [],
         monthlyReports: [],
         emailQueue: [],
@@ -332,18 +358,54 @@ const DashboardEngine = (function() {
                     localStorage.setItem("stemulus_db", JSON.stringify(parsed));
                 }
             }
-            // Proactively ensure STEM-2026-QWHF is in the local storage certificates
-            if (parsed.certificates && !parsed.certificates.some(c => c.credential_id === "STEM-2026-QWHF")) {
-                parsed.certificates.push({
-                    id: "cert-6002",
-                    credential_id: "STEM-2026-QWHF",
-                    student_name: "Modesire Abdusalam Shittu",
-                    program_name: "Python Data App Academy: Building Web Apps with Streamlit",
-                    grade_level: "Distinction",
-                    issue_date: "2026-05-31"
-                });
+            // Ensure tutors array exists and includes core tutors (especially Olalekan Israel Ajimati)
+            if (!parsed.tutors || !Array.isArray(parsed.tutors)) {
+                parsed.tutors = JSON.parse(JSON.stringify(DEFAULT_DATA.tutors));
+                localStorage.setItem("stemulus_db", JSON.stringify(parsed));
+            } else {
+                const hasOlalekan = parsed.tutors.some(t => (t.email || '').toLowerCase() === 'olalekan@stemuluskidstech.com' || (t.name || '').toLowerCase().includes('olalekan'));
+                if (!hasOlalekan) {
+                    parsed.tutors.push({
+                        id: "tut-103",
+                        name: "Olalekan Israel Ajimati",
+                        email: "olalekan@stemuluskidstech.com",
+                        phone: "+2347052466716",
+                        subjects: ["Python Programming", "Full-Stack Web Development", "AI & Machine Learning"],
+                        status: "active"
+                    });
+                    localStorage.setItem("stemulus_db", JSON.stringify(parsed));
+                }
+            }
+
+            // Ensure Olalekan is also in parsed.users with role tutor
+            parsed.users = parsed.users || {};
+            if (!parsed.users['olalekan@stemuluskidstech.com']) {
+                parsed.users['olalekan@stemuluskidstech.com'] = {
+                    id: "usr-tut-103",
+                    name: "Olalekan Israel Ajimati",
+                    email: "olalekan@stemuluskidstech.com",
+                    role: "tutor",
+                    status: "active"
+                };
                 localStorage.setItem("stemulus_db", JSON.stringify(parsed));
             }
+
+            // Clean up legacy schedules that have invalid/undefined dates
+            if (parsed.schedules && Array.isArray(parsed.schedules)) {
+                let schedulesCleaned = false;
+                parsed.schedules = parsed.schedules.filter(s => {
+                    if (!s || !s.studentId) return false;
+                    if (!s.date || s.date === 'undefined' || s.date === 'null') {
+                        schedulesCleaned = true;
+                        return false;
+                    }
+                    return true;
+                });
+                if (schedulesCleaned) {
+                    localStorage.setItem("stemulus_db", JSON.stringify(parsed));
+                }
+            }
+
             return parsed;
         } catch (e) {
             console.error("Local DB corrupt. Re-initializing...", e);
@@ -625,20 +687,79 @@ const DashboardEngine = (function() {
     // --- Tutors Controller ---
     function getTutors() {
         const db = getDB();
-        // Derive tutors from users + student assignments
-        const tutorUsers = Object.values(db.users).filter(u => u.role === 'tutor');
-        // Also add tutors inferred from student records (for legacy seed data)
-        const tutorNamesFromStudents = [...new Set(db.students.map(s => s.tutorName).filter(Boolean))];
         const tutorMap = {};
-        tutorUsers.forEach(u => {
-            tutorMap[u.name || u.email] = { name: u.name || u.email, email: u.email };
-        });
-        tutorNamesFromStudents.forEach(name => {
-            if (!tutorMap[name]) {
-                const matchedUser = tutorUsers.find(u => u.name === name);
-                tutorMap[name] = { name, email: matchedUser ? matchedUser.email : (name.toLowerCase().replace(/\s+/g,'') + '@stemuluskidstech.com') };
+
+        // 1. Load from db.tutors array
+        if (Array.isArray(db.tutors)) {
+            db.tutors.forEach(t => {
+                const key = (t.email || t.name || '').toLowerCase().trim();
+                if (key) {
+                    tutorMap[key] = {
+                        id: t.id || ('tut-' + key),
+                        name: t.name || 'Tutor',
+                        email: t.email || '',
+                        phone: t.phone || '',
+                        subjects: t.subjects || ['General Coding'],
+                        bio: t.bio || '',
+                        availability: t.availability || {},
+                        status: t.status || 'active'
+                    };
+                }
+            });
+        }
+
+        // 2. Load from db.users where role === 'tutor'
+        const usersList = Array.isArray(db.users) ? db.users : Object.values(db.users || {});
+        usersList.filter(u => u && u.role === 'tutor').forEach(u => {
+            const key = (u.email || u.name || '').toLowerCase().trim();
+            if (key) {
+                if (!tutorMap[key]) {
+                    tutorMap[key] = {
+                        id: u.id || ('tut-' + key),
+                        name: u.name || 'Tutor',
+                        email: u.email || '',
+                        phone: u.phone || '',
+                        subjects: u.subjects || ['General Coding'],
+                        status: u.status || 'active'
+                    };
+                } else if (u.name && (!tutorMap[key].name || tutorMap[key].name === 'Tutor')) {
+                    tutorMap[key].name = u.name;
+                }
             }
         });
+
+        // 3. Core verified tutors guarantee (including Olalekan Israel Ajimati)
+        const coreDefaults = [
+            { id: "tut-101", name: "Sarah Jane", email: "tutor@stemuluskidstech.com", phone: "+2348011223344", subjects: ["Python Programming", "Scratch Creators"], status: "active" },
+            { id: "tut-102", name: "David Okon", email: "david.okon@stemuluskidstech.com", phone: "+2348022334455", subjects: ["Web Development", "Robotics"], status: "active" },
+            { id: "tut-103", name: "Olalekan Israel Ajimati", email: "olalekan@stemuluskidstech.com", phone: "+2347052466716", subjects: ["Python Programming", "Full-Stack Web Development", "AI & Machine Learning"], status: "active" }
+        ];
+        coreDefaults.forEach(ct => {
+            const key = ct.email.toLowerCase().trim();
+            if (!tutorMap[key]) {
+                tutorMap[key] = ct;
+            } else if (!tutorMap[key].name || tutorMap[key].name === 'Tutor') {
+                tutorMap[key].name = ct.name;
+            }
+        });
+
+        // 4. Inferred from student tutor names
+        if (Array.isArray(db.students)) {
+            db.students.forEach(s => {
+                if (s.tutorName && s.tutorName !== 'Unassigned') {
+                    const key = (s.tutorEmail || s.tutorName).toLowerCase().trim();
+                    if (!tutorMap[key]) {
+                        tutorMap[key] = {
+                            id: s.tutorId || ('tut-' + key),
+                            name: s.tutorName,
+                            email: s.tutorEmail || (s.tutorName.toLowerCase().replace(/\s+/g,'') + '@stemuluskidstech.com'),
+                            status: 'active'
+                        };
+                    }
+                }
+            });
+        }
+
         return Object.values(tutorMap);
     }
 
@@ -872,8 +993,8 @@ const DashboardEngine = (function() {
                 const record = db.attendanceRecords[idx];
                 db.schedules = db.schedules || [];
                 const schedIdx = db.schedules.findIndex(s => 
-                    s.studentId === record.studentId && 
-                    s.date === record.classDate
+                    (record.scheduleId && s.id === record.scheduleId) ||
+                    (s.studentId === record.studentId && s.date === record.classDate)
                 );
                 if (schedIdx !== -1) {
                     db.schedules[schedIdx].attendanceStatus = 'present';
@@ -1104,6 +1225,22 @@ const DashboardEngine = (function() {
             return db.onboarding[email];
         }
         return null;
+    }
+
+    function completeAllOnboarding(email) {
+        const db = getDB();
+        if (!email) return null;
+        db.onboarding = db.onboarding || {};
+        if (!db.onboarding[email]) {
+            db.onboarding[email] = { completed: true, steps: [] };
+        } else {
+            db.onboarding[email].completed = true;
+            if (Array.isArray(db.onboarding[email].steps)) {
+                db.onboarding[email].steps.forEach(s => s.done = true);
+            }
+        }
+        saveDB(db);
+        return db.onboarding[email];
     }
 
     // --- Certificates Controller ---
@@ -2283,6 +2420,7 @@ const DashboardEngine = (function() {
         declineReschedule,
         getOnboarding,
         completeOnboardingStep,
+        completeAllOnboarding,
         getCertificates,
         addCertificate,
         deleteCertificate,

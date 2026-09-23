@@ -2096,15 +2096,18 @@ function renderStudentsTable(students) {
     if (window.lucide) lucide.createIcons();
 }
 
-function populateTutorsDropdown() {
+function populateTutorsDropdown(specificId) {
     const tutors = DashboardEngine.getTutors ? DashboardEngine.getTutors() : [];
-    const selects = ['student-tutor', 'schedule-mentor', 'new-child-tutor', 'add-child-tutor'];
+    const selects = specificId ? [specificId] : ['student-tutor', 'schedule-mentor', 'new-child-tutor', 'add-child-tutor', 'ac-tutor', 'qo-tutor-select'];
     selects.forEach(id => {
         const select = document.getElementById(id);
         if (!select) return;
         const currentVal = select.value;
         select.innerHTML = '<option value="">-- Select Tutor --</option>' +
-            tutors.map(t => `<option value="${t.name}" data-tutor-email="${t.email || ''}" data-tutor-id="${t.id || ''}">${t.name}</option>`).join('');
+            tutors.map(t => {
+                const label = t.name + (t.email && !t.name.includes(t.email) ? ' (' + t.email + ')' : '');
+                return `<option value="${t.name}" data-tutor-email="${t.email || ''}" data-tutor-id="${t.id || ''}">${label}</option>`;
+            }).join('');
         if (currentVal) select.value = currentVal;
     });
 }
@@ -2426,10 +2429,16 @@ function loadSchedules() {
     const sortedDates = Object.keys(grouped).sort();
 
     calendar.innerHTML = sortedDates.map(dateStr => {
-        const dateObj = new Date(dateStr);
-        const formattedDate = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+        let formattedDate = 'Scheduled Sessions';
+        if (dateStr && dateStr !== 'undefined' && dateStr !== 'null') {
+            const dateObj = new Date(dateStr + (dateStr.length === 10 ? 'T00:00:00' : ''));
+            if (!isNaN(dateObj.getTime())) {
+                formattedDate = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+            }
+        }
 
         const sessionsHTML = grouped[dateStr].map(s => {
+            const courseName = s.course || s.program || 'Coding Session';
             let badgeClass = 'bg-gray-100 text-gray-800';
             if (s.attendanceStatus === 'present') badgeClass = 'bg-emerald-100 text-emerald-800';
             if (s.attendanceStatus === 'absent') badgeClass = 'bg-rose-100 text-rose-800';
@@ -2439,7 +2448,7 @@ function loadSchedules() {
                         <div class="flex items-start gap-3">
                             <div class="w-1.5 h-12 bg-admin-accent rounded-full shrink-0"></div>
                             <div>
-                                <p class="font-bold text-gray-800 text-sm">${s.course}</p>
+                                <p class="font-bold text-gray-800 text-sm">${courseName}</p>
                                 <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-400 mt-0.5">
                                     <span class="font-semibold text-slate-600">Student: ${s.studentName}</span>
                                     <span>•</span>
@@ -2667,6 +2676,31 @@ function switchScheduleTab(tab) {
     }
 }
 
+const perDayTimesState = {};
+
+function formatTime12h(timeStr) {
+    if (!timeStr) return '05:00 PM';
+    try {
+        const [hh, mm] = timeStr.split(':');
+        const h = parseInt(hh, 10);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        return `${h12}:${mm} ${ampm}`;
+    } catch(e) {
+        return timeStr;
+    }
+}
+
+function onPerDayTimeChange() {
+    document.querySelectorAll('.rec-day-time-input').forEach(input => {
+        const day = input.dataset.day;
+        if (day !== undefined && input.value) {
+            perDayTimesState[day] = input.value;
+        }
+    });
+    updateRecurringPreview(false);
+}
+
 function getRecurringCalculatedDates() {
     const monthInput = document.getElementById('rec-schedule-month');
     if (!monthInput || !monthInput.value) return [];
@@ -2679,30 +2713,67 @@ function getRecurringCalculatedDates() {
 
     if (selectedDays.length === 0) return [];
 
+    const defaultTime = (document.getElementById('rec-schedule-time') ? document.getElementById('rec-schedule-time').value : '16:30') || '16:30';
+
     const dates = [];
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     for (let day = 1; day <= daysInMonth; day++) {
         const d = new Date(year, month, day);
-        if (selectedDays.includes(d.getDay())) {
+        const dayNum = d.getDay();
+        if (selectedDays.includes(dayNum)) {
             const yyyy = d.getFullYear();
             const mm = String(d.getMonth() + 1).padStart(2, '0');
             const dd = String(d.getDate()).padStart(2, '0');
+            const sessionTime = perDayTimesState[dayNum] || defaultTime;
             dates.push({
                 dateStr: `${yyyy}-${mm}-${dd}`,
-                dateObj: d
+                dateObj: d,
+                dayNum: dayNum,
+                time: sessionTime
             });
         }
     }
     return dates;
 }
 
-function updateRecurringPreview() {
+function updateRecurringPreview(renderPickers = true) {
     const chipsContainer = document.getElementById('rec-dates-chips');
     const badge = document.getElementById('rec-count-badge');
+    const perDaySection = document.getElementById('rec-per-day-times-section');
+    const perDayContainer = document.getElementById('rec-per-day-times-container');
     if (!chipsContainer) return;
 
+    const defaultTime = (document.getElementById('rec-schedule-time') ? document.getElementById('rec-schedule-time').value : '16:30') || '16:30';
+    const checkedBoxes = Array.from(document.querySelectorAll('.rec-day-checkbox:checked'));
+    const selectedDays = checkedBoxes.map(cb => parseInt(cb.value, 10));
+
+    const dayLabels = { 0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat' };
+    const dayFullLabels = { 0: 'Sunday', 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday' };
+
+    // Dynamically render per-day time input pickers if multiple days are chosen
+    if (perDaySection && perDayContainer && renderPickers) {
+        if (selectedDays.length > 0) {
+            perDaySection.classList.remove('hidden');
+            perDayContainer.innerHTML = selectedDays.map(dayNum => {
+                const curVal = perDayTimesState[dayNum] || defaultTime;
+                return `
+                    <div class="flex items-center justify-between bg-white border border-slate-200 rounded-xl px-3 py-2 shadow-2xs hover:border-indigo-300 transition-colors">
+                        <span class="font-bold text-slate-800 text-xs flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                            ${dayFullLabels[dayNum]}:
+                        </span>
+                        <input type="time" class="rec-day-time-input bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-lg px-2 py-1 text-xs text-slate-900 font-bold focus:border-indigo-600 focus:outline-none transition-colors"
+                            data-day="${dayNum}" id="rec-time-day-${dayNum}" value="${curVal}" onchange="AdminEngine.onPerDayTimeChange()">
+                    </div>
+                `;
+            }).join('');
+        } else {
+            perDaySection.classList.add('hidden');
+            perDayContainer.innerHTML = '';
+        }
+    }
+
     const dates = getRecurringCalculatedDates();
-    const timeVal = (document.getElementById('rec-schedule-time') ? document.getElementById('rec-schedule-time').value : '16:30') || '16:30';
 
     if (badge) badge.textContent = `${dates.length} sessions`;
 
@@ -2711,19 +2782,11 @@ function updateRecurringPreview() {
         return;
     }
 
-    let displayTime = timeVal;
-    try {
-        const [hh, mm] = timeVal.split(':');
-        const h = parseInt(hh, 10);
-        const ampm = h >= 12 ? 'PM' : 'AM';
-        const h12 = h % 12 || 12;
-        displayTime = `${h12}:${mm} ${ampm}`;
-    } catch(e) {}
-
     chipsContainer.innerHTML = dates.map(d => {
         const formatted = d.dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        const timeDisplay = formatTime12h(d.time);
         return `<span class="inline-flex items-center gap-1 bg-white border border-indigo-200 text-indigo-900 px-2.5 py-1 rounded-lg text-xs font-semibold shadow-xs">
-            <i data-lucide="calendar" class="w-3 h-3 text-indigo-500"></i> ${formatted} • ${displayTime}
+            <i data-lucide="calendar" class="w-3 h-3 text-indigo-500"></i> ${formatted} • <strong class="text-indigo-700">${timeDisplay}</strong>
         </span>`;
     }).join('');
 
@@ -2744,7 +2807,7 @@ function generateRecurringBatch() {
     const linkInput = document.getElementById('schedule-link');
     const link = linkInput ? linkInput.value.trim() : '';
 
-    const timeVal = (document.getElementById('rec-schedule-time') ? document.getElementById('rec-schedule-time').value : '') || '16:30';
+    const defaultTime = (document.getElementById('rec-schedule-time') ? document.getElementById('rec-schedule-time').value : '') || '16:30';
     const duration = (document.getElementById('rec-schedule-duration') ? document.getElementById('rec-schedule-duration').value : '60') || '60';
 
     if (!studentId || !course || !mentor) {
@@ -2773,7 +2836,7 @@ function generateRecurringBatch() {
             studentName,
             course,
             date: d.dateStr,
-            time: timeVal,
+            time: d.time || defaultTime,
             duration,
             mentor,
             tutorEmail,
@@ -3802,6 +3865,9 @@ return {
     switchScheduleTab,
     generateRecurringBatch,
     updateRecurringPreview,
+    onPerDayTimeChange,
+    getRecurringCalculatedDates,
+    populateTutorsDropdown,
     deleteSchedule,
     handleScheduleStudentChange,
     closeModal,
