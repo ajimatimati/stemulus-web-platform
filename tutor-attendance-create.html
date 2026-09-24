@@ -441,6 +441,23 @@
       <img src="images/portal/standalone/register-papers-3d.png" alt="Log" class="animate-float-band" style="width:120px;height:120px;object-fit:contain;" loading="lazy">
     </div>
 
+    <!-- Express Fill Shortcut Banner -->
+    <div class="max-w-2xl mb-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
+          <i data-lucide="zap" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h4 class="font-extrabold text-amber-950 text-xs sm:text-sm">In a hurry? Express 1-Click Fill</h4>
+          <p class="text-[11px] text-amber-800">Auto-populates present attendance, track-aligned lesson topics, and detailed feedback.</p>
+        </div>
+      </div>
+      <button type="button" onclick="expressFillSession()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 shrink-0">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+        <span>Express Fill</span>
+      </button>
+    </div>
+
     <!-- Form Card -->
     <div class="max-w-2xl" id="form-wrap">
       <div class="dark-card overflow-hidden">
@@ -564,6 +581,19 @@
               </div>
             </div>
 
+            <!-- Course Topic Suggestion Chips -->
+            <div class="mb-4 bg-indigo-50/50 p-3 rounded-xl border border-indigo-100/70">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-800 flex items-center gap-1">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-600"></i> Quick Topic Suggestions for Track:
+                </span>
+                <span class="text-[10px] text-slate-500">1-click fill</span>
+              </div>
+              <div id="topic-chips-container" class="flex flex-wrap gap-1.5">
+                <!-- Dynamically populated based on student's course -->
+              </div>
+            </div>
+
             <!-- Topic / Module -->
             <div class="mb-5">
               <label class="form-label">Topic / Module <span style="color:#f87171;">*</span></label>
@@ -628,6 +658,17 @@
               <p class="error-msg" id="err-grasp">Please rate the student's concept grasp.</p>
             </div>
 
+            <!-- Comment Suggestion Chips -->
+            <div class="mb-3">
+              <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-600 block mb-1.5">Quick Feedback Templates:</span>
+              <div class="flex flex-wrap gap-1.5" id="comment-chips">
+                <button type="button" class="comment-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors" data-comment="Demonstrated strong focus and problem-solving skills today. Solved errors independently and explained code concepts clearly.">Proactive &amp; Independent</button>
+                <button type="button" class="comment-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors" data-comment="Made impressive progress grasping new algorithmic logic today. Overcame initial confusion and completed the full challenge ahead of time.">Great Breakthrough</button>
+                <button type="button" class="comment-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors" data-comment="Good participation throughout class. Followed along attentively; with guided prompting, successfully built and tested the project.">Attentive &amp; Guided</button>
+                <button type="button" class="comment-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors" data-comment="Consistently engaged and brought creative ideas to the project design. Well-structured code with thoughtful implementation.">Creative Builder</button>
+              </div>
+            </div>
+
             <!-- Tutor Comment -->
             <div class="mb-2">
               <label class="form-label">Tutor Comment <span style="color:#f87171;">*</span></label>
@@ -646,6 +687,17 @@
               <div>
                 <h3>Action Items for Home</h3>
                 <p>est. 20 seconds &nbsp;·&nbsp; Step 4 of 4</p>
+              </div>
+            </div>
+
+            <!-- Homework Suggestion Chips -->
+            <div class="mb-3">
+              <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-600 block mb-1.5">Quick Homework Suggestions:</span>
+              <div class="flex flex-wrap gap-1.5" id="homework-chips">
+                <button type="button" class="hw-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors" data-hw="Review today's lesson code and complete the 2 practice challenges before our next session.">Practice Challenges (1-2)</button>
+                <button type="button" class="hw-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors" data-hw="Add an extra feature or personalized theme/scoring rule to today's project.">Add Custom Feature</button>
+                <button type="button" class="hw-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors" data-hw="Test your project for edge cases and note any bugs you find to discuss next class.">Debug &amp; Polish</button>
+                <button type="button" class="hw-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors" data-hw="Review lesson notes and submit the short module checkpoint quiz on the portal.">Portal Checkpoint Quiz</button>
               </div>
             </div>
 
@@ -744,7 +796,7 @@
       btn.onclick=openDrawer;
       if(ov) ov.onclick=closeDrawer;
       if(closeBtn) closeBtn.onclick=closeDrawer;
-      sb.querySelectorAll('a').forEach(function(a){ a.onclick=closeDrawer; });
+      sb.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
     }
   })();
 
@@ -1018,47 +1070,13 @@
         document.getElementById('class_date').value = paramDate;
       }
 
-      if (paramStudentId && typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) {
-        var allStudents = DashboardEngine.getStudents() || [];
-        var matched = allStudents.find(function(st){ return st.id === paramStudentId; });
-        if (matched) {
-          var fName = ((matched.firstName || '') + ' ' + (matched.lastName || '')).trim();
-          document.getElementById('student_name_display').value = fName;
-          document.getElementById('student_id').value = matched.id;
-          document.getElementById('student_name').value = fName;
-          if (document.getElementById('course_covered')) {
-            document.getElementById('course_covered').value = paramCourse || matched.program || 'STEM Coding';
-          }
-          document.getElementById('student-display-wrap').style.display = 'block';
-          document.getElementById('student-dropdown-wrap').style.display = 'none';
-          return;
-        }
-      }
-
-      if(typeof DashboardEngine !== 'undefined' && DashboardEngine.getCurrentScheduledStudent){
-        var sched = DashboardEngine.getCurrentScheduledStudent();
-        if(sched && sched.name){
-          document.getElementById('student_name_display').value = sched.name;
-          document.getElementById('student_id').value = sched.id || '';
-          document.getElementById('student_name').value = sched.name;
-          if (sched.scheduleId) window.currentScheduleId = sched.scheduleId;
-          if (sched.date && document.getElementById('class_date')) document.getElementById('class_date').value = sched.date;
-          if (sched.course && document.getElementById('course_covered')) {
-            document.getElementById('course_covered').value = sched.course;
-          }
-          return;
-        }
-      }
-      
       var students = [];
       if(typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutorStudents){
         students = DashboardEngine.getTutorStudents();
       }
       
-      document.getElementById('student-display-wrap').style.display = 'none';
-      document.getElementById('student-dropdown-wrap').style.display = 'block';
       var sel = document.getElementById('student_id_select');
-      if(students && students.length){
+      if(sel && students && students.length){
         sel.innerHTML = '<option value="">Choose student...</option>';
         students.forEach(function(s){
           var fullName = (s.firstName && s.lastName) ? (s.firstName + ' ' + s.lastName) : (s.firstName || s.name || s.display_name || s.email || 'Student');
@@ -1084,12 +1102,221 @@
             document.getElementById('student_name').value = '';
           }
         };
-        return;
-      } else {
+      } else if (sel) {
         sel.innerHTML = '<option value="">No assigned students found (Contact Admin)</option>';
       }
+
+      if (paramStudentId && typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) {
+        var allStudents = DashboardEngine.getStudents() || [];
+        var matched = allStudents.find(function(st){ return st.id === paramStudentId; });
+        if (matched) {
+          var fName = ((matched.firstName || '') + ' ' + (matched.lastName || '')).trim();
+          document.getElementById('student_name_display').value = fName;
+          document.getElementById('student_id').value = matched.id;
+          document.getElementById('student_name').value = fName;
+          if (document.getElementById('course_covered')) {
+            document.getElementById('course_covered').value = paramCourse || matched.program || 'STEM Coding';
+          }
+          if (sel) sel.value = matched.id;
+          document.getElementById('student-display-wrap').style.display = 'block';
+          document.getElementById('student-dropdown-wrap').style.display = 'none';
+          return;
+        }
+      }
+
+      if(typeof DashboardEngine !== 'undefined' && DashboardEngine.getCurrentScheduledStudent){
+        var sched = DashboardEngine.getCurrentScheduledStudent();
+        if(sched && sched.name){
+          document.getElementById('student_name_display').value = sched.name;
+          document.getElementById('student_id').value = sched.id || '';
+          document.getElementById('student_name').value = sched.name;
+          if (sched.scheduleId) window.currentScheduleId = sched.scheduleId;
+          if (sched.date && document.getElementById('class_date')) document.getElementById('class_date').value = sched.date;
+          if (sched.course && document.getElementById('course_covered')) {
+            document.getElementById('course_covered').value = sched.course;
+          }
+          if (sel && sched.id) sel.value = sched.id;
+          document.getElementById('student-display-wrap').style.display = 'block';
+          document.getElementById('student-dropdown-wrap').style.display = 'none';
+          return;
+        }
+      }
+
+      document.getElementById('student-display-wrap').style.display = 'none';
+      document.getElementById('student-dropdown-wrap').style.display = 'block';
     } catch(e){ console.warn('Student populate error', e); }
   }
+
+  // ─── Track Topics Catalog & Express Fill ──────────────────────────────
+  var TRACK_SUGGESTIONS = {
+    'Python': [
+      { topic: 'Loops & Iteration', built: 'Built an automated number guessing simulator and repeated math challenge using while loops and conditional break statements.' },
+      { topic: 'Functions & Return Values', built: 'Implemented modular utility functions with parameter passing, return values, and unit tests.' },
+      { topic: 'Data Structures: Lists & Dictionaries', built: 'Created an inventory management program with nested dictionary lookups and dynamic list updates.' },
+      { topic: 'Conditional Branching & Logic', built: 'Developed a text-based decision adventure testing boolean logic and multi-branch elif conditions.' },
+      { topic: 'Game Physics with Pygame', built: 'Constructed sprite movement and boundary collision checks with 60 FPS clock cycle.' }
+    ],
+    'Scratch': [
+      { topic: 'Sprite Animations & Costume Cycling', built: 'Animated character walking and jumping sequences synchronized with background parallax.' },
+      { topic: 'Broadcast Messaging & Story Flow', built: 'Structured multi-scene transition dialogue using event broadcasts and receiver handlers.' },
+      { topic: 'Variables & Scoreboard Mechanics', built: 'Integrated health counters, collectible score points, and game-over conditional screens.' },
+      { topic: 'Maze Navigation & Sensing', built: 'Engineered wall-bounce detection and mouse-follow sensing algorithms.' }
+    ],
+    'Web': [
+      { topic: 'HTML5 Semantic Layout & Structure', built: 'Coded accessible hero, card grid, and footer components using proper semantic elements.' },
+      { topic: 'CSS Flexbox & Responsive Layouts', built: 'Constructed a fully responsive portfolio page utilizing flex-wrap and fluid media queries.' },
+      { topic: 'DOM Events & Interactive Form UI', built: 'Wired button listeners, input validation, and real-time state display with JavaScript.' },
+      { topic: 'JavaScript Arrays & Dynamic Cards', built: 'Rendered interactive project showcase cards mapped from a dynamic JavaScript array.' }
+    ],
+    'Robotics': [
+      { topic: 'Ultrasonic Distance Detection', built: 'Calibrated obstacle detection logic and proximity alert LED thresholds.' },
+      { topic: 'Microcontroller Timing Loops', built: 'Programmed servo motor angles synchronized with pulse-width modulation timers.' }
+    ],
+    'default': [
+      { topic: 'Algorithmic Problem Solving', built: 'Solved step-by-step logic puzzles and tested algorithmic solutions with verified outputs.' },
+      { topic: 'Interactive Application Logic', built: 'Created an interactive application prototype testing user input validation and responsive actions.' }
+    ]
+  };
+
+  function updateTopicChips(courseName) {
+    var container = document.getElementById('topic-chips-container');
+    if (!container) return;
+    var course = courseName || (document.getElementById('course_covered') && document.getElementById('course_covered').value) || '';
+    var trackKey = 'default';
+    if (course.toLowerCase().indexOf('python') !== -1) trackKey = 'Python';
+    else if (course.toLowerCase().indexOf('scratch') !== -1) trackKey = 'Scratch';
+    else if (course.toLowerCase().indexOf('web') !== -1) trackKey = 'Web';
+    else if (course.toLowerCase().indexOf('robot') !== -1 || course.toLowerCase().indexOf('ai') !== -1) trackKey = 'Robotics';
+
+    var list = TRACK_SUGGESTIONS[trackKey] || TRACK_SUGGESTIONS['default'];
+    container.innerHTML = list.map(function(item) {
+      return '<button type="button" class="topic-chip px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-indigo-700 border border-indigo-200 hover:bg-indigo-600 hover:text-white transition-all shadow-sm" data-topic="' + item.topic.replace(/"/g, '&quot;') + '" data-built="' + item.built.replace(/"/g, '&quot;') + '">' +
+        item.topic +
+      '</button>';
+    }).join('');
+
+    container.querySelectorAll('.topic-chip').forEach(function(btn) {
+      btn.onclick = function() {
+        var top = btn.getAttribute('data-topic');
+        var blt = btn.getAttribute('data-built');
+        var topicInput = document.getElementById('topic');
+        var builtInput = document.getElementById('what_built');
+        if (topicInput) topicInput.value = top;
+        if (builtInput) builtInput.value = blt;
+        document.getElementById('err-topic').classList.remove('show');
+        document.getElementById('err-built').classList.remove('show');
+      };
+    });
+  }
+
+  // ─── Set Smart Defaults on Load ───────────────────────────────────────
+  function applySmartDefaults() {
+    // 1. Pre-select Present
+    var presentCard = document.querySelector('#attendance-cards .radio-card[data-value="present"]');
+    if (presentCard) {
+      presentCard.click();
+    }
+    // 2. Pre-select On Time
+    var onTimeCard = document.querySelector('#punctuality-cards .radio-card[data-value="on_time"]');
+    if (onTimeCard) {
+      onTimeCard.click();
+    }
+    // 3. Pre-select Completed Fully
+    var compPill = document.querySelector('#assignment-pills .pill-radio[data-value="completed_fully"]');
+    if (compPill) {
+      compPill.click();
+    }
+    // 4. Default 4 Stars (Good Progress)
+    var star4 = document.querySelector('#star-group .star-btn[data-val="4"]');
+    if (star4) {
+      star4.click();
+    }
+    // 5. Pre-check accuracy confirmation
+    var confirmCb = document.getElementById('confirm_accuracy');
+    if (confirmCb) {
+      confirmCb.checked = true;
+    }
+
+    // Initialize topic chips
+    updateTopicChips();
+  }
+
+  // Wire feedback template chips
+  document.addEventListener('click', function(e) {
+    var cChip = e.target.closest('.comment-chip');
+    if (cChip) {
+      var commentTxt = cChip.getAttribute('data-comment');
+      var commentEl = document.getElementById('tutor_comment');
+      if (commentEl) {
+        commentEl.value = commentTxt;
+        document.getElementById('err-comment').classList.remove('show');
+      }
+    }
+    var hwChip = e.target.closest('.hw-chip');
+    if (hwChip) {
+      var hwTxt = hwChip.getAttribute('data-hw');
+      var hwEl = document.getElementById('homework_assigned');
+      if (hwEl) {
+        hwEl.value = hwTxt;
+        document.getElementById('err-homework').classList.remove('show');
+      }
+    }
+  });
+
+  // Listen to student selection to refresh track chips
+  var studentSelectEl = document.getElementById('student_id_select');
+  if (studentSelectEl) {
+    studentSelectEl.addEventListener('change', function() {
+      var opt = studentSelectEl.options[studentSelectEl.selectedIndex];
+      var course = opt ? opt.getAttribute('data-course') : '';
+      if (course) {
+        var courseInput = document.getElementById('course_covered');
+        if (courseInput) courseInput.value = course;
+      }
+      updateTopicChips(course);
+    });
+  }
+
+  // ─── Express 1-Click Fill ─────────────────────────────────────────────
+  window.expressFillSession = function() {
+    applySmartDefaults();
+
+    // Fill Section 2 if empty
+    var topicEl = document.getElementById('topic');
+    var builtEl = document.getElementById('what_built');
+    if (topicEl && !topicEl.value) {
+      var firstChip = document.querySelector('#topic-chips-container .topic-chip');
+      if (firstChip) firstChip.click();
+      else {
+        topicEl.value = 'Core Curriculum Logic & Practical Coding';
+        if (builtEl) builtEl.value = 'Constructed hands-on interactive programming project verifying algorithms and syntax accuracy.';
+      }
+    }
+
+    // Fill Section 3 if empty
+    var commEl = document.getElementById('tutor_comment');
+    if (commEl && !commEl.value) {
+      commEl.value = 'Demonstrated strong focus and problem-solving skills today. Solved errors independently and explained code concepts clearly.';
+    }
+
+    // Fill Section 4 if empty
+    var hwEl = document.getElementById('homework_assigned');
+    if (hwEl && !hwEl.value) {
+      hwEl.value = 'Review today\'s lesson code and complete the practice challenges before our next session.';
+    }
+
+    // Jump to review step (Step 4) so tutor can submit immediately
+    currentStep = 4;
+    updateStepUI();
+    if (typeof showToast === 'function') {
+      showToast('Express details auto-populated! Review and click Submit.', 'success');
+    }
+  };
+
+  // Run smart defaults on DOM ready
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(applySmartDefaults, 300);
+  });
 
   // ─── Init ─────────────────────────────────────────────────────────────
   window.addEventListener('DOMContentLoaded', function(){
@@ -1097,6 +1324,10 @@
     updateStepUI();
     // Re-run lucide after any dynamic changes
     if(window.lucide) lucide.createIcons();
+  });
+  window.addEventListener('stemulusDbUpdated', populateStudentField);
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'stemulus_db') populateStudentField();
   });
   </script>
 

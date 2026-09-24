@@ -349,7 +349,12 @@ const TutorAttendanceEngine = (function() {
             studentsList = DashboardEngine.getStudents().filter(s => s.status === 'active');
         } else {
             // Normal mode: only students assigned to this tutor
-            studentsList = DashboardEngine.getStudents().filter(s => s.tutorName === currentTutor.name && s.status === 'active');
+            studentsList = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutorStudents)
+                ? DashboardEngine.getTutorStudents(currentTutor ? currentTutor.email : null).filter(s => s.status === 'active')
+                : DashboardEngine.getStudents().filter(s => (
+                    (s.tutorEmail && currentTutor && s.tutorEmail.toLowerCase() === (currentTutor.email || '').toLowerCase()) ||
+                    (s.tutorName && currentTutor && s.tutorName.toLowerCase() === (currentTutor.name || '').toLowerCase())
+                ) && s.status === 'active');
         }
 
         studentsList.forEach(s => {

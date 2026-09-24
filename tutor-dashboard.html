@@ -541,7 +541,7 @@
       btn.onclick=openDrawer;
       if(ov) ov.onclick=closeDrawer;
       if(closeBtn) closeBtn.onclick=closeDrawer;
-      sb.querySelectorAll('a').forEach(function(a){ a.onclick=closeDrawer; });
+      sb.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
     }
 
     window.toggleTutorSidebar = function() {
@@ -560,6 +560,9 @@
     window.addEventListener('storage', function(e) {
       if (e.key === 'stemulus_session' && !e.newValue) {
         window.location.href = 'parent-login.html';
+      }
+      if (e.key === 'stemulus_db' && typeof TutorEngine !== 'undefined' && typeof TutorEngine.renderDashboard === 'function') {
+        TutorEngine.renderDashboard();
       }
     });
   </script>

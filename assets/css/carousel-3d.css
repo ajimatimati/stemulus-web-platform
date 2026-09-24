@@ -8,29 +8,27 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  background: rgba(250, 249, 247, 0.92) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: #faf9f7 !important;
 }
 
-/* 3D Perspective Viewport */
+/* 3D Perspective Viewport (Scaled to 60% of original 400px height) */
 #carousel-perspective {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1400px;
-  perspective-origin: 50% 28%;
+  perspective: 850px;
+  perspective-origin: 50% 30%;
   overflow: visible;
 }
 
-/* Cylinder Track */
+/* Cylinder Track (Scaled to 60%: 204px x 156px from original 340px x 260px) */
 #carousel-track {
   position: relative;
-  width: 340px;
-  height: 260px;
+  width: 204px;
+  height: 156px;
   transform-style: preserve-3d;
   transition: transform 0.1s linear;
   will-change: transform;
@@ -48,46 +46,39 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transition: transform 0.4s ease, opacity 0.4s ease;
-  will-change: transform, opacity;
+  will-change: transform;
+  opacity: 1 !important;
+  filter: none !important;
 }
 
-/* Blurred Ambient Reflection/Shadow under card */
+/* Remove Smudgy Bottom Shadow */
 .carousel-card::after {
-  content: "";
-  position: absolute;
-  bottom: -25px;
-  left: 5%;
-  width: 90%;
-  height: 20px;
-  background: radial-gradient(ellipse at center, rgba(7, 13, 31, 0.38) 0%, rgba(7, 13, 31, 0) 70%);
-  filter: blur(5px);
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0.8;
-  transition: opacity 0.4s ease;
+  display: none !important;
 }
 
-/* Double-Bezel Card Architecture (Outer Bezel) */
+/* Clean Demarcated Card Border Architecture (Outer Shell) */
 .card-shell {
   width: 100%;
   height: 100%;
-  padding: 6px;
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(26, 35, 126, 0.08);
-  border-radius: 16px; /* modern sleek box corner */
-  box-shadow: 0 12px 36px rgba(7, 13, 31, 0.05), inset 0 1px 2px rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  padding: 3px;
+  background: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
   box-sizing: border-box;
   transform-style: preserve-3d;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.33, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.33, 1), background 0.4s ease, border-color 0.4s ease;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.33, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.33, 1), border-color 0.3s ease;
 }
 
 .carousel-card:hover .card-shell {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(244, 96, 12, 0.3);
-  box-shadow: 0 20px 48px rgba(244, 96, 12, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.9);
-  transform: translateY(-8px);
+  border-color: #f4600c;
+  box-shadow: 0 16px 36px rgba(244, 96, 12, 0.22);
+  transform: translateY(-4px);
+}
+
+.carousel-card.active .card-shell {
+  border: 2px solid #f4600c;
+  box-shadow: 0 12px 32px rgba(244, 96, 12, 0.25);
 }
 
 /* Inner Bezel / Card Core */
@@ -95,14 +86,12 @@
   width: 100%;
   height: 100%;
   position: relative;
-  border-radius: 12px; /* concentric padding compensation */
+  border-radius: 9px;
   overflow: hidden;
   background: #ffffff;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
-  transform-style: preserve-3d;
 }
 
-/* Card Background Graphic */
+/* Card Background Graphic - high quality images clean */
 .card-img {
   width: 100%;
   height: 100%;
@@ -111,70 +100,29 @@
   background: #ffffff;
   object-position: center;
   transition: transform 1.2s cubic-bezier(0.25, 1, 0.33, 1);
+  display: block;
 }
 
 .carousel-card:hover .card-img {
   transform: scale(1.08);
 }
 
-/* Card Content Overlay & Gradient Mesh */
+/* Images have NO additional words, badges, or overlays */
 .card-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(7, 13, 31, 0.92) 0%,
-    rgba(7, 13, 31, 0.45) 45%,
-    rgba(7, 13, 31, 0.05) 100%
-  );
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 1.5rem;
-  box-sizing: border-box;
-  color: #ffffff;
-  z-index: 2;
-  pointer-events: none;
+  display: none !important;
 }
 
-.card-badge {
-  display: inline-flex;
-  align-items: center;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #f4600c;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 0.25rem 0.6rem;
-  border-radius: 6px;
-  width: fit-content;
-  margin-bottom: 0.45rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-}
-
-/* Card Typography */
-.card-title {
-  font-family: 'Nunito', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 800;
-  margin-bottom: 0px;
-  color: #ffffff;
-  line-height: 1.2;
-}
-
-/* 3D Depth Card Attenuation (NO grayscale/blur filters) */
+/* All cards maintain full clarity: NO fade-out filter or opacity loss */
 .carousel-card:not(.active) {
-  opacity: 0.65; /* Slightly faded for depth, but NO filters */
-  filter: none !important; /* Removed grayscale/blur filter */
+  opacity: 1 !important;
+  filter: none !important;
   pointer-events: auto;
 }
 
 .carousel-card.hidden-card {
   opacity: 0 !important;
   pointer-events: none !important;
-  filter: none !important; /* Removed filter */
+  filter: none !important;
 }
 
 /* Controls Wrapper */
@@ -317,8 +265,8 @@
   
   .carousel-card {
     position: relative !important;
-    width: 240px !important;
-    height: 180px !important;
+    width: 204px !important;
+    height: 156px !important;
     transform: none !important;
     flex-shrink: 0 !important;
     opacity: 1 !important;
@@ -333,8 +281,7 @@
   }
   
   .carousel-card::after {
-    bottom: -30px !important;
-    opacity: 0.6 !important;
+    display: none !important;
   }
 
   .carousel-card:hover .card-shell {

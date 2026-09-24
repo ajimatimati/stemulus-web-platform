@@ -499,6 +499,50 @@
         </div>
       </div>
 
+      <!-- TECHNOLOGY PASSPORT: CHAPTER 1 - THE LIGHT EVOLUTION™ (48-MONTH BADGE SYSTEM) -->
+      <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6" id="passport-section">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-block bg-orange-50 text-orange-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider border border-orange-200/60">Membership Progression</span>
+              <span class="inline-block bg-indigo-50 text-indigo-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider">Chapter 1: The Light Evolution</span>
+            </div>
+            <h3 class="text-xl font-outfit font-extrabold text-slate-800 flex items-center gap-2">
+              <i data-lucide="compass" class="w-5 h-5 text-brand-orange"></i> STEMulus Technology Passport™
+            </h3>
+            <p class="text-xs text-gray-500 mt-1">48-Month historical breakthrough progression. Each month unlocks a crystal medallion and age-tailored science principles.</p>
+          </div>
+          
+          <div class="flex items-center gap-4 bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 shrink-0">
+            <div>
+              <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Passport Progress</span>
+              <span class="text-sm font-black text-slate-800" id="passport-badge-counter">0 / 48 Unlocked</span>
+            </div>
+            <div class="w-24 bg-gray-200 h-2.5 rounded-full overflow-hidden">
+              <div id="passport-progress-fill" class="bg-gradient-to-r from-orange-500 to-indigo-600 h-full rounded-full transition-all duration-700" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Era Filter Pills -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-3 mb-6 scrollbar-none" id="passport-era-filters">
+          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all whitespace-nowrap" data-era="all">All Eras (48)</button>
+          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="1">Era I: First Light (1-6)</button>
+          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="2">Era II: Flamecraft (7-12)</button>
+          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="3">Era III: Artisan Light (13-18)</button>
+          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="4">Era IV: Industrial (19-24)</button>
+          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="5">Era V: Electric (25-30)</button>
+          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="6">Era VI: Efficiency (31-36)</button>
+          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="7">Era VII: Sensing (37-42)</button>
+          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="8">Era VIII: Intelligent (43-48)</button>
+        </div>
+
+        <!-- 48 Badges Medallion Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="passport-badges-grid">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
       <!-- Roadmap Timeline Section -->
       <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6">
         <div class="mb-6">
@@ -776,6 +820,7 @@
   <!-- State & Controller Scripts -->
   <script src="assets/js/dashboard-engine.min.js" defer></script>
   <script src="assets/js/report-pdf-generator.min.js" defer></script>
+  <script src="assets/js/badge-passport-engine.js" defer></script>
   <script>
     // Self-contained page engine for parent-progress
     const ProgressPageController = (function() {
@@ -962,20 +1007,42 @@
         document.getElementById('active-student-title').textContent = `${student.firstName} ${student.lastName}'s Progress`;
         document.getElementById('active-student-badge').textContent = student.status;
         
-        // Render metrics cards
-        document.getElementById('metric-progress').textContent = `${student.progress}%`;
-        document.getElementById('metric-progress-bar').style.width = `${student.progress}%`;
+        // Calculate real live metrics from verified attendance logs and reports
+        const liveMetrics = (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateStudentLiveMetrics)
+            ? DashboardEngine.calculateStudentLiveMetrics(student.id)
+            : null;
+
+        const progressVal = liveMetrics ? liveMetrics.progress : (student.progress || 0);
+        document.getElementById('metric-progress').textContent = `${progressVal}%`;
+        document.getElementById('metric-progress-bar').style.width = `${progressVal}%`;
         
-        const attended = student.metrics ? student.metrics.attended : 0;
-        const total = (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateMonthlySessionTarget)
+        const attended = liveMetrics ? liveMetrics.attendedCount : (student.metrics ? student.metrics.attended : 0);
+        const total = liveMetrics ? liveMetrics.monthlyTarget : ((typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateMonthlySessionTarget)
             ? DashboardEngine.calculateMonthlySessionTarget(student)
-            : ((student.metrics && student.metrics.total) ? student.metrics.total : 8);
+            : ((student.metrics && student.metrics.total) ? student.metrics.total : 8));
         document.getElementById('metric-attended').textContent = `${attended} / ${total}`;
-        document.getElementById('metric-projects').textContent = student.metrics ? student.metrics.projects : 0;
-        document.getElementById('metric-lines').textContent = (student.metrics && student.metrics.lines) ? student.metrics.lines.toLocaleString() : '0';
+        document.getElementById('metric-projects').textContent = liveMetrics ? liveMetrics.projectsCount : (student.metrics ? student.metrics.projects : 0);
+        
+        const linesVal = liveMetrics ? (attended * 125) : ((student.metrics && student.metrics.lines) ? student.metrics.lines : (attended * 125));
+        document.getElementById('metric-lines').textContent = linesVal.toLocaleString();
 
         // Render Spotlight focus area
         document.getElementById('mentor-name').textContent = student.tutorName || "Assigned Mentor";
+
+        // Resolve mentor focus comment from real logs or reports
+        var mentorFocusEl = document.getElementById('mentor-focus-comment');
+        if (mentorFocusEl) {
+          if (liveMetrics && liveMetrics.recentLogs && liveMetrics.recentLogs.length > 0 && liveMetrics.recentLogs[0].tutorComment) {
+            mentorFocusEl.textContent = '“' + liveMetrics.recentLogs[0].tutorComment + '”';
+          } else {
+            var allReports = DashboardEngine.getReports ? DashboardEngine.getReports(student.id) : [];
+            if (allReports.length > 0 && allReports[0].feedback) {
+              mentorFocusEl.textContent = '“' + allReports[0].feedback + '”';
+            } else {
+              mentorFocusEl.textContent = 'Dedicated focus on logical decomposition and self-driven debugging during weekly guided sessions.';
+            }
+          }
+        }
 
         // Render chart
         renderMasteryChart(student);
@@ -988,6 +1055,9 @@
 
         // Render official monthly evaluations
         renderOfficialMonthlyReports(student);
+
+        // Render Technology Passport 48-Monthly Badge Progression
+        renderPassportJourney(student);
 
         // Render milestone video highlights and capstones
         renderMilestoneHighlights(student);
@@ -1070,7 +1140,10 @@
       }
 
       function renderMasteryChart(student) {
-        const skills = student.skills || { logic: 50, loops: 50, variables: 50, syntax: 50, projects: 50 };
+        const liveMetrics = (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateStudentLiveMetrics)
+            ? DashboardEngine.calculateStudentLiveMetrics(student.id)
+            : null;
+        const skills = (liveMetrics && liveMetrics.skills) ? liveMetrics.skills : (student.skills || { logic: 50, loops: 50, variables: 50, syntax: 50, projects: 50 });
         
         const labels = ['Logic & Strategy', 'Control Loops', 'Variables & Storage', 'Code Syntax', 'Capstone Projects'];
         const dataValues = [
@@ -1600,6 +1673,92 @@
         window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
       }
 
+      // ─── Technology Passport 48-Badge Journey Engine ───────────────────
+      let activePassportEra = 'all';
+
+      function renderPassportJourney(student) {
+        if (typeof BadgePassportEngine === 'undefined') return;
+        const pass = BadgePassportEngine.getStudentPassport(student.id);
+        if (!pass) return;
+
+        // Progress Counter & Bar
+        const counterEl = document.getElementById('passport-badge-counter');
+        const fillEl = document.getElementById('passport-progress-fill');
+        if (counterEl) counterEl.textContent = `${pass.unlockedCount} / 48 Unlocked`;
+        if (fillEl) fillEl.style.width = `${pass.completionPercent}%`;
+
+        // Render Badges Grid
+        renderPassportBadges(pass, student);
+
+        // Wire Era Filters
+        const filterBtns = document.querySelectorAll('.passport-era-btn');
+        filterBtns.forEach(btn => {
+          btn.onclick = function() {
+            activePassportEra = btn.getAttribute('data-era');
+            filterBtns.forEach(b => {
+              if (b.getAttribute('data-era') === activePassportEra) {
+                b.className = 'passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all whitespace-nowrap';
+              } else {
+                b.className = 'passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap';
+              }
+            });
+            renderPassportBadges(pass, student);
+          };
+        });
+      }
+
+      function renderPassportBadges(pass, student) {
+        const grid = document.getElementById('passport-badges-grid');
+        if (!grid) return;
+
+        let badges = pass.badges || [];
+        if (activePassportEra !== 'all') {
+          const eraId = parseInt(activePassportEra, 10);
+          badges = badges.filter(b => b.eraId === eraId);
+        }
+
+        grid.innerHTML = badges.map(b => {
+          const isUnlocked = b.isUnlocked;
+          const isCurrent = b.isCurrent;
+          const eraColor = b.eraColor || '#f97316';
+
+          if (isUnlocked) {
+            return `
+              <div class="bg-gradient-to-b from-white to-slate-50 border ${isCurrent ? 'border-amber-400 ring-2 ring-amber-400/30 shadow-md' : 'border-slate-200'} rounded-2xl p-3.5 flex flex-col items-center text-center cursor-pointer transition-all hover:scale-105 hover:shadow-lg relative overflow-hidden" onclick="BadgePassportEngine.openBadgeModal(${b.id}, ${student.age || 10})">
+                ${isCurrent ? '<span class="absolute top-2 right-2 flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span></span>' : ''}
+                <div class="w-16 h-16 mb-2 flex items-center justify-center relative">
+                  <img src="${b.image}" alt="${b.title}" class="w-14 h-14 object-contain drop-shadow-md">
+                </div>
+                <span class="text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1" style="background:${eraColor}18;color:${eraColor};">Month ${b.month}</span>
+                <h4 class="text-xs font-black text-slate-800 leading-tight truncate w-full" title="${b.title}">${b.title}</h4>
+                <p class="text-[10px] text-slate-500 mt-0.5 truncate w-full">${b.eraTheme}</p>
+                <button type="button" class="mt-2 text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-0.5">
+                  <span>Explore</span> &rarr;
+                </button>
+              </div>
+            `;
+          } else {
+            return `
+              <div class="bg-slate-50/70 border border-dashed border-slate-200 rounded-2xl p-3.5 flex flex-col items-center text-center opacity-60 relative overflow-hidden select-none">
+                <div class="w-16 h-16 mb-2 flex items-center justify-center relative">
+                  <img src="${b.image}" alt="${b.title}" class="w-14 h-14 object-contain grayscale blur-[1px] opacity-40">
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="w-7 h-7 rounded-full bg-slate-800/80 text-white flex items-center justify-center shadow-sm">
+                      <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-200"></i>
+                    </span>
+                  </div>
+                </div>
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider px-2 py-0.5 rounded-full mb-1 bg-slate-100">Month ${b.month}</span>
+                <h4 class="text-xs font-bold text-slate-500 leading-tight truncate w-full" title="${b.title}">${b.title}</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5 truncate w-full">Locked</p>
+              </div>
+            `;
+          }
+        }).join('');
+
+        if (window.lucide) lucide.createIcons();
+      }
+
       return {
         init,
         openOfficialPDF,
@@ -1875,7 +2034,7 @@
       btn.onclick=openDrawer;
       if(ov) ov.onclick=closeDrawer;
       if(closeBtn) closeBtn.onclick=closeDrawer;
-      sb.querySelectorAll('a').forEach(function(a){ a.onclick=closeDrawer; });
+      sb.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
     }
   })();
   </script>

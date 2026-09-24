@@ -261,7 +261,7 @@
       btn.onclick=openDrawer;
       if(ov) ov.onclick=closeDrawer;
       if(closeBtn) closeBtn.onclick=closeDrawer;
-      sb.querySelectorAll('a').forEach(function(a){ a.onclick=closeDrawer; });
+      sb.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
     }
   })();
   </script>

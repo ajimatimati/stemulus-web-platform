@@ -266,14 +266,14 @@
       tlFade.to('#video-overlay', {
         opacity: 0,
         ease: 'power1.inOut',
-        duration: 0.4
-      }, 0.45);
+        duration: 0.35
+      }, 0.25);
 
       tlFade.to('#hero-panel', {
         autoAlpha: 0,
         ease: 'power1.inOut',
-        duration: 0.4
-      }, 0.45);
+        duration: 0.3
+      }, 0.05);
 
       // Start the alive blink loop: desktop only
       initBlinkEngine();

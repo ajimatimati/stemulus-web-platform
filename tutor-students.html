@@ -295,9 +295,12 @@
           const initials = ((s.firstName || 'S')[0] + (s.lastName || '')[0]).toUpperCase();
           const waPhone = (s.parentPhone || '').replace(/[^0-9]/g, '');
           const waLink = waPhone ? ('https://wa.me/' + waPhone + '?text=Hello%20' + encodeURIComponent(s.parentName || 'Parent') + '%2C%20this%20is%20' + encodeURIComponent(currentTutor.name || 'your child\'s coding mentor') + '%20from%20STEMulus') : null;
-          const progress = s.progress || 0;
-          const attended = (s.metrics && s.metrics.attended) ? s.metrics.attended : (s.classesAttended || 0);
-          const totalClasses = (s.metrics && s.metrics.total) ? s.metrics.total : 24;
+          const live = (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateStudentLiveMetrics)
+            ? DashboardEngine.calculateStudentLiveMetrics(s.id)
+            : null;
+          const progress = live ? live.syllabusProgress : (s.progress || 0);
+          const attended = live ? live.totalAttended : ((s.metrics && s.metrics.attended) ? s.metrics.attended : (s.classesAttended || 0));
+          const totalClasses = live ? live.monthlyTarget : ((s.metrics && s.metrics.total) ? s.metrics.total : 24);
 
           return `
             <div class="student-card p-6 flex flex-col justify-between">
@@ -382,6 +385,16 @@
     })();
 
     document.addEventListener('DOMContentLoaded', TutorStudentsApp.init);
+    window.addEventListener('stemulusDbUpdated', function() {
+      if (typeof TutorStudentsApp !== 'undefined' && TutorStudentsApp.loadStudents) {
+        TutorStudentsApp.loadStudents();
+      }
+    });
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'stemulus_db' && typeof TutorStudentsApp !== 'undefined' && TutorStudentsApp.loadStudents) {
+        TutorStudentsApp.loadStudents();
+      }
+    });
   </script>
 </body>
 </html>

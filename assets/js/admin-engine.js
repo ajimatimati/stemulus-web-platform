@@ -520,6 +520,9 @@ function navigateToSection(sectionName) {
         sectionName = 'students';
         switchRosterTab('parents');
     }
+    if (sectionName === 'monthly-reports') {
+        sectionName = 'reports';
+    }
 
     document.querySelectorAll('#sidebar .nav-link').forEach(link => {
         link.classList.remove('active');
@@ -840,6 +843,8 @@ function loadTutorMonthlyReports() {
                         <p class="text-xs text-slate-500">
                             Tutor: <strong class="text-slate-700">${r.tutorName || 'Faculty Instructor'}</strong> &nbsp;&bull;&nbsp;
                             Attendance: <strong class="text-slate-700">${sessionsText}</strong> &nbsp;&bull;&nbsp;
+                            Verified: <strong class="text-slate-700">${r.totalHours || (r.sessionsAttended ? r.sessionsAttended * 1.5 : 0)} hrs</strong> &nbsp;&bull;&nbsp;
+                            Payout: <strong class="text-emerald-700 font-extrabold">$${((r.totalHours || (r.sessionsAttended ? r.sessionsAttended * 1.5 : 0)) * 25).toFixed(2)}</strong> &nbsp;&bull;&nbsp;
                             Engagement: <strong class="text-slate-700 capitalize">${(r.engagementLevel || 'Engaged').replace('-', ' ')}</strong>
                         </p>
                     </div>
@@ -965,6 +970,17 @@ function openReportReviewModal(id) {
     document.getElementById('rev-course-name').textContent = r.course || 'Coding Track';
     document.getElementById('rev-attendance-count').textContent = `${r.sessionsAttended || r.totalSessions || 0} Sessions`;
     document.getElementById('rev-total-hours').textContent = `${r.totalHours || 0} hrs`;
+
+    // Populate verified billing & payout calculations for admin review
+    const verifiedHours = parseFloat(r.totalHours) || (r.sessionsAttended ? r.sessionsAttended * 1.5 : 0);
+    const verifiedSessions = r.sessionsAttended !== undefined ? r.sessionsAttended : (r.totalSessions || 0);
+    const hourlyRate = 25.00;
+    const totalPayout = (verifiedHours * hourlyRate).toFixed(2);
+
+    if (document.getElementById('rev-payout-hours')) document.getElementById('rev-payout-hours').textContent = `${verifiedHours} hrs`;
+    if (document.getElementById('rev-payout-sessions')) document.getElementById('rev-payout-sessions').textContent = `${verifiedSessions}`;
+    if (document.getElementById('rev-payout-rate')) document.getElementById('rev-payout-rate').textContent = `$${hourlyRate.toFixed(2)} / hr`;
+    if (document.getElementById('rev-payout-total')) document.getElementById('rev-payout-total').textContent = `$${totalPayout}`;
 
     document.getElementById('rev-overall-grade').value = r.overallGrade || 'A';
     document.getElementById('rev-engagement-level').value = r.engagementLevel || 'highly-engaged';
@@ -1858,11 +1874,111 @@ function processAttendance(id, status) {
 
 // ==================== STUDENTS CRUD ====================
 
+
+let currentStudentStatusFilter = 'all';
+let currentParentStatusFilter = 'all';
+
+function setStudentStatusFilter(status) {
+    currentStudentStatusFilter = status || 'all';
+    const filterSelect = document.getElementById('filter-status');
+    if (filterSelect) {
+        filterSelect.value = (status === 'all' ? '' : status);
+    }
+    document.querySelectorAll('.st-filter-btn').forEach(btn => {
+        const bStatus = btn.getAttribute('data-status');
+        if (bStatus === currentStudentStatusFilter) {
+            btn.className = 'st-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition-all flex items-center gap-1.5';
+        } else {
+            const colors = {
+                'active': 'text-emerald-800 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100',
+                'inactive': 'text-amber-800 bg-amber-50 border border-amber-200 hover:bg-amber-100',
+                'withdrawn': 'text-rose-800 bg-rose-50 border border-rose-200 hover:bg-rose-100',
+                'all': 'text-slate-600 bg-slate-100 hover:bg-slate-200'
+            };
+            btn.className = 'st-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold ' + (colors[bStatus] || 'text-slate-600 bg-slate-100') + ' transition-all flex items-center gap-1.5';
+        }
+    });
+    filterStudents();
+}
+
+function setParentStatusFilter(status) {
+    currentParentStatusFilter = status || 'all';
+    const filterSelect = document.getElementById('filter-parent-status');
+    if (filterSelect) {
+        filterSelect.value = (status === 'all' ? '' : status);
+    }
+    document.querySelectorAll('.parent-filter-btn').forEach(btn => {
+        const bStatus = btn.getAttribute('data-status');
+        if (bStatus === currentParentStatusFilter) {
+            btn.className = 'parent-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition-all flex items-center gap-1.5';
+        } else {
+            const colors = {
+                'active': 'text-emerald-800 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100',
+                'inactive': 'text-amber-800 bg-amber-50 border border-amber-200 hover:bg-amber-100',
+                'withdrawn': 'text-rose-800 bg-rose-50 border border-rose-200 hover:bg-rose-100',
+                'all': 'text-slate-600 bg-slate-100 hover:bg-slate-200'
+            };
+            btn.className = 'parent-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold ' + (colors[bStatus] || 'text-slate-600 bg-slate-100') + ' transition-all flex items-center gap-1.5';
+        }
+    });
+    filterParents();
+}
+
+function toggleParentStatus(parentEmail) {
+    const db = DashboardEngine.getDB ? DashboardEngine.getDB() : null;
+    if (!db || !db.parents) return;
+    const parent = db.parents.find(p => p.email && p.email.toLowerCase() === (parentEmail || '').toLowerCase());
+    if (!parent) return;
+
+    const currentStatus = parent.status || 'active';
+    let newStatus = 'active';
+    if (currentStatus === 'active') newStatus = 'inactive';
+    else if (currentStatus === 'inactive') newStatus = 'withdrawn';
+    else newStatus = 'active';
+
+    parent.status = newStatus;
+
+    if (db.users) {
+        if (Array.isArray(db.users)) {
+            const u = db.users.find(user => user.email && user.email.toLowerCase() === parentEmail.toLowerCase());
+            if (u) u.status = newStatus;
+        } else if (typeof db.users === 'object') {
+            const emailKey = parentEmail.toLowerCase();
+            if (db.users[emailKey]) db.users[emailKey].status = newStatus;
+        }
+    }
+
+    if (DashboardEngine.saveDB) {
+        DashboardEngine.saveDB(db);
+    } else {
+        localStorage.setItem('stemulus_db', JSON.stringify(db));
+    }
+
+    showToast(`${parent.name || parentEmail} status set to ${newStatus.toUpperCase()}.`, newStatus === 'active' ? 'success' : (newStatus === 'inactive' ? 'warning' : 'error'));
+    loadParents();
+}
+
 function loadStudents() {
     studentsCache = DashboardEngine.getStudents();
     const badge = document.getElementById('badge-students-count');
     if (badge) badge.textContent = studentsCache.length;
-    renderStudentsTable(studentsCache);
+
+    // Update status pill counts
+    const countAll = studentsCache.length;
+    const countActive = studentsCache.filter(s => (s.status || 'active') === 'active').length;
+    const countInactive = studentsCache.filter(s => s.status === 'inactive').length;
+    const countWithdrawn = studentsCache.filter(s => s.status === 'withdrawn').length;
+
+    const elCountAll = document.getElementById('st-count-all');
+    const elCountActive = document.getElementById('st-count-active');
+    const elCountInactive = document.getElementById('st-count-inactive');
+    const elCountWithdrawn = document.getElementById('st-count-withdrawn');
+    if (elCountAll) elCountAll.textContent = countAll;
+    if (elCountActive) elCountActive.textContent = countActive;
+    if (elCountInactive) elCountInactive.textContent = countInactive;
+    if (elCountWithdrawn) elCountWithdrawn.textContent = countWithdrawn;
+
+    filterStudents();
 }
 
 let parentsCache = [];
@@ -1876,7 +1992,23 @@ function loadParents() {
     }
     const badge = document.getElementById('badge-parents-count');
     if (badge) badge.textContent = parentsCache.length;
-    renderParentsTable(parentsCache);
+
+    // Update status pill counts
+    const countAll = parentsCache.length;
+    const countActive = parentsCache.filter(p => (p.status || 'active') === 'active').length;
+    const countInactive = parentsCache.filter(p => p.status === 'inactive').length;
+    const countWithdrawn = parentsCache.filter(p => p.status === 'withdrawn').length;
+
+    const elCountAll = document.getElementById('parent-count-all');
+    const elCountActive = document.getElementById('parent-count-active');
+    const elCountInactive = document.getElementById('parent-count-inactive');
+    const elCountWithdrawn = document.getElementById('parent-count-withdrawn');
+    if (elCountAll) elCountAll.textContent = countAll;
+    if (elCountActive) elCountActive.textContent = countActive;
+    if (elCountInactive) elCountInactive.textContent = countInactive;
+    if (elCountWithdrawn) elCountWithdrawn.textContent = countWithdrawn;
+
+    filterParents();
 }
 
 function renderParentsTable(parents) {
@@ -1942,9 +2074,9 @@ function renderParentsTable(parents) {
                     <p class="text-[10px] text-slate-400">${dateFormatted}</p>
                 </td>
                 <td class="px-6 py-4">
-                    <span class="text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${p.status === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-700 border border-slate-200'}">
+                    <button type="button" onclick="AdminEngine.toggleParentStatus('${p.email}')" class="text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${(p.status || 'active') === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : ((p.status === 'withdrawn') ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-amber-50 text-amber-700 border border-amber-200')} hover:opacity-80 transition-opacity" title="Click to cycle status (Active / Inactive / Withdrawn)">
                         ${p.status || 'Active'}
-                    </span>
+                    </button>
                 </td>
                 <td class="px-6 py-4 text-right">
                     <div class="flex items-center justify-end gap-2">
@@ -1999,11 +2131,13 @@ function switchRosterTab(tab) {
     }
 }
 
-function filterParents(query, country) {
+function filterParents(query, country, status) {
     const searchEl = document.getElementById('parent-search');
     const q = (query !== undefined ? query : (searchEl ? searchEl.value : '')).toLowerCase().trim();
     const filterCountryEl = document.getElementById('filter-parent-country');
     const c = (country !== undefined ? country : (filterCountryEl ? filterCountryEl.value : '')).toLowerCase().trim();
+    const filterStatusEl = document.getElementById('filter-parent-status');
+    const st = status !== undefined ? status : (filterStatusEl ? filterStatusEl.value : (currentParentStatusFilter !== 'all' ? currentParentStatusFilter : ''));
 
     const filtered = parentsCache.filter(p => {
         const matchQuery = !q ||
@@ -2011,7 +2145,9 @@ function filterParents(query, country) {
             (p.email || '').toLowerCase().includes(q) ||
             (p.children || []).some(ch => (ch.name || '').toLowerCase().includes(q));
         const matchCountry = !c || (p.country || '').toLowerCase().includes(c);
-        return matchQuery && matchCountry;
+        const currentSt = p.status || 'active';
+        const matchStatus = !st || st === 'all' || currentSt === st;
+        return matchQuery && matchCountry && matchStatus;
     });
 
     renderParentsTable(filtered);
@@ -2076,7 +2212,7 @@ function renderStudentsTable(students) {
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                     <span class="text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${s.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}">
+                     <span class="text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${(s.status || 'active') === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : ((s.status === 'withdrawn') ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-amber-50 text-amber-700 border border-amber-200')}">
                         ${s.status || 'Active'}
                     </span>
                 </td>
@@ -2372,12 +2508,13 @@ function filterStudents(query, course, status) {
     const filterCourseEl = document.getElementById('filter-course');
     const filterStatusEl = document.getElementById('filter-status');
     const c = course !== undefined ? course : (filterCourseEl ? filterCourseEl.value : '');
-    const st = status !== undefined ? status : (filterStatusEl ? filterStatusEl.value : '');
+    const st = status !== undefined ? status : (filterStatusEl ? filterStatusEl.value : (currentStudentStatusFilter !== 'all' ? currentStudentStatusFilter : ''));
 
     const filtered = studentsCache.filter(s => {
         const matchQuery = !q || s.firstName.toLowerCase().includes(q) || s.lastName.toLowerCase().includes(q) || (s.parentEmail || '').toLowerCase().includes(q);
         const matchCourse = !c || (s.program || '').toLowerCase().includes(c.replace(/-/g, ' ').toLowerCase()) || (s.program || '').toLowerCase().replace(/\s+/g, '-') === c;
-        const matchStatus = !st || (s.status || 'active') === st;
+        const currentSt = s.status || 'active';
+        const matchStatus = !st || st === 'all' || currentSt === st;
         return matchQuery && matchCourse && matchStatus;
     });
     renderStudentsTable(filtered);
@@ -3797,19 +3934,53 @@ function saveTutorCoderAssignment() {
             s.tutorEmail = tutor.email;
             s.tutorId = tutor.id || '';
             assignedCount++;
+
+            // Synchronize pending schedules for newly assigned coder
+            if (db.schedules && Array.isArray(db.schedules)) {
+                const sFullName = `${s.firstName || ''} ${s.lastName || ''}`.trim().toLowerCase();
+                db.schedules.forEach(sch => {
+                    if (sch.attendanceStatus === 'pending') {
+                        const matchId = sch.studentId && (sch.studentId === s.id || sch.studentId === sid);
+                        const matchName = sch.studentName && sch.studentName.trim().toLowerCase() === sFullName;
+                        if (matchId || matchName) {
+                            sch.mentor = tutor.name;
+                            sch.tutorEmail = tutor.email;
+                        }
+                    }
+                });
+            }
         } else if (allRenderedBoxes.includes(sid)) {
             // If was assigned to this tutor but now unchecked
             if (s.tutorEmail && s.tutorEmail.toLowerCase() === (tutor.email || '').toLowerCase()) {
                 s.tutorName = 'Unassigned';
                 s.tutorEmail = '';
                 s.tutorId = '';
+
+                // Unlink pending schedules for unchecked coder
+                if (db.schedules && Array.isArray(db.schedules)) {
+                    const sFullName = `${s.firstName || ''} ${s.lastName || ''}`.trim().toLowerCase();
+                    db.schedules.forEach(sch => {
+                        if (sch.attendanceStatus === 'pending') {
+                            const matchId = sch.studentId && (sch.studentId === s.id || sch.studentId === sid);
+                            const matchName = sch.studentName && sch.studentName.trim().toLowerCase() === sFullName;
+                            if (matchId || matchName) {
+                                sch.mentor = 'Unassigned';
+                                sch.tutorEmail = '';
+                            }
+                        }
+                    });
+                }
             }
         }
     });
 
     try {
-        localStorage.setItem('stemulus_db', JSON.stringify(db));
-        window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { source: 'tutor_coder_assignment' } }));
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.saveDB) {
+            DashboardEngine.saveDB(db);
+        } else {
+            localStorage.setItem('stemulus_db', JSON.stringify(db));
+            window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { source: 'tutor_coder_assignment' } }));
+        }
     } catch(err) {}
 
     showToast(`Assigned ${assignedCount} coders to ${tutor.name} successfully!`, 'success');
@@ -3827,14 +3998,31 @@ function toggleTutorStatus(tutorIdOrEmail) {
     const wasActive = tutor.status !== 'inactive' && tutor.status !== 'disengaged';
     tutor.status = wasActive ? 'disengaged' : 'active';
 
-    // Sync to db.users if present
+    // Sync to db.users if present (safely handle dictionary/object and array)
     if (db.users) {
-        const u = db.users.find(user => user.email && user.email.toLowerCase() === (tutor.email || '').toLowerCase());
-        if (u) u.status = tutor.status;
+        const emailKey = (tutor.email || '').toLowerCase();
+        if (Array.isArray(db.users)) {
+            const u = db.users.find(user => user.email && user.email.toLowerCase() === emailKey);
+            if (u) u.status = tutor.status;
+        } else if (typeof db.users === 'object') {
+            if (db.users[emailKey]) {
+                db.users[emailKey].status = tutor.status;
+            } else {
+                for (const k in db.users) {
+                    if (db.users[k] && db.users[k].email && db.users[k].email.toLowerCase() === emailKey) {
+                        db.users[k].status = tutor.status;
+                    }
+                }
+            }
+        }
     }
 
     try {
-        localStorage.setItem('stemulus_db', JSON.stringify(db));
+        if (DashboardEngine.saveDB) {
+            DashboardEngine.saveDB(db);
+        } else {
+            localStorage.setItem('stemulus_db', JSON.stringify(db));
+        }
         window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { source: 'tutor_status_toggle' } }));
     } catch(err) {}
 
@@ -3853,6 +4041,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
 
 return {
     init,
+    navigateToSection,
     reloadData: loadDashboardData,
     approveRegistration,
     approveScheduleAdjust,
@@ -3882,6 +4071,9 @@ return {
     openParentModal,
     openAddChildModal,
     saveChildToParent,
+    setStudentStatusFilter,
+    setParentStatusFilter,
+    toggleParentStatus,
     loadTutors,
     renderTutorsTable,
     filterTutors,

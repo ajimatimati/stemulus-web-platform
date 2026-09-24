@@ -764,6 +764,30 @@
  
  <!-- Students View Container -->
  <div id="students-view-container">
+  <!-- Status Pill Filters for Students -->
+  <div class="flex items-center gap-2 mb-4 flex-wrap">
+    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mr-1">Status:</span>
+    <button type="button" id="st-filter-all" onclick="AdminEngine.setStudentStatusFilter('all')" class="st-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition-all flex items-center gap-1.5" data-status="all">
+      <span>All Students</span>
+      <span class="bg-blue-800 text-white px-2 py-0.5 rounded-md text-[10px] font-mono" id="st-count-all">0</span>
+    </button>
+    <button type="button" id="st-filter-active" onclick="AdminEngine.setStudentStatusFilter('active')" class="st-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 transition-all flex items-center gap-1.5" data-status="active">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+      <span>Active</span>
+      <span class="bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-md text-[10px] font-mono" id="st-count-active">0</span>
+    </button>
+    <button type="button" id="st-filter-inactive" onclick="AdminEngine.setStudentStatusFilter('inactive')" class="st-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 hover:bg-amber-100 transition-all flex items-center gap-1.5" data-status="inactive">
+      <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+      <span>Inactive</span>
+      <span class="bg-amber-200 text-amber-900 px-2 py-0.5 rounded-md text-[10px] font-mono" id="st-count-inactive">0</span>
+    </button>
+    <button type="button" id="st-filter-withdrawn" onclick="AdminEngine.setStudentStatusFilter('withdrawn')" class="st-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold text-rose-800 bg-rose-50 border border-rose-200 hover:bg-rose-100 transition-all flex items-center gap-1.5" data-status="withdrawn">
+      <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+      <span>Withdrawn</span>
+      <span class="bg-rose-200 text-rose-900 px-2 py-0.5 rounded-md text-[10px] font-mono" id="st-count-withdrawn">0</span>
+    </button>
+  </div>
+
  <!-- Filters -->
  <div class="admin-card rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-4">
  <div class="flex-1 min-w-[200px]">
@@ -781,10 +805,10 @@
  <option value="scratch-creators">Scratch Creators</option>
  </select>
  <select id="filter-status" class="bg-gray-50 border border-admin-border rounded-xl py-2 px-4 text-sm text-gray-800 font-medium focus:outline-none focus:border-admin-accent">
- <option value="">All Status</option>
+ <option value="">All Statuses</option>
  <option value="active">Active</option>
  <option value="inactive">Inactive</option>
- <option value="pending">Pending</option>
+ <option value="withdrawn">Withdrawn</option>
  </select>
  </div>
  
@@ -817,6 +841,30 @@
 
  <!-- Parents View Container -->
  <div id="parents-view-container" class="hidden">
+  <!-- Status Pill Filters for Parents -->
+  <div class="flex items-center gap-2 mb-4 flex-wrap">
+    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mr-1">Status:</span>
+    <button type="button" id="parent-filter-all" onclick="AdminEngine.setParentStatusFilter('all')" class="parent-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition-all flex items-center gap-1.5" data-status="all">
+      <span>All Parents</span>
+      <span class="bg-blue-800 text-white px-2 py-0.5 rounded-md text-[10px] font-mono" id="parent-count-all">0</span>
+    </button>
+    <button type="button" id="parent-filter-active" onclick="AdminEngine.setParentStatusFilter('active')" class="parent-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 transition-all flex items-center gap-1.5" data-status="active">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+      <span>Active</span>
+      <span class="bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-md text-[10px] font-mono" id="parent-count-active">0</span>
+    </button>
+    <button type="button" id="parent-filter-inactive" onclick="AdminEngine.setParentStatusFilter('inactive')" class="parent-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 hover:bg-amber-100 transition-all flex items-center gap-1.5" data-status="inactive">
+      <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+      <span>Inactive</span>
+      <span class="bg-amber-200 text-amber-900 px-2 py-0.5 rounded-md text-[10px] font-mono" id="parent-count-inactive">0</span>
+    </button>
+    <button type="button" id="parent-filter-withdrawn" onclick="AdminEngine.setParentStatusFilter('withdrawn')" class="parent-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold text-rose-800 bg-rose-50 border border-rose-200 hover:bg-rose-100 transition-all flex items-center gap-1.5" data-status="withdrawn">
+      <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+      <span>Withdrawn</span>
+      <span class="bg-rose-200 text-rose-900 px-2 py-0.5 rounded-md text-[10px] font-mono" id="parent-count-withdrawn">0</span>
+    </button>
+  </div>
+
  <!-- Filters -->
  <div class="admin-card rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-4">
  <div class="flex-1 min-w-[200px]">
@@ -832,6 +880,12 @@
  <option value="United Kingdom">United Kingdom</option>
  <option value="United States">United States</option>
  <option value="Canada">Canada</option>
+ </select>
+ <select id="filter-parent-status" class="bg-gray-50 border border-admin-border rounded-xl py-2 px-4 text-sm text-gray-800 font-medium focus:outline-none focus:border-admin-accent">
+ <option value="">All Statuses</option>
+ <option value="active">Active</option>
+ <option value="inactive">Inactive</option>
+ <option value="withdrawn">Withdrawn</option>
  </select>
  <button type="button" onclick="AdminEngine.openParentModal()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm" style="background-color: #047857 !important;">
  <i data-lucide="user-plus" class="w-4 h-4"></i>
@@ -2163,7 +2217,7 @@
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
  <option value="active">Active</option>
  <option value="inactive">Inactive</option>
- <option value="pending">Pending</option>
+ <option value="withdrawn">Withdrawn</option>
  </select>
  </div>
  </div>
@@ -2585,6 +2639,36 @@
              <span class="text-slate-600 font-bold uppercase text-[10px] block">Hours</span>
              <span class="font-bold text-slate-800" id="rev-total-hours">-</span>
            </div>
+
+         <!-- Tutor Billing & Payout Calculation Snapshot -->
+         <div class="bg-gradient-to-r from-emerald-50/80 to-teal-50/70 border border-emerald-200/80 rounded-xl p-4 text-xs mt-3">
+           <div class="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-emerald-100">
+             <span class="font-extrabold uppercase tracking-wider text-emerald-900 flex items-center gap-1.5 text-[11px]">
+               <i data-lucide="calculator" class="w-3.5 h-3.5 text-emerald-700"></i>
+               Tutor Payout &amp; Teaching Hours Verification
+             </span>
+             <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]" id="rev-payout-verified-badge">Verified by Attendance Log</span>
+           </div>
+           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-slate-700">
+             <div>
+               <span class="text-slate-500 font-bold uppercase text-[10px] block">Verified Hours</span>
+               <span class="font-extrabold text-slate-900 text-sm" id="rev-payout-hours">0 hrs</span>
+             </div>
+             <div>
+               <span class="text-slate-500 font-bold uppercase text-[10px] block">Total Sessions</span>
+               <span class="font-extrabold text-slate-900 text-sm" id="rev-payout-sessions">0</span>
+             </div>
+             <div>
+               <span class="text-slate-500 font-bold uppercase text-[10px] block">Instruction Rate</span>
+               <span class="font-extrabold text-emerald-700 text-sm" id="rev-payout-rate">$25.00 / hr</span>
+             </div>
+             <div>
+               <span class="text-slate-500 font-bold uppercase text-[10px] block">Total Tutor Payout</span>
+               <span class="font-black text-emerald-700 text-sm" id="rev-payout-total">$0.00</span>
+             </div>
+           </div>
+           <p class="text-[10px] text-slate-500 mt-2 italic">Calculated from verified attendance records. Ready for payroll disbursement upon approval.</p>
+         </div>
          </div>
 
          <!-- Grade & Engagement -->
@@ -2818,6 +2902,7 @@
      const botUrl = window.STEMULUS_BOT_URL || '';
 
      async function fetchBotStatus() {
+       if (!botUrl) return;
        try {
          const res = await fetch(`${botUrl}/api/status`);
          if (!res.ok) return;

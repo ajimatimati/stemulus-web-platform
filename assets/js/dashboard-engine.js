@@ -644,6 +644,22 @@ const DashboardEngine = (function() {
         const idx = db.students.findIndex(s => s.id === id);
         if (idx !== -1) {
             db.students[idx] = { ...db.students[idx], ...updates, id: id };
+
+            // If tutor assignment changed, synchronize pending schedules
+            if (updates.tutorName || updates.tutorEmail) {
+                const sName = ((db.students[idx].firstName || '') + ' ' + (db.students[idx].lastName || '')).trim().toLowerCase();
+                (db.schedules || []).forEach(sch => {
+                    if (sch.attendanceStatus === 'pending') {
+                        const matchId = sch.studentId && sch.studentId === id;
+                        const matchName = sch.studentName && sch.studentName.trim().toLowerCase() === sName;
+                        if (matchId || matchName) {
+                            if (updates.tutorName) sch.mentor = updates.tutorName;
+                            if (updates.tutorEmail !== undefined) sch.tutorEmail = updates.tutorEmail;
+                        }
+                    }
+                });
+            }
+
             saveDB(db);
             return db.students[idx];
         }
@@ -802,9 +818,184 @@ const DashboardEngine = (function() {
         const db = getDB();
         db.attendanceRecords = db.attendanceRecords || [];
         if (tutorEmail) {
-            return db.attendanceRecords.filter(r => r.tutorEmail === tutorEmail);
+            const key = tutorEmail.toLowerCase().trim();
+            return db.attendanceRecords.filter(r => 
+                (r.tutorEmail && r.tutorEmail.toLowerCase().trim() === key) ||
+                (r.tutorName && r.tutorName.toLowerCase().trim() === key)
+            );
         }
         return db.attendanceRecords;
+    }
+
+    /**
+     * Calculates tutor teaching statistics for a specific month (e.g. '2026-06')
+     * Returns: { totalSessions, totalHours, totalMinutes, studentStats }
+     */
+    function calculateTutorMonthlyStats(tutorEmailOrName, monthStr) {
+        const db = getDB();
+        const records = db.attendanceRecords || [];
+        const schedules = db.schedules || [];
+        const mStr = monthStr || new Date().toISOString().substring(0, 7);
+        const tKey = (tutorEmailOrName || '').toLowerCase().trim();
+
+        const matchingLogs = records.filter(r => {
+            const matchesTutor = !tKey || 
+                (r.tutorEmail && r.tutorEmail.toLowerCase().trim() === tKey) ||
+                (r.tutorName && r.tutorName.toLowerCase().trim() === tKey);
+            const matchesMonth = r.classDate && r.classDate.startsWith(mStr);
+            const isValidStatus = r.status === 'approved' || r.status === 'present' || r.status === 'pending' || r.attendanceStatus === 'present';
+            return matchesTutor && matchesMonth && isValidStatus;
+        });
+
+        const matchingSchedules = schedules.filter(s => {
+            const matchesTutor = !tKey || 
+                (s.mentor && s.mentor.toLowerCase().trim() === tKey) ||
+                (s.tutorEmail && s.tutorEmail.toLowerCase().trim() === tKey);
+            const matchesMonth = s.date && s.date.startsWith(mStr);
+            const isCompleted = s.attendanceStatus === 'present';
+            const alreadyInLogs = matchingLogs.some(l => l.classDate === s.date && (l.studentId === s.studentId || l.studentName === s.studentName));
+            return matchesTutor && matchesMonth && isCompleted && !alreadyInLogs;
+        });
+
+        let totalMinutes = 0;
+        const studentStats = {};
+
+        matchingLogs.forEach(r => {
+            const mins = parseInt(r.duration, 10) || 60;
+            totalMinutes += mins;
+            const sid = r.studentId || r.studentName || 'unknown';
+            if (!studentStats[sid]) {
+                studentStats[sid] = { sessions: 0, minutes: 0, topics: [], studentName: r.studentName };
+            }
+            studentStats[sid].sessions += 1;
+            studentStats[sid].minutes += mins;
+            if (r.topic || r.whatBuilt) {
+                studentStats[sid].topics.push(r.topic || r.whatBuilt);
+            }
+        });
+
+        matchingSchedules.forEach(s => {
+            const mins = parseInt(s.duration, 10) || 60;
+            totalMinutes += mins;
+            const sid = s.studentId || s.studentName || 'unknown';
+            if (!studentStats[sid]) {
+                studentStats[sid] = { sessions: 0, minutes: 0, topics: [], studentName: s.studentName };
+            }
+            studentStats[sid].sessions += 1;
+            studentStats[sid].minutes += mins;
+            if (s.topic || s.module) {
+                studentStats[sid].topics.push(s.topic || s.module);
+            }
+        });
+
+        const totalSessions = matchingLogs.length + matchingSchedules.length;
+        const totalHours = Math.round((totalMinutes / 60) * 10) / 10;
+
+        return {
+            month: mStr,
+            totalSessions: totalSessions,
+            totalHours: totalHours,
+            totalMinutes: totalMinutes,
+            studentStats: studentStats
+        };
+    }
+
+    /**
+     * Calculates live student metrics directly from verified attendance logs and reports
+     */
+    function calculateStudentLiveMetrics(studentId) {
+        const db = getDB();
+        const student = (db.students || []).find(s => s.id === studentId);
+        if (!student) return null;
+
+        const sFullName = ((student.firstName || '') + ' ' + (student.lastName || '')).trim().toLowerCase();
+        const sFirst = (student.firstName || '').toLowerCase().trim();
+
+        const logs = (db.attendanceRecords || []).filter(r => {
+            const idMatch = r.studentId && r.studentId === student.id;
+            const nameMatch = r.studentName && (r.studentName.toLowerCase().trim() === sFullName || r.studentName.toLowerCase().trim() === sFirst);
+            const isValid = r.status === 'approved' || r.status === 'present' || r.attendanceStatus === 'present';
+            return (idMatch || nameMatch) && isValid;
+        });
+
+        const schedules = (db.schedules || []).filter(s => {
+            const idMatch = s.studentId && s.studentId === student.id;
+            const nameMatch = s.studentName && (s.studentName.toLowerCase().trim() === sFullName || s.studentName.toLowerCase().trim() === sFirst);
+            const isCompleted = s.attendanceStatus === 'present';
+            const alreadyInLogs = logs.some(l => l.classDate === s.date);
+            return (idMatch || nameMatch) && isCompleted && !alreadyInLogs;
+        });
+
+        const allSessions = [...logs, ...schedules];
+        const attendedCount = allSessions.length > 0 ? allSessions.length : ((student.metrics && student.metrics.attended) ? student.metrics.attended : 0);
+        
+        const monthlyTarget = calculateMonthlySessionTarget(student);
+
+        let totalMinutes = 0;
+        let logicScores = [], loopScores = [], varScores = [], syntaxScores = [], projectScores = [];
+        const builtItems = new Set();
+
+        logs.forEach(r => {
+            const mins = parseInt(r.duration, 10) || 60;
+            totalMinutes += mins;
+            const topicStr = ((r.topic || '') + ' ' + (r.whatBuilt || '') + ' ' + (r.coursesCovered ? r.coursesCovered.join(' ') : '')).toLowerCase();
+            const grasp = r.conceptGrasp ? (parseInt(r.conceptGrasp, 10) * 20) : null;
+
+            if (r.whatBuilt && r.whatBuilt.trim()) {
+                builtItems.add(r.whatBuilt.trim());
+            }
+
+            if (grasp !== null) {
+                if (topicStr.includes('logic') || topicStr.includes('condition') || topicStr.includes('if') || topicStr.includes('algorithm')) {
+                    logicScores.push(grasp);
+                }
+                if (topicStr.includes('loop') || topicStr.includes('repeat') || topicStr.includes('while') || topicStr.includes('for')) {
+                    loopScores.push(grasp);
+                }
+                if (topicStr.includes('variable') || topicStr.includes('operator') || topicStr.includes('state') || topicStr.includes('data')) {
+                    varScores.push(grasp);
+                }
+                if (topicStr.includes('syntax') || topicStr.includes('function') || topicStr.includes('def') || topicStr.includes('script')) {
+                    syntaxScores.push(grasp);
+                }
+                if (topicStr.includes('project') || topicStr.includes('game') || topicStr.includes('app') || topicStr.includes('simulator') || topicStr.includes('build')) {
+                    projectScores.push(grasp);
+                }
+            }
+        });
+
+        function calcAverage(arr, fallback) {
+            if (arr.length === 0) return fallback;
+            const sum = arr.reduce((a, b) => a + b, 0);
+            return Math.round(sum / arr.length);
+        }
+
+        const baseSkills = student.skills || { logic: 70, loops: 65, variables: 70, syntax: 65, projects: 65 };
+        const liveSkills = {
+            logic: calcAverage(logicScores, baseSkills.logic || 75),
+            loops: calcAverage(loopScores, baseSkills.loops || 70),
+            variables: calcAverage(varScores, baseSkills.variables || 75),
+            syntax: calcAverage(syntaxScores, baseSkills.syntax || 68),
+            projects: calcAverage(projectScores, baseSkills.projects || 72)
+        };
+
+        const totalHours = Math.round((totalMinutes / 60) * 10) / 10;
+        const projectsCount = builtItems.size > 0 ? builtItems.size : (student.metrics && student.metrics.projects ? student.metrics.projects : 2);
+        const computedProgress = Math.min(100, Math.max(student.progress || 10, Math.round((attendedCount / 24) * 100)));
+
+        return {
+            studentId: student.id,
+            firstName: student.firstName,
+            lastName: student.lastName,
+            program: student.program,
+            attendedCount: attendedCount,
+            monthlyTarget: monthlyTarget,
+            totalHours: totalHours,
+            projectsCount: projectsCount,
+            skills: liveSkills,
+            progress: computedProgress,
+            recentLogs: logs.slice().reverse().slice(0, 10)
+        };
     }
 
     function addAttendanceRecord(record) {
@@ -1368,13 +1559,33 @@ const DashboardEngine = (function() {
 
     function getTutorStudents(tutorEmail = null) {
         const session = getSession();
-        const email = (tutorEmail || (session && session.email) || '').toLowerCase().trim();
-        const name = (session && session.name || '').toLowerCase().trim();
-        const tutorId = (session && (session.id || session.tutorId) || '').toLowerCase().trim();
+        let email = (tutorEmail || (session && session.email) || '').toLowerCase().trim();
+        let name = (session && session.name || '').toLowerCase().trim();
+        let tutorId = (session && (session.id || session.tutorId) || '').toLowerCase().trim();
         const db = getDB();
         const students = db.students || [];
+
+        // Admin override only if NO specific tutor email was requested
+        if (session && session.role === 'admin' && !tutorEmail) return students;
+
+        // Enrich tutor info (name, id, email) from db.tutors / db.users if any identifier is present
+        const allTutors = (db.tutors || []).concat(
+            Object.values(db.users || {}).filter(u => u && u.role === 'tutor')
+        );
+        if (email || tutorId || name) {
+            const foundTutor = allTutors.find(t => 
+                (email && t.email && t.email.toLowerCase().trim() === email) ||
+                (tutorId && t.id && t.id.toLowerCase().trim() === tutorId) ||
+                (name && t.name && t.name.toLowerCase().trim() === name)
+            );
+            if (foundTutor) {
+                if (!email && foundTutor.email) email = foundTutor.email.toLowerCase().trim();
+                if (!name && foundTutor.name) name = foundTutor.name.toLowerCase().trim();
+                if (!tutorId && foundTutor.id) tutorId = foundTutor.id.toLowerCase().trim();
+            }
+        }
+
         if (!email && !name && !tutorId) return [];
-        if (session && session.role === 'admin') return students;
 
         const nameTokens = name ? name.split(/\s+/).filter(t => t.length > 2) : [];
 
@@ -1436,7 +1647,14 @@ const DashboardEngine = (function() {
             }
         });
 
-        return filtered;
+        // Deduplicate
+        const seen = new Set();
+        return filtered.filter(s => {
+            const key = s.id || ((s.firstName || '') + '_' + (s.lastName || '')).toLowerCase();
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
     }
 
 
@@ -1685,11 +1903,25 @@ const DashboardEngine = (function() {
     }
 
     function markNotificationsRead(email) {
+        if (!email) return;
         const db = getDB();
-        db.notifications.forEach(n => {
-            if (n.userEmail === email) n.read = true;
+        let changed = false;
+        (db.notifications || []).forEach(n => {
+            if (n && n.userEmail === email && !n.read) {
+                n.read = true;
+                changed = true;
+            }
         });
-        saveDB(db);
+        if (changed) {
+            try {
+                localStorage.setItem('stemulus_db', JSON.stringify(db));
+            } catch(e) {}
+            if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) {
+                try {
+                    firebase.firestore().collection('state').doc('current').set(db).catch(() => {});
+                } catch(e) {}
+            }
+        }
     }
 
     function syncLegacyMonthlyReports(reportsList) {
@@ -2368,8 +2600,8 @@ const DashboardEngine = (function() {
     if (typeof firebase !== 'undefined' && firebase.apps.length) {
         try {
             firebase.firestore().collection('state').doc('current').onSnapshot(doc => {
-                if (isSyncing) return; // skip snapshot while a local save is in-flight
-                if (doc.exists()) {
+                const docExists = typeof doc.exists === 'function' ? doc.exists() : doc.exists;
+                if (docExists) {
                     const cloudData = doc.data();
                     
                     // Proactively ensure STEM-2026-QWHF is in the certificates list
@@ -2443,6 +2675,8 @@ const DashboardEngine = (function() {
         checkDuplicateAttendance,
         getOverdueAttendance,
         calculateMonthlySessionTarget,
+        calculateTutorMonthlyStats,
+        calculateStudentLiveMetrics,
         getStudentsByTutor,
         getTutorStudents,
         getCurrentScheduledStudent,

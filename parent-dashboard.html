@@ -507,6 +507,7 @@
   <script src="assets/js/firebase-config.min.js" defer></script>
   <script src="assets/js/dashboard-engine.min.js" defer></script>
   <script src="assets/js/report-pdf-generator.min.js" defer></script>
+  <script src="assets/js/badge-passport-engine.js" defer></script>
   <script src="assets/js/parent-engine.min.js" defer></script>
   <script src="assets/js/portal-scene-engine.min.js" defer></script>
 
@@ -667,7 +668,7 @@
       btn.onclick=openDrawer;
       if(ov) ov.onclick=closeDrawer;
       if(closeBtn) closeBtn.onclick=closeDrawer;
-      sb.querySelectorAll('a').forEach(function(a){ a.onclick=closeDrawer; });
+      sb.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
     }
   })();
   </script>

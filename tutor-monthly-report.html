@@ -470,6 +470,7 @@
     <div class="footer-bottom">
         <p class="footer-legal">&copy; 2026 STEMulus Innovations LTD. All rights reserved.</p>
     </div>
+  <div class="footer-bg-text">STEMulus</div>
 </footer>
 
 <!-- Scripts -->
@@ -483,15 +484,65 @@ document.addEventListener('DOMContentLoaded', function() {
   var nameEl = document.getElementById('tutor-name');
   var avatarEl = document.getElementById('avatar-initials');
   var reportNameEl = document.getElementById('report-tutor-name');
-  if (nameEl) nameEl.textContent = _session.name || 'Tutor';
-  if (avatarEl) avatarEl.textContent = (_session.name || 'T')[0].toUpperCase();
-  if (reportNameEl) reportNameEl.value = _session.name || '';
+  
+  // Resolve rich full name for tutor from database
+  var tutorFullName = _session.name || 'Tutor';
+  if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutors) {
+    var allTutors = DashboardEngine.getTutors() || [];
+    var matchTut = allTutors.find(function(t) {
+      return (t.email && _session.email && t.email.toLowerCase() === _session.email.toLowerCase()) ||
+             (t.name && _session.name && t.name.toLowerCase() === _session.name.toLowerCase());
+    });
+    if (matchTut && matchTut.name) {
+      tutorFullName = matchTut.name;
+    }
+  }
+
+  if (nameEl) nameEl.textContent = tutorFullName;
+  if (avatarEl) avatarEl.textContent = (tutorFullName || 'T')[0].toUpperCase();
+  if (reportNameEl) reportNameEl.value = tutorFullName;
 
   // Set default month to current
   var monthInput = document.getElementById('report-month');
   if (monthInput) {
     var now = new Date();
     monthInput.value = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+  }
+
+  // Auto-calculate teaching hours and sessions from attendance records
+  function autoFillMonthlyStats() {
+    var monthVal = monthInput ? monthInput.value : '';
+    if (!monthVal) return;
+    if (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateTutorMonthlyStats) {
+      var stats = DashboardEngine.calculateTutorMonthlyStats(_session.email || tutorFullName, monthVal);
+      var sessInput = document.getElementById('report-total-sessions');
+      var hoursInput = document.getElementById('report-total-hours');
+      if (sessInput && stats.totalSessions !== undefined) {
+        sessInput.value = stats.totalSessions;
+      }
+      if (hoursInput && stats.totalHours !== undefined) {
+        hoursInput.value = stats.totalHours;
+      }
+      
+      var gridEl = sessInput ? sessInput.closest('.grid') : null;
+      if (gridEl) {
+        var noticeEl = document.getElementById('report-stats-notice');
+        if (!noticeEl) {
+          noticeEl = document.createElement('div');
+          noticeEl.id = 'report-stats-notice';
+          noticeEl.className = 'col-span-1 md:col-span-2 p-3.5 bg-indigo-50/80 border border-indigo-200/80 rounded-xl text-xs text-indigo-800 font-medium flex items-center justify-between gap-3';
+          gridEl.appendChild(noticeEl);
+        }
+        noticeEl.innerHTML = '<span>Calculated <strong>' + stats.totalSessions + ' sessions</strong> (' + stats.totalHours + ' hrs) from verified logs for <strong>' + monthVal + '</strong>.</span>' +
+          '<span class="text-[11px] font-bold text-indigo-600 bg-white px-2.5 py-1 rounded-lg border border-indigo-200">Verified by Attendance Log</span>';
+      }
+    }
+  }
+
+  // Initial calculation and listen on month change
+  autoFillMonthlyStats();
+  if (monthInput) {
+    monthInput.addEventListener('change', autoFillMonthlyStats);
   }
 
   // Logout
@@ -525,7 +576,7 @@ document.addEventListener('DOMContentLoaded', function() {
       btn.onclick = openDrawer;
       if (ov) ov.onclick = closeDrawer;
       if (closeBtn) closeBtn.onclick = closeDrawer;
-      sb.querySelectorAll('a').forEach(function(a){ a.onclick = closeDrawer; });
+      sb.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
     }
   })();
 
@@ -582,13 +633,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function resetStudentEntries() {
     if (!entriesContainer) return;
-    entriesContainer.innerHTML = generateStudentEntry(1, {});
+    entriesContainer.innerHTML = '';
+    var entry = document.createElement('div');
+    entry.className = 'student-entry';
+    entry.innerHTML = generateStudentEntry(1, {});
+    entriesContainer.appendChild(entry);
     studentCount = 1;
     if (window.lucide) lucide.createIcons();
   }
 
   // Initialize first student entry
   resetStudentEntries();
+
+  // If studentId passed in URL parameter, auto-populate the first entry
+  var urlParams = new URLSearchParams(window.location.search);
+  var paramStudentId = urlParams.get('studentId');
+  if (paramStudentId && typeof DashboardEngine !== 'undefined') {
+    var allSt = (DashboardEngine.getStudents ? DashboardEngine.getStudents() : []);
+    var matchSt = allSt.find(function(s){ return s.id === paramStudentId; });
+    if (matchSt) {
+      var sFullName = ((matchSt.firstName || '') + ' ' + (matchSt.lastName || '')).trim();
+      entriesContainer.innerHTML = '';
+      var pEntry = document.createElement('div');
+      pEntry.className = 'student-entry';
+      pEntry.innerHTML = generateStudentEntry(1, {
+        studentId: matchSt.id,
+        name: sFullName,
+        course: matchSt.program || ''
+      });
+      entriesContainer.appendChild(pEntry);
+      var picker = entriesContainer.querySelector('.student-quick-picker');
+      if (picker) {
+        picker.value = matchSt.id;
+        picker.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+  }
 
   if (addBtn && entriesContainer) {
     addBtn.addEventListener('click', function() {
@@ -609,49 +689,101 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Quick auto-fill selection
-    entriesContainer.addEventListener('change', function(e) {
-      if (e.target.classList.contains('student-quick-picker')) {
-        var sel = e.target;
-        var opt = sel.options[sel.selectedIndex];
-        if (!opt || !opt.value) return;
-        var entry = sel.closest('.student-entry');
-        if (!entry) return;
-        var sId = opt.value;
-        var sName = opt.getAttribute('data-name');
-        var sProg = opt.getAttribute('data-program');
-        
-        var nameInput = entry.querySelector('.student-name-input');
-        var courseInput = entry.querySelector('.student-course-input');
-        var sessionsInput = entry.querySelector('.student-sessions-input');
-        var idInput = entry.querySelector('.student-id-input');
-        
-        if (idInput) idInput.value = sId || '';
-        if (nameInput) nameInput.value = sName || '';
-        if (courseInput) courseInput.value = sProg || '';
+    function updateStudentEntryStats(entry) {
+      if (!entry) return;
+      var picker = entry.querySelector('.student-quick-picker');
+      if (!picker) return;
+      var opt = picker.options[picker.selectedIndex];
+      if (!opt || !opt.value) return;
 
-        // Calculate sessions attended from schedules if present
-        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSchedules) {
-          var allSchedules = DashboardEngine.getSchedules(sId) || [];
-          var presentCount = allSchedules.filter(function(sc){ return sc.attendanceStatus === 'present'; }).length;
-          if (sessionsInput && presentCount > 0) sessionsInput.value = presentCount;
+      var sId = opt.value;
+      var sName = opt.getAttribute('data-name');
+      var sProg = opt.getAttribute('data-program');
+      var monthVal = (document.getElementById('report-month') || {}).value || '';
+
+      var nameInput = entry.querySelector('.student-name-input');
+      var courseInput = entry.querySelector('.student-course-input');
+      var sessionsInput = entry.querySelector('.student-sessions-input');
+      var moduleInput = entry.querySelector('.student-module-input');
+      var idInput = entry.querySelector('.student-id-input');
+
+      if (idInput) idInput.value = sId || '';
+      if (nameInput) nameInput.value = sName || '';
+      if (courseInput) courseInput.value = sProg || '';
+
+      // Find student record for stage/module
+      if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) {
+        var allStudents = DashboardEngine.getStudents() || [];
+        var sObj = allStudents.find(function(s){ return s.id === sId; });
+        if (sObj && moduleInput && !moduleInput.value) {
+          moduleInput.value = sObj.stage ? ('Stage ' + sObj.stage + ': ' + (sObj.program || 'Core Track')) : (sObj.program ? (sObj.program + ' Level 1') : '');
         }
+      }
+
+      // Calculate sessions attended from attendance records for the selected month
+      var calculatedSessions = 0;
+      var matchedLogs = [];
+      if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getAttendanceRecords) {
+        var allLogs = DashboardEngine.getAttendanceRecords() || [];
+        var studentLogs = allLogs.filter(function(log){
+          var isStudent = (log.studentId === sId) || 
+                          (sName && log.studentName && log.studentName.toLowerCase().trim() === sName.toLowerCase().trim());
+          var isApprovedOrPresent = (log.status === 'approved' || log.status === 'present' || log.attendanceStatus === 'present' || !log.status);
+          return isStudent && isApprovedOrPresent;
+        });
+
+        if (monthVal) {
+          matchedLogs = studentLogs.filter(function(l){
+            var d = l.classDate || l.date || l.sessionDate || '';
+            return d.indexOf(monthVal) === 0;
+          });
+        }
+        if (matchedLogs.length === 0) {
+          matchedLogs = studentLogs; // Fallback to all verified records for this student
+        }
+        calculatedSessions = matchedLogs.length;
 
         // Auto-suggest recent topics covered from verified attendance records
-        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getAttendanceRecords) {
-          var allLogs = DashboardEngine.getAttendanceRecords() || [];
-          var studentLogs = allLogs.filter(function(log){
-            return (log.studentId === sId || log.studentName === sName) && (log.status === 'approved' || log.status === 'present');
-          });
-          var topicsInput = entry.querySelector('.student-topics-input');
-          if (topicsInput && !topicsInput.value && studentLogs.length > 0) {
-            var recentTopics = studentLogs.map(function(l){ return '• ' + (l.topic || l.whatBuilt); }).filter(Boolean);
-            if (recentTopics.length > 0) {
-              topicsInput.value = recentTopics.slice(-5).join('\n');
-            }
+        var topicsInput = entry.querySelector('.student-topics-input');
+        if (topicsInput && !topicsInput.value && matchedLogs.length > 0) {
+          var recentTopics = matchedLogs.map(function(l){
+            return '• ' + (l.topic || l.whatBuilt || l.topicsCovered);
+          }).filter(Boolean);
+          if (recentTopics.length > 0) {
+            // Keep unique items
+            var uniqueTopics = [];
+            recentTopics.forEach(function(t){ if (uniqueTopics.indexOf(t) === -1) uniqueTopics.push(t); });
+            topicsInput.value = uniqueTopics.slice(-5).join('\n');
           }
         }
       }
+
+      // Fallback to schedules if no attendance logs found
+      if (calculatedSessions === 0 && typeof DashboardEngine !== 'undefined' && DashboardEngine.getSchedules) {
+        var allSchedules = DashboardEngine.getSchedules(sId) || [];
+        var presentCount = allSchedules.filter(function(sc){ return sc.attendanceStatus === 'present'; }).length;
+        if (presentCount > 0) calculatedSessions = presentCount;
+      }
+
+      if (sessionsInput) {
+        sessionsInput.value = calculatedSessions > 0 ? calculatedSessions : (sessionsInput.value || 8);
+      }
+    }
+
+    entriesContainer.addEventListener('change', function(e) {
+      if (e.target.classList.contains('student-quick-picker')) {
+        var entry = e.target.closest('.student-entry');
+        if (entry) updateStudentEntryStats(entry);
+      }
     });
+
+    // Update all student entries when month changes
+    if (monthInput) {
+      monthInput.addEventListener('change', function() {
+        var entries = entriesContainer.querySelectorAll('.student-entry');
+        entries.forEach(function(ent){ updateStudentEntryStats(ent); });
+      });
+    }
   }
 
   // Form submission

@@ -99,43 +99,49 @@ const ParentEngine = (function() {
         if (loginOverlay) loginOverlay.remove();
     }
 
+    let isRenderingDashboard = false;
     function renderDashboard() {
-        if (!currentParent) return;
-        document.documentElement.style.visibility = 'visible';
-        // Remove loading screen
-        const loader = document.getElementById('loading-screen');
-        if (loader) {
-            loader.style.opacity = '0';
-            setTimeout(() => loader.remove(), 500);
+        if (!currentParent || isRenderingDashboard) return;
+        isRenderingDashboard = true;
+        try {
+            document.documentElement.style.visibility = 'visible';
+            // Remove loading screen
+            const loader = document.getElementById('loading-screen');
+            if (loader) {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 500);
+            }
+
+            // Set parent name in header
+            const nameEl = document.getElementById('user-name');
+            if (nameEl) nameEl.textContent = currentParent.name || "Parent";
+
+            var sidebarName = document.getElementById('sidebar-user-name');
+            if (sidebarName && currentParent && currentParent.name) sidebarName.textContent = currentParent.name;
+
+            var heroName = document.getElementById('hero-user-name');
+            if (heroName && currentParent && currentParent.name) heroName.textContent = currentParent.name.split(' ')[0];
+
+            // Wire logout
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.onclick = function() {
+                    DashboardEngine.logout();
+                    if (typeof firebase !== 'undefined' && firebase.auth) { firebase.auth().signOut().catch(function(){}).then(function(){ window.location.href = 'parent-login.html'; }); }
+                    else { window.location.href = 'parent-login.html'; }
+                };
+            }
+
+            // Load content
+            renderOnboardingPanel();
+            renderChildren();
+            renderUpcomingClasses();
+            renderNotifications();
+            renderProjectShowcase();
+            injectModals();
+        } finally {
+            isRenderingDashboard = false;
         }
-
-        // Set parent name in header
-        const nameEl = document.getElementById('user-name');
-        if (nameEl) nameEl.textContent = currentParent.name || "Parent";
-
-        var sidebarName = document.getElementById('sidebar-user-name');
-        if (sidebarName && currentParent && currentParent.name) sidebarName.textContent = currentParent.name;
-
-        var heroName = document.getElementById('hero-user-name');
-        if (heroName && currentParent && currentParent.name) heroName.textContent = currentParent.name.split(' ')[0];
-
-        // Wire logout
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.onclick = function() {
-                DashboardEngine.logout();
-                if (typeof firebase !== 'undefined' && firebase.auth) { firebase.auth().signOut().catch(function(){}).then(function(){ window.location.href = 'parent-login.html'; }); }
-                else { window.location.href = 'parent-login.html'; }
-            };
-        }
-
-        // Load content
-        renderOnboardingPanel();
-        renderChildren();
-        renderUpcomingClasses();
-        renderNotifications();
-        renderProjectShowcase();
-        injectModals();
     }
 
     function renderOnboardingPanel() {
@@ -252,6 +258,17 @@ const ParentEngine = (function() {
         }
 
         childrenContainer.innerHTML = students.map(s => {
+            // Calculate real live metrics from verified attendance logs and completed sessions
+            const liveMetrics = (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateStudentLiveMetrics)
+                ? DashboardEngine.calculateStudentLiveMetrics(s.id)
+                : null;
+
+            const progressVal = liveMetrics ? liveMetrics.progress : (s.progress || 0);
+            const attendedSessions = liveMetrics ? liveMetrics.attendedCount : ((s.metrics && s.metrics.attended) ? s.metrics.attended : 0);
+            const targetSessions = liveMetrics ? liveMetrics.monthlyTarget : 8;
+            const liveProjects = liveMetrics ? liveMetrics.projectsCount : 1;
+            const liveHours = liveMetrics ? liveMetrics.totalHours : 0;
+
             // Get reports
             const reports = DashboardEngine.getReports(s.id);
             const reportHTML = reports.length > 0 
@@ -345,18 +362,61 @@ const ParentEngine = (function() {
                         <span class="bg-green-100 text-green-700 text-xs font-bold px-2.5 py-1 rounded-xl uppercase tracking-wider">${s.status || 'Active'}</span>
                     </div>
 
-                    <!-- Progress Tracking -->
-                    <div class="space-y-1.5 pt-2">
+                    <!-- Progress & Verified Attendance Metrics -->
+                    <div class="space-y-2 pt-2">
                         <div class="flex justify-between text-xs font-semibold text-gray-500">
                             <span>Syllabus Completion</span>
-                            <span>${s.progress}%</span>
+                            <span class="font-bold text-slate-800">${progressVal}%</span>
                         </div>
                         <div class="w-full bg-gray-100 h-2.5 rounded-xl overflow-hidden">
-                            <div class="bg-indigo-600 h-full rounded-xl transition-all duration-500" style="width: ${s.progress}%"></div>
+                            <div class="bg-indigo-600 h-full rounded-xl transition-all duration-500" style="width: ${progressVal}%"></div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 pt-1 text-center text-xs">
+                            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Sessions</span>
+                                <span class="font-extrabold text-slate-800 text-xs">${attendedSessions} / ${targetSessions}</span>
+                            </div>
+                            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Hours</span>
+                                <span class="font-extrabold text-slate-800 text-xs">${liveHours} hrs</span>
+                            </div>
+                            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Capstones</span>
+                                <span class="font-extrabold text-slate-800 text-xs">${liveProjects} built</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="pt-2">
+                    <!-- Technology Passport Badge Preview Card -->
+                    ${(function() {
+                        if (typeof BadgePassportEngine === 'undefined') return '';
+                        const pass = BadgePassportEngine.getStudentPassport(s.id);
+                        if (!pass) return '';
+                        const currBadge = pass.currentBadge || {};
+                        const eraCol = (pass.currentEra && pass.currentEra.color) || '#f97316';
+                        return `
+                            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-2xl p-3.5 shadow-sm border border-slate-800 flex items-center justify-between gap-3 my-2">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="relative w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center border border-white/15 shrink-0 overflow-hidden cursor-pointer" onclick="BadgePassportEngine.openBadgeModal(${currBadge.id || 1}, ${s.age || 10})">
+                                        <img src="${currBadge.image || 'assets/images/badges/light-evolution/badge-01-fire-finder.png'}" alt="Medallion" class="w-9 h-9 object-contain drop-shadow hover:scale-110 transition-transform">
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-1.5 mb-0.5">
+                                            <span class="text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.2 rounded-full" style="background:${eraCol}25;color:${eraCol};border:1px solid ${eraCol}40;">${(pass.currentEra && pass.currentEra.name) || 'Era I'}</span>
+                                            <span class="text-[9px] text-slate-300 font-mono">Badge ${pass.unlockedCount} of 48</span>
+                                        </div>
+                                        <h4 class="text-xs font-bold text-white truncate">${currBadge.title || 'Fire Finder'}</h4>
+                                        <p class="text-[10px] text-slate-400 truncate">Technology Passport: Light Evolution</p>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="BadgePassportEngine.openBadgeModal(${currBadge.id || 1}, ${s.age || 10})" class="px-2.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 text-white font-bold text-[11px] transition-all shrink-0">
+                                    View Badge
+                                </button>
+                            </div>
+                        `;
+                    })()}
+
+                    <div class="pt-1">
                         <a href="parent-progress.html?studentId=${s.id}" class="btn-3d btn-3d-secondary w-full border border-indigo-100 flex items-center justify-center gap-2 text-indigo-700 font-bold hover:bg-indigo-50 transition-colors">
                             <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i>
                             <span>Track Learning Progress &rarr;</span>
