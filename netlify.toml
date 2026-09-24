@@ -4,6 +4,7 @@
   command = "cd tools && npm install && cd .. && npm run build"
   publish = "."
   functions = "netlify/functions"
+  ignore = "node tools/check-build-ignore.js"
 
 [functions]
   directory = "netlify/functions"
