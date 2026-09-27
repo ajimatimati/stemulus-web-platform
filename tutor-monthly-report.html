@@ -509,40 +509,93 @@ document.addEventListener('DOMContentLoaded', function() {
     monthInput.value = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
   }
 
-  // Auto-calculate teaching hours and sessions from attendance records
-  function autoFillMonthlyStats() {
+  // Auto-calculate teaching hours, total sessions, and payout from attendance records and student entries
+  function syncReportTotals() {
     var monthVal = monthInput ? monthInput.value : '';
-    if (!monthVal) return;
-    if (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateTutorMonthlyStats) {
-      var stats = DashboardEngine.calculateTutorMonthlyStats(_session.email || tutorFullName, monthVal);
-      var sessInput = document.getElementById('report-total-sessions');
-      var hoursInput = document.getElementById('report-total-hours');
-      if (sessInput && stats.totalSessions !== undefined) {
-        sessInput.value = stats.totalSessions;
+    var sessInput = document.getElementById('report-total-sessions');
+    var hoursInput = document.getElementById('report-total-hours');
+    
+    // Check if student entries are present and filled in Section 2
+    var studentInputs = document.querySelectorAll('#student-entries .student-sessions-input');
+    var formSumSessions = 0;
+    var hasFilledEntries = false;
+    studentInputs.forEach(function(inp) {
+      var val = parseInt(inp.value, 10);
+      if (!isNaN(val) && val >= 0) {
+        formSumSessions += val;
+        hasFilledEntries = true;
       }
-      if (hoursInput && stats.totalHours !== undefined) {
-        hoursInput.value = stats.totalHours;
+    });
+
+    // Verified logs stats from DashboardEngine
+    var dbStats = { totalSessions: 0, totalHours: 0, totalMinutes: 0 };
+    if (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateTutorMonthlyStats && monthVal) {
+      dbStats = DashboardEngine.calculateTutorMonthlyStats(_session.email || tutorFullName, monthVal);
+    }
+
+    // Prioritize sum of filled student cards, otherwise fallback to database verified logs
+    var finalSessions = hasFilledEntries ? formSumSessions : (dbStats.totalSessions || 0);
+    var finalHours = Math.round(finalSessions * 1.5 * 10) / 10;
+    var payoutRate = 25.00;
+    var totalPayout = (finalHours * payoutRate).toFixed(2);
+
+    if (sessInput) sessInput.value = finalSessions;
+    if (hoursInput) hoursInput.value = finalHours;
+
+    var gridEl = sessInput ? sessInput.closest('.grid') : null;
+    if (gridEl) {
+      var noticeEl = document.getElementById('report-stats-notice');
+      if (!noticeEl) {
+        noticeEl = document.createElement('div');
+        noticeEl.id = 'report-stats-notice';
+        noticeEl.className = 'col-span-1 md:col-span-2 p-4 bg-gradient-to-r from-indigo-50/90 to-purple-50/90 border border-indigo-200/90 rounded-2xl text-xs text-indigo-950 font-medium space-y-2.5 shadow-sm';
+        gridEl.appendChild(noticeEl);
       }
-      
-      var gridEl = sessInput ? sessInput.closest('.grid') : null;
-      if (gridEl) {
-        var noticeEl = document.getElementById('report-stats-notice');
-        if (!noticeEl) {
-          noticeEl = document.createElement('div');
-          noticeEl.id = 'report-stats-notice';
-          noticeEl.className = 'col-span-1 md:col-span-2 p-3.5 bg-indigo-50/80 border border-indigo-200/80 rounded-xl text-xs text-indigo-800 font-medium flex items-center justify-between gap-3';
-          gridEl.appendChild(noticeEl);
-        }
-        noticeEl.innerHTML = '<span>Calculated <strong>' + stats.totalSessions + ' sessions</strong> (' + stats.totalHours + ' hrs) from verified logs for <strong>' + monthVal + '</strong>.</span>' +
-          '<span class="text-[11px] font-bold text-indigo-600 bg-white px-2.5 py-1 rounded-lg border border-indigo-200">Verified by Attendance Log</span>';
-      }
+      noticeEl.innerHTML = 
+        '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-indigo-100 pb-2.5">' +
+          '<div class="flex items-center gap-2">' +
+            '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>' +
+            '<span class="font-extrabold text-sm text-indigo-900 font-nunito">Verified Compensation & Attendance Audit</span>' +
+          '</div>' +
+          '<div class="flex flex-wrap items-center gap-2">' +
+            '<span class="text-[11px] font-black text-indigo-700 bg-white px-3 py-1 rounded-xl border border-indigo-200 shadow-sm">' +
+              'Rate: $' + payoutRate.toFixed(2) + '/hr' +
+            '</span>' +
+            '<span class="text-[11px] font-black text-emerald-700 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200 shadow-sm">' +
+              'Estimated Payout: $' + totalPayout +
+            '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center pt-1 text-slate-700">' +
+          '<div class="bg-white/80 p-2 rounded-xl border border-indigo-100/70">' +
+            '<span class="block text-[10px] text-slate-500 font-bold uppercase tracking-wider">Total Classes</span>' +
+            '<strong class="text-indigo-700 text-sm font-black">' + finalSessions + ' Sessions</strong>' +
+          '</div>' +
+          '<div class="bg-white/80 p-2 rounded-xl border border-indigo-100/70">' +
+            '<span class="block text-[10px] text-slate-500 font-bold uppercase tracking-wider">Teaching Hours</span>' +
+            '<strong class="text-indigo-700 text-sm font-black">' + finalHours + ' Hours</strong>' +
+          '</div>' +
+          '<div class="bg-white/80 p-2 rounded-xl border border-indigo-100/70">' +
+            '<span class="block text-[10px] text-slate-500 font-bold uppercase tracking-wider">Attendance Logs</span>' +
+            '<strong class="text-emerald-700 text-sm font-black">' + (dbStats.totalSessions || 0) + ' Logged</strong>' +
+          '</div>' +
+          '<div class="bg-white/80 p-2 rounded-xl border border-indigo-100/70">' +
+            '<span class="block text-[10px] text-slate-500 font-bold uppercase tracking-wider">Period</span>' +
+            '<strong class="text-slate-800 text-sm font-black">' + (monthVal || 'Current') + '</strong>' +
+          '</div>' +
+        '</div>' +
+        '<p class="text-[11px] text-slate-500 italic mt-1 text-center sm:text-left">' +
+          'Note: Tutor payment is officially audited, calculated, and disbursed by Admin Administration based on the number of approved logged sessions taught this month.' +
+        '</p>';
     }
   }
 
+  var autoFillMonthlyStats = syncReportTotals;
+
   // Initial calculation and listen on month change
-  autoFillMonthlyStats();
+  syncReportTotals();
   if (monthInput) {
-    monthInput.addEventListener('change', autoFillMonthlyStats);
+    monthInput.addEventListener('change', syncReportTotals);
   }
 
   // Logout
@@ -678,13 +731,17 @@ document.addEventListener('DOMContentLoaded', function() {
       entry.innerHTML = generateStudentEntry(studentCount, {});
       entriesContainer.appendChild(entry);
       if (window.lucide) lucide.createIcons();
+      syncReportTotals();
     });
 
     entriesContainer.addEventListener('click', function(e) {
       var removeBtn = e.target.closest('.remove-student-btn');
       if (removeBtn) {
         var entry = removeBtn.closest('.student-entry');
-        if (entry) entry.remove();
+        if (entry) {
+          entry.remove();
+          syncReportTotals();
+        }
       }
     });
 
@@ -766,14 +823,25 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       if (sessionsInput) {
-        sessionsInput.value = calculatedSessions > 0 ? calculatedSessions : (sessionsInput.value || 8);
+        sessionsInput.value = calculatedSessions > 0 ? calculatedSessions : (sessionsInput.value !== '' ? sessionsInput.value : 0);
       }
+
+      syncReportTotals();
     }
 
     entriesContainer.addEventListener('change', function(e) {
       if (e.target.classList.contains('student-quick-picker')) {
         var entry = e.target.closest('.student-entry');
         if (entry) updateStudentEntryStats(entry);
+      }
+      if (e.target.classList.contains('student-sessions-input')) {
+        syncReportTotals();
+      }
+    });
+
+    entriesContainer.addEventListener('input', function(e) {
+      if (e.target.classList.contains('student-sessions-input')) {
+        syncReportTotals();
       }
     });
 
@@ -782,6 +850,7 @@ document.addEventListener('DOMContentLoaded', function() {
       monthInput.addEventListener('change', function() {
         var entries = entriesContainer.querySelectorAll('.student-entry');
         entries.forEach(function(ent){ updateStudentEntryStats(ent); });
+        syncReportTotals();
       });
     }
   }
@@ -1068,9 +1137,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function generateStudentEntry(num, data) {
   data = data || {};
+  var tutorSession = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSession) ? DashboardEngine.getSession() : null;
   var tutorStudents = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutorStudents) 
-    ? DashboardEngine.getTutorStudents() 
+    ? DashboardEngine.getTutorStudents(tutorSession ? tutorSession.email : null) 
     : [];
+  
+  if (tutorStudents.length === 0 && typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) {
+    var allSt = DashboardEngine.getStudents() || [];
+    var tEmail = tutorSession ? (tutorSession.email || '').toLowerCase().trim() : '';
+    var tName = tutorSession ? (tutorSession.name || '').toLowerCase().trim() : '';
+    tutorStudents = allSt.filter(function(s) {
+      var se = (s.tutorEmail || '').toLowerCase().trim();
+      var sn = (s.tutorName || '').toLowerCase().trim();
+      return (tEmail && se === tEmail) || (tName && sn && (sn.includes(tName) || tName.includes(sn)));
+    });
+  }
   
   var optionsHTML = '<option value="">-- Or Select from My Students --</option>' +
     tutorStudents.map(function(s){

@@ -389,6 +389,20 @@
 
     <!-- LEFT MAIN COLUMN -->
     <div>
+      <!-- Assigned Students Roster Card -->
+      <div class="dash-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <img src="images/portal/standalone/backpack-3d.png" alt="" width="28" height="28" style="object-fit:contain;">
+            My Assigned Students
+          </h2>
+          <a href="tutor-students.html" style="font-size:13px; font-weight:700; color:var(--stage-tutor-1); text-decoration:none;">View Full Roster &rarr;</a>
+        </div>
+        <div id="assigned-students-list" style="display:flex; flex-direction:column; gap:0;">
+          <p class="text-xs text-slate-400 p-4 text-center">Loading assigned students...</p>
+        </div>
+      </div>
+
       <!-- Schedule -->
       <div class="dash-card">
         <div class="card-header">
@@ -484,6 +498,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="assets/js/firebase-config.min.js" defer></script>
   <script src="assets/js/dashboard-engine.min.js" defer></script>
+  <script src="assets/js/badge-passport-engine.js" defer></script>
   <script src="assets/js/tutor-engine.min.js" defer></script>
   <script src="assets/js/portal-scene-engine.min.js" defer></script>
 

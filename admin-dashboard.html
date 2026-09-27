@@ -509,12 +509,12 @@
         </div>
       </div>
       <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-        <!-- Search (desktop only; mobile users have search in each section) -->
-        <div class="relative hidden md:block">
-          <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-          <input type="text" id="global-search" placeholder="Search students..."
-            class="bg-white border border-admin-border rounded-lg py-2 pl-10 pr-4 text-sm text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent w-48 lg:w-64 transition-colors">
-        </div>
+        <!-- Global Search Trigger (Command Palette Ctrl + K) -->
+        <button type="button" id="global-search-trigger" onclick="AdminEngine.openGlobalSearchModal()" class="flex items-center gap-2 bg-white border border-slate-300 hover:border-orange-500 text-slate-600 rounded-xl px-3 py-2 text-sm shadow-sm transition-all group w-44 sm:w-56 lg:w-64 cursor-pointer text-left">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 group-hover:text-orange-500 shrink-0"></i>
+          <span class="font-medium text-slate-500 truncate flex-1 text-xs sm:text-sm">Search anything...</span>
+          <kbd class="hidden md:inline-flex items-center text-[10px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded tracking-wide">Ctrl K</kbd>
+        </button>
         <!-- Quick Actions -->
         <button id="open-quick-onboard-btn" onclick="AdminEngine.openQuickOnboardModal()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-2.5 sm:px-3.5 py-2 rounded-lg transition-all flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm shadow-sm" style="background-color: #c2410c !important;">
           <i data-lucide="zap" class="w-4 h-4 shrink-0"></i>
@@ -544,6 +544,9 @@
        <span class="kpi-pill"><i data-lucide="mail" style="width:14px;height:14px;"></i> <span id="kpi-admin-emails">0</span> Pending Enrollments</span>
      </div>
    </div>
+
+ <!-- ATTENDANCE ESCALATION CENTER (DASHBOARD) -->
+ <div id="dashboard-attendance-escalation" class="mb-8"></div>
    <img src="images/portal/standalone/admin-shield-3d.png" alt="Admin" class="hero-3d-object animate-float-band" style="width:200px;height:200px;" loading="lazy">
  </div>
 
@@ -737,6 +740,10 @@
  <p class="text-slate-500" id="roster-section-subtitle">Manage all enrolled students and registered parents</p>
  </div>
  <div class="flex items-center gap-3">
+ <button type="button" onclick="AdminEngine.openTutorReassignModal()" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm font-semibold shadow-sm">
+ <i data-lucide="user-cog" class="w-4 h-4 text-blue-600"></i>
+ <span>Reassign Tutor</span>
+ </button>
  <button id="export-csv-btn" class="bg-white border border-admin-border hover:bg-gray-50 text-slate-700 px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm font-semibold shadow-sm">
  <i data-lucide="download" class="w-4 h-4"></i>
  <span id="export-btn-label">Export CSV</span>
@@ -929,6 +936,10 @@
         <p class="text-slate-500">Manage instructors, assign coders, monitor availability, and track engagement.</p>
       </div>
       <div class="flex items-center gap-3">
+        <button type="button" onclick="AdminEngine.openTutorReassignModal()" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm">
+          <i data-lucide="arrow-left-right" class="w-4 h-4 text-orange-600"></i>
+          <span>Reassign Students</span>
+        </button>
         <button onclick="AdminEngine.openTutorModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm" style="background-color: #059669 !important;">
           <i data-lucide="user-plus" class="w-4 h-4"></i>
           <span>+ Onboard New Tutor</span>
@@ -1034,21 +1045,63 @@
  </button>
  </div>
  
- <!-- Calendar Placeholder -->
- <div class="admin-card rounded-2xl p-6">
- <div id="schedule-calendar" class="min-h-[500px]">
- <p class="text-slate-500 font-medium text-center py-20">Loading calendar...</p>
- </div>
- </div>
- </section>
+  <!-- Calendar with Status Filter Pills -->
+  <div class="admin-card rounded-2xl p-6">
+    <div class="flex flex-wrap items-center justify-between gap-3 pb-5 mb-5 border-b border-gray-100">
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="AdminEngine.filterSchedules('upcoming')" data-filter="upcoming" class="schedule-filter-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition-all flex items-center gap-1.5">
+          <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+          <span>Upcoming (Active)</span>
+          <span class="bg-white/20 text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded-full" id="sch-count-upcoming">0</span>
+        </button>
+        <button type="button" onclick="AdminEngine.filterSchedules('done')" data-filter="done" class="schedule-filter-pill px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-all flex items-center gap-1.5">
+          <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+          <span>Held (Done)</span>
+          <span class="bg-slate-200 text-slate-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full" id="sch-count-done">0</span>
+        </button>
+        <button type="button" onclick="AdminEngine.filterSchedules('all')" data-filter="all" class="schedule-filter-pill px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-all flex items-center gap-1.5">
+          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+          <span>All Sessions</span>
+          <span class="bg-slate-200 text-slate-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full" id="sch-count-all">0</span>
+        </button>
+      </div>
+      <p class="text-xs text-slate-400 font-medium hidden sm:block">Held sessions are automatically archived and hidden from active view</p>
+    </div>
+
+    <div id="schedule-calendar" class="min-h-[500px]">
+      <p class="text-slate-500 font-medium text-center py-20">Loading calendar...</p>
+    </div>
+  </div>
+  </section>
 
  <!-- ===== ATTENDANCE SECTION ===== -->
+  <!-- ===== ATTENDANCE SECTION ===== -->
  <section id="section-attendance" class="admin-section animate-fadeIn">
- <div class="flex items-center justify-between mb-6">
+ <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
  <div>
- <h2 class="text-2xl font-nunito font-bold text-slate-800">Attendance Approvals</h2>
- <p class="text-slate-500">Review and approve tutor attendance logs</p>
+ <h2 class="text-2xl font-nunito font-bold text-slate-800">Attendance Approvals & Faculty Operations</h2>
+ <p class="text-slate-500">Review attendance logs, batch approve verified classes, and generate monthly faculty payouts.</p>
  </div>
+ </div>
+
+ <!-- ATTENDANCE ESCALATION NOTICES -->
+ <div id="attendance-section-escalation" class="mb-6"></div>
+
+ <!-- BATCH ACTIONS & PAYROLL REVIEW TOOLBAR -->
+ <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+   <div class="flex items-center gap-3 flex-wrap">
+     <span class="text-xs font-bold uppercase tracking-wider text-slate-600">Batch Review:</span>
+     <button type="button" id="btn-batch-approve-attendance" onclick="AdminEngine.batchApproveAllPendingAttendance()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-sm flex items-center gap-2" style="background-color:#047857!important;">
+       <i data-lucide="check-check" class="w-4 h-4"></i>
+       <span id="batch-approve-btn-label">Approve All Verified Sessions</span>
+     </button>
+   </div>
+   <div class="flex items-center gap-3">
+     <button type="button" onclick="AdminEngine.openMonthlyPayrollModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-sm flex items-center gap-2">
+       <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+       <span>Monthly Faculty Payroll Statement</span>
+     </button>
+   </div>
  </div>
  
  <div class="admin-card rounded-2xl p-6 overflow-x-auto">
@@ -1166,9 +1219,9 @@
  <div class="my-3">
  <label class="block text-sm font-medium text-gray-500 mb-1.5">Design Template Track</label>
  <select id="cert-template-type" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 font-semibold focus:outline-none focus:border-admin-accent text-xs">
- <option value="auto">✨ Auto-Detect (Based on Course Curriculum)</option>
- <option value="explorers">🧒 Explorers Track (Ages 5–12: Colorful, Waves &amp; Rosette)</option>
- <option value="vanguard">🚀 Vanguard Track (Ages 12–18: Modern Architectural Tech)</option>
+ <option value="auto">Auto-Detect (Based on Course Curriculum)</option>
+ <option value="explorers">Explorers Track (Ages 5–12: Colorful, Waves &amp; Rosette)</option>
+ <option value="vanguard">Vanguard Track (Ages 12–18: Modern Architectural Tech)</option>
  </select>
  </div>
 
@@ -1409,6 +1462,28 @@
     </div>
     <span id="queue-count-badge" class="bg-orange-500 text-white text-xs font-bold px-2.5 py-1 rounded-md hidden">0 pending</span>
   </div>
+
+  <!-- BULK QUEUE ACTIONS TOOLBAR -->
+  <div id="email-queue-bulk-bar" class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+    <div class="flex items-center gap-3">
+      <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700 select-none">
+        <input type="checkbox" id="queue-select-all" onchange="AdminEngine.toggleSelectAllEmailQueue(this.checked)" class="w-4 h-4 rounded text-orange-600 focus:ring-orange-500 border-slate-300">
+        <span>Select All</span>
+      </label>
+      <span id="queue-selected-count-badge" class="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-full border border-slate-200">0 selected</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button type="button" id="btn-dispatch-selected" onclick="AdminEngine.dispatchSelectedEmails()" disabled class="bg-orange-600 hover:bg-orange-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-sm flex items-center gap-1.5" style="background-color:#c2410c!important;">
+        <i data-lucide="send" class="w-3.5 h-3.5"></i>
+        <span>Dispatch Selected</span>
+      </button>
+      <button type="button" id="btn-dispatch-all" onclick="AdminEngine.dispatchAllPendingEmails()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-sm flex items-center gap-1.5">
+        <i data-lucide="check-check" class="w-3.5 h-3.5"></i>
+        <span>Dispatch All Pending</span>
+      </button>
+    </div>
+  </div>
+
   <div id="email-queue-list" class="space-y-3">
     <p class="text-slate-600 text-sm font-medium text-center py-8">No emails pending review.</p>
   </div>
@@ -2072,6 +2147,59 @@
     </div>
   </div>
 
+  <!-- Modal: Email Parent Directly -->
+  <div id="admin-email-parent-modal" class="fixed inset-0 z-50 hidden">
+    <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('admin-email-parent-modal')"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div class="admin-card rounded-2xl p-6 sm:p-8 m-4 bg-white shadow-2xl animate-fadeIn">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+              <i data-lucide="mail" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-nunito font-bold text-slate-800">Dispatch Email to Parent</h3>
+              <p class="text-xs text-slate-500">Send an official parent update via email</p>
+            </div>
+          </div>
+          <button type="button" class="text-slate-400 hover:text-slate-700 p-1" onclick="AdminEngine.closeModal('admin-email-parent-modal')">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <form id="admin-email-parent-form" onsubmit="AdminEngine.sendParentModalEmail(event)" class="space-y-4">
+          <input type="hidden" id="aep-email" value="">
+          <input type="hidden" id="aep-name" value="">
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Recipient</label>
+            <input type="text" id="aep-recipient" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-600 font-mono cursor-not-allowed">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Subject</label>
+            <input type="text" id="aep-subject" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-500 font-semibold" placeholder="Email Subject...">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Message Body</label>
+            <textarea id="aep-body" rows="6" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-500 resize-none font-medium" placeholder="Write message to parent..."></textarea>
+          </div>
+
+          <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+            <button type="button" onclick="AdminEngine.closeModal('admin-email-parent-modal')" class="px-5 py-2.5 text-slate-500 hover:text-slate-800 font-semibold text-sm">
+              Cancel
+            </button>
+            <button type="submit" id="aep-send-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl shadow-md text-sm transition-all flex items-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Send Email</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal: Assign Coders to Tutor -->
   <div id="tutor-assign-coder-modal" class="fixed inset-0 z-50 hidden">
     <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('tutor-assign-coder-modal')"></div>
@@ -2667,7 +2795,7 @@
                <span class="font-black text-emerald-700 text-sm" id="rev-payout-total">$0.00</span>
              </div>
            </div>
-           <p class="text-[10px] text-slate-500 mt-2 italic">Calculated from verified attendance records. Ready for payroll disbursement upon approval.</p>
+           <p class="text-[10px] text-slate-500 mt-2 italic">Calculated by Admin from the number of approved logged sessions taught monthly (.00/hr). Ready for payroll disbursement upon approval.</p>
          </div>
          </div>
 
@@ -3072,6 +3200,217 @@ window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger
 <script src="assets/js/stemulus-icons.js" defer></script>
 <script src="assets/js/scroll-choreography.js" defer></script>
 <script src="assets/js/stemulus-interactive.js" defer></script>
+
+
+<!-- ===================== GLOBAL SEARCH & COMMAND PALETTE MODAL ===================== -->
+<div id="admin-global-search-modal" class="modal fixed inset-0 z-50 overflow-y-auto hidden">
+  <div class="modal-overlay absolute inset-0 bg-slate-900/75 backdrop-blur-sm" onclick="AdminEngine.closeGlobalSearchModal()"></div>
+  <div class="relative min-h-screen flex items-start justify-center p-4 pt-12 sm:pt-20">
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col max-h-[85vh] animate-fadeIn relative">
+      <!-- Search Input Bar -->
+      <div class="p-4 border-b border-slate-200 flex items-center gap-3 bg-slate-50">
+        <i data-lucide="search" class="w-5 h-5 text-orange-600 shrink-0"></i>
+        <input type="text" id="command-search-input" oninput="AdminEngine.handleGlobalSearchInput(this.value)" placeholder="Search students, parents, tutors, schedules, leads, queue..." class="w-full bg-transparent text-slate-800 placeholder-slate-400 font-semibold text-base focus:outline-none" autocomplete="off">
+        <button type="button" onclick="AdminEngine.closeGlobalSearchModal()" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Quick Filter Pills -->
+      <div class="px-4 py-2 border-b border-slate-100 flex items-center gap-1.5 overflow-x-auto bg-white text-xs">
+        <button type="button" onclick="AdminEngine.setGlobalSearchCategory('all')" id="gsearch-cat-all" class="gsearch-cat-btn px-2.5 py-1 rounded-lg font-bold bg-blue-600 text-white">All</button>
+        <button type="button" onclick="AdminEngine.setGlobalSearchCategory('students')" id="gsearch-cat-students" class="gsearch-cat-btn px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">Students</button>
+        <button type="button" onclick="AdminEngine.setGlobalSearchCategory('parents')" id="gsearch-cat-parents" class="gsearch-cat-btn px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">Parents</button>
+        <button type="button" onclick="AdminEngine.setGlobalSearchCategory('tutors')" id="gsearch-cat-tutors" class="gsearch-cat-btn px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">Tutors</button>
+        <button type="button" onclick="AdminEngine.setGlobalSearchCategory('schedules')" id="gsearch-cat-schedules" class="gsearch-cat-btn px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">Schedules</button>
+        <button type="button" onclick="AdminEngine.setGlobalSearchCategory('bookings')" id="gsearch-cat-bookings" class="gsearch-cat-btn px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">Bookings</button>
+        <button type="button" onclick="AdminEngine.setGlobalSearchCategory('queue')" id="gsearch-cat-queue" class="gsearch-cat-btn px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100">Queue</button>
+      </div>
+
+      <!-- Search Results List -->
+      <div id="command-search-results" class="p-3 overflow-y-auto flex-1 space-y-1 divide-y divide-slate-100">
+        <!-- Dynamically rendered -->
+      </div>
+
+      <!-- Keyboard Footer -->
+      <div class="px-4 py-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500 font-medium">
+        <div class="flex items-center gap-3">
+          <span><kbd class="bg-white border border-slate-200 px-1.5 py-0.5 rounded font-mono font-bold">ArrowUp / ArrowDown</kbd> Navigate</span>
+          <span><kbd class="bg-white border border-slate-200 px-1.5 py-0.5 rounded font-mono font-bold">Enter</kbd> Select</span>
+          <span><kbd class="bg-white border border-slate-200 px-1.5 py-0.5 rounded font-mono font-bold">Esc</kbd> Close</span>
+        </div>
+        <span class="text-slate-400 font-mono" id="gsearch-total-count">0 items found</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MONTHLY FACULTY PAYROLL MODAL ===================== -->
+<div id="modal-monthly-payroll" class="modal fixed inset-0 z-50 overflow-y-auto hidden">
+  <div class="modal-overlay absolute inset-0 bg-slate-900/75 backdrop-blur-sm" onclick="AdminEngine.closeModal('modal-monthly-payroll')"></div>
+  <div class="relative min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl max-w-4xl w-full p-6 sm:p-8 space-y-6 animate-fadeIn relative my-8">
+      
+      <!-- Modal Header -->
+      <div class="flex items-start justify-between border-b border-slate-100 pb-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Financials &amp; Payroll</span>
+            <span class="text-xs text-slate-400 font-medium">Standard Rate: $25.00 / hr</span>
+          </div>
+          <h2 class="text-2xl font-nunito font-bold text-slate-800 mt-1">Monthly Tutor Payroll Statement</h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Calculated exclusively from admin-approved logged sessions for each faculty instructor.</p>
+        </div>
+        <button type="button" onclick="AdminEngine.closeModal('modal-monthly-payroll')" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <!-- Month Selector & Controls -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+        <div class="flex items-center gap-3">
+          <label for="payroll-month-select" class="text-xs font-bold uppercase tracking-wider text-slate-600">Billing Period:</label>
+          <select id="payroll-month-select" onchange="AdminEngine.renderPayrollPeriod(this.value)" class="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-800 focus:outline-none focus:border-blue-600">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="AdminEngine.batchApproveMonthPayroll()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-1.5 rounded-lg text-xs transition-all shadow-sm flex items-center gap-1.5" style="background-color:#047857!important;">
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+            <span>Batch Approve Month</span>
+          </button>
+          <button type="button" onclick="AdminEngine.exportPayrollCSV()" class="bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold px-3.5 py-1.5 rounded-lg text-xs transition-all shadow-sm flex items-center gap-1.5">
+            <i data-lucide="download" class="w-3.5 h-3.5 text-blue-600"></i>
+            <span>Export CSV Statement</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Summary KPI Row -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl">
+          <p class="text-xs font-bold text-slate-500 uppercase">Scheduled Classes</p>
+          <p id="payroll-kpi-scheduled" class="text-2xl font-bold text-slate-800 mt-1">0</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl">
+          <p class="text-xs font-bold text-slate-500 uppercase">Approved Classes</p>
+          <p id="payroll-kpi-approved" class="text-2xl font-bold text-emerald-700 mt-1">0</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl">
+          <p class="text-xs font-bold text-slate-500 uppercase">Approved Hours</p>
+          <p id="payroll-kpi-hours" class="text-2xl font-bold text-blue-700 mt-1">0 hrs</p>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl">
+          <p class="text-xs font-bold text-slate-500 uppercase">Total Faculty Payout</p>
+          <p id="payroll-kpi-total" class="text-2xl font-bold text-orange-600 mt-1">$0.00</p>
+        </div>
+      </div>
+
+      <!-- Faculty Breakdown Table -->
+      <div class="border border-slate-200 rounded-xl overflow-x-auto max-h-[350px]">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead class="bg-slate-100 text-slate-700 uppercase font-bold sticky top-0">
+            <tr>
+              <th class="p-3">Instructor</th>
+              <th class="p-3">Assigned Students</th>
+              <th class="p-3">Scheduled</th>
+              <th class="p-3">Approved Sessions</th>
+              <th class="p-3">Approved Hours</th>
+              <th class="p-3">Rate</th>
+              <th class="p-3 font-bold text-emerald-800">Total Payout</th>
+              <th class="p-3">Audit Status</th>
+            </tr>
+          </thead>
+          <tbody id="payroll-table-body" class="divide-y divide-slate-100 text-slate-700 font-medium">
+            <tr>
+              <td colspan="8" class="p-8 text-center text-slate-400">Loading payroll data...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer Note -->
+      <div class="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+        <p>Payroll policy: Hourly payouts are computed exclusively on verified, completed attendance submissions approved by administrative directors.</p>
+        <button type="button" onclick="AdminEngine.closeModal('modal-monthly-payroll')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TUTOR REASSIGNMENT MODAL ===================== -->
+<div id="modal-tutor-reassign" class="modal fixed inset-0 z-50 overflow-y-auto hidden">
+  <div class="modal-overlay absolute inset-0 bg-slate-900/75 backdrop-blur-sm" onclick="AdminEngine.closeModal('modal-tutor-reassign')"></div>
+  <div class="relative min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl max-w-xl w-full p-6 sm:p-8 space-y-5 animate-fadeIn relative my-8">
+      
+      <!-- Modal Header -->
+      <div class="flex items-start justify-between border-b border-slate-100 pb-4">
+        <div>
+          <span class="bg-orange-100 text-orange-700 text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Faculty Operations</span>
+          <h2 class="text-xl font-nunito font-bold text-slate-800 mt-1">Reassign Students &amp; Schedules</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Transfer active student coders and future recurring schedules between faculty members.</p>
+        </div>
+        <button type="button" onclick="AdminEngine.closeModal('modal-tutor-reassign')" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <form id="tutor-reassign-form" onsubmit="AdminEngine.submitTutorReassignment(event)" class="space-y-4">
+        <!-- Source Tutor -->
+        <div>
+          <label for="reassign-source-tutor" class="block text-xs font-bold text-slate-600 uppercase mb-1">Source Tutor (Current Instructor) *</label>
+          <select id="reassign-source-tutor" onchange="AdminEngine.onReassignSourceTutorChange(this.value)" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:border-orange-500">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <!-- Students Multi-select Container -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="block text-xs font-bold text-slate-600 uppercase">Select Students to Transfer *</label>
+            <button type="button" onclick="AdminEngine.toggleSelectAllReassignStudents()" class="text-xs text-blue-600 font-bold hover:underline" id="reassign-toggle-all-btn">Select All</button>
+          </div>
+          <div id="reassign-students-list" class="border border-slate-200 rounded-xl p-3 max-h-48 overflow-y-auto space-y-2 bg-slate-50 text-xs">
+            <p class="text-slate-400 text-center py-4">Select a source tutor above to list assigned students.</p>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1" id="reassign-students-count-note">0 students selected</p>
+        </div>
+
+        <!-- Target Tutor -->
+        <div>
+          <label for="reassign-target-tutor" class="block text-xs font-bold text-slate-600 uppercase mb-1">Target Tutor (New Instructor) *</label>
+          <select id="reassign-target-tutor" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:border-blue-600">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <!-- Transition Options -->
+        <div class="bg-blue-50/60 border border-blue-100 rounded-xl p-3.5 space-y-2 text-xs">
+          <label class="flex items-center gap-2 cursor-pointer font-medium text-slate-700 select-none">
+            <input type="checkbox" id="reassign-opt-schedules" checked class="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500">
+            <span>Automatically update future recurring schedules to new instructor</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer font-medium text-slate-700 select-none">
+            <input type="checkbox" id="reassign-opt-notify" checked class="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500">
+            <span>Queue transition notification email to parent</span>
+          </label>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <button type="button" onclick="AdminEngine.closeModal('modal-tutor-reassign')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100">Cancel</button>
+          <button type="submit" id="reassign-submit-btn" class="bg-orange-600 hover:bg-orange-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow-md transition-all flex items-center gap-2" style="background-color:#c2410c!important;">
+            <i data-lucide="arrow-left-right" class="w-4 h-4"></i>
+            <span>Transfer Students &amp; Schedules</span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

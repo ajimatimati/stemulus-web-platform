@@ -1070,9 +1070,12 @@
         document.getElementById('class_date').value = paramDate;
       }
 
+      var session = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSession) ? DashboardEngine.getSession() : null;
+      var tutorEmail = (session && session.email) || '';
+
       var students = [];
       if(typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutorStudents){
-        students = DashboardEngine.getTutorStudents();
+        students = DashboardEngine.getTutorStudents(tutorEmail);
       }
       
       var sel = document.getElementById('student_id_select');
@@ -1102,6 +1105,12 @@
             document.getElementById('student_name').value = '';
           }
         };
+
+        // If only 1 assigned student and no explicit param, auto-select
+        if (students.length === 1 && !paramStudentId) {
+          sel.selectedIndex = 1;
+          sel.dispatchEvent(new Event('change'));
+        }
       } else if (sel) {
         sel.innerHTML = '<option value="">No assigned students found (Contact Admin)</option>';
       }
@@ -1124,13 +1133,13 @@
         }
       }
 
-      if(typeof DashboardEngine !== 'undefined' && DashboardEngine.getCurrentScheduledStudent){
+      // If scheduled session is passed or exists with explicit schedule ID
+      if(paramScheduleId && typeof DashboardEngine !== 'undefined' && DashboardEngine.getCurrentScheduledStudent){
         var sched = DashboardEngine.getCurrentScheduledStudent();
-        if(sched && sched.name){
+        if(sched && sched.name && sched.scheduleId === paramScheduleId){
           document.getElementById('student_name_display').value = sched.name;
           document.getElementById('student_id').value = sched.id || '';
           document.getElementById('student_name').value = sched.name;
-          if (sched.scheduleId) window.currentScheduleId = sched.scheduleId;
           if (sched.date && document.getElementById('class_date')) document.getElementById('class_date').value = sched.date;
           if (sched.course && document.getElementById('course_covered')) {
             document.getElementById('course_covered').value = sched.course;

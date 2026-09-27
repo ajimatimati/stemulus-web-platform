@@ -26,6 +26,7 @@ const AdminEngine = (function () {
     function init() {
         bindLoginForm();
         checkAuth();
+        initGlobalSearch();
     }
 
     function checkAuth() {
@@ -1274,6 +1275,7 @@ function loadDashboardData() {
     renderRescheduleRequests();
     renderAttendanceApprovals();
     updatePendingAttendanceBadge();
+    renderAttendanceEscalationCenter();
     checkBirthdays();
     populateNotificationRecipients();
     loadTutorMonthlyReports();
@@ -1408,6 +1410,7 @@ function loadEmailQueue() {
       var typeLabel = typeLabels[item.type] || item.type;
       var typeColor = (item.type === 'welcome' || item.type === 'tutor-welcome' || item.type === 'tutor_welcome' || item.type === 'student-enrolled') ? 'bg-blue-100 text-blue-700' : item.type === 'certificate-delivery' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700';
       return '<div class="bg-white border border-gray-200 rounded-xl p-4 flex items-start justify-between gap-4 shadow-sm">' +
+        '<div class="pt-0.5 shrink-0"><input type="checkbox" class="queue-item-checkbox w-4 h-4 rounded text-orange-600 focus:ring-orange-500 border-slate-300 cursor-pointer" value="' + item.id + '" onchange="AdminEngine.updateQueueSelectionCount()"></div>' +
         '<div class="flex-1 min-w-0">' +
           '<div class="flex items-center gap-2 mb-1">' +
             '<span class="inline-block text-xs font-bold px-2 py-0.5 rounded ' + typeColor + '">' + typeLabel + '</span>' +
@@ -1539,9 +1542,9 @@ window.adminResetAndSend = async function(reqId, email) {
 };
 
 function loadStats() {
-    const students = DashboardEngine.getStudents();
-    const enrollments = DashboardEngine.getEnrollments().filter(e => e.status === 'pending'); // Pending enrollments awaiting admin approval
-    const schedules = DashboardEngine.getSchedules();
+    const students = (DashboardEngine.getStudents ? DashboardEngine.getStudents() : []) || [];
+    const enrollments = ((DashboardEngine.getEnrollments ? DashboardEngine.getEnrollments() : []) || []).filter(e => e && e.status === 'pending'); // Pending enrollments awaiting admin approval
+    const schedules = (DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : []) || [];
 
     const statStudents = document.getElementById('stat-total-students');
     if (statStudents) statStudents.textContent = students.length;
@@ -1645,7 +1648,7 @@ function renderPendingRegistrations() {
     const container = document.getElementById('recent-students-list'); // Re-use recent students for registrations
     if (!container) return;
 
-    const enrollments = DashboardEngine.getEnrollments().filter(e => e.status === 'pending');
+    const enrollments = ((DashboardEngine.getEnrollments ? DashboardEngine.getEnrollments() : []) || []).filter(e => e && e.status === 'pending');
 
     if (enrollments.length === 0) {
         container.innerHTML = `
@@ -1702,7 +1705,7 @@ function renderRescheduleRequests() {
     const dashboardSection = document.getElementById('section-dashboard');
     if (!dashboardSection) return;
 
-    const requests = DashboardEngine.getRescheduleRequests().filter(r => r.status === 'pending');
+    const requests = ((DashboardEngine.getRescheduleRequests ? DashboardEngine.getRescheduleRequests() : []) || []).filter(r => r && r.status === 'pending');
 
     // Remove old reschedule section if present
     const oldSection = document.getElementById('admin-reschedule-section');
@@ -1778,8 +1781,8 @@ function renderAttendanceApprovals() {
     const listContainer = document.getElementById('admin-attendance-list');
     if (!listContainer) return;
 
-    const records = DashboardEngine.getAttendanceRecords();
-    const pendingRecords = records.filter(r => r.status === 'pending');
+    const records = (DashboardEngine.getAttendanceRecords ? DashboardEngine.getAttendanceRecords() : []) || [];
+    const pendingRecords = records.filter(r => r && r.status === 'pending');
 
     if (pendingRecords.length === 0) {
         listContainer.innerHTML = `
@@ -1820,11 +1823,11 @@ function renderAttendanceApprovals() {
                     <td class="p-3 text-sm font-semibold">${r.studentName}</td>
                     <td class="p-3 text-sm">
                         <div class="font-medium text-slate-800">${r.topic}</div>
-                        <div class="text-xs text-slate-400">${r.coursesCovered.join(', ')}</div>
+                        <div class="text-xs text-slate-400">${(r.coursesCovered && Array.isArray(r.coursesCovered)) ? r.coursesCovered.join(', ') : (r.course || '')}</div>
                         ${r.homeworkAssigned ? `<div class="mt-1 text-xs text-amber-700 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-md font-medium inline-block"><span class="font-bold text-amber-800">Assignment:</span> ${r.homeworkAssigned}</div>` : ''}
                         ${r.whatBuilt ? `<div class="text-[11px] text-slate-500 mt-0.5"><span class="font-semibold text-slate-600">Built:</span> ${r.whatBuilt}</div>` : ''}
                         ${r.tutorComment ? `<div class="text-[11px] text-slate-500 italic mt-0.5 line-clamp-1" title="${r.tutorComment}">&ldquo;${r.tutorComment}&rdquo;</div>` : ''}
-                        ${r.conceptGrasp ? `<div class="text-[11px] text-amber-500 font-semibold mt-0.5">${'★'.repeat(r.conceptGrasp)}${'☆'.repeat(5 - r.conceptGrasp)} <span class="text-slate-400 font-normal">(${r.conceptGrasp}/5 grasp)</span></div>` : ''}
+                        ${r.conceptGrasp ? `<div class="text-[11px] text-amber-700 font-semibold mt-0.5"><span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded">Score: ${r.conceptGrasp}/5</span> <span class="text-slate-400 font-normal">concept grasp</span></div>` : ''}
                     </td>
                     <td class="p-3 text-sm">${r.duration} mins</td>
                     <td class="p-3 text-sm">${typeLabel}</td>
@@ -1849,8 +1852,8 @@ function renderAttendanceApprovals() {
 }
 
 function updatePendingAttendanceBadge() {
-    const records = DashboardEngine.getAttendanceRecords();
-    const pendingCount = records.filter(r => r.status === 'pending').length;
+    const records = (DashboardEngine.getAttendanceRecords ? DashboardEngine.getAttendanceRecords() : []) || [];
+    const pendingCount = records.filter(r => r && r.status === 'pending').length;
     const badge = document.getElementById('pending-attendance-badge');
     if (badge) {
         badge.textContent = pendingCount;
@@ -4039,6 +4042,957 @@ function openMessageTutorModal(tutorEmail, tutorName) {
     showToast(`Composing email to ${tutorName}...`, 'info');
 }
 
+    // =====================================================================================
+    // ADMINISTRATIVE USABILITY SUITE: 5 WORKFLOW ENHANCEMENTS
+    // =====================================================================================
+
+    // ── FEATURE 1: GLOBAL QUICK SEARCH & COMMAND PALETTE (CTRL + K) ──
+    let globalSearchCategory = 'all';
+    let globalSearchResults = [];
+    let selectedSearchIndex = -1;
+
+    function initGlobalSearch() {
+        window.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                openGlobalSearchModal();
+            }
+        });
+
+        const searchInput = document.getElementById('command-search-input');
+        if (searchInput) {
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateGlobalSearchResults(1);
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateGlobalSearchResults(-1);
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectHighlightedGlobalResult();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeGlobalSearchModal();
+                }
+            });
+        }
+    }
+
+    function openGlobalSearchModal() {
+        const modal = document.getElementById('admin-global-search-modal');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        const input = document.getElementById('command-search-input');
+        if (input) {
+            input.value = '';
+            setTimeout(() => input.focus(), 50);
+        }
+        setGlobalSearchCategory('all');
+        renderGlobalSearchResults('');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function closeGlobalSearchModal() {
+        const modal = document.getElementById('admin-global-search-modal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function setGlobalSearchCategory(cat) {
+        globalSearchCategory = cat;
+        document.querySelectorAll('.gsearch-cat-btn').forEach(btn => {
+            btn.className = 'gsearch-cat-btn px-2.5 py-1 rounded-lg font-bold text-slate-600 hover:bg-slate-100 transition-colors';
+        });
+        const activeBtn = document.getElementById('gsearch-cat-' + cat);
+        if (activeBtn) {
+            activeBtn.className = 'gsearch-cat-btn px-2.5 py-1 rounded-lg font-bold bg-blue-600 text-white transition-colors';
+        }
+        const input = document.getElementById('command-search-input');
+        renderGlobalSearchResults(input ? input.value : '');
+    }
+
+    function handleGlobalSearchInput(val) {
+        renderGlobalSearchResults(val);
+    }
+
+    function renderGlobalSearchResults(query) {
+        const container = document.getElementById('command-search-results');
+        const countEl = document.getElementById('gsearch-total-count');
+        if (!container) return;
+
+        const q = (query || '').toLowerCase().trim();
+        selectedSearchIndex = -1;
+        globalSearchResults = [];
+
+        if (!q) {
+            const quickActions = [
+                { type: 'action', title: 'Open Students Roster', subtitle: 'View, filter, and manage enrolled students', icon: 'graduation-cap', action: () => { closeGlobalSearchModal(); navigateToSection('students'); switchRosterTab('students'); } },
+                { type: 'action', title: 'Open Parents Directory', subtitle: 'View registered parent contacts and accounts', icon: 'users', action: () => { closeGlobalSearchModal(); navigateToSection('students'); switchRosterTab('parents'); } },
+                { type: 'action', title: 'Open Tutors Directory', subtitle: 'Manage faculty mentors and student assignments', icon: 'briefcase', action: () => { closeGlobalSearchModal(); navigateToSection('tutors'); } },
+                { type: 'action', title: 'Review Attendance Approvals', subtitle: 'Inspect pending attendance logs submitted by tutors', icon: 'clipboard-check', action: () => { closeGlobalSearchModal(); navigateToSection('attendance'); } },
+                { type: 'action', title: 'Open Monthly Faculty Payroll', subtitle: 'Batch approve sessions and export payroll statement', icon: 'file-spreadsheet', action: () => { closeGlobalSearchModal(); openMonthlyPayrollModal(); } },
+                { type: 'action', title: 'Review Email Queue', subtitle: 'Inspect and bulk dispatch pending parent/tutor emails', icon: 'mail-check', action: () => { closeGlobalSearchModal(); navigateToSection('email-queue'); } },
+                { type: 'action', title: 'Reassign Students to Tutor', subtitle: 'Transfer active student coders and future schedules', icon: 'arrow-left-right', action: () => { closeGlobalSearchModal(); openTutorReassignModal(); } }
+            ];
+
+            globalSearchResults = quickActions;
+            container.innerHTML = '<div class="px-2 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Quick Actions &amp; Navigation</div>' +
+                quickActions.map((item, idx) => `
+                    <div class="command-search-item p-2.5 rounded-xl hover:bg-slate-100 flex items-center justify-between gap-3 cursor-pointer transition-colors" data-index="${idx}" onclick="AdminEngine.selectGlobalSearchResult(${idx})">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center shrink-0">
+                                <i data-lucide="${item.icon}" class="w-4 h-4"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-sm font-bold text-slate-800 truncate">${item.title}</p>
+                                <p class="text-xs text-slate-500 truncate">${item.subtitle}</p>
+                            </div>
+                        </div>
+                        <span class="text-[11px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 shrink-0">Jump</span>
+                    </div>
+                `).join('');
+            if (countEl) countEl.textContent = quickActions.length + ' quick actions';
+            if (window.lucide) lucide.createIcons();
+            return;
+        }
+
+        const students = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) ? DashboardEngine.getStudents() : [];
+        const parents = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getParents) ? Object.values(DashboardEngine.getParents()) : [];
+        const tutors = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutors) ? DashboardEngine.getTutors() : [];
+        const schedules = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSchedules) ? DashboardEngine.getSchedules() : [];
+        const bookings = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getBookings) ? DashboardEngine.getBookings() : [];
+        const queue = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getEmailQueue) ? DashboardEngine.getEmailQueue() : [];
+
+        const results = [];
+
+        // Match Students
+        if (globalSearchCategory === 'all' || globalSearchCategory === 'students') {
+            students.forEach(s => {
+                const fullName = `${s.firstName || ''} ${s.lastName || ''}`.trim();
+                if (fullName.toLowerCase().includes(q) || (s.id && s.id.toLowerCase().includes(q)) || (s.program && s.program.toLowerCase().includes(q)) || (s.parentEmail && s.parentEmail.toLowerCase().includes(q))) {
+                    results.push({
+                        type: 'Student',
+                        category: 'students',
+                        title: fullName || 'Student',
+                        subtitle: `${s.program || 'Track'} | Age ${s.age || '—'} | Tutor: ${s.tutorName || 'Unassigned'} | Parent: ${s.parentEmail || '—'}`,
+                        badgeClass: 'bg-blue-100 text-blue-700',
+                        action: () => { closeGlobalSearchModal(); navigateToSection('students'); switchRosterTab('students'); editStudent(s.id); }
+                    });
+                }
+            });
+        }
+
+        // Match Parents
+        if (globalSearchCategory === 'all' || globalSearchCategory === 'parents') {
+            parents.forEach(p => {
+                if ((p.name && p.name.toLowerCase().includes(q)) || (p.email && p.email.toLowerCase().includes(q)) || (p.phone && p.phone.toLowerCase().includes(q))) {
+                    results.push({
+                        type: 'Parent',
+                        category: 'parents',
+                        title: p.name || p.email,
+                        subtitle: `${p.email} | Phone: ${p.phone || '—'} | Linked Students: ${p.children ? p.children.length : 0}`,
+                        badgeClass: 'bg-purple-100 text-purple-700',
+                        action: () => { closeGlobalSearchModal(); navigateToSection('students'); switchRosterTab('parents'); filterParents(p.email || p.name); }
+                    });
+                }
+            });
+        }
+
+        // Match Tutors
+        if (globalSearchCategory === 'all' || globalSearchCategory === 'tutors') {
+            tutors.forEach(t => {
+                if ((t.name && t.name.toLowerCase().includes(q)) || (t.email && t.email.toLowerCase().includes(q)) || (t.specialty && t.specialty.toLowerCase().includes(q))) {
+                    results.push({
+                        type: 'Tutor',
+                        category: 'tutors',
+                        title: t.name || t.email,
+                        subtitle: `${t.email} | Specialization: ${t.specialty || 'Coding'} | Status: ${t.status || 'active'}`,
+                        badgeClass: 'bg-emerald-100 text-emerald-700',
+                        action: () => { closeGlobalSearchModal(); navigateToSection('tutors'); filterTutors(t.name || t.email); }
+                    });
+                }
+            });
+        }
+
+        // Match Schedules
+        if (globalSearchCategory === 'all' || globalSearchCategory === 'schedules') {
+            schedules.forEach(sc => {
+                const studentMatch = (sc.studentName && sc.studentName.toLowerCase().includes(q));
+                const tutorMatch = (sc.tutorName && sc.tutorName.toLowerCase().includes(q));
+                const dayMatch = (sc.dayOfWeek && sc.dayOfWeek.toLowerCase().includes(q));
+                if (studentMatch || tutorMatch || dayMatch) {
+                    results.push({
+                        type: 'Schedule',
+                        category: 'schedules',
+                        title: `${sc.studentName || 'Student'} with ${sc.tutorName || 'Tutor'}`,
+                        subtitle: `${sc.dayOfWeek || 'Date'} at ${sc.time || 'Time'} | ${sc.course || 'Coding'} | Link: ${sc.meetingLink ? 'Configured' : 'Missing'}`,
+                        badgeClass: 'bg-amber-100 text-amber-700',
+                        action: () => { closeGlobalSearchModal(); navigateToSection('schedules'); }
+                    });
+                }
+            });
+        }
+
+        // Match Bookings
+        if (globalSearchCategory === 'all' || globalSearchCategory === 'bookings') {
+            bookings.forEach(b => {
+                if ((b.childName && b.childName.toLowerCase().includes(q)) || (b.parentName && b.parentName.toLowerCase().includes(q)) || (b.email && b.email.toLowerCase().includes(q)) || (b.country && b.country.toLowerCase().includes(q))) {
+                    results.push({
+                        type: 'Booking Lead',
+                        category: 'bookings',
+                        title: `${b.childName || 'Lead'} (${b.parentName || 'Parent'})`,
+                        subtitle: `${b.email || '—'} | Location: ${b.country || 'Global'} | Source: ${b.source || 'Website'} | Stage: ${b.status || 'New'}`,
+                        badgeClass: 'bg-indigo-100 text-indigo-700',
+                        action: () => { closeGlobalSearchModal(); navigateToSection('schedule-wf'); }
+                    });
+                }
+            });
+        }
+
+        // Match Email Queue
+        if (globalSearchCategory === 'all' || globalSearchCategory === 'queue') {
+            queue.forEach(item => {
+                if ((item.recipientName && item.recipientName.toLowerCase().includes(q)) || (item.to && item.to.toLowerCase().includes(q)) || (item.subject && item.subject.toLowerCase().includes(q))) {
+                    results.push({
+                        type: 'Email Draft',
+                        category: 'queue',
+                        title: `To: ${item.recipientName || item.to}`,
+                        subtitle: `Subject: ${item.subject || 'Notice'} | Type: ${item.type || 'Custom'}`,
+                        badgeClass: 'bg-rose-100 text-rose-700',
+                        action: () => { closeGlobalSearchModal(); navigateToSection('email-queue'); }
+                    });
+                }
+            });
+        }
+
+        globalSearchResults = results;
+
+        if (results.length === 0) {
+            container.innerHTML = `
+                <div class="py-12 text-center">
+                    <i data-lucide="search-x" class="w-8 h-8 text-slate-300 mx-auto mb-2"></i>
+                    <p class="text-sm font-bold text-slate-700">No matching records found</p>
+                    <p class="text-xs text-slate-400 mt-1">Try searching by student name, parent email, tutor, or schedule slot.</p>
+                </div>
+            `;
+        } else {
+            container.innerHTML = results.map((item, idx) => `
+                <div class="command-search-item p-2.5 rounded-xl hover:bg-slate-100 flex items-center justify-between gap-3 cursor-pointer transition-colors" data-index="${idx}" onclick="AdminEngine.selectGlobalSearchResult(${idx})">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${item.badgeClass}">${item.type}</span>
+                            <p class="text-sm font-bold text-slate-800 truncate">${item.title}</p>
+                        </div>
+                        <p class="text-xs text-slate-500 truncate">${item.subtitle}</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0"></i>
+                </div>
+            `).join('');
+        }
+
+        if (countEl) countEl.textContent = results.length + ' records found';
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function navigateGlobalSearchResults(direction) {
+        const items = document.querySelectorAll('.command-search-item');
+        if (!items.length) return;
+
+        items.forEach(el => el.classList.remove('bg-slate-100', 'ring-2', 'ring-blue-500'));
+        selectedSearchIndex += direction;
+        if (selectedSearchIndex >= items.length) selectedSearchIndex = 0;
+        if (selectedSearchIndex < 0) selectedSearchIndex = items.length - 1;
+
+        const activeItem = items[selectedSearchIndex];
+        if (activeItem) {
+            activeItem.classList.add('bg-slate-100', 'ring-2', 'ring-blue-500');
+            activeItem.scrollIntoView({ block: 'nearest' });
+        }
+    }
+
+    function selectHighlightedGlobalResult() {
+        if (selectedSearchIndex >= 0 && globalSearchResults[selectedSearchIndex]) {
+            selectGlobalSearchResult(selectedSearchIndex);
+        } else if (globalSearchResults.length > 0) {
+            selectGlobalSearchResult(0);
+        }
+    }
+
+    function selectGlobalSearchResult(index) {
+        const item = globalSearchResults[index];
+        if (item && typeof item.action === 'function') {
+            item.action();
+        }
+    }
+
+
+    // ── FEATURE 2: ATTENDANCE ESCALATION CENTER & WHATSAPP NUDGE ──
+    function getAttendanceEscalations() {
+        if (typeof DashboardEngine === 'undefined') return [];
+        const db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
+        const schedules = db.schedules || [];
+        const records = db.attendanceRecords || [];
+        const tutors = db.tutors || [];
+        const users = db.users || {};
+        const now = Date.now();
+
+        const escalations = [];
+
+        schedules.forEach(sc => {
+            let sessionDate = null;
+            if (sc.date) {
+                sessionDate = new Date(`${sc.date}T${sc.time || '12:00'}`);
+            } else if (sc.dayOfWeek) {
+                const daysMap = { 'sunday':0, 'monday':1, 'tuesday':2, 'wednesday':3, 'thursday':4, 'friday':5, 'saturday':6 };
+                const targetDay = daysMap[sc.dayOfWeek.toLowerCase()];
+                if (targetDay !== undefined) {
+                    const d = new Date();
+                    const currentDay = d.getDay();
+                    let diff = currentDay - targetDay;
+                    if (diff < 0) diff += 7;
+                    if (diff === 0) diff = 7;
+                    d.setDate(d.getDate() - diff);
+                    const [hh, mm] = (sc.time || '12:00').split(':');
+                    d.setHours(parseInt(hh) || 12, parseInt(mm) || 0, 0, 0);
+                    sessionDate = d;
+                }
+            }
+
+            if (sessionDate && (now - sessionDate.getTime()) > (24 * 3600 * 1000)) {
+                const dateStr = sessionDate.toISOString().substring(0, 10);
+                const hasAtt = records.some(r => {
+                    const sMatch = (r.studentId === sc.studentId || (r.studentName && sc.studentName && r.studentName.toLowerCase() === sc.studentName.toLowerCase()));
+                    const dMatch = r.classDate === dateStr || (Math.abs(new Date(r.classDate).getTime() - sessionDate.getTime()) < 36 * 3600 * 1000);
+                    return sMatch && dMatch;
+                });
+
+                if (!hasAtt) {
+                    const hoursOverdue = Math.floor((now - sessionDate.getTime()) / 3600000);
+                    const tutorUser = tutors.find(t => (t.name && sc.tutorName && t.name.toLowerCase() === sc.tutorName.toLowerCase()) || (t.email && sc.tutorEmail && t.email.toLowerCase() === sc.tutorEmail.toLowerCase())) || Object.values(users).find(u => u && u.name && sc.tutorName && u.name.toLowerCase() === sc.tutorName.toLowerCase());
+
+                    const phone = (tutorUser && tutorUser.phone) ? tutorUser.phone : '+2347052466716';
+                    const email = (tutorUser && tutorUser.email) ? tutorUser.email : (sc.tutorEmail || 'faculty@stemuluskidstech.com');
+
+                    escalations.push({
+                        id: sc.id || 'esc-' + Math.random().toString(36).substr(2, 6),
+                        studentName: sc.studentName || 'Student',
+                        studentId: sc.studentId,
+                        course: sc.course || 'Coding Track',
+                        tutorName: sc.tutorName || 'Faculty Mentor',
+                        tutorEmail: email,
+                        tutorPhone: phone,
+                        sessionDateStr: sessionDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                        rawDateStr: dateStr,
+                        time: sc.time || 'Scheduled Slot',
+                        hoursOverdue: hoursOverdue
+                    });
+                }
+            }
+        });
+
+        escalations.sort((a, b) => b.hoursOverdue - a.hoursOverdue);
+        return escalations.slice(0, 8);
+    }
+
+    function renderAttendanceEscalationCenter() {
+        const escalations = getAttendanceEscalations();
+        const dashTarget = document.getElementById('dashboard-attendance-escalation');
+        const attTarget = document.getElementById('attendance-section-escalation');
+
+        const html = escalations.length === 0 ? `
+            <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-4 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                        <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-emerald-900">Faculty Attendance Compliant</h4>
+                        <p class="text-xs text-emerald-700 mt-0.5">All scheduled sessions have submitted attendance logs within 24 hours.</p>
+                    </div>
+                </div>
+                <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full border border-emerald-300">100% Up to Date</span>
+            </div>
+        ` : `
+            <div class="bg-amber-50/90 border border-amber-300 rounded-2xl p-5 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-amber-200/80 pb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold shrink-0">
+                            <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h4 class="text-base font-bold text-amber-950">Attendance Escalation Center</h4>
+                                <span class="bg-amber-200 text-amber-900 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">${escalations.length} Overdue</span>
+                            </div>
+                            <p class="text-xs text-amber-800 mt-0.5">Classes held &gt;24 hours ago lacking submitted attendance records. Prompt tutors to submit logs.</p>
+                        </div>
+                    </div>
+                    <span class="text-xs font-bold text-amber-900 font-mono bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-300">Action Required</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="text-amber-900 font-bold border-b border-amber-200">
+                                <th class="pb-2">Student &amp; Course</th>
+                                <th class="pb-2">Faculty Tutor</th>
+                                <th class="pb-2">Session Held</th>
+                                <th class="pb-2">Overdue Time</th>
+                                <th class="pb-2 text-right">Escalation Nudge</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-amber-200/60 font-medium text-slate-800">
+                            ${escalations.map(e => {
+                                const cleanPhone = (e.tutorPhone || '').replace(/[^0-9]/g, '');
+                                const nudgeMsg = `Hello ${e.tutorName}, your STEMulus session with ${e.studentName} on ${e.sessionDateStr} (${e.time}) is pending attendance submission. Please submit your session log promptly here: https://stemuluskidstech.com/tutor-attendance-create.html`;
+                                const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(nudgeMsg)}`;
+
+                                return `
+                                    <tr class="hover:bg-amber-100/50 transition-colors">
+                                        <td class="py-2.5">
+                                            <p class="font-bold text-slate-900">${e.studentName}</p>
+                                            <p class="text-[11px] text-slate-500">${e.course}</p>
+                                        </td>
+                                        <td class="py-2.5">
+                                            <p class="font-bold text-slate-900">${e.tutorName}</p>
+                                            <p class="text-[11px] text-slate-500">${e.tutorEmail}</p>
+                                        </td>
+                                        <td class="py-2.5">
+                                            <p class="font-bold text-slate-800">${e.sessionDateStr}</p>
+                                            <p class="text-[11px] text-slate-500">${e.time}</p>
+                                        </td>
+                                        <td class="py-2.5">
+                                            <span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded text-[11px] border border-rose-200">${e.hoursOverdue}h Overdue</span>
+                                        </td>
+                                        <td class="py-2.5 text-right space-x-1.5 whitespace-nowrap">
+                                            <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-1 rounded-lg text-[11px] transition-colors shadow-sm" style="background-color:#047857!important;">
+                                                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                                                <span>WhatsApp Nudge</span>
+                                            </a>
+                                            <button type="button" onclick="AdminEngine.nudgeTutorEmail('${e.tutorEmail}', '${e.studentName}', '${e.sessionDateStr}')" class="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white font-bold px-2.5 py-1 rounded-lg text-[11px] transition-colors shadow-sm">
+                                                <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+                                                <span>Email Nudge</span>
+                                            </button>
+                                            <a href="tutor-attendance-create.html?studentId=${e.studentId || ''}&date=${e.rawDateStr || ''}" target="_blank" class="inline-flex items-center gap-1 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold px-2 py-1 rounded-lg text-[11px] transition-colors">
+                                                <span>Log on Behalf</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+
+        if (dashTarget) dashTarget.innerHTML = html;
+        if (attTarget) attTarget.innerHTML = html;
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function nudgeTutorEmail(tutorEmail, studentName, sessionDateStr) {
+        if (typeof DashboardEngine === 'undefined') return;
+        const db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
+        db.emailQueue = db.emailQueue || [];
+
+        const item = {
+            id: 'nudge-' + Date.now(),
+            to: tutorEmail,
+            recipientName: tutorEmail.split('@')[0],
+            type: 'custom',
+            subject: 'Urgent: Attendance Logging Pending for ' + studentName + ' (' + sessionDateStr + ')',
+            body: 'Dear Faculty Instructor,\n\nOur administrative records indicate that your STEMulus session with ' + studentName + ' on ' + sessionDateStr + ' has not yet had attendance logged.\n\nPrompt submission of attendance notes ensures parents receive their weekly progress updates and guarantees that your session hours are accurately audited for monthly payroll calculations.\n\nPlease log in to your faculty portal and submit your session notes here:\nhttps://stemuluskidstech.com/tutor-attendance-create.html\n\nKind regards,\nSTEMulus Academic Operations',
+            createdAt: new Date().toISOString(),
+            status: 'pending',
+            triggeredBy: 'attendance-escalation-nudge'
+        };
+
+        db.emailQueue.unshift(item);
+        DashboardEngine.saveDB(db);
+        showToast('Queued attendance reminder email to ' + tutorEmail, 'success');
+        loadEmailQueue();
+    }
+
+
+    // ── FEATURE 3: 1-CLICK BATCH SESSION APPROVAL & MONTHLY PAYROLL ──
+    function batchApproveAllPendingAttendance() {
+        if (typeof DashboardEngine === 'undefined') return;
+        const db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
+        const records = db.attendanceRecords || [];
+        const pending = records.filter(r => r.status === 'pending');
+
+        if (pending.length === 0) {
+            showToast('No pending attendance records to approve', 'info');
+            return;
+        }
+
+        const now = new Date().toISOString();
+        let approvedCount = 0;
+        records.forEach(r => {
+            if (r.status === 'pending') {
+                r.status = 'approved';
+                r.auditedAt = now;
+                r.auditedBy = (currentUser && currentUser.name) ? currentUser.name : 'Director Board';
+                approvedCount++;
+            }
+        });
+
+        DashboardEngine.saveDB(db);
+        showToast('Successfully batch approved ' + approvedCount + ' attendance sessions!', 'success');
+        renderAttendanceApprovals();
+        renderAttendanceEscalationCenter();
+        updatePendingAttendanceBadge();
+        loadDashboardData();
+    }
+
+    let currentPayrollMonth = new Date().toISOString().substring(0, 7);
+
+    function openMonthlyPayrollModal(targetMonth) {
+        const modal = document.getElementById('modal-monthly-payroll');
+        if (!modal) return;
+
+        if (targetMonth) currentPayrollMonth = targetMonth;
+        populatePayrollMonthSelect();
+        renderPayrollPeriod(currentPayrollMonth);
+        modal.classList.remove('hidden');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function populatePayrollMonthSelect() {
+        const sel = document.getElementById('payroll-month-select');
+        if (!sel) return;
+
+        const months = [];
+        const d = new Date();
+        for (let i = 0; i < 6; i++) {
+            const ym = d.toISOString().substring(0, 7);
+            const label = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            months.push({ ym, label });
+            d.setMonth(d.getMonth() - 1);
+        }
+
+        sel.innerHTML = months.map(m => `
+            <option value="${m.ym}" ${m.ym === currentPayrollMonth ? 'selected' : ''}>${m.label} (${m.ym})</option>
+        `).join('');
+    }
+
+    function renderPayrollPeriod(monthStr) {
+        currentPayrollMonth = monthStr || currentPayrollMonth;
+        const tbody = document.getElementById('payroll-table-body');
+        if (!tbody) return;
+
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : {};
+        const tutors = (db.tutors || []).concat(
+            Object.values(db.users || {}).filter(u => u && u.role === 'tutor' && !db.tutors.some(t => t.email === u.email))
+        );
+
+        let totalScheduled = 0;
+        let totalApprovedSessions = 0;
+        let totalApprovedHours = 0;
+        let totalPayoutAmount = 0;
+
+        const facultyRows = tutors.map(t => {
+            const tKey = (t.email || t.name || '').toLowerCase().trim();
+            const stats = DashboardEngine.calculateTutorMonthlyStats
+                ? DashboardEngine.calculateTutorMonthlyStats(tKey, currentPayrollMonth)
+                : { scheduledSessions: 0, attendedSessions: 0, approvedSessions: 0, approvedHours: 0, totalHours: 0, totalPayout: 0 };
+
+            const scheduled = stats.scheduledSessions || 0;
+            const approvedSessions = stats.approvedSessions || 0;
+            const approvedHours = stats.approvedHours || 0;
+            const hourlyRate = 25.00;
+            const payout = (approvedHours * hourlyRate);
+
+            totalScheduled += scheduled;
+            totalApprovedSessions += approvedSessions;
+            totalApprovedHours += approvedHours;
+            totalPayoutAmount += payout;
+
+            const assignedStudents = (typeof DashboardEngine.getStudentsByTutor === 'function') 
+                ? DashboardEngine.getStudentsByTutor(tKey).length 
+                : 0;
+
+            const isCompliant = (stats.pendingReviewSessions === 0 && approvedSessions > 0);
+            const statusBadge = isCompliant 
+                ? '<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Audited &amp; Approved</span>'
+                : (approvedSessions > 0 
+                    ? '<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Partially Approved</span>'
+                    : '<span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">No Approved Logs</span>');
+
+            return `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="p-3">
+                        <p class="font-bold text-slate-900">${t.name || 'Faculty Member'}</p>
+                        <p class="text-[11px] text-slate-400 font-mono">${t.email || '—'}</p>
+                    </td>
+                    <td class="p-3 font-semibold text-slate-700">${assignedStudents} students</td>
+                    <td class="p-3 font-semibold text-slate-700">${scheduled}</td>
+                    <td class="p-3 font-bold text-slate-900">${approvedSessions}</td>
+                    <td class="p-3 font-bold text-blue-700">${approvedHours.toFixed(1)} hrs</td>
+                    <td class="p-3 text-slate-500 font-mono">$${hourlyRate.toFixed(2)}/hr</td>
+                    <td class="p-3 font-bold text-emerald-700 font-mono text-sm">$${payout.toFixed(2)}</td>
+                    <td class="p-3">${statusBadge}</td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML = facultyRows.length ? facultyRows.join('') : '<tr><td colspan="8" class="p-8 text-center text-slate-400">No active tutors found.</td></tr>';
+
+        if (document.getElementById('payroll-kpi-scheduled')) document.getElementById('payroll-kpi-scheduled').textContent = totalScheduled;
+        if (document.getElementById('payroll-kpi-approved')) document.getElementById('payroll-kpi-approved').textContent = totalApprovedSessions;
+        if (document.getElementById('payroll-kpi-hours')) document.getElementById('payroll-kpi-hours').textContent = totalApprovedHours.toFixed(1) + ' hrs';
+        if (document.getElementById('payroll-kpi-total')) document.getElementById('payroll-kpi-total').textContent = '$' + totalPayoutAmount.toFixed(2);
+    }
+
+    function batchApproveMonthPayroll() {
+        if (typeof DashboardEngine === 'undefined') return;
+        const db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
+        const records = db.attendanceRecords || [];
+        let updated = 0;
+
+        records.forEach(r => {
+            if (r.classDate && r.classDate.startsWith(currentPayrollMonth) && r.status === 'pending') {
+                r.status = 'approved';
+                r.auditedAt = new Date().toISOString();
+                r.auditedBy = (currentUser && currentUser.name) ? currentUser.name : 'Administrative Director';
+                updated++;
+            }
+        });
+
+        DashboardEngine.saveDB(db);
+        showToast('Batch approved ' + updated + ' pending sessions for ' + currentPayrollMonth + '!', 'success');
+        renderPayrollPeriod(currentPayrollMonth);
+        renderAttendanceApprovals();
+        loadDashboardData();
+    }
+
+    function exportPayrollCSV() {
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : {};
+        const tutors = (db.tutors || []).concat(
+            Object.values(db.users || {}).filter(u => u && u.role === 'tutor' && !db.tutors.some(t => t.email === u.email))
+        );
+
+        const headers = ['Instructor Name', 'Instructor Email', 'Billing Period', 'Assigned Students', 'Scheduled Sessions', 'Approved Sessions', 'Approved Hours', 'Hourly Rate ($)', 'Total Payout ($)', 'Status'];
+        const rows = [headers];
+
+        tutors.forEach(t => {
+            const tKey = (t.email || t.name || '').toLowerCase().trim();
+            const stats = DashboardEngine.calculateTutorMonthlyStats
+                ? DashboardEngine.calculateTutorMonthlyStats(tKey, currentPayrollMonth)
+                : { scheduledSessions: 0, attendedSessions: 0, approvedSessions: 0, approvedHours: 0, totalHours: 0, totalPayout: 0 };
+
+            const scheduled = stats.scheduledSessions || 0;
+            const approvedSessions = stats.approvedSessions || 0;
+            const approvedHours = (stats.approvedHours || 0).toFixed(1);
+            const hourlyRate = (25.00).toFixed(2);
+            const payout = (parseFloat(approvedHours) * 25.00).toFixed(2);
+            const assignedStudents = (typeof DashboardEngine.getStudentsByTutor === 'function') ? DashboardEngine.getStudentsByTutor(tKey).length : 0;
+            const status = approvedSessions > 0 ? 'Approved' : 'No Approved Sessions';
+
+            rows.push([
+                `"${t.name || 'Faculty Member'}"`,
+                `"${t.email || ''}"`,
+                `"${currentPayrollMonth}"`,
+                assignedStudents,
+                scheduled,
+                approvedSessions,
+                approvedHours,
+                hourlyRate,
+                payout,
+                `"${status}"`
+            ]);
+        });
+
+        const csvContent = rows.map(r => r.join(',')).join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `stemulus-faculty-payroll-${currentPayrollMonth}.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
+        showToast('Downloaded payroll statement CSV', 'success');
+    }
+
+
+    // ── FEATURE 4: ONE-CLICK BULK EMAIL QUEUE DISPATCH ──
+    function toggleSelectAllEmailQueue(checked) {
+        const checkboxes = document.querySelectorAll('.queue-item-checkbox');
+        checkboxes.forEach(cb => { cb.checked = checked; });
+        updateQueueSelectionCount();
+    }
+
+    function updateQueueSelectionCount() {
+        const selected = document.querySelectorAll('.queue-item-checkbox:checked');
+        const badge = document.getElementById('queue-selected-count-badge');
+        const btn = document.getElementById('btn-dispatch-selected');
+        if (badge) badge.textContent = selected.length + ' selected';
+        if (btn) btn.disabled = (selected.length === 0);
+    }
+
+    function dispatchSelectedEmails() {
+        const selected = [...document.querySelectorAll('.queue-item-checkbox:checked')].map(cb => cb.value);
+        if (!selected.length) {
+            showToast('Please select at least one email to dispatch', 'warning');
+            return;
+        }
+        executeBulkQueueDispatch(selected);
+    }
+
+    function dispatchAllPendingEmails() {
+        if (typeof DashboardEngine === 'undefined') return;
+        const queue = DashboardEngine.getEmailQueue ? DashboardEngine.getEmailQueue() : [];
+        if (!queue.length) {
+            showToast('No emails pending in queue to dispatch', 'info');
+            return;
+        }
+        const allIds = queue.map(item => item.id);
+        executeBulkQueueDispatch(allIds);
+    }
+
+    function executeBulkQueueDispatch(itemIds) {
+        if (typeof DashboardEngine === 'undefined') return;
+        const db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
+        db.emailQueue = db.emailQueue || [];
+        db.emailHistory = db.emailHistory || [];
+
+        let dispatchedCount = 0;
+        const remainingQueue = [];
+
+        db.emailQueue.forEach(item => {
+            if (itemIds.includes(item.id)) {
+                item.status = 'sent';
+                item.sentAt = new Date().toISOString();
+                db.emailHistory.unshift(item);
+                dispatchedCount++;
+            } else {
+                remainingQueue.push(item);
+            }
+        });
+
+        db.emailQueue = remainingQueue;
+        DashboardEngine.saveDB(db);
+
+        showToast('Successfully dispatched ' + dispatchedCount + ' queued emails!', 'success');
+        loadEmailQueue();
+        updateQueueSelectionCount();
+    }
+
+
+    // ── FEATURE 5: ONE-CLICK TUTOR STUDENT REASSIGNMENT TOOL ──
+    function openTutorReassignModal(preselectedTutorId) {
+        const modal = document.getElementById('modal-tutor-reassign');
+        if (!modal) return;
+
+        populateReassignTutorsDropdowns(preselectedTutorId);
+        modal.classList.remove('hidden');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function populateReassignTutorsDropdowns(preselectedTutorId) {
+        const sourceSel = document.getElementById('reassign-source-tutor');
+        const targetSel = document.getElementById('reassign-target-tutor');
+        if (!sourceSel || !targetSel) return;
+
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : {};
+        const tutors = db.tutors || [];
+        const students = db.students || [];
+
+        const tutorCounts = {};
+        tutors.forEach(t => {
+            const tName = (t.name || '').toLowerCase().trim();
+            const tEmail = (t.email || '').toLowerCase().trim();
+            const cnt = students.filter(s => {
+                const sName = (s.tutorName || '').toLowerCase().trim();
+                const sEmail = (s.tutorEmail || '').toLowerCase().trim();
+                return (tName && (sName === tName || sEmail === tName)) ||
+                       (tEmail && (sEmail === tEmail || sName === tEmail)) ||
+                       (s.tutorId && s.tutorId === t.id);
+            }).length;
+            tutorCounts[t.id] = cnt;
+        });
+
+        sourceSel.innerHTML = '<option value="">-- Choose Current Tutor --</option>' + tutors.map(t => {
+            const cnt = tutorCounts[t.id] || 0;
+            const isSelected = preselectedTutorId && (t.id === preselectedTutorId || (t.email && t.email.toLowerCase() === preselectedTutorId.toLowerCase()) || (t.name && t.name.toLowerCase() === preselectedTutorId.toLowerCase()));
+            return `<option value="${t.id}" data-email="${t.email}" data-name="${t.name}" ${isSelected ? 'selected' : ''}>${t.name} (${t.email}) - ${cnt} students</option>`;
+        }).join('');
+
+        targetSel.innerHTML = '<option value="">-- Choose New Target Tutor --</option>' + tutors.map(t => `
+            <option value="${t.id}" data-email="${t.email}" data-name="${t.name}">${t.name} (${t.email}) - ${t.specialty || 'General'}</option>
+        `).join('');
+
+        if (sourceSel.value) {
+            onReassignSourceTutorChange(sourceSel.value);
+        } else {
+            const list = document.getElementById('reassign-students-list');
+            if (list) list.innerHTML = '<p class="text-slate-400 text-center py-4">Select a source tutor above to list assigned students.</p>';
+        }
+    }
+
+    function onReassignSourceTutorChange(sourceTutorId) {
+        const list = document.getElementById('reassign-students-list');
+        const targetSel = document.getElementById('reassign-target-tutor');
+        const countNote = document.getElementById('reassign-students-count-note');
+        if (!list) return;
+
+        if (!sourceTutorId) {
+            list.innerHTML = '<p class="text-slate-400 text-center py-4">Select a source tutor above to list assigned students.</p>';
+            if (countNote) countNote.textContent = '0 students selected';
+            return;
+        }
+
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : {};
+        const sourceTutor = (db.tutors || []).find(t => t.id === sourceTutorId);
+        if (!sourceTutor) return;
+
+        const sourceName = (sourceTutor.name || '').toLowerCase().trim();
+        const sourceEmail = (sourceTutor.email || '').toLowerCase().trim();
+        const students = (db.students || []).filter(s => {
+            const sName = (s.tutorName || '').toLowerCase().trim();
+            const sEmail = (s.tutorEmail || '').toLowerCase().trim();
+            const nameMatch = sourceName && (sName === sourceName || sEmail === sourceName);
+            const emailMatch = sourceEmail && (sEmail === sourceEmail || sName === sourceEmail);
+            const idMatch = s.tutorId && s.tutorId === sourceTutorId;
+            return nameMatch || emailMatch || idMatch;
+        });
+
+        if (students.length === 0) {
+            list.innerHTML = '<p class="text-amber-700 text-center py-4 font-medium">No students currently assigned to ' + sourceTutor.name + '.</p>';
+            if (countNote) countNote.textContent = '0 students selected';
+            return;
+        }
+
+        list.innerHTML = students.map(s => `
+            <label class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" name="reassign_student" value="${s.id}" checked onchange="AdminEngine.updateReassignCount()" class="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500">
+                    <div>
+                        <span class="font-bold text-slate-800 text-xs">${s.firstName || ''} ${s.lastName || ''}</span>
+                        <span class="text-[11px] text-slate-500 ml-1">(${s.program || 'Track'}, Age ${s.age || '—'})</span>
+                    </div>
+                </div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${s.status === 'active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}">${s.status || 'active'}</span>
+            </label>
+        `).join('');
+
+        updateReassignCount();
+
+        if (targetSel) {
+            [...targetSel.options].forEach(opt => {
+                opt.disabled = (opt.value === sourceTutorId);
+            });
+        }
+    }
+
+    function toggleSelectAllReassignStudents() {
+        const cbs = document.querySelectorAll('input[name="reassign_student"]');
+        if (!cbs.length) return;
+        const allChecked = [...cbs].every(cb => cb.checked);
+        cbs.forEach(cb => { cb.checked = !allChecked; });
+        const btn = document.getElementById('reassign-toggle-all-btn');
+        if (btn) btn.textContent = allChecked ? 'Select All' : 'Deselect All';
+        updateReassignCount();
+    }
+
+    function updateReassignCount() {
+        const cbs = document.querySelectorAll('input[name="reassign_student"]:checked');
+        const countNote = document.getElementById('reassign-students-count-note');
+        if (countNote) countNote.textContent = cbs.length + ' students selected';
+    }
+
+    function submitTutorReassignment(e) {
+        if (e && e.preventDefault) e.preventDefault();
+
+        const sourceSel = document.getElementById('reassign-source-tutor');
+        const targetSel = document.getElementById('reassign-target-tutor');
+        const optSchedules = document.getElementById('reassign-opt-schedules');
+        const optNotify = document.getElementById('reassign-opt-notify');
+
+        const sourceTutorId = sourceSel ? sourceSel.value : '';
+        const targetTutorId = targetSel ? targetSel.value : '';
+
+        if (!sourceTutorId || !targetTutorId) {
+            showToast('Please select both source and target tutors', 'warning');
+            return;
+        }
+
+        if (sourceTutorId === targetTutorId) {
+            showToast('Target tutor must be different from source tutor', 'warning');
+            return;
+        }
+
+        const selectedStudentIds = [...document.querySelectorAll('input[name="reassign_student"]:checked')].map(cb => cb.value);
+        if (!selectedStudentIds.length) {
+            showToast('Please select at least one student to transfer', 'warning');
+            return;
+        }
+
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : {};
+        const sourceTutor = (db.tutors || []).find(t => t.id === sourceTutorId);
+        const targetTutor = (db.tutors || []).find(t => t.id === targetTutorId);
+
+        if (!targetTutor) {
+            showToast('Target tutor record not found', 'warning');
+            return;
+        }
+
+        let reassignedStudentsCount = 0;
+        let reassignedSchedulesCount = 0;
+
+        (db.students || []).forEach(s => {
+            if (selectedStudentIds.includes(s.id)) {
+                s.tutorId = targetTutor.id;
+                s.tutorName = targetTutor.name;
+                s.tutorEmail = targetTutor.email;
+                reassignedStudentsCount++;
+
+                if (optNotify && optNotify.checked && s.parentEmail) {
+                    db.emailQueue = db.emailQueue || [];
+                    db.emailQueue.unshift({
+                        id: 'transition-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+                        to: s.parentEmail,
+                        recipientName: s.parentName || 'Parent',
+                        type: 'custom',
+                        subject: 'Instructor Transition Update: ' + s.firstName + ' has been assigned to ' + targetTutor.name,
+                        body: 'Dear ' + (s.parentName || 'Parent') + ',\n\nWe are writing to inform you that your child, ' + s.firstName + ' ' + (s.lastName || '') + ', will now be guided by ' + targetTutor.name + ' (' + (targetTutor.specialty || 'Coding Instructor') + ') for upcoming sessions.\n\nAll existing learning milestones and curriculum progress in ' + (s.program || 'their coding track') + ' remain seamlessly preserved.\n\nYou can view upcoming classes and progress at any time in your Parent Dashboard:\nhttps://stemuluskidstech.com/parent-dashboard.html\n\nWarm regards,\nSTEMulus Academic Operations',
+                        createdAt: new Date().toISOString(),
+                        status: 'pending',
+                        triggeredBy: 'tutor-reassignment'
+                    });
+                }
+            }
+        });
+
+        if (optSchedules && optSchedules.checked && db.schedules) {
+            db.schedules.forEach(sc => {
+                if (selectedStudentIds.includes(sc.studentId) || (sc.studentName && selectedStudentIds.some(sid => {
+                    const matched = (db.students || []).find(st => st.id === sid);
+                    return matched && `${matched.firstName} ${matched.lastName}`.trim().toLowerCase() === sc.studentName.toLowerCase();
+                }))) {
+                    sc.tutorId = targetTutor.id;
+                    sc.tutorName = targetTutor.name;
+                    sc.tutorEmail = targetTutor.email;
+                    sc.mentor = targetTutor.name;
+                    reassignedSchedulesCount++;
+                }
+            });
+        }
+
+        DashboardEngine.saveDB(db);
+        showToast('Successfully transferred ' + reassignedStudentsCount + ' students and ' + reassignedSchedulesCount + ' schedule slots to ' + targetTutor.name + '!', 'success');
+
+        closeModal('modal-tutor-reassign');
+        loadStudents();
+        loadTutors();
+        renderTutorsTable();
+        loadEmailQueue();
+        renderAttendanceEscalationCenter();
+        if (typeof renderSchedulesCalendar === 'function') renderSchedulesCalendar();
+    }
+
+
 return {
     init,
     navigateToSection,
@@ -4101,7 +5055,40 @@ return {
     switchQuickOnboardTab,
     submitQuickOnboardStudent,
     submitQuickOnboardTutor,
-    copyQuickOnboardCredentials
+    copyQuickOnboardCredentials,
+
+    // Global Command Palette (Ctrl + K)
+    initGlobalSearch,
+    openGlobalSearchModal,
+    closeGlobalSearchModal,
+    setGlobalSearchCategory,
+    handleGlobalSearchInput,
+    selectGlobalSearchResult,
+
+    // Attendance Escalation Center
+    getAttendanceEscalations,
+    renderAttendanceEscalationCenter,
+    nudgeTutorEmail,
+
+    // 1-Click Batch Session Approval & Monthly Payroll
+    batchApproveAllPendingAttendance,
+    openMonthlyPayrollModal,
+    renderPayrollPeriod,
+    batchApproveMonthPayroll,
+    exportPayrollCSV,
+
+    // Bulk Email Queue Dispatch
+    toggleSelectAllEmailQueue,
+    updateQueueSelectionCount,
+    dispatchSelectedEmails,
+    dispatchAllPendingEmails,
+
+    // One-Click Tutor Student Reassignment
+    openTutorReassignModal,
+    onReassignSourceTutorChange,
+    toggleSelectAllReassignStudents,
+    updateReassignCount,
+    submitTutorReassignment
 };
 }) ();
 

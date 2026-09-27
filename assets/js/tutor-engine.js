@@ -120,9 +120,79 @@ const TutorEngine = (function() {
         // Load content
         renderOverdueAttendanceAlert();
         renderStats();
+        renderAssignedStudents();
         renderSchedule();
         renderNotifications();
         injectReportModal();
+    }
+
+    function renderAssignedStudents() {
+        if (!currentTutor) return;
+        const container = document.getElementById('assigned-students-list');
+        if (!container) return;
+
+        const students = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(currentTutor.email) : [];
+
+        if (students.length === 0) {
+            container.innerHTML = `
+                <div class="p-6 text-center text-slate-500 bg-slate-50/50 rounded-2xl border border-slate-100 m-3">
+                    <p class="font-bold text-sm text-slate-700">No students assigned to your roster yet</p>
+                    <p class="text-xs text-slate-400 mt-1">Once the administrator assigns students to you in the Students or Tutors Directory, they will appear here with direct session logging.</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = students.map(s => {
+            const fullName = (s.firstName && s.lastName) ? `${s.firstName} ${s.lastName}` : (s.firstName || s.name || 'Student');
+            const track = s.program || 'STEM Coding Track';
+            const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+
+            var badgeHtml = '';
+            if (typeof BadgePassportEngine !== 'undefined') {
+                var pass = BadgePassportEngine.getStudentPassport(s.id);
+                if (pass && pass.currentBadge) {
+                    var cb = pass.currentBadge;
+                    var eraCol = (pass.currentEra && pass.currentEra.color) || '#f97316';
+                    badgeHtml = `<button type="button" onclick="BadgePassportEngine.openBadgeModal(${cb.id || 1}, ${s.age || 10})" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold transition-all hover:brightness-105 cursor-pointer" style="background:${eraCol}15;color:${eraCol};border:1px solid ${eraCol}35;" title="View ${cb.title} (Month ${pass.unlockedCount})">
+                        <img src="${cb.image}" alt="" class="w-3.5 h-3.5 object-contain">
+                        <span>Month ${pass.unlockedCount}: ${cb.title}</span>
+                    </button>`;
+                }
+            }
+
+            return `
+                <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/70 transition-colors border-b border-gray-100 last:border-0">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center font-extrabold text-sm shrink-0 shadow-sm">
+                            ${initials}
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="font-bold text-slate-900 text-sm leading-tight">${fullName}</h3>
+                                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Active</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 mt-1">
+                                <span class="font-semibold text-indigo-600">${track}</span>
+                                ${s.age ? `<span>•</span><span>Age ${s.age}</span>` : ''}
+                                ${badgeHtml ? `<span>•</span>${badgeHtml}` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+                        <a href="tutor-attendance-create.html?studentId=${s.id}&course=${encodeURIComponent(track)}"
+                           class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-md inline-flex items-center gap-1.5 no-underline">
+                            <i data-lucide="clipboard-check" style="width:14px;height:14px;"></i> + Log Attendance
+                        </a>
+                        <a href="tutor-students.html" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors" title="View Student Profile">
+                            <i data-lucide="chevron-right" style="width:18px;height:18px;"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        if (window.lucide) lucide.createIcons();
     }
 
     function renderStats() {
@@ -232,13 +302,33 @@ const TutorEngine = (function() {
 
             const isToday = s.date === new Date().toISOString().split('T')[0];
 
-            const attendanceBadge = s.attendanceStatus === 'pending'
-                ? `<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">${isToday ? 'Today • Scheduled' : 'Scheduled'}</span>`
-                : (s.attendanceStatus === 'present'
-                    ? `<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Present</span>`
-                    : `<span class="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Absent</span>`);
+            const isDone = s.attendanceStatus === 'done' || s.status === 'done';
+            const isPresent = s.attendanceStatus === 'present';
+            const isAbsent = s.attendanceStatus === 'absent';
+            const isPending = s.attendanceStatus === 'pending';
 
-            const actionBtn = s.attendanceStatus === 'pending'
+            const dbData = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : {};
+            const logsList = dbData.attendanceRecords || [];
+            const hasAttendedLog = logsList.some(function(l) {
+                return (l.scheduleId && s.id && l.scheduleId === s.id) ||
+                       (l.classDate && s.date && l.classDate === s.date && (
+                           (l.studentId && s.studentId && l.studentId === s.studentId) ||
+                           (l.studentName && s.studentName && l.studentName.toLowerCase().trim() === s.studentName.toLowerCase().trim())
+                       ));
+            });
+
+            let attendanceBadge = '';
+            if (isPresent || (isDone && hasAttendedLog)) {
+                attendanceBadge = '<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Held • Done</span>';
+            } else if (isDone && !hasAttendedLog) {
+                attendanceBadge = '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Held • Needs Log</span>';
+            } else if (isAbsent) {
+                attendanceBadge = '<span class="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Absent</span>';
+            } else {
+                attendanceBadge = `<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">${isToday ? 'Today • Scheduled' : 'Scheduled'}</span>`;
+            }
+
+            const actionBtn = (!hasAttendedLog)
                 ? `<a href="tutor-attendance-create.html?scheduleId=${s.id}&studentId=${s.studentId || ''}&date=${s.date || ''}&course=${encodeURIComponent(s.course || '')}"
                         class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition-all shadow-md inline-flex items-center gap-1.5 no-underline">
                         <i data-lucide="clipboard-check" style="width:14px;height:14px;"></i> Log Class & Attendance
@@ -294,8 +384,8 @@ const TutorEngine = (function() {
         bannerContainer.innerHTML = `
             <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 sm:p-5 mb-6 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-fadeIn">
                 <div class="flex items-start gap-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 font-black text-lg">
-                        ⚠️
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-700"></i>
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
@@ -652,6 +742,7 @@ const TutorEngine = (function() {
     return {
         init,
         renderDashboard,
+        renderAssignedStudents,
         openReportModal,
         closeReportModal,
         openProfileModal,

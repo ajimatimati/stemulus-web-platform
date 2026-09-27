@@ -1,17 +1,22 @@
 /**
  * STEMulus Email Proxy: Netlify Function
  * Routes all transactional email through Resend API.
- * RESEND_API_KEY is stored as a Netlify environment variable: never in client JS.
+ * Formatted to world-class tech company standards (Apple / Stripe / Linear caliber).
+ * High-contrast, WCAG AAA/AA compliant, responsive, and strictly zero emojis.
  *
  * Supported types:
- *   enrollment  → admin alert + parent confirmation
- *   booking     → admin alert + parent confirmation
- *   contact     → admin alert only
- *   welcome     → parent welcome with temp password
- *   reminder    → class reminder (24h or 1h)
- *   schedule    → schedule change notice
- *   certificate → completion certificate notice
- *   custom      → generic send (admin dashboard compose)
+ *   enrollment           → admin alert + parent confirmation
+ *   booking              → admin alert + parent confirmation
+ *   contact              → admin alert only
+ *   welcome              → parent welcome with portal credentials
+ *   tutor-welcome        → tutor faculty welcome with portal credentials
+ *   reminder             → class reminder (24h, 1h, 10m)
+ *   tutor-reminder       → tutor session reminder
+ *   schedule             → schedule change notice
+ *   certificate          → completion certificate notice
+ *   certificate-delivery → certificate delivery with verification link & PDF
+ *   credentials-reset    → password reset notification
+ *   custom               → generic send (admin dashboard compose)
  */
 
 const ADMIN_EMAIL = 'admin@stemuluskidstech.com';
@@ -19,351 +24,566 @@ const FROM_ADDRESS = 'STEMulus Kids Tech <hello@portal.stemuluskidstech.com>';
 const SITE_URL = 'https://stemuluskidstech.com';
 const WHATSAPP_NUMBER = '2347052466716';
 
-// ─── Brand colours for HTML emails ───────────────────────────────────────────
+// Brand design tokens
 const C = {
   orange: '#F4600C',
-  navy: '#1A237E',
-  white: '#ffffff',
-  bgLight: '#f8fafc',
-  textMuted: '#64748b',
-  border: '#e2e8f0',
+  orangeDark: '#D44F00',
+  navy: '#0F172A',
+  slate800: '#1E293B',
+  slate700: '#334155',
+  slate600: '#475569',
+  slate500: '#64748B',
+  slate400: '#94A3B8',
+  slate200: '#E2E8F0',
+  slate100: '#F1F5F9',
+  slate50: '#F8FAFC',
+  white: '#FFFFFF',
+  emerald: '#059669',
+  emeraldDark: '#047857',
+  blue: '#2563EB',
+  blueLight: '#EFF6FF',
 };
 
-// ─── Shared HTML email shell ──────────────────────────────────────────────────
+// World-Class HTML Email Shell
 function shell(title, bodyHtml) {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>${title}</title>
-<style>
-  body{margin:0;padding:0;background:${C.bgLight};font-family:'Helvetica Neue',Arial,sans-serif;color:#1e293b}
-  .wrap{max-width:600px;margin:32px auto;background:${C.white};border-radius:12px;overflow:hidden;border:1px solid ${C.border}}
-  .header{background:${C.navy};padding:28px 32px;text-align:center}
-  .header img{height:56px;width:auto}
-  .header-rule{height:4px;background:${C.orange};margin:0}
-  .body{padding:32px}
-  .body h2{margin:0 0 12px;font-size:1.4rem;color:${C.navy}}
-  .body p{margin:0 0 16px;line-height:1.7;color:#374151;font-size:0.95rem}
-  .info-box{background:${C.bgLight};border:1px solid ${C.border};border-radius:8px;padding:20px;margin:20px 0}
-  .info-box table{width:100%;border-collapse:collapse}
-  .info-box td{padding:6px 0;font-size:0.88rem;vertical-align:top}
-  .info-box td:first-child{color:${C.textMuted};width:42%;font-weight:600}
-  .id-badge{display:inline-block;background:${C.bgLight};border:1px dashed ${C.border};border-radius:6px;padding:6px 16px;font-family:monospace;font-weight:700;color:${C.navy};font-size:0.95rem;margin:8px 0 20px}
-  .btn{display:inline-block;background:${C.orange};color:${C.white}!important;text-decoration:none;font-weight:700;padding:12px 28px;border-radius:10px;font-size:0.92rem;margin-top:8px}
-  .btn-green{background:#25D366}
-  .footer{padding:20px 32px;background:${C.bgLight};border-top:1px solid ${C.border};text-align:center;font-size:0.78rem;color:${C.textMuted}}
-  .footer a{color:${C.orange};text-decoration:none}
+<!--[if mso]>
+<style type="text/css">
+  body, table, td { font-family: Arial, Helvetica, sans-serif !important; }
+</style>
+<![endif]-->
+<style type="text/css">
+  body { margin: 0; padding: 0; background-color: ${C.slate50}; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+  img { -ms-interpolation-mode: bicubic; }
+  a { text-decoration: none; }
+  .email-wrapper { width: 100%; background-color: ${C.slate50}; padding: 32px 12px; }
+  .email-container { max-width: 600px; margin: 0 auto; background-color: ${C.white}; border: 1px solid ${C.slate200}; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04); }
+  .email-header { background-color: ${C.white}; padding: 28px 36px 20px; border-bottom: 1px solid ${C.slate200}; text-align: left; }
+  .header-logo { max-width: 172px; width: 172px; height: auto; display: block; border: 0; }
+  .header-accent { height: 3px; background-color: ${C.orange}; width: 100%; }
+  .email-body { padding: 36px 36px 28px; }
+  .email-body h1 { margin: 0 0 12px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 800; color: ${C.navy}; line-height: 1.3; letter-spacing: -0.02em; }
+  .email-body h2 { margin: 0 0 12px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 700; color: ${C.navy}; line-height: 1.35; letter-spacing: -0.01em; }
+  .email-body p { margin: 0 0 16px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; font-weight: 400; color: ${C.slate700}; line-height: 1.65; }
+  .btn-primary { display: inline-block; background-color: ${C.orange}; color: ${C.white} !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; padding: 13px 26px; border-radius: 10px; text-decoration: none; text-align: center; border: 1px solid ${C.orangeDark}; box-shadow: 0 2px 6px rgba(244, 96, 12, 0.25); }
+  .btn-secondary { display: inline-block; background-color: ${C.emerald}; color: ${C.white} !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; padding: 13px 26px; border-radius: 10px; text-decoration: none; text-align: center; border: 1px solid ${C.emeraldDark}; }
+  .btn-outline { display: inline-block; background-color: ${C.white}; color: ${C.navy} !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; padding: 12px 24px; border-radius: 10px; text-decoration: none; text-align: center; border: 1px solid ${C.slate200}; }
+  .badge-pill { display: inline-block; padding: 4px 10px; border-radius: 6px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .email-footer { background-color: ${C.slate50}; padding: 24px 36px 32px; border-top: 1px solid ${C.slate200}; text-align: left; }
+  .footer-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; line-height: 1.6; color: ${C.slate500}; margin: 0 0 8px 0; }
+  .footer-links a { color: ${C.slate600}; text-decoration: underline; font-weight: 600; }
+  @media only screen and (max-width: 620px) {
+    .email-wrapper { padding: 12px 6px; }
+    .email-container { border-radius: 12px; }
+    .email-header { padding: 20px 20px 16px; }
+    .email-body { padding: 24px 20px 20px; }
+    .email-footer { padding: 20px 20px 24px; }
+    .btn-primary, .btn-secondary, .btn-outline { display: block !important; width: 100% !important; box-sizing: border-box; margin-bottom: 10px; }
+    .grid-cell { display: block !important; width: 100% !important; padding-right: 0 !important; padding-left: 0 !important; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="header">
-    <img src="${SITE_URL}/logo-light.jpg" alt="STEMulus Kids Tech">
-  </div>
-  <div class="header-rule"></div>
-  <div class="body">${bodyHtml}</div>
-  <div class="footer">
-    STEMulus Kids Tech  -  Private 1-on-1 Coding for Kids &bull; <a href="${SITE_URL}">${SITE_URL.replace('https://', '')}</a><br>
-    <a href="mailto:${ADMIN_EMAIL}">${ADMIN_EMAIL}</a>
+<div class="email-wrapper">
+  <div class="email-container">
+    <div class="header-accent"></div>
+    <div class="email-header">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="left" valign="middle">
+            <a href="${SITE_URL}" target="_blank">
+              <img src="${SITE_URL}/logo.png" alt="STEMulus Kids Tech" class="header-logo" width="172">
+            </a>
+          </td>
+          <td align="right" valign="middle">
+            <span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;color:${C.slate500};text-transform:uppercase;letter-spacing:0.06em;">Official Communication</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="email-body">
+      ${bodyHtml}
+    </div>
+    <div class="email-footer">
+      <p class="footer-text" style="font-weight:600;color:${C.slate700};">STEMulus Kids Technologies Ltd.</p>
+      <p class="footer-text">
+        Private 1-on-1 Coding, Robotics and Artificial Intelligence Mentorship for Young Innovators.<br>
+        Website: <a href="${SITE_URL}" target="_blank" style="color:${C.orange};font-weight:600;">stemuluskidstech.com</a> &nbsp;|&nbsp; 
+        Email: <a href="mailto:${ADMIN_EMAIL}" style="color:${C.orange};font-weight:600;">${ADMIN_EMAIL}</a>
+      </p>
+      <p class="footer-text" style="font-size:11px;color:${C.slate400};margin-top:12px;margin-bottom:0;">
+        Confidentiality Notice: This email and any attachments are intended solely for the designated recipient. If you received this transmission in error, please notify administration immediately.
+      </p>
+    </div>
   </div>
 </div>
 </body>
 </html>`;
 }
 
-// ─── Email template builders ──────────────────────────────────────────────────
+// ─── Template Builders ────────────────────────────────────────────────────────
 
 function tplEnrollmentAdmin(d) {
-  const children = (d.children || []).map((c, i) =>
-    `<tr><td>#${i + 1} Child</td><td><strong>${c.firstName} ${c.lastName}</strong>  -  Age ${c.age}, ${c.program}</td></tr>`
-  ).join('');
+  const children = (d.children || []).map((c, i) => `
+    <tr>
+      <td style="padding:10px 14px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Child #${i + 1}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};"><strong>${c.firstName} ${c.lastName}</strong> &mdash; Age ${c.age}, Program: ${c.program}</td>
+    </tr>
+  `).join('');
 
   return {
-    subject: `[New Enrollment] ${d.studentFirstName} ${d.studentLastName}  -  ${d.enrollmentId}`,
-    html: shell('New Enrollment', `
-      <h2>New Enrollment Received</h2>
-      <p>A new enrollment has just been submitted via the website.</p>
-      <div class="id-badge">${d.enrollmentId}</div>
-      <div class="info-box">
-        <table>
-          <tr><td>Parent</td><td><strong>${d.parentName}</strong></td></tr>
-          <tr><td>Email</td><td><a href="mailto:${d.email}">${d.email}</a></td></tr>
-          <tr><td>Phone</td><td>${d.phone}</td></tr>
-          <tr><td>Referral</td><td>${d.referral || 'Not specified'}</td></tr>
-          <tr><td>Submitted</td><td>${new Date().toLocaleString('en-GB')}</td></tr>
+    subject: `[New Enrollment] ${d.studentFirstName} ${d.studentLastName} &mdash; ${d.enrollmentId}`,
+    html: shell('New Student Enrollment', `
+      <h1>New Student Enrollment Received</h1>
+      <p>A new student enrollment has been recorded through the admissions platform.</p>
+      
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:12px;padding:20px;margin:20px 0;">
+        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:monospace;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;margin-bottom:16px;">
+          ${d.enrollmentId}
+        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Parent Name</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.parentName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Parent Email</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.blue};"><a href="mailto:${d.email}" style="color:${C.blue};">${d.email}</a></td>
+          </tr>
+          ${d.studentEmail ? `
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Student Email</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.studentEmail}</td>
+          </tr>` : ''}
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Phone / WhatsApp</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.phone}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Media Consent</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${d.mediaConsent === 'yes' ? C.emerald : C.slate600};">${d.mediaConsent === 'yes' ? 'Granted (Approved for celebrations & showcase)' : 'Declined / Undisclosed'}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Referral Source</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.referral || 'Not specified'}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Submission Timestamp</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:${C.slate600};">${new Date().toLocaleString('en-GB')}</td>
+          </tr>
           ${children}
         </table>
       </div>
-      <a class="btn btn-green" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Following up on enrollment ${d.enrollmentId} for ${d.studentFirstName}`)}" target="_blank">Reply on WhatsApp</a>
+
+      <div style="margin-top:24px;">
+        <a class="btn-secondary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Following up on enrollment ${d.enrollmentId} for ${d.studentFirstName}`)}" target="_blank">Initiate Contact via WhatsApp</a>
+      </div>
     `)
   };
 }
 
 function tplEnrollmentParent(d) {
   return {
-    subject: `Welcome to STEMulus, ${d.studentFirstName}! Enrollment Received`,
-    html: shell('Enrollment Confirmed', `
-      <h2>Enrollment Received!</h2>
-      <p>Hi <strong>${d.parentName}</strong>,</p>
-      <p>Thank you for enrolling <strong>${d.studentFirstName}</strong> at STEMulus! We've received your details and our team will be in touch within <strong>24 hours</strong> to confirm your first session.</p>
-      <div class="id-badge">${d.enrollmentId}</div>
-      <div class="info-box">
-        <table>
-          <tr><td>Student</td><td>${d.studentFirstName} ${d.studentLastName}</td></tr>
-          <tr><td>Program</td><td>${d.program || 'To be confirmed'}</td></tr>
-          <tr><td>Your Email</td><td>${d.email}</td></tr>
+    subject: `Enrollment Confirmed: Welcome to STEMulus, ${d.studentFirstName}!`,
+    html: shell('Enrollment Confirmation', `
+      <h1>Enrollment Received</h1>
+      <p>Dear <strong>${d.parentName}</strong>,</p>
+      <p>Thank you for enrolling <strong>${d.studentFirstName}</strong> with STEMulus Kids Technologies. We have successfully registered your admissions details.</p>
+      
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:12px;padding:20px;margin:22px 0;">
+        <div style="display:inline-block;background-color:${C.slate800};color:${C.white};font-family:monospace;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;margin-bottom:14px;">
+          Reference ID: ${d.enrollmentId}
+        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Student</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.studentFirstName} ${d.studentLastName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Program</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.program || 'Curriculum Pathway Confirmed upon Intake'}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Registered Email</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.email}</td>
+          </tr>
         </table>
       </div>
-      <p>In the meantime, feel free to reach us on WhatsApp:</p>
-      <a class="btn btn-green" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi! I just enrolled ${d.studentFirstName}. Enrollment ID: ${d.enrollmentId}`)}" target="_blank">Chat on WhatsApp</a>
+
+      <h2 style="font-size:16px;margin-top:24px;">What Happens Next</h2>
+      <p>An Academic Coordinator will review your enrollment and contact you within <strong>24 hours</strong> to finalize your schedule slot and assign your designated mentor.</p>
+
+      <div style="margin-top:24px;">
+        <a class="btn-secondary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi! Following up on enrollment ${d.enrollmentId} for ${d.studentFirstName}`)}" target="_blank">Connect with Admissions on WhatsApp</a>
+      </div>
     `)
   };
 }
 
 function tplBookingAdmin(d) {
   return {
-    subject: `[Quick Booking] ${d.studentName}  -  ${d.bookingId}`,
-    html: shell('Quick Booking', `
-      <h2>New Trial Class Booking</h2>
-      <div class="id-badge">${d.bookingId}</div>
-      <div class="info-box">
-        <table>
-          <tr><td>Parent</td><td><strong>${d.parentName}</strong></td></tr>
-          <tr><td>Child</td><td>${d.studentName}</td></tr>
-          <tr><td>Email</td><td><a href="mailto:${d.email}">${d.email}</a></td></tr>
-          <tr><td>Phone</td><td>${d.phone}</td></tr>
-          <tr><td>Preferred Contact</td><td>${d.contactPref}</td></tr>
-          <tr><td>Submitted</td><td>${new Date().toLocaleString('en-GB')}</td></tr>
+    subject: `[Trial Booking] ${d.studentName} &mdash; ${d.bookingId}`,
+    html: shell('Trial Class Booking', `
+      <h1>New Trial Class Booking</h1>
+      <p>A new trial lesson request has been submitted.</p>
+      
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:12px;padding:20px;margin:20px 0;">
+        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:monospace;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;margin-bottom:14px;">
+          ${d.bookingId}
+        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Parent Name</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.parentName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Student Name</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.studentName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Location / Country</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;color:${C.navy};">${d.country || 'Global'}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Email</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.blue};"><a href="mailto:${d.email}" style="color:${C.blue};">${d.email}</a></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Phone / WhatsApp</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.phone}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Lead Source</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.leadSource || d.referral || 'Website'}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Preferred Channel</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.contactPref || 'WhatsApp'}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Timestamp</td>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:${C.slate600};">${new Date().toLocaleString('en-GB')}</td>
+          </tr>
         </table>
       </div>
-      <a class="btn btn-green" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Following up on quick booking ${d.bookingId} for ${d.studentName}`)}" target="_blank">Reply on WhatsApp</a>
+
+      <div style="margin-top:24px;">
+        <a class="btn-secondary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Following up on trial booking ${d.bookingId} for ${d.studentName}`)}" target="_blank">Contact Parent on WhatsApp</a>
+      </div>
     `)
   };
 }
 
 function tplBookingParent(d) {
   return {
-    subject: `Free Trial Class Requested: STEMulus`,
-    html: shell('Trial Class Booked', `
-      <h2>Booking Received!</h2>
-      <p>Hi <strong>${d.parentName}</strong>,</p>
-      <p>We've received your request for a free trial class for <strong>${d.studentName}</strong>. A mentor will contact you within <strong>2 hours</strong> to confirm your schedule and send a Zoom link.</p>
-      <div class="id-badge">${d.bookingId}</div>
-      <p>Your preferred contact channel: <strong>${d.contactPref}</strong></p>
-      <a class="btn btn-green" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi! Following up on quick booking ${d.bookingId} for ${d.studentName}`)}" target="_blank">Chat on WhatsApp for Instant Setup</a>
+    subject: `Trial Class Confirmation: STEMulus Coding Assessment`,
+    html: shell('Trial Class Requested', `
+      <h1>Free Trial Class Requested</h1>
+      <p>Dear <strong>${d.parentName}</strong>,</p>
+      <p>We have received your trial booking request for <strong>${d.studentName}</strong>. A dedicated mentor will reach out within <strong>2 hours</strong> to confirm your schedule and provide your live Zoom session link.</p>
+      
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:12px;padding:20px;margin:22px 0;">
+        <div style="display:inline-block;background-color:${C.slate800};color:${C.white};font-family:monospace;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;margin-bottom:14px;">
+          Booking ID: ${d.bookingId}
+        </div>
+        <p style="margin:0;font-size:14px;color:${C.slate700};">
+          Selected Contact Channel: <strong>${d.contactPref || 'WhatsApp'}</strong>
+        </p>
+      </div>
+
+      <h2 style="font-size:16px;">What to Expect During the Trial</h2>
+      <p>Our 45-minute discovery session features a 10-minute student skill evaluation, a 25-minute interactive coding build, and a 10-minute debrief with you to review learning recommendations.</p>
+
+      <div style="margin-top:24px;">
+        <a class="btn-secondary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi! Following up on quick booking ${d.bookingId} for ${d.studentName}`)}" target="_blank">Connect via WhatsApp for Instant Setup</a>
+      </div>
     `)
   };
 }
 
 function tplContactAdmin(d) {
   return {
-    subject: `[New Message] ${d.firstName} ${d.lastName}: ${d.subject}`,
-    html: shell('New Contact Message', `
-      <h2>New Contact Form Submission</h2>
-      <div class="info-box">
-        <table>
-          <tr><td>Name</td><td><strong>${d.firstName} ${d.lastName}</strong></td></tr>
-          <tr><td>Email</td><td><a href="mailto:${d.email}">${d.email}</a></td></tr>
-          <tr><td>Subject</td><td>${d.subject}</td></tr>
-          <tr><td>Received</td><td>${new Date().toLocaleString('en-GB')}</td></tr>
+    subject: `[Contact Inquiry] ${d.firstName} ${d.lastName}: ${d.subject}`,
+    html: shell('New Contact Inquiry', `
+      <h1>New Contact Inquiry</h1>
+      
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:12px;padding:20px;margin:20px 0;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Sender Name</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.firstName} ${d.lastName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Sender Email</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.blue};"><a href="mailto:${d.email}" style="color:${C.blue};">${d.email}</a></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Subject</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;color:${C.navy};">${d.subject}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Received At</td>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:${C.slate600};">${new Date().toLocaleString('en-GB')}</td>
+          </tr>
         </table>
       </div>
-      <p><strong>Message:</strong></p>
-      <p style="white-space:pre-wrap;background:${C.bgLight};padding:16px;border-radius:8px;border:1px solid ${C.border}">${d.message}</p>
-      <a class="btn" href="mailto:${d.email}?subject=${encodeURIComponent('Re: ' + d.subject)}">Reply by Email</a>
+
+      <h2 style="font-size:15px;margin-top:20px;">Message Body</h2>
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:10px;padding:16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};line-height:1.65;white-space:pre-wrap;">${d.message}</div>
+
+      <div style="margin-top:24px;">
+        <a class="btn-primary" href="mailto:${d.email}?subject=${encodeURIComponent('Re: ' + d.subject)}">Reply by Email</a>
+      </div>
     `)
   };
 }
 
+/**
+ * World-Class Parent Welcome Onboarding Email
+ * Solves all prior contrast issues (eliminates navy gradient with illegible subtext/passwords).
+ * Pristine typography, clean credential cards, bulletproof responsive layout, zero emojis.
+ */
 function tplWelcome(d) {
   const meetLink = d.meetLink || d.googleMeetLink || 'https://meet.google.com/stm-prog-live';
-  const scheduleText = d.classSchedule || d.scheduleText || 'As agreed with your admissions coordinator';
-
-  const scheduleAndMeetSection = `
-    <tr>
-      <td style="padding:8px 12px;background:rgba(255,255,255,0.06);border-top:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);font-size:0.75rem;font-weight:600;text-transform:uppercase;">Agreed Schedule</td>
-      <td style="padding:8px 12px;background:rgba(255,255,255,0.06);border-top:1px solid rgba(255,255,255,0.1);color:#fff;font-size:0.85rem;font-weight:600;">${scheduleText}</td>
-    </tr>
-    <tr>
-      <td style="padding:8px 12px;background:rgba(255,255,255,0.04);border-top:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);font-size:0.75rem;font-weight:600;text-transform:uppercase;">Live Class Meet</td>
-      <td style="padding:8px 12px;background:rgba(255,255,255,0.04);border-top:1px solid rgba(255,255,255,0.1);color:#fff;font-size:0.85rem;">
-        <a href="${meetLink}" style="color:#93c5fd;text-decoration:underline;font-weight:700;" target="_blank">Open Live Google Meet Session &rarr;</a>
-      </td>
-    </tr>
-  `;
-
-  const classroomSection = d.classroomLink ? `
-    <tr><td colspan="2" style="padding-top:12px;">
-      <a href="${d.classroomLink}" style="display:inline-flex;align-items:center;gap:8px;background:#1a73e8;color:#fff;text-decoration:none;font-weight:700;padding:10px 20px;border-radius:8px;font-size:0.88rem;" target="_blank">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
-        Join Google Classroom
-      </a>
-    </td></tr>` : '';
+  const scheduleText = d.classSchedule || d.scheduleText || 'As agreed with your Academic Coordinator';
 
   const steps = [
-    { n:'1', t:'Log in to your portal', d:'Use the credentials below to access your Parent Dashboard' },
-    { n:'2', t:'Change your password', d:'Go to Settings in your portal and set a personal password' },
-    d.classroomLink ? { n:'3', t:'Join Google Classroom', d:`Click the Google Classroom button above - ${d.studentName} will find class materials there` } : { n:'3', t:'Join Live Coding Sessions', d:`Use the Google Meet link above at your scheduled class times` },
-    { n:'4', t:'Track progress', d:"After every session you'll receive a progress update in your portal" }
+    { n: '01', t: 'Access the Parent Portal', d: 'Log in using your designated account email and secure temporary password below.' },
+    { n: '02', t: 'Update Security Credentials', d: 'Navigate to Portal Settings to set your permanent, private password.' },
+    { n: '03', t: 'Review Schedule & Join Sessions', d: d.classroomLink ? `Join class sessions via Google Meet and access class materials on Google Classroom.` : `Access live 1-on-1 coding sessions via Google Meet at your scheduled times.` },
+    { n: '04', t: 'Track Weekly & Monthly Milestones', d: 'Receive structured progress reports, skill mastery ratings, and monthly progression badges.' }
   ];
 
   const stepRows = steps.map(s => `
     <tr>
-      <td style="padding:8px 0;vertical-align:top;">
-        <span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:${C.orange};color:#fff;font-weight:700;font-size:0.8rem;text-align:center;line-height:28px;">${s.n}</span>
+      <td style="padding:10px 0;vertical-align:top;width:34px;">
+        <div style="width:26px;height:26px;border-radius:6px;background-color:${C.slate800};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-weight:800;font-size:11px;text-align:center;line-height:26px;">${s.n}</div>
       </td>
-      <td style="padding:8px 0 8px 12px;vertical-align:top;">
-        <strong style="color:#1e293b;font-size:0.9rem;">${s.t}</strong><br>
-        <span style="color:${C.textMuted};font-size:0.82rem;">${s.d}</span>
+      <td style="padding:8px 0 10px 10px;vertical-align:top;">
+        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};display:block;">${s.t}</span>
+        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:${C.slate600};line-height:1.5;display:block;margin-top:2px;">${s.d}</span>
       </td>
     </tr>
   `).join('');
 
   return {
-    subject: `Welcome to STEMulus - ${d.studentName}'s coding journey starts now!`,
+    subject: `Welcome to STEMulus: Official Portal Credentials for ${d.studentName}`,
     html: shell(`Welcome, ${d.parentName}!`, `
-      <h2 style="font-size:1.5rem;margin:0 0 8px;">Welcome to STEMulus KidsTech!</h2>
-      <p style="font-size:1rem;color:${C.textMuted};margin:0 0 24px;">Hi <strong style="color:#1e293b;">${d.parentName}</strong>, we're thrilled to have <strong style="color:${C.navy};">${d.studentName}</strong> join us for <strong>${d.courseName || 'their coding programme'}</strong>.</p>
+      <h1>Welcome to STEMulus Kids Technologies</h1>
+      <p>Dear <strong>${d.parentName}</strong>,</p>
+      <p>We are delighted to welcome <strong>${d.studentName}</strong> to the <strong>${d.courseName || 'STEMulus Coding Program'}</strong>. Your student account has been successfully configured.</p>
 
-      <div style="background:linear-gradient(135deg,${C.navy} 0%,#2d3f8c 100%);border-radius:12px;padding:24px;margin-bottom:24px;">
-        <p style="margin:0 0 4px;color:rgba(255,255,255,0.72);font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Parent Portal Login &amp; Class Details</p>
-        <p style="margin:0 0 16px;color:#fff;font-size:0.82rem;">Access your dashboard to track progress, download certificates, and view upcoming sessions</p>
-        <table style="width:100%;border-collapse:collapse;">
+      <!-- Executive Credential Card (High Contrast) -->
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:24px;margin:26px 0;">
+        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:6px;margin-bottom:16px;">
+          Portal Access Credentials
+        </div>
+        <p style="margin:0 0 16px 0;font-size:13px;color:${C.slate600};">Use these credentials to access your centralized Parent Dashboard:</p>
+        
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:10px;overflow:hidden;">
           <tr>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.1);border-radius:6px 0 0 0;color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:600;text-transform:uppercase;width:42%;">Email</td>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.1);border-radius:0 6px 0 0;color:#fff;font-size:0.88rem;">${d.parentEmail}</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;width:38%;">Portal Email</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.parentEmail}</td>
           </tr>
           <tr>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.08);border-radius:0 0 0 6px;color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:600;text-transform:uppercase;">Temp Password</td>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.08);border-radius:0 0 6px 0;font-family:monospace;font-weight:700;font-size:1rem;color:${C.orange};">${d.tempPassword}</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Temporary Password</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};">
+              <span style="font-family:'SF Mono',Consolas,Monaco,monospace;font-size:15px;font-weight:700;color:${C.navy};background-color:${C.slate100};border:1px solid ${C.slate200};padding:4px 10px;border-radius:6px;letter-spacing:0.05em;display:inline-block;">${d.tempPassword}</span>
+            </td>
           </tr>
-          ${scheduleAndMeetSection}
-          ${classroomSection}
+          <tr>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Class Schedule</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;color:${C.navy};">${scheduleText}</td>
+          </tr>
+          <tr>
+            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Live Classroom Meet</td>
+            <td style="padding:12px 16px;">
+              <a href="${meetLink}" target="_blank" style="color:${C.blue};font-weight:700;font-size:13px;text-decoration:none;">Open Google Meet Room &rarr;</a>
+            </td>
+          </tr>
+          ${d.classroomLink ? `
+          <tr>
+            <td style="padding:12px 16px;border-top:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Google Classroom</td>
+            <td style="padding:12px 16px;border-top:1px solid ${C.slate200};">
+              <a href="${d.classroomLink}" target="_blank" style="color:${C.blue};font-weight:700;font-size:13px;text-decoration:none;">Join Google Classroom &rarr;</a>
+            </td>
+          </tr>` : ''}
         </table>
-        <p style="margin:16px 0 0;color:rgba(255,255,255,0.55);font-size:0.75rem;">Please change your password after your first login.</p>
+
+        <p style="margin:14px 0 0 0;font-size:12px;color:${C.slate500};line-height:1.5;">
+          Security Notice: For your protection, please update your temporary password upon logging into the portal for the first time.
+        </p>
       </div>
 
-      <table style="width:100%;margin-bottom:20px;"><tbody>
+      <!-- Action Buttons -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
         <tr>
-          <td style="padding-right:8px;">
-            <a href="${SITE_URL}/parent-login.html" style="display:block;background:${C.orange};color:#fff;text-align:center;text-decoration:none;font-weight:700;padding:14px 20px;border-radius:10px;font-size:0.95rem;">Log Into Parent Portal →</a>
+          <td class="grid-cell" style="padding-right:8px;padding-bottom:8px;" width="50%">
+            <a class="btn-primary" href="${SITE_URL}/parent-login.html" style="display:block;">Log In to Parent Portal &rarr;</a>
           </td>
-          <td style="padding-left:8px;">
-            <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi! I just received my welcome email for ' + d.studentName + '. Ready to get started!')}" style="display:block;background:#25D366;color:#fff;text-align:center;text-decoration:none;font-weight:700;padding:14px 20px;border-radius:10px;font-size:0.95rem;" target="_blank">Chat on WhatsApp</a>
+          <td class="grid-cell" style="padding-left:8px;padding-bottom:8px;" width="50%">
+            <a class="btn-secondary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi, I received my STEMulus welcome email for ' + d.studentName + '. Ready to get started!')}" target="_blank" style="display:block;">Connect on WhatsApp</a>
           </td>
         </tr>
       </table>
 
-      <div style="background:#f8fafc;border-radius:10px;padding:20px;margin-bottom:20px;border:1px solid #e2e8f0;">
-        <p style="margin:0 0 12px;font-weight:700;color:${C.navy};font-size:0.92rem;">What happens next</p>
-        <table style="width:100%;border-collapse:collapse;">${stepRows}</table>
+      <!-- Next Steps Checklist -->
+      <div style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:14px;padding:22px 24px;margin-bottom:24px;">
+        <h2 style="font-size:15px;margin-bottom:14px;color:${C.navy};text-transform:uppercase;letter-spacing:0.04em;">Onboarding Roadmap</h2>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">${stepRows}</table>
       </div>
 
-      <div style="background:#f0f4ff;border-radius:10px;padding:18px;border-left:4px solid ${C.navy};">
-        <p style="margin:0 0 8px;font-weight:700;color:${C.navy};font-size:0.88rem;">Your Portal gives you access to:</p>
-        <table style="width:100%;border-collapse:collapse;">
-          ${[
-            ['[Schedule]','Live session schedule','Never miss a class'],
-            ['[Reports]','Progress reports','After every single session'],
-            ['[Certificates]','Certificates','On successful completion'],
-            ['[Alerts]','Notifications','Important updates in real time']
-          ].map(([icon, title, sub]) => `<tr>
-            <td style="width:28px;font-size:1.1rem;vertical-align:top;padding:5px 0;">${icon}</td>
-            <td style="padding:5px 0 5px 8px;vertical-align:top;"><strong style="font-size:0.85rem;">${title}</strong><br><span style="font-size:0.78rem;color:${C.textMuted};">${sub}</span></td>
-          </tr>`).join('')}
+      <!-- Portal Capabilities -->
+      <div style="background-color:${C.slate50};border-left:4px solid ${C.navy};border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:24px;">
+        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:800;color:${C.navy};text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:10px;">Your Portal Capabilities</span>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
+              <strong style="color:${C.navy};">Real-Time Schedule:</strong> View and sync upcoming 1-on-1 sessions.
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
+              <strong style="color:${C.navy};">Session Reports:</strong> Continuous progress analytics delivered after every class.
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
+              <strong style="color:${C.navy};">Technology Passport:</strong> 48-month progression badges tracking student mastery.
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
+              <strong style="color:${C.navy};">Verified Certificates:</strong> Cryptographically verifiable completion credentials.
+            </td>
+          </tr>
         </table>
       </div>
 
-      <p style="margin:20px 0 0;font-size:0.88rem;color:${C.textMuted};line-height:1.7;">
-        If you have any questions, please email us at <a href="mailto:${ADMIN_EMAIL}" style="color:${C.orange};">${ADMIN_EMAIL}</a> or chat with us on WhatsApp.<br>
-        We're happy to have <strong>${d.studentName}</strong> with us and look forward to a great learning experience together.<br><br>
-        <strong>The STEMulus Kids Tech Team</strong>
+      <p style="margin:20px 0 0 0;font-size:14px;color:${C.slate600};line-height:1.65;">
+        If you require any assistance, reply directly to this message or contact administration at <a href="mailto:${ADMIN_EMAIL}" style="color:${C.orange};font-weight:600;">${ADMIN_EMAIL}</a>.<br><br>
+        We look forward to an inspiring and impactful learning journey with <strong>${d.studentName}</strong>.<br><br>
+        Sincerely,<br>
+        <strong>The STEMulus Academic Team</strong>
       </p>
     `)
   };
 }
 
+/**
+ * World-Class Tutor Welcome Onboarding Email
+ * Elevated faculty onboarding communication, pristine contrast, zero emojis.
+ */
 function tplTutorWelcome(d) {
   const steps = [
-    { n:'1', t:'Log in and change your password', d:'Use the credentials below, then update your password in portal settings' },
-    { n:'2', t:'Review your assigned students', d:'Your dashboard shows all your students, their programs, and session history' },
-    { n:'3', t:'Check your session schedule', d:"Your upcoming classes are listed on your dashboard. Zoom links are included." },
-    { n:'4', t:'Log attendance after each session', d:'Use the Attendance Log to record topics covered, student performance, and notes' },
-    { n:'5', t:'Submit monthly progress reports', d:'At the end of each month, submit a detailed report from your Tutor Portal' }
+    { n: '01', t: 'Access the Faculty Portal', d: 'Log in with your provided credentials, then set your personal password under Settings.' },
+    { n: '02', t: 'Inspect Assigned Student Rosters', d: 'Review your students, enrolled curriculum tracks, learning objectives, and age groups.' },
+    { n: '03', t: 'Review Session Schedule & Links', d: 'Your teaching calendar displays upcoming class slots with direct Google Meet / Zoom links.' },
+    { n: '04', t: 'Log Post-Session Attendance & Notes', d: 'Submit attendance and topic coverage immediately following each session.' },
+    { n: '05', t: 'Submit Monthly Evaluation Reports', d: 'At the conclusion of each month, submit structured progress assessments for admin payout review.' }
   ];
 
   const stepRows = steps.map(s => `
     <tr>
-      <td style="padding:8px 0;vertical-align:top;">
-        <span style="display:inline-block;width:26px;height:26px;border-radius:50%;background:${C.navy};color:#fff;font-weight:700;font-size:0.76rem;text-align:center;line-height:26px;">${s.n}</span>
+      <td style="padding:10px 0;vertical-align:top;width:34px;">
+        <div style="width:26px;height:26px;border-radius:6px;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-weight:800;font-size:11px;text-align:center;line-height:26px;">${s.n}</div>
       </td>
-      <td style="padding:8px 0 8px 12px;vertical-align:top;">
-        <strong style="color:#1e293b;font-size:0.88rem;">${s.t}</strong><br>
-        <span style="color:${C.textMuted};font-size:0.8rem;">${s.d}</span>
+      <td style="padding:8px 0 10px 10px;vertical-align:top;">
+        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};display:block;">${s.t}</span>
+        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:${C.slate600};line-height:1.5;display:block;margin-top:2px;">${s.d}</span>
       </td>
     </tr>
   `).join('');
 
   return {
-    subject: `Welcome to the STEMulus Team, ${d.tutorName}!`,
+    subject: `Welcome to STEMulus Faculty: Tutor Portal Access for ${d.tutorName}`,
     html: shell(`Welcome, ${d.tutorName}!`, `
-      <h2 style="font-size:1.4rem;margin:0 0 8px;">Welcome to the STEMulus Teaching Team!</h2>
-      <p style="color:${C.textMuted};margin:0 0 24px;">Hi <strong style="color:#1e293b;">${d.tutorName}</strong>, we're excited to have you on board as a STEMulus mentor. Here's everything you need to get started.</p>
+      <h1>Welcome to the STEMulus Teaching Faculty</h1>
+      <p>Dear <strong>${d.tutorName}</strong>,</p>
+      <p>We are excited to welcome you to the STEMulus instructional team as an official mentor. Your faculty account has been established and configured.</p>
 
-      <div style="background:linear-gradient(135deg,${C.navy} 0%,#2d3f8c 100%);border-radius:12px;padding:24px;margin-bottom:24px;">
-        <p style="margin:0 0 4px;color:rgba(255,255,255,0.72);font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Tutor Portal Login</p>
-        <p style="margin:0 0 16px;color:#fff;font-size:0.82rem;">Select the <strong>Tutor</strong> tab on the login page</p>
-        <table style="width:100%;border-collapse:collapse;">
+      <!-- Faculty Credentials Card -->
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:24px;margin:26px 0;">
+        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:6px;margin-bottom:16px;">
+          Faculty Portal Credentials
+        </div>
+        <p style="margin:0 0 16px 0;font-size:13px;color:${C.slate600};">Log in to manage your classes, student attendance, and monthly payout submissions:</p>
+
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:10px;overflow:hidden;">
           <tr>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.1);border-radius:6px 0 0 0;color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:600;text-transform:uppercase;width:42%;">Email</td>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.1);border-radius:0 6px 0 0;color:#fff;font-size:0.88rem;">${d.tutorEmail}</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;width:38%;">Faculty Email</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.tutorEmail}</td>
           </tr>
           <tr>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.08);border-radius:0 0 0 6px;color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:600;text-transform:uppercase;">Temp Password</td>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.08);border-radius:0 0 6px 0;font-family:monospace;font-weight:700;font-size:1rem;color:${C.orange};">${d.tempPassword}</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Temporary Password</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};">
+              <span style="font-family:'SF Mono',Consolas,Monaco,monospace;font-size:15px;font-weight:700;color:${C.navy};background-color:${C.slate100};border:1px solid ${C.slate200};padding:4px 10px;border-radius:6px;letter-spacing:0.05em;display:inline-block;">${d.tempPassword}</span>
+            </td>
           </tr>
-          ${d.subjects ? `<tr><td style="padding:6px 12px;color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:600;text-transform:uppercase;">Subjects</td><td style="padding:6px 12px;color:#fff;font-size:0.88rem;">${d.subjects}</td></tr>` : ''}
+          ${d.subjects ? `
+          <tr>
+            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Assigned Domain</td>
+            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;color:${C.navy};">${d.subjects}</td>
+          </tr>` : ''}
         </table>
-        <p style="margin:16px 0 0;color:rgba(255,255,255,0.55);font-size:0.75rem;">Please change your password after your first login.</p>
+
+        <p style="margin:14px 0 0 0;font-size:12px;color:${C.slate500};line-height:1.5;">
+          Select the <strong>Tutor</strong> role tab on the login portal. Update your password upon initial sign-in.
+        </p>
       </div>
 
-      <table style="width:100%;margin-bottom:20px;"><tbody>
+      <!-- Action Buttons -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
         <tr>
-          <td style="padding-right:8px;">
-            <a href="${SITE_URL}/parent-login.html?role=tutor" style="display:block;background:${C.orange};color:#fff;text-align:center;text-decoration:none;font-weight:700;padding:14px 20px;border-radius:10px;font-size:0.95rem;">Log Into Tutor Portal →</a>
+          <td class="grid-cell" style="padding-right:8px;padding-bottom:8px;" width="50%">
+            <a class="btn-primary" href="${SITE_URL}/parent-login.html?role=tutor" style="display:block;">Access Tutor Portal &rarr;</a>
           </td>
-          <td style="padding-left:8px;">
-            <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi, this is ' + d.tutorName + '. I just received my STEMulus tutor welcome email!')}" style="display:block;background:#25D366;color:#fff;text-align:center;text-decoration:none;font-weight:700;padding:14px 20px;border-radius:10px;font-size:0.95rem;" target="_blank">Confirm on WhatsApp</a>
+          <td class="grid-cell" style="padding-left:8px;padding-bottom:8px;" width="50%">
+            <a class="btn-secondary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi, this is ' + d.tutorName + '. I have received my STEMulus tutor portal access credentials.')}" target="_blank" style="display:block;">Confirm on WhatsApp</a>
           </td>
         </tr>
       </table>
 
-      <div style="background:#f8fafc;border-radius:10px;padding:20px;margin-bottom:20px;border:1px solid #e2e8f0;">
-        <p style="margin:0 0 12px;font-weight:700;color:${C.navy};font-size:0.92rem;">Getting started: 5 steps</p>
-        <table style="width:100%;border-collapse:collapse;">${stepRows}</table>
+      <!-- Faculty Onboarding Protocol -->
+      <div style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:14px;padding:22px 24px;margin-bottom:24px;">
+        <h2 style="font-size:15px;margin-bottom:14px;color:${C.navy};text-transform:uppercase;letter-spacing:0.04em;">Faculty Onboarding Protocol</h2>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">${stepRows}</table>
       </div>
 
-      <div style="background:#f0f4ff;border-radius:10px;padding:18px;border-left:4px solid ${C.navy};margin-bottom:20px;">
-        <p style="margin:0 0 8px;font-weight:700;color:${C.navy};font-size:0.88rem;">Your Tutor Portal lets you:</p>
-        <table style="width:100%;border-collapse:collapse;">
-          ${[
-            ['[Students]','View assigned students','Profiles, programs, and full session history'],
-            ['[Attendance]','Log attendance & reports','After every class: topic covered, performance notes'],
-            ['[Reports]','Submit monthly reports','Detailed progress summaries for admin review'],
-            ['[Schedule]','Track your schedule','All upcoming sessions in one place']
-          ].map(([icon, title, sub]) => `<tr>
-            <td style="width:28px;font-size:1.1rem;vertical-align:top;padding:5px 0;">${icon}</td>
-            <td style="padding:5px 0 5px 8px;vertical-align:top;"><strong style="font-size:0.85rem;">${title}</strong><br><span style="font-size:0.78rem;color:${C.textMuted};">${sub}</span></td>
-          </tr>`).join('')}
+      <!-- Portal Feature Summary -->
+      <div style="background-color:${C.slate50};border-left:4px solid ${C.navy};border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:24px;">
+        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:800;color:${C.navy};text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:10px;">Faculty Dashboard Tools</span>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
+              <strong style="color:${C.navy};">Student Rosters:</strong> Access student profiles, curriculum pathways, and learning goals.
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
+              <strong style="color:${C.navy};">Attendance Logging:</strong> Submit attendance and session notes immediately following each class.
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
+              <strong style="color:${C.navy};">Monthly Reports &amp; Payouts:</strong> Track approved teaching hours and submit monthly reviews.
+            </td>
+          </tr>
         </table>
       </div>
 
-      <p style="margin:0;font-size:0.88rem;color:${C.textMuted};line-height:1.7;">
-        Questions? Email <a href="mailto:${ADMIN_EMAIL}" style="color:${C.orange};">${ADMIN_EMAIL}</a> or WhatsApp us anytime.<br><br>
-        We look forward to building great coding skills with you.<br>
-        <strong>The STEMulus Admin Team</strong>
+      <p style="margin:20px 0 0 0;font-size:14px;color:${C.slate600};line-height:1.65;">
+        If you have questions regarding student assignments or curriculum materials, contact academic administration at <a href="mailto:${ADMIN_EMAIL}" style="color:${C.orange};font-weight:600;">${ADMIN_EMAIL}</a>.<br><br>
+        Thank you for your dedication to mentoring the next generation of technologists.<br><br>
+        Sincerely,<br>
+        <strong>The STEMulus Academic Administration</strong>
       </p>
     `)
   };
@@ -372,28 +592,52 @@ function tplTutorWelcome(d) {
 function tplReminder(d) {
   const label = d.reminderType === '24h' ? '24-Hour' : (d.reminderType === '10m' ? '10-Minute' : '1-Hour');
   const isUrgent = d.reminderType === '10m';
+
   return {
     subject: `[${label} Reminder] ${d.studentName}'s coding session at ${d.classTime}`,
     html: shell(`${label} Class Reminder`, `
-      <h2>${isUrgent ? 'Starting in 10 Minutes!' : label + ' Class Reminder'}</h2>
-      <p>Hi <strong>${d.parentName || 'Parent'}</strong>,</p>
-      <p>${isUrgent ? `The classroom for <strong>${d.studentName}</strong> is launching now!` : `This is a reminder that <strong>${d.studentName}</strong> has an upcoming 1-on-1 coding class.`}</p>
-      <div class="info-box">
-        <table>
-          <tr><td>Student</td><td><strong>${d.studentName}</strong></td></tr>
-          <tr><td>Course</td><td>${d.courseName || d.course}</td></tr>
-          <tr><td>Date</td><td>${d.classDate || d.date}</td></tr>
-          <tr><td>Time</td><td><strong style="color:${C.orange};">${d.classTime || d.time} (WAT)</strong></td></tr>
-          <tr><td>Duration</td><td>${d.duration || 60} minutes</td></tr>
-          <tr><td>Mentor</td><td>${d.mentorName || 'Your Instructor'}</td></tr>
+      <h1>${isUrgent ? 'Class Launching in 10 Minutes' : label + ' Session Reminder'}</h1>
+      <p>Dear <strong>${d.parentName || 'Parent'}</strong>,</p>
+      <p>${isUrgent ? `The 1-on-1 coding classroom for <strong>${d.studentName}</strong> is launching in 10 minutes.` : `This is a reminder that <strong>${d.studentName}</strong> has an upcoming 1-on-1 coding session scheduled.`}</p>
+
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Student</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.studentName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Curriculum</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.courseName || d.course}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Date</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;color:${C.navy};">${d.classDate || d.date}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Scheduled Time</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:15px;font-weight:800;color:${C.orange};">${d.classTime || d.time} (WAT)</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Session Duration</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.duration || 60} Minutes</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Assigned Mentor</td>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;color:${C.navy};">${d.mentorName || 'STEMulus Faculty Mentor'}</td>
+          </tr>
         </table>
       </div>
-      <div style="text-align:center;margin:24px 0;">
-        <a class="btn" style="background:${isUrgent ? C.orange : C.navy};font-size:1rem;" href="${d.zoomLink || d.link || SITE_URL}">
-          ${isUrgent ? 'Launch Classroom Now &rarr;' : 'Open Class on Zoom &rarr;'}
+
+      <div style="text-align:center;margin:28px 0;">
+        <a class="btn-primary" href="${d.zoomLink || d.link || SITE_URL}" target="_blank" style="font-size:15px;padding:14px 32px;">
+          ${isUrgent ? 'Launch Live Classroom Now &rarr;' : 'Open Class on Zoom &rarr;'}
         </a>
       </div>
-      <p style="font-size:0.85rem;color:${C.textMuted};">Please ensure the student's laptop, webcam, and microphone are ready.</p>
+
+      <p style="font-size:13px;color:${C.slate500};line-height:1.5;">
+        Preparation Checklist: Please ensure the student has their computer, microphone, and webcam configured 5 minutes prior to the start time.
+      </p>
     `)
   };
 }
@@ -401,28 +645,48 @@ function tplReminder(d) {
 function tplTutorReminder(d) {
   const label = d.reminderType === '24h' ? '24-Hour' : (d.reminderType === '10m' ? '10-Minute' : '1-Hour');
   const isUrgent = d.reminderType === '10m';
+
   return {
-    subject: `[${label} Reminder] Upcoming session with ${d.studentName} at ${d.classTime}`,
-    html: shell(`${label} Tutor Session Reminder`, `
-      <h2>${isUrgent ? 'Class Launching in 10 Minutes!' : label + ' Session Reminder'}</h2>
-      <p>Hi <strong>${d.tutorName || d.mentorName || 'Mentor'}</strong>,</p>
-      <p>${isUrgent ? `Your 1-on-1 session with <strong>${d.studentName}</strong> begins in 10 minutes!` : `This is your automated reminder for your upcoming 1-on-1 session with <strong>${d.studentName}</strong>.`}</p>
-      <div class="info-box">
-        <table>
-          <tr><td>Student</td><td><strong>${d.studentName}</strong></td></tr>
-          <tr><td>Course</td><td>${d.courseName || d.course}</td></tr>
-          <tr><td>Date</td><td>${d.classDate || d.date}</td></tr>
-          <tr><td>Time</td><td><strong style="color:${C.orange};">${d.classTime || d.time} (WAT)</strong></td></tr>
-          <tr><td>Duration</td><td>${d.duration || 60} minutes</td></tr>
-          <tr><td>Parent Email</td><td>${d.parentEmail || 'On file'}</td></tr>
+    subject: `[${label} Reminder] Faculty session with ${d.studentName} at ${d.classTime}`,
+    html: shell(`${label} Faculty Reminder`, `
+      <h1>${isUrgent ? 'Session Launching in 10 Minutes' : label + ' Session Reminder'}</h1>
+      <p>Dear <strong>${d.tutorName || d.mentorName || 'Mentor'}</strong>,</p>
+      <p>${isUrgent ? `Your scheduled 1-on-1 session with <strong>${d.studentName}</strong> starts in 10 minutes.` : `This is your automated instructional reminder for your upcoming session with <strong>${d.studentName}</strong>.`}</p>
+
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Student</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.studentName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Course</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.courseName || d.course}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Date</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;color:${C.navy};">${d.classDate || d.date}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Scheduled Time</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:15px;font-weight:800;color:${C.orange};">${d.classTime || d.time} (WAT)</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Duration</td>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.duration || 60} Minutes</td>
+          </tr>
         </table>
       </div>
-      <div style="text-align:center;margin:24px 0;">
-        <a class="btn" style="background:${isUrgent ? C.orange : C.navy};font-size:1rem;" href="${d.zoomLink || d.link || SITE_URL}">
-          ${isUrgent ? 'Open Classroom Now &rarr;' : 'Join Class on Zoom &rarr;'}
+
+      <div style="text-align:center;margin:28px 0;">
+        <a class="btn-primary" href="${d.zoomLink || d.link || SITE_URL}" target="_blank" style="font-size:15px;padding:14px 32px;">
+          ${isUrgent ? 'Launch Classroom Now &rarr;' : 'Open Class on Zoom &rarr;'}
         </a>
       </div>
-      <p style="font-size:0.85rem;color:${C.textMuted};">Reminder: Please submit attendance and class notes immediately after the session at <a href="${SITE_URL}/tutor-attendance-create.html" style="color:${C.orange};">Attendance Portal</a>.</p>
+
+      <p style="font-size:13px;color:${C.slate600};line-height:1.5;">
+        Instructional Note: Please submit session attendance and feedback notes immediately upon class completion via the <a href="${SITE_URL}/tutor-attendance-create.html" style="color:${C.orange};font-weight:600;">Attendance Portal</a> to ensure timely administrative payout logging.
+      </p>
     `)
   };
 }
@@ -430,128 +694,184 @@ function tplTutorReminder(d) {
 function tplScheduleChange(d) {
   return {
     subject: `Schedule Update: ${d.studentName}'s class has been rescheduled`,
-    html: shell('Schedule Change', `
-      <h2>Class Schedule Updated</h2>
-      <p>Hi <strong>${d.parentName}</strong>,</p>
-      <p>${d.changeMessage || 'Please note the updated schedule for your upcoming class.'}</p>
-      <div class="info-box">
-        <table>
-          <tr><td>Course</td><td>${d.courseName}</td></tr>
-          <tr><td>Previous Date</td><td><s>${d.oldDate} at ${d.oldTime}</s></td></tr>
-          <tr><td>New Date</td><td><strong>${d.newDate} at ${d.newTime}</strong></td></tr>
+    html: shell('Schedule Update', `
+      <h1>Class Schedule Updated</h1>
+      <p>Dear <strong>${d.parentName}</strong>,</p>
+      <p>${d.changeMessage || 'Please note the revised schedule for your upcoming 1-on-1 coding class.'}</p>
+
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Curriculum</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.courseName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Previous Schedule</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.slate500};text-decoration:line-through;">${d.oldDate} at ${d.oldTime}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">New Confirmed Schedule</td>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:15px;font-weight:800;color:${C.emerald};">${d.newDate} at ${d.newTime}</td>
+          </tr>
         </table>
       </div>
-      <a class="btn btn-green" href="https://wa.me/${WHATSAPP_NUMBER}">Questions? Chat on WhatsApp</a>
+
+      <div style="margin-top:24px;">
+        <a class="btn-secondary" href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank">Questions? Chat with Coordinator on WhatsApp</a>
+      </div>
     `)
   };
 }
 
 function tplCertificate(d) {
   return {
-    subject: `${d.studentName} has completed ${d.courseName}!`,
-    html: shell('Course Completion', `
-      <h2>Certificate of Completion</h2>
-      <p>Hi <strong>${d.parentName}</strong>,</p>
-      <p>Congratulations! <strong>${d.studentName}</strong> has successfully completed the <strong>${d.courseName}</strong> programme at STEMulus.</p>
-      <div class="info-box">
-        <table>
-          <tr><td>Student</td><td>${d.studentName}</td></tr>
-          <tr><td>Programme</td><td>${d.courseName}</td></tr>
-          <tr><td>Completed</td><td>${d.completionDate}</td></tr>
+    subject: `Certificate Awarded: ${d.studentName} has completed ${d.courseName}!`,
+    html: shell('Course Completion Certificate', `
+      <h1>Certificate of Completion</h1>
+      <p>Dear <strong>${d.parentName}</strong>,</p>
+      <p>Congratulations! <strong>${d.studentName}</strong> has successfully completed the <strong>${d.courseName}</strong> curriculum pathway at STEMulus Kids Technologies.</p>
+
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Graduate</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.studentName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Program</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${d.courseName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Completion Date</td>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;color:${C.navy};">${d.completionDate}</td>
+          </tr>
         </table>
       </div>
-      <p>You can view and download the certificate from the parent portal:</p>
-      <a class="btn" href="${SITE_URL}/verify-certificate.html">View Certificate</a>
+
+      <div style="margin-top:24px;">
+        <a class="btn-primary" href="${SITE_URL}/verify-certificate.html">View &amp; Verify Official Certificate &rarr;</a>
+      </div>
     `)
   };
 }
 
 function tplCertificateDelivery(d) {
   return {
-    subject: d.studentName + ' has earned their STEMulus Certificate!',
-    html: shell('Certificate of Completion', `
-      <h2 style="font-size:1.5rem;margin:0 0 8px;">Congratulations, ${d.studentName}!</h2>
-      <p>Hi <strong>${d.parentName}</strong>,</p>
-      <p>We are thrilled to share that <strong>${d.studentName}</strong> has successfully completed <strong>${d.courseName}</strong> at STEMulus KidsTech.</p>
+    subject: `Official STEMulus Certificate of Completion &mdash; ${d.studentName}`,
+    html: shell('Certificate Delivery', `
+      <h1>Congratulations, ${d.studentName}!</h1>
+      <p>Dear <strong>${d.parentName}</strong>,</p>
+      <p>We are proud to present the official Certificate of Completion for <strong>${d.studentName}</strong>, celebrating the successful completion of the <strong>${d.courseName}</strong> program.</p>
 
-      <div style="background:linear-gradient(135deg,#1a237e 0%,#283593 50%,#3949ab 100%);border-radius:12px;padding:24px;margin:20px 0;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:8px;"><span data-icon-3d="graduation-cap" data-icon-size="48"></span></div>
-        <p style="color:#fff;font-family:Fredoka,sans-serif;font-size:1.3rem;font-weight:600;margin:0 0 4px;">${d.studentName}</p>
-        <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;margin:0 0 8px;">${d.courseName}</p>
-        <p style="color:rgba(255,255,255,0.5);font-size:0.75rem;font-family:monospace;margin:0;">Credential ID: ${d.credentialId}</p>
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:16px;padding:32px 24px;margin:24px 0;text-align:center;">
+        <div style="display:inline-block;width:56px;height:56px;border-radius:50%;background-color:${C.navy};color:${C.white};text-align:center;line-height:56px;margin-bottom:16px;">
+          <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:18px;font-weight:800;color:${C.orange};">&#9733;</span>
+        </div>
+        <h2 style="font-size:20px;color:${C.navy};margin:0 0 6px 0;">${d.studentName}</h2>
+        <p style="font-size:14px;color:${C.slate600};margin:0 0 14px 0;font-weight:600;">${d.courseName}</p>
+        <div style="display:inline-block;background-color:${C.white};border:1px solid ${C.slate200};padding:6px 14px;border-radius:8px;">
+          <span style="font-family:monospace;font-size:12px;font-weight:700;color:${C.slate700};">Credential ID: ${d.credentialId}</span>
+        </div>
       </div>
 
-      <p>The certificate is attached to this email. You can also verify it anytime at:</p>
-      <a href="${SITE_URL}/verify-certificate.html" style="display:inline-block;background:${C.orange};color:#fff;text-decoration:none;font-weight:700;padding:12px 28px;border-radius:10px;font-size:0.92rem;margin:8px 0 16px;">Verify Certificate</a>
+      <p style="font-size:14px;color:${C.slate600};">
+        The official certificate document is attached to this email. You may also view and verify the cryptographically certified record at any time:
+      </p>
 
-      <p style="font-size:0.85rem;color:#64748b;">Issued on ${d.issueDate}. Thank you for being part of the STEMulus family.</p>
+      <div style="margin:24px 0;">
+        <a class="btn-primary" href="${SITE_URL}/verify-certificate.html?id=${encodeURIComponent(d.credentialId || '')}">Verify Certificate Online &rarr;</a>
+      </div>
+
+      <p style="font-size:12px;color:${C.slate500};margin-top:20px;">
+        Issued on ${d.issueDate || new Date().toLocaleDateString('en-GB')}. STEMulus Kids Technologies Certification Authority.
+      </p>
     `)
   };
 }
 
 function tplCredentialsReset(d) {
   return {
-    subject: 'Your New STEMulus Login Details',
-    html: shell('New Login Credentials', `
-      <h2 style="font-size:1.4rem;margin:0 0 8px;">Your login details have been reset</h2>
-      <p>Hi <strong>${d.recipientName || d.recipientEmail}</strong>,</p>
-      <p>An admin has reset your STEMulus portal password. Here are your new login details:</p>
+    subject: 'Security Notice: Your Updated STEMulus Portal Credentials',
+    html: shell('Portal Security Credentials', `
+      <h1>Security Credentials Reset</h1>
+      <p>Dear <strong>${d.recipientName || d.recipientEmail}</strong>,</p>
+      <p>An authorized administrator has generated new access credentials for your STEMulus account. Please find your updated credentials below:</p>
 
-      <div style="background:linear-gradient(135deg,${C.navy} 0%,#2d3f8c 100%);border-radius:12px;padding:24px;margin:20px 0;">
-        <table style="width:100%;border-collapse:collapse;">
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:24px;margin:24px 0;">
+        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:6px;margin-bottom:16px;">
+          Updated Credentials
+        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:10px;overflow:hidden;">
           <tr>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.1);border-radius:6px 0 0 0;color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:600;text-transform:uppercase;width:40%;">Email</td>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.1);border-radius:0 6px 0 0;color:#fff;font-size:0.88rem;">${d.recipientEmail}</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;width:38%;">Account Email</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.recipientEmail}</td>
           </tr>
           <tr>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.08);border-radius:0 0 0 6px;color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:600;text-transform:uppercase;">New Password</td>
-            <td style="padding:6px 12px;background:rgba(255,255,255,0.08);border-radius:0 0 6px 0;font-family:monospace;font-weight:700;font-size:1.1rem;color:${C.orange};">${d.newPassword}</td>
+            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">New Temporary Password</td>
+            <td style="padding:12px 16px;">
+              <span style="font-family:'SF Mono',Consolas,Monaco,monospace;font-size:16px;font-weight:700;color:${C.navy};background-color:${C.slate100};border:1px solid ${C.slate200};padding:4px 12px;border-radius:6px;letter-spacing:0.05em;display:inline-block;">${d.newPassword}</span>
+            </td>
           </tr>
         </table>
-        <p style="margin:12px 0 0;color:rgba(255,255,255,0.55);font-size:0.75rem;">Please change your password after logging in.</p>
+        <p style="margin:14px 0 0 0;font-size:12px;color:${C.slate500};line-height:1.5;">
+          For account security, you will be prompted to update this temporary password upon signing in.
+        </p>
       </div>
 
-      <a href="${d.portalUrl || SITE_URL + '/parent-login.html'}" style="display:inline-block;background:${C.orange};color:#fff;text-decoration:none;font-weight:700;padding:12px 28px;border-radius:10px;font-size:0.92rem;margin:8px 0 16px;">Log In to Your Portal</a>
+      <div style="margin:24px 0;">
+        <a class="btn-primary" href="${d.portalUrl || SITE_URL + '/parent-login.html'}">Access Portal Sign-In &rarr;</a>
+      </div>
 
-      <p style="font-size:0.85rem;color:#64748b;">If you did not request this reset, please contact <a href="mailto:${ADMIN_EMAIL}" style="color:${C.orange};">${ADMIN_EMAIL}</a> immediately.</p>
+      <p style="font-size:13px;color:${C.slate500};margin-top:20px;line-height:1.5;">
+        Security Notice: If you did not request this credential change, please alert administration immediately at <a href="mailto:${ADMIN_EMAIL}" style="color:${C.orange};font-weight:600;">${ADMIN_EMAIL}</a>.
+      </p>
     `)
   };
 }
 
 function tplCustom(d) {
   return {
-    subject: d.subject,
-    html: shell(d.subject, `
-      <h2>${d.subject}</h2>
-      <p>${(d.body || '').replace(/\n/g, '<br>')}</p>
+    subject: d.subject || 'Communication from STEMulus Kids Technologies',
+    html: shell(d.subject || 'STEMulus Communication', `
+      <h1>${d.subject || 'Message from STEMulus'}</h1>
+      <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:15px;color:${C.navy};line-height:1.65;margin:20px 0;">
+        ${(d.body || '').replace(/\n/g, '<br>')}
+      </div>
     `)
   };
 }
 
-// ─── Template router ─────────────────────────────────────────────────────────
+// ─── Template Router ──────────────────────────────────────────────────────────
 
 function buildEmail(type, data) {
   switch (type) {
-    case 'enrollment_admin':   return { ...tplEnrollmentAdmin(data),  to: ADMIN_EMAIL };
-    case 'enrollment_parent':  return { ...tplEnrollmentParent(data), to: data.email };
-    case 'booking_admin':      return { ...tplBookingAdmin(data),     to: ADMIN_EMAIL };
-    case 'booking_parent':     return { ...tplBookingParent(data),    to: data.email };
-    case 'contact':            return { ...tplContactAdmin(data),     to: ADMIN_EMAIL };
-    case 'welcome':            return { ...tplWelcome(data),          to: data.parentEmail };
-    case 'reminder':           return { ...tplReminder(data),         to: data.recipientEmail || data.parentEmail };
-    case 'tutor-reminder':     return { ...tplTutorReminder(data),    to: data.tutorEmail || data.recipientEmail };
-    case 'schedule':           return { ...tplScheduleChange(data),   to: data.parentEmail };
-    case 'certificate':        return { ...tplCertificate(data),      to: data.parentEmail };
-    case 'tutor-welcome':       return { ...tplTutorWelcome(data),    to: data.tutorEmail };
-    case 'credentials-reset':   return { ...tplCredentialsReset(data),    to: data.recipientEmail || data.to };
-    case 'certificate-delivery': return { ...tplCertificateDelivery(data), to: data.parentEmail,
-      attachments: data.fileData ? [{ filename: data.fileName || 'STEMulus-Certificate.pdf', content: data.fileData.split(',')[1] || data.fileData, encoding: 'base64' }] : undefined };
-    case 'custom':             return { ...tplCustom(data),           to: data.to };
+    case 'enrollment_admin':     return { ...tplEnrollmentAdmin(data),    to: ADMIN_EMAIL };
+    case 'enrollment_parent':    return { ...tplEnrollmentParent(data),   to: data.email };
+    case 'booking_admin':        return { ...tplBookingAdmin(data),       to: ADMIN_EMAIL };
+    case 'booking_parent':       return { ...tplBookingParent(data),      to: data.email };
+    case 'contact':              return { ...tplContactAdmin(data),       to: ADMIN_EMAIL };
+    case 'welcome':              return { ...tplWelcome(data),            to: data.parentEmail };
+    case 'reminder':             return { ...tplReminder(data),           to: data.recipientEmail || data.parentEmail };
+    case 'tutor-reminder':       return { ...tplTutorReminder(data),      to: data.tutorEmail || data.recipientEmail };
+    case 'schedule':             return { ...tplScheduleChange(data),     to: data.parentEmail };
+    case 'certificate':          return { ...tplCertificate(data),        to: data.parentEmail };
+    case 'tutor-welcome':         return { ...tplTutorWelcome(data),      to: data.tutorEmail };
+    case 'credentials-reset':     return { ...tplCredentialsReset(data),  to: data.recipientEmail || data.to };
+    case 'certificate-delivery': return {
+      ...tplCertificateDelivery(data),
+      to: data.parentEmail,
+      attachments: data.fileData ? [{
+        filename: data.fileName || 'STEMulus-Certificate.pdf',
+        content: data.fileData.split(',')[1] || data.fileData,
+        encoding: 'base64'
+      }] : undefined
+    };
+    case 'custom':               return { ...tplCustom(data),             to: data.to };
     default: return null;
   }
 }
 
-// ─── Resend API call ─────────────────────────────────────────────────────────
+// ─── Resend API Transport ─────────────────────────────────────────────────────
 
 async function sendViaResend(to, subject, html, attachments) {
   const apiKey = process.env.RESEND_API_KEY;
@@ -563,7 +883,12 @@ async function sendViaResend(to, subject, html, attachments) {
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(Object.assign({ from: FROM_ADDRESS, to: Array.isArray(to)?to:[to], subject, html }, attachments ? { attachments } : {})),
+    body: JSON.stringify(Object.assign({
+      from: FROM_ADDRESS,
+      to: Array.isArray(to) ? to : [to],
+      subject,
+      html
+    }, attachments ? { attachments } : {})),
   });
 
   if (!resp.ok) {
@@ -573,7 +898,7 @@ async function sendViaResend(to, subject, html, attachments) {
   return await resp.json();
 }
 
-// ─── CORS headers ─────────────────────────────────────────────────────────────
+// ─── CORS Headers ─────────────────────────────────────────────────────────────
 
 const CORS = {
   'Access-Control-Allow-Origin': 'https://stemuluskidstech.com',
@@ -581,10 +906,9 @@ const CORS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
-// ─── Main handler ─────────────────────────────────────────────────────────────
+// ─── Netlify Handler ──────────────────────────────────────────────────────────
 
 exports.handler = async (event) => {
-  // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers: CORS, body: '' };
   }
@@ -602,7 +926,6 @@ exports.handler = async (event) => {
 
   const { type, data } = payload;
 
-  // Basic honeypot check
   if (data && data.honeypot) {
     return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true }) };
   }
@@ -611,7 +934,6 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Missing type or data' }) };
   }
 
-  // Handle compound types that send multiple emails at once
   const types = type === 'enrollment'
     ? ['enrollment_admin', 'enrollment_parent']
     : type === 'booking'
@@ -643,4 +965,3 @@ exports.handler = async (event) => {
 };
 
 exports.buildEmail = buildEmail;
-

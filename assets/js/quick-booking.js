@@ -194,6 +194,9 @@ const QuickBooking = (function() {
             .qb-input:placeholder {
                 color: #94a3b8;
             }
+            select.qb-input {
+                cursor: pointer;
+            }
             .qb-pref-row {
                 display: flex;
                 gap: 1rem;
@@ -440,7 +443,6 @@ const QuickBooking = (function() {
                     <form id="qb-booking-form" name="free-class-booking">
                         <!-- Netlify forms field -->
                         <input type="hidden" name="form-name" value="free-class-booking">
-                        <input type="hidden" name="country" value="${attr.country}">
                         <input type="hidden" name="age_group" value="${attr.ageGroup}">
                         <input type="hidden" name="utm_source" value="${attr.utmSource}">
                         <input type="hidden" name="utm_medium" value="${attr.utmMedium}">
@@ -467,6 +469,25 @@ const QuickBooking = (function() {
                             <div class="qb-field-group">
                                 <label class="qb-label" for="qb-phone">Phone / WhatsApp (with country code)</label>
                                 <input class="qb-input" type="tel" id="qb-phone" name="phone" placeholder="e.g. +1 555 123 4567" required>
+                            </div>
+
+                            <div class="qb-field-group">
+                                <label class="qb-label" for="qb-country">Location / Country</label>
+                                <input class="qb-input" type="text" id="qb-country" name="country" placeholder="e.g. United Kingdom, USA, Nigeria" value="${attr.country && attr.country !== 'Global' ? attr.country : ''}" required>
+                            </div>
+
+                            <div class="qb-field-group">
+                                <label class="qb-label" for="qb-lead-source">How Did You Hear About Us?</label>
+                                <select class="qb-input" id="qb-lead-source" name="lead_source" required>
+                                    <option value="" disabled selected>Select an option</option>
+                                    <option value="Google Search">Google Search</option>
+                                    <option value="Social Media (Instagram/Facebook/TikTok)">Social Media</option>
+                                    <option value="Word of Mouth / Referral">Word of Mouth / Referral</option>
+                                    <option value="WhatsApp Community">WhatsApp Community</option>
+                                    <option value="School / Teacher Recommendation">School / Teacher</option>
+                                    <option value="Online Ad">Online Ad</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </div>
                         </div>
                         
@@ -583,7 +604,6 @@ const QuickBooking = (function() {
 
             <form id="qb-booking-form" name="free-class-booking">
                 <input type="hidden" name="form-name" value="free-class-booking">
-                <input type="hidden" name="country" value="${attr.country}">
                 <input type="hidden" name="age_group" value="${attr.ageGroup}">
                 <input type="hidden" name="utm_source" value="${attr.utmSource}">
                 <input type="hidden" name="utm_medium" value="${attr.utmMedium}">
@@ -610,6 +630,25 @@ const QuickBooking = (function() {
                     <div class="qb-field-group">
                         <label class="qb-label" for="qb-phone">Phone / WhatsApp (with country code)</label>
                         <input class="qb-input" type="tel" id="qb-phone" name="phone" placeholder="e.g. +1 555 123 4567" required>
+                    </div>
+
+                    <div class="qb-field-group">
+                        <label class="qb-label" for="qb-country">Location / Country</label>
+                        <input class="qb-input" type="text" id="qb-country" name="country" placeholder="e.g. United Kingdom, USA, Nigeria" value="${attr.country && attr.country !== 'Global' ? attr.country : ''}" required>
+                    </div>
+
+                    <div class="qb-field-group">
+                        <label class="qb-label" for="qb-lead-source">How Did You Hear About Us?</label>
+                        <select class="qb-input" id="qb-lead-source" name="lead_source" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="Google Search">Google Search</option>
+                            <option value="Social Media (Instagram/Facebook/TikTok)">Social Media</option>
+                            <option value="Word of Mouth / Referral">Word of Mouth / Referral</option>
+                            <option value="WhatsApp Community">WhatsApp Community</option>
+                            <option value="School / Teacher Recommendation">School / Teacher</option>
+                            <option value="Online Ad">Online Ad</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                 </div>
                 
@@ -669,7 +708,8 @@ const QuickBooking = (function() {
         const attr = getAttributionData();
 
         const country = formData.get('country') || attr.country || 'Global';
-        const utmSource = formData.get('utm_source') || attr.utmSource || 'direct';
+        const leadSource = formData.get('lead_source') || formData.get('utm_source') || attr.utmSource || 'direct';
+        const utmSource = leadSource;
         const utmCampaign = formData.get('utm_campaign') || attr.utmCampaign || '';
         const referrer = formData.get('referrer') || attr.referrer || 'direct';
         const timeZone = formData.get('time_zone') || attr.timeZone || '';
@@ -677,6 +717,8 @@ const QuickBooking = (function() {
 
         // Guarantee hidden attributes exist in formData for Netlify forms
         formData.set('country', country);
+        formData.set('location', country);
+        formData.set('lead_source', leadSource);
         formData.set('utm_source', utmSource);
         formData.set('utm_campaign', utmCampaign);
         formData.set('referrer', referrer);
@@ -691,6 +733,8 @@ const QuickBooking = (function() {
             phone: formData.get('phone'),
             contactPref: formData.get('contact_pref'),
             country: country,
+            location: country,
+            leadSource: leadSource,
             utmSource: utmSource,
             utmCampaign: utmCampaign,
             referrer: referrer,
@@ -762,6 +806,8 @@ const QuickBooking = (function() {
                     phone:       data.phone,
                     contactPref: data.contactPref,
                     country:     data.country,
+                    location:    data.location || data.country,
+                    leadSource:  data.leadSource || data.utmSource,
                     ageGroup:    data.ageGroup,
                     utmSource:   data.utmSource
                 }
@@ -785,10 +831,10 @@ const QuickBooking = (function() {
 Parent Name: ${data.parentName}
 Email: ${data.email}
 Phone: ${data.phone}
-Country: ${data.country || 'Global'}
+Country / Location: ${data.country || 'Global'}
+Lead Source: ${data.leadSource || data.utmSource || 'direct'}
 Age Group: ${data.ageGroup || 'N/A'}
 Contact Pref: ${data.contactPref}
-Source: ${data.utmSource || 'direct'}
 Booking ID: ${data.bookingId}
         `.trim();
 
@@ -953,6 +999,8 @@ Booking ID: ${data.bookingId}
                 email: data.email,
                 phone: data.phone,
                 country: data.country || 'Global',
+                location: data.location || data.country || 'Global',
+                leadSource: data.leadSource || data.utmSource || 'direct',
                 utmSource: data.utmSource || 'direct',
                 utmCampaign: data.utmCampaign || '',
                 referrer: data.referrer || '',
@@ -973,6 +1021,7 @@ Booking ID: ${data.bookingId}
                     email: data.email,
                     phone: data.phone,
                     country: data.country || 'Global',
+                    leadSource: data.leadSource || data.utmSource || 'direct',
                     isFreeTrial: true
                 });
             }
@@ -997,13 +1046,12 @@ Booking ID: ${data.bookingId}
                 <div class="glass-form text-left" style="background: rgba(255, 255, 255, 0.88); border: none; border-radius: 16px; padding: 2rem; box-shadow: 0 20px 40px -10px rgba(10, 25, 50, 0.08); box-sizing: border-box;">
                     <div id="quick-booking-form-wrap">
                         <div class="qb-header-badge" style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#2563eb; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; padding:4px 10px; border-radius:100px; margin-bottom:0.75rem;">
-                            <span>⏱️ 45-Minute 1-on-1 Assessment</span>
+                            <span>45-Minute 1-on-1 Assessment</span>
                         </div>
                         <h2 class="qb-title" style="margin-top:0;">Free Coding Discovery Session</h2>
                         <p class="qb-subtitle">A live 1-on-1 session with a senior mentor: 10m assessment & goals, 25m interactive build, 10m personalized learning roadmap.</p>
                         <form id="qb-booking-form" name="free-class-booking">
                             <input type="hidden" name="form-name" value="free-class-booking">
-                            <input type="hidden" name="country" value="${attr.country}">
                             <input type="hidden" name="utm_source" value="${attr.utmSource}">
                             <input type="hidden" name="utm_medium" value="${attr.utmMedium}">
                             <input type="hidden" name="utm_campaign" value="${attr.utmCampaign}">
@@ -1030,6 +1078,25 @@ Booking ID: ${data.bookingId}
                                 <div class="qb-field-group">
                                     <label class="qb-label" for="qb-phone">Phone / WhatsApp Number</label>
                                     <input class="qb-input" type="tel" id="qb-phone" name="phone" placeholder="e.g. +1 (555) 234-5678" required>
+                                </div>
+
+                                <div class="qb-field-group">
+                                    <label class="qb-label" for="qb-country">Location / Country</label>
+                                    <input class="qb-input" type="text" id="qb-country" name="country" placeholder="e.g. United Kingdom, USA, Nigeria" value="${attr.country && attr.country !== 'Global' ? attr.country : ''}" required>
+                                </div>
+
+                                <div class="qb-field-group">
+                                    <label class="qb-label" for="qb-lead-source">How Did You Hear About Us?</label>
+                                    <select class="qb-input" id="qb-lead-source" name="lead_source" required>
+                                        <option value="" disabled selected>Select an option</option>
+                                        <option value="Google Search">Google Search</option>
+                                        <option value="Social Media (Instagram/Facebook/TikTok)">Social Media</option>
+                                        <option value="Word of Mouth / Referral">Word of Mouth / Referral</option>
+                                        <option value="WhatsApp Community">WhatsApp Community</option>
+                                        <option value="School / Teacher Recommendation">School / Teacher</option>
+                                        <option value="Online Ad">Online Ad</option>
+                                        <option value="Other">Other</option>
+                                    </select>
                                 </div>
                             </div>
                             

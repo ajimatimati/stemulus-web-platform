@@ -358,35 +358,49 @@ const DashboardEngine = (function() {
                     localStorage.setItem("stemulus_db", JSON.stringify(parsed));
                 }
             }
-            // Ensure tutors array exists and includes core tutors (especially Olalekan Israel Ajimati)
+            // Ensure tutors array exists and includes all core verified tutors
+            const coreVerifiedTutors = [
+                { id: "tut-101", name: "Sarah Jane", email: "tutor@stemuluskidstech.com", phone: "+2348011223344", subjects: ["Python Programming", "Scratch Creators"], status: "active" },
+                { id: "tut-102", name: "David Okon", email: "david.okon@stemuluskidstech.com", phone: "+2348022334455", subjects: ["Web Development", "Robotics"], status: "active" },
+                { id: "tut-103", name: "Olalekan Israel Ajimati", email: "olalekan@stemuluskidstech.com", phone: "+2347052466716", subjects: ["Python Programming", "Full-Stack Web Development", "AI & Machine Learning"], status: "active" }
+            ];
+
             if (!parsed.tutors || !Array.isArray(parsed.tutors)) {
-                parsed.tutors = JSON.parse(JSON.stringify(DEFAULT_DATA.tutors));
+                parsed.tutors = JSON.parse(JSON.stringify(coreVerifiedTutors));
                 localStorage.setItem("stemulus_db", JSON.stringify(parsed));
             } else {
-                const hasOlalekan = parsed.tutors.some(t => (t.email || '').toLowerCase() === 'olalekan@stemuluskidstech.com' || (t.name || '').toLowerCase().includes('olalekan'));
-                if (!hasOlalekan) {
-                    parsed.tutors.push({
-                        id: "tut-103",
-                        name: "Olalekan Israel Ajimati",
-                        email: "olalekan@stemuluskidstech.com",
-                        phone: "+2347052466716",
-                        subjects: ["Python Programming", "Full-Stack Web Development", "AI & Machine Learning"],
-                        status: "active"
-                    });
+                let tutorsAppended = false;
+                coreVerifiedTutors.forEach(ct => {
+                    const ctKey = ct.email.toLowerCase().trim();
+                    const exists = parsed.tutors.some(t => (t.email && t.email.toLowerCase().trim() === ctKey) || (t.id && t.id === ct.id));
+                    if (!exists) {
+                        parsed.tutors.push(ct);
+                        tutorsAppended = true;
+                    }
+                });
+                if (tutorsAppended) {
                     localStorage.setItem("stemulus_db", JSON.stringify(parsed));
                 }
             }
 
-            // Ensure Olalekan is also in parsed.users with role tutor
+            // Ensure core tutors also exist in parsed.users with role tutor
             parsed.users = parsed.users || {};
-            if (!parsed.users['olalekan@stemuluskidstech.com']) {
-                parsed.users['olalekan@stemuluskidstech.com'] = {
-                    id: "usr-tut-103",
-                    name: "Olalekan Israel Ajimati",
-                    email: "olalekan@stemuluskidstech.com",
-                    role: "tutor",
-                    status: "active"
-                };
+            let usersAppended = false;
+            coreVerifiedTutors.forEach(ct => {
+                const ctKey = ct.email.toLowerCase().trim();
+                if (!parsed.users[ctKey]) {
+                    parsed.users[ctKey] = {
+                        id: "usr-" + ct.id,
+                        name: ct.name,
+                        email: ct.email,
+                        role: "tutor",
+                        phone: ct.phone,
+                        status: "active"
+                    };
+                    usersAppended = true;
+                }
+            });
+            if (usersAppended) {
                 localStorage.setItem("stemulus_db", JSON.stringify(parsed));
             }
 
@@ -417,7 +431,9 @@ const DashboardEngine = (function() {
     // Helper to save data to localStorage & Cloud
     function saveDB(db) {
         try { localStorage.setItem('stemulus_db', JSON.stringify(db)); } catch(e) { console.warn('Storage quota exceeded:', e); }
-        window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+        if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function' && typeof CustomEvent !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+        }
 
         // Broadcast updates to Firebase Firestore for cloud persistence
         if (typeof firebase !== 'undefined' && firebase.apps.length) {
@@ -438,14 +454,15 @@ const DashboardEngine = (function() {
 
     // Get currently logged-in user from session
     function getSession() {
-        const sessionStr = sessionStorage.getItem("stemulus_session") || localStorage.getItem("stemulus_session");
+        const sessionStr = (typeof sessionStorage !== 'undefined' ? sessionStorage.getItem("stemulus_session") : null) || 
+                           (typeof localStorage !== 'undefined' ? localStorage.getItem("stemulus_session") : null);
         if (!sessionStr) return null;
         try {
             const session = JSON.parse(sessionStr);
             if (session && session.issuedAt) {
                 if (Date.now() - session.issuedAt > SESSION_TTL_MS) {
-                    sessionStorage.removeItem("stemulus_session");
-                    localStorage.removeItem("stemulus_session");
+                    if (typeof sessionStorage !== 'undefined') sessionStorage.removeItem("stemulus_session");
+                    if (typeof localStorage !== 'undefined') localStorage.removeItem("stemulus_session");
                     return null;
                 }
             }
@@ -507,7 +524,8 @@ const DashboardEngine = (function() {
     }
 
     function logout() {
-        sessionStorage.clear();
+        if (typeof sessionStorage !== 'undefined') sessionStorage.clear();
+        if (typeof localStorage !== 'undefined') localStorage.removeItem('stemulus_session');
     }
 
     // --- Students Controller ---
@@ -776,11 +794,93 @@ const DashboardEngine = (function() {
             });
         }
 
-        return Object.values(tutorMap);
+        // Permanently persist all resolved tutors to db.tutors so they never vanish
+        const allResolved = Object.values(tutorMap);
+        let tutorsUpdated = false;
+        if (!Array.isArray(db.tutors)) {
+            db.tutors = allResolved;
+            tutorsUpdated = true;
+        } else {
+            allResolved.forEach(t => {
+                const exists = db.tutors.some(existing => 
+                    (existing.id && t.id && existing.id === t.id) ||
+                    (existing.email && t.email && existing.email.toLowerCase().trim() === t.email.toLowerCase().trim())
+                );
+                if (!exists) {
+                    db.tutors.push(t);
+                    tutorsUpdated = true;
+                }
+            });
+        }
+        if (tutorsUpdated) {
+            saveDB(db);
+        }
+
+        return allResolved;
     }
 
     // --- Schedules Controller ---
+    function reconcileHeldSchedules() {
+        const db = getDB();
+        if (!db.schedules || !Array.isArray(db.schedules)) return [];
+        const logs = db.attendanceRecords || [];
+        const now = Date.now();
+        let changed = false;
+
+        db.schedules.forEach(s => {
+            if (!s) return;
+            const currentAttStatus = (s.attendanceStatus || 'pending').toLowerCase();
+            const currentStatus = (s.status || '').toLowerCase();
+
+            // If already marked present or done, synchronize status fields
+            if (currentAttStatus === 'present' || currentAttStatus === 'done' || currentStatus === 'done') {
+                if (s.attendanceStatus !== 'done' && s.attendanceStatus !== 'present') {
+                    s.attendanceStatus = 'done';
+                    changed = true;
+                }
+                if (s.status !== 'done') {
+                    s.status = 'done';
+                    changed = true;
+                }
+                return;
+            }
+
+            // Check if there is an attendance log already filed for this session
+            const hasAttendedLog = logs.some(l => 
+                (l.scheduleId && s.id && l.scheduleId === s.id) ||
+                (l.classDate && s.date && l.classDate === s.date && (
+                    (l.studentId && s.studentId && l.studentId === s.studentId) ||
+                    (l.studentName && s.studentName && l.studentName.toLowerCase().trim() === s.studentName.toLowerCase().trim())
+                ))
+            );
+
+            if (hasAttendedLog) {
+                s.attendanceStatus = 'done';
+                s.status = 'done';
+                changed = true;
+                return;
+            }
+
+            // Check if scheduled date & time has elapsed
+            if (s.date) {
+                const timeStr = s.time ? s.time : '23:59';
+                const sessionDateTime = new Date(`${s.date}T${timeStr.length === 5 ? timeStr : '00:00'}:00`).getTime();
+                if (!isNaN(sessionDateTime) && sessionDateTime < now) {
+                    s.attendanceStatus = 'done';
+                    s.status = 'done';
+                    changed = true;
+                }
+            }
+        });
+
+        if (changed) {
+            saveDB(db);
+        }
+        return db.schedules;
+    }
+
     function getSchedules(studentId = null) {
+        reconcileHeldSchedules();
         const db = getDB();
         if (studentId) {
             return db.schedules.filter(s => s.studentId === studentId);
@@ -838,21 +938,50 @@ const DashboardEngine = (function() {
         const mStr = monthStr || new Date().toISOString().substring(0, 7);
         const tKey = (tutorEmailOrName || '').toLowerCase().trim();
 
+        // Build set of all known aliases for this tutor
+        const aliases = new Set();
+        if (tKey) aliases.add(tKey);
+
+        const allTutors = (db.tutors || []).concat(
+            Object.values(db.users || {}).filter(u => u && u.role === 'tutor')
+        );
+        const found = allTutors.find(t => 
+            (t.email && t.email.toLowerCase().trim() === tKey) ||
+            (t.name && t.name.toLowerCase().trim() === tKey) ||
+            (t.id && t.id.toLowerCase().trim() === tKey) ||
+            (t.name && tKey && (t.name.toLowerCase().includes(tKey) || tKey.includes(t.name.toLowerCase())))
+        );
+        if (found) {
+            if (found.email) aliases.add(found.email.toLowerCase().trim());
+            if (found.name) aliases.add(found.name.toLowerCase().trim());
+            if (found.id) aliases.add(found.id.toLowerCase().trim());
+            const parts = (found.name || '').toLowerCase().split(/\s+/).filter(p => p.length > 2);
+            parts.forEach(p => aliases.add(p));
+        }
+
+        const isTutorMatch = (email, name, mentor) => {
+            if (!tKey) return true;
+            const e = (email || '').toLowerCase().trim();
+            const n = (name || '').toLowerCase().trim();
+            const m = (mentor || '').toLowerCase().trim();
+            if (aliases.has(e) || aliases.has(n) || aliases.has(m)) return true;
+            for (const alias of aliases) {
+                if (alias.length > 2 && (n.includes(alias) || m.includes(alias) || alias.includes(n) || alias.includes(m))) return true;
+            }
+            return false;
+        };
+
         const matchingLogs = records.filter(r => {
-            const matchesTutor = !tKey || 
-                (r.tutorEmail && r.tutorEmail.toLowerCase().trim() === tKey) ||
-                (r.tutorName && r.tutorName.toLowerCase().trim() === tKey);
+            const matchesTutor = isTutorMatch(r.tutorEmail, r.tutorName, r.mentor);
             const matchesMonth = r.classDate && r.classDate.startsWith(mStr);
-            const isValidStatus = r.status === 'approved' || r.status === 'present' || r.status === 'pending' || r.attendanceStatus === 'present';
+            const isValidStatus = r.status === 'approved' || r.status === 'present' || r.status === 'pending' || r.attendanceStatus === 'present' || r.attendanceStatus === 'done' || !r.status;
             return matchesTutor && matchesMonth && isValidStatus;
         });
 
         const matchingSchedules = schedules.filter(s => {
-            const matchesTutor = !tKey || 
-                (s.mentor && s.mentor.toLowerCase().trim() === tKey) ||
-                (s.tutorEmail && s.tutorEmail.toLowerCase().trim() === tKey);
+            const matchesTutor = isTutorMatch(s.tutorEmail, null, s.mentor);
             const matchesMonth = s.date && s.date.startsWith(mStr);
-            const isCompleted = s.attendanceStatus === 'present';
+            const isCompleted = s.attendanceStatus === 'present' || s.attendanceStatus === 'done' || s.status === 'done';
             const alreadyInLogs = matchingLogs.some(l => l.classDate === s.date && (l.studentId === s.studentId || l.studentName === s.studentName));
             return matchesTutor && matchesMonth && isCompleted && !alreadyInLogs;
         });
@@ -891,11 +1020,27 @@ const DashboardEngine = (function() {
         const totalSessions = matchingLogs.length + matchingSchedules.length;
         const totalHours = Math.round((totalMinutes / 60) * 10) / 10;
 
+        // Calculate admin approved sessions and payout ($25.00/hr)
+        const approvedLogs = matchingLogs.filter(r => r.status === 'approved');
+        let approvedMinutes = 0;
+        approvedLogs.forEach(r => {
+            approvedMinutes += (parseInt(r.duration, 10) || 60);
+        });
+        const approvedSessions = approvedLogs.length;
+        const approvedHours = Math.round((approvedMinutes / 60) * 10) / 10;
+        const hourlyRate = 25.00;
+        const approvedPayout = parseFloat((approvedHours * hourlyRate).toFixed(2));
+
         return {
             month: mStr,
             totalSessions: totalSessions,
             totalHours: totalHours,
             totalMinutes: totalMinutes,
+            approvedSessions: approvedSessions,
+            approvedHours: approvedHours,
+            approvedMinutes: approvedMinutes,
+            approvedPayout: approvedPayout,
+            hourlyRate: hourlyRate,
             studentStats: studentStats
         };
     }
@@ -1540,8 +1685,22 @@ const DashboardEngine = (function() {
         const session = getSession();
         const db = getDB();
         if (!session) return null;
+
+        const sName = (session.name || '').toLowerCase().trim();
+        const sEmail = (session.email || '').toLowerCase().trim();
+        const sTokens = sName.split(/\s+/).filter(t => t.length > 2);
+
+        const isTutorMatch = (mentor, tutorEmail) => {
+            const m = (mentor || '').toLowerCase().trim();
+            const e = (tutorEmail || '').toLowerCase().trim();
+            if (sEmail && (e === sEmail || m === sEmail)) return true;
+            if (sName && (m === sName || m.includes(sName) || sName.includes(m))) return true;
+            if (sTokens.length > 0 && sTokens.some(t => m.includes(t))) return true;
+            return false;
+        };
+
         const tutorSchedules = (db.schedules || []).filter(s => 
-            (s.mentor === session.name || s.tutorEmail === session.email) && s.attendanceStatus === 'pending'
+            isTutorMatch(s.mentor, s.tutorEmail) && s.attendanceStatus === 'pending'
         );
         if (tutorSchedules.length > 0) {
             const sched = tutorSchedules[0];
@@ -1552,6 +1711,21 @@ const DashboardEngine = (function() {
                 scheduleId: sched.id,
                 time: sched.time,
                 date: sched.date
+            };
+        }
+
+        // Resilient fallback: If no pending schedule, return the first assigned student
+        const tutorStudents = getTutorStudents(session.email);
+        if (tutorStudents && tutorStudents.length > 0) {
+            const first = tutorStudents[0];
+            const fullName = (first.firstName && first.lastName) ? `${first.firstName} ${first.lastName}` : (first.firstName || first.name || 'Student');
+            return {
+                id: first.id,
+                name: fullName,
+                course: first.program || 'Python Programming',
+                scheduleId: '',
+                time: '16:00',
+                date: new Date().toISOString().split('T')[0]
             };
         }
         return null;
@@ -1722,8 +1896,10 @@ const DashboardEngine = (function() {
                 experience: enr.experience,
                 program: enr.program,
                 status: "active",
-                parentEmail: enr.email,
-                parentName: enr.parentName,
+                parentEmail: enr.parentEmail || enr.email || "",
+                parentName: enr.parentName || "",
+                studentEmail: enr.studentEmail || "",
+                mediaConsent: enr.mediaConsent !== false,
                 birthday: (enr.studentBirthday && typeof enr.studentBirthday === 'string' && enr.studentBirthday.trim().length >= 10) ? enr.studentBirthday.trim() : "",
                 hasExplicitBirthday: !!(enr.studentBirthday && enr.studentBirthday.trim()),
                 fatherName: enr.fatherName || "",
@@ -2181,6 +2357,27 @@ const DashboardEngine = (function() {
                 password: hashed,
                 createdAt: new Date().toISOString()
             };
+            db.tutors = db.tutors || [];
+            var existingTutorIdx = db.tutors.findIndex(function(t){
+                return (t.email && t.email.toLowerCase().trim() === tutorEmail) ||
+                       (t.name && params.name && t.name.toLowerCase().trim() === params.name.toLowerCase().trim());
+            });
+            if (existingTutorIdx === -1) {
+                db.tutors.push({
+                    id: 'tut-' + Date.now(),
+                    name: params.name || 'Tutor',
+                    email: tutorEmail,
+                    phone: params.phone || '',
+                    subjects: params.program ? [params.program] : ['General Coding'],
+                    status: 'active',
+                    createdAt: new Date().toISOString()
+                });
+            } else {
+                db.tutors[existingTutorIdx].name = params.name || db.tutors[existingTutorIdx].name;
+                db.tutors[existingTutorIdx].email = tutorEmail;
+                if (params.phone) db.tutors[existingTutorIdx].phone = params.phone;
+                db.tutors[existingTutorIdx].status = 'active';
+            }
             db.notifications = db.notifications || [];
             db.notifications.push({
                 id: 'not-' + Date.now(),
@@ -2643,6 +2840,7 @@ const DashboardEngine = (function() {
         deleteStudent,
         getTutors,
         getSchedules,
+        reconcileHeldSchedules,
         addSchedule,
         updateSchedule,
         deleteSchedule,
@@ -2799,3 +2997,13 @@ const DashboardEngine = (function() {
 
 // Auto-initialize default seed accounts on first load
 DashboardEngine.initDefaultAccounts();
+
+if (typeof window !== 'undefined') {
+    window.DashboardEngine = DashboardEngine;
+}
+if (typeof globalThis !== 'undefined') {
+    globalThis.DashboardEngine = DashboardEngine;
+}
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = DashboardEngine;
+}

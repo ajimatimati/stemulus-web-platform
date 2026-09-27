@@ -137,6 +137,18 @@ const EnrollmentHandler = (function() {
                 }
             }
             
+            // Media & Social celebration consent check
+            var mediaConsent = true;
+            if (formData.has('media_consent')) {
+                var mcVal = formData.get('media_consent');
+                mediaConsent = (mcVal === 'granted' || mcVal === 'on' || mcVal === 'true' || mcVal === true);
+            } else {
+                var mediaConsentInput = form.querySelector('[name="media_consent"]');
+                if (mediaConsentInput) {
+                    mediaConsent = mediaConsentInput.checked;
+                }
+            }
+
             const enrollmentData = {
                 // Primary child info (for backwards compatibility)
                 studentFirstName: childrenArray[0]?.firstName || formData.get('student_first_name'),
@@ -150,8 +162,10 @@ const EnrollmentHandler = (function() {
                 // Parent info
                 parentName: formData.get('parent_name'),
                 email: formData.get('email'),
+                parentEmail: formData.get('email'),
                 phone: formData.get('phone'),
                 referral: formData.get('referral') || 'Not specified',
+                mediaConsent: mediaConsent,
                 // Father & Mother detailed info
                 fatherName: formData.get('father_name') || '',
                 fatherPhone: formData.get('father_phone') || '',
@@ -233,11 +247,14 @@ const EnrollmentHandler = (function() {
                     studentFirstName:  data.studentFirstName,
                     studentLastName:   data.studentLastName,
                     studentAge:        data.studentAge,
+                    studentEmail:      data.studentEmail || '',
+                    parentEmail:       data.parentEmail || data.email,
                     program:           data.program,
                     parentName:        data.parentName,
                     email:             data.email,
                     phone:             data.phone,
                     referral:          data.referral,
+                    mediaConsent:      data.mediaConsent ? 'Granted' : 'Declined',
                     children:          data.children || [],
                 }
             })
@@ -278,7 +295,9 @@ Children:
 ${childrenSummary}
 
 Parent: ${data.parentName}
-Email: ${data.email}
+Parent Email: ${data.parentEmail || data.email}
+Student Email: ${data.studentEmail || 'None provided'}
+Media / Social Consent: ${data.mediaConsent ? 'Granted' : 'Declined'}
 Phone: ${data.phone}
 Source: ${data.referral}
 Time: ${new Date().toLocaleTimeString()}
@@ -427,11 +446,15 @@ Time: ${new Date().toLocaleTimeString()}
                     studentLastName: data.studentLastName,
                     studentAge: data.studentAge,
                     studentGender: data.studentGender,
+                    studentBirthday: data.studentBirthday || '',
+                    studentEmail: data.studentEmail || '',
                     experience: data.experience,
                     program: data.program,
                     parentName: data.parentName,
                     email: data.email,
+                    parentEmail: data.parentEmail || data.email,
                     phone: data.phone,
+                    mediaConsent: data.mediaConsent !== false,
                     children: data.children || [],
                     timestamp: new Date().toISOString(),
                     source: 'public_form',
@@ -447,11 +470,20 @@ Time: ${new Date().toLocaleTimeString()}
                     studentLastName: data.studentLastName,
                     studentAge: data.studentAge,
                     studentGender: data.studentGender,
+                    studentBirthday: data.studentBirthday || '',
+                    studentEmail: data.studentEmail || '',
                     experience: data.experience,
                     program: data.program,
                     parentName: data.parentName,
                     email: data.email,
-                    phone: data.phone
+                    parentEmail: data.parentEmail || data.email,
+                    phone: data.phone,
+                    mediaConsent: data.mediaConsent !== false,
+                    fatherName: data.fatherName || '',
+                    fatherPhone: data.fatherPhone || '',
+                    motherName: data.motherName || '',
+                    motherPhone: data.motherPhone || '',
+                    children: data.children || []
                 };
                 DashboardEngine.addEnrollment(enrData);
                 console.log('[Enrollment] Synced with DashboardEngine');

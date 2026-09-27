@@ -1323,29 +1323,39 @@ const BadgePassportEngine = (function() {
                 ).length;
             }
             
-            // Enrollment duration in months
-            let monthsSinceEnrolled = 1;
+            // 1. Enrollment duration in months
+            let timeMonths = 1;
             if (student.enrolledDate || student.createdAt) {
                 const enrolled = new Date(student.enrolledDate || student.createdAt);
                 const now = new Date();
                 const diffTime = Math.max(0, now - enrolled);
                 const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                monthsSinceEnrolled = Math.max(1, Math.floor(diffDays / 30) + 1);
-            } else if (student.metrics && student.metrics.attended) {
-                monthsSinceEnrolled = Math.max(1, Math.ceil(student.metrics.attended / 4));
-            } else if (attendedCount > 0) {
-                monthsSinceEnrolled = Math.max(1, Math.ceil(attendedCount / 4));
-            }
-            
-            // Demo student defaults
-            if (student.id === 'std-1001' || (student.firstName === 'Daniel' && student.lastName === 'M.')) {
-                monthsSinceEnrolled = Math.max(monthsSinceEnrolled, 4);
-            }
-            if (student.id === 'std-1002' || (student.firstName === 'Sarah' && student.lastName === 'M.')) {
-                monthsSinceEnrolled = Math.max(monthsSinceEnrolled, 2);
+                timeMonths = Math.max(1, Math.floor(diffDays / 30) + 1);
             }
 
-            unlockedCount = Math.min(48, Math.max(1, monthsSinceEnrolled));
+            // 2. Attendance-based months (every 4 attended sessions = 1 curriculum month)
+            const attendanceSessions = Math.max(
+                attendedCount,
+                (student.metrics && student.metrics.attended) ? parseInt(student.metrics.attended, 10) : 0,
+                student.classesAttended ? parseInt(student.classesAttended, 10) : 0
+            );
+            const attendanceMonths = attendanceSessions > 0 ? Math.ceil(attendanceSessions / 4) : 1;
+
+            // 3. Explicit month level if designated
+            const explicitMonth = parseInt(student.currentMonth || student.badgeMonth || student.monthLevel, 10) || 0;
+
+            // Harmonize progression indicators
+            let progressiveMonths = Math.max(timeMonths, attendanceMonths, explicitMonth);
+            
+            // Demo student defaults for standard showcases
+            if (student.id === 'std-1001' || (student.firstName === 'Daniel' && student.lastName === 'M.')) {
+                progressiveMonths = Math.max(progressiveMonths, 4);
+            }
+            if (student.id === 'std-1002' || (student.firstName === 'Sarah' && student.lastName === 'M.')) {
+                progressiveMonths = Math.max(progressiveMonths, 2);
+            }
+
+            unlockedCount = Math.min(48, Math.max(1, progressiveMonths));
         }
 
         const currentBadge = getBadge(unlockedCount);
