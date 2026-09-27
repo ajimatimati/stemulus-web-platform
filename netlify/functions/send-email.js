@@ -347,131 +347,146 @@ function tplContactAdmin(d) {
 
 /**
  * World-Class Parent Welcome Onboarding Email
- * Solves all prior contrast issues (eliminates navy gradient with illegible subtext/passwords).
- * Pristine typography, clean credential cards, bulletproof responsive layout, zero emojis.
+ * Matches exact structured reference specifications:
+ * 1. Live Coding Sessions (Google Meet, WAT GMT+1 schedule)
+ * 2. Google Classroom Learning Hub (materials, assignments, projects)
+ * 3. Parent Portal Credentials (URL, email, temporary password, report tracking)
+ * Pristine typography, clean high-contrast containers, zero emojis.
  */
 function tplWelcome(d) {
-  const meetLink = d.meetLink || d.googleMeetLink || 'https://meet.google.com/stm-prog-live';
-  const scheduleText = d.classSchedule || d.scheduleText || 'As agreed with your Academic Coordinator';
-
-  const steps = [
-    { n: '01', t: 'Access the Parent Portal', d: 'Log in using your designated account email and secure temporary password below.' },
-    { n: '02', t: 'Update Security Credentials', d: 'Navigate to Portal Settings to set your permanent, private password.' },
-    { n: '03', t: 'Review Schedule & Join Sessions', d: d.classroomLink ? `Join class sessions via Google Meet and access class materials on Google Classroom.` : `Access live 1-on-1 coding sessions via Google Meet at your scheduled times.` },
-    { n: '04', t: 'Track Weekly & Monthly Milestones', d: 'Receive structured progress reports, skill mastery ratings, and monthly progression badges.' }
-  ];
-
-  const stepRows = steps.map(s => `
-    <tr>
-      <td style="padding:10px 0;vertical-align:top;width:34px;">
-        <div style="width:26px;height:26px;border-radius:6px;background-color:${C.slate800};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-weight:800;font-size:11px;text-align:center;line-height:26px;">${s.n}</div>
-      </td>
-      <td style="padding:8px 0 10px 10px;vertical-align:top;">
-        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};display:block;">${s.t}</span>
-        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:${C.slate600};line-height:1.5;display:block;margin-top:2px;">${s.d}</span>
-      </td>
-    </tr>
-  `).join('');
+  const studentName = d.studentName || d.studentFirstName || 'Young Innovator';
+  const parentName = d.parentName || d.parentSalutation || 'Ma/Sir';
+  const scheduleText = d.classSchedule || d.scheduleText || 'Wednesday 4:00 PM • Friday 4:00 PM (WAT, GMT+1)';
+  const meetLink = d.meetLink || d.googleMeetLink || 'https://meet.google.com/gyd-fewb-cdh';
+  const classroomLink = d.classroomLink || 'https://classroom.google.com/c/ODg2NTc4NzE1MTgz?cjc=sfgboast';
+  const parentEmail = d.parentEmail || d.email || 'parent@stemuluskidstech.com';
+  const tempPassword = d.tempPassword || 'STEM-2026';
 
   return {
-    subject: `Welcome to STEMulus: Official Portal Credentials for ${d.studentName}`,
-    html: shell(`Welcome, ${d.parentName}!`, `
-      <h1>Welcome to STEMulus Kids Technologies</h1>
-      <p>Dear <strong>${d.parentName}</strong>,</p>
-      <p>We are delighted to welcome <strong>${d.studentName}</strong> to the <strong>${d.courseName || 'STEMulus Coding Program'}</strong>. Your student account has been successfully configured.</p>
+    subject: `Parents Welcome to STEMulus Kids Tech: Official Onboarding for ${studentName}`,
+    html: shell(`Welcome to STEMulus Kids Tech`, `
+      <h1>Parents Welcome to STEMulus Kids Tech</h1>
+      <p style="font-size:15px;color:${C.navy};margin:0 0 16px 0;">Dear <strong>${parentName}</strong>,</p>
+      <p style="font-size:14px;color:${C.slate600};line-height:1.65;margin:0 0 20px 0;">
+        We are pleased to welcome <strong>${studentName}</strong> to STEMulus Kids Tech. We are excited to have a new coder join our community and look forward to supporting the development of coding and technology skills.<br><br>
+        To help you get started, please find the key information below.
+      </p>
 
-      <!-- Executive Credential Card (High Contrast) -->
-      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:24px;margin:26px 0;">
-        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:6px;margin-bottom:16px;">
-          Portal Access Credentials
+      <!-- Section 1: LIVE CODING SESSIONS -->
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:6px;margin-bottom:12px;">
+          Live Coding Sessions
         </div>
-        <p style="margin:0 0 16px 0;font-size:13px;color:${C.slate600};">Use these credentials to access your centralized Parent Dashboard:</p>
-        
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:10px;overflow:hidden;">
+        <p style="font-size:13px;color:${C.slate600};line-height:1.6;margin:0 0 16px 0;">
+          Coding classes will be conducted live online via Google Meet. The same meeting link will be used for all scheduled sessions.
+        </p>
+
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:10px;overflow:hidden;margin-bottom:14px;">
           <tr>
-            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;width:38%;">Portal Email</td>
-            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.parentEmail}</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;width:38%;">Class Schedule</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${scheduleText}</td>
           </tr>
           <tr>
-            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Temporary Password</td>
-            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};">
-              <span style="font-family:'SF Mono',Consolas,Monaco,monospace;font-size:15px;font-weight:700;color:${C.navy};background-color:${C.slate100};border:1px solid ${C.slate200};padding:4px 10px;border-radius:6px;letter-spacing:0.05em;display:inline-block;">${d.tempPassword}</span>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Class Schedule</td>
-            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;color:${C.navy};">${scheduleText}</td>
-          </tr>
-          <tr>
-            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Live Classroom Meet</td>
+            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Google Meet Link</td>
             <td style="padding:12px 16px;">
-              <a href="${meetLink}" target="_blank" style="color:${C.blue};font-weight:700;font-size:13px;text-decoration:none;">Open Google Meet Room &rarr;</a>
+              <a href="${meetLink}" target="_blank" style="color:${C.blue};font-weight:700;font-size:13px;text-decoration:none;word-break:break-all;">${meetLink}</a>
             </td>
           </tr>
-          ${d.classroomLink ? `
-          <tr>
-            <td style="padding:12px 16px;border-top:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Google Classroom</td>
-            <td style="padding:12px 16px;border-top:1px solid ${C.slate200};">
-              <a href="${d.classroomLink}" target="_blank" style="color:${C.blue};font-weight:700;font-size:13px;text-decoration:none;">Join Google Classroom &rarr;</a>
-            </td>
-          </tr>` : ''}
         </table>
 
-        <p style="margin:14px 0 0 0;font-size:12px;color:${C.slate500};line-height:1.5;">
-          Security Notice: For your protection, please update your temporary password upon logging into the portal for the first time.
+        <div style="text-align:left;">
+          <a class="btn-primary" href="${meetLink}" target="_blank" style="display:inline-block;padding:10px 18px;font-size:13px;">Launch Google Meet Classroom &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Section 2: GOOGLE CLASSROOM -->
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:6px;margin-bottom:12px;">
+          Google Classroom (Learning Hub)
+        </div>
+        <p style="font-size:13px;color:${C.slate600};line-height:1.6;margin:0 0 16px 0;">
+          Google Classroom will serve as the learning hub. This is where learning materials will be accessed, assignments will be received, projects will be submitted, and communication with the tutor can take place when needed outside live class sessions.
         </p>
+
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:10px;overflow:hidden;margin-bottom:14px;">
+          <tr>
+            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;width:38%;">Classroom Invite</td>
+            <td style="padding:12px 16px;">
+              <a href="${classroomLink}" target="_blank" style="color:${C.blue};font-weight:700;font-size:13px;text-decoration:none;word-break:break-all;">${classroomLink}</a>
+            </td>
+          </tr>
+        </table>
+
+        <p style="font-size:12px;color:${C.slate500};line-height:1.5;margin:0 0 14px 0;">
+          Note: You may use an existing Google account or create a separate account for the coder.
+        </p>
+
+        <div style="text-align:left;">
+          <a class="btn-secondary" href="${classroomLink}" target="_blank" style="display:inline-block;padding:10px 18px;font-size:13px;">Open Google Classroom &rarr;</a>
+        </div>
       </div>
 
-      <!-- Action Buttons -->
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
-        <tr>
-          <td class="grid-cell" style="padding-right:8px;padding-bottom:8px;" width="50%">
-            <a class="btn-primary" href="${SITE_URL}/parent-login.html" style="display:block;">Log In to Parent Portal &rarr;</a>
-          </td>
-          <td class="grid-cell" style="padding-left:8px;padding-bottom:8px;" width="50%">
-            <a class="btn-secondary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi, I received my STEMulus welcome email for ' + d.studentName + '. Ready to get started!')}" target="_blank" style="display:block;">Connect on WhatsApp</a>
-          </td>
-        </tr>
-      </table>
+      <!-- Section 3: PARENT PORTAL ACCESS -->
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:6px;margin-bottom:12px;">
+          Parent Portal
+        </div>
+        <p style="font-size:13px;color:${C.slate600};line-height:1.6;margin:0 0 16px 0;">
+          You also have full access to our official Parent Portal, which allows you to stay informed about the learning journey, view session attendance records, inspect monthly badge progression, and track real-time progress reports.
+        </p>
 
-      <!-- Next Steps Checklist -->
-      <div style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:14px;padding:22px 24px;margin-bottom:24px;">
-        <h2 style="font-size:15px;margin-bottom:14px;color:${C.navy};text-transform:uppercase;letter-spacing:0.04em;">Onboarding Roadmap</h2>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0">${stepRows}</table>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:10px;overflow:hidden;margin-bottom:14px;">
+          <tr>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;width:38%;">Portal URL</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};">
+              <a href="${SITE_URL}/parent-login.html" target="_blank" style="color:${C.blue};font-weight:700;font-size:13px;text-decoration:none;">${SITE_URL}/parent-login.html</a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Login Email</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${parentEmail}</td>
+          </tr>
+          <tr>
+            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Temporary Password</td>
+            <td style="padding:12px 16px;">
+              <span style="font-family:'SF Mono',Consolas,Monaco,monospace;font-size:15px;font-weight:800;color:${C.navy};background-color:${C.slate100};border:1px solid ${C.slate200};padding:4px 10px;border-radius:6px;letter-spacing:0.05em;display:inline-block;">${tempPassword}</span>
+            </td>
+          </tr>
+        </table>
+
+        <p style="font-size:12px;color:${C.slate500};line-height:1.5;margin:0 0 14px 0;">
+          Instructions: Sign in using your registered email and temporary password above. You will be prompted to create your secure permanent password upon first sign-in.
+        </p>
+
+        <div style="text-align:left;">
+          <a class="btn-primary" href="${SITE_URL}/parent-login.html" target="_blank" style="display:inline-block;padding:10px 18px;font-size:13px;">Sign In to Parent Portal &rarr;</a>
+        </div>
       </div>
 
-      <!-- Portal Capabilities -->
-      <div style="background-color:${C.slate50};border-left:4px solid ${C.navy};border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:24px;">
-        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:800;color:${C.navy};text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:10px;">Your Portal Capabilities</span>
+      <!-- Assistance & Support -->
+      <div style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:14px;padding:20px;margin:22px 0;">
+        <h3 style="font-size:14px;font-weight:800;color:${C.navy};text-transform:uppercase;letter-spacing:0.05em;margin:0 0 10px 0;">Assistance &amp; Inquiries</h3>
+        <p style="font-size:13px;color:${C.slate600};line-height:1.6;margin:0 0 14px 0;">
+          If you have any questions or need assistance at any point, please feel free to contact us.
+        </p>
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
-              <strong style="color:${C.navy};">Real-Time Schedule:</strong> View and sync upcoming 1-on-1 sessions.
+            <td style="padding:6px 0;font-size:13px;color:${C.slate600};">
+              <strong>WhatsApp Support:</strong> <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello STEMulus Team, following up on onboarding for ' + studentName)}" target="_blank" style="color:${C.emerald};font-weight:700;text-decoration:none;">+234 705 246 6716</a>
             </td>
           </tr>
           <tr>
-            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
-              <strong style="color:${C.navy};">Session Reports:</strong> Continuous progress analytics delivered after every class.
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
-              <strong style="color:${C.navy};">Technology Passport:</strong> 48-month progression badges tracking student mastery.
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
-              <strong style="color:${C.navy};">Verified Certificates:</strong> Cryptographically verifiable completion credentials.
+            <td style="padding:6px 0;font-size:13px;color:${C.slate600};">
+              <strong>Academic Support Email:</strong> <a href="mailto:${ADMIN_EMAIL}" style="color:${C.orange};font-weight:700;text-decoration:none;">${ADMIN_EMAIL}</a>
             </td>
           </tr>
         </table>
       </div>
 
-      <p style="margin:20px 0 0 0;font-size:14px;color:${C.slate600};line-height:1.65;">
-        If you require any assistance, reply directly to this message or contact administration at <a href="mailto:${ADMIN_EMAIL}" style="color:${C.orange};font-weight:600;">${ADMIN_EMAIL}</a>.<br><br>
-        We look forward to an inspiring and impactful learning journey with <strong>${d.studentName}</strong>.<br><br>
+      <p style="font-size:14px;color:${C.slate600};line-height:1.65;margin:24px 0 0 0;">
+        We are happy to have a new coder join STEMulus Kids Tech and look forward to a great learning experience together.<br><br>
         Sincerely,<br>
-        <strong>The STEMulus Academic Team</strong>
+        <strong style="color:${C.navy};">STEMulus Kids Tech Team</strong>
       </p>
     `)
   };
@@ -479,111 +494,135 @@ function tplWelcome(d) {
 
 /**
  * World-Class Tutor Welcome Onboarding Email
- * Elevated faculty onboarding communication, pristine contrast, zero emojis.
+ * Comprehensive faculty onboarding communication:
+ * 1. Faculty Portal Credentials
+ * 2. Live Coding Sessions & Meeting Rooms
+ * 3. Google Classroom Learning Hub Protocol
+ * 4. Attendance Logging & Monthly Payouts
  */
 function tplTutorWelcome(d) {
-  const steps = [
-    { n: '01', t: 'Access the Faculty Portal', d: 'Log in with your provided credentials, then set your personal password under Settings.' },
-    { n: '02', t: 'Inspect Assigned Student Rosters', d: 'Review your students, enrolled curriculum tracks, learning objectives, and age groups.' },
-    { n: '03', t: 'Review Session Schedule & Links', d: 'Your teaching calendar displays upcoming class slots with direct Google Meet / Zoom links.' },
-    { n: '04', t: 'Log Post-Session Attendance & Notes', d: 'Submit attendance and topic coverage immediately following each session.' },
-    { n: '05', t: 'Submit Monthly Evaluation Reports', d: 'At the conclusion of each month, submit structured progress assessments for admin payout review.' }
-  ];
-
-  const stepRows = steps.map(s => `
-    <tr>
-      <td style="padding:10px 0;vertical-align:top;width:34px;">
-        <div style="width:26px;height:26px;border-radius:6px;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-weight:800;font-size:11px;text-align:center;line-height:26px;">${s.n}</div>
-      </td>
-      <td style="padding:8px 0 10px 10px;vertical-align:top;">
-        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};display:block;">${s.t}</span>
-        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:${C.slate600};line-height:1.5;display:block;margin-top:2px;">${s.d}</span>
-      </td>
-    </tr>
-  `).join('');
+  const tutorName = d.tutorName || 'Faculty Instructor';
+  const tutorEmail = d.tutorEmail || d.email || 'tutor@stemuluskidstech.com';
+  const tempPassword = d.tempPassword || 'Tutor2026!';
+  const assignedStudents = d.assignedStudents || d.studentName || 'Available on Faculty Roster';
+  const curriculum = d.curriculum || d.courseName || d.subjects || 'Junior Scratch / Python Programming';
+  const scheduleText = d.classSchedule || d.scheduleText || 'Wednesday 4:00 PM • Friday 4:00 PM (WAT, GMT+1)';
+  const meetLink = d.meetLink || d.googleMeetLink || 'https://meet.google.com/gyd-fewb-cdh';
+  const classroomLink = d.classroomLink || 'https://classroom.google.com/c/ODg2NTc4NzE1MTgz?cjc=sfgboast';
 
   return {
-    subject: `Welcome to STEMulus Faculty: Tutor Portal Access for ${d.tutorName}`,
-    html: shell(`Welcome, ${d.tutorName}!`, `
+    subject: `Welcome to STEMulus Teaching Faculty: Portal Credentials for ${tutorName}`,
+    html: shell(`Welcome, ${tutorName}!`, `
       <h1>Welcome to the STEMulus Teaching Faculty</h1>
-      <p>Dear <strong>${d.tutorName}</strong>,</p>
-      <p>We are excited to welcome you to the STEMulus instructional team as an official mentor. Your faculty account has been established and configured.</p>
+      <p style="font-size:15px;color:${C.navy};margin:0 0 16px 0;">Dear <strong>${tutorName}</strong>,</p>
+      <p style="font-size:14px;color:${C.slate600};line-height:1.65;margin:0 0 20px 0;">
+        We are delighted to welcome you to the STEMulus instructional team. We are excited to have you guide and empower our young coders in developing critical computational, problem-solving, and technology skills.<br><br>
+        Please review your teaching credentials, assigned student schedule, and instructional protocols below.
+      </p>
 
-      <!-- Faculty Credentials Card -->
-      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:24px;margin:26px 0;">
-        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:6px;margin-bottom:16px;">
+      <!-- Section 1: FACULTY PORTAL CREDENTIALS -->
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:6px;margin-bottom:12px;">
           Faculty Portal Credentials
         </div>
-        <p style="margin:0 0 16px 0;font-size:13px;color:${C.slate600};">Log in to manage your classes, student attendance, and monthly payout submissions:</p>
+        <p style="font-size:13px;color:${C.slate600};line-height:1.6;margin:0 0 16px 0;">
+          Your official mentor account has been provisioned. Log in to access your student roster, session calendar, attendance logging console, and monthly payroll reports.
+        </p>
 
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:10px;overflow:hidden;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:10px;overflow:hidden;margin-bottom:14px;">
           <tr>
-            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;width:38%;">Faculty Email</td>
-            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${d.tutorEmail}</td>
-          </tr>
-          <tr>
-            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Temporary Password</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;width:38%;">Portal URL</td>
             <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};">
-              <span style="font-family:'SF Mono',Consolas,Monaco,monospace;font-size:15px;font-weight:700;color:${C.navy};background-color:${C.slate100};border:1px solid ${C.slate200};padding:4px 10px;border-radius:6px;letter-spacing:0.05em;display:inline-block;">${d.tempPassword}</span>
+              <a href="${SITE_URL}/parent-login.html?role=tutor" target="_blank" style="color:${C.blue};font-weight:700;font-size:13px;text-decoration:none;">${SITE_URL}/parent-login.html?role=tutor</a>
             </td>
           </tr>
-          ${d.subjects ? `
           <tr>
-            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Assigned Domain</td>
-            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;color:${C.navy};">${d.subjects}</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Faculty Email</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${tutorEmail}</td>
+          </tr>
+          <tr>
+            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Temporary Password</td>
+            <td style="padding:12px 16px;">
+              <span style="font-family:'SF Mono',Consolas,Monaco,monospace;font-size:15px;font-weight:800;color:${C.navy};background-color:${C.slate100};border:1px solid ${C.slate200};padding:4px 10px;border-radius:6px;letter-spacing:0.05em;display:inline-block;">${tempPassword}</span>
+            </td>
+          </tr>
+        </table>
+
+        <div style="text-align:left;">
+          <a class="btn-primary" href="${SITE_URL}/parent-login.html?role=tutor" target="_blank" style="display:inline-block;padding:10px 18px;font-size:13px;">Sign In to Faculty Portal &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Section 2: LIVE CODING SESSIONS -->
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <div style="display:inline-block;background-color:${C.navy};color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:6px;margin-bottom:12px;">
+          Live Classroom &amp; Assigned Students
+        </div>
+
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:10px;overflow:hidden;margin-bottom:14px;">
+          <tr>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;width:38%;">Assigned Student(s)</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${assignedStudents}</td>
+          </tr>
+          <tr>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Curriculum Pathway</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:600;color:${C.navy};">${curriculum}</td>
+          </tr>
+          <tr>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Teaching Schedule</td>
+            <td style="padding:12px 16px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${scheduleText}</td>
+          </tr>
+          <tr>
+            <td style="padding:12px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Persistent Meet Link</td>
+            <td style="padding:12px 16px;">
+              <a href="${meetLink}" target="_blank" style="color:${C.blue};font-weight:700;font-size:13px;text-decoration:none;word-break:break-all;">${meetLink}</a>
+            </td>
+          </tr>
+          ${classroomLink ? `
+          <tr>
+            <td style="padding:12px 16px;border-top:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:700;color:${C.slate600};text-transform:uppercase;letter-spacing:0.05em;">Google Classroom</td>
+            <td style="padding:12px 16px;border-top:1px solid ${C.slate200};">
+              <a href="${classroomLink}" target="_blank" style="color:${C.blue};font-weight:700;font-size:13px;text-decoration:none;word-break:break-all;">${classroomLink}</a>
+            </td>
           </tr>` : ''}
         </table>
+      </div>
 
-        <p style="margin:14px 0 0 0;font-size:12px;color:${C.slate500};line-height:1.5;">
-          Select the <strong>Tutor</strong> role tab on the login portal. Update your password upon initial sign-in.
+      <!-- Section 3: INSTRUCTIONAL PROTOCOLS -->
+      <div style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <h3 style="font-size:14px;font-weight:800;color:${C.navy};text-transform:uppercase;letter-spacing:0.05em;margin:0 0 12px 0;">Mandatory Faculty Protocols</h3>
+        <ol style="margin:0;padding-left:20px;font-size:13px;color:${C.slate600};line-height:1.7;">
+          <li><strong>Punctuality:</strong> Launch the Google Meet room 5 minutes prior to class time.</li>
+          <li><strong>Post-Session Attendance:</strong> Submit detailed session attendance logs within 2 hours of class completion via the Faculty Portal.</li>
+          <li><strong>Monthly Evaluation Reports:</strong> Submit end-of-month progress evaluations for all assigned students to finalize verified payroll disbursement ($25.00/hour).</li>
+          <li><strong>Classroom Hub:</strong> Share lesson recap notes, coding starter projects, and feedback via Google Classroom.</li>
+        </ol>
+      </div>
+
+      <!-- Assistance & Lead Coordination -->
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:20px;margin:22px 0;">
+        <h3 style="font-size:14px;font-weight:800;color:${C.navy};text-transform:uppercase;letter-spacing:0.05em;margin:0 0 10px 0;">Academic Coordination &amp; Lead Support</h3>
+        <p style="font-size:13px;color:${C.slate600};line-height:1.6;margin:0 0 14px 0;">
+          For emergency schedule adjustments, curriculum questions, or student technical assistance, contact Academic Operations immediately.
         </p>
-      </div>
-
-      <!-- Action Buttons -->
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
-        <tr>
-          <td class="grid-cell" style="padding-right:8px;padding-bottom:8px;" width="50%">
-            <a class="btn-primary" href="${SITE_URL}/parent-login.html?role=tutor" style="display:block;">Access Tutor Portal &rarr;</a>
-          </td>
-          <td class="grid-cell" style="padding-left:8px;padding-bottom:8px;" width="50%">
-            <a class="btn-secondary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi, this is ' + d.tutorName + '. I have received my STEMulus tutor portal access credentials.')}" target="_blank" style="display:block;">Confirm on WhatsApp</a>
-          </td>
-        </tr>
-      </table>
-
-      <!-- Faculty Onboarding Protocol -->
-      <div style="background-color:${C.white};border:1px solid ${C.slate200};border-radius:14px;padding:22px 24px;margin-bottom:24px;">
-        <h2 style="font-size:15px;margin-bottom:14px;color:${C.navy};text-transform:uppercase;letter-spacing:0.04em;">Faculty Onboarding Protocol</h2>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0">${stepRows}</table>
-      </div>
-
-      <!-- Portal Feature Summary -->
-      <div style="background-color:${C.slate50};border-left:4px solid ${C.navy};border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:24px;">
-        <span style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:800;color:${C.navy};text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:10px;">Faculty Dashboard Tools</span>
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
-              <strong style="color:${C.navy};">Student Rosters:</strong> Access student profiles, curriculum pathways, and learning goals.
+            <td style="padding:6px 0;font-size:13px;color:${C.slate600};">
+              <strong>WhatsApp Faculty Dispatch:</strong> <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello Academic Operations, this is ' + tutorName + ' confirming faculty onboarding.')}" target="_blank" style="color:${C.emerald};font-weight:700;text-decoration:none;">+234 705 246 6716</a>
             </td>
           </tr>
           <tr>
-            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
-              <strong style="color:${C.navy};">Attendance Logging:</strong> Submit attendance and session notes immediately following each class.
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:6px 0;font-size:13px;color:${C.slate700};">
-              <strong style="color:${C.navy};">Monthly Reports &amp; Payouts:</strong> Track approved teaching hours and submit monthly reviews.
+            <td style="padding:6px 0;font-size:13px;color:${C.slate600};">
+              <strong>Faculty Coordination Email:</strong> <a href="mailto:${ADMIN_EMAIL}" style="color:${C.orange};font-weight:700;text-decoration:none;">${ADMIN_EMAIL}</a>
             </td>
           </tr>
         </table>
       </div>
 
-      <p style="margin:20px 0 0 0;font-size:14px;color:${C.slate600};line-height:1.65;">
-        If you have questions regarding student assignments or curriculum materials, contact academic administration at <a href="mailto:${ADMIN_EMAIL}" style="color:${C.orange};font-weight:600;">${ADMIN_EMAIL}</a>.<br><br>
-        Thank you for your dedication to mentoring the next generation of technologists.<br><br>
+      <p style="font-size:14px;color:${C.slate600};line-height:1.65;margin:24px 0 0 0;">
+        We look forward to an inspiring, high-impact teaching collaboration with you.<br><br>
         Sincerely,<br>
-        <strong>The STEMulus Academic Administration</strong>
+        <strong style="color:${C.navy};">The STEMulus Academic Team</strong>
       </p>
     `)
   };
@@ -830,12 +869,14 @@ function tplCredentialsReset(d) {
 }
 
 function tplCustom(d) {
+  const isHtml = /<[a-z][\s\S]*>/i.test(d.body || '');
+  const content = isHtml ? (d.body || '') : (d.body || '').replace(/\n/g, '<br>');
   return {
     subject: d.subject || 'Communication from STEMulus Kids Technologies',
     html: shell(d.subject || 'STEMulus Communication', `
       <h1>${d.subject || 'Message from STEMulus'}</h1>
       <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:15px;color:${C.navy};line-height:1.65;margin:20px 0;">
-        ${(d.body || '').replace(/\n/g, '<br>')}
+        ${content}
       </div>
     `)
   };
@@ -900,38 +941,50 @@ async function sendViaResend(to, subject, html, attachments) {
 
 // ─── CORS Headers ─────────────────────────────────────────────────────────────
 
-const CORS = {
-  'Access-Control-Allow-Origin': 'https://stemuluskidstech.com',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-};
+function getCorsHeaders(event) {
+  const origin = (event && event.headers && (event.headers.origin || event.headers.Origin)) || '';
+  const allowed = [
+    'https://stemuluskidstech.com',
+    'https://portal.stemuluskidstech.com',
+    'https://stemulus-portal-web.netlify.app'
+  ];
+  const isAllowed = allowed.includes(origin) || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1');
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin : 'https://stemuluskidstech.com',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  };
+}
 
 // ─── Netlify Handler ──────────────────────────────────────────────────────────
 
 exports.handler = async (event) => {
+  const cors = getCorsHeaders(event);
+
   if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers: CORS, body: '' };
+    return { statusCode: 200, headers: cors, body: '' };
   }
 
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: 'Method not allowed' }) };
+    return { statusCode: 405, headers: cors, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
   let payload;
   try {
     payload = JSON.parse(event.body || '{}');
   } catch {
-    return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid JSON' }) };
+    return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'Invalid JSON' }) };
   }
 
-  const { type, data } = payload;
+  const type = payload.type;
+  const data = payload.data || payload;
 
   if (data && data.honeypot) {
-    return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true }) };
+    return { statusCode: 200, headers: cors, body: JSON.stringify({ ok: true }) };
   }
 
   if (!type || !data) {
-    return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Missing type or data' }) };
+    return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'Missing type or data' }) };
   }
 
   const types = type === 'enrollment'
@@ -959,7 +1012,7 @@ exports.handler = async (event) => {
   const allOk = results.every(r => r.ok);
   return {
     statusCode: allOk ? 200 : 207,
-    headers: CORS,
+    headers: cors,
     body: JSON.stringify({ ok: allOk, results }),
   };
 };

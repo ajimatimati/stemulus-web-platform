@@ -545,12 +545,11 @@
      </div>
    </div>
 
- <!-- ATTENDANCE ESCALATION CENTER (DASHBOARD) -->
- <div id="dashboard-attendance-escalation" class="mb-8"></div>
+ 
    <img src="images/portal/standalone/admin-shield-3d.png" alt="Admin" class="hero-3d-object animate-float-band" style="width:200px;height:200px;" loading="lazy">
  </div>
 
- <!-- Stats Cards -->
+  <!-- Stats Cards -->
  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
  <div class="admin-card rounded-2xl p-6">
  <div class="flex items-center justify-between mb-4">
@@ -2150,7 +2149,7 @@
   <!-- Modal: Email Parent Directly -->
   <div id="admin-email-parent-modal" class="fixed inset-0 z-50 hidden">
     <div class="modal-overlay absolute inset-0 bg-black/75" onclick="AdminEngine.closeModal('admin-email-parent-modal')"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl max-h-[92vh] overflow-y-auto">
       <div class="admin-card rounded-2xl p-6 sm:p-8 m-4 bg-white shadow-2xl animate-fadeIn">
         <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
           <div class="flex items-center gap-3">
@@ -2159,7 +2158,7 @@
             </div>
             <div>
               <h3 class="text-lg font-nunito font-bold text-slate-800">Dispatch Email to Parent</h3>
-              <p class="text-xs text-slate-500">Send an official parent update via email</p>
+              <p class="text-xs text-slate-500">Select an official template, configure student variables, and dispatch or queue</p>
             </div>
           </div>
           <button type="button" class="text-slate-400 hover:text-slate-700 p-1" onclick="AdminEngine.closeModal('admin-email-parent-modal')">
@@ -2167,33 +2166,101 @@
           </button>
         </div>
 
-        <form id="admin-email-parent-form" onsubmit="AdminEngine.sendParentModalEmail(event)" class="space-y-4">
+        <form id="admin-email-parent-form" onsubmit="AdminEngine.sendParentModalEmail(event, false)" class="space-y-4">
           <input type="hidden" id="aep-email" value="">
           <input type="hidden" id="aep-name" value="">
+          <input type="hidden" id="aep-student-id" value="">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Recipient Parent</label>
+              <input type="text" id="aep-recipient" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-mono cursor-not-allowed">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Associated Child / Student</label>
+              <select id="aep-student-select" onchange="AdminEngine.onParentChildChange()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 font-semibold focus:outline-none focus:border-blue-500">
+                <option value="">-- No child selected --</option>
+              </select>
+            </div>
+          </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Recipient</label>
-            <input type="text" id="aep-recipient" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-600 font-mono cursor-not-allowed">
+            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Select Email Template</label>
+            <select id="aep-template-select" onchange="AdminEngine.onParentTemplateChange()" class="w-full bg-blue-50/70 border border-blue-200 text-blue-900 rounded-xl px-3.5 py-2.5 text-sm font-bold focus:outline-none focus:border-blue-500">
+              <option value="welcome">Official Parent Onboarding &amp; Credentials (Full Welcome)</option>
+              <option value="schedule">Live Coding Session Schedule &amp; Google Meet Link</option>
+              <option value="classroom">Google Classroom Access &amp; Learning Hub</option>
+              <option value="progress">Student Progress &amp; Milestone Update</option>
+              <option value="attendance">Class Attendance &amp; Follow-up Notice</option>
+              <option value="custom">Custom Direct Notice</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Template Parameters -->
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">Template Parameters &amp; Learning Hub Links</span>
+              <span class="text-[11px] text-slate-400">Updates live in email draft</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">Child / Coder Name</label>
+                <input type="text" id="aep-student-name" oninput="AdminEngine.onParentConfigChange()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 font-semibold focus:outline-none focus:border-blue-500">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">Course / Pathway</label>
+                <input type="text" id="aep-course-name" oninput="AdminEngine.onParentConfigChange()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 font-semibold focus:outline-none focus:border-blue-500">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">Class Schedule (WAT)</label>
+                <input type="text" id="aep-schedule" oninput="AdminEngine.onParentConfigChange()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">Google Meet Link</label>
+                <input type="url" id="aep-meet-link" oninput="AdminEngine.onParentConfigChange()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 font-mono">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">Google Classroom Link</label>
+                <input type="url" id="aep-classroom-link" oninput="AdminEngine.onParentConfigChange()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 font-mono">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">Temporary Password</label>
+                <input type="text" id="aep-temp-password" oninput="AdminEngine.onParentConfigChange()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 font-mono">
+              </div>
+            </div>
           </div>
 
           <div>
             <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Subject</label>
-            <input type="text" id="aep-subject" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-500 font-semibold" placeholder="Email Subject...">
+            <input type="text" id="aep-subject" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-blue-500 font-bold" placeholder="Email Subject...">
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Message Body</label>
-            <textarea id="aep-body" rows="6" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-500 resize-none font-medium" placeholder="Write message to parent..."></textarea>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-bold text-slate-600 uppercase">Message Body &amp; Preview</label>
+              <div class="flex items-center gap-1.5 text-xs">
+                <button type="button" id="aep-tab-edit" onclick="AdminEngine.toggleEmailParentPreview(false)" class="px-2.5 py-0.5 rounded-md font-bold bg-blue-100 text-blue-700">Editor</button>
+                <button type="button" id="aep-tab-preview" onclick="AdminEngine.toggleEmailParentPreview(true)" class="px-2.5 py-0.5 rounded-md font-bold bg-slate-100 text-slate-600 hover:bg-slate-200">HTML Preview</button>
+              </div>
+            </div>
+            <textarea id="aep-body" rows="7" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 font-mono resize-y" placeholder="Write message to parent..."></textarea>
+            <div id="aep-preview" class="hidden w-full bg-white border border-slate-200 rounded-xl p-4 max-h-64 overflow-y-auto text-sm text-slate-800"></div>
           </div>
 
-          <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-            <button type="button" onclick="AdminEngine.closeModal('admin-email-parent-modal')" class="px-5 py-2.5 text-slate-500 hover:text-slate-800 font-semibold text-sm">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-100">
+            <button type="button" onclick="AdminEngine.closeModal('admin-email-parent-modal')" class="px-4 py-2.5 text-slate-500 hover:text-slate-800 font-semibold text-xs order-3 sm:order-1">
               Cancel
             </button>
-            <button type="submit" id="aep-send-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl shadow-md text-sm transition-all flex items-center gap-2">
-              <i data-lucide="send" class="w-4 h-4"></i>
-              <span>Send Email</span>
-            </button>
+            <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end order-1 sm:order-2">
+              <button type="button" onclick="AdminEngine.sendParentModalEmail(event, true)" class="px-4 py-2.5 text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-xl font-bold text-xs transition-colors flex items-center gap-1.5">
+                <i data-lucide="archive" class="w-3.5 h-3.5 text-slate-600"></i>
+                <span>Queue to Outbox</span>
+              </button>
+              <button type="submit" id="aep-send-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl shadow-md text-xs transition-all flex items-center gap-1.5">
+                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                <span>Send Email Now</span>
+              </button>
+            </div>
           </div>
         </form>
       </div>

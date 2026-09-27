@@ -27,6 +27,7 @@ const AdminEngine = (function () {
         bindLoginForm();
         checkAuth();
         initGlobalSearch();
+        loadEmailTemplates();
     }
 
     function checkAuth() {
@@ -2086,9 +2087,9 @@ function renderParentsTable(parents) {
                         <button class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors" onclick="AdminEngine.openAddChildModal('${p.email}')" title="Add Child to this Parent">
                             + Child
                         </button>
-                        <a href="mailto:${p.email}" class="text-slate-400 hover:text-blue-600 transition-colors p-1" title="Email Parent">
+                        <button type="button" class="text-slate-400 hover:text-blue-600 transition-colors p-1" onclick="AdminEngine.openEmailParentModal('${p.email}')" title="Email Parent">
                             <i data-lucide="mail" class="w-4 h-4"></i>
-                        </a>
+                        </button>
                     </div>
                 </td>
             </tr>
@@ -2221,6 +2222,9 @@ function renderStudentsTable(students) {
                 </td>
                 <td class="px-6 py-4 text-right">
                     <div class="flex items-center justify-end gap-2">
+                        <button type="button" class="text-gray-400 hover:text-blue-600 transition-colors p-1" onclick="AdminEngine.openEmailParentModal('${s.parentEmail || ''}', '${s.id}')" title="Email Parent">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                        </button>
                         <button class="text-gray-400 hover:text-admin-accent transition-colors p-1" onclick="AdminEngine.editStudent('${s.id}')" title="Edit Student">
                             <i data-lucide="edit-3" class="w-4 h-4"></i>
                         </button>
@@ -4486,7 +4490,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
             </div>
         `;
 
-        if (dashTarget) dashTarget.innerHTML = html;
+        if (dashTarget) dashTarget.innerHTML = ''; // Kept clean; escalations live exclusively in dedicated Attendance section
         if (attTarget) attTarget.innerHTML = html;
         if (window.lucide) lucide.createIcons();
     }
@@ -4993,9 +4997,398 @@ function openMessageTutorModal(tutorEmail, tutorName) {
     }
 
 
+    // ==================== PARENT EMAIL DISPATCHER & MULTI-TEMPLATE ENGINE ====================
+
+    let emailTemplatesCache = [
+        {
+            id: 'welcome',
+            name: 'Official Parent Onboarding & Credentials',
+            subject: 'Welcome to STEMulus Kids Tech - Onboarding & Class Access for {{student_name}}',
+            body: '<p>Dear {{parent_name}},</p><p>We are pleased to welcome <strong>{{student_name}}</strong> to STEMulus Kids Tech. We are excited to have a new coder join our community and look forward to supporting the development of coding and technology skills in our <strong>{{course_name}}</strong> program.</p><p>To help you get started smoothly, please find the key information below.</p><div style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:18px;margin:18px 0;"><h3 style="margin:0 0 10px 0;font-size:14px;color:#0F172A;text-transform:uppercase;letter-spacing:0.05em;">Live Coding Sessions</h3><p style="margin:0 0 12px 0;font-size:13px;color:#475569;">Coding classes will be conducted live online via Google Meet. The same meeting link will be used for all scheduled sessions.</p><ul style="margin:0;padding-left:20px;font-size:13px;color:#1E293B;"><li><strong>Class Schedule (WAT, GMT+1):</strong> {{schedule_text}}</li><li><strong>Google Meet Link:</strong> <a href="{{meet_link}}" target="_blank" style="color:#2563EB;font-weight:bold;">{{meet_link}}</a></li></ul></div><div style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:18px;margin:18px 0;"><h3 style="margin:0 0 10px 0;font-size:14px;color:#0F172A;text-transform:uppercase;letter-spacing:0.05em;">Google Classroom Learning Hub</h3><p style="margin:0 0 12px 0;font-size:13px;color:#475569;">All learning materials, project guides, and coding challenges will be shared through Google Classroom. Please note that a standard Google account is required to access the classroom.</p><p style="margin:0;font-size:13px;color:#1E293B;"><strong>Classroom Join Link:</strong> <a href="{{classroom_link}}" target="_blank" style="color:#2563EB;font-weight:bold;">{{classroom_link}}</a></p></div><div style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:18px;margin:18px 0;"><h3 style="margin:0 0 10px 0;font-size:14px;color:#0F172A;text-transform:uppercase;letter-spacing:0.05em;">Parent Portal Access</h3><p style="margin:0 0 12px 0;font-size:13px;color:#475569;">You have been provided access to the STEMulus Parent Portal where you can monitor {{student_name}}\'s learning journey, review tutor feedback, and track milestones.</p><ul style="margin:0 0 12px 0;padding-left:20px;font-size:13px;color:#1E293B;"><li><strong>Portal Link:</strong> <a href="{{portal_url}}" target="_blank" style="color:#2563EB;font-weight:bold;">{{portal_url}}</a></li><li><strong>Login Email:</strong> {{parent_email}}</li><li><strong>Temporary Password:</strong> <code style="background:#E2E8F0;padding:2px 6px;border-radius:4px;font-family:monospace;font-weight:bold;">{{temp_password}}</code></li></ul><p style="margin:0;font-size:12px;color:#64748B;">For security, please change your password upon your first login.</p></div><div style="background-color:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:18px;margin:18px 0;"><h3 style="margin:0 0 10px 0;font-size:14px;color:#0F172A;text-transform:uppercase;letter-spacing:0.05em;">Support &amp; Inquiries</h3><p style="margin:0 0 10px 0;font-size:13px;color:#475569;">If you have any questions, need schedule adjustments, or require technical assistance, please do not hesitate to reach out.</p><ul style="margin:0;padding-left:20px;font-size:13px;color:#1E293B;"><li><strong>WhatsApp:</strong> <a href="https://wa.me/2347052466716" target="_blank" style="color:#059669;font-weight:bold;">+234 705 246 6716</a></li><li><strong>Email:</strong> <a href="mailto:support@stemuluskidstech.com" style="color:#F4600C;font-weight:bold;">support@stemuluskidstech.com</a></li></ul></div><p style="margin-top:20px;font-size:14px;color:#1E293B;">Warm regards,<br><strong>STEMulus Kids Tech Team</strong></p>'
+        },
+        {
+            id: 'schedule',
+            name: 'Live Coding Session Schedule & Google Meet Link',
+            subject: 'Confirmed Live Coding Schedule & Meeting Link - {{student_name}}',
+            body: '<p>Dear {{parent_name}},</p><p>We are writing to confirm the live coding session schedule and classroom access link for <strong>{{student_name}}</strong> in the <strong>{{course_name}}</strong> program.</p><div style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:18px;margin:18px 0;"><h3 style="margin:0 0 10px 0;font-size:14px;color:#0F172A;text-transform:uppercase;letter-spacing:0.05em;">Live Class Details</h3><ul style="margin:0;padding-left:20px;font-size:13px;color:#1E293B;line-height:1.7;"><li><strong>Student:</strong> {{student_name}}</li><li><strong>Course Pathway:</strong> {{course_name}}</li><li><strong>Schedule (WAT, GMT+1):</strong> {{schedule_text}}</li><li><strong>Google Meet Link:</strong> <a href="{{meet_link}}" target="_blank" style="color:#2563EB;font-weight:bold;">{{meet_link}}</a></li></ul></div><p><strong>Session Readiness Checklist:</strong></p><ul style="font-size:13px;color:#475569;line-height:1.6;"><li>Ensure laptop or desktop computer is charged with a working webcam and microphone.</li><li>Join the Google Meet room 5 minutes prior to session commencement.</li><li>Ensure your child has their code editor or browser tab ready for hands-on practice.</li></ul><p>If you need to reschedule or have questions, reach us on WhatsApp at <a href="https://wa.me/2347052466716" style="color:#059669;font-weight:bold;">+234 705 246 6716</a> or reply directly to this email.</p><p>Best regards,<br><strong>The STEMulus Academic Team</strong></p>'
+        },
+        {
+            id: 'classroom',
+            name: 'Google Classroom Access & Learning Hub',
+            subject: 'Google Classroom Access & Learning Hub - {{student_name}}',
+            body: '<p>Dear {{parent_name}},</p><p>All curriculum resources, project starter files, assignments, and lesson recaps for <strong>{{student_name}}</strong> are organized on our dedicated Google Classroom hub.</p><div style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:18px;margin:18px 0;"><h3 style="margin:0 0 10px 0;font-size:14px;color:#0F172A;text-transform:uppercase;letter-spacing:0.05em;">Classroom Join Information</h3><p style="font-size:13px;color:#475569;margin:0 0 12px 0;">Click the link below using any Google account to join {{student_name}}\'s official classroom:</p><p style="margin:0 0 12px 0;"><a href="{{classroom_link}}" target="_blank" style="display:inline-block;background-color:#2563EB;color:#FFFFFF;padding:10px 18px;border-radius:8px;font-weight:bold;text-decoration:none;font-size:13px;">Join Google Classroom</a></p><p style="font-size:12px;color:#64748B;margin:0;">Direct Link: <a href="{{classroom_link}}" target="_blank" style="color:#2563EB;">{{classroom_link}}</a></p></div><p style="font-size:13px;color:#475569;">Through Google Classroom, {{student_name}} will:</p><ul style="font-size:13px;color:#475569;line-height:1.6;"><li>Access step-by-step project documentation and coding slides.</li><li>Submit coding project files and creative portfolio exercises.</li><li>Receive personalized mentor comments and project reviews.</li></ul><p>For any setup assistance, reach our support desk at <a href="mailto:support@stemuluskidstech.com" style="color:#F4600C;font-weight:bold;">support@stemuluskidstech.com</a>.</p><p>Warm regards,<br><strong>STEMulus Academic Operations</strong></p>'
+        },
+        {
+            id: 'progress',
+            name: 'Student Progress & Milestone Update',
+            subject: 'Student Milestone & Progress Update - {{student_name}}',
+            body: '<p>Dear {{parent_name}},</p><p>We are delighted to share a learning milestone update for <strong>{{student_name}}</strong> in the <strong>{{course_name}}</strong> curriculum at STEMulus Kids Tech.</p><div style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:18px;margin:18px 0;"><h3 style="margin:0 0 10px 0;font-size:14px;color:#0F172A;text-transform:uppercase;letter-spacing:0.05em;">Progress Highlights</h3><ul style="margin:0;padding-left:20px;font-size:13px;color:#1E293B;line-height:1.7;"><li><strong>Student:</strong> {{student_name}}</li><li><strong>Program Track:</strong> {{course_name}}</li><li><strong>Milestone:</strong> Core Computational Concepts Mastered</li><li><strong>Parent Portal:</strong> <a href="{{portal_url}}" target="_blank" style="color:#2563EB;font-weight:bold;">View Full Learning Analytics</a></li></ul></div><p style="font-size:13px;color:#475569;">{{student_name}} is demonstrating outstanding problem-solving dedication, active class participation, and creative code implementation. Detailed session logs, mentor feedback notes, and badge achievements are updated in real time on the Parent Portal.</p><p>You can sign in to the Parent Portal at any time to inspect weekly tutor evaluations and project portfolios.</p><p>Warm regards,<br><strong>The STEMulus Academic Team</strong></p>'
+        },
+        {
+            id: 'attendance',
+            name: 'Class Attendance & Academic Notice',
+            subject: 'Class Attendance & Academic Notice - {{student_name}}',
+            body: '<p>Dear {{parent_name}},</p><p>This is an official attendance and scheduling update regarding <strong>{{student_name}}</strong>\'s sessions in the <strong>{{course_name}}</strong> program.</p><div style="background-color:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:18px;margin:18px 0;"><h3 style="margin:0 0 10px 0;font-size:14px;color:#0F172A;text-transform:uppercase;letter-spacing:0.05em;">Attendance Summary</h3><ul style="margin:0;padding-left:20px;font-size:13px;color:#1E293B;line-height:1.7;"><li><strong>Student:</strong> {{student_name}}</li><li><strong>Program:</strong> {{course_name}}</li><li><strong>Scheduled Timing:</strong> {{schedule_text}}</li><li><strong>Status:</strong> Active &amp; Verified</li></ul></div><p style="font-size:13px;color:#475569;">Regular attendance and punctual participation ensure steady progression through coding projects and mastery of foundational algorithms. If you ever require an advance schedule adjustment or need to arrange a makeup session, please inform us at least 12 hours in advance.</p><p>Contact our scheduling desk directly on WhatsApp at <a href="https://wa.me/2347052466716" style="color:#059669;font-weight:bold;">+234 705 246 6716</a> or email <a href="mailto:support@stemuluskidstech.com" style="color:#F4600C;font-weight:bold;">support@stemuluskidstech.com</a>.</p><p>Warm regards,<br><strong>STEMulus Academic Operations</strong></p>'
+        },
+        {
+            id: 'custom',
+            name: 'Custom Direct Notice',
+            subject: 'Notice from STEMulus Kids Tech - {{student_name}}',
+            body: '<p>Dear {{parent_name}},</p><p>We are reaching out with an update regarding {{student_name}} and your enrollment with STEMulus Kids Tech.</p><p>[Enter your custom message here]</p><p>If you have any questions, feel free to reply directly to this email or reach us on WhatsApp at <a href="https://wa.me/2347052466716" style="color:#059669;font-weight:bold;">+234 705 246 6716</a>.</p><p>Warm regards,<br><strong>STEMulus Kids Tech Team</strong></p>'
+        }
+    ];
+
+    async function loadEmailTemplates() {
+        try {
+            const res = await fetch('assets/data/email-templates.json');
+            if (res.ok) {
+                const data = await res.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    emailTemplatesCache = data;
+                }
+            }
+        } catch (e) {
+            // Keep embedded fallbacks
+        }
+    }
+
+    function openEmailParentModal(email, studentId) {
+        var db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : { parents: [], students: [], users: {} };
+        var parents = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getParents) ? DashboardEngine.getParents() : (db.parents || []);
+        var students = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) ? DashboardEngine.getStudents() : (db.students || []);
+
+        var parent = null;
+        var targetEmail = (email || '').toLowerCase().trim();
+
+        if (studentId) {
+            var stud = students.find(function(s) { return s.id === studentId; });
+            if (stud && stud.parentEmail) {
+                targetEmail = stud.parentEmail.toLowerCase().trim();
+            }
+        }
+
+        if (targetEmail) {
+            parent = parents.find(function(p) { return p.email && p.email.toLowerCase().trim() === targetEmail; });
+            if (!parent && db.users && db.users[targetEmail]) {
+                var usr = db.users[targetEmail];
+                parent = { name: usr.name || 'Parent', email: targetEmail, phone: usr.phone || '' };
+            }
+        }
+
+        if (!parent) {
+            parent = { name: 'Valued Parent', email: targetEmail || 'parent@stemuluskidstech.com' };
+        }
+
+        var parentName = parent.name || 'Parent';
+        var parentEmail = parent.email;
+
+        // Find enrolled children for this parent
+        var children = students.filter(function(s) {
+            return (s.parentEmail && s.parentEmail.toLowerCase().trim() === parentEmail.toLowerCase().trim()) ||
+                   (s.parentName && parentName && s.parentName.toLowerCase().trim() === parentName.toLowerCase().trim());
+        });
+
+        if (children.length === 0 && parent.children && parent.children.length > 0) {
+            children = parent.children.map(function(c, idx) {
+                return {
+                    id: c.id || ('child-' + idx),
+                    firstName: (c.name || 'Student').split(' ')[0],
+                    lastName: (c.name || '').split(' ').slice(1).join(' '),
+                    program: c.program || 'Junior Coding Track'
+                };
+            });
+        }
+
+        var emailInput = document.getElementById('aep-email');
+        var nameInput = document.getElementById('aep-name');
+        var recipientInput = document.getElementById('aep-recipient');
+        var studentSelect = document.getElementById('aep-student-select');
+
+        if (emailInput) emailInput.value = parentEmail;
+        if (nameInput) nameInput.value = parentName;
+        if (recipientInput) recipientInput.value = parentName + ' <' + parentEmail + '>';
+
+        if (studentSelect) {
+            if (children.length === 0) {
+                studentSelect.innerHTML = '<option value="">-- Generic / No child enrolled --</option>';
+            } else {
+                studentSelect.innerHTML = children.map(function(c) {
+                    var cName = (c.firstName ? (c.firstName + ' ' + (c.lastName || '')).trim() : c.name) || 'Student';
+                    var cProgram = c.program || 'Junior Coding Track';
+                    return '<option value="' + (c.id || '') + '" data-name="' + cName.replace(/"/g, '&quot;') + '" data-course="' + cProgram.replace(/"/g, '&quot;') + '">' + cName + ' (' + cProgram + ')</option>';
+                }).join('');
+            }
+
+            if (studentId) {
+                studentSelect.value = studentId;
+            }
+        }
+
+        var selectedChild = null;
+        if (studentSelect && studentSelect.selectedIndex >= 0 && studentSelect.options.length > 0) {
+            var opt = studentSelect.options[studentSelect.selectedIndex];
+            var sName = opt.getAttribute('data-name') || '';
+            var sCourse = opt.getAttribute('data-course') || '';
+            if (sName) {
+                selectedChild = { name: sName, course: sCourse };
+            }
+        }
+
+        if (!selectedChild && children.length > 0) {
+            var firstC = children[0];
+            selectedChild = {
+                name: (firstC.firstName ? (firstC.firstName + ' ' + (firstC.lastName || '')).trim() : firstC.name) || 'Student',
+                course: firstC.program || 'Junior Coding Track'
+            };
+        }
+
+        var sNameVal = selectedChild ? selectedChild.name : 'Student';
+        var sCourseVal = selectedChild ? selectedChild.course : 'Junior Coding Track';
+
+        var cNameInput = document.getElementById('aep-student-name');
+        var cCourseInput = document.getElementById('aep-course-name');
+        var cSchedInput = document.getElementById('aep-schedule');
+        var cMeetInput = document.getElementById('aep-meet-link');
+        var cClassroomInput = document.getElementById('aep-classroom-link');
+        var cTempPwdInput = document.getElementById('aep-temp-password');
+
+        if (cNameInput) cNameInput.value = sNameVal;
+        if (cCourseInput) cCourseInput.value = sCourseVal;
+        if (cSchedInput && !cSchedInput.value) cSchedInput.value = 'Wednesday 4:00 PM • Friday 4:00 PM (WAT, GMT+1)';
+        if (cMeetInput && !cMeetInput.value) cMeetInput.value = 'https://meet.google.com/gyd-fewb-cdh';
+        if (cClassroomInput && !cClassroomInput.value) cClassroomInput.value = 'https://classroom.google.com/c/ODg2NTc4NzE1MTgz?cjc=sfgboast';
+        if (cTempPwdInput && !cTempPwdInput.value) cTempPwdInput.value = 'Parent2026!';
+
+        var tplSelect = document.getElementById('aep-template-select');
+        if (tplSelect && !tplSelect.value) tplSelect.value = 'welcome';
+
+        onParentTemplateChange();
+        toggleEmailParentPreview(false);
+        openModal('admin-email-parent-modal');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function onParentChildChange() {
+        var studentSelect = document.getElementById('aep-student-select');
+        if (!studentSelect || studentSelect.selectedIndex < 0) return;
+        var opt = studentSelect.options[studentSelect.selectedIndex];
+        var sName = opt.getAttribute('data-name');
+        var sCourse = opt.getAttribute('data-course');
+
+        if (sName) {
+            var cNameInput = document.getElementById('aep-student-name');
+            if (cNameInput) cNameInput.value = sName;
+        }
+        if (sCourse) {
+            var cCourseInput = document.getElementById('aep-course-name');
+            if (cCourseInput) cCourseInput.value = sCourse;
+        }
+
+        onParentTemplateChange();
+    }
+
+    function onParentTemplateChange() {
+        var tplSelect = document.getElementById('aep-template-select');
+        var tplId = tplSelect ? tplSelect.value : 'welcome';
+        var tpl = emailTemplatesCache.find(function(t) { return t.id === tplId; }) || emailTemplatesCache[0];
+        if (!tpl) return;
+
+        var parentName = (document.getElementById('aep-name') ? document.getElementById('aep-name').value : '') || 'Parent';
+        var parentEmail = (document.getElementById('aep-email') ? document.getElementById('aep-email').value : '') || '';
+        var studentName = (document.getElementById('aep-student-name') ? document.getElementById('aep-student-name').value : '') || 'Student';
+        var courseName = (document.getElementById('aep-course-name') ? document.getElementById('aep-course-name').value : '') || 'Junior Coding Track';
+        var scheduleText = (document.getElementById('aep-schedule') ? document.getElementById('aep-schedule').value : '') || 'Wednesday 4:00 PM • Friday 4:00 PM (WAT, GMT+1)';
+        var meetLink = (document.getElementById('aep-meet-link') ? document.getElementById('aep-meet-link').value : '') || 'https://meet.google.com/gyd-fewb-cdh';
+        var classroomLink = (document.getElementById('aep-classroom-link') ? document.getElementById('aep-classroom-link').value : '') || 'https://classroom.google.com/c/ODg2NTc4NzE1MTgz?cjc=sfgboast';
+        var tempPassword = (document.getElementById('aep-temp-password') ? document.getElementById('aep-temp-password').value : '') || 'Parent2026!';
+        var portalUrl = 'https://stemuluskidstech.com/parent-login.html';
+        var supportWhatsapp = '+234 705 246 6716';
+        var supportEmail = 'support@stemuluskidstech.com';
+
+        var replacer = function(str) {
+            if (!str) return '';
+            return str
+                .replace(/\{\{parent_name\}\}/g, parentName)
+                .replace(/\{\{student_name\}\}/g, studentName)
+                .replace(/\{\{course_name\}\}/g, courseName)
+                .replace(/\{\{schedule_text\}\}/g, scheduleText)
+                .replace(/\{\{meet_link\}\}/g, meetLink)
+                .replace(/\{\{classroom_link\}\}/g, classroomLink)
+                .replace(/\{\{parent_email\}\}/g, parentEmail)
+                .replace(/\{\{temp_password\}\}/g, tempPassword)
+                .replace(/\{\{portal_url\}\}/g, portalUrl)
+                .replace(/\{\{support_whatsapp\}\}/g, supportWhatsapp)
+                .replace(/\{\{support_email\}\}/g, supportEmail);
+        };
+
+        var subject = replacer(tpl.subject);
+        var body = replacer(tpl.body);
+
+        var subjectInput = document.getElementById('aep-subject');
+        var bodyInput = document.getElementById('aep-body');
+        var previewEl = document.getElementById('aep-preview');
+
+        if (subjectInput) subjectInput.value = subject;
+        if (bodyInput) bodyInput.value = body;
+        if (previewEl) previewEl.innerHTML = body;
+    }
+
+    function onParentConfigChange() {
+        onParentTemplateChange();
+    }
+
+    function toggleEmailParentPreview(showPreview) {
+        var bodyInput = document.getElementById('aep-body');
+        var previewEl = document.getElementById('aep-preview');
+        var tabEdit = document.getElementById('aep-tab-edit');
+        var tabPreview = document.getElementById('aep-tab-preview');
+
+        if (showPreview) {
+            if (bodyInput) bodyInput.classList.add('hidden');
+            if (previewEl) {
+                previewEl.classList.remove('hidden');
+                previewEl.innerHTML = bodyInput ? bodyInput.value : '';
+            }
+            if (tabEdit) { tabEdit.className = 'px-2.5 py-0.5 rounded-md font-bold bg-slate-100 text-slate-600 hover:bg-slate-200'; }
+            if (tabPreview) { tabPreview.className = 'px-2.5 py-0.5 rounded-md font-bold bg-blue-100 text-blue-700'; }
+        } else {
+            if (previewEl) previewEl.classList.add('hidden');
+            if (bodyInput) bodyInput.classList.remove('hidden');
+            if (tabEdit) { tabEdit.className = 'px-2.5 py-0.5 rounded-md font-bold bg-blue-100 text-blue-700'; }
+            if (tabPreview) { tabPreview.className = 'px-2.5 py-0.5 rounded-md font-bold bg-slate-100 text-slate-600 hover:bg-slate-200'; }
+        }
+    }
+
+    async function sendParentModalEmail(event, queueOnly) {
+        if (event && event.preventDefault) event.preventDefault();
+
+        var email = (document.getElementById('aep-email') ? document.getElementById('aep-email').value : '').trim();
+        var name = (document.getElementById('aep-name') ? document.getElementById('aep-name').value : '').trim() || 'Parent';
+        var subject = (document.getElementById('aep-subject') ? document.getElementById('aep-subject').value : '').trim();
+        var body = (document.getElementById('aep-body') ? document.getElementById('aep-body').value : '').trim();
+        var tplSelect = document.getElementById('aep-template-select');
+        var tplId = tplSelect ? tplSelect.value : 'welcome';
+
+        var studentName = (document.getElementById('aep-student-name') ? document.getElementById('aep-student-name').value : '').trim() || 'Student';
+        var courseName = (document.getElementById('aep-course-name') ? document.getElementById('aep-course-name').value : '').trim() || 'Junior Coding Track';
+        var scheduleText = (document.getElementById('aep-schedule') ? document.getElementById('aep-schedule').value : '').trim() || 'Wednesday 4:00 PM • Friday 4:00 PM (WAT, GMT+1)';
+        var meetLink = (document.getElementById('aep-meet-link') ? document.getElementById('aep-meet-link').value : '').trim() || 'https://meet.google.com/gyd-fewb-cdh';
+        var classroomLink = (document.getElementById('aep-classroom-link') ? document.getElementById('aep-classroom-link').value : '').trim() || 'https://classroom.google.com/c/ODg2NTc4NzE1MTgz?cjc=sfgboast';
+        var tempPassword = (document.getElementById('aep-temp-password') ? document.getElementById('aep-temp-password').value : '').trim() || 'Parent2026!';
+
+        if (!email) {
+            showToast('Parent email recipient is required.', 'warning');
+            return;
+        }
+        if (!subject) {
+            showToast('Email subject is required.', 'warning');
+            return;
+        }
+        if (!body) {
+            showToast('Message body cannot be empty.', 'warning');
+            return;
+        }
+
+        var queueData = {
+            parentEmail: email,
+            parentName: name,
+            studentName: studentName,
+            courseName: courseName,
+            scheduleText: scheduleText,
+            meetLink: meetLink,
+            classroomLink: classroomLink,
+            tempPassword: tempPassword,
+            portalUrl: 'https://stemuluskidstech.com/parent-login.html'
+        };
+
+        var queueItem = {
+            type: tplId === 'welcome' ? 'welcome' : 'custom',
+            to: email,
+            recipientName: name,
+            subject: subject,
+            htmlPreview: body,
+            data: queueData,
+            triggeredBy: 'admin-modal'
+        };
+
+        if (queueOnly) {
+            if (typeof DashboardEngine !== 'undefined' && DashboardEngine.addToEmailQueue) {
+                DashboardEngine.addToEmailQueue(queueItem);
+            }
+            closeModal('admin-email-parent-modal');
+            showToast('Email queued to Outbox for review.', 'success');
+            if (typeof loadEmailQueue === 'function') loadEmailQueue();
+            return;
+        }
+
+        var sendBtn = document.getElementById('aep-send-btn');
+        var originalBtnText = sendBtn ? sendBtn.innerHTML : '';
+        if (sendBtn) {
+            sendBtn.innerHTML = '<span class="inline-block animate-spin mr-1">o</span> Sending...';
+            sendBtn.disabled = true;
+        }
+
+        var payload;
+        if (tplId === 'welcome') {
+            payload = { type: 'welcome', data: queueData };
+        } else {
+            payload = { type: 'custom', data: { to: email, subject: subject, body: body } };
+        }
+
+        try {
+            var resp = await fetch('/.netlify/functions/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!resp.ok) {
+                throw new Error('Server returned ' + resp.status);
+            }
+
+            var db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
+            if (db) {
+                db.emailQueue = db.emailQueue || [];
+                db.emailQueue.unshift({
+                    id: 'eq-' + Date.now(),
+                    type: queueItem.type,
+                    status: 'sent',
+                    to: email,
+                    recipientName: name,
+                    subject: subject,
+                    htmlPreview: body,
+                    data: queueData,
+                    triggeredBy: 'admin-modal',
+                    createdAt: new Date().toISOString(),
+                    sentAt: new Date().toISOString()
+                });
+                if (DashboardEngine.saveDB) DashboardEngine.saveDB(db);
+            }
+
+            closeModal('admin-email-parent-modal');
+            showToast('Email successfully dispatched to ' + email, 'success');
+            if (typeof loadEmailQueue === 'function') loadEmailQueue();
+        } catch (err) {
+            console.warn('Direct send failed (offline or local server): queuing to outbox', err);
+            if (typeof DashboardEngine !== 'undefined' && DashboardEngine.addToEmailQueue) {
+                DashboardEngine.addToEmailQueue(queueItem);
+            }
+            closeModal('admin-email-parent-modal');
+            showToast('Email queued to Outbox (Offline / Local Mode).', 'info');
+            if (typeof loadEmailQueue === 'function') loadEmailQueue();
+        } finally {
+            if (sendBtn) {
+                sendBtn.innerHTML = originalBtnText;
+                sendBtn.disabled = false;
+            }
+        }
+    }
+
+
 return {
     init,
     navigateToSection,
+    showSection: navigateToSection,
     reloadData: loadDashboardData,
     approveRegistration,
     approveScheduleAdjust,
@@ -5088,7 +5481,15 @@ return {
     onReassignSourceTutorChange,
     toggleSelectAllReassignStudents,
     updateReassignCount,
-    submitTutorReassignment
+    submitTutorReassignment,
+
+    // Parent Email Dispatcher
+    openEmailParentModal,
+    onParentChildChange,
+    onParentTemplateChange,
+    onParentConfigChange,
+    toggleEmailParentPreview,
+    sendParentModalEmail,
 };
 }) ();
 

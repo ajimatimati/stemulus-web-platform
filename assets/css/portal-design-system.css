@@ -256,8 +256,8 @@ body {
 }
 
 /* Hide floating toolbar when any modal or overlay is active */
-body:has([id*="modal"][style*="display: flex"]),
-body:has([id*="modal"][style*="display:flex"]),
+body:has([id*="modal"][style*="display: flex"]) .pill-toolbar,
+body:has([id*="modal"][style*="display:flex"]) .pill-toolbar,
 body:has(.modal-open) .pill-toolbar,
 body:has(.sidebar-overlay.show) .pill-toolbar,
 body:has(.sidebar-overlay.active) .pill-toolbar {

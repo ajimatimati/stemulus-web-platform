@@ -122,7 +122,7 @@
           <div class="input-group">
             <div style="display: flex; justify-content: space-between;">
               <label class="input-label" for="password">Password</label>
-              <button type="button" id="forgot-btn" onclick="document.getElementById('forgot-modal').style.display='flex'" style="font-size:0.82rem;color:var(--brand-orange,#f4600c);background:none;border:none;cursor:pointer;padding:0;font-weight:600;">Forgot?</button>
+              <button type="button" id="forgot-btn" onclick="openForgotPasswordModal()" style="font-size:0.82rem;color:var(--brand-orange,#f4600c);background:none;border:none;cursor:pointer;padding:0;font-weight:600;">Forgot?</button>
             </div>
             <i data-lucide="key-round" class="input-icon"></i>
             <div style="position:relative;">
@@ -151,17 +151,140 @@
 
   </div>
 
-  <!-- Forgot Password Modal -->
-  <div id="forgot-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99999;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
-    <div style="background:#fff;border-radius:16px;padding:2rem;max-width:380px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
-      <h3 style="font-family:Fredoka,sans-serif;font-size:1.3rem;color:#1e293b;margin:0 0 0.5rem;">Request Password Reset</h3>
-      <p style="font-size:0.875rem;color:#64748b;margin:0 0 1.25rem;">Enter your email address. The admin will be notified and send you new login details.</p>
-      <input type="email" id="forgot-email" placeholder="your@email.com" style="width:100%;padding:0.75rem 1rem;border:1.5px solid #e2e8f0;border-radius:10px;font-size:0.9rem;box-sizing:border-box;margin-bottom:1rem;outline:none;" oninput="this.style.borderColor='#6366F1'">
-      <div style="display:flex;gap:0.75rem;">
-        <button type="button" onclick="document.getElementById('forgot-modal').style.display='none'" style="flex:1;padding:0.75rem;border:1.5px solid #e2e8f0;border-radius:10px;font-weight:600;font-size:0.875rem;cursor:pointer;background:#fff;">Cancel</button>
-        <button type="button" onclick="submitForgotPassword()" style="flex:1;padding:0.75rem;background:#f4600c;color:#fff;border:none;border-radius:10px;font-weight:700;font-size:0.875rem;cursor:pointer;">Send Request</button>
+  <!-- Role-Aware Self-Serve Forgot Password Modal -->
+  <div id="forgot-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.65);backdrop-filter:blur(6px);z-index:99999;align-items:center;justify-content:center;padding:1rem;" onclick="if(event.target===this)closeForgotPasswordModal()">
+    <div style="background:#ffffff;border-radius:20px;padding:2rem;max-width:420px;width:100%;box-shadow:0 25px 60px -15px rgba(0,0,0,0.3);border:1px solid #e2e8f0;position:relative;" class="animate-fadeIn">
+      
+      <!-- Close button -->
+      <button type="button" onclick="closeForgotPasswordModal()" style="position:absolute;top:1rem;right:1rem;background:#f1f5f9;border:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748b;font-weight:700;">
+        <i data-lucide="x" style="width:18px;height:18px;"></i>
+      </button>
+
+      <!-- View 1: Request Input Form -->
+      <div id="forgot-view-input">
+        <!-- Interactive Role Switcher Inside Forgot Modal -->
+        <div style="display:flex;background:#f1f5f9;border-radius:12px;padding:4px;margin-bottom:1.25rem;gap:4px;">
+          <button type="button" id="forgot-tab-parent" onclick="switchForgotRole('parent')" style="flex:1;padding:8px 12px;border:none;border-radius:8px;font-weight:800;font-size:12px;cursor:pointer;background:#ffffff;color:#f4600c;box-shadow:0 2px 4px rgba(0,0,0,0.06);transition:all 0.2s;">
+            Parent Account
+          </button>
+          <button type="button" id="forgot-tab-tutor" onclick="switchForgotRole('tutor')" style="flex:1;padding:8px 12px;border:none;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;background:transparent;color:#64748b;transition:all 0.2s;">
+            Faculty Mentor
+          </button>
+        </div>
+        <input type="hidden" id="forgot-selected-role" value="parent">
+        <h3 style="font-family:'Nunito',sans-serif;font-size:1.35rem;font-weight:800;color:#0f172a;margin:0 0 0.5rem;">Reset Your Password</h3>
+        <p style="font-size:0.875rem;color:#64748b;line-height:1.5;margin:0 0 1.25rem;">Enter your registered account email. We will verify your account and issue a secure temporary password directly to your inbox.</p>
+        
+        <div style="margin-bottom:1rem;">
+          <label style="display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:#64748b;margin-bottom:6px;">Registered Email Address</label>
+          <div style="position:relative;">
+            <input type="email" id="forgot-email" placeholder="your@email.com" autocomplete="email" style="width:100%;box-sizing:border-box;padding:12px 14px 12px 38px;border-radius:12px;border:1.5px solid #cbd5e1;font-size:14px;color:#0f172a;outline:none;background:#f8fafc;" onkeydown="if(event.key==='Enter')submitForgotPassword()">
+            <i data-lucide="mail" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:#94a3b8;"></i>
+          </div>
+        </div>
+
+        <div id="forgot-error-box" style="display:none;background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:10px 12px;margin-bottom:1rem;color:#b91c1c;font-size:12px;font-weight:600;align-items:center;gap:8px;">
+          <i data-lucide="alert-circle" style="width:15px;height:15px;shrink-0;"></i>
+          <span id="forgot-error-text">Account not found.</span>
+        </div>
+
+        <div style="display:flex;gap:0.75rem;">
+          <button type="button" onclick="closeForgotPasswordModal()" style="flex:1;padding:12px;border:1.5px solid #cbd5e1;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;background:#ffffff;color:#475569;">Cancel</button>
+          <button type="button" id="forgot-submit-btn" onclick="submitForgotPassword()" style="flex:1.4;padding:12px;background:#f4600c;color:#ffffff;border:none;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;">
+            <span>Send Temporary Password</span>
+            <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+          </button>
+        </div>
+
+        <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid #f1f5f9;text-align:center;">
+          <p style="font-size:12px;color:#64748b;margin:0;">
+            Need help? Contact administration on <a href="https://wa.me/2347052466716" target="_blank" style="color:#059669;font-weight:700;text-decoration:none;">WhatsApp Support</a>
+          </p>
+        </div>
       </div>
-      <p id="forgot-success" style="display:none;margin-top:1rem;font-size:0.85rem;color:#22c55e;text-align:center;font-weight:600;">Request sent. The admin will contact you within 1 hour.</p>
+
+      <!-- View 2: Success Confirmation Screen -->
+      <div id="forgot-view-success" style="display:none;text-align:center;padding:0.5rem 0;">
+        <div style="width:52px;height:52px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#059669;margin-bottom:1rem;">
+          <i data-lucide="check" style="width:28px;height:28px;stroke-width:2.5;"></i>
+        </div>
+        <h3 style="font-family:'Nunito',sans-serif;font-size:1.35rem;font-weight:800;color:#0f172a;margin:0 0 0.5rem;">Temporary Password Dispatched</h3>
+        <p style="font-size:0.875rem;color:#475569;line-height:1.5;margin:0 0 1rem;">
+          We have generated a secure temporary password and dispatched it to:
+        </p>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:8px 12px;margin-bottom:1rem;font-weight:700;font-family:monospace;font-size:14px;color:#0f172a;" id="forgot-success-email">
+          parent@stemuluskidstech.com
+        </div>
+
+        <!-- Dev / local convenience banner showing temp password for testing -->
+        <div id="forgot-temp-pwd-banner" style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px;margin-bottom:1rem;font-size:12px;color:#92400e;">
+          <div style="font-weight:700;margin-bottom:4px;">Temporary Password Generated:</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+            <code id="forgot-temp-pwd-val" style="background:#ffffff;border:1px solid #f59e0b;padding:3px 8px;border-radius:6px;font-weight:800;font-size:14px;color:#b45309;">STEM-XXXXXX</code>
+            <button type="button" onclick="copyTemporaryPassword()" id="btn-copy-temp" style="padding:3px 8px;font-size:11px;font-weight:700;border:1px solid #d97706;border-radius:6px;background:#ffffff;cursor:pointer;color:#92400e;">Copy</button>
+          </div>
+        </div>
+
+        <p style="font-size:12px;color:#64748b;margin:0 0 1.25rem;line-height:1.4;">
+          Please check your inbox (and spam folder). Sign in using this temporary password, and you will be prompted to set your new permanent password.
+        </p>
+        <button type="button" onclick="useTemporaryPasswordToLogin()" style="width:100%;padding:12px;background:#0f172a;color:#ffffff;border:none;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;">
+          <span>Return to Sign In</span>
+          <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mandatory Permanent Password Setup Modal -->
+  <div id="force-password-change-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.75);backdrop-filter:blur(8px);z-index:999999;align-items:center;justify-content:center;padding:1rem;">
+    <div style="background:#ffffff;border-radius:20px;padding:2rem;max-width:420px;width:100%;box-shadow:0 25px 60px -15px rgba(0,0,0,0.4);border:1px solid #e2e8f0;position:relative;" class="animate-fadeIn">
+      
+      <div style="display:inline-flex;align-items:center;gap:6px;background:#fef3c7;border:1px solid #fde68a;padding:4px 10px;border-radius:999px;margin-bottom:0.75rem;">
+        <i data-lucide="shield-alert" style="width:13px;height:13px;color:#d97706;"></i>
+        <span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;color:#b45309;">Security Update Required</span>
+      </div>
+
+      <h3 style="font-family:'Nunito',sans-serif;font-size:1.35rem;font-weight:800;color:#0f172a;margin:0 0 0.5rem;">Create Permanent Password</h3>
+      <p style="font-size:0.875rem;color:#64748b;line-height:1.5;margin:0 0 1.25rem;">You signed in with a temporary password. For account security, please create a new permanent password to continue.</p>
+
+      <form id="permanent-pwd-form" onsubmit="submitPermanentPassword(event)">
+        <input type="hidden" id="perm-user-email" value="">
+        <input type="hidden" id="perm-user-role" value="">
+
+        <div class="input-group" style="margin-bottom:1rem;">
+          <label class="input-label" for="new-permanent-pwd">New Password</label>
+          <input type="password" id="new-permanent-pwd" class="input-field" placeholder="At least 8 characters" required style="padding-left:14px;" oninput="validatePasswordStrength(this.value)">
+        </div>
+
+        <div class="input-group" style="margin-bottom:1rem;">
+          <label class="input-label" for="confirm-permanent-pwd">Confirm New Password</label>
+          <input type="password" id="confirm-permanent-pwd" class="input-field" placeholder="Re-enter new password" required style="padding-left:14px;">
+        </div>
+
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;margin-bottom:1.25rem;font-size:12px;color:#475569;">
+          <div style="font-weight:700;margin-bottom:4px;color:#0f172a;">Password Requirements:</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;" id="req-len">
+            <i data-lucide="circle" style="width:12px;height:12px;color:#94a3b8;"></i>
+            <span>Minimum 8 characters</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;" id="req-char">
+            <i data-lucide="circle" style="width:12px;height:12px;color:#94a3b8;"></i>
+            <span>Contains both letters and numbers</span>
+          </div>
+        </div>
+
+        <div id="permanent-pwd-error" style="display:none;background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:10px 12px;margin-bottom:1rem;color:#b91c1c;font-size:12px;font-weight:600;align-items:center;gap:8px;">
+          <i data-lucide="alert-circle" style="width:15px;height:15px;shrink-0;"></i>
+          <span id="permanent-pwd-error-text">Passwords do not match.</span>
+        </div>
+
+        <button type="submit" id="btn-save-permanent-pwd" class="btn-3d orange" style="width:100%;gap:8px;">
+          <span>Save &amp; Enter Dashboard</span>
+          <i data-lucide="arrow-right" style="width:16px;"></i>
+        </button>
+      </form>
     </div>
   </div>
 
@@ -176,21 +299,24 @@
   <script src="assets/js/portal-scene-engine.min.js" defer></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Auto-switch tab based on ?role= URL param
+      const urlRole = new URLSearchParams(window.location.search).get('role');
+      if (urlRole === 'tutor') switchRole('tutor', 1);
+
       if (typeof DashboardEngine !== 'undefined') {
         var existingSession = DashboardEngine.getSession ? DashboardEngine.getSession() : null;
         if (existingSession && existingSession.role) {
-          var redirectMap = { admin: 'admin-dashboard.html', tutor: 'tutor-dashboard.html', parent: 'parent-dashboard.html' };
-          if (redirectMap[existingSession.role]) { window.location.href = redirectMap[existingSession.role]; return; }
+          // Only auto-redirect if no specific role was requested or if the requested role matches the session
+          if (!urlRole || urlRole === existingSession.role) {
+            var redirectMap = { admin: 'admin-dashboard.html', tutor: 'tutor-dashboard.html', parent: 'parent-dashboard.html' };
+            if (redirectMap[existingSession.role]) { window.location.href = redirectMap[existingSession.role]; return; }
+          }
         }
       }
       if (typeof DashboardEngine !== 'undefined' && DashboardEngine.initDefaultAccounts) {
         DashboardEngine.initDefaultAccounts().catch(function(e) { console.warn('Account init failed:', e); });
       }
       if (window.lucide) lucide.createIcons();
-
-      // Auto-switch tab based on ?role= URL param
-      const urlRole = new URLSearchParams(window.location.search).get('role');
-      if (urlRole === 'tutor') switchRole('tutor', 1);
 
       // GSAP intro animations
       gsap.from(".data-panel > div > *", {
@@ -313,12 +439,20 @@
             window.location.href = 'admin-dashboard.html';
             return;
           }
-          if (res.user.role === role) {
-            if (role === 'parent') window.location.href = 'parent-dashboard.html';
-            if (role === 'tutor') window.location.href = 'tutor-dashboard.html';
+          if (res.user.role !== role) {
+            showError('Your credentials are correct but you selected the ' + role + ' tab. Please switch to the ' + res.user.role + ' tab and try again.');
             return;
           }
-          showError('Your credentials are correct but you selected the ' + role + ' tab. Please switch to the ' + res.user.role + ' tab and try again.');
+
+          // If user logged in using temporary password, enforce permanent password creation
+          if (res.user.mustChangePassword) {
+            openPermanentPasswordModal(res.user.email, res.user.role);
+            return;
+          }
+
+          if (role === 'parent') window.location.href = 'parent-dashboard.html';
+          if (role === 'tutor') window.location.href = 'tutor-dashboard.html';
+          return;
         } else {
           errorBox.style.display = 'flex';
           document.getElementById('error-text').innerText = res.message || 'Incorrect credentials for this role.';
@@ -331,15 +465,246 @@
   </script>
 
   <script>
-  function submitForgotPassword() {
-    var email = (document.getElementById('forgot-email')||{}).value || '';
-    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
-    if (typeof DashboardEngine !== 'undefined' && DashboardEngine.addPasswordResetRequest) {
-      DashboardEngine.addPasswordResetRequest(email);
+  let lastGeneratedTempPassword = '';
+  let activeForgotRole = 'parent';
+
+  function switchForgotRole(role) {
+    activeForgotRole = role;
+    const parentTab = document.getElementById('forgot-tab-parent');
+    const tutorTab = document.getElementById('forgot-tab-tutor');
+    const submitBtn = document.getElementById('forgot-submit-btn');
+    const emailInput = document.getElementById('forgot-email');
+    const roleInput = document.getElementById('forgot-selected-role');
+    const errBox = document.getElementById('forgot-error-box');
+    if (errBox) errBox.style.display = 'none';
+
+    if (roleInput) roleInput.value = role;
+
+    if (role === 'tutor') {
+      if (tutorTab) {
+        tutorTab.style.background = '#ffffff';
+        tutorTab.style.color = '#4B49AC';
+        tutorTab.style.fontWeight = '800';
+        tutorTab.style.boxShadow = '0 2px 4px rgba(0,0,0,0.06)';
+      }
+      if (parentTab) {
+        parentTab.style.background = 'transparent';
+        parentTab.style.color = '#64748b';
+        parentTab.style.fontWeight = '700';
+        parentTab.style.boxShadow = 'none';
+      }
+      if (submitBtn) submitBtn.style.backgroundColor = '#4B49AC';
+      if (emailInput && (!emailInput.value || emailInput.value === 'parent@stemuluskidstech.com')) {
+        emailInput.placeholder = 'tutor@stemuluskidstech.com';
+      }
+    } else {
+      if (parentTab) {
+        parentTab.style.background = '#ffffff';
+        parentTab.style.color = '#F4600C';
+        parentTab.style.fontWeight = '800';
+        parentTab.style.boxShadow = '0 2px 4px rgba(0,0,0,0.06)';
+      }
+      if (tutorTab) {
+        tutorTab.style.background = 'transparent';
+        tutorTab.style.color = '#64748b';
+        tutorTab.style.fontWeight = '700';
+        tutorTab.style.boxShadow = 'none';
+      }
+      if (submitBtn) submitBtn.style.backgroundColor = '#F4600C';
+      if (emailInput && (!emailInput.value || emailInput.value === 'tutor@stemuluskidstech.com')) {
+        emailInput.placeholder = 'parent@stemuluskidstech.com';
+      }
     }
-    var success = document.getElementById('forgot-success');
-    if (success) success.style.display = 'block';
-    setTimeout(function(){ document.getElementById('forgot-modal').style.display='none'; if(success) success.style.display='none'; document.getElementById('forgot-email').value=''; }, 3000);
+  }
+
+  function openForgotPasswordModal() {
+    const mainRole = (document.getElementById('login-role') || {}).value || 'parent';
+    const emailVal = (document.getElementById('email') || {}).value || '';
+    
+    switchForgotRole(mainRole);
+
+    const forgotEmailInput = document.getElementById('forgot-email');
+    if (forgotEmailInput && emailVal) {
+      forgotEmailInput.value = emailVal;
+    }
+
+    document.getElementById('forgot-view-input').style.display = 'block';
+    document.getElementById('forgot-view-success').style.display = 'none';
+    const errBox = document.getElementById('forgot-error-box');
+    if (errBox) errBox.style.display = 'none';
+
+    const modal = document.getElementById('forgot-modal');
+    modal.style.display = 'flex';
+    if (forgotEmailInput) forgotEmailInput.focus();
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function closeForgotPasswordModal() {
+    document.getElementById('forgot-modal').style.display = 'none';
+    const errBox = document.getElementById('forgot-error-box');
+    if (errBox) errBox.style.display = 'none';
+  }
+
+  async function submitForgotPassword() {
+    const emailInput = document.getElementById('forgot-email');
+    const email = (emailInput ? emailInput.value : '').trim();
+    const role = activeForgotRole || (document.getElementById('forgot-selected-role') || {}).value || (document.getElementById('login-role') || {}).value || 'parent';
+    const errBox = document.getElementById('forgot-error-box');
+    const errText = document.getElementById('forgot-error-text');
+    const submitBtn = document.getElementById('forgot-submit-btn');
+
+    if (!email || !email.includes('@')) {
+      if (errBox) errBox.style.display = 'flex';
+      if (errText) errText.innerText = 'Please enter a valid email address.';
+      return;
+    }
+
+    if (errBox) errBox.style.display = 'none';
+    const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Verifying & Sending...</span>';
+    }
+
+    try {
+      if (typeof DashboardEngine === 'undefined' || !DashboardEngine.requestPasswordReset) {
+        if (errBox) errBox.style.display = 'flex';
+        if (errText) errText.innerText = 'Authentication service initializing. Please try again in a few moments.';
+        return;
+      }
+
+      const res = await DashboardEngine.requestPasswordReset(email, role);
+      if (res.success) {
+        lastGeneratedTempPassword = res.tempPassword;
+        document.getElementById('forgot-view-input').style.display = 'none';
+        document.getElementById('forgot-view-success').style.display = 'block';
+        document.getElementById('forgot-success-email').innerText = res.email;
+        
+        const tempValEl = document.getElementById('forgot-temp-pwd-val');
+        if (tempValEl) tempValEl.innerText = res.tempPassword;
+
+        // Auto pre-fill login email input
+        const mainEmailInput = document.getElementById('email');
+        if (mainEmailInput) mainEmailInput.value = res.email;
+
+        if (window.lucide) lucide.createIcons();
+      } else {
+        if (errBox) errBox.style.display = 'flex';
+        if (errText) errText.innerText = res.message || 'Unable to process reset request.';
+        if (window.gsap) gsap.fromTo(errBox, { x: -4 }, { x: 4, duration: 0.08, yoyo: true, repeat: 3, onComplete: () => gsap.set(errBox, { x: 0 }) });
+      }
+    } catch (e) {
+      if (errBox) errBox.style.display = 'flex';
+      if (errText) errText.innerText = 'Network error. Please check your connection.';
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+    }
+  }
+
+  function copyTemporaryPassword() {
+    if (!lastGeneratedTempPassword) return;
+    navigator.clipboard.writeText(lastGeneratedTempPassword).then(() => {
+      const copyBtn = document.getElementById('btn-copy-temp');
+      if (copyBtn) {
+        copyBtn.innerText = 'Copied!';
+        setTimeout(() => { copyBtn.innerText = 'Copy'; }, 2000);
+      }
+    });
+  }
+
+  function useTemporaryPasswordToLogin() {
+    closeForgotPasswordModal();
+    if (activeForgotRole === 'tutor') {
+      switchRole('tutor', 1);
+    } else {
+      switchRole('parent', 0);
+    }
+    const mainPwdInput = document.getElementById('password');
+    if (mainPwdInput && lastGeneratedTempPassword) {
+      mainPwdInput.value = lastGeneratedTempPassword;
+      mainPwdInput.focus();
+    }
+  }
+
+  function openPermanentPasswordModal(email, role) {
+    document.getElementById('perm-user-email').value = email;
+    document.getElementById('perm-user-role').value = role;
+    document.getElementById('force-password-change-modal').style.display = 'flex';
+    const pwdInput = document.getElementById('new-permanent-pwd');
+    if (pwdInput) pwdInput.focus();
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function validatePasswordStrength(pwd) {
+    const reqLen = document.getElementById('req-len');
+    const reqChar = document.getElementById('req-char');
+
+    if (pwd.length >= 8) {
+      reqLen.style.color = '#059669';
+      reqLen.querySelector('span').innerText = 'Minimum 8 characters (Pass)';
+    } else {
+      reqLen.style.color = '#475569';
+      reqLen.querySelector('span').innerText = 'Minimum 8 characters';
+    }
+
+    if (/[A-Za-z]/.test(pwd) && /[0-9]/.test(pwd)) {
+      reqChar.style.color = '#059669';
+      reqChar.querySelector('span').innerText = 'Contains letters and numbers (Pass)';
+    } else {
+      reqChar.style.color = '#475569';
+      reqChar.querySelector('span').innerText = 'Contains both letters and numbers';
+    }
+  }
+
+  async function submitPermanentPassword(e) {
+    e.preventDefault();
+    const email = document.getElementById('perm-user-email').value;
+    const role = document.getElementById('perm-user-role').value;
+    const newPwd = (document.getElementById('new-permanent-pwd').value || '').trim();
+    const confirmPwd = (document.getElementById('confirm-permanent-pwd').value || '').trim();
+    const errBox = document.getElementById('permanent-pwd-error');
+    const errText = document.getElementById('permanent-pwd-error-text');
+    const submitBtn = document.getElementById('btn-save-permanent-pwd');
+
+    if (newPwd !== confirmPwd) {
+      errBox.style.display = 'flex';
+      errText.innerText = 'Passwords do not match. Please verify.';
+      return;
+    }
+
+    if (newPwd.length < 8 || !/[A-Za-z]/.test(newPwd) || !/[0-9]/.test(newPwd)) {
+      errBox.style.display = 'flex';
+      errText.innerText = 'Password does not meet the security criteria.';
+      return;
+    }
+
+    errBox.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span>Saving New Password...</span>';
+
+    try {
+      const res = await DashboardEngine.changePasswordAfterReset(email, newPwd);
+      if (res.success) {
+        document.getElementById('force-password-change-modal').style.display = 'none';
+        if (role === 'parent') window.location.href = 'parent-dashboard.html';
+        else if (role === 'tutor') window.location.href = 'tutor-dashboard.html';
+        else window.location.href = 'admin-dashboard.html';
+      } else {
+        errBox.style.display = 'flex';
+        errText.innerText = res.message || 'Unable to update password.';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Save &amp; Enter Dashboard</span>';
+      }
+    } catch(err) {
+      errBox.style.display = 'flex';
+      errText.innerText = 'Network error while updating password.';
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span>Save &amp; Enter Dashboard</span>';
+    }
   }
   </script>
 </body>
