@@ -14,10 +14,10 @@ const artifactDir = 'C:\\Users\\USER\\.gemini\\antigravity\\brain\\66a470fd-ed7c
 
 (async () => {
   const browser = await chromium.launch({ channel: 'msedge', headless: true });
-  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const context = await browser.newContext({ viewport: { width: 1280, height: 950 } });
   const page = await context.newPage();
 
-  console.log('=== STARTING MOTION-LUXURY GEO PAGES AUDIT ===\n');
+  console.log('=== STARTING GEMINI ARGON 3D SVG & ARCHITECTURAL BENTO AUDIT ===\n');
   let allPassed = true;
 
   for (const geo of GEO_PAGES) {
@@ -37,7 +37,6 @@ const artifactDir = 'C:\\Users\\USER\\.gemini\\antigravity\\brain\\66a470fd-ed7c
     const pillsCount = await page.evaluate(() => {
       return document.querySelectorAll('.rounded-full').length;
     });
-
     if (pillsCount > 0) {
       console.error(`  [FAIL] ${geo.name} has ${pillsCount} element(s) with .rounded-full!`);
       allPassed = false;
@@ -45,128 +44,123 @@ const artifactDir = 'C:\\Users\\USER\\.gemini\\antigravity\\brain\\66a470fd-ed7c
       console.log(`  [PASS] ${geo.name} has ZERO .rounded-full pills.`);
     }
 
-    // 2. Check for dotted radial grid pattern
-    const dottedPatternElements = await page.evaluate(() => {
-      const all = Array.from(document.querySelectorAll('*'));
-      return all.filter(el => {
-        const style = el.getAttribute('style') || '';
-        return style.includes('radial-gradient(#f4600c 1px');
-      }).length;
+    // 2. Assert ZERO banned Lucide icons ([data-lucide])
+    const lucideCount = await page.evaluate(() => {
+      return document.querySelectorAll('[data-lucide]').length;
     });
-
-    if (dottedPatternElements > 0) {
-      console.error(`  [FAIL] ${geo.name} has ${dottedPatternElements} element(s) with dotted radial-gradient!`);
+    if (lucideCount > 0) {
+      console.error(`  [FAIL] ${geo.name} still has ${lucideCount} banned [data-lucide] icons!`);
       allPassed = false;
     } else {
-      console.log(`  [PASS] ${geo.name} zero dotted grid pattern detected.`);
+      console.log(`  [PASS] ${geo.name} has ZERO banned Lucide icons.`);
     }
 
-    // 3. Verify Ambient Video Background in Hero
-    const ambientVideo = await page.evaluate(() => {
-      const video = document.querySelector('.geo-hero-luxury .ambient-video-wrap video');
-      const scrim = document.querySelector('.geo-hero-luxury .ambient-video-scrim');
+    // 3. Assert 3D Isometric & Glass-Bezel SVGs are hydrated
+    const icons3dStats = await page.evaluate(() => {
+      const rendered3d = document.querySelectorAll('.icon-3d svg');
+      const flagEl = document.querySelector('.hero-eyebrow-badge-geo .icon-3d svg');
+      const statIcons = document.querySelectorAll('.stats-item__3d-icon .icon-3d svg');
+      const bentoIcons = document.querySelectorAll('.bento-3d-squircle .icon-3d svg');
+      const expandingEmblems = document.querySelectorAll('.expanding-card__3d-emblem .icon-3d svg');
+      const pricingBadges = document.querySelectorAll('.pricing-3d-badge .icon-3d svg');
+      const safeguardingSeal = document.querySelector('.safeguarding-seal-wrap .icon-3d svg');
       return {
-        exists: !!video,
-        hasScrim: !!scrim,
-        src: video ? video.querySelector('source')?.getAttribute('src') : null
+        total3dSvgs: rendered3d.length,
+        has3dFlag: !!flagEl,
+        statIconsCount: statIcons.length,
+        bentoIconsCount: bentoIcons.length,
+        expandingEmblemsCount: expandingEmblems.length,
+        pricingBadgesCount: pricingBadges.length,
+        hasSafeguardingSeal: !!safeguardingSeal
       };
     });
 
-    if (!ambientVideo.exists || !ambientVideo.hasScrim) {
-      console.error(`  [FAIL] ${geo.name} ambient video background missing!`);
+    if (
+      icons3dStats.total3dSvgs < 35 ||
+      !icons3dStats.has3dFlag ||
+      icons3dStats.statIconsCount !== 4 ||
+      icons3dStats.bentoIconsCount !== 4 ||
+      icons3dStats.expandingEmblemsCount !== 4 ||
+      icons3dStats.pricingBadgesCount !== 2 ||
+      !icons3dStats.hasSafeguardingSeal
+    ) {
+      console.error(`  [FAIL] ${geo.name} 3D SVG hydration incomplete:`, icons3dStats);
       allPassed = false;
     } else {
-      console.log(`  [PASS] ${geo.name} ambient video background present: ${ambientVideo.src}`);
+      console.log(`  [PASS] ${geo.name} hydrated ${icons3dStats.total3dSvgs} multi-layered 3D SVGs (3D Flag, 4 Stats, 4 Bento, 4 Pathway Emblems, 2 Pricing, Safeguarding Seal).`);
     }
 
-    // 4. Verify Interactive Expanding Cards Deck
-    const expandingCards = await page.evaluate(() => {
-      const container = document.querySelector('.expanding-cards-container');
-      const cards = container ? container.querySelectorAll('.expanding-card') : [];
-      const activeCard = container ? container.querySelector('.expanding-card.active') : null;
+    // 4. Assert Asymmetrical 12-Col Bento (.argon-why-bento)
+    const bentoAudit = await page.evaluate(() => {
+      const bento = document.querySelector('.argon-why-bento');
       return {
-        exists: !!container,
-        cardCount: cards.length,
-        hasActive: !!activeCard
+        exists: !!bento,
+        span7: bento ? bento.querySelectorAll('.bento-span-7').length : 0,
+        span5: bento ? bento.querySelectorAll('.bento-span-5').length : 0,
+        photos: bento ? bento.querySelectorAll('.bento-photo-shell img').length : 0,
+        tzChips: bento ? bento.querySelectorAll('.tz-chip').length : 0
       };
     });
-
-    if (!expandingCards.exists || expandingCards.cardCount < 4 || !expandingCards.hasActive) {
-      console.error(`  [FAIL] ${geo.name} expanding cards deck issue: exists=${expandingCards.exists}, count=${expandingCards.cardCount}`);
+    if (!bentoAudit.exists || bentoAudit.span7 !== 2 || bentoAudit.span5 !== 2 || bentoAudit.photos !== 2) {
+      console.error(`  [FAIL] ${geo.name} Asymmetrical 12-Col Bento issue:`, bentoAudit);
       allPassed = false;
     } else {
-      console.log(`  [PASS] ${geo.name} expanding cards deck verified (4 cards, active state set).`);
+      console.log(`  [PASS] ${geo.name} Asymmetrical 12-Col Bento verified (7/5 + 5/7 split, ${bentoAudit.photos} Doppelrand photos, ${bentoAudit.tzChips} localized chips).`);
     }
 
-    // 5. Verify Transformation Grid
-    const transformGrid = await page.evaluate(() => {
-      const grid = document.querySelector('.transformation-grid');
-      const cards = grid ? grid.querySelectorAll('.transform-card') : [];
-      return {
-        exists: !!grid,
-        cardCount: cards.length
-      };
-    });
-
-    if (!transformGrid.exists || transformGrid.cardCount < 3) {
-      console.error(`  [FAIL] ${geo.name} transformation grid missing or incomplete!`);
-      allPassed = false;
-    } else {
-      console.log(`  [PASS] ${geo.name} screen time transformation grid verified (3 cards).`);
-    }
-
-    // 6. Verify Squircle Testimonial Avatars
-    const squircleAvatars = await page.evaluate(() => {
-      const squircles = document.querySelectorAll('.testi-avatar-squircle');
-      const circles = document.querySelectorAll('.testi-avatar-circle');
-      return {
-        squircleCount: squircles.length,
-        circleCount: circles.length
-      };
-    });
-
-    if (squircleAvatars.circleCount > 0 || squircleAvatars.squircleCount < 2) {
-      console.error(`  [FAIL] ${geo.name} testimonial avatars not properly squirclized: squircle=${squircleAvatars.squircleCount}, circle=${squircleAvatars.circleCount}`);
-      allPassed = false;
-    } else {
-      console.log(`  [PASS] ${geo.name} testimonial avatars are 100% squircle (${squircleAvatars.squircleCount} frames).`);
-    }
-
-    // 7. Verify Hero BG is radiant light
-    const heroBg = await page.evaluate(() => {
-      const hero = document.querySelector('header.geo-hero-luxury');
-      return hero ? window.getComputedStyle(hero).backgroundColor : null;
-    });
-    const isDarkBg = heroBg && (heroBg.includes('rgb(11, 17, 32)') || heroBg.includes('rgb(3, 7, 18)'));
-    if (isDarkBg) {
-      console.error(`  [FAIL] ${geo.name} hero background is DARK!`);
-      allPassed = false;
-    } else {
-      console.log(`  [PASS] ${geo.name} hero background is radiant light ivory/pearl.`);
-    }
-
-    // 8. Capture Hero Screenshot
+    // 5. Capture Hero + 3D Flag + 3D Marquee + 3D Stats Screenshot
     const heroScreenshotPath = path.join(artifactDir, `geo_${geo.name.toLowerCase()}_luxury_preview.png`);
-    await page.screenshot({ path: heroScreenshotPath, clip: { x: 0, y: 0, width: 1280, height: 1100 } });
-    console.log(`  [SCREENSHOT] Saved hero preview to ${heroScreenshotPath}`);
+    await page.screenshot({ path: heroScreenshotPath, clip: { x: 0, y: 0, width: 1280, height: 1180 } });
+    console.log(`  [SCREENSHOT] Saved hero + 3D marquee + 3D stats to ${heroScreenshotPath}`);
 
-    // 9. Capture Expanding Cards Section Screenshot
-    const expandingSection = await page.$('#expanding-curriculum');
+    // 6. Capture Asymmetrical 12-Col Bento Screenshot
+    const bentoSection = await page.$('.argon-why-bento');
+    if (bentoSection) {
+      await bentoSection.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(300);
+      const bentoScreenshotPath = path.join(artifactDir, `geo_${geo.name.toLowerCase()}_argon_bento.png`);
+      await page.screenshot({ path: bentoScreenshotPath, clip: { x: 0, y: 0, width: 1280, height: 820 } });
+      console.log(`  [SCREENSHOT] Saved 12-col Argon Bento to ${bentoScreenshotPath}`);
+    }
+
+    // 7. Capture Expanding Cards with 3D Pathway Emblems Screenshot
+    const expandingSection = await page.$('section[aria-label="Curriculum Pathways"]');
     if (expandingSection) {
-      const cardsScreenshotPath = path.join(artifactDir, `geo_${geo.name.toLowerCase()}_expanding_cards.png`);
       await expandingSection.scrollIntoViewIfNeeded();
       await page.waitForTimeout(300);
-      await page.screenshot({ path: cardsScreenshotPath, clip: { x: 0, y: 0, width: 1280, height: 750 } });
-      console.log(`  [SCREENSHOT] Saved expanding cards to ${cardsScreenshotPath}\n`);
+      const cardsScreenshotPath = path.join(artifactDir, `geo_${geo.name.toLowerCase()}_expanding_cards.png`);
+      await page.screenshot({ path: cardsScreenshotPath, clip: { x: 0, y: 0, width: 1280, height: 820 } });
+      console.log(`  [SCREENSHOT] Saved 3D Expanding Cards to ${cardsScreenshotPath}`);
     }
+
+    // 8. Capture Doppelrand Pricing + Safeguarding Vault Screenshot (on USA)
+    if (geo.name === 'USA') {
+      const pricingSection = await page.$('#pricing');
+      if (pricingSection) {
+        await pricingSection.scrollIntoViewIfNeeded();
+        await page.waitForTimeout(300);
+        const pricingPath = path.join(artifactDir, 'geo_usa_pricing_vault.png');
+        await page.screenshot({ path: pricingPath, clip: { x: 0, y: 0, width: 1280, height: 950 } });
+        console.log(`  [SCREENSHOT] Saved Doppelrand Pricing to ${pricingPath}`);
+      }
+      const vaultSection = await page.$('.safeguarding-vault');
+      if (vaultSection) {
+        await vaultSection.scrollIntoViewIfNeeded();
+        await page.waitForTimeout(300);
+        const vaultPath = path.join(artifactDir, 'geo_usa_safeguarding_vault.png');
+        await page.screenshot({ path: vaultPath, clip: { x: 0, y: 0, width: 1280, height: 650 } });
+        console.log(`  [SCREENSHOT] Saved 3D Safeguarding Vault to ${vaultPath}`);
+      }
+    }
+    console.log('');
   }
 
   await browser.close();
 
   if (allPassed) {
-    console.log('================================================================');
-    console.log('=== ALL 5 GEO PAGES PASSED 100% MOTION-LUXURY ARCHITECTURAL AUDIT ===');
-    console.log('================================================================');
+    console.log('========================================================================');
+    console.log('=== ALL 5 GEO PAGES PASSED 100% GEMINI ARGON 3D SVG & BENTO AUDIT ===');
+    console.log('========================================================================');
     process.exit(0);
   } else {
     console.error('=== SOME GEO PAGES FAILED AUDIT ===');

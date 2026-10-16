@@ -99,29 +99,10 @@
       el.innerHTML = svg(name, size, cls);
     });
 
-    // 2. Safely replace legacy 3D icon containers [data-icon-3d] with clean geometric icons
-    var legacy3d = document.querySelectorAll('[data-icon-3d]');
-    legacy3d.forEach(function (el) {
-      var iconKey = el.getAttribute('data-icon-3d');
-      var map = {
-        'rocket': 'terminal',
-        'atom': 'ai',
-        'shield': 'shield',
-        'cube': 'scratch',
-        'target': 'art',
-        'code': 'python',
-        'laptop': 'web',
-        'robot': 'robot',
-        'chart': 'creative',
-        'globe': 'globe',
-        'users': 'mentorship'
-      };
-      var target = map[iconKey] || 'terminal';
-      el.removeAttribute('data-icon-3d');
-      el.classList.remove('icon-3d-active', 'icon-3d-enhanced');
-      el.classList.add('stem-icon-badge');
-      el.innerHTML = svg(target, 24, 'text-slate-700');
-    });
+    // 2. Only fallback [data-icon-3d] if Stemulus3DIcons is not present and element is explicitly marked fallback
+    if (typeof window !== 'undefined' && window.Stemulus3DIcons) {
+      window.Stemulus3DIcons.hydrate(document);
+    }
   }
 
   if (typeof document !== 'undefined') {

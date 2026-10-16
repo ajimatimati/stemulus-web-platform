@@ -665,6 +665,301 @@
         <circle cx="28" cy="42" r="2.5" fill="#FFFFFF" opacity="0.8"/>
         <circle cx="36" cy="45" r="1.8" fill="#FFFFFF" opacity="0.8"/>
       </svg>
+    `,
+
+    // 29. 3D Scratch Interlocking Logic Puzzle Block
+    'puzzle': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="58" rx="18" ry="3.5" fill="#0F172A" opacity="0.2"/>
+        <!-- 3D Extruded Base -->
+        <path d="M14 20H24V15C24 12.2 26.2 10 29 10H35C37.8 10 40 12.2 40 15V20H50C52.2 20 54 21.8 54 24V48C54 50.2 52.2 52 50 52H39V47C39 44.2 36.8 42 34 42H30C27.2 42 25 44.2 25 47V52H14C11.8 52 10 50.2 10 48V24C10 21.8 11.8 20 14 20Z" fill="#9A3412"/>
+        <!-- Top Surface -->
+        <path d="M14 16H24V11C24 8.2 26.2 6 29 6H35C37.8 6 40 8.2 40 11V16H50C52.2 16 54 17.8 54 20V44C54 46.2 52.2 48 50 48H39V43C39 40.2 36.8 38 34 38H30C27.2 38 25 40.2 25 43V48H14C11.8 48 10 46.2 10 44V20C10 17.8 11.8 16 14 16Z" fill="url(#gradOrange3D)" filter="url(#shadow3D)"/>
+        <!-- Specular Glass Highlight -->
+        <path d="M14 16H50C52.2 16 54 17.8 54 20V30H10V20C10 17.8 11.8 16 14 16Z" fill="url(#gradGlass3D)"/>
+        <rect x="18" y="25" width="16" height="4" rx="2" fill="#FFF9C4"/>
+        <circle cx="42" cy="27" r="3" fill="url(#gradGold3D)"/>
+      </svg>
+    `,
+
+    // 30. 3D Command Terminal Console
+    'terminal': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="58" rx="20" ry="3.5" fill="#0F172A" opacity="0.2"/>
+        <rect x="8" y="15" width="48" height="38" rx="9" fill="#0F172A"/>
+        <rect x="8" y="11" width="48" height="38" rx="9" fill="url(#gradNavy3D)" filter="url(#shadow3D)" stroke="#475569" stroke-width="1.5"/>
+        <path d="M8 20C8 15 12 11 17 11H47C52 11 56 15 56 20V22H8V20Z" fill="#1E293B"/>
+        <circle cx="15" cy="16.5" r="2" fill="#EF4444"/>
+        <circle cx="21" cy="16.5" r="2" fill="#F59E0B"/>
+        <circle cx="27" cy="16.5" r="2" fill="#10B981"/>
+        <path d="M18 29L25 34L18 39" stroke="url(#gradCyan3D)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="29" y1="39" x2="40" y2="39" stroke="url(#gradOrange3D)" stroke-width="3.5" stroke-linecap="round"/>
+      </svg>
+    `,
+
+    // 31. 3D JavaScript Syntax Braces
+    'braces': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="58" rx="18" ry="3.5" fill="#0F172A" opacity="0.2"/>
+        <rect x="10" y="13" width="44" height="40" rx="10" fill="#B45309"/>
+        <rect x="10" y="10" width="44" height="40" rx="10" fill="url(#gradGold3D)" filter="url(#shadow3D)"/>
+        <path d="M10 20C10 14.5 14.5 10 20 10H44C49.5 10 54 14.5 54 20V28H10V20Z" fill="url(#gradGlass3D)"/>
+        <path d="M26 20C22 20 22 23 22 26V28C22 30 19 30 19 30C19 30 22 30 22 32V34C22 37 22 40 26 40" stroke="#0F172A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M38 20C42 20 42 23 42 26V28C42 30 45 30 45 30C45 30 42 30 42 32V34C42 37 42 40 38 40" stroke="#0F172A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `,
+
+    // 32. 3D Isometric Web Layout Bento
+    'layout': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="58" rx="20" ry="3.5" fill="#0F172A" opacity="0.2"/>
+        <rect x="10" y="14" width="44" height="38" rx="8" fill="#334155"/>
+        <rect x="10" y="11" width="44" height="38" rx="8" fill="#F8FAFC" filter="url(#shadow3D)"/>
+        <path d="M10 19C10 14.6 13.6 11 18 11H46C50.4 11 54 14.6 54 19V23H10V19Z" fill="url(#gradRuby3D)"/>
+        <rect x="15" y="27" width="14" height="17" rx="3" fill="url(#gradOrange3D)"/>
+        <rect x="33" y="27" width="16" height="7" rx="2.5" fill="url(#gradNavy3D)"/>
+        <rect x="33" y="37" width="16" height="7" rx="2.5" fill="url(#gradCyan3D)"/>
+      </svg>
+    `,
+
+    // 33. 3D AI Neural Network Core
+    'brain': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="58" rx="18" ry="3.5" fill="#0F172A" opacity="0.2"/>
+        <circle cx="32" cy="31" r="22" fill="url(#gradPurple3D)" filter="url(#shadow3D)"/>
+        <circle cx="32" cy="31" r="19" fill="url(#gradGlass3D)"/>
+        <!-- Synaptic Links -->
+        <path d="M22 23L32 18L42 23L42 37L32 43L22 37Z" stroke="#67E8F9" stroke-width="2" fill="none"/>
+        <line x1="22" y1="23" x2="42" y2="37" stroke="#FFF9C4" stroke-width="1.5" opacity="0.8"/>
+        <line x1="42" y1="23" x2="22" y2="37" stroke="#FFF9C4" stroke-width="1.5" opacity="0.8"/>
+        <!-- Glowing Nodes -->
+        <circle cx="32" cy="18" r="3.5" fill="#FFFFFF"/>
+        <circle cx="22" cy="23" r="3.5" fill="url(#gradCyan3D)"/>
+        <circle cx="42" cy="23" r="3.5" fill="url(#gradCyan3D)"/>
+        <circle cx="32" cy="31" r="4.5" fill="url(#gradGold3D)"/>
+        <circle cx="22" cy="37" r="3.5" fill="url(#gradOrange3D)"/>
+        <circle cx="42" cy="37" r="3.5" fill="url(#gradOrange3D)"/>
+        <circle cx="32" cy="43" r="3.5" fill="#FFFFFF"/>
+      </svg>
+    `,
+
+    // 34. 3D Silicon Microcontroller / Arduino CPU
+    'cpu': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="58" rx="18" ry="3.5" fill="#0F172A" opacity="0.2"/>
+        <!-- Gold Pins -->
+        <rect x="20" y="8" width="4" height="46" rx="2" fill="url(#gradGold3D)"/>
+        <rect x="30" y="8" width="4" height="46" rx="2" fill="url(#gradGold3D)"/>
+        <rect x="40" y="8" width="4" height="46" rx="2" fill="url(#gradGold3D)"/>
+        <rect x="9" y="19" width="46" height="4" rx="2" fill="url(#gradGold3D)"/>
+        <rect x="9" y="29" width="46" height="4" rx="2" fill="url(#gradGold3D)"/>
+        <rect x="9" y="39" width="46" height="4" rx="2" fill="url(#gradGold3D)"/>
+        <!-- Silicon Package -->
+        <rect x="14" y="15" width="36" height="34" rx="7" fill="#047857"/>
+        <rect x="14" y="13" width="36" height="34" rx="7" fill="url(#gradEmerald3D)" filter="url(#shadow3D)"/>
+        <!-- Inner Die -->
+        <rect x="21" y="20" width="22" height="20" rx="4" fill="#0F172A"/>
+        <rect x="24" y="23" width="16" height="14" rx="2" fill="url(#gradCyan3D)"/>
+        <circle cx="28" cy="27" r="2" fill="#FFFFFF"/>
+      </svg>
+    `,
+
+    // 35. 3D Isometric Cube / Unity 3D Engine
+    'box': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="58" rx="18" ry="3.5" fill="#0F172A" opacity="0.2"/>
+        <g filter="url(#shadow3D)">
+          <!-- Top Diamond Facet -->
+          <polygon points="32,10 52,21 32,32 12,21" fill="url(#gradCyan3D)"/>
+          <!-- Left Facet -->
+          <polygon points="12,21 32,32 32,53 12,42" fill="url(#gradNavy3D)"/>
+          <!-- Right Facet -->
+          <polygon points="52,21 32,32 32,53 52,42" fill="#0E7490"/>
+          <!-- Specular Wireframe Edges -->
+          <polyline points="12,21 32,32 52,21" stroke="#FFFFFF" stroke-width="1.5" opacity="0.8"/>
+          <line x1="32" y1="32" x2="32" y2="53" stroke="#FFFFFF" stroke-width="1.5" opacity="0.8"/>
+        </g>
+      </svg>
+    `,
+
+    // 36. 3D Gamepad Controller / Roblox & Game Dev
+    'gamepad': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="56" rx="22" ry="3.5" fill="#0F172A" opacity="0.2"/>
+        <path d="M16 20H48C53 20 57 26 55 38L53 45C52 49 47 50 44 46L39 40H25L20 46C17 50 12 49 11 45L9 38C7 26 11 20 16 20Z" fill="#0F172A"/>
+        <path d="M16 17H48C53 17 57 23 55 35L53 42C52 46 47 47 44 43L39 37H25L20 43C17 47 12 46 11 42L9 35C7 23 11 17 16 17Z" fill="url(#gradNavy3D)" filter="url(#shadow3D)"/>
+        <!-- D-Pad -->
+        <path d="M19 24H23V28H27V32H23V36H19V32H15V28H19V24Z" fill="url(#gradSteel3D)"/>
+        <!-- Action Buttons -->
+        <circle cx="46" cy="26" r="2.8" fill="url(#gradOrange3D)"/>
+        <circle cx="40" cy="31" r="2.8" fill="url(#gradCyan3D)"/>
+        <circle cx="46" cy="35" r="2.8" fill="url(#gradEmerald3D)"/>
+        <circle cx="51" cy="31" r="2.8" fill="url(#gradGold3D)"/>
+      </svg>
+    `,
+
+    // 37. 3D Play Prism / Pygame Arcade
+    'play': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="58" rx="18" ry="3.5" fill="#0F172A" opacity="0.2"/>
+        <circle cx="32" cy="31" r="23" fill="url(#gradEmerald3D)" filter="url(#shadow3D)"/>
+        <path d="M12 25C15 16 22 10 32 10C42 10 49 16 52 25" fill="url(#gradGlass3D)"/>
+        <polygon points="26,20 45,31 26,42" fill="#FFFFFF" filter="url(#shadow3D)"/>
+      </svg>
+    `,
+
+    // 38. 3D Cryptographic Safeguarding Crest Shield
+    'shield': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="58" rx="18" ry="3.5" fill="#0F172A" opacity="0.22"/>
+        <!-- Outer Titanium Bezel Shield -->
+        <path d="M32 6L10 15V31C10 45.5 19.4 55.8 32 59C44.6 55.8 54 45.5 54 31V15L32 6Z" fill="url(#gradSteel3D)" filter="url(#shadow3D)"/>
+        <!-- Inner Emerald Core Shield -->
+        <path d="M32 10L14 17.5V31C14 43 21.7 51.8 32 54.6C42.3 51.8 50 43 50 31V17.5L32 10Z" fill="url(#gradEmerald3D)"/>
+        <!-- Left Facet Specular Highlight -->
+        <path d="M32 10L14 17.5V31C14 43 21.7 51.8 32 54.6V10Z" fill="url(#gradGlass3D)"/>
+        <!-- 3D Embossed Checkmark -->
+        <path d="M23 32L29 38L42 25" stroke="#064E3B" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M23 30.5L29 36.5L42 23.5" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `,
+
+    // 39. 3D Live Broadcast Camera
+    'video': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="56" rx="20" ry="3.5" fill="#0F172A" opacity="0.2"/>
+        <path d="M44 26L56 19V43L44 36V26Z" fill="url(#gradOrange3D)" filter="url(#shadow3D)"/>
+        <rect x="8" y="18" width="36" height="26" rx="7" fill="url(#gradNavy3D)" filter="url(#shadow3D)"/>
+        <circle cx="22" cy="31" r="7" fill="url(#gradCyan3D)"/>
+        <circle cx="20" cy="29" r="2.5" fill="#FFFFFF"/>
+        <circle cx="37" cy="24" r="2.5" fill="#10B981" class="anim-flame"/>
+      </svg>
+    `,
+
+    // 40. 3D Tuition / Pricing Tag Emblem
+    'tag': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <ellipse cx="32" cy="58" rx="18" ry="3.5" fill="#0F172A" opacity="0.2"/>
+        <path d="M12 12H32L52 32L32 52L12 32V12Z" fill="url(#gradOrange3D)" filter="url(#shadow3D)"/>
+        <path d="M12 12H32L42 22H12V12Z" fill="url(#gradGlass3D)"/>
+        <circle cx="22" cy="22" r="4" fill="#FFF9C4"/>
+      </svg>
+    `,
+
+    // 41. 3D Glass-Bezel Flag: United States (USA)
+    'flag-us': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <clipPath id="clipFlagUS"><rect x="6" y="12" width="52" height="38" rx="9"/></clipPath>
+        <rect x="6" y="15" width="52" height="38" rx="9" fill="#1E293B"/>
+        <g clip-path="url(#clipFlagUS)" filter="url(#shadow3D)">
+          <rect x="6" y="12" width="52" height="38" fill="#FFFFFF"/>
+          <rect x="6" y="12" width="52" height="5.5" fill="#DC2626"/>
+          <rect x="6" y="23" width="52" height="5.5" fill="#DC2626"/>
+          <rect x="6" y="34" width="52" height="5.5" fill="#DC2626"/>
+          <rect x="6" y="44.5" width="52" height="5.5" fill="#DC2626"/>
+          <rect x="6" y="12" width="26" height="22" fill="#1E3A8A"/>
+          <circle cx="13" cy="18" r="1.6" fill="#FFFFFF"/>
+          <circle cx="20" cy="18" r="1.6" fill="#FFFFFF"/>
+          <circle cx="27" cy="18" r="1.6" fill="#FFFFFF"/>
+          <circle cx="16.5" cy="23" r="1.6" fill="#FFFFFF"/>
+          <circle cx="23.5" cy="23" r="1.6" fill="#FFFFFF"/>
+          <circle cx="13" cy="28" r="1.6" fill="#FFFFFF"/>
+          <circle cx="20" cy="28" r="1.6" fill="#FFFFFF"/>
+          <circle cx="27" cy="28" r="1.6" fill="#FFFFFF"/>
+          <rect x="6" y="12" width="52" height="20" fill="url(#gradGlass3D)"/>
+        </g>
+        <rect x="6" y="12" width="52" height="38" rx="9" stroke="rgba(255,255,255,0.65)" stroke-width="1.5"/>
+      </svg>
+    `,
+
+    // 42. 3D Glass-Bezel Flag: United Kingdom (UK)
+    'flag-uk': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <clipPath id="clipFlagUK"><rect x="6" y="12" width="52" height="38" rx="9"/></clipPath>
+        <rect x="6" y="15" width="52" height="38" rx="9" fill="#1E293B"/>
+        <g clip-path="url(#clipFlagUK)" filter="url(#shadow3D)">
+          <rect x="6" y="12" width="52" height="38" fill="#1E3A8A"/>
+          <path d="M6 12L58 50M58 12L6 50" stroke="#FFFFFF" stroke-width="7"/>
+          <path d="M6 12L58 50M58 12L6 50" stroke="#DC2626" stroke-width="3.5"/>
+          <path d="M32 12V50M6 31H58" stroke="#FFFFFF" stroke-width="11"/>
+          <path d="M32 12V50M6 31H58" stroke="#DC2626" stroke-width="6.5"/>
+          <rect x="6" y="12" width="52" height="20" fill="url(#gradGlass3D)"/>
+        </g>
+        <rect x="6" y="12" width="52" height="38" rx="9" stroke="rgba(255,255,255,0.65)" stroke-width="1.5"/>
+      </svg>
+    `,
+
+    // 43. 3D Glass-Bezel Flag: Canada (CA)
+    'flag-ca': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <clipPath id="clipFlagCA"><rect x="6" y="12" width="52" height="38" rx="9"/></clipPath>
+        <rect x="6" y="15" width="52" height="38" rx="9" fill="#1E293B"/>
+        <g clip-path="url(#clipFlagCA)" filter="url(#shadow3D)">
+          <rect x="6" y="12" width="52" height="38" fill="#FFFFFF"/>
+          <rect x="6" y="12" width="14" height="38" fill="#DC2626"/>
+          <rect x="44" y="12" width="14" height="38" fill="#DC2626"/>
+          <!-- Iconic Maple Leaf Silhouette -->
+          <path d="M32 18L34.5 23.5L39 22.5L36.5 27.5L40 29.5L34 34H30L24 29.5L27.5 27.5L25 22.5L29.5 23.5L32 18Z" fill="#DC2626"/>
+          <rect x="31" y="33" width="2" height="7" fill="#DC2626"/>
+          <rect x="6" y="12" width="52" height="20" fill="url(#gradGlass3D)"/>
+        </g>
+        <rect x="6" y="12" width="52" height="38" rx="9" stroke="rgba(255,255,255,0.65)" stroke-width="1.5"/>
+      </svg>
+    `,
+
+    // 44. 3D Glass-Bezel Flag: Australia (AU)
+    'flag-au': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <clipPath id="clipFlagAU"><rect x="6" y="12" width="52" height="38" rx="9"/></clipPath>
+        <rect x="6" y="15" width="52" height="38" rx="9" fill="#1E293B"/>
+        <g clip-path="url(#clipFlagAU)" filter="url(#shadow3D)">
+          <rect x="6" y="12" width="52" height="38" fill="#1E3A8A"/>
+          <!-- Union Jack Canton -->
+          <path d="M6 12L32 30M32 12L6 30" stroke="#FFFFFF" stroke-width="4"/>
+          <path d="M19 12V30M6 21H32" stroke="#FFFFFF" stroke-width="6"/>
+          <path d="M19 12V30M6 21H32" stroke="#DC2626" stroke-width="3.5"/>
+          <!-- Commonwealth & Southern Cross Stars -->
+          <circle cx="19" cy="40" r="3.5" fill="#FFFFFF"/>
+          <circle cx="45" cy="20" r="2" fill="#FFFFFF"/>
+          <circle cx="51" cy="27" r="2" fill="#FFFFFF"/>
+          <circle cx="39" cy="29" r="2" fill="#FFFFFF"/>
+          <circle cx="45" cy="41" r="2.2" fill="#FFFFFF"/>
+          <rect x="6" y="12" width="52" height="20" fill="url(#gradGlass3D)"/>
+        </g>
+        <rect x="6" y="12" width="52" height="38" rx="9" stroke="rgba(255,255,255,0.65)" stroke-width="1.5"/>
+      </svg>
+    `,
+
+    // 45. 3D Glass-Bezel Flag: Nigeria (NG)
+    'flag-ng': `
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        ${SVG_DEFS}
+        <clipPath id="clipFlagNG"><rect x="6" y="12" width="52" height="38" rx="9"/></clipPath>
+        <rect x="6" y="15" width="52" height="38" rx="9" fill="#1E293B"/>
+        <g clip-path="url(#clipFlagNG)" filter="url(#shadow3D)">
+          <rect x="6" y="12" width="52" height="38" fill="#FFFFFF"/>
+          <rect x="6" y="12" width="17.5" height="38" fill="#008751"/>
+          <rect x="40.5" y="12" width="17.5" height="38" fill="#008751"/>
+          <rect x="6" y="12" width="52" height="20" fill="url(#gradGlass3D)"/>
+        </g>
+        <rect x="6" y="12" width="52" height="38" rx="9" stroke="rgba(255,255,255,0.65)" stroke-width="1.5"/>
+      </svg>
     `
   };
 
@@ -696,12 +991,14 @@
     'success': 'check',
     'ok': 'check',
     'verified': 'check',
+    'shield-check': 'shield',
     'error': 'cross',
     'cancel': 'cross',
     'close': 'cross',
     'sync': 'refresh',
     'loop': 'refresh',
     'bolt': 'lightning',
+    'zap': 'lightning',
     'power': 'lightning',
     'padlock': 'lock',
     'secure': 'lock',
@@ -727,7 +1024,9 @@
     'hello': 'wave',
     'idea': 'bulb',
     'light': 'bulb',
-    'lab': 'test-tube'
+    'lab': 'test-tube',
+    'brain-circuit': 'brain',
+    'scratch': 'puzzle'
   };
 
   // Motion map: defaults motion classes based on icon type
@@ -738,13 +1037,16 @@
     'sparkle': 'motion-twinkle',
     'trophy': 'motion-pulse',
     'check': 'motion-pop',
+    'shield': 'motion-pulse',
     'cross': 'motion-pop',
     'refresh': '',
     'lightning': 'motion-voltage',
     'cake': 'motion-float',
     'wave': 'motion-float',
     'bulb': 'motion-pulse',
-    'robot': 'motion-float'
+    'robot': 'motion-float',
+    'brain': 'motion-pulse',
+    'cpu': 'motion-pulse'
   };
 
   function normalizeName(name) {
