@@ -52,6 +52,10 @@
   <link rel="stylesheet" href="assets/css/3d-svg-icons.css" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
+  <!-- GSAP & SCROLLTRIGGER -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+
   <!-- LUCIDE ICONS -->
   <script src="https://unpkg.com/lucide@latest" defer></script>
   <script defer>
@@ -186,12 +190,12 @@
               Guide your child from passive screen time into active software engineering and autonomous robotics. From Scratch game mechanics to Python, AI, and AP Computer Science prep — taught live 1-on-1 by Silicon Valley-caliber mentors mapped to <strong class="text-slate-900 font-bold">CSTA Standards &amp; AP Computer Science Frameworks</strong>.
             </p>
 
-            <!-- ACTION BUTTONS -->
+            <!-- ACTION BUTTONS (Button-in-Button Architecture) -->
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-10">
               <a href="book-class.html?country=USA" class="geo-btn-primary group">
                 <span>Book Free Discovery Session (45 Min)</span>
-                <span class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover:translate-x-1">
-                  <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-white"></i>
+                <span class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover:translate-x-1">
+                  <i data-lucide="arrow-right" class="w-4 h-4 text-white"></i>
                 </span>
               </a>
               <a href="#pricing" class="geo-btn-secondary">
@@ -258,9 +262,10 @@
       </div>
     </header>
 
-    <!-- INFINITE LOGO MARQUEE TICKER (What We Teach) -->
-    <section class="py-8 bg-white border-b border-slate-200/80 overflow-hidden">
+    <!-- DOUBLE-LAYER INFINITE LOGO MARQUEE TICKER -->
+    <section class="py-8 bg-white border-b border-slate-200/80 overflow-hidden" aria-label="Skills Marquee">
       <div class="skills-marquee-container">
+        <!-- Row 1: Scroll Left -->
         <div class="logo-marquee-row row-left">
           <div class="logo-marquee-track">
             <div class="logo-card card-scratch"><i data-lucide="puzzle" class="w-5 h-5 text-orange-500"></i><span>Scratch 3.0</span></div>
@@ -289,12 +294,153 @@
       </div>
     </section>
 
+    <!-- LOCALIZED STATS BAND -->
+    <div class="stats-band-new" aria-label="Key US Statistics">
+      <div class="stats-band-new__grid">
+        <div class="stats-item">
+          <div class="stats-item__num">50<span>+</span></div>
+          <div class="stats-item__lbl">Real Projects Deployed</div>
+        </div>
+        <div class="stats-item">
+          <div class="stats-item__num">4.9<span>/5</span></div>
+          <div class="stats-item__lbl">US Parent Rating</div>
+        </div>
+        <div class="stats-item">
+          <div class="stats-item__num">5<span>-17</span></div>
+          <div class="stats-item__lbl">Ages We Teach</div>
+        </div>
+        <div class="stats-item">
+          <div class="stats-item__num">4<span> TZ</span></div>
+          <div class="stats-item__lbl">ET · CT · MT · PT Covered</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3D CURVED PERSPECTIVE CAROUSEL: WHAT WE TEACH -->
+    <section id="skills-section" aria-label="Curriculum Portfolio" class="py-24 bg-[#fffbf7]">
+      <div class="zb-inner text-center mb-12">
+        <span class="zb-eyebrow">[ Subject Portfolio ]</span>
+        <h2 class="zb-h2">What American Students Build</h2>
+        <p class="zb-lead mx-auto">From intuitive drag-and-drop block logic to university-level object-oriented Python, machine learning, and hardware robotics.</p>
+      </div>
+
+      <!-- 3D Perspective Container -->
+      <div id="carousel-perspective">
+        <div id="carousel-track">
+          <!-- Slide 1: Scratch -->
+          <div class="carousel-card active" data-index="0" data-link="scratch-creators.html" data-title="Scratch Game Creators">
+            <div class="card-shell">
+              <div class="card-core">
+                <img src="assets/images/scratch_game_creators.png" alt="Scratch Game Creators" class="card-img" loading="lazy">
+              </div>
+            </div>
+          </div>
+          <!-- Slide 2: Python -->
+          <div class="carousel-card" data-index="1" data-link="python-programming.html" data-title="Python Programming">
+            <div class="card-shell">
+              <div class="card-core">
+                <img src="assets/images/python_programming.jpg" alt="Python Programming" class="card-img" loading="lazy">
+              </div>
+            </div>
+          </div>
+          <!-- Slide 3: Web Wizards -->
+          <div class="carousel-card" data-index="2" data-link="web-wizards.html" data-title="Web Wizards (HTML/CSS)">
+            <div class="card-shell">
+              <div class="card-core">
+                <img src="assets/images/web_development.png" alt="Web Development" class="card-img" loading="lazy">
+              </div>
+            </div>
+          </div>
+          <!-- Slide 4: Fullstack -->
+          <div class="carousel-card" data-index="3" data-link="fullstack-web-dev.html" data-title="Fullstack Development">
+            <div class="card-shell">
+              <div class="card-core">
+                <img src="assets/images/javascript.jpg" alt="JavaScript" class="card-img" loading="lazy">
+              </div>
+            </div>
+          </div>
+          <!-- Slide 5: AI & Machine Learning -->
+          <div class="carousel-card" data-index="4" data-link="ai-machine-learning.html" data-title="AI & Machine Learning">
+            <div class="card-shell">
+              <div class="card-core">
+                <img src="assets/images/aiml.jpg" alt="AI & ML" class="card-img" loading="lazy">
+              </div>
+            </div>
+          </div>
+          <!-- Slide 6: Arduino Robotics -->
+          <div class="carousel-card" data-index="5" data-link="arduino-robotics.html" data-title="Arduino Robotics">
+            <div class="card-shell">
+              <div class="card-core">
+                <img src="assets/images/robotic.jpg" alt="Robotics" class="card-img" loading="lazy">
+              </div>
+            </div>
+          </div>
+          <!-- Slide 7: Roblox Scripting -->
+          <div class="carousel-card" data-index="6" data-link="programs.html" data-title="Roblox Scripting">
+            <div class="card-shell">
+              <div class="card-core">
+                <img src="assets/images/roblox.jpg" alt="Roblox" class="card-img" loading="lazy">
+              </div>
+            </div>
+          </div>
+          <!-- Slide 8: Pygame -->
+          <div class="carousel-card" data-index="7" data-link="python-programming.html" data-title="Game Dev with Pygame">
+            <div class="card-shell">
+              <div class="card-core">
+                <img src="assets/images/pygame.jpg" alt="Pygame" class="card-img" loading="lazy">
+              </div>
+            </div>
+          </div>
+          <!-- Slide 9: Unity 3D -->
+          <div class="carousel-card" data-index="8" data-link="programs.html" data-title="Unity 3D Game Engine">
+            <div class="card-shell">
+              <div class="card-core">
+                <img src="assets/images/unity.jpg" alt="Unity" class="card-img" loading="lazy">
+              </div>
+            </div>
+          </div>
+          <!-- Slide 10: Mathematics & Logic -->
+          <div class="carousel-card" data-index="9" data-link="programs.html" data-title="Mathematics & Logic">
+            <div class="card-shell">
+              <div class="card-core">
+                <img src="assets/images/mathematics.jpg" alt="Mathematics" class="card-img" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls (Prev/Next, Counter, Dynamic CTA) -->
+      <div class="carousel-controls-wrapper">
+        <div class="carousel-btn-container" style="display: flex; align-items: center; gap: 1.5rem;">
+          <button id="carousel-prev" class="carousel-btn" aria-label="Previous Subject">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          </button>
+          <div id="carousel-counter">
+            <span id="active-num">01</span> / 10
+          </div>
+          <button id="carousel-next" class="carousel-btn" aria-label="Next Subject">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </button>
+        </div>
+
+        <div style="margin-top: 0.5rem;">
+          <a id="carousel-cta" href="scratch-creators.html" class="dynamic-cta-button">
+            <span>Explore Program</span>
+            <span class="cta-arrow-circle">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- REAL STUDENT PROJECT SHOWCASE REEL (FACT-BASED ONLY, NO HALLUCINATIONS, NO DARK BACKGROUND) -->
-    <section class="geo-project-reel py-16 relative">
+    <section class="geo-project-reel py-20 relative bg-white border-y border-slate-200/80">
       <div class="max-w-7xl mx-auto px-6">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
-            <span class="reel-eyebrow text-xs font-black uppercase tracking-widest block mb-1">Tangible Output</span>
+            <span class="reel-eyebrow text-xs font-black uppercase tracking-widest block mb-1 text-orange-600">Tangible Output</span>
             <h2 class="text-3xl md:text-4xl font-black font-nunito text-slate-900">What Your Child Actually Builds &amp; Deploys</h2>
           </div>
           <p class="reel-sub text-sm max-w-md text-slate-600">No passive lectures. Every month concludes with a deployed playable game, live web app, or hardware prototype verified in our curriculum.</p>
@@ -356,101 +502,194 @@
               <p>Physical robotic rover with HC-SR04 ultrasonic distance sensors, infrared path-tracking modules, and C++ autonomous motor loops.</p>
             </div>
           </div>
-
         </div>
       </div>
     </section>
 
-    <!-- WHY US PARENTS CHOOSE STEMULUS -->
-    <section class="py-24 max-w-6xl mx-auto px-6">
-      <div class="text-center max-w-2xl mx-auto mb-16">
-        <span class="text-orange-600 text-xs font-extrabold uppercase tracking-widest block mb-2">Designed for American Families</span>
-        <h2 class="text-3xl md:text-4xl font-black font-nunito text-slate-900 mb-4">
-          Why US Parents Choose STEMulus Over Crowded Group Classes
-        </h2>
-        <p class="text-slate-600 text-base">
-          Most coding bootcamps group 8-15 kids together on Zoom. At STEMulus, every single lesson is 100% private 1-on-1.
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-8">
+    <!-- WHY US PARENTS CHOOSE STEMULUS + AGES PHOTO BANNER -->
+    <section class="zb-section" aria-label="Why US Parents Choose STEMulus">
+      <div class="zb-inner">
+        <span class="zb-eyebrow">Why STEMulus</span>
+        <h2 class="zb-h2">We don't teach kids about technology.<br>We teach them to think in it.</h2>
+        <p class="zb-lead">Private 1-on-1 mentorship for American students — tailored to their natural curiosity, mapped to CSTA standards, and scheduled in your local US time zone.</p>
         
-        <div class="bezel-card">
-          <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 mb-6">
-            <i data-lucide="user-check" class="w-6 h-6"></i>
+        <!-- Ages photo banner with smooth continuous crossfade -->
+        <div id="ages-banner-wrap">
+          <div class="ages-crossfade-container">
+            <img src="assets/images/curriculum_ages_5_8.jpg" alt="Ages 5-8 student coding on laptop with STEMulus" class="ages-banner-slide active" loading="lazy">
+            <img src="assets/images/curriculum_ages_9_13.jpg" alt="Ages 9-13 student engineering robotics" class="ages-banner-slide" style="opacity:0;" loading="lazy">
+            <img src="assets/images/curriculum_ages_14_17.jpg" alt="Ages 14-17 student at tech campus" class="ages-banner-slide" style="opacity:0;" loading="lazy">
           </div>
-          <h3 class="text-xl font-bold font-nunito text-slate-900 mb-3">1-on-1 Dedicated Mentor</h3>
-          <p class="text-slate-600 text-sm leading-relaxed">
-            Your child gets the undivided attention of a vetted mentor. No waiting for help, no peer pressure, and no getting left behind when concepts get challenging.
-          </p>
+          <!-- Luxurious gradient vignette for text legibility -->
+          <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(15,23,42,0.82) 0%,rgba(15,23,42,0.25) 35%,rgba(15,23,42,0.25) 65%,rgba(15,23,42,0.82) 100%), linear-gradient(to top, rgba(15,23,42,0.85) 0%, transparent 60%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;pointer-events:none;padding:1.5rem;">
+            <span style="font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.3rem, 3.2vw, 2rem);color:#fff;text-align:center;text-shadow:0 3px 18px rgba(0,0,0,0.85);letter-spacing:-0.01em;">One curriculum. Every age. All 1-on-1.</span>
+            <div id="ages-indicators" style="display:flex;gap:8px;margin-top:1rem;" aria-hidden="true">
+              <span class="age-pill active" style="width:28px;height:4px;border-radius:9999px;background:#f4600c;transition:all 0.5s ease;"></span>
+              <span class="age-pill" style="width:10px;height:4px;border-radius:9999px;background:rgba(255,255,255,0.45);transition:all 0.5s ease;"></span>
+              <span class="age-pill" style="width:10px;height:4px;border-radius:9999px;background:rgba(255,255,255,0.45);transition:all 0.5s ease;"></span>
+            </div>
+          </div>
         </div>
 
-        <div class="bezel-card">
-          <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 mb-6">
-            <i data-lucide="calendar" class="w-6 h-6"></i>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-card__num">1</div>
+            <h3>1-on-1 Dedicated Mentorship</h3>
+            <p>Every session is 100% private. An expert mentor focuses entirely on your child's questions and pacing — zero waiting, zero peer distraction.</p>
           </div>
-          <h3 class="text-xl font-bold font-nunito text-slate-900 mb-3">Your Schedule, Your Time Zone</h3>
-          <p class="text-slate-600 text-sm leading-relaxed">
-            Whether you are on Eastern Time in New York, Central in Texas, Mountain in Colorado, or Pacific in California, we offer after-school and weekend time slots that fit your family's calendar.
-          </p>
-        </div>
-
-        <div class="bezel-card">
-          <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600 mb-6">
-            <i data-lucide="code-2" class="w-6 h-6"></i>
+          <div class="why-card">
+            <div class="why-card__num">2</div>
+            <h3>Your US Time Zone</h3>
+            <p>Whether you're in New York (ET), Chicago (CT), Denver (MT), or Los Angeles (PT), we offer weekday after-school and weekend times that fit your family.</p>
           </div>
-          <h3 class="text-xl font-bold font-nunito text-slate-900 mb-3">Project-First Portfolio &amp; AP Prep</h3>
-          <p class="text-slate-600 text-sm leading-relaxed">
-            Students don't memorize dry syntax; they build real playable games, full-stack websites, and prepare directly for high school AP Computer Science Principles and AP CS A examinations.
-          </p>
+          <div class="why-card">
+            <div class="why-card__num">3</div>
+            <h3>CSTA &amp; AP Computer Science Prep</h3>
+            <p>Direct alignment with College Board AP Computer Science Principles and AP CS A (Java) standards to give your teen a tangible high school edge.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-card__num">4</div>
+            <h3>Creator Portfolio, Not Worksheets</h3>
+            <p>Students build playable games, publish live websites, and engineer physical Arduino rovers they can proudly showcase in college applications.</p>
+          </div>
         </div>
-
       </div>
     </section>
+
+    <!-- PLANNING PHOTO INTERSTITIAL ("Paper first. Code second.") -->
+    <div class="planning-interstitial">
+      <div class="pi-inner">
+        <div class="pi-photo">
+          <img src="assets/images/scratch_planning.png" alt="Student planning a Scratch game on notebook paper before coding" loading="lazy" width="800" height="600">
+          <div class="pi-photo-fade"></div>
+        </div>
+        <div class="pi-text">
+          <span style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:#f4600c;margin-bottom:0.75rem;display:block;">Every Session Starts Here</span>
+          <h3 style="font-family:'Nunito',sans-serif;font-size:1.65rem;font-weight:900;color:#0f172a;line-height:1.2;margin-bottom:0.85rem;">Paper first.<br>Code second.</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;line-height:1.7;color:#475569;">We teach children to think before they type. Every project starts with planning — what will it do? What does the user see? Only then do we open the laptop.</p>
+        </div>
+      </div>
+    </div>
 
     <!-- CURRICULUM PATHWAYS BY AGE -->
-    <section class="py-20 bg-white border-y border-slate-200/70">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center max-w-2xl mx-auto mb-16">
-          <span class="text-orange-600 text-xs font-extrabold uppercase tracking-widest block mb-2">Age-Tailored Learning</span>
-          <h2 class="text-3xl md:text-4xl font-black font-nunito text-slate-900 mb-4">
-            Curriculum Pathways from Ages 5 to 17
-          </h2>
-          <p class="text-slate-600 text-base">
-            Every age has a tailored cognitive approach - starting with visual logic and expanding into university-grade software development.
-          </p>
+    <section class="zb-section--tinted" aria-label="Curriculum Pathways">
+      <div class="zb-inner">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+          <span class="zb-eyebrow">[ Progression Framework ]</span>
+          <h2 class="zb-h2">Curriculum Pathways (Ages 5 to 17)</h2>
+          <p class="zb-lead mx-auto">Structured cognitive milestones that guide your child from visual logic into production-grade software engineering.</p>
         </div>
 
         <div class="grid md:grid-cols-4 gap-6">
-          
-          <a href="coding-for-kids-ages-5-7.html" class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-orange-500 transition-all group block">
+          <a href="coding-for-kids-ages-5-7.html" class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-orange-500 transition-all shadow-sm hover:shadow-md group block">
             <div class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Ages 5-7</div>
             <h4 class="font-bold text-slate-900 text-lg mb-2 font-nunito group-hover:text-orange-600 transition-colors">Early Explorers</h4>
             <p class="text-xs text-slate-600 leading-relaxed mb-4">ScratchJr, playful sequencing, loops, and interactive storytelling for early minds.</p>
             <span class="text-xs font-bold text-orange-600 flex items-center">Explore Pathway →</span>
           </a>
 
-          <a href="coding-for-kids-ages-8-10.html" class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-orange-500 transition-all group block">
+          <a href="coding-for-kids-ages-8-10.html" class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-orange-500 transition-all shadow-sm hover:shadow-md group block">
             <div class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Ages 8-10</div>
             <h4 class="font-bold text-slate-900 text-lg mb-2 font-nunito group-hover:text-orange-600 transition-colors">Junior Builders</h4>
             <p class="text-xs text-slate-600 leading-relaxed mb-4">Scratch 3.0 game architecture, arcade mechanics, variables, and creative problem solving.</p>
             <span class="text-xs font-bold text-orange-600 flex items-center">Explore Pathway →</span>
           </a>
 
-          <a href="coding-for-kids-ages-11-13.html" class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-orange-500 transition-all group block">
+          <a href="coding-for-kids-ages-11-13.html" class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-orange-500 transition-all shadow-sm hover:shadow-md group block">
             <div class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Ages 11-13</div>
             <h4 class="font-bold text-slate-900 text-lg mb-2 font-nunito group-hover:text-orange-600 transition-colors">Tech Innovators</h4>
             <p class="text-xs text-slate-600 leading-relaxed mb-4">Python programming fundamentals, Pygame graphics, web development (HTML/CSS/JS), and robotics.</p>
             <span class="text-xs font-bold text-orange-600 flex items-center">Explore Pathway →</span>
           </a>
 
-          <a href="coding-for-kids-ages-14-17.html" class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-orange-500 transition-all group block">
+          <a href="coding-for-kids-ages-14-17.html" class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-orange-500 transition-all shadow-sm hover:shadow-md group block">
             <div class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Ages 14-17</div>
             <h4 class="font-bold text-slate-900 text-lg mb-2 font-nunito group-hover:text-orange-600 transition-colors">Future Engineers</h4>
             <p class="text-xs text-slate-600 leading-relaxed mb-4">Full-stack web apps, algorithms, machine learning models, and AP Computer Science exam mastery.</p>
             <span class="text-xs font-bold text-orange-600 flex items-center">Explore Pathway →</span>
           </a>
+        </div>
+      </div>
+    </section>
 
+    <!-- MENTORS SPLIT SECTION WITH US VETTING STANDARDS -->
+    <section class="zb-section" aria-label="Our Mentors">
+      <div class="zb-inner">
+        <div class="mentors-split">
+          <div class="mentor-img-wrap">
+            <img src="assets/images/tutor_mentor.png" alt="STEMulus mentor teaching coding live on video call" loading="lazy" width="1350" height="900">
+            <div class="mentor-badge">
+              <div class="mentor-badge__icon"><i data-lucide="video" style="width:20px;height:20px;"></i></div>
+              <div>
+                <div class="mentor-badge__text">Live 1-on-1<br>every session</div>
+                <div class="mentor-badge__sub">Real expert. Real screen.</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="zb-eyebrow">Silicon Valley Pedagogy</span>
+            <h2 class="zb-h2">We hire builders<br>who love to teach.</h2>
+            <p class="zb-lead">Every STEMulus mentor is an industry professional — developers, AI researchers, and robotics engineers who genuinely celebrate when your child has an "Aha!" breakthrough.</p>
+            <div class="mentor-qualities">
+              <div class="mentor-quality">
+                <div class="mentor-quality__dot"><i data-lucide="shield-check" style="width:18px;height:18px;"></i></div>
+                <span>Strict US Background Check: Multi-state identity, criminal &amp; sex offender registries screened.</span>
+              </div>
+              <div class="mentor-quality">
+                <div class="mentor-quality__dot"><i data-lucide="zap" style="width:18px;height:18px;"></i></div>
+                <span>Adaptive Mentorship: Pacing adjusts dynamically to keep curious minds challenged, never frustrated.</span>
+              </div>
+              <div class="mentor-quality">
+                <div class="mentor-quality__dot"><i data-lucide="award" style="width:18px;height:18px;"></i></div>
+                <span>CSTA &amp; AP Standards: Mentors trained on College Board AP CS frameworks and computational rubrics.</span>
+              </div>
+            </div>
+            <a href="join-as-tutor.html" class="zb-link-btn">Become a Mentor →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTHENTIC US REVIEWS + EXCITED PARENT PHOTO BANNER -->
+    <section class="zb-section--tinted" aria-label="Parent Reviews">
+      <div class="zb-inner">
+        <span class="zb-eyebrow">American Families</span>
+        <h2 class="zb-h2" style="max-width:520px;">In their own words.</h2>
+        <p class="zb-lead" style="margin-bottom:2.5rem;">Authentic feedback from US parents whose kids attend weekly 1-on-1 STEMulus sessions.</p>
+
+        <div class="testi-honest-grid">
+          <!-- Quote 1 -->
+          <div class="testi-quote-card">
+            <p class="testi-quote-text">"Daniel built his first playable game in 3 sessions. His confidence with math, logic, and computers has soared. The 1-on-1 focus made all the difference."</p>
+            <div class="testi-author-row">
+              <div class="testi-avatar-circle" style="background:#fff3ed;color:#f4600c;">S</div>
+              <div>
+                <div class="testi-author-name">Sarah M.</div>
+                <div class="testi-author-role">Parent in New Jersey · Scratch &amp; Python</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quote 2 -->
+          <div class="testi-quote-card">
+            <p class="testi-quote-text">"What impressed me most was that nobody tried to sell us. The discovery session was genuine, informative, and our mentor gave clear milestones for AP CS."</p>
+            <div class="testi-author-row">
+              <div class="testi-avatar-circle" style="background:#f0fdf4;color:#16a34a;">D</div>
+              <div>
+                <div class="testi-author-name">David K.</div>
+                <div class="testi-author-role">Parent in California · Python &amp; AP Prep</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cinematic excited parent + child photo banner -->
+        <div class="testi-photo-banner">
+          <img src="assets/images/excited_parent_child.png" alt="Excited parent watching their child code a game" loading="lazy" width="1350" height="900">
+          <div class="testi-banner-caption">
+            <p class="testi-banner-quote">"He built a playable platformer game. I watched it happen live on screen."</p>
+            <p class="testi-banner-author">Verified STEMulus Parent · US Eastern Time</p>
+          </div>
         </div>
       </div>
     </section>
@@ -468,7 +707,6 @@
       </div>
 
       <div class="grid md:grid-cols-2 gap-8">
-        
         <!-- Starter / Intermediate Tier -->
         <div class="bezel-card relative border border-slate-200">
           <div class="accent-pill inline-block px-3 py-1 rounded-md text-xs font-bold mb-3">Foundation &amp; Intermediate (Ages 5-13)</div>
@@ -541,7 +779,6 @@
             Book Free Discovery Session for Advanced
           </a>
         </div>
-
       </div>
     </section>
 
@@ -704,6 +941,242 @@
   <script src="assets/js/stemulus-icons.js" defer></script>
   <script src="assets/js/scroll-choreography.js" defer></script>
   <script src="assets/js/stemulus-interactive.js" defer></script>
+
+  <!-- 3D CAROUSEL & AGES CROSSFADE ENGINE -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // 1. 3D Curved Perspective Carousel
+      (function init3DCarousel() {
+        const track = document.getElementById('carousel-track');
+        const cards = Array.from(document.querySelectorAll('.carousel-card'));
+        const prevBtn = document.getElementById('carousel-prev');
+        const nextBtn = document.getElementById('carousel-next');
+        const activeCounter = document.getElementById('active-num');
+        const ctaBtn = document.getElementById('carousel-cta');
+        const perspectiveContainer = document.getElementById('carousel-perspective');
+        
+        if (!track || cards.length === 0) return;
+
+        const totalCards = cards.length;
+        const theta = 360 / totalCards;
+        const radius = 375;
+        
+        let isDragging = false;
+        let hasDragged = false;
+        let isHovered = false;
+        let startX = 0;
+        let currentRotation = 0;
+        let dragRotationOffset = 0;
+        let rotationSpeed = 0.08;
+        let animId = null;
+        let isButtonAnimating = false;
+        let buttonTween = null;
+
+        if (perspectiveContainer) {
+          perspectiveContainer.addEventListener('mouseenter', () => { isHovered = true; });
+          perspectiveContainer.addEventListener('mouseleave', () => { isHovered = false; });
+        }
+
+        function initCardPositions() {
+          cards.forEach((card, i) => {
+            const angle = i * theta;
+            card.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+          });
+        }
+
+        function updateActiveCard() {
+          let activeIdx = 0;
+          let minDiff = Infinity;
+          cards.forEach((card, i) => {
+            const cardAngle = i * theta;
+            let spaceAngle = (currentRotation + cardAngle) % 360;
+            if (spaceAngle < 0) spaceAngle += 360;
+            let diff = Math.min(spaceAngle, 360 - spaceAngle);
+            if (diff < minDiff) {
+              minDiff = diff;
+              activeIdx = i;
+            }
+          });
+
+          cards.forEach((card, i) => {
+            card.classList.toggle('active', i === activeIdx);
+          });
+
+          if (activeCounter) {
+            activeCounter.innerText = String(activeIdx + 1).padStart(2, '0');
+          }
+
+          const activeCard = cards[activeIdx];
+          if (ctaBtn && activeCard) {
+            ctaBtn.setAttribute('href', activeCard.dataset.link);
+            const title = activeCard.dataset.title;
+            const ctaSpan = ctaBtn.querySelector('span:first-child');
+            if (ctaSpan) {
+              ctaSpan.innerText = `Explore ${title}`;
+            }
+          }
+        }
+
+        function animate() {
+          if (!isDragging && !isButtonAnimating && !isHovered && window.innerWidth >= 768) {
+            currentRotation += rotationSpeed;
+            if (currentRotation >= 360) currentRotation -= 360;
+            if (currentRotation < 0) currentRotation += 360;
+            
+            track.style.transition = 'none';
+            track.style.transform = `rotateY(${currentRotation}deg)`;
+            updateActiveCard();
+          }
+          animId = requestAnimationFrame(animate);
+        }
+
+        function handleDragStart(e) {
+          if (window.innerWidth < 768) return;
+          if (buttonTween) {
+            buttonTween.kill();
+            buttonTween = null;
+          }
+          isButtonAnimating = false;
+          isDragging = true;
+          hasDragged = false;
+          startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+          track.style.transition = 'none';
+        }
+
+        function handleDragMove(e) {
+          if (!isDragging) return;
+          const x = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+          const dx = x - startX;
+          if (Math.abs(dx) > 6) {
+            hasDragged = true;
+          }
+          dragRotationOffset = dx * 0.16;
+          track.style.transform = `rotateY(${currentRotation + dragRotationOffset}deg)`;
+        }
+
+        function handleDragEnd() {
+          if (!isDragging) return;
+          isDragging = false;
+          currentRotation = currentRotation + dragRotationOffset;
+          dragRotationOffset = 0;
+          setTimeout(() => { hasDragged = false; }, 120);
+        }
+
+        cards.forEach((card) => {
+          card.addEventListener('click', (e) => {
+            if (window.innerWidth < 768) return;
+            if (hasDragged) {
+              e.preventDefault();
+              e.stopPropagation();
+              return;
+            }
+            window.location.href = card.dataset.link;
+          });
+        });
+
+        function snapToCard(direction) {
+          if (window.innerWidth < 768) return;
+          if (buttonTween) {
+            buttonTween.kill();
+          }
+          isButtonAnimating = true;
+
+          let currentVal = currentRotation;
+          let activeIdx = Math.round(-currentVal / theta);
+          let targetIdx = activeIdx + direction;
+          let targetAngle = -targetIdx * theta;
+          
+          let diff = targetAngle - currentVal;
+          diff = ((diff + 180) % 360) - 180;
+          if (diff < -180) diff += 360;
+          let finalTargetAngle = currentVal + diff;
+
+          if (typeof gsap !== 'undefined') {
+            buttonTween = gsap.to({ val: currentVal }, {
+              val: finalTargetAngle,
+              duration: 0.8,
+              ease: "power3.out",
+              onUpdate: function() {
+                currentRotation = this.targets()[0].val;
+                track.style.transform = `rotateY(${currentRotation}deg)`;
+                updateActiveCard();
+              },
+              onComplete: function() {
+                currentRotation = ((currentRotation % 360) + 360) % 360;
+                isButtonAnimating = false;
+                buttonTween = null;
+              }
+            });
+          } else {
+            currentRotation = finalTargetAngle;
+            track.style.transform = `rotateY(${currentRotation}deg)`;
+            updateActiveCard();
+            isButtonAnimating = false;
+          }
+        }
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', () => { snapToCard(1); });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => { snapToCard(-1); });
+        }
+
+        if (perspectiveContainer) {
+          perspectiveContainer.addEventListener('mousedown', handleDragStart);
+          window.addEventListener('mousemove', handleDragMove);
+          window.addEventListener('mouseup', handleDragEnd);
+
+          perspectiveContainer.addEventListener('touchstart', handleDragStart, { passive: true });
+          window.addEventListener('touchmove', handleDragMove, { passive: true });
+          window.addEventListener('touchend', handleDragEnd);
+        }
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => {
+            if (window.innerWidth < 768) {
+              if (animId) cancelAnimationFrame(animId);
+              track.style.transform = '';
+              cards.forEach(card => card.style.transform = '');
+            } else {
+              initCardPositions();
+              if (animId) cancelAnimationFrame(animId);
+              animate();
+            }
+          }, 250);
+        });
+
+        if (window.innerWidth >= 768) {
+          initCardPositions();
+          animate();
+        }
+      })();
+
+      // 2. Ages Photo Banner Continuous Crossfade
+      (function initAgesCrossfade() {
+        const slides = document.querySelectorAll('.ages-banner-slide');
+        const pills = document.querySelectorAll('.age-pill');
+        if (slides.length < 2) return;
+        let current = 0;
+        setInterval(() => {
+          slides[current].style.opacity = '0';
+          if (pills[current]) {
+            pills[current].style.width = '10px';
+            pills[current].style.background = 'rgba(255,255,255,0.45)';
+          }
+          current = (current + 1) % slides.length;
+          slides[current].style.opacity = '1';
+          if (pills[current]) {
+            pills[current].style.width = '28px';
+            pills[current].style.background = '#f4600c';
+          }
+        }, 3800);
+      })();
+    });
+  </script>
 
 </body>
 </html>
