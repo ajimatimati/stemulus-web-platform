@@ -164,10 +164,19 @@
   </nav>
 
   <main id="main-content">
-    <!-- HERO SECTION: ASYMMETRICAL SPLIT-STAGE WITH ROBOT LAB (LIGHT LUXURY) -->
-    <header class="geo-hero-luxury pt-32 pb-20 relative">
-      <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-orange-500/5 blur-3xl pointer-events-none"></div>
-      <div class="absolute top-1/2 -right-32 w-96 h-96 rounded-full bg-blue-500/5 blur-3xl pointer-events-none"></div>
+    <!-- HERO SECTION: ASYMMETRICAL SPLIT-STAGE WITH AMBIENT VIDEO & ROBOT LAB -->
+    <header class="geo-hero-luxury pt-32 pb-20 relative overflow-hidden">
+      <!-- Ambient Motion Background Video Layer -->
+      <div class="ambient-video-wrap">
+        <video autoplay loop muted playsinline poster="assets/images/stats-parallax-bg.webp">
+          <source src="assets/images/blender_marble_loop.mp4" type="video/mp4">
+        </video>
+        <div class="ambient-video-scrim"></div>
+      </div>
+      
+      <!-- Soft organic ambient glow -->
+      <div class="absolute -top-32 -left-32 w-96 h-96 rounded-3xl bg-orange-500/5 blur-3xl pointer-events-none"></div>
+      <div class="absolute top-1/2 -right-32 w-96 h-96 rounded-3xl bg-blue-500/5 blur-3xl pointer-events-none"></div>
       
       <div class="max-w-7xl mx-auto px-6 relative z-10">
         <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
@@ -175,10 +184,10 @@
           <!-- LEFT COLUMN: EDITORIAL COPY & CTAS (7 COLS) -->
           <div class="lg:col-span-7 text-left">
             
-            <div class="hero-eyebrow-pill inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full mb-6">
+            <div class="hero-eyebrow-badge-geo">
               <span class="text-base">🇳🇬</span>
-              <span class="text-orange-600 font-extrabold">Nigeria &amp; Africa · Lagos, Abuja &amp; Worldwide Diaspora</span>
-              <span class="hero-pill-meta font-medium">| WAT Timetable</span>
+              <span class="text-orange-600 font-extrabold uppercase tracking-wider text-[11px]">Nigeria &amp; Africa · Lagos, Abuja &amp; Global Diaspora</span>
+              <span class="text-slate-400 font-mono text-[10px]">| WAT Timetable</span>
             </div>
 
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black font-nunito tracking-tight text-slate-900 mb-6 leading-[1.1]">
@@ -189,11 +198,11 @@
               Give your child an unfair global advantage. From Scratch game mechanics and Python software engineering to physical Arduino robotics and Cambridge IGCSE prep — taught live 1-on-1 by vetted mentors over <strong class="text-slate-900 font-bold">low-bandwidth optimized virtual classrooms</strong> scheduled in West Africa Time (WAT).
             </p>
 
-            <!-- ACTION BUTTONS (Button-in-Button Architecture) -->
+            <!-- ACTION BUTTONS (Architectural Double-Bezel Geometry, Zero Pills) -->
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-10">
               <a href="book-class.html?country=Nigeria" class="geo-btn-primary group">
                 <span>Book Free Discovery Session (45 Min)</span>
-                <span class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover:translate-x-1">
+                <span class="btn-icon-box">
                   <i data-lucide="arrow-right" class="w-4 h-4 text-white"></i>
                 </span>
               </a>
@@ -221,8 +230,8 @@
 
           </div>
 
-          <!-- RIGHT COLUMN: AUTONOMOUS HARDWARE & ROBOT LAB STAGE (5 COLS) -->
-          <div class="lg:col-span-5">
+          <!-- RIGHT COLUMN: AUTONOMOUS HARDWARE & ROBOT LAB STAGE + MENTOR PROOF -->
+          <div class="lg:col-span-5 space-y-4">
             <div class="geo-stage-shell">
               <div class="geo-stage-core">
                 <video autoplay loop muted playsinline poster="assets/images/poster-robot-scrub.webp" preload="auto">
@@ -232,7 +241,7 @@
 
                 <!-- Floating Telemetry HUD Badges -->
                 <div class="geo-stage-badge top-3.5 left-3.5">
-                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span class="w-2 h-2 rounded-sm bg-emerald-400"></span>
                   <span class="tracking-wider uppercase text-[10px]">Live STEMulus Lab</span>
                 </div>
 
@@ -253,6 +262,18 @@
                     <span class="review-sub text-[9px] block text-slate-300">4.9/5 Rating (500+ African Parents)</span>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <!-- HUMAN EMPATHY & LIVE SESSION PROOF CARD -->
+            <div class="p-3.5 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-md flex items-center gap-3.5">
+              <img src="assets/images/mom_son_laptop.webp" alt="Parent and student coding together in live 1-on-1 session" class="w-16 h-14 rounded-xl object-cover shrink-0 border border-slate-100">
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 mb-0.5">
+                  <span class="w-2 h-2 rounded-sm bg-emerald-500"></span>
+                  <span class="text-[11px] font-bold text-slate-900">Live 1-on-1 Mentorship in WAT</span>
+                </div>
+                <p class="text-[11px] text-slate-600 truncate">Vetted mentors with low-data streaming &amp; flexible rescheduling.</p>
               </div>
             </div>
           </div>
@@ -292,8 +313,8 @@
       </div>
     </section>
 
-    <!-- LOCALIZED STATS BAND -->
-    <div class="stats-band-new" aria-label="Key Nigerian Statistics">
+    <!-- LOCALIZED STATS BAND (WITH AMBIENT PARALLAX TEXTURE) -->
+    <div class="stats-band-new zb-section--parallax-stats" aria-label="Key Nigerian Statistics">
       <div class="stats-band-new__grid">
         <div class="stats-item">
           <div class="stats-item__num">50<span>+</span></div>
@@ -448,25 +469,63 @@
       </div>
     </section>
 
-    <!-- WHY NIGERIAN PARENTS CHOOSE STEMULUS + AGES PHOTO BANNER -->
+    <!-- WHY NIGERIAN PARENTS CHOOSE STEMULUS + TRANSFORMATION SHOWCASE + AGES PHOTO BANNER -->
     <section class="zb-section" aria-label="Why Nigerian Parents Choose STEMulus">
       <div class="zb-inner">
-        <span class="zb-eyebrow">Why STEMulus</span>
+        <span class="zb-eyebrow">The STEMulus Difference</span>
         <h2 class="zb-h2">We don't teach kids about technology.<br>We teach them to think in it.</h2>
-        <p class="zb-lead">Private 1-on-1 mentorship for Nigerian students — delivering Silicon Valley-standard computer science, Cambridge IGCSE alignment, and low-data convenience.</p>
+        <p class="zb-lead mb-10">Private 1-on-1 mentorship for Nigerian students — converting passive screen addiction into autonomous engineering, aligned with Cambridge IGCSE &amp; NERDC standards, scheduled in West Africa Time (WAT).</p>
         
+        <!-- The Screen Time Transformation Showcase (Authentic Imagery) -->
+        <div class="transformation-grid">
+          <div class="transform-card">
+            <div class="transform-card__img-wrap">
+              <img src="assets/images/worried_mom_screentime.webp" alt="Parent worried about mindless screen time and gaming" loading="lazy">
+              <span class="transform-card__badge transform-card__badge--passive">Passive Consumption</span>
+            </div>
+            <div class="transform-card__body">
+              <h4>The Screen Time Trap</h4>
+              <p>Hours lost to infinite algorithmic video feeds, repetitive games, and non-productive screen fatigue with zero computational thinking.</p>
+            </div>
+          </div>
+
+          <div class="transform-card">
+            <div class="transform-card__img-wrap">
+              <img src="assets/images/after_stemulus.webp" alt="Child focused and actively coding software" loading="lazy">
+              <span class="transform-card__badge transform-card__badge--active">Active Engineering</span>
+            </div>
+            <div class="transform-card__body">
+              <h4>Computational Intuition</h4>
+              <p>Transforming fascination with tech into real Python code, custom physics engines, algorithmic logic, and responsive web apps.</p>
+            </div>
+          </div>
+
+          <div class="transform-card">
+            <div class="transform-card__img-wrap">
+              <img src="assets/images/stemulus_mastery_kids.webp" alt="Students building robotics and software together" loading="lazy">
+              <span class="transform-card__badge transform-card__badge--mastery">Tangible Mastery</span>
+            </div>
+            <div class="transform-card__body">
+              <h4>Global Silicon Valley Standard</h4>
+              <p>Deploying working projects to GitHub, wiring physical microcontrollers, and building pride in software they created from scratch.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ages photo banner with smooth continuous crossfade -->
         <div id="ages-banner-wrap">
           <div class="ages-crossfade-container">
             <img src="assets/images/curriculum_ages_5_8.jpg" alt="Ages 5-8 student coding on laptop with STEMulus" class="ages-banner-slide active" loading="lazy">
             <img src="assets/images/curriculum_ages_9_13.jpg" alt="Ages 9-13 student engineering robotics" class="ages-banner-slide" style="opacity:0;" loading="lazy">
             <img src="assets/images/curriculum_ages_14_17.jpg" alt="Ages 14-17 student at tech campus" class="ages-banner-slide" style="opacity:0;" loading="lazy">
           </div>
+          <!-- Luxurious gradient vignette for text legibility -->
           <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(15,23,42,0.82) 0%,rgba(15,23,42,0.25) 35%,rgba(15,23,42,0.25) 65%,rgba(15,23,42,0.82) 100%), linear-gradient(to top, rgba(15,23,42,0.85) 0%, transparent 60%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;pointer-events:none;padding:1.5rem;">
             <span style="font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(1.3rem, 3.2vw, 2rem);color:#fff;text-align:center;text-shadow:0 3px 18px rgba(0,0,0,0.85);letter-spacing:-0.01em;">One curriculum. Every age. All 1-on-1.</span>
             <div id="ages-indicators" style="display:flex;gap:8px;margin-top:1rem;" aria-hidden="true">
-              <span class="age-pill active" style="width:28px;height:4px;border-radius:9999px;background:#f4600c;transition:all 0.5s ease;"></span>
-              <span class="age-pill" style="width:10px;height:4px;border-radius:9999px;background:rgba(255,255,255,0.45);transition:all 0.5s ease;"></span>
-              <span class="age-pill" style="width:10px;height:4px;border-radius:9999px;background:rgba(255,255,255,0.45);transition:all 0.5s ease;"></span>
+              <span class="age-pill active" style="width:28px;height:4px;border-radius:2px;background:#f4600c;transition:all 0.5s ease;"></span>
+              <span class="age-pill" style="width:10px;height:4px;border-radius:2px;background:rgba(255,255,255,0.45);transition:all 0.5s ease;"></span>
+              <span class="age-pill" style="width:10px;height:4px;border-radius:2px;background:rgba(255,255,255,0.45);transition:all 0.5s ease;"></span>
             </div>
           </div>
         </div>
@@ -496,8 +555,8 @@
       </div>
     </section>
 
-    <!-- PLANNING PHOTO INTERSTITIAL -->
-    <div class="planning-interstitial">
+    <!-- PLANNING PHOTO INTERSTITIAL ("Paper first. Code second.") WITH BLUEPRINT TEXTURE -->
+    <div class="planning-interstitial zb-section--blueprint-bg">
       <div class="pi-inner">
         <div class="pi-photo">
           <img src="assets/images/scratch_planning.png" alt="Student planning a Scratch game on notebook paper before coding" loading="lazy" width="800" height="600">
@@ -511,43 +570,110 @@
       </div>
     </div>
 
-    <!-- CURRICULUM PATHWAYS BY AGE -->
+    <!-- CURRICULUM PATHWAYS: INTERACTIVE EXPANDING CARDS BENTO (NO GENERIC 3-COLUMNS) -->
     <section class="zb-section--tinted" aria-label="Curriculum Pathways">
       <div class="zb-inner">
-        <div class="text-center max-w-2xl mx-auto mb-14">
+        <div class="text-center max-w-2xl mx-auto mb-8">
           <span class="zb-eyebrow">[ Progression Framework ]</span>
           <h2 class="zb-h2">Curriculum Pathways (Ages 5 to 17)</h2>
-          <p class="zb-lead mx-auto">Structured cognitive milestones that guide your child from visual logic into production-grade software engineering.</p>
+          <p class="zb-lead mx-auto">Hover or click any pathway below to explore our structured cognitive milestones, from visual logic into production-grade software engineering aligned with British &amp; global standards.</p>
         </div>
 
-        <div class="grid md:grid-cols-4 gap-6">
-          <a href="coding-for-kids-ages-5-7.html" class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-orange-500 transition-all shadow-sm hover:shadow-md group block">
-            <div class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Ages 5-7</div>
-            <h4 class="font-bold text-slate-900 text-lg mb-2 font-nunito group-hover:text-orange-600 transition-colors">Early Explorers</h4>
-            <p class="text-xs text-slate-600 leading-relaxed mb-4">ScratchJr, playful sequencing, loops, and interactive storytelling for early minds.</p>
-            <span class="text-xs font-bold text-orange-600 flex items-center">Explore Pathway →</span>
-          </a>
+        <!-- INTERACTIVE EXPANDING CARDS DECK (FLEX ACCORDION BENTO) -->
+        <div class="expanding-cards-container" id="expanding-curriculum">
+          
+          <!-- Card 1: Ages 5-7 -->
+          <div class="expanding-card active" data-pathway="early-explorers">
+            <img src="assets/images/curriculum_ages_5_8.jpg" alt="Ages 5-7 Early Explorers Coding Nigeria" class="expanding-card__bg" loading="lazy">
+            <div class="expanding-card__scrim"></div>
+            <div class="expanding-card__collapsed-label">Ages 5–7 · Early Explorers</div>
+            <div class="expanding-card__content">
+              <div class="expanding-card__details">
+                <span class="expanding-card__badge">Ages 5–7 · Foundations</span>
+                <h3 class="expanding-card__title">Early Explorers</h3>
+                <p class="expanding-card__desc">ScratchJr, visual sequencing, loop logic, and creative storytelling designed to build foundational computational confidence.</p>
+                <div class="expanding-card__tags">
+                  <span class="expanding-card__tag">ScratchJr</span>
+                  <span class="expanding-card__tag">Visual Sequencing</span>
+                  <span class="expanding-card__tag">Pattern Logic</span>
+                </div>
+                <a href="coding-for-kids-ages-5-7.html" class="expanding-card__btn">
+                  <span>Explore Pathway</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
 
-          <a href="coding-for-kids-ages-8-10.html" class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-orange-500 transition-all shadow-sm hover:shadow-md group block">
-            <div class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Ages 8-10</div>
-            <h4 class="font-bold text-slate-900 text-lg mb-2 font-nunito group-hover:text-orange-600 transition-colors">Junior Builders</h4>
-            <p class="text-xs text-slate-600 leading-relaxed mb-4">Scratch 3.0 game architecture, arcade mechanics, variables, and creative problem solving.</p>
-            <span class="text-xs font-bold text-orange-600 flex items-center">Explore Pathway →</span>
-          </a>
+          <!-- Card 2: Ages 8-10 -->
+          <div class="expanding-card" data-pathway="junior-builders">
+            <img src="assets/images/curriculum_ages_9_13.jpg" alt="Ages 8-10 Junior Builders Game Coding Nigeria" class="expanding-card__bg" loading="lazy">
+            <div class="expanding-card__scrim"></div>
+            <div class="expanding-card__collapsed-label">Ages 8–10 · Junior Builders</div>
+            <div class="expanding-card__content">
+              <div class="expanding-card__details">
+                <span class="expanding-card__badge">Ages 8–10 · Logic &amp; Mechanics</span>
+                <h3 class="expanding-card__title">Junior Builders</h3>
+                <p class="expanding-card__desc">Scratch 3.0 arcade game architecture, platformer gravity physics, broadcast messaging, variables, and procedural animation.</p>
+                <div class="expanding-card__tags">
+                  <span class="expanding-card__tag">Scratch 3.0</span>
+                  <span class="expanding-card__tag">Game Physics</span>
+                  <span class="expanding-card__tag">Variables &amp; Loops</span>
+                </div>
+                <a href="coding-for-kids-ages-8-10.html" class="expanding-card__btn">
+                  <span>Explore Pathway</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
 
-          <a href="coding-for-kids-ages-11-13.html" class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-orange-500 transition-all shadow-sm hover:shadow-md group block">
-            <div class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Ages 11-13</div>
-            <h4 class="font-bold text-slate-900 text-lg mb-2 font-nunito group-hover:text-orange-600 transition-colors">Tech Innovators</h4>
-            <p class="text-xs text-slate-600 leading-relaxed mb-4">Python programming fundamentals, Pygame graphics, web development (HTML/CSS/JS), and robotics.</p>
-            <span class="text-xs font-bold text-orange-600 flex items-center">Explore Pathway →</span>
-          </a>
+          <!-- Card 3: Ages 11-13 -->
+          <div class="expanding-card" data-pathway="tech-innovators">
+            <img src="assets/images/web_app_development.webp" alt="Ages 11-13 Tech Innovators Python & Web Coding Nigeria" class="expanding-card__bg" loading="lazy">
+            <div class="expanding-card__scrim"></div>
+            <div class="expanding-card__collapsed-label">Ages 11–13 · Tech Innovators</div>
+            <div class="expanding-card__content">
+              <div class="expanding-card__details">
+                <span class="expanding-card__badge">Ages 11–13 · Syntax &amp; Architecture</span>
+                <h3 class="expanding-card__title">Tech Innovators</h3>
+                <p class="expanding-card__desc">Transitioning to text-based coding in Python, Pygame arcade development, responsive HTML5/CSS3 layouts, and robotics.</p>
+                <div class="expanding-card__tags">
+                  <span class="expanding-card__tag">Python 3</span>
+                  <span class="expanding-card__tag">Pygame</span>
+                  <span class="expanding-card__tag">HTML5 / CSS3</span>
+                </div>
+                <a href="coding-for-kids-ages-11-13.html" class="expanding-card__btn">
+                  <span>Explore Pathway</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
 
-          <a href="coding-for-kids-ages-14-17.html" class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-orange-500 transition-all shadow-sm hover:shadow-md group block">
-            <div class="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Ages 14-17</div>
-            <h4 class="font-bold text-slate-900 text-lg mb-2 font-nunito group-hover:text-orange-600 transition-colors">Future Engineers</h4>
-            <p class="text-xs text-slate-600 leading-relaxed mb-4">Full-stack web apps, algorithms, machine learning models, and Cambridge IGCSE computer science mastery.</p>
-            <span class="text-xs font-bold text-orange-600 flex items-center">Explore Pathway →</span>
-          </a>
+          <!-- Card 4: Ages 14-17 -->
+          <div class="expanding-card" data-pathway="future-engineers">
+            <img src="assets/images/curriculum_ages_14_17.jpg" alt="Ages 14-17 Future Engineers Cambridge IGCSE Nigeria" class="expanding-card__bg" loading="lazy">
+            <div class="expanding-card__scrim"></div>
+            <div class="expanding-card__collapsed-label">Ages 14–17 · Future Engineers</div>
+            <div class="expanding-card__content">
+              <div class="expanding-card__details">
+                <span class="expanding-card__badge">Ages 14–17 · Pre-College &amp; Cambridge IGCSE</span>
+                <h3 class="expanding-card__title">Future Engineers</h3>
+                <p class="expanding-card__desc">Cambridge IGCSE Computer Science mastery, fullstack web apps, algorithms, data structures, and autonomous Arduino firmware.</p>
+                <div class="expanding-card__tags">
+                  <span class="expanding-card__tag">Cambridge IGCSE</span>
+                  <span class="expanding-card__tag">Algorithms &amp; AI</span>
+                  <span class="expanding-card__tag">Arduino C++</span>
+                </div>
+                <a href="coding-for-kids-ages-14-17.html" class="expanding-card__btn">
+                  <span>Explore Pathway</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -601,7 +727,9 @@
           <div class="testi-quote-card">
             <p class="testi-quote-text">"I honestly didn't expect this. He sat down for his first session shy and unsure, and by session eight he was showing me a platformer game he'd built himself. I can't explain the look on his face."</p>
             <div class="testi-author-row">
-              <div class="testi-avatar-circle" style="background:#fff3ed;color:#f4600c;">D</div>
+              <div class="testi-avatar-squircle">
+                <img src="assets/images/footer_student_3.webp" alt="Daniel student creator" loading="lazy">
+              </div>
               <div>
                 <div class="testi-author-name">Daniel's mum</div>
                 <div class="testi-author-role">Parent in Lagos · Scratch Creators Programme</div>
@@ -612,7 +740,9 @@
           <div class="testi-quote-card">
             <p class="testi-quote-text">"What sold me was that nobody tried to sell me anything. The first class was free, no pitch at the end, just the mentor saying 'she's a natural — here's where we'd go next.' We enrolled the same night."</p>
             <div class="testi-author-row">
-              <div class="testi-avatar-circle" style="background:#f0fdf4;color:#16a34a;">A</div>
+              <div class="testi-avatar-squircle">
+                <img src="assets/images/footer_student_4.webp" alt="Amara student coder" loading="lazy">
+              </div>
               <div>
                 <div class="testi-author-name">Amara's dad</div>
                 <div class="testi-author-role">Parent in Abuja · Python Power Programme</div>
@@ -634,7 +764,7 @@
     <!-- TRANSPARENT NAIRA PRICING -->
     <section id="pricing" class="py-24 max-w-5xl mx-auto px-6">
       <div class="text-center max-w-2xl mx-auto mb-16">
-        <span class="accent-pill inline-block px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider mb-3">Simple, Honest Tuition</span>
+        <span class="accent-pill inline-block px-3.5 py-1 rounded-md text-xs font-extrabold uppercase tracking-wider mb-3">Simple, Honest Tuition</span>
         <h2 class="text-3xl md:text-4xl font-black font-nunito text-slate-900 mb-4">
           Transparent Naira Pricing · Private 1-on-1
         </h2>
@@ -775,15 +905,21 @@
       </div>
     </section>
 
-    <!-- FINAL CTA (HIGH-END LUMINOUS PEARL - NO DARK BACKGROUND) -->
-    <section class="py-20 text-center relative overflow-hidden" style="background: linear-gradient(135deg, #FFFBF7 0%, #FFF3ED 50%, #F8FAFC 100%); border-top: 1.5px solid rgba(244, 96, 12, 0.15); border-bottom: 1.5px solid rgba(244, 96, 12, 0.15); box-shadow: 0 20px 40px -15px rgba(244, 96, 12, 0.08);">
+    <!-- FINAL CTA (HIGH-END LUMINOUS PEARL WITH AMBIENT VIDEO SCRIM) -->
+    <section class="py-24 text-center relative overflow-hidden" style="background: linear-gradient(135deg, #FFFBF7 0%, #FFF3ED 50%, #F8FAFC 100%); border-top: 1.5px solid rgba(244, 96, 12, 0.15); border-bottom: 1.5px solid rgba(244, 96, 12, 0.15);">
+      <div class="ambient-video-wrap">
+        <video autoplay loop muted playsinline poster="assets/images/stats-parallax-bg.webp">
+          <source src="assets/images/blender_marble_loop.mp4" type="video/mp4">
+        </video>
+        <div class="ambient-video-scrim" style="opacity:0.92;"></div>
+      </div>
       <div class="max-w-3xl mx-auto px-6 relative z-10">
-        <span class="accent-pill inline-block px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider mb-4">Start Building This Week</span>
+        <span class="accent-pill inline-block px-3.5 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider mb-4">Start Building This Week</span>
         <h2 class="text-3xl md:text-5xl font-black font-nunito text-slate-900 mb-6 leading-tight">
           Spark Your Child’s Passion for Building Today
         </h2>
         <p class="text-slate-600 text-base md:text-lg mb-8 max-w-xl mx-auto leading-relaxed">
-          Book your child's free 45-minute Coding Discovery Session. Meet your dedicated mentor in West Africa Time (WAT) with zero commitment.
+          Book your child's free 45-minute Coding Discovery Session. Meet your dedicated mentor across Nigeria &amp; Africa in West Africa Time (WAT) with zero commitment.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
           <a href="book-class.html?country=Nigeria" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-base shadow-lg shadow-orange-600/30 transition-all">
@@ -1105,6 +1241,21 @@
             pills[current].style.background = '#f4600c';
           }
         }, 3800);
+      })();
+
+      // 3. Interactive Expanding Curriculum Cards
+      (function initExpandingCards() {
+        const cards = document.querySelectorAll('.expanding-card');
+        cards.forEach(card => {
+          card.addEventListener('mouseenter', () => {
+            cards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+          });
+          card.addEventListener('click', () => {
+            cards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+          });
+        });
       })();
     });
   </script>

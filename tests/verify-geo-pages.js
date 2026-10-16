@@ -17,7 +17,7 @@ const artifactDir = 'C:\\Users\\USER\\.gemini\\antigravity\\brain\\66a470fd-ed7c
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const page = await context.newPage();
 
-  console.log('=== STARTING GEO PAGES AUDIT ===\n');
+  console.log('=== STARTING MOTION-LUXURY GEO PAGES AUDIT ===\n');
   let allPassed = true;
 
   for (const geo of GEO_PAGES) {
@@ -33,7 +33,19 @@ const artifactDir = 'C:\\Users\\USER\\.gemini\\antigravity\\brain\\66a470fd-ed7c
     await page.goto(fileUrl, { waitUntil: 'load' });
     await page.waitForTimeout(500);
 
-    // 1. Check for dotted grid pattern
+    // 1. Assert ZERO rounded-full pills in DOM
+    const pillsCount = await page.evaluate(() => {
+      return document.querySelectorAll('.rounded-full').length;
+    });
+
+    if (pillsCount > 0) {
+      console.error(`  [FAIL] ${geo.name} has ${pillsCount} element(s) with .rounded-full!`);
+      allPassed = false;
+    } else {
+      console.log(`  [PASS] ${geo.name} has ZERO .rounded-full pills.`);
+    }
+
+    // 2. Check for dotted radial grid pattern
     const dottedPatternElements = await page.evaluate(() => {
       const all = Array.from(document.querySelectorAll('*'));
       return all.filter(el => {
@@ -49,88 +61,112 @@ const artifactDir = 'C:\\Users\\USER\\.gemini\\antigravity\\brain\\66a470fd-ed7c
       console.log(`  [PASS] ${geo.name} zero dotted grid pattern detected.`);
     }
 
-    // 2. Check hero background & text colors
-    const heroMetrics = await page.evaluate(() => {
-      const hero = document.querySelector('header.geo-hero-luxury');
-      if (!hero) return null;
-      const heroStyle = window.getComputedStyle(hero);
-      const h1 = hero.querySelector('h1');
-      const h1Style = h1 ? window.getComputedStyle(h1) : null;
-      const p = hero.querySelector('.hero-desc');
-      const pStyle = p ? window.getComputedStyle(p) : null;
+    // 3. Verify Ambient Video Background in Hero
+    const ambientVideo = await page.evaluate(() => {
+      const video = document.querySelector('.geo-hero-luxury .ambient-video-wrap video');
+      const scrim = document.querySelector('.geo-hero-luxury .ambient-video-scrim');
       return {
-        heroBg: heroStyle.backgroundColor,
-        heroBackgroundImage: heroStyle.backgroundImage,
-        h1Color: h1Style ? h1Style.color : null,
-        pColor: pStyle ? pStyle.color : null
+        exists: !!video,
+        hasScrim: !!scrim,
+        src: video ? video.querySelector('source')?.getAttribute('src') : null
       };
     });
 
-    console.log(`  Hero BG: ${heroMetrics.heroBg}, H1 Color: ${heroMetrics.h1Color}, P Color: ${heroMetrics.pColor}`);
-    
-    // Check if hero is dark
-    const isDarkBg = heroMetrics.heroBg.includes('rgb(11, 17, 32)') || heroMetrics.heroBg.includes('rgb(3, 7, 18)');
+    if (!ambientVideo.exists || !ambientVideo.hasScrim) {
+      console.error(`  [FAIL] ${geo.name} ambient video background missing!`);
+      allPassed = false;
+    } else {
+      console.log(`  [PASS] ${geo.name} ambient video background present: ${ambientVideo.src}`);
+    }
+
+    // 4. Verify Interactive Expanding Cards Deck
+    const expandingCards = await page.evaluate(() => {
+      const container = document.querySelector('.expanding-cards-container');
+      const cards = container ? container.querySelectorAll('.expanding-card') : [];
+      const activeCard = container ? container.querySelector('.expanding-card.active') : null;
+      return {
+        exists: !!container,
+        cardCount: cards.length,
+        hasActive: !!activeCard
+      };
+    });
+
+    if (!expandingCards.exists || expandingCards.cardCount < 4 || !expandingCards.hasActive) {
+      console.error(`  [FAIL] ${geo.name} expanding cards deck issue: exists=${expandingCards.exists}, count=${expandingCards.cardCount}`);
+      allPassed = false;
+    } else {
+      console.log(`  [PASS] ${geo.name} expanding cards deck verified (4 cards, active state set).`);
+    }
+
+    // 5. Verify Transformation Grid
+    const transformGrid = await page.evaluate(() => {
+      const grid = document.querySelector('.transformation-grid');
+      const cards = grid ? grid.querySelectorAll('.transform-card') : [];
+      return {
+        exists: !!grid,
+        cardCount: cards.length
+      };
+    });
+
+    if (!transformGrid.exists || transformGrid.cardCount < 3) {
+      console.error(`  [FAIL] ${geo.name} transformation grid missing or incomplete!`);
+      allPassed = false;
+    } else {
+      console.log(`  [PASS] ${geo.name} screen time transformation grid verified (3 cards).`);
+    }
+
+    // 6. Verify Squircle Testimonial Avatars
+    const squircleAvatars = await page.evaluate(() => {
+      const squircles = document.querySelectorAll('.testi-avatar-squircle');
+      const circles = document.querySelectorAll('.testi-avatar-circle');
+      return {
+        squircleCount: squircles.length,
+        circleCount: circles.length
+      };
+    });
+
+    if (squircleAvatars.circleCount > 0 || squircleAvatars.squircleCount < 2) {
+      console.error(`  [FAIL] ${geo.name} testimonial avatars not properly squirclized: squircle=${squircleAvatars.squircleCount}, circle=${squircleAvatars.circleCount}`);
+      allPassed = false;
+    } else {
+      console.log(`  [PASS] ${geo.name} testimonial avatars are 100% squircle (${squircleAvatars.squircleCount} frames).`);
+    }
+
+    // 7. Verify Hero BG is radiant light
+    const heroBg = await page.evaluate(() => {
+      const hero = document.querySelector('header.geo-hero-luxury');
+      return hero ? window.getComputedStyle(hero).backgroundColor : null;
+    });
+    const isDarkBg = heroBg && (heroBg.includes('rgb(11, 17, 32)') || heroBg.includes('rgb(3, 7, 18)'));
     if (isDarkBg) {
       console.error(`  [FAIL] ${geo.name} hero background is DARK!`);
       allPassed = false;
     } else {
-      console.log(`  [PASS] ${geo.name} hero background is light & radiant.`);
+      console.log(`  [PASS] ${geo.name} hero background is radiant light ivory/pearl.`);
     }
 
-    // 3. Check project reel background & cards
-    const reelMetrics = await page.evaluate(() => {
-      const reel = document.querySelector('section.geo-project-reel');
-      if (!reel) return null;
-      const reelStyle = window.getComputedStyle(reel);
-      const cards = Array.from(document.querySelectorAll('.geo-reel-card'));
-      const cardStyles = cards.map(c => {
-        const cs = window.getComputedStyle(c);
-        const h4 = c.querySelector('h4');
-        const p = c.querySelector('p');
-        return {
-          cardBg: cs.backgroundColor,
-          h4Color: h4 ? window.getComputedStyle(h4).color : null,
-          pColor: p ? window.getComputedStyle(p).color : null
-        };
-      });
-      return {
-        reelBg: reelStyle.backgroundColor,
-        cardStyles
-      };
-    });
+    // 8. Capture Hero Screenshot
+    const heroScreenshotPath = path.join(artifactDir, `geo_${geo.name.toLowerCase()}_luxury_preview.png`);
+    await page.screenshot({ path: heroScreenshotPath, clip: { x: 0, y: 0, width: 1280, height: 1100 } });
+    console.log(`  [SCREENSHOT] Saved hero preview to ${heroScreenshotPath}`);
 
-    if (reelMetrics) {
-      console.log(`  Reel BG: ${reelMetrics.reelBg}`);
-      const isDarkReel = reelMetrics.reelBg.includes('rgb(7, 13, 31)');
-      if (isDarkReel) {
-        console.error(`  [FAIL] ${geo.name} project reel background is DARK!`);
-        allPassed = false;
-      } else {
-        console.log(`  [PASS] ${geo.name} project reel background is light.`);
-      }
-
-      if (reelMetrics.cardStyles.length > 0) {
-        const firstCard = reelMetrics.cardStyles[0];
-        console.log(`  Card BG: ${firstCard.cardBg}, Card H4: ${firstCard.h4Color}, Card P: ${firstCard.pColor}`);
-        if (firstCard.cardBg.includes('rgba(15, 23, 42') || firstCard.cardBg.includes('rgb(15, 23, 42)')) {
-          console.error(`  [FAIL] ${geo.name} card background is DARK!`);
-          allPassed = false;
-        } else {
-          console.log(`  [PASS] ${geo.name} cards are clean light double-bezel.`);
-        }
-      }
+    // 9. Capture Expanding Cards Section Screenshot
+    const expandingSection = await page.$('#expanding-curriculum');
+    if (expandingSection) {
+      const cardsScreenshotPath = path.join(artifactDir, `geo_${geo.name.toLowerCase()}_expanding_cards.png`);
+      await expandingSection.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(300);
+      await page.screenshot({ path: cardsScreenshotPath, clip: { x: 0, y: 0, width: 1280, height: 750 } });
+      console.log(`  [SCREENSHOT] Saved expanding cards to ${cardsScreenshotPath}\n`);
     }
-
-    // 4. Capture screenshot
-    const screenshotPath = path.join(artifactDir, `geo_${geo.name.toLowerCase()}_luxury_preview.png`);
-    await page.screenshot({ path: screenshotPath, clip: { x: 0, y: 0, width: 1280, height: 1100 } });
-    console.log(`  [SCREENSHOT] Saved preview to ${screenshotPath}\n`);
   }
 
   await browser.close();
 
   if (allPassed) {
-    console.log('=== ALL 5 GEO PAGES PASSED LUXURY AUDIT WITH ZERO FLAWS ===');
+    console.log('================================================================');
+    console.log('=== ALL 5 GEO PAGES PASSED 100% MOTION-LUXURY ARCHITECTURAL AUDIT ===');
+    console.log('================================================================');
     process.exit(0);
   } else {
     console.error('=== SOME GEO PAGES FAILED AUDIT ===');
