@@ -783,58 +783,60 @@ body:not(.dark) span.text-slate-500,
 }
 
 /* ==========================================================================
-   FLAGSHIP GEO HERO & ASYMMETRICAL ROBOT STAGE (Agency caliber)
+   FLAGSHIP GEO HERO & ASYMMETRICAL ROBOT STAGE (Agency caliber - Light Luxury)
    ========================================================================== */
 .geo-hero-luxury,
 body:not(.dashboard-page) header.geo-hero-luxury,
 body:not(.dashboard-page) .geo-hero-luxury {
-  background: radial-gradient(120% 120% at 50% 0%, #0b1120 0%, #030712 100%) !important;
-  color: #ffffff !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFFBF7 50%, #F8FAFC 100%) !important;
+  color: #0F172A !important;
   position: relative;
   overflow: hidden;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
 }
 
 /* Primary Hero Headline */
 body:not(.dashboard-page) .geo-hero-luxury h1,
 .geo-hero-luxury h1 {
-  color: #ffffff !important;
+  color: #0F172A !important;
 }
 body:not(.dashboard-page) .geo-hero-luxury h1 span.text-orange-400,
-.geo-hero-luxury h1 span.text-orange-400 {
-  color: #fb923c !important;
+body:not(.dashboard-page) .geo-hero-luxury h1 span.text-orange-500,
+.geo-hero-luxury h1 span.text-orange-400,
+.geo-hero-luxury h1 span.text-orange-500 {
+  color: #EA580C !important;
 }
 
 /* Eyebrow Pill Badge */
 body:not(.dashboard-page) .geo-hero-luxury .hero-eyebrow-pill,
 .geo-hero-luxury .hero-eyebrow-pill {
-  background-color: rgba(19, 28, 46, 0.9) !important;
-  border: 1px solid rgba(255, 255, 255, 0.22) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  background-color: #FFF3ED !important;
+  border: 1px solid rgba(244, 96, 12, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(244, 96, 12, 0.08) !important;
 }
 body:not(.dashboard-page) .geo-hero-luxury .hero-eyebrow-pill span,
 .geo-hero-luxury .hero-eyebrow-pill span {
-  color: #e2e8f0 !important;
+  color: #0F172A !important;
 }
 body:not(.dashboard-page) .geo-hero-luxury .hero-eyebrow-pill span.text-orange-400,
-.geo-hero-luxury .hero-eyebrow-pill span.text-orange-400 {
-  color: #fb923c !important;
+body:not(.dashboard-page) .geo-hero-luxury .hero-eyebrow-pill span.text-orange-500,
+.geo-hero-luxury .hero-eyebrow-pill span.text-orange-400,
+.geo-hero-luxury .hero-eyebrow-pill span.text-orange-500 {
+  color: #EA580C !important;
   font-weight: 800 !important;
 }
 body:not(.dashboard-page) .geo-hero-luxury .hero-eyebrow-pill .hero-pill-meta,
 .geo-hero-luxury .hero-eyebrow-pill .hero-pill-meta {
-  color: #cbd5e1 !important;
-  opacity: 0.9 !important;
+  color: #64748B !important;
+  font-weight: 500 !important;
 }
 
-/* Hero Subheading Description Paragraph (12.8:1 contrast ratio) */
+/* Hero Subheading Description Paragraph */
 body:not(.dashboard-page) .geo-hero-luxury p,
 body:not(.dashboard-page) .geo-hero-luxury .hero-desc,
 .geo-hero-luxury p,
 .geo-hero-luxury .hero-desc {
-  color: #cbd5e1 !important;
+  color: #334155 !important;
   font-size: 1.125rem !important;
   line-height: 1.75 !important;
 }
@@ -842,8 +844,8 @@ body:not(.dashboard-page) .geo-hero-luxury p strong,
 body:not(.dashboard-page) .geo-hero-luxury .hero-desc strong,
 .geo-hero-luxury p strong,
 .geo-hero-luxury .hero-desc strong {
-  color: #ffffff !important;
-  font-weight: 700 !important;
+  color: #0F172A !important;
+  font-weight: 800 !important;
 }
 
 /* Trust & Vetting Strip at bottom of Hero */
@@ -851,7 +853,7 @@ body:not(.dashboard-page) .geo-hero-luxury .hero-trust,
 body:not(.dashboard-page) .geo-hero-luxury .hero-trust span,
 .geo-hero-luxury .hero-trust,
 .geo-hero-luxury .hero-trust span {
-  color: #e2e8f0 !important;
+  color: #475569 !important;
   font-size: 0.8125rem !important;
   letter-spacing: 0.01em !important;
 }
@@ -888,29 +890,30 @@ body:not(.dashboard-page) .geo-hero-luxury .hero-trust i,
   justify-content: center;
   gap: 8px;
   padding: 14px 24px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff !important;
-  font-weight: 600;
+  background: #ffffff;
+  color: #0F172A !important;
+  font-weight: 700;
   font-size: 14px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
 }
 .geo-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.35);
+  background: #F8FAFC;
+  border-color: rgba(15, 23, 42, 0.25);
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
 }
 
-/* Video Stage Shell & Core */
+/* Video Stage Shell & Core (Machined Hardware Double-Bezel) */
 .geo-stage-shell {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  background: #F1F5F9 !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
   border-radius: 28px !important;
-  padding: 8px !important;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+  padding: 10px !important;
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.8) !important;
   position: relative;
 }
 
@@ -920,6 +923,7 @@ body:not(.dashboard-page) .geo-hero-luxury .hero-trust i,
   overflow: hidden !important;
   position: relative !important;
   aspect-ratio: 16 / 11;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .geo-stage-core video {
@@ -974,59 +978,59 @@ body:not(.dashboard-page) .geo-stage-review .review-sub,
 }
 
 /* ==========================================================================
-   FLAGSHIP GEO PROJECT SHOWCASE REEL (Fact-Checked Real Curriculum Artifacts)
+   FLAGSHIP GEO PROJECT SHOWCASE REEL (Light Luxury Agency Caliber)
    ========================================================================== */
 body:not(.dashboard-page) section.geo-project-reel,
 section.geo-project-reel {
-  background-color: #070d1f !important;
-  color: #ffffff !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: #FFFBF7 !important;
+  color: #0F172A !important;
+  border-top: 1px solid rgba(15, 23, 42, 0.06) !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important;
   position: relative;
   overflow: hidden;
 }
 
 body:not(.dashboard-page) .geo-project-reel h3,
 .geo-project-reel h3 {
-  color: #ffffff !important;
+  color: #0F172A !important;
 }
 body:not(.dashboard-page) .geo-project-reel .reel-eyebrow,
 .geo-project-reel .reel-eyebrow {
-  color: #fb923c !important;
+  color: #EA580C !important;
 }
 body:not(.dashboard-page) .geo-project-reel .reel-sub,
 .geo-project-reel .reel-sub {
-  color: #cbd5e1 !important;
+  color: #64748B !important;
 }
 
-/* Showcase Reel Cards */
+/* Showcase Reel Cards (Light Double-Bezel) */
 body:not(.dashboard-page) .geo-reel-card,
 .geo-reel-card {
-  background: rgba(15, 23, 42, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  border-radius: 18px !important;
-  padding: 14px !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  border-radius: 20px !important;
+  padding: 16px !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02) !important;
 }
 body:not(.dashboard-page) .geo-reel-card:hover,
 .geo-reel-card:hover {
-  border-color: rgba(249, 115, 22, 0.6) !important;
-  transform: translateY(-3px) !important;
-  box-shadow: 0 18px 40px -12px rgba(249, 115, 22, 0.25), 0 20px 45px -10px rgba(0, 0, 0, 0.7) !important;
+  border-color: rgba(244, 96, 12, 0.35) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 20px 35px -8px rgba(15, 23, 42, 0.09) !important;
 }
 
 .geo-reel-media {
-  border-radius: 12px !important;
+  border-radius: 14px !important;
   overflow: hidden !important;
   aspect-ratio: 16 / 9 !important;
-  background: #020617 !important;
+  background: #0F172A !important;
   position: relative !important;
-  margin-bottom: 12px !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  margin-bottom: 14px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
 }
 .geo-reel-media video,
 .geo-reel-media img {
@@ -1069,18 +1073,18 @@ body:not(.dashboard-page) .geo-reel-pill,
 
 body:not(.dashboard-page) .geo-reel-card .card-meta,
 .geo-reel-card .card-meta {
-  color: #94a3b8 !important;
+  color: #EA580C !important;
   font-size: 11px !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.05em !important;
   display: block !important;
-  margin-bottom: 2px !important;
+  margin-bottom: 4px !important;
 }
 body:not(.dashboard-page) .geo-reel-card h4,
 .geo-reel-card h4 {
-  color: #ffffff !important;
-  font-size: 15px !important;
+  color: #0F172A !important;
+  font-size: 16px !important;
   font-weight: 800 !important;
   font-family: 'Nunito', sans-serif !important;
   margin: 2px 0 6px 0 !important;
@@ -1088,11 +1092,12 @@ body:not(.dashboard-page) .geo-reel-card h4,
 }
 body:not(.dashboard-page) .geo-reel-card p,
 .geo-reel-card p {
-  color: #cbd5e1 !important;
-  font-size: 12px !important;
-  line-height: 1.5 !important;
+  color: #475569 !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
   margin: 0 !important;
 }
+
 
 
 
