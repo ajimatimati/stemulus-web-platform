@@ -1,0 +1,100 @@
+{
+  "executedAt": "2026-10-16T07:50:22.353Z",
+  "sourceFile": "C:\\Users\\USER\\OneDrive\\Desktop\\HTMLCSSJS GEM STEMulus\\data\\google_sheets_roster.csv",
+  "totalRows": 10,
+  "successfulIngestions": [
+    {
+      "ok": true,
+      "studentId": "std-1003-8ecr",
+      "parentEmail": "abiodunadebiyis@gmail.com",
+      "isNewUser": true,
+      "queueId": "queue-1792137028617-bx59",
+      "tutor": "Sarah Jane"
+    },
+    {
+      "ok": true,
+      "studentId": "std-1004-e1rm",
+      "parentEmail": "abmsotayo@googlemail.com",
+      "isNewUser": true,
+      "queueId": "queue-1792137029497-6tax",
+      "tutor": "Sarah Jane"
+    },
+    {
+      "ok": true,
+      "studentId": "std-1005-6f4y",
+      "parentEmail": "abmsotayo@googlemail.com",
+      "isNewUser": false,
+      "queueId": "queue-1792137031290-mrmj",
+      "tutor": "Sarah Jane"
+    },
+    {
+      "ok": true,
+      "studentId": "std-1006-il0c",
+      "parentEmail": "Chukwumah.maryrose@gmail.com",
+      "isNewUser": true,
+      "queueId": "queue-1792137032043-b8y8",
+      "tutor": "Sarah Jane"
+    },
+    {
+      "ok": true,
+      "studentId": "std-1007-r4cv",
+      "parentEmail": "talk2nike2009@gmail.com",
+      "isNewUser": true,
+      "queueId": "queue-1792137033048-01ie",
+      "tutor": "Sarah Jane"
+    },
+    {
+      "ok": true,
+      "studentId": "std-1008-a0lp",
+      "parentEmail": "Temiladeokesanjo1@gmail.com",
+      "isNewUser": true,
+      "queueId": "queue-1792137034030-v4oz",
+      "tutor": "Sarah Jane"
+    },
+    {
+      "ok": true,
+      "studentId": "std-1009-tbod",
+      "parentEmail": "diamondsheva@gmail.com",
+      "isNewUser": true,
+      "queueId": "queue-1792137034891-ny1d",
+      "tutor": "Sarah Jane"
+    },
+    {
+      "ok": true,
+      "studentId": "std-1010-ilb5",
+      "parentEmail": "carlanouriat.k@gmail.com",
+      "isNewUser": true,
+      "queueId": "queue-1792137036078-w7wa",
+      "tutor": "Sarah Jane"
+    },
+    {
+      "ok": true,
+      "studentId": "std-1011-tq1u",
+      "parentEmail": "eoosonaike@gmail.com",
+      "isNewUser": true,
+      "queueId": "queue-1792137037330-n18x",
+      "tutor": "Sarah Jane"
+    },
+    {
+      "ok": true,
+      "studentId": "std-1012-wq6b",
+      "parentEmail": "annakhavkina@gmail.com",
+      "isNewUser": true,
+      "queueId": "queue-1792137038663-kgx9",
+      "tutor": "Sarah Jane"
+    }
+  ],
+  "failedIngestions": [],
+  "emailQueueStaged": [
+    "queue-1792137028617-bx59",
+    "queue-1792137029497-6tax",
+    "queue-1792137031290-mrmj",
+    "queue-1792137032043-b8y8",
+    "queue-1792137033048-01ie",
+    "queue-1792137034030-v4oz",
+    "queue-1792137034891-ny1d",
+    "queue-1792137036078-w7wa",
+    "queue-1792137037330-n18x",
+    "queue-1792137038663-kgx9"
+  ]
+}

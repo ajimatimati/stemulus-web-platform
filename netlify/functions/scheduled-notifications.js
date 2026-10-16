@@ -34,6 +34,29 @@ const FB_PROJECT     = process.env.FIREBASE_PROJECT_ID || 'stemulus-kidstech';
 const FB_API_KEY     = process.env.FIREBASE_API_KEY;
 const FROM_ADDRESS   = 'STEMulus Kids Tech <hello@portal.stemuluskidstech.com>';
 
+function unpackFirestoreField(v) {
+  if (!v || typeof v !== 'object') return null;
+  if ('stringValue' in v) return v.stringValue;
+  if ('integerValue' in v) return parseInt(v.integerValue, 10);
+  if ('doubleValue' in v) return parseFloat(v.doubleValue);
+  if ('booleanValue' in v) return v.booleanValue;
+  if ('timestampValue' in v) return v.timestampValue;
+  if ('nullValue' in v) return null;
+  if ('mapValue' in v) {
+    const out = {};
+    const fields = (v.mapValue && v.mapValue.fields) || {};
+    for (const [k, subVal] of Object.entries(fields)) {
+      out[k] = unpackFirestoreField(subVal);
+    }
+    return out;
+  }
+  if ('arrayValue' in v) {
+    const values = (v.arrayValue && v.arrayValue.values) || [];
+    return values.map(unpackFirestoreField);
+  }
+  return null;
+}
+
 // ─── Firestore REST helper ────────────────────────────────────────────────────
 
 async function firestoreQuery(collection) {
@@ -48,7 +71,7 @@ async function firestoreQuery(collection) {
       const fields = doc.fields || {};
       const out = { _id: doc.name.split('/').pop() };
       for (const [k, v] of Object.entries(fields)) {
-        out[k] = v.stringValue ?? v.integerValue ?? v.booleanValue ?? v.doubleValue ?? null;
+        out[k] = unpackFirestoreField(v);
       }
       return out;
     });
@@ -323,27 +346,8 @@ async function sendBirthdayAlerts(students, tutors, birthdayTopic) {
       { tags: 'birthday,tada,party_popper', priority: 'default' }
     );
 
-    // Email parent a birthday note
-    if (s.parentEmail) {
-      await sendEmail(s.parentEmail,
-        ` Happy Birthday, ${s.firstName}! A special message from STEMulus`,
-        `<!DOCTYPE html><html><body style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f8fafc;margin:0;padding:0">
-        <div style="max-width:580px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0">
-          <div style="background:linear-gradient(135deg,#1A237E,#F4600C);padding:32px;text-align:center">
-            <div style="font-size:3rem"></div>
-            <h2 style="color:#fff;margin:8px 0 0;font-size:1.5rem">Happy Birthday, ${s.firstName}!</h2>
-          </div>
-          <div style="padding:32px;text-align:center">
-            <p style="color:#374151;font-size:1rem;line-height:1.7">The entire STEMulus team wishes <strong>${s.firstName}</strong> a wonderful ${age}th birthday! Keep building amazing things: the world needs more young coders like you! </p>
-            <p style="color:#64748b;font-size:0.85rem">From all of us at STEMulus Kids Tech</p>
-          </div>
-          <div style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;text-align:center;font-size:0.75rem;color:#94a3b8">
-            STEMulus Kids Tech · <a href="https://stemuluskidstech.com" style="color:#f4600c">stemuluskidstech.com</a>
-          </div>
-        </div></body></html>`
-      );
-    }
-    console.log(`[birthday] Student: ${name}`);
+    // POLICY: Birthday emails to parents require explicit admin approval; keep NTFY alert to staff
+    console.log(`[birthday] Student birthday detected for ${name}. Admin notified via NTFY; automated email withheld pending admin approval.`);
   }
 
   // Tutor birthdays
@@ -359,27 +363,8 @@ async function sendBirthdayAlerts(students, tutors, birthdayTopic) {
       { tags: 'birthday,heart,teacher', priority: 'default' }
     );
 
-    // Email tutor directly
-    if (t.email) {
-      await sendEmail(t.email,
-        ` Happy Birthday from the STEMulus Family!`,
-        `<!DOCTYPE html><html><body style="font-family:'Helvetica Neue',Arial,sans-serif;background:#f8fafc;margin:0;padding:0">
-        <div style="max-width:580px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0">
-          <div style="background:linear-gradient(135deg,#1A237E,#7C3AED);padding:32px;text-align:center">
-            <div style="font-size:3rem"></div>
-            <h2 style="color:#fff;margin:8px 0 0;font-size:1.5rem">Happy Birthday, ${name}!</h2>
-          </div>
-          <div style="padding:32px;text-align:center">
-            <p style="color:#374151;font-size:1rem;line-height:1.7">Thank you for being an incredible mentor and making a real difference in the lives of our students. Today is your day: we appreciate everything you do! </p>
-            <p style="color:#64748b;font-size:0.85rem">With love from the entire STEMulus family</p>
-          </div>
-          <div style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;text-align:center;font-size:0.75rem;color:#94a3b8">
-            STEMulus Kids Tech · <a href="https://stemuluskidstech.com" style="color:#f4600c">stemuluskidstech.com</a>
-          </div>
-        </div></body></html>`
-      );
-    }
-    console.log(`[birthday] Tutor: ${name}`);
+    // POLICY: Birthday emails to tutors require explicit admin approval; keep NTFY alert to staff
+    console.log(`[birthday] Tutor birthday detected for ${name}. Staff notified via NTFY; automated email withheld pending admin approval.`);
   }
 }
 
@@ -410,18 +395,8 @@ async function sendClassReminder(schedule, minutesBefore, type) {
     await fetch('https://ntfy.sh/' + tutor_topic,  { method: 'POST', headers: ntfyHeaders, body: message });
   } catch(e) { console.warn('[Reminder] NTFY failed:', e.message); }
 
-  // Email to BOTH parent and tutor
-  const SEND_EMAIL = process.env.URL ? process.env.URL + '/.netlify/functions/send-email' : null;
-  if (SEND_EMAIL) {
-    if (schedule.parentEmail) {
-      const emailData = { studentName, tutorName, classDate, classTime, duration: schedule.duration||60, zoomLink: joinLink, mentorName: tutorName, reminderType, parentEmail: schedule.parentEmail, parentName: schedule.parentName||'Parent' };
-      fetch(SEND_EMAIL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ type:'reminder', data: emailData }) }).catch(()=>{});
-    }
-    if (schedule.tutorEmail) {
-      const tutorData = { studentName, tutorName, classDate, classTime, duration: schedule.duration||60, zoomLink: joinLink, mentorName: tutorName, reminderType, tutorEmail: schedule.tutorEmail, parentEmail: schedule.parentEmail };
-      fetch(SEND_EMAIL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ type:'tutor-reminder', data: tutorData }) }).catch(()=>{});
-    }
-  }
+  // POLICY: Reminder emails to parents and tutors require explicit admin review/approval
+  console.log(`[Reminder] ${label} alert for ${studentName} sent to internal NTFY channels. Direct emails withheld pending admin approval.`);
 }
 
 // ─── Check upcoming sessions and send reminders ─────────
@@ -468,6 +443,105 @@ async function sendWeeklyReportReminder() {
   } catch(e) {}
 }
 
+// ─── Day-clamped addMonths helper ──────────────────────────────────────────────
+function addMonthsClamped(dateStr, monthsToAdd = 1, preferredAnchorDay = null) {
+  if (!dateStr || typeof dateStr !== 'string') return '';
+  const clean = dateStr.trim().slice(0, 10);
+  const parts = clean.split('-');
+  if (parts.length !== 3) return '';
+  let y = parseInt(parts[0], 10);
+  let m = parseInt(parts[1], 10) - 1;
+  if (isNaN(y) || isNaN(m)) return '';
+  const origDay = parseInt(parts[2], 10);
+  const anchor = (typeof preferredAnchorDay === 'number' && preferredAnchorDay >= 1 && preferredAnchorDay <= 31)
+    ? preferredAnchorDay
+    : (isNaN(origDay) ? 1 : origDay);
+  m += monthsToAdd;
+  y += Math.floor(m / 12);
+  m = ((m % 12) + 12) % 12;
+  const maxDays = new Date(y, m + 1, 0).getDate();
+  const clampedDay = Math.min(anchor, maxDays);
+  return `${y}-${String(m + 1).padStart(2, '0')}-${String(clampedDay).padStart(2, '0')}`;
+}
+
+// ─── Monthly Tuition Renewal Reminders ──────────────────────────────────────────
+async function sendMonthlyBillingReminders(students, schedules, adminTopic) {
+  const today = todayStr();
+  const todayMs = new Date(today).getTime();
+
+  for (const s of students) {
+    if (s.status === 'withdrawn' || s.status === 'inactive' || s.isDeleted) continue;
+
+    // Determine first class date / cycle start date
+    const b = s.billing || {};
+    let firstClass = b.firstClassDate || s.billing_firstClassDate || s.firstClassDate;
+    if (!firstClass) {
+      const studSched = schedules.filter(sc => sc.studentId === s._id || (sc.studentName && sc.studentName.toLowerCase().includes((s.firstName || '').toLowerCase())));
+      if (studSched.length > 0) {
+        studSched.sort((a, b) => new Date(a.date) - new Date(b.date));
+        firstClass = studSched[0].date;
+      }
+    }
+    if (!firstClass) firstClass = s.createdAt ? s.createdAt.slice(0, 10) : today;
+
+    const anchorDay = b.anchorDay || parseInt(firstClass.slice(8, 10), 10) || 1;
+    const cycleStart = b.cycleStartDate || s.billing_cycleStartDate || firstClass;
+    let nextDue = b.nextDueDate || s.billing_nextDueDate;
+    if (!nextDue) {
+      nextDue = addMonthsClamped(cycleStart, 1, anchorDay);
+    }
+
+    const dueMs = new Date(nextDue).getTime();
+    const diffDays = Math.round((dueMs - todayMs) / (1000 * 60 * 60 * 24));
+
+    // Send reminder at structured milestones: 5 days advance, on due date, and overdue follow-up (T+3d, T+7d)
+    const shouldRemind = (diffDays === 5 || diffDays === 0 || diffDays === -3 || diffDays === -7);
+    if (shouldRemind) {
+      const childName = `${s.firstName || ''} ${s.lastName || ''}`.trim();
+      const parentName = s.parentName || 'Parent';
+      const parentEmail = s.parentEmail;
+      const amount = s.monthlyFee ? `₦${Number(s.monthlyFee).toLocaleString()}` : '₦35,000';
+
+      console.log(`[scheduled-notifications] Tuition renewal due for ${childName} (${diffDays} days remaining, due ${nextDue})`);
+
+      // 1. Notify Admin via NTFY push
+      if (adminTopic) {
+        await ntfyPush(
+          adminTopic,
+          `Tuition Reminder: ${childName} (Due ${nextDue})`,
+          `1-month cycle payment reminder for ${childName}. Monthly fee: ${amount}. Parent: ${parentName} (${parentEmail || 'no email'}). Kindly follow up.`,
+          { priority: diffDays < 0 ? 'urgent' : 'high', tags: 'moneybag,calendar', click: 'https://stemuluskidstech.com/admin-dashboard.html#billing' }
+        );
+      }
+
+      // 2. Notify Parent via Email (if email configured)
+      if (parentEmail && RESEND_KEY) {
+        const emailHtml = `
+          <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:20px;border:1px solid #e2e8f0;border-radius:12px;">
+            <h2 style="color:#0F172A;margin-top:0;">STEMulus Tuition Renewal Notice</h2>
+            <p>Dear <strong>${parentName}</strong>,</p>
+            <p>This is a friendly reminder that <strong>${childName}</strong>'s 1-month learning cycle is due for renewal on <strong>${nextDue}</strong>.</p>
+            <div style="background:#F8FAFC;padding:16px;border-radius:8px;margin:16px 0;border:1px solid #E2E8F0;">
+              <p style="margin:4px 0;"><strong>Student:</strong> ${childName}</p>
+              <p style="margin:4px 0;"><strong>Program:</strong> ${s.program || 'Coding Track'}</p>
+              <p style="margin:4px 0;"><strong>Due Date:</strong> ${nextDue}</p>
+              <p style="margin:4px 0;"><strong>Tuition Fee:</strong> ${amount}</p>
+            </div>
+            <div style="background:#EFF6FF;padding:16px;border-radius:8px;margin:16px 0;border:1px solid #BFDBFE;">
+              <h4 style="margin:0 0 8px 0;color:#1E40AF;">School Bank Account Details</h4>
+              <p style="margin:4px 0;"><strong>Bank:</strong> Access Bank</p>
+              <p style="margin:4px 0;"><strong>Account Name:</strong> STEMulus Kids Tech</p>
+              <p style="margin:4px 0;"><strong>Account Number:</strong> 1853492019</p>
+            </div>
+            <p style="font-size:13px;color:#64748B;">Please share proof of payment via WhatsApp (+2347052466716) once transfer is made.</p>
+          </div>
+        `;
+        await sendEmail(parentEmail, `Tuition Renewal Notice: ${childName}'s Monthly Learning Cycle Due ${nextDue}`, emailHtml);
+      }
+    }
+  }
+}
+
 // ─── Main handler ─────────────────────────────────────────────────────────────
 
 exports.handler = async (event) => {
@@ -497,6 +571,7 @@ exports.handler = async (event) => {
   if (isMorning) {
     await sendTutorDailyDigests(schedules, tutorTopic);
     await sendBirthdayAlerts(students, tutors, birthdayTopic);
+    await sendMonthlyBillingReminders(students, schedules, enrollTopic);
     console.log('[scheduled-notifications] Morning tasks complete');
   }
 

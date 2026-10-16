@@ -1,0 +1,4 @@
+parent_name,parent_email,parent_phone,child_name,child_age,child_birthday,program,tutor_name,classroom_link,notes
+"Adeola Johnson","adeola.j@example.com","+2348012345678","Tobi Johnson",9,"2017-04-12","Scratch Creators","Sarah Jane","https://meet.google.com/abc-defg-hij","Excited about animations and interactive games"
+"Michael Chen","m.chen@example.com","+14155552671","Chloe Chen",12,"2014-08-23","Python Programming","Sarah Jane","https://meet.google.com/xyz-uvwx-rst","Has previous block-based coding experience"
+"Amina Bello","amina.bello@example.com","+2347098765432","Zayd Bello",7,"2019-01-15","Scratch Creators","Unassigned","","Brand new to programming"

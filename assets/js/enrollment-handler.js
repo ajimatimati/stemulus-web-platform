@@ -22,6 +22,55 @@ const EnrollmentHandler = (function() {
         return d.innerHTML;
     }
 
+    function getAttributionData() {
+        const urlParams = new URLSearchParams(window.location.search);
+        let country = urlParams.get('country') || '';
+        let timeZone = '';
+        try {
+            timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+            if (!country) {
+                if (/America\/(New_York|Chicago|Denver|Los_Angeles|Phoenix|Detroit|Indiana|Anchorage|Honolulu)/i.test(timeZone)) {
+                    country = 'USA';
+                } else if (/Europe\/(London|Belfast)|GMT|BST/i.test(timeZone)) {
+                    country = 'UK';
+                } else if (/America\/(Toronto|Vancouver|Edmonton|Winnipeg|Halifax|Montreal|St_Johns)/i.test(timeZone)) {
+                    country = 'Canada';
+                } else if (/Australia|Sydney|Melbourne|Brisbane|Perth|Adelaide|Hobart|Darwin/i.test(timeZone)) {
+                    country = 'Australia';
+                } else if (/Africa\/Lagos/i.test(timeZone)) {
+                    country = 'Nigeria';
+                } else if (/Europe\/Dublin/i.test(timeZone)) {
+                    country = 'Ireland';
+                } else if (/Pacific\/(Auckland|Chatham)/i.test(timeZone)) {
+                    country = 'New Zealand';
+                } else if (/Africa\/Johannesburg/i.test(timeZone)) {
+                    country = 'South Africa';
+                } else if (/Africa\/Accra/i.test(timeZone)) {
+                    country = 'Ghana';
+                } else if (/Africa\/Nairobi/i.test(timeZone)) {
+                    country = 'Kenya';
+                } else if (/Asia\/Dubai/i.test(timeZone)) {
+                    country = 'UAE';
+                } else if (/Asia\/Singapore/i.test(timeZone)) {
+                    country = 'Singapore';
+                } else {
+                    country = 'Global';
+                }
+            }
+        } catch(e) {
+            country = country || 'Global';
+        }
+
+        return {
+            country: country,
+            utmSource: urlParams.get('utm_source') || '',
+            utmMedium: urlParams.get('utm_medium') || '',
+            utmCampaign: urlParams.get('utm_campaign') || '',
+            referrer: document.referrer || 'direct',
+            timeZone: timeZone
+        };
+    }
+
     let isSubmitting = false;
     let originalBtnHTML = ''; // Capture once to avoid ripple accumulation
 
@@ -149,6 +198,12 @@ const EnrollmentHandler = (function() {
                 }
             }
 
+            const attr = getAttributionData();
+            const country = formData.get('country') || attr.country || 'Global';
+            const location = formData.get('location') || country;
+            const timeZone = formData.get('time_zone') || attr.timeZone || '';
+            const utmSource = formData.get('utm_source') || attr.utmSource || 'direct';
+
             const enrollmentData = {
                 // Primary child info (for backwards compatibility)
                 studentFirstName: childrenArray[0]?.firstName || formData.get('student_first_name'),
@@ -166,6 +221,10 @@ const EnrollmentHandler = (function() {
                 phone: formData.get('phone'),
                 referral: formData.get('referral') || 'Not specified',
                 mediaConsent: mediaConsent,
+                country: country,
+                location: location,
+                timeZone: timeZone,
+                utmSource: utmSource,
                 // Father & Mother detailed info
                 fatherName: formData.get('father_name') || '',
                 fatherPhone: formData.get('father_phone') || '',
@@ -254,6 +313,10 @@ const EnrollmentHandler = (function() {
                     email:             data.email,
                     phone:             data.phone,
                     referral:          data.referral,
+                    country:           data.country || 'Global',
+                    location:          data.location || data.country || 'Global',
+                    timeZone:          data.timeZone || '',
+                    utmSource:         data.utmSource || 'direct',
                     mediaConsent:      data.mediaConsent ? 'Granted' : 'Declined',
                     children:          data.children || [],
                 }
@@ -277,8 +340,8 @@ const EnrollmentHandler = (function() {
      */
     async function sendPhoneNotification(data) {
         const title = data.totalChildren > 1 
-            ? `New Enrollment: ${data.totalChildren} Children` 
-            : `New Enrollment: ${data.studentFirstName} ${data.studentLastName}`;
+            ? `New Enrollment: ${data.totalChildren} Children [${data.country || 'Global'}]` 
+            : `New Enrollment: ${data.studentFirstName} ${data.studentLastName} [${data.country || 'Global'}]`;
         
         // Build children summary
         let childrenSummary = '';
@@ -297,9 +360,10 @@ ${childrenSummary}
 Parent: ${data.parentName}
 Parent Email: ${data.parentEmail || data.email}
 Student Email: ${data.studentEmail || 'None provided'}
+Country: ${data.country || 'Global'}
 Media / Social Consent: ${data.mediaConsent ? 'Granted' : 'Declined'}
 Phone: ${data.phone}
-Source: ${data.referral}
+Source: ${data.referral || data.utmSource || 'direct'}
 Time: ${new Date().toLocaleTimeString()}
         `.trim();
 

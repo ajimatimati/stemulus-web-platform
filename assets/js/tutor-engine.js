@@ -11,6 +11,14 @@ const TutorEngine = (function() {
     }
 
     function checkAuth() {
+        // Immediate synchronous render if a valid local session is already active
+        const localSession = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSession) ? DashboardEngine.getSession() : null;
+        if (localSession && (localSession.role === 'tutor' || localSession.role === 'admin')) {
+            currentTutor = localSession;
+            hideLoginOverlay();
+            renderDashboard();
+        }
+
         const hasFirebase = (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore);
 
         if (hasFirebase) {
@@ -29,7 +37,11 @@ const TutorEngine = (function() {
                             if (userDoc.exists) {
                                 const userData = userDoc.data();
                                 if (userData.role === 'tutor' || userData.role === 'admin') {
-                                    sessionStorage.setItem("stemulus_session", JSON.stringify(userData));
+                                    if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.saveSecureSession) {
+                                        StemulusSecurity.saveSecureSession(userData);
+                                    } else {
+                                        sessionStorage.setItem("stemulus_session", JSON.stringify(userData));
+                                    }
                                     currentTutor = userData;
                                     hideLoginOverlay();
                                     renderDashboard();

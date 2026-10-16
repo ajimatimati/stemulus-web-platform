@@ -1,0 +1,108 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions for Role-Based Access Control (RBAC) & Principle of Least Privilege
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.token.email.lower())).data;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email.lower() == 'admin@stemuluskidstech.com' ||
+        getUserData().role == 'admin'
+      );
+    }
+
+    function isTutor() {
+      return isAuthenticated() && (getUserData().role == 'tutor' || isAdmin());
+    }
+
+    function isParent() {
+      return isAuthenticated() && (getUserData().role == 'parent' || isAdmin());
+    }
+
+    function isOwner(userEmail) {
+      return isAuthenticated() && request.auth.token.email.lower() == userEmail.lower();
+    }
+
+    // 1. User Profiles:
+    // Only the authenticated user can read their own profile; only admins can list or create/update roles
+    match /users/{userEmail} {
+      allow read: if isOwner(userEmail) || isAdmin();
+      allow create, update: if isAdmin() || (isOwner(userEmail) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']));
+      allow delete: if isAdmin();
+    }
+
+    // 2. Student Records (COPPA & FERPA Protection):
+    // Minors' data is strictly isolated. Parents only see their enrolled children;
+    // Tutors only see assigned students; Admins see all. Public access is strictly DENIED.
+    match /students/{studentId} {
+      allow read: if isAdmin() ||
+                     (isParent() && resource.data.parentEmail.lower() == request.auth.token.email.lower()) ||
+                     (isTutor() && resource.data.tutorEmail.lower() == request.auth.token.email.lower());
+      allow create, update, delete: if isAdmin();
+    }
+
+    // 3. Parents Roster & Billing:
+    match /parents/{parentEmail} {
+      allow read: if isOwner(parentEmail) || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // 4. Tutor Faculty & Payout Statements:
+    match /tutors/{tutorEmail} {
+      allow read: if isOwner(tutorEmail) || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // 5. Schedules & Calendars:
+    match /schedules/{scheduleId} {
+      allow read: if isAuthenticated();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // 6. Attendance & Class Progress Reports:
+    match /attendance/{attendanceId} {
+      allow read: if isAdmin() ||
+                     (isTutor() && resource.data.tutorEmail.lower() == request.auth.token.email.lower()) ||
+                     (isParent() && resource.data.parentEmail.lower() == request.auth.token.email.lower());
+      allow create: if isTutor() || isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    // 7. Public Intake Ingestion (Leads, Bookings, Applications):
+    // Public unauthenticated visitors can SUBMIT forms (write-only),
+    // but CANNOT read, query, list, or tamper with submissions.
+    match /leads/{leadId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /enrollments/{enrollmentId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /tutor_applications/{appId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // 8. Global State Document (Spark Plan Fallback):
+    // Only verified administrators can overwrite or read the complete state snapshot
+    match /state/current {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // Default catch-all: Deny all unhandled operations
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

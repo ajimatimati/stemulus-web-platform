@@ -1,0 +1,38 @@
+[
+  {
+    "parent_name": "Adeola Johnson",
+    "parent_email": "adeola.j@example.com",
+    "parent_phone": "+2348012345678",
+    "child_name": "Tobi Johnson",
+    "child_age": 9,
+    "child_birthday": "2017-04-12",
+    "program": "Scratch Creators",
+    "tutor_name": "Sarah Jane",
+    "classroom_link": "https://meet.google.com/abc-defg-hij",
+    "notes": "Excited about animations and interactive games"
+  },
+  {
+    "parent_name": "Michael Chen",
+    "parent_email": "m.chen@example.com",
+    "parent_phone": "+14155552671",
+    "child_name": "Chloe Chen",
+    "child_age": 12,
+    "child_birthday": "2014-08-23",
+    "program": "Python Programming",
+    "tutor_name": "Sarah Jane",
+    "classroom_link": "https://meet.google.com/xyz-uvwx-rst",
+    "notes": "Has previous block-based coding experience"
+  },
+  {
+    "parent_name": "Amina Bello",
+    "parent_email": "amina.bello@example.com",
+    "parent_phone": "+2347098765432",
+    "child_name": "Zayd Bello",
+    "child_age": 7,
+    "child_birthday": "2019-01-15",
+    "program": "Scratch Creators",
+    "tutor_name": "Unassigned",
+    "classroom_link": "",
+    "notes": "Brand new to programming"
+  }
+]

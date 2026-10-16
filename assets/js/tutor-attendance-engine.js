@@ -193,7 +193,10 @@ const TutorAttendanceEngine = (function() {
         var filterMonthEl = document.getElementById('filter-month');
         var monthStr = (filterMonthEl && filterMonthEl.value) ? filterMonthEl.value : new Date().toISOString().substring(0,7);
 
-        const thisMonthRecords = records.filter(r => r.classDate.startsWith(monthStr));
+        const thisMonthRecords = records.filter(r => {
+            const d = (r && (r.classDate || r.date || ''));
+            return d && d.startsWith(monthStr);
+        });
 
         const totalEl = document.getElementById('stat-total-submissions');
         const approvedEl = document.getElementById('stat-approved-submissions');
@@ -210,8 +213,8 @@ const TutorAttendanceEngine = (function() {
         const container = document.getElementById('attendance-list-container');
         if (!container) return;
 
-        const monthFilter = document.getElementById('filter-month').value; // "YYYY-MM"
-        const statusFilter = document.getElementById('filter-status').value; // "all", "pending", "approved", "rejected"
+        const monthFilter = document.getElementById('filter-month') ? document.getElementById('filter-month').value : ''; // "YYYY-MM"
+        const statusFilter = document.getElementById('filter-status') ? document.getElementById('filter-status').value : 'all'; // "all", "pending", "approved", "rejected"
 
         let records = DashboardEngine.getAttendanceRecords(currentTutor.email);
 
@@ -220,7 +223,10 @@ const TutorAttendanceEngine = (function() {
 
         // Filter by Month
         if (monthFilter) {
-            records = records.filter(r => r.classDate.startsWith(monthFilter));
+            records = records.filter(r => {
+                const d = (r && (r.classDate || r.date || ''));
+                return d && d.startsWith(monthFilter);
+            });
         }
 
         // Filter by Status
@@ -241,31 +247,36 @@ const TutorAttendanceEngine = (function() {
 
         // Sort descending by date & time
         records.sort((a, b) => {
-            const dtA = new Date(a.classDate + 'T' + a.classTime);
-            const dtB = new Date(b.classDate + 'T' + b.classTime);
+            const dtA = new Date((a.classDate || a.date || '') + 'T' + (a.classTime || '00:00'));
+            const dtB = new Date((b.classDate || b.date || '') + 'T' + (b.classTime || '00:00'));
             return dtB - dtA;
         });
 
         container.innerHTML = records.map(r => {
-            const dateObj = new Date(r.classDate);
+            const dateObj = new Date(r.classDate || r.date || Date.now());
             const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             
             // Format Time (12h format)
-            const [hh, mm] = r.classTime.split(':');
-            let h = parseInt(hh);
+            const timeVal = r.classTime || '12:00';
+            const [hh, mm] = timeVal.split(':');
+            let h = parseInt(hh) || 12;
             const ampm = h >= 12 ? 'PM' : 'AM';
             h = h % 12 || 12;
-            const formattedTime = `${h}:${mm} ${ampm}`;
+            const formattedTime = `${h}:${mm || '00'} ${ampm}`;
 
             const badgeClass = r.status === 'approved' ? 'badge-approved' : (r.status === 'rejected' ? 'badge-rejected' : 'badge-pending');
-            const statusLabel = r.status.charAt(0).toUpperCase() + r.status.slice(1);
+            const statusLabel = r.status ? (r.status.charAt(0).toUpperCase() + r.status.slice(1)) : 'Pending';
 
             // Get initials for avatar
-            const initials = r.studentName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            const initials = (r.studentName || 'Student').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
             // Calculate student monthly attendance count
+            const rDateStr = (r.classDate || r.date || '');
             const monthlyTally = DashboardEngine.getAttendanceRecords(currentTutor.email)
-                .filter(ar => ar.studentId === r.studentId && ar.classDate.startsWith(r.classDate.substring(0, 7)) && ar.status === 'approved').length;
+                .filter(ar => {
+                    const arDate = (ar && (ar.classDate || ar.date || ''));
+                    return ar.studentId === r.studentId && arDate && rDateStr && arDate.startsWith(rDateStr.substring(0, 7)) && ar.status === 'approved';
+                }).length;
 
             return `
                 <div class="p-5 bg-white border border-gray-150 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:shadow-md transition-all">
@@ -338,29 +349,37 @@ const TutorAttendanceEngine = (function() {
     }
 
     function populateStudentDropdown() {
-        const selectEl = document.getElementById('student_id');
-        if (!selectEl) return;
+        let selectEl = document.getElementById('student_id_select');
+        if (!selectEl || selectEl.tagName !== 'SELECT') {
+            selectEl = document.getElementById('student_id');
+        }
+        if (!selectEl || selectEl.tagName !== 'SELECT') return;
 
         selectEl.innerHTML = '<option value="">Choose student...</option>';
 
         let studentsList = [];
-        if (isStandIn) {
-            // Stand-in mode: list all active students in the system
-            studentsList = DashboardEngine.getStudents().filter(s => s.status === 'active');
+        if (isStandIn || (currentTutor && currentTutor.role === 'admin')) {
+            // Stand-in or Admin mode: list all active students in the system
+            studentsList = DashboardEngine.getStudents ? DashboardEngine.getStudents().filter(s => s.status !== 'inactive' && s.status !== 'withdrawn') : [];
         } else {
             // Normal mode: only students assigned to this tutor
             studentsList = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutorStudents)
-                ? DashboardEngine.getTutorStudents(currentTutor ? currentTutor.email : null).filter(s => s.status === 'active')
-                : DashboardEngine.getStudents().filter(s => (
+                ? DashboardEngine.getTutorStudents(currentTutor ? currentTutor.email : null).filter(s => s.status !== 'inactive' && s.status !== 'withdrawn')
+                : (DashboardEngine.getStudents ? DashboardEngine.getStudents().filter(s => (
                     (s.tutorEmail && currentTutor && s.tutorEmail.toLowerCase() === (currentTutor.email || '').toLowerCase()) ||
                     (s.tutorName && currentTutor && s.tutorName.toLowerCase() === (currentTutor.name || '').toLowerCase())
-                ) && s.status === 'active');
+                ) && s.status !== 'inactive' && s.status !== 'withdrawn') : []);
+        }
+
+        if (studentsList.length === 0) {
+            selectEl.innerHTML = '<option value="">No assigned students found (Contact Admin)</option>';
+            return;
         }
 
         studentsList.forEach(s => {
             const opt = document.createElement('option');
             opt.value = s.id;
-            opt.textContent = `${s.firstName} ${s.lastName} (${s.program})`;
+            opt.textContent = `${s.firstName} ${s.lastName} (${s.program || 'Coding'})`;
             selectEl.appendChild(opt);
         });
     }

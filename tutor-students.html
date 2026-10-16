@@ -20,15 +20,20 @@
     .kpi-chip { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.18); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 9999px; padding: 0.4rem 1rem; font-size: 0.85rem; font-weight: 700; color: #ffffff; }
     .student-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1.25rem; box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.04); transition: all 0.25s ease; }
   </style>
+  <script src="assets/js/stemulus-security.min.js"></script>
   <script>
   (function(){
     try {
-      var s=JSON.parse(sessionStorage.getItem('stemulus_session') || localStorage.getItem('stemulus_session') || 'null');
-      var ttl=8*60*60*1000;
-      if(!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
+      var s = (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession)
+        ? StemulusSecurity.getSecureSession()
+        : null;
+      var ttl = 8 * 60 * 60 * 1000;
+      if (!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
         window.location.replace('parent-login.html?role=tutor');
       }
-    } catch(e){}
+    } catch(e) {
+      window.location.replace('parent-login.html?role=tutor');
+    }
   })();
   </script>
 </head>

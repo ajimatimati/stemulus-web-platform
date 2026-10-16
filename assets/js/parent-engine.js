@@ -30,7 +30,11 @@ const ParentEngine = (function() {
                             if (userDoc.exists) {
                                 const userData = userDoc.data();
                                 if (userData.role === 'parent' || userData.role === 'admin') {
-                                    sessionStorage.setItem("stemulus_session", JSON.stringify(userData));
+                                    if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.saveSecureSession) {
+                                        StemulusSecurity.saveSecureSession(userData);
+                                    } else {
+                                        sessionStorage.setItem("stemulus_session", JSON.stringify(userData));
+                                    }
                                     currentParent = userData;
                                     hideLoginOverlay();
                                     renderDashboard();
@@ -173,14 +177,16 @@ const ParentEngine = (function() {
 
         // 1. Query approved attendance records from db.attendanceRecords
         if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getAttendanceRecords) {
-            var allAtt = DashboardEngine.getAttendanceRecords();
-            var attRecords = allAtt.filter(function(r) {
+            var allAtt = DashboardEngine.getAttendanceRecords() || [];
+            var attList = Array.isArray(allAtt) ? allAtt : [];
+            var attRecords = attList.filter(function(r) {
+                if (!r) return false;
                 var rName = (r.studentName || '').toLowerCase().trim();
                 return (r.studentId === student.id || rName === fullName || (student.firstName && rName.startsWith(student.firstName.toLowerCase()))) && r.status === 'approved';
             }).map(function(r) {
                 return {
-                    date: r.classDate,
-                    topic: r.topic,
+                    date: r.classDate || r.date || '',
+                    topic: r.topic || '',
                     conceptGrasp: r.conceptGrasp || 0,
                     tutorComment: r.tutorComment || r.notes || '',
                     homeworkAssigned: r.homeworkAssigned || r.homework || '',
@@ -191,8 +197,10 @@ const ParentEngine = (function() {
         }
 
         // 2. Query schedules in db.schedules
-        var schedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
-        var schedRecords = schedules.filter(function(s) {
+        var schedules = (DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : []) || [];
+        var schedList = Array.isArray(schedules) ? schedules : [];
+        var schedRecords = schedList.filter(function(s) {
+            if (!s) return false;
             var sName = (s.studentName || '').toLowerCase().trim();
             return (s.studentId === student.id || sName === fullName || (student.firstName && sName.startsWith(student.firstName.toLowerCase()))) && 
                    (s.attendanceStatus === 'present' || s.status === 'approved') &&
@@ -270,7 +278,8 @@ const ParentEngine = (function() {
             const liveHours = liveMetrics ? liveMetrics.totalHours : 0;
 
             // Get reports
-            const reports = DashboardEngine.getReports(s.id);
+            const rawReports = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getReports) ? DashboardEngine.getReports(s.id) : [];
+            const reports = Array.isArray(rawReports) ? rawReports : [];
             const reportHTML = reports.length > 0 
                 ? `<div class="bg-gray-50 border border-gray-100 rounded-xl p-4 mt-4 space-y-2">
                         <div class="flex justify-between items-center">
@@ -285,10 +294,11 @@ const ParentEngine = (function() {
             // Check for official monthly academic evaluations (approved by admin & sent to parent)
             let monthlyReports = [];
             if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getMonthlyReports) {
-                const allMR = DashboardEngine.getMonthlyReports();
+                const allMR = DashboardEngine.getMonthlyReports() || [];
+                const mrList = Array.isArray(allMR) ? allMR : [];
                 const sNameLower = ((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim();
-                monthlyReports = allMR.filter(mr => {
-                    if (mr.status !== 'sent_to_parent') return false;
+                monthlyReports = mrList.filter(mr => {
+                    if (!mr || mr.status !== 'sent_to_parent') return false;
                     if (mr.studentId && mr.studentId === s.id) return true;
                     if (mr.studentName && mr.studentName.toLowerCase().trim() === sNameLower) return true;
                     if (mr.studentName && mr.studentName.toLowerCase().trim() === (s.firstName || '').toLowerCase().trim()) return true;
@@ -346,6 +356,55 @@ const ParentEngine = (function() {
                         </div>
                    </div>`
                 : '';
+
+            // Monthly Tuition Cycle details
+            const billingInfo = (typeof BillingEngine !== 'undefined')
+                ? BillingEngine.calculateBillingInfo(s, (typeof DashboardEngine !== 'undefined' ? DashboardEngine.getAttendanceRecords() : []), (typeof DashboardEngine !== 'undefined' ? DashboardEngine.getSchedules() : []))
+                : null;
+
+            const billingHTML = billingInfo ? (function() {
+                const isOverdue = billingInfo.status === 'overdue';
+                const isDueSoon = billingInfo.status === 'due_soon';
+                const statusBadge = isOverdue
+                    ? `<span class="bg-rose-100 text-rose-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-rose-200">Overdue by ${Math.abs(billingInfo.daysRemaining)} days</span>`
+                    : (isDueSoon
+                        ? `<span class="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-amber-200">Due in ${billingInfo.daysRemaining} days</span>`
+                        : `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-emerald-200">Active • Renews ${billingInfo.nextDueDate}</span>`);
+
+                const settings = (typeof BillingEngine !== 'undefined') ? BillingEngine.getSettings() : { bankName: 'Access Bank', accountNumber: '1853492019', accountName: 'STEMulus Kids Tech' };
+
+                return `
+                    <div class="bg-slate-50 border border-slate-200/90 rounded-2xl p-3.5 space-y-2 mt-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-1.5">
+                                <i data-lucide="receipt" class="w-4 h-4 text-emerald-600"></i>
+                                <span class="text-xs font-bold text-slate-700">Tuition Cycle</span>
+                            </div>
+                            ${statusBadge}
+                        </div>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-200/60">
+                            <div>
+                                <span class="text-[10px] text-slate-400 block">Monthly Rate</span>
+                                <span class="font-bold text-slate-800 font-mono">${billingInfo.formattedFee}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] text-slate-400 block">Next Due Date</span>
+                                <span class="font-bold text-slate-800">${billingInfo.nextDueDate}</span>
+                            </div>
+                        </div>
+                        ${(isOverdue || isDueSoon) ? `
+                            <div class="bg-white border border-amber-200 rounded-xl p-2.5 text-[11px] text-slate-700 space-y-1 mt-1 shadow-2xs">
+                                <p class="font-bold text-amber-800 flex items-center gap-1">
+                                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i> Payment Reminder
+                                </p>
+                                <p class="text-[11px] text-slate-600">
+                                    Transfer to <strong>${settings.bankName}</strong>: <span class="font-mono font-bold text-slate-900">${settings.accountNumber}</span> (${settings.accountName}) & WhatsApp proof of payment to admin.
+                                </p>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            })() : '';
 
             return `
                 <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm flex flex-col space-y-4 hover:shadow-md transition-shadow">
@@ -423,6 +482,7 @@ const ParentEngine = (function() {
                         </a>
                     </div>
 
+                    ${billingHTML}
                     ${officialReportHTML}
                     ${reportHTML}
                     ${renderLatestSessionData(s)}
@@ -441,8 +501,12 @@ const ParentEngine = (function() {
         const students = (currentParent.role === 'admin' && DashboardEngine.getStudents(currentParent.email).length === 0)
             ? DashboardEngine.getStudents()
             : DashboardEngine.getStudents(currentParent.email);
-        const studentIds = students.map(s => s.id);
-        const schedules = DashboardEngine.getSchedules().filter(function(s) { return studentIds.includes(s.studentId) && new Date(s.date) >= new Date(new Date().toDateString()); });
+        const studentIds = (Array.isArray(students) ? students : []).map(s => s.id);
+        const rawSched = (DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : []) || [];
+        const schedList = Array.isArray(rawSched) ? rawSched : [];
+        const schedules = schedList.filter(function(s) { 
+            return s && studentIds.includes(s.studentId) && new Date(s.date) >= new Date(new Date().toDateString()); 
+        });
 
         if (schedules.length === 0) {
             scheduleContainer.innerHTML = `
@@ -799,8 +863,10 @@ const ParentEngine = (function() {
 
         // 2. Check approved attendance records with whatBuilt
         if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getAttendanceRecords) {
-            const records = DashboardEngine.getAttendanceRecords().filter(r => 
-                (r.studentId === student.id || (r.studentName && r.studentName.toLowerCase().trim() === sFull)) &&
+            const rawAtt = DashboardEngine.getAttendanceRecords() || [];
+            const attList = Array.isArray(rawAtt) ? rawAtt : [];
+            const records = attList.filter(r => 
+                r && (r.studentId === student.id || (r.studentName && r.studentName.toLowerCase().trim() === sFull)) &&
                 r.status === 'approved' &&
                 (r.whatBuilt || r.topic)
             );

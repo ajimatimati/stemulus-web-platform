@@ -1866,6 +1866,10 @@
               <!-- Hidden compatibility fields -->
               <input type="hidden" id="parent_name" name="parent_name" value="">
               <input type="hidden" id="parent_phone" name="phone" value="">
+              <input type="hidden" id="enroll_country" name="country" value="">
+              <input type="hidden" id="enroll_location" name="location" value="">
+              <input type="hidden" id="enroll_timezone" name="time_zone" value="">
+              <input type="hidden" id="enroll_utm_source" name="utm_source" value="">
 
               <!-- Father's Info -->
               <h3 style="font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--orange); margin: 12px 0 12px; display: flex; align-items: center; gap: 8px;">
@@ -2481,6 +2485,32 @@
     list.style.flexDirection = 'column';
   });
 
+
+  /* ── Auto-populate country & timezone attribution ── */
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    let ctry = urlParams.get('country') || '';
+    if (!ctry) {
+      if (/America\/(New_York|Chicago|Denver|Los_Angeles|Phoenix|Detroit|Indiana|Anchorage|Honolulu)/i.test(tz)) ctry = 'USA';
+      else if (/Europe\/(London|Belfast)|GMT|BST/i.test(tz)) ctry = 'UK';
+      else if (/America\/(Toronto|Vancouver|Edmonton|Winnipeg|Halifax|Montreal|St_Johns)/i.test(tz)) ctry = 'Canada';
+      else if (/Australia|Sydney|Melbourne|Brisbane|Perth|Adelaide|Hobart|Darwin/i.test(tz)) ctry = 'Australia';
+      else if (/Africa\/Lagos/i.test(tz)) ctry = 'Nigeria';
+      else if (/Europe\/Dublin/i.test(tz)) ctry = 'Ireland';
+      else if (/Pacific\/(Auckland|Chatham)/i.test(tz)) ctry = 'New Zealand';
+      else if (/Africa\/Johannesburg/i.test(tz)) ctry = 'South Africa';
+      else if (/Africa\/Accra/i.test(tz)) ctry = 'Ghana';
+      else if (/Africa\/Nairobi/i.test(tz)) ctry = 'Kenya';
+      else if (/Asia\/Dubai/i.test(tz)) ctry = 'UAE';
+      else if (/Asia\/Singapore/i.test(tz)) ctry = 'Singapore';
+      else ctry = 'Global';
+    }
+    if ($id('enroll_country')) $id('enroll_country').value = ctry;
+    if ($id('enroll_location')) $id('enroll_location').value = ctry;
+    if ($id('enroll_timezone')) $id('enroll_timezone').value = tz;
+    if ($id('enroll_utm_source')) $id('enroll_utm_source').value = urlParams.get('utm_source') || 'direct';
+  } catch (e) {}
 
   /* ── Init ── */
   goToStep(1);

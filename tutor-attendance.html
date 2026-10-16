@@ -39,15 +39,20 @@
     #sidebar-overlay.show { display:block; }
     #sidebar nav a:hover { background:rgba(244,96,12,0.12) !important; color:#f4600c !important; }
   </style>
+  <script src="assets/js/stemulus-security.min.js"></script>
   <script>
   (function(){
     try {
-      var s=JSON.parse(sessionStorage.getItem('stemulus_session') || localStorage.getItem('stemulus_session') || 'null');
-      var ttl=8*60*60*1000;
-      if(!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
+      var s = (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession)
+        ? StemulusSecurity.getSecureSession()
+        : null;
+      var ttl = 8 * 60 * 60 * 1000;
+      if (!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
         window.location.replace('parent-login.html?role=tutor');
       }
-    } catch(e){}
+    } catch(e) {
+      window.location.replace('parent-login.html?role=tutor');
+    }
   })();
   </script>
 </head>

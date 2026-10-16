@@ -39,6 +39,28 @@ async function getFirestoreSchedules() {
   }
 }
 
+// Mark reminder milestone as dispatched in Firestore to guarantee idempotency across cron ticks
+async function markMilestoneDispatched(scheduleId, milestone, currentDispatched) {
+  if (!FB_PROJECT || !FB_API_KEY || !scheduleId) return;
+  const list = currentDispatched ? currentDispatched.split(',').map(s => s.trim()).filter(Boolean) : [];
+  if (!list.includes(milestone)) list.push(milestone);
+  const updatedStr = list.join(',');
+  const url = `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents/schedules/${scheduleId}?updateMask.fieldPaths=remindersDispatched&key=${FB_API_KEY}`;
+  try {
+    await fetch(url, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fields: {
+          remindersDispatched: { stringValue: updatedStr }
+        }
+      })
+    });
+  } catch (e) {
+    console.warn('[ClassReminders] Failed to update remindersDispatched in Firestore:', e.message);
+  }
+}
+
 // Push NTFY Notification
 async function pushNtfy(topic, title, message, { priority = 'high', tags = '' } = {}) {
   if (!topic) return;
@@ -152,109 +174,41 @@ exports.handler = async (event) => {
     const link = s.link || 'https://meet.google.com';
     const parentEmail = s.parentEmail;
     const tutorEmail = s.tutorEmail;
+    const sentMilestones = (s.remindersDispatched || '').split(',').map(x => x.trim()).filter(Boolean);
 
-    // ── Milestone 1: 24 Hours Before Class (1410 to 1470 minutes window) ──
-    if (diffMinutes >= 1410 && diffMinutes <= 1470) {
-      // 1. Alert to Parent
-      if (parentEmail) {
-        await sendEmail(
-          parentEmail,
-          `[24h Reminder] Tomorrow: ${studentName}'s Coding Class`,
-          buildEmailTemplate({
-            title: '24-Hour Class Reminder',
-            subtitle: `Tomorrow: ${studentName}'s 1-on-1 Class at ${s.time} (WAT)`,
-            studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: false
-          })
-        );
-      }
-
-      // 2. Alert to Tutor
-      if (tutorEmail) {
-        await sendEmail(
-          tutorEmail,
-          `[24h Reminder] Tomorrow: Session with ${studentName} at ${s.time}`,
-          buildEmailTemplate({
-            title: '24-Hour Tutor Session Reminder',
-            subtitle: `Tomorrow: 1-on-1 Session with ${studentName}`,
-            studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: false
-          })
-        );
-      }
-
-      // 3. NTFY Push Alert
+    // ── Milestone 1: 24 Hours Before Class (1380 to 1470 minutes window) ──
+    if (!sentMilestones.includes('24h') && diffMinutes >= 1380 && diffMinutes <= 1470) {
+      // POLICY: Direct emails to parent/tutor require explicit admin approval. Keep internal NTFY alert.
       await pushNtfy(enrollTopic, `[24h Alert] ${studentName} &bull; ${course}`, `Class tomorrow at ${s.time} WAT.\nTutor: ${tutorName}\nLink: ${link}`, { priority: 'high', tags: 'clock,calendar' });
       await pushNtfy(tutorTopic, `[24h Alert] Tomorrow: ${studentName}`, `Starts tomorrow at ${s.time} WAT.\nCourse: ${course}`, { priority: 'high', tags: 'mortar_board,calendar' });
 
+      await markMilestoneDispatched(s.id, '24h', s.remindersDispatched);
+      sentMilestones.push('24h');
+      s.remindersDispatched = sentMilestones.join(',');
       dispatched.push({ milestone: '24h', scheduleId: s.id, studentName });
     }
 
-    // ── Milestone 2: 1 Hour Before Class (50 to 75 minutes window) ──
-    if (diffMinutes >= 50 && diffMinutes <= 75) {
-      // 1. Alert to Parent
-      if (parentEmail) {
-        await sendEmail(
-          parentEmail,
-          `[1-Hour Alert] Class Starts in 60 Minutes - ${studentName}`,
-          buildEmailTemplate({
-            title: '1-Hour Class Briefing',
-            subtitle: `Preparation Reminder: ${studentName}'s Class begins in 1 hour`,
-            studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: false
-          })
-        );
-      }
-
-      // 2. Alert to Tutor
-      if (tutorEmail) {
-        await sendEmail(
-          tutorEmail,
-          `[1-Hour Alert] Session with ${studentName} in 60 Minutes`,
-          buildEmailTemplate({
-            title: '1-Hour Mentor Briefing',
-            subtitle: `Upcoming Session with ${studentName} begins in 1 hour`,
-            studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: false
-          })
-        );
-      }
-
-      // 3. NTFY Push Alert
+    // ── Milestone 2: 1 Hour Before Class (45 to 75 minutes window) ──
+    if (!sentMilestones.includes('1h') && diffMinutes >= 45 && diffMinutes <= 75) {
+      // POLICY: Direct emails to parent/tutor require explicit admin approval. Keep internal NTFY alert.
       await pushNtfy(enrollTopic, `[1h Alert] ${studentName} Class in 1h`, `Session begins in 60 minutes (${s.time} WAT).\nJoin: ${link}`, { priority: 'high', tags: 'bell,computer' });
       await pushNtfy(tutorTopic, `[1h Alert] Session in 1h with ${studentName}`, `Class at ${s.time} WAT.\nLink: ${link}`, { priority: 'high', tags: 'teacher,bell' });
 
+      await markMilestoneDispatched(s.id, '1h', s.remindersDispatched);
+      sentMilestones.push('1h');
+      s.remindersDispatched = sentMilestones.join(',');
       dispatched.push({ milestone: '1h', scheduleId: s.id, studentName });
     }
 
     // ── Milestone 3: 10 Minutes Before Class (0 to 15 minutes window) ──
-    if (diffMinutes >= 0 && diffMinutes <= 15) {
-      // 1. Alert to Parent
-      if (parentEmail) {
-        await sendEmail(
-          parentEmail,
-          `[Starting in 10 Mins] Classroom Launching Now - ${studentName}`,
-          buildEmailTemplate({
-            title: 'Starting in 10 Minutes!',
-            subtitle: `Urgent: ${studentName}'s Classroom is Launching Now`,
-            studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: true
-          })
-        );
-      }
-
-      // 2. Alert to Tutor
-      if (tutorEmail) {
-        await sendEmail(
-          tutorEmail,
-          `[Starting in 10 Mins] Launch Session with ${studentName}`,
-          buildEmailTemplate({
-            title: 'Class Launching Now!',
-            subtitle: `Urgent: Your session with ${studentName} begins in 10 minutes`,
-            studentName, tutorName, course, date: s.date, time: s.time, link, isUrgent: true
-          })
-        );
-      }
-
-      // 3. NTFY Urgent Push
+    if (!sentMilestones.includes('10m') && diffMinutes >= 0 && diffMinutes <= 15) {
+      // POLICY: Direct emails to parent/tutor require explicit admin approval. Keep internal NTFY alert.
       await pushNtfy(enrollTopic, `[10m Urgent Alert] ${studentName} Class Starting`, `Classroom open now!\nJoin Link: ${link}`, { priority: 'urgent', tags: 'alarm_clock,zap' });
       await pushNtfy(tutorTopic, `[Tutor Launch Alert] 10m until ${studentName}`, `Please join classroom:\n${link}`, { priority: 'urgent', tags: 'alarm_clock,zap' });
 
+      await markMilestoneDispatched(s.id, '10m', s.remindersDispatched);
+      sentMilestones.push('10m');
+      s.remindersDispatched = sentMilestones.join(',');
       dispatched.push({ milestone: '10m', scheduleId: s.id, studentName });
     }
   }

@@ -2753,16 +2753,16 @@ a, button,
 /* Scroll-reveal base class (animated via IntersectionObserver in JS) */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal-on-scroll.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
-.reveal-on-scroll:nth-child(2) { transition-delay: 0.1s; }
-.reveal-on-scroll:nth-child(3) { transition-delay: 0.2s; }
-.reveal-on-scroll:nth-child(4) { transition-delay: 0.3s; }
+.reveal-on-scroll:nth-child(2) { transition-delay: 0.06s; }
+.reveal-on-scroll:nth-child(3) { transition-delay: 0.12s; }
+.reveal-on-scroll:nth-child(4) { transition-delay: 0.18s; }
 
 /* Card warm - improved contrast & depth */
 .card-warm {
@@ -3208,7 +3208,7 @@ body.borderless-homepage .divider-line {
   z-index: 0;  /* Lowest layer - everything sits above */
   overflow: hidden;
   pointer-events: none;
-  background: #080c1c;
+  background: #a8acb0;
 }
 
 #video-bg video {
@@ -3266,6 +3266,13 @@ body.borderless-homepage .divider-line {
   #page-content {
     overflow-x: hidden !important;
   }
+}
+
+#page-content > .zb-section:first-of-type,
+#page-content > section:first-of-type {
+  position: relative;
+  z-index: 20;
+  box-shadow: 0 -24px 48px rgba(15, 23, 42, 0.08);
 }
 
 /* ── Scrub Spacer - container for the hero section ────── */
@@ -3330,8 +3337,10 @@ body.borderless-homepage .divider-line {
     border: 1px solid rgba(255, 255, 255, 0.5) !important;
     border-radius: 24px !important;
     padding: 2.25rem 1.75rem calc(2.25rem + 12px) !important;
-    margin: 1rem auto !important;
-    max-width: calc(100% - 2rem) !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.05) !important;
   }
 }

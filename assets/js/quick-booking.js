@@ -384,16 +384,30 @@ const QuickBooking = (function() {
         try {
             timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
             if (!country) {
-                if (/America\/(New_York|Chicago|Denver|Los_Angeles|Phoenix|Detroit|Indiana)/i.test(timeZone)) {
+                if (/America\/(New_York|Chicago|Denver|Los_Angeles|Phoenix|Detroit|Indiana|Anchorage|Honolulu)/i.test(timeZone)) {
                     country = 'USA';
-                } else if (/Europe\/London|GMT|BST/i.test(timeZone)) {
+                } else if (/Europe\/(London|Belfast)|GMT|BST/i.test(timeZone)) {
                     country = 'UK';
-                } else if (/America\/(Toronto|Vancouver|Edmonton|Winnipeg|Halifax|Montreal)/i.test(timeZone)) {
+                } else if (/America\/(Toronto|Vancouver|Edmonton|Winnipeg|Halifax|Montreal|St_Johns)/i.test(timeZone)) {
                     country = 'Canada';
-                } else if (/Australia|Sydney|Melbourne|Brisbane|Perth|Adelaide/i.test(timeZone)) {
+                } else if (/Australia|Sydney|Melbourne|Brisbane|Perth|Adelaide|Hobart|Darwin/i.test(timeZone)) {
                     country = 'Australia';
                 } else if (/Africa\/Lagos/i.test(timeZone)) {
                     country = 'Nigeria';
+                } else if (/Europe\/Dublin/i.test(timeZone)) {
+                    country = 'Ireland';
+                } else if (/Pacific\/(Auckland|Chatham)/i.test(timeZone)) {
+                    country = 'New Zealand';
+                } else if (/Africa\/Johannesburg/i.test(timeZone)) {
+                    country = 'South Africa';
+                } else if (/Africa\/Accra/i.test(timeZone)) {
+                    country = 'Ghana';
+                } else if (/Africa\/Nairobi/i.test(timeZone)) {
+                    country = 'Kenya';
+                } else if (/Asia\/Dubai/i.test(timeZone)) {
+                    country = 'UAE';
+                } else if (/Asia\/Singapore/i.test(timeZone)) {
+                    country = 'Singapore';
                 } else {
                     country = 'Global';
                 }

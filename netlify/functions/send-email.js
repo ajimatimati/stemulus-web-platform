@@ -868,6 +868,77 @@ function tplCredentialsReset(d) {
   };
 }
 
+function tplMonthlyReportParent(d) {
+  const studentName = d.studentName || 'Student';
+  const month = d.month || 'Current Evaluation Period';
+  const grade = d.grade || d.overallGrade || 'A';
+  const course = d.course || 'Coding & Robotics';
+  const tutorName = d.tutorName || 'Assigned Instructor';
+  const directorNote = d.directorNote || d.adminNotes || 'Student has demonstrated outstanding progress and problem-solving growth this month.';
+
+  return {
+    subject: `Official Academic Progress Report: ${studentName} (${month})`,
+    html: shell(`Official Progress Report — ${studentName}`, `
+      <div style="margin-bottom:20px;">
+        <span class="badge-pill" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;">ACADEMIC BOARD EVALUATION</span>
+      </div>
+      <h1>Monthly Progress Report Approved</h1>
+      <p>Dear Parent,</p>
+      <p>The monthly academic evaluation for <strong>${studentName}</strong> covering <strong>${month}</strong> in <strong>${course}</strong> has been reviewed and officially approved by the Academic Director.</p>
+      
+      <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-left:4px solid #059669;border-radius:12px;padding:20px;margin:24px 0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:0.05em;">Overall Academic Grade</div>
+            <div style="font-size:28px;font-weight:900;color:#059669;">${grade}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:0.05em;">Lead Instructor</div>
+            <div style="font-size:14px;font-weight:700;color:#1E293B;">${tutorName}</div>
+          </div>
+        </div>
+        <div style="border-top:1px solid #E2E8F0;padding-top:12px;font-size:13px;color:#334155;line-height:1.6;">
+          <strong>Director's Note:</strong> “${directorNote}”
+        </div>
+      </div>
+
+      <p>You can review the full evaluation metrics, mastered programming concepts, and print or download the official verification-stamped PDF report inside your parent portal.</p>
+      <div style="margin:28px 0;">
+        <a href="${SITE_URL}/parent-progress.html" class="btn-primary">View &amp; Download Official PDF Report</a>
+      </div>
+      <p style="font-size:13px;color:#64748B;">If you have any questions regarding your child's curriculum milestone progression, our academic advisors are always available via WhatsApp at <strong>+234 705 246 6716</strong>.</p>
+    `)
+  };
+}
+
+function tplMonthlyReportRevision(d) {
+  const studentName = d.studentName || 'Student';
+  const month = d.month || 'Evaluation';
+  const reason = d.rejectionReason || 'Please review observations and resubmit.';
+
+  return {
+    subject: `Report Revision Requested: ${studentName} (${month})`,
+    html: shell(`Report Revision Requested`, `
+      <div style="margin-bottom:20px;">
+        <span class="badge-pill" style="background:#FFF1F2;color:#E11D48;border:1px solid #FECDD3;">ACADEMIC REVIEW ACTION REQUIRED</span>
+      </div>
+      <h1>Monthly Report Revision Requested</h1>
+      <p>Hello,</p>
+      <p>Your submitted monthly evaluation report for <strong>${studentName}</strong> (${month}) requires revision prior to director approval and release to the parent.</p>
+      
+      <div style="background:#FFF1F2;border:1px solid #FECDD3;border-left:4px solid #E11D48;border-radius:12px;padding:20px;margin:24px 0;">
+        <div style="font-size:11px;font-weight:800;color:#9F1239;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Admin Feedback &amp; Adjustments Needed:</div>
+        <div style="font-size:14px;color:#881337;font-style:italic;line-height:1.6;">“${reason}”</div>
+      </div>
+
+      <p>Please log into your Tutor Portal to edit the report entries and resubmit for immediate review.</p>
+      <div style="margin:28px 0;">
+        <a href="${SITE_URL}/tutor-monthly-report.html" class="btn-primary">Open Tutor Report Editor</a>
+      </div>
+    `)
+  };
+}
+
 function tplCustom(d) {
   const isHtml = /<[a-z][\s\S]*>/i.test(d.body || '');
   const content = isHtml ? (d.body || '') : (d.body || '').replace(/\n/g, '<br>');
@@ -882,32 +953,156 @@ function tplCustom(d) {
   };
 }
 
+function tplTuitionReminderParent(d) {
+  const bankName = d.bankName || 'Access Bank';
+  const accountName = d.accountName || 'STEMulus Kids Tech';
+  const accountNumber = d.accountNumber || '1853492019';
+  const amount = d.amount || '₦35,000';
+  const dueDate = d.dueDate || 'End of Month';
+  const studentName = d.studentName || 'Student';
+  const courseName = d.courseName || 'Coding Track';
+
+  return {
+    subject: `Tuition Renewal Notice: ${studentName}'s Monthly Learning Cycle Due ${dueDate}`,
+    html: shell('Tuition Renewal Reminder', `
+      <h1>Monthly Learning Cycle Renewal</h1>
+      <p>Dear <strong>${d.parentName || 'Parent'}</strong>,</p>
+      <p>This is a cordial advisory that <strong>${studentName}</strong>'s 1-month tuition cycle for the <strong>${courseName}</strong> program is scheduled for renewal on <strong>${dueDate}</strong>.</p>
+
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Student</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${studentName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Curriculum</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${courseName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Renewal Due Date</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.orange};">${dueDate}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Monthly Tuition</td>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;font-weight:800;color:${C.emerald};">${amount}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div style="background-color:${C.blueLight};border:1px solid #BFDBFE;border-radius:14px;padding:20px;margin:20px 0;">
+        <h2 style="font-size:15px;margin:0 0 10px 0;color:${C.blue};">Settlement Bank Details</h2>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:4px 0;font-size:13px;color:${C.slate600};font-weight:600;width:35%;">Bank:</td>
+            <td style="padding:4px 0;font-size:14px;color:${C.navy};font-weight:700;">${bankName}</td>
+          </tr>
+          <tr>
+            <td style="padding:4px 0;font-size:13px;color:${C.slate600};font-weight:600;">Account Name:</td>
+            <td style="padding:4px 0;font-size:14px;color:${C.navy};font-weight:700;">${accountName}</td>
+          </tr>
+          <tr>
+            <td style="padding:4px 0;font-size:13px;color:${C.slate600};font-weight:600;">Account Number:</td>
+            <td style="padding:4px 0;font-size:16px;color:${C.navy};font-weight:800;font-family:monospace;letter-spacing:1px;">${accountNumber}</td>
+          </tr>
+        </table>
+      </div>
+
+      <p style="font-size:13px;color:${C.slate600};line-height:1.6;">
+        Kindly send proof of payment via WhatsApp to <strong>+${WHATSAPP_NUMBER}</strong> or reply to this email so our administrative team can update ${studentName}'s learning ledger and provide your official receipt.
+      </p>
+
+      <div style="text-align:center;margin:28px 0;">
+        <a class="btn-primary" href="${SITE_URL}/parent-dashboard.html" target="_blank" style="font-size:15px;padding:14px 32px;">
+          Open Parent Portal &rarr;
+        </a>
+      </div>
+    `)
+  };
+}
+
+function tplTuitionAlertAdmin(d) {
+  const studentName = d.studentName || 'Student';
+  const dueDate = d.dueDate || 'Today';
+  const amount = d.amount || '₦35,000';
+  const parentName = d.parentName || 'Parent';
+  const parentEmail = d.parentEmail || 'N/A';
+  const parentPhone = d.parentPhone || 'N/A';
+
+  return {
+    subject: `[Billing Notice] Tuition Renewal Due for ${studentName} on ${dueDate}`,
+    html: shell('Billing Renewal Due Notice', `
+      <h1>Tuition Renewal Due: ${studentName}</h1>
+      <p>This is an automated administrative notification that <strong>${studentName}</strong>'s 1-month tuition cycle is due for renewal.</p>
+
+      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Student</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:700;color:${C.navy};">${studentName}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Parent</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};">${parentName} (${parentEmail} / ${parentPhone})</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Renewal Due Date</td>
+            <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:800;color:${C.orange};">${dueDate}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Amount Due</td>
+            <td style="padding:8px 12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;font-weight:800;color:${C.emerald};">${amount}</td>
+          </tr>
+        </table>
+      </div>
+
+      <p style="font-size:13px;color:${C.slate600};line-height:1.5;">
+        Reminder Policy: As this system is reminder-driven, no card was charged. Once payment is confirmed via bank statement or receipt, record it in the Admin Dashboard to advance the billing cycle.
+      </p>
+
+      <div style="text-align:center;margin:28px 0;">
+        <a class="btn-primary" href="${SITE_URL}/admin-dashboard.html" target="_blank" style="font-size:15px;padding:14px 32px;">
+          Open Admin Tuition Ledger &rarr;
+        </a>
+      </div>
+    `)
+  };
+}
+
 // ─── Template Router ──────────────────────────────────────────────────────────
 
 function buildEmail(type, data) {
   switch (type) {
     case 'enrollment_admin':     return { ...tplEnrollmentAdmin(data),    to: ADMIN_EMAIL };
-    case 'enrollment_parent':    return { ...tplEnrollmentParent(data),   to: data.email };
+    case 'enrollment_parent':    return { ...tplEnrollmentParent(data),   to: data.email || data.parentEmail || data.to };
     case 'booking_admin':        return { ...tplBookingAdmin(data),       to: ADMIN_EMAIL };
-    case 'booking_parent':       return { ...tplBookingParent(data),      to: data.email };
+    case 'booking_parent':       return { ...tplBookingParent(data),      to: data.email || data.parentEmail || data.to };
     case 'contact':              return { ...tplContactAdmin(data),       to: ADMIN_EMAIL };
-    case 'welcome':              return { ...tplWelcome(data),            to: data.parentEmail };
-    case 'reminder':             return { ...tplReminder(data),           to: data.recipientEmail || data.parentEmail };
-    case 'tutor-reminder':       return { ...tplTutorReminder(data),      to: data.tutorEmail || data.recipientEmail };
-    case 'schedule':             return { ...tplScheduleChange(data),     to: data.parentEmail };
-    case 'certificate':          return { ...tplCertificate(data),        to: data.parentEmail };
-    case 'tutor-welcome':         return { ...tplTutorWelcome(data),      to: data.tutorEmail };
-    case 'credentials-reset':     return { ...tplCredentialsReset(data),  to: data.recipientEmail || data.to };
+    case 'welcome':              return { ...tplWelcome(data),            to: data.parentEmail || data.email || data.to };
+    case 'reminder':             return { ...tplReminder(data),           to: data.recipientEmail || data.parentEmail || data.email || data.to };
+    case 'tutor-reminder':       return { ...tplTutorReminder(data),      to: data.tutorEmail || data.recipientEmail || data.email || data.to };
+    case 'schedule':             return { ...tplScheduleChange(data),     to: data.parentEmail || data.email || data.to };
+    case 'certificate':          return { ...tplCertificate(data),        to: data.parentEmail || data.email || data.to };
+    case 'tutor-welcome':         return { ...tplTutorWelcome(data),      to: data.tutorEmail || data.email || data.to };
+    case 'credentials-reset':     return { ...tplCredentialsReset(data),  to: data.recipientEmail || data.email || data.to };
+    case 'monthly_report':
+    case 'monthly-report-parent': return { ...tplMonthlyReportParent(data), to: data.to || data.parentEmail || data.email };
+    case 'monthly-report-revision-tutor': return { ...tplMonthlyReportRevision(data), to: data.to || data.tutorEmail || data.email };
+    case 'tuition-reminder-parent':
+    case 'tuition_reminder':
+      return { ...tplTuitionReminderParent(data), to: data.to || data.recipientEmail || data.parentEmail || data.email };
+    case 'tuition-alert-admin':
+      return { ...tplTuitionAlertAdmin(data), to: ADMIN_EMAIL };
     case 'certificate-delivery': return {
       ...tplCertificateDelivery(data),
-      to: data.parentEmail,
+      to: data.parentEmail || data.email || data.to,
       attachments: data.fileData ? [{
         filename: data.fileName || 'STEMulus-Certificate.pdf',
         content: data.fileData.split(',')[1] || data.fileData,
         encoding: 'base64'
       }] : undefined
     };
-    case 'custom':               return { ...tplCustom(data),             to: data.to };
+    case 'custom':               return { ...tplCustom(data),             to: data.to || data.email };
     default: return null;
   }
 }
@@ -945,6 +1140,7 @@ function getCorsHeaders(event) {
   const origin = (event && event.headers && (event.headers.origin || event.headers.Origin)) || '';
   const allowed = [
     'https://stemuluskidstech.com',
+    'https://www.stemuluskidstech.com',
     'https://portal.stemuluskidstech.com',
     'https://stemulus-portal-web.netlify.app'
   ];
@@ -987,14 +1183,50 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'Missing type or data' }) };
   }
 
+  // Anti-abuse: enforce valid recipient email format if provided
+  const targetRecipient = data.to || data.recipientEmail || data.parentEmail || data.tutorEmail || data.email;
+  if (targetRecipient && typeof targetRecipient === 'string') {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(targetRecipient.trim())) {
+      return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'Invalid recipient email format' }) };
+    }
+  }
+
+  // Prevent giant payload bombing
+  if (event.body && event.body.length > 500000 && !data.fileData) {
+    return { statusCode: 413, headers: cors, body: JSON.stringify({ error: 'Payload exceeds allowed limit' }) };
+  }
+
   const types = type === 'enrollment'
     ? ['enrollment_admin', 'enrollment_parent']
     : type === 'booking'
     ? ['booking_admin', 'booking_parent']
     : [type];
 
+  const isApprovedByAdmin = data.adminApproved === true || 
+                            data.approvedByAdmin === true || 
+                            (event.headers && (event.headers['x-admin-approval'] === 'true' || event.headers['X-Admin-Approval'] === 'true'));
+
   const results = [];
   for (const t of types) {
+    // STRICT POLICY: No emails sent automatically to parents/tutors unless explicitly approved by admin
+    const isTargetingUser = (t === 'enrollment_parent' || t === 'booking_parent' || t === 'welcome' || 
+                             t === 'tutor-welcome' || t === 'tutor_welcome' || t === 'student-enrolled' || 
+                             t === 'reminder' || t === 'tutor-reminder' || t === 'schedule' || 
+                             t === 'certificate' || t === 'certificate-delivery' || t === 'credentials-reset' || 
+                             (t === 'custom' && data.to && data.to.toLowerCase() !== ADMIN_EMAIL.toLowerCase()));
+
+    if (isTargetingUser && !isApprovedByAdmin) {
+      console.log(`[send-email] Automated dispatch withheld for ${t}. Requires explicit admin approval.`);
+      results.push({ 
+        type: t, 
+        ok: true, 
+        heldForApproval: true, 
+        message: 'Held in Admin Review Queue. Requires manual admin approval prior to dispatch.' 
+      });
+      continue;
+    }
+
     const email = buildEmail(t, data);
     if (!email) {
       results.push({ type: t, error: 'Unknown email type' });

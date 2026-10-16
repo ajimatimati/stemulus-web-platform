@@ -33,6 +33,14 @@
 
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768);
 
+  // Safety net: if video fails or takes too long, always unlock the page
+  let handoffCalled = false;
+  function safeHandoff() {
+    if (handoffCalled) return;
+    handoffCalled = true;
+    onHandoff();
+  }
+
   // ─── PHASE 1: Loader ────────────────────────────────────────────────────────
   function initLoader() {
     // Bypass loader if user refreshed the page while already scrolled down
@@ -69,14 +77,6 @@
     }
 
     body.classList.add('video-loading-lock');
-
-    // Safety net: if video fails or takes too long, always unlock the page
-    let handoffCalled = false;
-    function safeHandoff() {
-      if (handoffCalled) return;
-      handoffCalled = true;
-      onHandoff();
-    }
     video.addEventListener('error', () => {
       console.warn('[VideoScrub] Video failed to load: unlocking page.');
       body.classList.remove('video-loading-lock');
@@ -116,24 +116,27 @@
       return;
     }
 
-    // canplaythrough = browser confident it can play all the way through without buffering
-    // Fall back to canplay if canplaythrough is slow (> 8s)
     let cptFired = false;
-    const cptFallback = setTimeout(() => {
-      if (!cptFired && !handoffCalled) {
-        video.removeEventListener('canplaythrough', onCanPlayThrough);
-        video.addEventListener('canplay', startIntroPlayback, { once: true });
-      }
-    }, 8000);
-    function onCanPlayThrough() {
+    function onReadyToPlay() {
+      if (cptFired || handoffCalled) return;
       cptFired = true;
-      clearTimeout(cptFallback);
+      video.removeEventListener('canplay', onReadyToPlay);
+      video.removeEventListener('canplaythrough', onReadyToPlay);
+      video.removeEventListener('loadeddata', onReadyToPlay);
       startIntroPlayback();
     }
-    if (video.readyState >= 4) {
-      startIntroPlayback(); // already fully buffered
+
+    if (video.readyState >= 2) {
+      startIntroPlayback();
     } else {
-      video.addEventListener('canplaythrough', onCanPlayThrough, { once: true });
+      video.addEventListener('canplay', onReadyToPlay, { once: true });
+      video.addEventListener('canplaythrough', onReadyToPlay, { once: true });
+      video.addEventListener('loadeddata', onReadyToPlay, { once: true });
+      setTimeout(() => {
+        if (!cptFired && !handoffCalled) {
+          onReadyToPlay();
+        }
+      }, 2000);
       video.load();
     }
   }
@@ -274,6 +277,22 @@
         ease: 'power1.inOut',
         duration: 0.3
       }, 0.05);
+
+      // Animate engineering anatomy HUD during robot disassembly
+      const hudEl = document.getElementById('robot-hud-overlay');
+      if (hudEl) {
+        tlFade.fromTo(hudEl, 
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, ease: 'power2.out', duration: 0.25 },
+          0.08
+        );
+        tlFade.to(hudEl, {
+          opacity: 0,
+          y: -15,
+          ease: 'power2.in',
+          duration: 0.2
+        }, 0.38);
+      }
 
       // Start the alive blink loop: desktop only
       initBlinkEngine();

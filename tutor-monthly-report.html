@@ -30,18 +30,23 @@
   <!-- Design System -->
   <link rel="stylesheet" href="assets/css/portal-design-system.css">
   <link rel="stylesheet" href="assets/css/portal-animations.css">
-  <!-- Core State & PDF Generator -->
+  <!-- Core Security & State & PDF Generator -->
+  <script src="assets/js/stemulus-security.min.js"></script>
   <script src="assets/js/dashboard-engine.js"></script>
   <script src="assets/js/report-pdf-generator.js"></script>
   <script>
   (function(){
     try {
-      var s=JSON.parse(sessionStorage.getItem('stemulus_session') || localStorage.getItem('stemulus_session') || 'null');
-      var ttl=8*60*60*1000;
-      if(!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
+      var s = (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession)
+        ? StemulusSecurity.getSecureSession()
+        : null;
+      var ttl = 8 * 60 * 60 * 1000;
+      if (!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
         window.location.replace('parent-login.html?role=tutor');
       }
-    } catch(e){}
+    } catch(e) {
+      window.location.replace('parent-login.html?role=tutor');
+    }
   })();
   </script>
 
@@ -943,12 +948,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Reset edit state
-    document.getElementById('editing-report-id').value = '';
-    document.getElementById('revision-active-banner').classList.add('hidden');
+    var editIdEl = document.getElementById('editing-report-id');
+    if (editIdEl) editIdEl.value = '';
+    var revBanner = document.getElementById('revision-active-banner');
+    if (revBanner) revBanner.classList.add('hidden');
 
     // Show success state
-    document.getElementById('report-form').classList.add('hidden');
-    document.getElementById('report-success').classList.remove('hidden');
+    var repForm = document.getElementById('report-form');
+    if (repForm) repForm.classList.add('hidden');
+    var repSuccess = document.getElementById('report-success');
+    if (repSuccess) repSuccess.classList.remove('hidden');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // Refresh history

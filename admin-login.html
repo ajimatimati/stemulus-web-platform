@@ -622,7 +622,8 @@
     <p class="footer-note">STEMulus KidsTech  -  Internal use only &bull; <a href="parent-login.html" style="color: rgba(255,255,255,0.5); text-decoration: underline;">Parent / Tutor Portal</a></p>
   </div>
 
-  <!-- Dashboard Engine (provides DashboardEngine.login()) -->
+  <!-- Security Shield & Dashboard Engine -->
+  <script src="assets/js/stemulus-security.min.js" defer></script>
   <script src="assets/js/dashboard-engine.min.js" defer></script>
 
   <script>
@@ -713,12 +714,9 @@
           if (DashboardEngine.initDefaultAccounts) {
             DashboardEngine.initDefaultAccounts().catch(function(e) { console.warn('Account init failed:', e); });
           }
-          var session = DashboardEngine.getSession ? DashboardEngine.getSession() : null;
-          // Also check localStorage/sessionStorage fallback
-          if (!session) {
-            var raw = sessionStorage.getItem('stemulus_session') || localStorage.getItem('stemulus_session');
-            if (raw) { try { session = JSON.parse(raw); } catch (_) {} }
-          }
+          var session = (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession)
+            ? StemulusSecurity.getSecureSession()
+            : (DashboardEngine.getSession ? DashboardEngine.getSession() : null);
           if (session && session.role === 'admin' && session.valid !== false) {
             window.location.replace('admin-dashboard.html');
             return;

@@ -1303,11 +1303,13 @@ const BadgePassportEngine = (function() {
      * - Returns unlocked badges based on enrollment months / attended sessions.
      * - Every enrolled student has at least Month 1 unlocked.
      */
-    function getStudentPassport(studentId) {
+    function getStudentPassport(studentIdOrObj) {
         let student = null;
-        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) {
-            const all = DashboardEngine.getStudents();
-            student = all.find(s => s.id === studentId) || null;
+        if (studentIdOrObj && typeof studentIdOrObj === 'object') {
+            student = studentIdOrObj;
+        } else if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) {
+            const all = DashboardEngine.getStudents() || [];
+            student = all.find(s => s.id === studentIdOrObj) || null;
         }
 
         // Calculate progression months
@@ -1563,11 +1565,16 @@ const BadgePassportEngine = (function() {
         document.body.appendChild(div);
     }
 
+    function calculatePassport(monthLevel, age) {
+        return getStudentPassport({ id: 'progression-calc', currentMonth: parseInt(monthLevel, 10) || 1, age: age || 10 });
+    }
+
     return {
         getAllBadges: getAllBadges,
         getEras: getEras,
         getBadge: getBadge,
         getStudentPassport: getStudentPassport,
+        calculatePassport: calculatePassport,
         openBadgeModal: openBadgeModal,
         closeBadgeModal: closeBadgeModal
     };

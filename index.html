@@ -19,7 +19,7 @@
   <link rel="alternate" hreflang="en-gb" href="https://stemuluskidstech.com/coding-classes-for-kids-uk.html">
   <link rel="alternate" hreflang="en-ca" href="https://stemuluskidstech.com/coding-classes-for-kids-canada.html">
   <link rel="alternate" hreflang="en-au" href="https://stemuluskidstech.com/coding-classes-for-kids-australia.html">
-  <link rel="alternate" hreflang="en-ng" href="https://stemuluskidstech.com/">
+  <link rel="alternate" hreflang="en-ng" href="https://stemuluskidstech.com/coding-classes-for-kids-nigeria.html">
   <!-- SEO: GEO TARGETING (Nigeria HQ & Global Diaspora Reach) -->
   <meta name="geo.region" content="NG-LA">
   <meta name="geo.placename" content="Lagos, Nigeria">
@@ -44,6 +44,7 @@
   <meta property="og:locale:alternate" content="en_GB">
   <meta property="og:locale:alternate" content="en_CA">
   <meta property="og:locale:alternate" content="en_AU">
+  <meta property="og:locale:alternate" content="en_NG">
   <!-- SEO: TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="STEMulus | Live 1-on-1 Online Coding Classes for Kids Ages 5-17">
@@ -273,18 +274,42 @@
   </article>
 
 
-  <!-- CINEMATIC BRAND LOADER
- Pure CSS curtain  |  lifts after 2.2s -->
+  <!-- HIGH-END POLISHED BRAND PRELOADER (Aesthetic 750ms Reveal) -->
   <div id="site-loader" aria-hidden="true">
-    <div id="loader-inner">
-      <p id="loader-sub">Global Coding Academy</p>
-      <h1 id="loader-wordmark">STEMulus</h1>
-      <div id="loader-progress">
-        <div id="loader-bar"></div>
+    <div class="stem-loader-inner">
+      <div class="stem-loader-icon-glow">
+        <img src="favicon.png" alt="STEMulus" width="54" height="54" class="stem-loader-cube" fetchpriority="high">
       </div>
-      <p id="loader-tagline">Ages 5 - 17 &nbsp;&middot;&nbsp;1-on-1 &nbsp;&middot;&nbsp; Est.2025</p>
+      <div class="stem-loader-wordmark">
+        <span class="stem-part">STEM</span><span class="ulus-part">ulus</span>
+      </div>
+      <div class="stem-loader-track">
+        <div class="stem-loader-bar"></div>
+      </div>
+      <p class="stem-loader-tag">Global 1-on-1 Coding Academy &middot; Ages 5&ndash;17</p>
     </div>
   </div>
+  <script>
+    (function() {
+      var loader = document.getElementById('site-loader');
+      if (!loader) return;
+      var dismissed = false;
+      function dismiss() {
+        if (dismissed) return;
+        dismissed = true;
+        loader.classList.add('is-loaded');
+        setTimeout(function() {
+          if (loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 500);
+      }
+      if (document.readyState === 'complete') {
+        setTimeout(dismiss, 600);
+      } else {
+        window.addEventListener('load', function() { setTimeout(dismiss, 600); });
+        setTimeout(dismiss, 850);
+      }
+    })();
+  </script>
 
   <!-- Custom Cursor -->
   <div id="cursor-ring" aria-hidden="true"></div>
@@ -316,11 +341,46 @@
  video-scrub.js controls playback.
  All page content sits above it via #page-content. -->
   <div id="video-bg" aria-hidden="true">
-    <video id="scrub-video" src="Robot_scrub.mp4" muted playsinline preload="metadata"></video>
+    <video id="scrub-video" src="Robot_scrub.mp4" poster="assets/images/poster-robot-scrub.webp" muted playsinline preload="auto"></video>
     <!-- Blink overlay - plays robot_blink.mp4 crossfaded over frozen scrub video -->
-    <video id="blink-video" src="robot_blink.mp4" muted playsinline preload="metadata"
+    <video id="blink-video" src="robot_blink.mp4" poster="assets/images/poster-robot-blink.webp" muted playsinline preload="metadata"
       style="opacity:0;pointer-events:none;will-change:opacity;"></video>
     <div id="video-overlay"></div>
+    <!-- Engineering Anatomy HUD: Illuminates when robot separates during scrub -->
+    <div id="robot-hud-overlay" class="absolute inset-0 pointer-events-none opacity-0 transition-all duration-300 z-10 flex items-center justify-center p-6">
+      <div class="relative w-full max-w-5xl h-full max-h-[640px]">
+        <!-- Blueprint Status -->
+        <div class="absolute top-24 left-6 bg-slate-950/85 border border-orange-500/40 rounded-2xl p-4 backdrop-blur-xl shadow-2xl text-left">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="w-2 h-2 rounded-full bg-orange-400 animate-ping"></span>
+            <span class="text-[10px] font-mono font-bold text-orange-400 uppercase tracking-widest">Hardware Architecture</span>
+          </div>
+          <p class="text-sm font-bold text-white">Autonomous Robotics Rig</p>
+          <span class="text-[10px] font-mono text-slate-400">Spec: C++ Kinematics &amp; Microcontroller Engine</span>
+        </div>
+
+        <!-- Callout 1: Optical / AI Vision -->
+        <div class="absolute top-32 right-8 bg-slate-950/85 border border-blue-500/40 rounded-2xl p-3.5 backdrop-blur-xl shadow-2xl text-left hidden sm:block">
+          <span class="text-[9px] font-mono font-bold text-blue-400 uppercase tracking-wider block mb-0.5">Subsystem 01</span>
+          <p class="text-xs font-bold text-white">Computer Vision &amp; Neural Inference</p>
+          <span class="text-[9px] text-slate-400">Real-time object segmentation</span>
+        </div>
+
+        <!-- Callout 2: Microcontroller Core -->
+        <div class="absolute bottom-36 left-8 bg-slate-950/85 border border-emerald-500/40 rounded-2xl p-3.5 backdrop-blur-xl shadow-2xl text-left hidden sm:block">
+          <span class="text-[9px] font-mono font-bold text-emerald-400 uppercase tracking-wider block mb-0.5">Subsystem 02</span>
+          <p class="text-xs font-bold text-white">STM32 / ESP32 Dual-Core Logic</p>
+          <span class="text-[9px] text-slate-400">I2C / SPI Sensor Protocol Bus</span>
+        </div>
+
+        <!-- Callout 3: Servos & Actuators -->
+        <div class="absolute bottom-24 right-12 bg-slate-950/85 border border-pink-500/40 rounded-2xl p-3.5 backdrop-blur-xl shadow-2xl text-left hidden sm:block">
+          <span class="text-[9px] font-mono font-bold text-pink-400 uppercase tracking-wider block mb-0.5">Subsystem 03</span>
+          <p class="text-xs font-bold text-white">High-Torque Kinematic Servos</p>
+          <span class="text-[9px] text-slate-400">Closed-loop PID position control</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- PAGE CONTENT  |  scrolls over the fixed video -->
@@ -1954,6 +2014,7 @@
             <a href="coding-classes-for-kids-uk.html">United Kingdom</a>
             <a href="coding-classes-for-kids-canada.html">Canada</a>
             <a href="coding-classes-for-kids-australia.html">Australia</a>
+            <a href="coding-classes-for-kids-nigeria.html">Nigeria &amp; Africa</a>
             <a href="index.html">International / Global</a>
         </div>
 
@@ -1996,12 +2057,75 @@
             gsap.registerPlugin(ScrollTrigger);
           }
 
-          // Scroll-reveal observer
+          // Simple & Light Dynamic Reveal Observer (Components & Texts)
           (function () {
-            var els = document.querySelectorAll('.card-warm, .showcase-item, .testimonial-card, .flow-card, .stat-block, .prog-card');
-            if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('is-visible'); }); return; }
-            var obs = new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('reveal-on-scroll', 'is-visible'); obs.unobserve(e.target); } }); }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-            els.forEach(function (el) { el.classList.add('reveal-on-scroll'); obs.observe(el); });
+            // Components to gently reveal
+            var components = document.querySelectorAll(
+              '.why-card, .showcase-new-card, .prog-cell, .testimonial-card, .stats-item, .card-warm, .showcase-item, .prog-card, .flow-card, .stat-block, .mentor-quality, .hero-stat-item'
+            );
+            
+            // Section texts to gently reveal (eyebrows, headings, leads)
+            var texts = document.querySelectorAll(
+              '.zb-eyebrow, .zb-h2, .zb-lead'
+            );
+
+            if (!('IntersectionObserver' in window)) {
+              components.forEach(function (e) { e.classList.add('is-revealed'); });
+              texts.forEach(function (e) { e.classList.add('is-revealed'); });
+              return;
+            }
+
+            var obs = new IntersectionObserver(function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-revealed');
+                  obs.unobserve(entry.target);
+                }
+              });
+            }, {
+              threshold: 0.08,
+              rootMargin: '0px 0px -30px 0px'
+            });
+
+            var winHeight = window.innerHeight || document.documentElement.clientHeight;
+            function isAlreadyInView(el) {
+              var rect = el.getBoundingClientRect();
+              return rect.top < winHeight - 20 && rect.bottom > 0;
+            }
+
+            // Register components with subtle sibling staggering
+            components.forEach(function (el) {
+              el.classList.add('stem-reveal');
+              if (el.parentElement) {
+                var siblings = Array.from(el.parentElement.children);
+                var idx = siblings.indexOf(el);
+                if (idx > 0) {
+                  el.style.transitionDelay = (Math.min(idx, 4) * 0.06) + 's';
+                }
+              }
+              if (isAlreadyInView(el)) {
+                el.classList.add('is-revealed');
+              } else {
+                obs.observe(el);
+              }
+            });
+
+            // Register section texts with subtle header stagger
+            texts.forEach(function (el) {
+              el.classList.add('stem-reveal-text');
+              if (isAlreadyInView(el)) {
+                el.classList.add('is-revealed');
+              } else {
+                obs.observe(el);
+              }
+            });
+
+            // Fail-safe sweep after 1.2s to guarantee 100% visibility under all conditions
+            setTimeout(function () {
+              document.querySelectorAll('.stem-reveal:not(.is-revealed), .stem-reveal-text:not(.is-revealed)').forEach(function (e) {
+                e.classList.add('is-revealed');
+              });
+            }, 1200);
           })();
 
           // 3D Curved Carousel Engine - Continuous Smooth Linear Rotation
@@ -2373,13 +2497,23 @@ if ('serviceWorker' in navigator) {
   </div>
 </div>
 <script>
-  // Show mobile bar only on small screens
+  // Show mobile bar only on small screens after scrolling past hero CTA
   (function(){
-    function checkMobile(){ document.getElementById('mobile-booking-bar').style.display = window.innerWidth<=768?'block':'none'; }
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    // Hide bar when popup is open
-    document.addEventListener('click', function(e){ if(e.target.closest('#quick-booking-modal')) document.getElementById('mobile-booking-bar').style.display='none'; });
+    var bar = document.getElementById('mobile-booking-bar');
+    if (!bar) return;
+    function updateMobileBar(){
+      if (window.innerWidth <= 768 && window.scrollY > 220) {
+        bar.style.display = 'block';
+      } else {
+        bar.style.display = 'none';
+      }
+    }
+    window.addEventListener('scroll', updateMobileBar, {passive: true});
+    window.addEventListener('resize', updateMobileBar);
+    updateMobileBar();
+    document.addEventListener('click', function(e){
+      if(e.target.closest('#quick-booking-modal')) bar.style.display = 'none';
+    });
   })();
 </script>
 

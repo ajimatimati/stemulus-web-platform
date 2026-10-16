@@ -23,11 +23,21 @@
  *   }
  */
 
-const CORS = {
-  'Access-Control-Allow-Origin': 'https://stemuluskidstech.com',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-};
+function getCorsHeaders(event) {
+  const origin = (event && event.headers && (event.headers.origin || event.headers.Origin)) || '';
+  const allowed = [
+    'https://stemuluskidstech.com',
+    'https://www.stemuluskidstech.com',
+    'https://portal.stemuluskidstech.com',
+    'https://stemulus-portal-web.netlify.app'
+  ];
+  const isAllowed = allowed.includes(origin) || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1');
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin : 'https://stemuluskidstech.com',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  };
+}
 
 const TOPIC_MAP = {
   enroll:          'NTFY_TOPIC_ENROLL',
@@ -46,6 +56,7 @@ const TOPIC_FALLBACKS = {
 };
 
 exports.handler = async (event) => {
+  const CORS = getCorsHeaders(event);
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers: CORS, body: '' };
   }

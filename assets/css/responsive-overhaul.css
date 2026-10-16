@@ -20,6 +20,13 @@ a.wa-float, .wa-float {
   transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
+@media (max-width: 768px) {
+  a.wa-float, .wa-float {
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)) !important;
+    right: 1rem !important;
+  }
+}
+
 a.wa-float:hover, .wa-float:hover {
   transform: scale(1.1) !important;
   box-shadow: 0 6px 28px rgba(37, 211, 102, 0.6) !important;

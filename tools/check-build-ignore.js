@@ -81,7 +81,9 @@ function run() {
       file === 'package.json' ||
       file === 'netlify.toml' ||
       file === 'src/tailwind-input.css' ||
-      file.startsWith('tools/')
+      file.startsWith('tools/') ||
+      file.startsWith('netlify/functions/') ||
+      file.startsWith('assets/js/')
     );
   };
 

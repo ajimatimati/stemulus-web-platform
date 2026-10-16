@@ -11,15 +11,20 @@
   <meta name="keywords" content="STEMulus progress monitoring, child coding reports, student progress dashboard">
   <meta name="author" content="STEMulus Kids Tech">
   <meta name="robots" content="noindex, nofollow">
+  <script src="assets/js/stemulus-security.min.js"></script>
   <script>
   (function(){
     try {
-      var s=JSON.parse(sessionStorage.getItem('stemulus_session')||'null');
-      var ttl=8*60*60*1000;
-      if(!s || (s.role !== 'parent' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
+      var s = (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession)
+        ? StemulusSecurity.getSecureSession()
+        : null;
+      var ttl = 8 * 60 * 60 * 1000;
+      if (!s || (s.role !== 'parent' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
         window.location.replace('parent-login.html?role=parent');
       }
-    } catch(e){}
+    } catch(e) {
+      window.location.replace('parent-login.html?role=parent');
+    }
   })();
   </script>
   
@@ -1083,12 +1088,14 @@
         // Render attendance history table
         var attTable = document.getElementById("attendance-history-table");
         if (attTable && typeof DashboardEngine !== "undefined") {
-          var allSchedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
-          var studentSessions = allSchedules.filter(function(s) { return s.studentId === student.id || s.studentName === (student.firstName + " " + student.lastName); });
+          var allSchedules = (DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : []) || [];
+          var schedList = Array.isArray(allSchedules) ? allSchedules : [];
+          var studentSessions = schedList.filter(function(s) { return s && (s.studentId === student.id || s.studentName === (student.firstName + " " + student.lastName)); });
           
           if (DashboardEngine.getAttendanceRecords) {
-            var attRecs = DashboardEngine.getAttendanceRecords().filter(function(r) {
-              return (r.studentId === student.id || r.studentName === (student.firstName + " " + student.lastName)) && r.status === 'approved';
+            var rawAtt = DashboardEngine.getAttendanceRecords() || [];
+            var attRecs = (Array.isArray(rawAtt) ? rawAtt : []).filter(function(r) {
+              return r && (r.studentId === student.id || r.studentName === (student.firstName + " " + student.lastName)) && r.status === 'approved';
             });
             attRecs.forEach(function(r) {
               if (!studentSessions.some(function(s) { return s.date === r.classDate && (s.attendanceStatus === 'present' || s.status === 'approved'); })) {
@@ -1122,9 +1129,10 @@
         // Update Project Canvas Title dynamically
         const projectTitleEl = document.getElementById('canvas-front-title');
         if (projectTitleEl) {
-          if (student.program.includes("Python")) {
+          const sProg = String(student.program || student.course || '');
+          if (sProg.includes("Python")) {
             projectTitleEl.textContent = `${student.firstName}'s Pygame Arcade`;
-          } else if (student.program.includes("Scratch")) {
+          } else if (sProg.includes("Scratch")) {
             projectTitleEl.textContent = `${student.firstName}'s Scratch World`;
           } else {
             projectTitleEl.textContent = `${student.firstName}'s Web Portal`;
@@ -1249,9 +1257,10 @@
 
         // Resolve module structure based on student's program
         let programName = "default";
-        if (student.program.includes("Python")) {
+        const sProg = String(student.program || student.course || '');
+        if (sProg.includes("Python")) {
           programName = "Python Programming";
-        } else if (student.program.includes("Scratch")) {
+        } else if (sProg.includes("Scratch")) {
           programName = "Scratch Creators";
         }
         
@@ -1415,9 +1424,10 @@
         let reports = [];
         if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getMonthlyReports) {
           const allMR = DashboardEngine.getMonthlyReports();
+          const mrList = Array.isArray(allMR) ? allMR : [];
           const sNameLower = ((student.firstName || '') + ' ' + (student.lastName || '')).toLowerCase().trim();
-          reports = allMR.filter(mr => {
-            if (mr.status !== 'sent_to_parent') return false;
+          reports = mrList.filter(mr => {
+            if (!mr || mr.status !== 'sent_to_parent') return false;
             if (mr.studentId && mr.studentId === student.id) return true;
             if (mr.studentName && mr.studentName.toLowerCase().trim() === sNameLower) return true;
             if (mr.studentName && mr.studentName.toLowerCase().trim() === (student.firstName || '').toLowerCase().trim()) return true;
@@ -1459,7 +1469,7 @@
                   <span class="text-xs font-semibold text-slate-600">Dispatched: ${sentDate}</span>
                 </div>
                 <div>
-                  <h4 class="font-extrabold text-base text-slate-800 font-nunito">${r.course || student.program}</h4>
+                  <h4 class="font-extrabold text-base text-slate-800 font-nunito">${r.course || student.program || student.course || 'Coding Track'}</h4>
                   <p class="text-xs text-slate-500">Lead Instructor: <strong class="text-slate-700">${tutor}</strong> &nbsp;&bull;&nbsp; Attendance: <strong class="text-slate-700">${r.sessionsAttended || r.totalSessions || 4} Sessions (${r.totalHours || 6} hrs)</strong></p>
                 </div>
                 ${r.topics ? `
@@ -1522,8 +1532,9 @@
 
         // 2. Attendance logs with whatBuilt
         if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getAttendanceRecords) {
-          const records = DashboardEngine.getAttendanceRecords().filter(r =>
-            (r.studentId === student.id || (r.studentName && r.studentName.toLowerCase().trim() === sFull)) &&
+          const rawRecords = DashboardEngine.getAttendanceRecords() || [];
+          const records = (Array.isArray(rawRecords) ? rawRecords : []).filter(r =>
+            r && (r.studentId === student.id || (r.studentName && r.studentName.toLowerCase().trim() === sFull)) &&
             r.status === 'approved' &&
             (r.whatBuilt || r.topic)
           );
@@ -1544,7 +1555,8 @@
 
         // 3. Fallback defaults if no milestones logged yet
         if (items.length === 0) {
-          if (student.program.includes("Python")) {
+          const sProg = String(student.program || student.course || '');
+          if (sProg.includes("Python")) {
             items.push(
               {
                 title: "Space Raider Launch",
@@ -1563,7 +1575,7 @@
                 date: "Completed"
               }
             );
-          } else if (student.program.includes("Scratch")) {
+          } else if (sProg.includes("Scratch")) {
             items.push(
               {
                 title: "Interactive Quest & Sprite Animation",

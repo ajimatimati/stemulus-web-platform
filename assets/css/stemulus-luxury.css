@@ -464,11 +464,122 @@
 }
 
 /* ==========================================================================
-   7. EXECUTIVE TOP HAIRLINE LOADER (Replaces 2.5s Curtain)
+   7. HIGH-END POLISHED BRAND PRELOADER (Aesthetic 750ms Reveal)
    ========================================================================== */
 
 #site-loader {
-  display: none !important; /* Remove old blocking curtain */
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 999999 !important;
+  background: #080c1c !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  pointer-events: auto;
+}
+
+#site-loader.is-loaded {
+  opacity: 0 !important;
+  transform: translateY(-100%) !important;
+  pointer-events: none !important;
+}
+
+.stem-loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.stem-loader-icon-glow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.stem-loader-icon-glow::before {
+  content: '';
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(244, 96, 12, 0.4) 0%, rgba(56, 189, 248, 0.15) 55%, transparent 70%);
+  filter: blur(12px);
+  animation: loaderPulse 1.8s ease-in-out infinite alternate;
+}
+
+.stem-loader-cube {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.35));
+  animation: loaderFloat 2s ease-in-out infinite alternate;
+}
+
+.stem-loader-wordmark {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 1.25rem;
+}
+
+.stem-loader-wordmark .stem-part {
+  color: #ffffff;
+}
+
+.stem-loader-wordmark .ulus-part {
+  background: linear-gradient(135deg, #f4600c 0%, #fb923c 60%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stem-loader-track {
+  width: 140px;
+  height: 2.5px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.stem-loader-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #f4600c, #38bdf8);
+  border-radius: 9999px;
+  animation: loaderBarSweep 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.stem-loader-tag {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+@keyframes loaderPulse {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  100% { transform: scale(1.15); opacity: 1; }
+}
+
+@keyframes loaderFloat {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-4px); }
+}
+
+@keyframes loaderBarSweep {
+  0% { width: 0%; }
+  60% { width: 75%; }
+  100% { width: 100%; }
 }
 
 #stem-top-loader {
@@ -624,5 +735,364 @@ body:not(.dark) span.text-slate-500,
 [class*="bg-[#FAFA"] .text-slate-500 {
   color: #64748B !important;
 }
+
+/* ==========================================================================
+   SIMPLE & LIGHT DYNAMIC REVEAL SYSTEM (Non-dramatized, smooth)
+   ========================================================================== */
+
+/* Components: gentle 14px lift, 0.5s duration */
+.stem-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Texts: ultra-subtle 10px lift, 0.45s duration */
+.stem-reveal-text {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Revealed active state */
+.stem-reveal.is-revealed,
+.stem-reveal-text.is-revealed,
+.reveal-on-scroll.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  will-change: auto;
+}
+
+/* Micro-stagger utilities */
+.stem-delay-1 { transition-delay: 0.05s !important; }
+.stem-delay-2 { transition-delay: 0.10s !important; }
+.stem-delay-3 { transition-delay: 0.15s !important; }
+.stem-delay-4 { transition-delay: 0.20s !important; }
+
+/* Accessible reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .stem-reveal,
+  .stem-reveal-text,
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   FLAGSHIP GEO HERO & ASYMMETRICAL ROBOT STAGE (Agency caliber)
+   ========================================================================== */
+.geo-hero-luxury,
+body:not(.dashboard-page) header.geo-hero-luxury,
+body:not(.dashboard-page) .geo-hero-luxury {
+  background: radial-gradient(120% 120% at 50% 0%, #0b1120 0%, #030712 100%) !important;
+  color: #ffffff !important;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Primary Hero Headline */
+body:not(.dashboard-page) .geo-hero-luxury h1,
+.geo-hero-luxury h1 {
+  color: #ffffff !important;
+}
+body:not(.dashboard-page) .geo-hero-luxury h1 span.text-orange-400,
+.geo-hero-luxury h1 span.text-orange-400 {
+  color: #fb923c !important;
+}
+
+/* Eyebrow Pill Badge */
+body:not(.dashboard-page) .geo-hero-luxury .hero-eyebrow-pill,
+.geo-hero-luxury .hero-eyebrow-pill {
+  background-color: rgba(19, 28, 46, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+body:not(.dashboard-page) .geo-hero-luxury .hero-eyebrow-pill span,
+.geo-hero-luxury .hero-eyebrow-pill span {
+  color: #e2e8f0 !important;
+}
+body:not(.dashboard-page) .geo-hero-luxury .hero-eyebrow-pill span.text-orange-400,
+.geo-hero-luxury .hero-eyebrow-pill span.text-orange-400 {
+  color: #fb923c !important;
+  font-weight: 800 !important;
+}
+body:not(.dashboard-page) .geo-hero-luxury .hero-eyebrow-pill .hero-pill-meta,
+.geo-hero-luxury .hero-eyebrow-pill .hero-pill-meta {
+  color: #cbd5e1 !important;
+  opacity: 0.9 !important;
+}
+
+/* Hero Subheading Description Paragraph (12.8:1 contrast ratio) */
+body:not(.dashboard-page) .geo-hero-luxury p,
+body:not(.dashboard-page) .geo-hero-luxury .hero-desc,
+.geo-hero-luxury p,
+.geo-hero-luxury .hero-desc {
+  color: #cbd5e1 !important;
+  font-size: 1.125rem !important;
+  line-height: 1.75 !important;
+}
+body:not(.dashboard-page) .geo-hero-luxury p strong,
+body:not(.dashboard-page) .geo-hero-luxury .hero-desc strong,
+.geo-hero-luxury p strong,
+.geo-hero-luxury .hero-desc strong {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Trust & Vetting Strip at bottom of Hero */
+body:not(.dashboard-page) .geo-hero-luxury .hero-trust,
+body:not(.dashboard-page) .geo-hero-luxury .hero-trust span,
+.geo-hero-luxury .hero-trust,
+.geo-hero-luxury .hero-trust span {
+  color: #e2e8f0 !important;
+  font-size: 0.8125rem !important;
+  letter-spacing: 0.01em !important;
+}
+body:not(.dashboard-page) .geo-hero-luxury .hero-trust i,
+.geo-hero-luxury .hero-trust i {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Buttons */
+.geo-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px -5px rgba(234, 88, 12, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+.geo-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px -5px rgba(234, 88, 12, 0.55);
+}
+
+.geo-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+.geo-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Video Stage Shell & Core */
+.geo-stage-shell {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 28px !important;
+  padding: 8px !important;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+  position: relative;
+}
+
+.geo-stage-core {
+  background: #020617 !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  aspect-ratio: 16 / 11;
+}
+
+.geo-stage-core video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+body:not(.dashboard-page) .geo-stage-badge,
+.geo-stage-badge {
+  position: absolute;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  border-radius: 12px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 20;
+}
+body:not(.dashboard-page) .geo-stage-badge span,
+.geo-stage-badge span {
+  color: #ffffff !important;
+}
+
+/* Video Stage Review Strip */
+body:not(.dashboard-page) .geo-stage-review,
+.geo-stage-review {
+  background: rgba(15, 23, 42, 0.92) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+body:not(.dashboard-page) .geo-stage-review .review-eyebrow,
+.geo-stage-review .review-eyebrow {
+  color: #fb923c !important;
+}
+body:not(.dashboard-page) .geo-stage-review .review-title,
+.geo-stage-review .review-title {
+  color: #ffffff !important;
+}
+body:not(.dashboard-page) .geo-stage-review .review-sub,
+.geo-stage-review .review-sub {
+  color: #cbd5e1 !important;
+}
+
+/* ==========================================================================
+   FLAGSHIP GEO PROJECT SHOWCASE REEL (Fact-Checked Real Curriculum Artifacts)
+   ========================================================================== */
+body:not(.dashboard-page) section.geo-project-reel,
+section.geo-project-reel {
+  background-color: #070d1f !important;
+  color: #ffffff !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+body:not(.dashboard-page) .geo-project-reel h3,
+.geo-project-reel h3 {
+  color: #ffffff !important;
+}
+body:not(.dashboard-page) .geo-project-reel .reel-eyebrow,
+.geo-project-reel .reel-eyebrow {
+  color: #fb923c !important;
+}
+body:not(.dashboard-page) .geo-project-reel .reel-sub,
+.geo-project-reel .reel-sub {
+  color: #cbd5e1 !important;
+}
+
+/* Showcase Reel Cards */
+body:not(.dashboard-page) .geo-reel-card,
+.geo-reel-card {
+  background: rgba(15, 23, 42, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 18px !important;
+  padding: 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
+}
+body:not(.dashboard-page) .geo-reel-card:hover,
+.geo-reel-card:hover {
+  border-color: rgba(249, 115, 22, 0.6) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 18px 40px -12px rgba(249, 115, 22, 0.25), 0 20px 45px -10px rgba(0, 0, 0, 0.7) !important;
+}
+
+.geo-reel-media {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  aspect-ratio: 16 / 9 !important;
+  background: #020617 !important;
+  position: relative !important;
+  margin-bottom: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.geo-reel-media video,
+.geo-reel-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+body:not(.dashboard-page) .geo-reel-pill,
+.geo-reel-pill {
+  position: absolute !important;
+  top: 8px !important;
+  left: 8px !important;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  background: rgba(2, 6, 23, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+.geo-reel-pill-scratch {
+  color: #34d399 !important;
+  border: 1px solid rgba(52, 211, 153, 0.5) !important;
+}
+.geo-reel-pill-python {
+  color: #fb923c !important;
+  border: 1px solid rgba(251, 146, 60, 0.5) !important;
+}
+.geo-reel-pill-web {
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.5) !important;
+}
+.geo-reel-pill-arduino {
+  color: #f472b6 !important;
+  border: 1px solid rgba(244, 114, 182, 0.5) !important;
+}
+
+body:not(.dashboard-page) .geo-reel-card .card-meta,
+.geo-reel-card .card-meta {
+  color: #94a3b8 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  display: block !important;
+  margin-bottom: 2px !important;
+}
+body:not(.dashboard-page) .geo-reel-card h4,
+.geo-reel-card h4 {
+  color: #ffffff !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  font-family: 'Nunito', sans-serif !important;
+  margin: 2px 0 6px 0 !important;
+  line-height: 1.3 !important;
+}
+body:not(.dashboard-page) .geo-reel-card p,
+.geo-reel-card p {
+  color: #cbd5e1 !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+}
+
 
 

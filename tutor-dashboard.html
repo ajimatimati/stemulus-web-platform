@@ -203,16 +203,18 @@
       }
     }
   </style>
+<script src="assets/js/stemulus-security.min.js"></script>
 <script>
 (function(){
   try {
-    var s=JSON.parse(sessionStorage.getItem('stemulus_session') || localStorage.getItem('stemulus_session') || 'null');
-    var ttl=8*60*60*1000;
-    if(!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)){
-      // Not logged in as tutor or admin - redirect to login
+    var s = (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession)
+      ? StemulusSecurity.getSecureSession()
+      : null;
+    var ttl = 8 * 60 * 60 * 1000;
+    if (!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
       window.location.replace('parent-login.html?role=tutor');
     }
-    if(localStorage.getItem('stemulus_tutor_sidebar_collapsed') === 'true'){
+    if (localStorage.getItem('stemulus_tutor_sidebar_collapsed') === 'true') {
       document.documentElement.classList.add('sidebar-collapsed');
       document.addEventListener('DOMContentLoaded', function(){
         document.body.classList.add('sidebar-collapsed');
@@ -223,7 +225,9 @@
         if (window.lucide) lucide.createIcons();
       });
     }
-  } catch(e){}
+  } catch(e) {
+    window.location.replace('parent-login.html?role=tutor');
+  }
 })();
 </script>
 </head>

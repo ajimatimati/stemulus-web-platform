@@ -96,12 +96,25 @@
       {
         "@type": "JobPosting",
         "@id": "https://stemuluskidstech.com/join-as-tutor.html#job",
-        "title": "Online Coding Tutor for Kids",
-        "description": "STEMulus is seeking passionate coding tutors to deliver private 1-on-1 online lessons to children aged 5-17. You will teach topics ranging from Scratch and Python to web development, AI, and robotics, helping students build computational thinking skills in a fun, supportive environment.",
+        "title": "Online Coding Tutor & STEM Mentor for Kids",
+        "description": "STEMulus is seeking passionate coding tutors to deliver private 1-on-1 online lessons to children aged 5-17. You will teach topics ranging from Scratch and Python to web development, AI, and robotics. Competitive hourly pay (₦5,000 - ₦15,000 NGN/hr or $15 - $35 USD/hr), flexible remote hours, and full curriculum support.",
         "hiringOrganization": {
           "@type": "EducationalOrganization",
-          "@id": "https://stemuluskidstech.com/#organization"
+          "@id": "https://stemuluskidstech.com/#organization",
+          "name": "STEMulus Global Coding Academy",
+          "sameAs": "https://stemuluskidstech.com"
         },
+        "baseSalary": {
+          "@type": "MonetaryAmount",
+          "currency": "USD",
+          "value": {
+            "@type": "QuantitativeValue",
+            "minValue": 15.00,
+            "maxValue": 35.00,
+            "unitText": "HOUR"
+          }
+        },
+        "directApply": true,
         "jobLocation": {
           "@type": "VirtualLocation"
         },
@@ -236,9 +249,13 @@
       <p class="preai-hero-sub">We're looking for passionate engineers, designers, and scientists who can make complex ideas simple and learning genuinely fun.</p>
 
       <!-- CTAs -->
-      <div class="preai-hero-ctas">
+      <div class="preai-hero-ctas" style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center;">
         <a href="#apply" class="btn-stem-primary">Apply Now
           <i data-lucide="arrow-right" class="w-3.5 h-3.5 inline-block align-middle ml-1"></i>
+        </a>
+        <a href="https://wa.me/2347052466716?text=Hello%20STEMulus%20Recruiting,%20I%20am%20applying%20as%20a%20Senior%20STEM/Coding%20Tutor.%20I%20specialize%20in%20[Python/Scratch/Web/Robotics].%20Here%20is%20my%20CV/LinkedIn:" target="_blank" rel="noopener noreferrer" class="btn-stem-secondary" style="border-color:#10b981; color:#047857; background:rgba(16,185,129,0.06); display:inline-flex; align-items:center; gap:0.4rem;">
+          <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+          Fast-Track WhatsApp
         </a>
         <a href="#why-mentor" class="btn-stem-secondary">Learn More</a>
       </div>
@@ -581,6 +598,15 @@
               <span>Submit Application</span>
               <i data-lucide="send" class="w-5 h-5"></i>
             </button>
+          </div>
+
+          <!-- Fast-Track WhatsApp Alternative -->
+          <div class="mt-6 pt-6 border-t border-slate-100 text-center">
+            <p class="text-xs text-slate-500 mb-3">Experienced Software Engineer or CS Educator? Bypass the queue:</p>
+            <a href="https://wa.me/2347052466716?text=Hello%20STEMulus%20Recruiting,%20I%20am%20applying%20as%20a%20Senior%20STEM/Coding%20Tutor.%20I%20specialize%20in%20[Python/Scratch/Web/Robotics].%20Here%20is%20my%20CV/LinkedIn:" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              Fast-Track Screening on WhatsApp
+            </a>
           </div>
         </form>
       </div>

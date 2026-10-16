@@ -202,7 +202,20 @@
                         '<p style="margin:0;color:#1e293b;font-size:0.9rem;line-height:1.65;font-family:\'DM Sans\',sans-serif;">' + data.recommendation + '</p>' +
                     '</div>' +
 
-                    adminNoteBlock +
+            adminNoteBlock +
+
+                    '<!-- Governance & Verification Timeline (KidzTech Parity) -->' +
+                    '<div style="margin-top:1.5rem;background:#fafafc;border:1px solid #e2e8f0;border-left:4px solid #4f46e5;border-radius:10px;padding:1rem 1.25rem;">' +
+                        '<div style="font-size:0.75rem;font-weight:800;color:#4f46e5;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;">Governance &amp; Verification Timeline</div>' +
+                        '<div style="display:grid;grid-template-columns:140px 1fr;row-gap:4px;font-size:0.82rem;">' +
+                            '<span style="font-weight:700;color:#64748b;">Tutor Submitted:</span>' +
+                            '<span style="font-weight:600;color:#1e293b;">' + data.submittedDate + '</span>' +
+                            '<span style="font-weight:700;color:#64748b;">Academic Review:</span>' +
+                            '<span style="font-weight:600;color:#1e293b;">Verified &amp; Standardized</span>' +
+                            '<span style="font-weight:700;color:#64748b;">Director Approval:</span>' +
+                            '<span style="font-weight:800;color:#059669;">&#10003; Approved by Academic Director</span>' +
+                        '</div>' +
+                    '</div>' +
 
                     '<!-- Sign-off & Verification Footer -->' +
                     '<div style="margin-top:2.5rem;padding-top:1.5rem;border-top:1.5px solid #e2e8f0;display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;">' +

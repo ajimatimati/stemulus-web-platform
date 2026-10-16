@@ -1457,64 +1457,222 @@
       </div>
     </div>
   </section>
-<!-- PRICING & FAQ -->
-  <section id="pricing" class="py-20 bg-white border-t border-slate-100">
-    <div class="max-w-5xl mx-auto px-6">
+<!-- PRICING & CURRENCY SELECTOR -->
+  <section id="pricing" class="py-24 bg-white border-t border-slate-100">
+    <div class="max-w-6xl mx-auto px-6">
 
-      <div class="mb-14 text-center">
-        <p class="text-xs font-bold tracking-widest uppercase text-orange mb-3">Fees</p>
-        <h2 class="text-4xl font-black text-slate-900 font-nunito mb-4">Simple, Transparent Pricing</h2>
-        <p class="text-slate-500 max-w-xl mx-auto text-base">No hidden fees. No contracts. Cancel or pause any month.</p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8 mb-20">
-
-        <!-- Starter Tier -->
-        <div class="border border-slate-200 p-8 bg-slate-50 rounded-2xl relative shadow-sm">
-          <p class="text-xs font-bold tracking-widest uppercase text-slate-600 mb-2">Starter (Foundations)</p>
-          <div class="flex items-baseline gap-2 mb-1">
-            <span class="text-5xl font-black text-slate-900 font-nunito">$50</span>
-            <span class="text-lg font-semibold text-slate-600">/month</span>
-          </div>
-          <p class="text-xs font-bold text-orange uppercase tracking-wider mb-2">Standard Pace: 4 × 60-min sessions (1×/wk)</p>
-          <p class="text-xs text-slate-500 mb-6 bg-white border border-slate-200 rounded-lg p-2.5">
-            <strong class="text-slate-800 font-bold">Want faster progress?</strong> Accelerated Pace available at <strong>$95/month</strong> (8 × 60-min sessions · 2×/wk).
-          </p>
-          <ul class="space-y-3 mb-8 text-sm text-slate-700">
-            <li class="flex items-start gap-2"><span class="text-orange mt-0.5">&#10003;</span> Scratch Creators (ages 5-10)</li>
-            <li class="flex items-start gap-2"><span class="text-orange mt-0.5">&#10003;</span> Creative Coding (ages 8-11)</li>
-            <li class="flex items-start gap-2"><span class="text-orange mt-0.5">&#10003;</span> Junior Robotics (ages 8-12)</li>
-            <li class="flex items-start gap-2"><span class="text-orange mt-0.5">&#10003;</span> Digital Art &amp; Animation (ages 9-13)</li>
-            <li class="flex items-start gap-2"><span class="text-orange mt-0.5">&#10003;</span> Monthly progress evaluations for parents</li>
-            <li class="flex items-start gap-2"><span class="text-orange mt-0.5">&#10003;</span> Certificate on course completion</li>
-          </ul>
-          <a href="enroll.html" class="block text-center bg-orange text-white font-bold py-3 px-6 rounded-xl text-sm tracking-wide hover:bg-orange/90 transition-colors shadow-sm">Enroll in a Starter Programme</a>
-        </div>
-
-        <!-- Advanced Tier -->
-        <div class="border-2 border-slate-900 p-8 bg-white relative rounded-2xl shadow-md">
-          <span class="absolute -top-3 left-6 bg-slate-900 text-white text-xs font-bold px-3 py-1 rounded-xl tracking-widest uppercase">Most Popular</span>
-          <p class="text-xs font-bold tracking-widest uppercase text-slate-600 mb-2">Advanced &amp; Career Tracks</p>
-          <div class="flex items-baseline gap-2 mb-1">
-            <span class="text-5xl font-black text-slate-900 font-nunito">$80</span>
-            <span class="text-lg font-semibold text-slate-600">/month</span>
-          </div>
-          <p class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-2">Standard Pace: 4 × 60-min sessions (1×/wk)</p>
-          <p class="text-xs text-slate-500 mb-6 bg-slate-50 border border-slate-200 rounded-lg p-2.5">
-            <strong class="text-slate-800 font-bold">Intensive Portfolio Pace:</strong> Accelerated available at <strong>$150/month</strong> (8 × 60-min sessions · 2×/wk).
-          </p>
-          <ul class="space-y-3 mb-8 text-sm text-slate-700">
-            <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Python Programming (ages 10-16)</li>
-            <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Web Wizards (ages 11-15)</li>
-            <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Arduino &amp; Robotics (ages 11-15)</li>
-            <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> AI &amp; Machine Learning (ages 13-17)</li>
-            <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Full-Stack Web Dev &amp; Portfolio (ages 14-18)</li>
-            <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Between-session tutor chat &amp; code reviews</li>
-            <li class="flex items-start gap-2"><span class="text-slate-900 mt-0.5">&#10003;</span> Monthly progress reports &amp; certification</li>
-          </ul>
-          <a href="enroll.html" class="block text-center bg-slate-900 text-white font-bold py-3 px-6 rounded-xl text-sm tracking-wide hover:bg-slate-800 transition-colors shadow-sm">Enroll in an Advanced Programme</a>
+      <div class="mb-12 text-center max-w-3xl mx-auto">
+        <span class="badge-stem badge-stem-accent mb-3">Transparent Tuition</span>
+        <h2 class="text-3xl md:text-5xl font-black text-slate-900 font-nunito mb-4">Global Monthly Tuition Plans</h2>
+        <p class="text-slate-500 max-w-xl mx-auto text-sm md:text-base leading-relaxed">Private 1-on-1 instruction. No hidden fees. Cancel or pause anytime with zero penalty.</p>
+        
+        <!-- Interactive Currency Switcher -->
+        <div class="mt-8 inline-flex flex-wrap items-center justify-center gap-1.5 p-1.5 rounded-xl bg-slate-100 border border-slate-200" id="currency-switcher-nav" role="tablist">
+          <button type="button" data-currency="NGN" class="curr-btn px-4 py-2 rounded-lg text-xs font-bold transition-all bg-slate-900 text-white shadow-sm" role="tab" aria-selected="true">
+            🇳🇬 ₦ NGN
+          </button>
+          <button type="button" data-currency="GBP" class="curr-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 hover:bg-white/60" role="tab" aria-selected="false">
+            🇬🇧 £ GBP
+          </button>
+          <button type="button" data-currency="USD" class="curr-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 hover:bg-white/60" role="tab" aria-selected="false">
+            🇺🇸 $ USD
+          </button>
+          <button type="button" data-currency="CAD" class="curr-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 hover:bg-white/60" role="tab" aria-selected="false">
+            🇨🇦 C$ CAD
+          </button>
+          <button type="button" data-currency="AUD" class="curr-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 hover:bg-white/60" role="tab" aria-selected="false">
+            🇦🇺 A$ AUD
+          </button>
+          <button type="button" data-currency="EUR" class="curr-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 hover:bg-white/60" role="tab" aria-selected="false">
+            🇪🇺 € EUR
+          </button>
         </div>
       </div>
+
+      <div class="grid md:grid-cols-3 gap-6 lg:gap-8 mb-20">
+
+        <!-- Tier 1: Foundations (Ages 5-9) -->
+        <div class="border border-slate-200 p-7 bg-white rounded-2xl relative shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+          <div>
+            <div class="badge-stem mb-3">Ages 5–9 · Foundations</div>
+            <h3 class="text-xl font-black font-nunito text-slate-900 mb-2">Foundations Lab</h3>
+            <p class="text-slate-500 text-xs leading-relaxed mb-4">Scratch 3.0, Creative Coding, logic algorithms, and junior computational thinking.</p>
+            
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-4xl font-black text-slate-900 font-nunito" id="price-tier-1">₦50,000</span>
+              <span class="text-xs text-slate-500 font-semibold" id="period-tier-1">/month</span>
+            </div>
+            <p class="text-[11px] font-bold text-orange-600 uppercase tracking-wider mb-6" id="pace-tier-1">
+              4 × 60-min sessions · 1×/week
+            </p>
+
+            <ul class="space-y-2.5 text-xs text-slate-600 mb-8">
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i> Private 1-on-1 dedicated instructor</li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i> Playable game design projects &amp; animations</li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i> Creative Scratch &amp; Junior Python mastery</li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i> Monthly parent progress evaluations</li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i> Certificate on course milestone completion</li>
+            </ul>
+          </div>
+
+          <a href="enroll.html?plan=foundations" id="cta-tier-1" class="w-full inline-flex items-center justify-center px-5 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition-all">
+            Enroll in Foundations
+          </a>
+        </div>
+
+        <!-- Tier 2: Young Engineers (Ages 10-13) - Most Popular -->
+        <div class="p-1.5 rounded-2xl bg-gradient-to-b from-orange-500/25 to-orange-500/5 border border-orange-500/30 shadow-xl shadow-orange-500/10 flex flex-col justify-between">
+          <div class="bg-white rounded-xl p-6 relative flex flex-col justify-between h-full">
+            <div>
+              <div class="absolute -top-3.5 right-6 px-3 py-1 bg-orange-600 text-white text-[10px] font-black uppercase rounded-md tracking-wider shadow-sm">
+                Most Popular
+              </div>
+              <div class="badge-stem badge-stem-accent mb-3">Ages 10–13 · Intermediate</div>
+              <h3 class="text-xl font-black font-nunito text-slate-900 mb-2">Young Engineers Academy</h3>
+              <p class="text-slate-500 text-xs leading-relaxed mb-4">Text-based Python, HTML/CSS/JS web development, and Cambridge Checkpoint CS.</p>
+              
+              <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-4xl font-black text-slate-900 font-nunito" id="price-tier-2">₦75,000</span>
+                <span class="text-xs text-slate-500 font-semibold" id="period-tier-2">/month</span>
+              </div>
+              <p class="text-[11px] font-bold text-orange-600 uppercase tracking-wider mb-6" id="pace-tier-2">
+                4 × 60-min sessions · 1×/wk (8×/mo available)
+              </p>
+
+              <ul class="space-y-2.5 text-xs text-slate-600 mb-8">
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i> Senior software engineering mentor</li>
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i> Live website hosting &amp; GitHub profile deployment</li>
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i> Algorithmic problem solving &amp; debugging</li>
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i> Verified Certificate of Project Mastery</li>
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i> Dedicated between-session tutor code review</li>
+              </ul>
+            </div>
+
+            <a href="enroll.html?plan=young-engineers" id="cta-tier-2" class="w-full inline-flex items-center justify-center px-5 py-3.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-orange-600/20 transition-all">
+              Enroll in Young Engineers
+            </a>
+          </div>
+        </div>
+
+        <!-- Tier 3: Pre-University Fellowship (Ages 14-18) -->
+        <div class="bg-slate-900 text-white rounded-2xl p-7 border border-slate-800 shadow-xl relative flex flex-col justify-between">
+          <div>
+            <div class="badge-stem badge-stem-dark mb-3">Ages 14–18 · Pre-University</div>
+            <h3 class="text-xl font-black font-nunito text-white mb-2">Pre-University Fellowship</h3>
+            <p class="text-slate-400 text-xs leading-relaxed mb-4">Hardware kinematics, Arduino, Aerodynamics simulators, and college admissions portfolio prep.</p>
+            
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-4xl font-black text-white font-nunito" id="price-tier-3">₦120,000</span>
+              <span class="text-xs text-slate-400 font-semibold" id="period-tier-3">/month</span>
+            </div>
+            <p class="text-[11px] font-bold text-orange-400 uppercase tracking-wider mb-6" id="pace-tier-3">
+              8 × 60-min sessions · 2×/week intensive
+            </p>
+
+            <ul class="space-y-2.5 text-xs text-slate-300 mb-8">
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> 8 private 1-on-1 live mentoring sessions / mo</li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> Senior Systems Engineer / Hardware mentor</li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> Robotics kinematics &amp; aerodynamics simulator capstone</li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> Standout GitHub repo for US/UK university admissions</li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> Academic recommendation letter upon capstone completion</li>
+            </ul>
+          </div>
+
+          <a href="enroll.html?plan=fellowship" id="cta-tier-3" class="w-full inline-flex items-center justify-center px-5 py-3.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all">
+            Enroll in Fellowship Lab
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Currency Switcher Client Script -->
+      <script>
+      (function(){
+        var rates = {
+          NGN: {
+            t1Price: '₦50,000', t1Period: '/month', t1Pace: '4 × 60-min sessions · 1×/week',
+            t2Price: '₦75,000', t2Period: '/month', t2Pace: '4 × 60-min sessions · 1×/wk (8×/mo available)',
+            t3Price: '₦120,000', t3Period: '/month', t3Pace: '8 × 60-min sessions · 2×/week intensive',
+            t3Title: 'Pre-University Fellowship',
+            t3Desc: 'Hardware kinematics, Arduino, Aerodynamics simulators, and college admissions portfolio prep.'
+          },
+          GBP: {
+            t1Price: '£45', t1Period: '/month', t1Pace: '4 × 60-min sessions · 1×/week',
+            t2Price: '£80', t2Period: '/month', t2Pace: '8 × 60-min sessions · 2×/week (Standard Pace)',
+            t3Price: '£155', t3Period: '/month', t3Pace: '8 × 60-min sessions · 2×/week (Robotics & Aero Lab)',
+            t3Title: 'Robotics & Aerodynamics Lab',
+            t3Desc: 'Hardware engineering, aerodynamics simulators, full-stack web, and GCSE/A-Level CS portfolio prep.'
+          },
+          USD: {
+            t1Price: '$60', t1Period: '/month', t1Pace: '4 × 60-min sessions · 1×/week',
+            t2Price: '$105', t2Period: '/month', t2Pace: '8 × 60-min sessions · 2×/week (Standard Pace)',
+            t3Price: '$200', t3Period: '/month', t3Pace: '8 × 60-min sessions · 2×/week (Robotics & Aero Lab)',
+            t3Title: 'Robotics & Aerodynamics Lab',
+            t3Desc: 'Advanced hardware kinematics, aerodynamics simulations, and AP Computer Science portfolio prep.'
+          },
+          CAD: {
+            t1Price: '$80 CAD', t1Period: '/month', t1Pace: '4 × 60-min sessions · 1×/week',
+            t2Price: '$145 CAD', t2Period: '/month', t2Pace: '8 × 60-min sessions · 2×/week (Standard Pace)',
+            t3Price: '$275 CAD', t3Period: '/month', t3Pace: '8 × 60-min sessions · 2×/week (Robotics & Aero Lab)',
+            t3Title: 'Robotics & Aerodynamics Lab',
+            t3Desc: 'Full-stack software, Arduino robotics, aerodynamics simulations, and Waterloo contest prep.'
+          },
+          AUD: {
+            t1Price: '$90 AUD', t1Period: '/month', t1Pace: '4 × 60-min sessions · 1×/week',
+            t2Price: '$160 AUD', t2Period: '/month', t2Pace: '8 × 60-min sessions · 2×/week (Standard Pace)',
+            t3Price: '$300 AUD', t3Period: '/month', t3Pace: '8 × 60-min sessions · 2×/week (Robotics & Aero Lab)',
+            t3Title: 'Robotics & Aerodynamics Lab',
+            t3Desc: 'Robotics kinematics, aerodynamics simulators, Python, and Senior Computing electives.'
+          },
+          EUR: {
+            t1Price: '€55', t1Period: '/month', t1Pace: '4 × 60-min sessions · 1×/week',
+            t2Price: '€95', t2Period: '/month', t2Pace: '8 × 60-min sessions · 2×/week (Standard Pace)',
+            t3Price: '€185', t3Period: '/month', t3Pace: '8 × 60-min sessions · 2×/week (Robotics & Aero Lab)',
+            t3Title: 'Robotics & Aerodynamics Lab',
+            t3Desc: 'International engineering fellowship, aerodynamics simulations, and European university portfolio prep.'
+          }
+        };
+
+        var buttons = document.querySelectorAll('#currency-switcher-nav .curr-btn');
+        buttons.forEach(function(btn){
+          btn.addEventListener('click', function(){
+            var cur = this.getAttribute('data-currency');
+            if(!rates[cur]) return;
+
+            buttons.forEach(function(b){
+              b.classList.remove('bg-slate-900', 'text-white', 'shadow-sm');
+              b.classList.add('text-slate-600', 'hover:text-slate-900', 'hover:bg-white/60');
+              b.setAttribute('aria-selected', 'false');
+            });
+            this.classList.add('bg-slate-900', 'text-white', 'shadow-sm');
+            this.classList.remove('text-slate-600', 'hover:text-slate-900', 'hover:bg-white/60');
+            this.setAttribute('aria-selected', 'true');
+
+            var d = rates[cur];
+            var p1 = document.getElementById('price-tier-1');
+            var p2 = document.getElementById('price-tier-2');
+            var p3 = document.getElementById('price-tier-3');
+            if(p1) p1.textContent = d.t1Price;
+            if(p2) p2.textContent = d.t2Price;
+            if(p3) p3.textContent = d.t3Price;
+
+            var pace1 = document.getElementById('pace-tier-1');
+            var pace2 = document.getElementById('pace-tier-2');
+            var pace3 = document.getElementById('pace-tier-3');
+            if(pace1) pace1.textContent = d.t1Pace;
+            if(pace2) pace2.textContent = d.t2Pace;
+            if(pace3) pace3.textContent = d.t3Pace;
+
+            var cta1 = document.getElementById('cta-tier-1');
+            var cta2 = document.getElementById('cta-tier-2');
+            var cta3 = document.getElementById('cta-tier-3');
+            if(cta1) cta1.href = 'enroll.html?plan=foundations&currency=' + cur;
+            if(cta2) cta2.href = 'enroll.html?plan=young-engineers&currency=' + cur;
+            if(cta3) cta3.href = 'enroll.html?plan=fellowship&currency=' + cur;
+          });
+        });
+      })();
+      </script>
 
       <!-- FAQ -->
       <div>
@@ -1617,6 +1775,17 @@
             <a href="join-as-tutor.html">Join as a Tutor</a>
             <a href="blog.html">Blog</a>
             <a href="contact.html">Contact</a>
+        </div>
+
+        <!-- Locations -->
+        <div class="footer-col">
+            <p class="footer-col-title">Locations</p>
+            <a href="coding-classes-for-kids-usa.html">United States</a>
+            <a href="coding-classes-for-kids-uk.html">United Kingdom</a>
+            <a href="coding-classes-for-kids-canada.html">Canada</a>
+            <a href="coding-classes-for-kids-australia.html">Australia</a>
+            <a href="coding-classes-for-kids-nigeria.html">Nigeria &amp; Africa</a>
+            <a href="index.html">International / Global</a>
         </div>
 
         <!-- Account -->
@@ -2198,10 +2367,19 @@ window.addEventListener('load', function() {
 </div>
 <script>
   (function(){
-    function checkMobile(){ document.getElementById('mobile-booking-bar').style.display = window.innerWidth<=768?'block':'none'; }
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    document.addEventListener('click', function(e){ if(e.target.closest('#quick-booking-modal')) document.getElementById('mobile-booking-bar').style.display='none'; });
+    var bar = document.getElementById('mobile-booking-bar');
+    if (!bar) return;
+    function updateMobileBar(){
+      if (window.innerWidth <= 768 && window.scrollY > 220) {
+        bar.style.display = 'block';
+      } else {
+        bar.style.display = 'none';
+      }
+    }
+    window.addEventListener('scroll', updateMobileBar, {passive: true});
+    window.addEventListener('resize', updateMobileBar);
+    updateMobileBar();
+    document.addEventListener('click', function(e){ if(e.target.closest('#quick-booking-modal')) bar.style.display='none'; });
   })();
 </script>
 

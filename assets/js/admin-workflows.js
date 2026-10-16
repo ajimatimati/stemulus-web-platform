@@ -4,6 +4,15 @@
  * Depends on: DashboardEngine, Tailwind CSS, Lucide icons.
  */
 
+const esc = (typeof escapeHtml === 'function')
+  ? escapeHtml
+  : (str => String(str === null || str === undefined ? '' : str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;'));
+
 // ── DashboardEngine stubs for methods that may not exist ──────────────────────
 if (typeof DashboardEngine !== 'undefined') {
   if (!DashboardEngine.getTutors)
@@ -546,10 +555,13 @@ AdminWorkflows.EnrollmentAssignment = {
       AdminWorkflows.showToast('Enrollment assignments refreshed.', 'info');
     }
 
-    const enrollments = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getEnrollments)
-      ? DashboardEngine.getEnrollments().filter(e => !e.tutorId || e.tutorId === '')
+    const rawEnrollments = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getEnrollments)
+      ? DashboardEngine.getEnrollments()
       : [];
-    const tutors = (typeof DashboardEngine !== 'undefined') ? DashboardEngine.getTutors() : [];
+    const enrollments = Array.isArray(rawEnrollments)
+      ? rawEnrollments.filter(e => e && (!e.tutorId || e.tutorId === ''))
+      : [];
+    const tutors = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutors) ? (DashboardEngine.getTutors() || []) : [];
 
     const unassignedHTML = enrollments.length === 0
       ? `<div class="text-center py-10 text-slate-400"><i data-lucide="check-circle" class="w-10 h-10 mx-auto mb-2 text-emerald-400"></i><p class="text-sm">All enrollments are assigned.</p></div>`
@@ -573,8 +585,10 @@ AdminWorkflows.EnrollmentAssignment = {
     const tutorsHTML = tutors.length === 0
       ? `<div class="text-center py-10 text-slate-400"><i data-lucide="user-x" class="w-10 h-10 mx-auto mb-2"></i><p class="text-sm">No tutors onboarded yet.</p></div>`
       : tutors.map(t => {
-          const studentCount = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents)
-            ? DashboardEngine.getStudents().filter(s => s.tutorName === t.name).length : 0;
+          const rawStudents = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents)
+            ? DashboardEngine.getStudents() : [];
+          const studentCount = Array.isArray(rawStudents)
+            ? rawStudents.filter(s => s && s.tutorName === t.name).length : 0;
           const specs = Array.isArray(t.subjects) ? t.subjects.join(', ') : (t.subjects || t.specializations || 'General');
           return `
             <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm">
@@ -736,6 +750,8 @@ AdminWorkflows.EnrollmentAssignment = {
       studentName: `${enrollment.studentFirstName || ''} ${enrollment.studentLastName || ''}`.trim(),
       tutorId,
       tutorName: tutor ? tutor.name : tutorId,
+      mentor: tutor ? tutor.name : tutorId,
+      tutorEmail: tutor ? tutor.email : '',
       program: enrollment.program,
       dayOfWeek: schedule.dayOfWeek,
       time: schedule.time,
@@ -982,6 +998,16 @@ AdminWorkflows.ScheduleManager = {
       const sel = document.getElementById(id + '-student');
       const studentName = sel.options[sel.selectedIndex]?.text || '';
       const tutorName = document.getElementById(id + '-tutor').value;
+      let calTutorEmail = '';
+      let calTutorId = '';
+      if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutors) {
+        const calTutors = DashboardEngine.getTutors();
+        const calMatched = calTutors.find(t => (t.name && t.name.toLowerCase().trim() === tutorName.toLowerCase().trim()) || (t.email && t.email.toLowerCase().trim() === tutorName.toLowerCase().trim()));
+        if (calMatched) {
+          calTutorEmail = calMatched.email || '';
+          calTutorId = calMatched.id || '';
+        }
+      }
       const sessionData = {
         studentId: document.getElementById(id + '-student').value,
         studentName,
@@ -991,6 +1017,8 @@ AdminWorkflows.ScheduleManager = {
         duration: document.getElementById(id + '-dur').value,
         mentor: tutorName,
         tutorName,
+        tutorEmail: calTutorEmail,
+        tutorId: calTutorId,
         link: document.getElementById(id + '-zoom').value,
         recurring: document.getElementById(id + '-recur').value,
         attendanceStatus: 'pending'
@@ -1083,9 +1111,10 @@ AdminWorkflows.AttendanceApproval = {
     if (!container) return;
 
     const allLogs = this.loadPendingLogs();
-    const pending = allLogs.filter(l => !l.status || l.status === 'pending');
-    const approved = allLogs.filter(l => l.status === 'approved');
-    const flagged = allLogs.filter(l => l.status === 'flagged' || l.status === 'needs_correction');
+    const safeLogs = Array.isArray(allLogs) ? allLogs : [];
+    const pending = safeLogs.filter(l => l && (!l.status || l.status === 'pending'));
+    const approved = safeLogs.filter(l => l && l.status === 'approved');
+    const flagged = safeLogs.filter(l => l && (l.status === 'flagged' || l.status === 'needs_correction'));
 
     const buildCard = (log, col) => `
       <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
@@ -1249,11 +1278,19 @@ AdminWorkflows.AttendanceApproval = {
   loadPendingLogs() {
     let logs = [];
     if (typeof DashboardEngine !== 'undefined') {
-      if (DashboardEngine.getAttendanceLogs) logs = DashboardEngine.getAttendanceLogs();
-      else if (DashboardEngine.getAttendanceRecords) logs = DashboardEngine.getAttendanceRecords();
+      try {
+        if (DashboardEngine.getAttendanceLogs) logs = DashboardEngine.getAttendanceLogs();
+        else if (DashboardEngine.getAttendanceRecords) logs = DashboardEngine.getAttendanceRecords();
+      } catch (e) { logs = []; }
     }
-    if (!logs.length) logs = JSON.parse(localStorage.getItem('stemulus_attendance') || '[]');
-    return logs;
+    if (!logs || !logs.length) {
+      try {
+        logs = JSON.parse(localStorage.getItem('stemulus_attendance') || '[]');
+      } catch (e) {
+        logs = [];
+      }
+    }
+    return Array.isArray(logs) ? logs : [];
   }
 };
 
@@ -1570,7 +1607,7 @@ AdminWorkflows.NotificationCenter = {
 
 // ── Init hook: schedule reminders on admin dashboard load ─────────────────────
 document.addEventListener('DOMContentLoaded', function () {
-  if (document.getElementById('dashboard-container')) {
+  if (document.getElementById('dashboard-container') || document.getElementById('section-dashboard') || document.querySelector('.dashboard-page')) {
     setTimeout(() => {
       if (typeof AdminWorkflows !== 'undefined' && AdminWorkflows.NotificationCenter) {
         AdminWorkflows.NotificationCenter.scheduleReminders();

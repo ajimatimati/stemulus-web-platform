@@ -76,7 +76,11 @@ const AdminEngine = (function () {
                             if (userDoc.exists) {
                                 const userData = userDoc.data();
                                 if (userData.role === 'admin') {
-                                    sessionStorage.setItem('stemulus_session', JSON.stringify(userData));
+                                    if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.saveSecureSession) {
+                                        StemulusSecurity.saveSecureSession(userData);
+                                    } else {
+                                        sessionStorage.setItem('stemulus_session', JSON.stringify(userData));
+                                    }
                                     proceedAsAdmin(userData);
                                 } else {
                                     console.warn('[Admin Engine] User is logged in but role is:', userData.role);
@@ -544,11 +548,12 @@ function navigateToSection(sectionName) {
 
     const pageTitle = document.getElementById('page-title');
     if (pageTitle) {
-        var SECTION_TITLES = { 'dashboard': 'Dashboard', 'students': 'Students', 'tutors': 'Tutors', 'parents': 'Parents', 'schedule-wf': 'Weekly Schedule', 'schedules': 'Schedule', 'certificates': 'Certificates', 'emails': 'Email Center', 'notifications': 'Notifications', 'settings': 'Settings', 'whatsapp-bot': 'WhatsApp Bot', 'reports': 'Reports' };
+        var SECTION_TITLES = { 'dashboard': 'Dashboard', 'students': 'Students', 'tutors': 'Tutors', 'parents': 'Parents', 'schedule-wf': 'Weekly Schedule', 'schedules': 'Schedule', 'certificates': 'Certificates', 'emails': 'Email Center', 'notifications': 'Notifications', 'settings': 'Settings', 'whatsapp-bot': 'WhatsApp Bot', 'reports': 'Reports', 'billing': 'Tuition & Billing Reminders' };
         var title = SECTION_TITLES[sectionName] || (sectionName.charAt(0).toUpperCase() + sectionName.slice(1));
         pageTitle.textContent = title;
     }
 
+    if (sectionName === 'billing') { loadBillingRoster(); }
     if (sectionName === 'email-queue') { loadEmailQueue(); }
     if (sectionName === 'password-resets') { loadPasswordResets(); }
     if (sectionName === 'reports') { loadTutorMonthlyReports(); }
@@ -569,6 +574,17 @@ function navigateToSection(sectionName) {
                 var userRecord = db && db.users && db.users[session.email];
                 sinceEl.textContent = userRecord && userRecord.createdAt ? new Date(userRecord.createdAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'Nov 2025';
             }
+        }
+        if (typeof BillingEngine !== 'undefined') {
+            var bSettings = BillingEngine.getSettings();
+            var sBank = document.getElementById('settings-card-bank-name');
+            var sAcc = document.getElementById('settings-card-account-number');
+            var sName = document.getElementById('settings-card-account-name');
+            var sFee = document.getElementById('settings-card-default-fee');
+            if (sBank) sBank.textContent = bSettings.bankName || 'Access Bank';
+            if (sAcc) sAcc.textContent = bSettings.accountNumber || '1853492019';
+            if (sName) sName.textContent = bSettings.accountName || 'STEMulus Kids Tech';
+            if (sFee) sFee.textContent = '₦' + Number(bSettings.defaultMonthlyFee || 35000).toLocaleString();
         }
     }
 
@@ -1457,21 +1473,22 @@ window.sendQueuedEmail = async function(id) {
 
   try {
     var payload;
+    var baseData = Object.assign({}, item.data || {}, { adminApproved: true, approvedByAdmin: true });
     if (item.type === 'welcome') {
-      payload = { type: 'welcome', data: item.data };
+      payload = { type: 'welcome', data: baseData };
     } else if (item.type === 'tutor-welcome' || item.type === 'tutor_welcome') {
-      payload = { type: 'tutor-welcome', data: item.data };
+      payload = { type: 'tutor-welcome', data: baseData };
     } else if (item.type === 'certificate-delivery') {
-      payload = { type: 'certificate-delivery', data: item.data };
+      payload = { type: 'certificate-delivery', data: baseData };
     } else if (item.type === 'credentials-reset') {
-      payload = { type: 'credentials-reset', data: item.data };
+      payload = { type: 'credentials-reset', data: baseData };
     } else {
-      payload = { type: 'custom', data: { to: item.to, subject: item.editedSubject||item.subject, body: item.editedBody||item.htmlPreview } };
+      payload = { type: 'custom', data: Object.assign({ to: item.to, subject: item.editedSubject||item.subject, body: item.editedBody||item.htmlPreview }, baseData) };
     }
 
     var resp = await fetch('/.netlify/functions/send-email', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-admin-approval': 'true' },
       body: JSON.stringify(payload)
     });
     var json = await resp.json();
@@ -2015,6 +2032,29 @@ function loadParents() {
     filterParents();
 }
 
+let isPrivacyMaskActive = true;
+
+function togglePrivacyMask() {
+    isPrivacyMaskActive = !isPrivacyMaskActive;
+    var parents = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getParents) ? DashboardEngine.getParents() : [];
+    renderParentsTable(parents);
+    var students = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) ? DashboardEngine.getStudents() : [];
+    renderStudentsTable(students);
+    updatePrivacyToggleUI();
+}
+
+function updatePrivacyToggleUI() {
+    var btns = document.querySelectorAll('.privacy-shield-toggle');
+    btns.forEach(btn => {
+        if (isPrivacyMaskActive) {
+            btn.innerHTML = `<i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i><span class="text-emerald-700 font-bold text-xs">Privacy Mask: ON (COPPA Compliant)</span>`;
+        } else {
+            btn.innerHTML = `<i data-lucide="eye" class="w-3.5 h-3.5 text-amber-600"></i><span class="text-amber-700 font-bold text-xs">Privacy Mask: OFF (Admin Unmasked)</span>`;
+        }
+    });
+    if (window.lucide) lucide.createIcons();
+}
+
 function renderParentsTable(parents) {
     const tbody = document.getElementById('parents-table-body');
     if (!tbody) return;
@@ -2044,6 +2084,14 @@ function renderParentsTable(parents) {
 
         const dateFormatted = p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Registered';
 
+        const displayEmail = (isPrivacyMaskActive && typeof StemulusSecurity !== 'undefined')
+            ? StemulusSecurity.PrivacyShield.maskEmail(p.email)
+            : p.email;
+        const rawPhone = p.phone || p.whatsapp || '';
+        const displayPhone = (isPrivacyMaskActive && typeof StemulusSecurity !== 'undefined')
+            ? StemulusSecurity.PrivacyShield.maskPhone(rawPhone)
+            : (rawPhone || 'N/A');
+
         return `
             <tr class="hover:bg-gray-50/80 border-b border-gray-100 text-slate-800 transition-colors">
                 <td class="px-6 py-4">
@@ -2053,13 +2101,13 @@ function renderParentsTable(parents) {
                         </div>
                         <div>
                             <p class="font-bold text-slate-900 text-sm">${p.name}</p>
-                            <p class="text-xs text-slate-500 font-mono">${p.email}</p>
+                            <p class="text-xs text-slate-500 font-mono">${displayEmail}</p>
                         </div>
                     </div>
                 </td>
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-2">
-                        <span class="text-xs font-semibold text-slate-700 font-mono">${p.phone || p.whatsapp || 'N/A'}</span>
+                        <span class="text-xs font-semibold text-slate-700 font-mono">${displayPhone}</span>
                         ${waLink ? `
                             <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-lg hover:bg-emerald-100 transition-colors" title="Chat on WhatsApp">
                                 <i data-lucide="message-circle" class="w-3 h-3 text-emerald-600"></i>
@@ -2190,7 +2238,12 @@ function renderStudentsTable(students) {
         return;
     }
 
-    tbody.innerHTML = students.map(s => `
+    tbody.innerHTML = students.map(s => {
+        const displayParentPhone = (isPrivacyMaskActive && typeof StemulusSecurity !== 'undefined')
+            ? StemulusSecurity.PrivacyShield.maskPhone(s.parentPhone)
+            : (s.parentPhone || '');
+
+        return `
             <tr class="hover:bg-gray-50 border-b border-gray-200 text-gray-800">
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-3">
@@ -2205,7 +2258,7 @@ function renderStudentsTable(students) {
                 </td>
                 <td class="px-6 py-4">
                     <p class="text-xs font-bold text-gray-800">${s.parentName}</p>
-                    <p class="text-[10px] text-gray-400">${s.parentPhone || ''}</p>
+                    <p class="text-[10px] text-gray-400 font-mono">${displayParentPhone}</p>
                 </td>
                 <td class="px-6 py-4">
                     <span class="text-xs bg-indigo-50 text-indigo-700 font-semibold px-2.5 py-0.5 rounded-full border border-indigo-100">${s.program}</span>
@@ -2233,9 +2286,9 @@ function renderStudentsTable(students) {
                         </button>
                         <button class="text-xs px-2 py-1 rounded-lg border transition-colors ${s.remindersPaused ? 'bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-200' : 'bg-gray-100 text-gray-500 border-gray-200 hover:bg-gray-200'}" onclick="if(DashboardEngine.setRemindersPaused){DashboardEngine.setRemindersPaused('${s.id}',${!s.remindersPaused});AdminEngine.reloadData();}" title="${s.remindersPaused ? 'Reminders paused — click to resume' : 'Click to pause reminders'}">${s.remindersPaused ? 'Unmute' : 'Mute'}</button>
                     </div>
-                </td>
             </tr>
-        `).join('');
+        `;
+    }).join('');
     if (window.lucide) lucide.createIcons();
 }
 
@@ -2359,9 +2412,27 @@ function saveStudent(e) {
     const status = document.getElementById('student-status').value;
     const tutorSelect = document.getElementById('student-tutor');
     const selectedTutorOpt = tutorSelect ? tutorSelect.options[tutorSelect.selectedIndex] : null;
-    const tutorName = tutorSelect ? tutorSelect.value : '';
-    const tutorEmail = selectedTutorOpt ? (selectedTutorOpt.dataset.tutorEmail || '') : '';
-    const tutorId = selectedTutorOpt ? (selectedTutorOpt.dataset.tutorId || '') : '';
+    const rawTutorVal = tutorSelect ? tutorSelect.value : '';
+    let tutorEmail = selectedTutorOpt ? (selectedTutorOpt.dataset.tutorEmail || '') : '';
+    let tutorId = selectedTutorOpt ? (selectedTutorOpt.dataset.tutorId || '') : '';
+    let tutorName = rawTutorVal;
+
+    // Resolve tutor details reliably from DashboardEngine
+    if (rawTutorVal && rawTutorVal !== 'Unassigned') {
+        const allTutorsList = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutors) ? DashboardEngine.getTutors() : [];
+        const cleanTutorVal = rawTutorVal.toLowerCase().trim();
+        const matchedTutor = allTutorsList.find(t => 
+            (t.name && t.name.toLowerCase().trim() === cleanTutorVal) ||
+            (t.email && t.email.toLowerCase().trim() === cleanTutorVal) ||
+            (t.id && t.id.toLowerCase().trim() === cleanTutorVal)
+        );
+        if (matchedTutor) {
+            tutorName = matchedTutor.name;
+            tutorEmail = matchedTutor.email;
+            tutorId = matchedTutor.id;
+        }
+    }
+
     const notes = document.getElementById('student-notes') ? document.getElementById('student-notes').value.trim() : '';
     const classroomLink = (document.getElementById('student-classroom-link') || {}).value || '';
 
@@ -2385,8 +2456,8 @@ function saveStudent(e) {
         program,
         status,
         tutorName,
-        tutorEmail: tutorEmail || (existingStudentObj ? existingStudentObj.tutorEmail : ''),
-        tutorId: tutorId || (existingStudentObj ? existingStudentObj.tutorId : ''),
+        tutorEmail: tutorEmail || (existingStudentObj && existingStudentObj.tutorName === tutorName ? existingStudentObj.tutorEmail : ''),
+        tutorId: tutorId || (existingStudentObj && existingStudentObj.tutorName === tutorName ? existingStudentObj.tutorId : ''),
         notes,
         classroomLink
     };
@@ -2548,16 +2619,128 @@ function exportStudentsCSV() {
 
 // ==================== SCHEDULES CRUD ====================
 
+var currentScheduleFilter = 'upcoming';
+
+function filterSchedules(filterType) {
+    currentScheduleFilter = filterType || 'upcoming';
+    loadSchedules();
+}
+
+function renderLiveRadar() {
+    const container = document.getElementById('live-radar-list');
+    if (!container || typeof ClassEscalationEngine === 'undefined') return;
+
+    const radarItems = ClassEscalationEngine.getLiveRadarHUD();
+    if (!radarItems || radarItems.length === 0) {
+        container.innerHTML = `
+            <div class="p-4 bg-white/5 border border-white/10 rounded-xl text-center text-xs text-slate-400 col-span-full flex flex-col items-center justify-center gap-1">
+                <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 mb-1"></i>
+                <span class="font-bold text-slate-200">No Scheduled Sessions For Today</span>
+                <span class="text-[11px] text-slate-400">All sessions are up to date. The live radar will track attendees during scheduled class hours.</span>
+            </div>
+        `;
+        if (window.lucide) lucide.createIcons();
+        return;
+    }
+
+    container.innerHTML = radarItems.map(item => {
+        const s = item.schedule;
+        const state = item.state;
+        const nudgeParentUrl = ClassEscalationEngine.generateParentNudgeUrl(s);
+        const alertTutorUrl = ClassEscalationEngine.generateTutorAlertUrl(s);
+
+        let actionBtn = '';
+        if (state.alertType === 'parent_nudge') {
+            actionBtn = `<a href="${nudgeParentUrl}" target="_blank" class="mt-2 inline-flex items-center justify-center gap-1 w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold text-[11px] py-1.5 px-3 rounded-lg transition-colors">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Nudge Parent on WhatsApp
+            </a>`;
+        } else if (state.alertType === 'tutor_alert' || state.alertType === 'ops_intervention') {
+            actionBtn = `<a href="${alertTutorUrl}" target="_blank" class="mt-2 inline-flex items-center justify-center gap-1 w-full bg-rose-600 hover:bg-rose-700 text-white font-bold text-[11px] py-1.5 px-3 rounded-lg transition-colors">
+                <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Alert Missing Tutor
+            </a>`;
+        }
+
+        const safeStudent = (typeof escapeHtml === 'function') ? escapeHtml(s.studentName) : (s.studentName || '');
+        const safeCourse = (typeof escapeHtml === 'function') ? escapeHtml(s.course) : (s.course || '');
+        const safeMentor = (typeof escapeHtml === 'function') ? escapeHtml(s.mentor || s.tutorName || 'Unassigned') : (s.mentor || 'Unassigned');
+
+        return `
+            <div class="p-3 bg-white/10 border border-white/15 rounded-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start justify-between gap-2 mb-1.5">
+                        <span class="text-xs font-bold text-slate-100">${safeStudent}</span>
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${state.badgeClass}">${state.label}</span>
+                    </div>
+                    <p class="text-[11px] text-slate-300 font-medium">${safeCourse} · ${s.time || ''}</p>
+                    <p class="text-[11px] text-slate-400">Coach: <strong class="text-slate-300">${safeMentor}</strong></p>
+                </div>
+                ${actionBtn}
+            </div>
+        `;
+    }).join('');
+
+    if (window.lucide) lucide.createIcons();
+}
+
+function refreshLiveRadar() {
+    renderLiveRadar();
+    showToast('Class Radar refreshed.', 'info');
+}
+
 function loadSchedules() {
-    const schedules = DashboardEngine.getSchedules();
+    renderLiveRadar();
+    const allSchedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
     const calendar = document.getElementById('schedule-calendar');
     if (!calendar) return;
+
+    // Update pill counters
+    const todayStr = new Date().toISOString().split('T')[0];
+    const upcomingCount = allSchedules.filter(function(s) {
+        return s.attendanceStatus !== 'present' && s.attendanceStatus !== 'completed' && s.attendanceStatus !== 'absent';
+    }).length;
+    const doneCount = allSchedules.filter(function(s) {
+        return s.attendanceStatus === 'present' || s.attendanceStatus === 'completed' || s.attendanceStatus === 'absent';
+    }).length;
+    const allCount = allSchedules.length;
+
+    var elUp = document.getElementById('sch-count-upcoming');
+    if (elUp) elUp.textContent = upcomingCount;
+    var elDone = document.getElementById('sch-count-done');
+    if (elDone) elDone.textContent = doneCount;
+    var elAll = document.getElementById('sch-count-all');
+    if (elAll) elAll.textContent = allCount;
+
+    // Update active pill button styling
+    document.querySelectorAll('.schedule-filter-pill').forEach(function(btn) {
+        var filter = btn.getAttribute('data-filter');
+        if (filter === currentScheduleFilter) {
+            btn.className = 'schedule-filter-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition-all flex items-center gap-1.5';
+            var badge = btn.querySelector('span:last-child');
+            if (badge) badge.className = 'bg-white/20 text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded-full';
+        } else {
+            btn.className = 'schedule-filter-pill px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-all flex items-center gap-1.5';
+            var badge = btn.querySelector('span:last-child');
+            if (badge) badge.className = 'bg-slate-200 text-slate-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full';
+        }
+    });
+
+    // Apply schedule filter
+    var schedules = allSchedules;
+    if (currentScheduleFilter === 'upcoming') {
+        schedules = allSchedules.filter(function(s) {
+            return s.attendanceStatus !== 'present' && s.attendanceStatus !== 'completed' && s.attendanceStatus !== 'absent';
+        });
+    } else if (currentScheduleFilter === 'done') {
+        schedules = allSchedules.filter(function(s) {
+            return s.attendanceStatus === 'present' || s.attendanceStatus === 'completed' || s.attendanceStatus === 'absent';
+        });
+    }
 
     if (schedules.length === 0) {
         calendar.innerHTML = `
                 <div class="text-center py-20">
                     <i data-lucide="calendar" class="w-12 h-12 mx-auto text-gray-300 mb-4"></i>
-                    <p class="text-gray-400">No scheduled sessions. Click "Add Session" to set one up!</p>
+                    <p class="text-gray-400">No ${currentScheduleFilter === 'done' ? 'completed' : currentScheduleFilter === 'upcoming' ? 'upcoming active' : ''} sessions found.</p>
                 </div>
             `;
         if (window.lucide) lucide.createIcons();
@@ -3454,7 +3637,7 @@ function openTutorModal(email) {
 }
 
 async function saveTutor(e) {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     const name = (document.getElementById('tutor-name').value || '').trim();
     const email = (document.getElementById('tutor-email').value || '').trim().toLowerCase();
     const password = (document.getElementById('tutor-password').value || '').trim();
@@ -3507,7 +3690,7 @@ function openParentModal() {
 }
 
 async function saveParent(e) {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     const name = (document.getElementById('new-parent-name').value || '').trim();
     const email = (document.getElementById('new-parent-email').value || '').trim().toLowerCase();
     const password = (document.getElementById('new-parent-password').value || '').trim();
@@ -4800,7 +4983,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
         if (!sourceSel || !targetSel) return;
 
         const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : {};
-        const tutors = db.tutors || [];
+        const tutors = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutors) ? DashboardEngine.getTutors() : (db.tutors || []);
         const students = db.students || [];
 
         const tutorCounts = {};
@@ -4934,8 +5117,9 @@ function openMessageTutorModal(tutorEmail, tutorName) {
         }
 
         const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : {};
-        const sourceTutor = (db.tutors || []).find(t => t.id === sourceTutorId);
-        const targetTutor = (db.tutors || []).find(t => t.id === targetTutorId);
+        const allTutorsList = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutors) ? DashboardEngine.getTutors() : (db.tutors || []);
+        const sourceTutor = allTutorsList.find(t => t.id === sourceTutorId || t.email === sourceTutorId);
+        const targetTutor = allTutorsList.find(t => t.id === targetTutorId || t.email === targetTutorId);
 
         if (!targetTutor) {
             showToast('Target tutor record not found', 'warning');
@@ -5384,6 +5568,378 @@ function openMessageTutorModal(tutorEmail, tutorName) {
         }
     }
 
+// ==================== TUITION & BILLING CYCLE CONTROLLER ====================
+var billingCache = [];
+var currentBillingStatusFilter = 'all';
+
+function updateBillingNavBadge() {
+    if (typeof BillingEngine === 'undefined') return;
+    const dueStudents = BillingEngine.getDueStudents ? BillingEngine.getDueStudents() : [];
+    const navBadge = document.getElementById('nav-billing-due-badge');
+    if (navBadge) {
+        if (dueStudents.length > 0) {
+            navBadge.textContent = dueStudents.length;
+            navBadge.classList.remove('hidden');
+        } else {
+            navBadge.classList.add('hidden');
+        }
+    }
+}
+
+function loadBillingRoster() {
+    if (typeof BillingEngine === 'undefined') {
+        console.warn('BillingEngine not loaded');
+        return;
+    }
+    const roster = BillingEngine.getBillingRoster();
+    billingCache = roster;
+
+    // Update KPI metrics
+    const totalActive = roster.length;
+    const dueSoonList = roster.filter(r => r.billing.status === 'due_soon');
+    const overdueList = roster.filter(r => r.billing.status === 'overdue');
+    const currentList = roster.filter(r => r.billing.status === 'current');
+
+    let totalMonthlyRev = 0;
+    roster.forEach(r => { totalMonthlyRev += (r.billing.monthlyFee || 35000); });
+
+    const kpiActive = document.getElementById('billing-kpi-active');
+    const kpiDue = document.getElementById('billing-kpi-due');
+    const kpiOverdue = document.getElementById('billing-kpi-overdue');
+    const kpiRev = document.getElementById('billing-kpi-revenue');
+
+    if (kpiActive) kpiActive.textContent = totalActive;
+    if (kpiDue) kpiDue.textContent = dueSoonList.length;
+    if (kpiOverdue) kpiOverdue.textContent = overdueList.length;
+    if (kpiRev) kpiRev.textContent = '₦' + totalMonthlyRev.toLocaleString();
+
+    updateBillingNavBadge();
+
+    // Update filter counts
+    const countAll = document.getElementById('bill-count-all');
+    const countDue = document.getElementById('bill-count-due');
+    const countOverdue = document.getElementById('bill-count-overdue');
+    const countCurrent = document.getElementById('bill-count-current');
+    if (countAll) countAll.textContent = totalActive;
+    if (countDue) countDue.textContent = dueSoonList.length;
+    if (countOverdue) countOverdue.textContent = overdueList.length;
+    if (countCurrent) countCurrent.textContent = currentList.length;
+
+    // Load school bank settings in card
+    const settings = BillingEngine.getSettings();
+    const bankEl = document.getElementById('billing-bank-name');
+    const accNumEl = document.getElementById('billing-account-number');
+    const accNameEl = document.getElementById('billing-account-name');
+    const feeEl = document.getElementById('billing-default-fee');
+    if (bankEl) bankEl.textContent = settings.bankName;
+    if (accNumEl) accNumEl.textContent = settings.accountNumber;
+    if (accNameEl) accNameEl.textContent = settings.accountName;
+    if (feeEl) feeEl.textContent = '₦' + Number(settings.defaultMonthlyFee || 35000).toLocaleString();
+
+    filterBilling();
+}
+
+function setBillingStatusFilter(status) {
+    currentBillingStatusFilter = status;
+    document.querySelectorAll('.bill-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-status') === status) {
+            btn.className = 'bill-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm transition-all flex items-center gap-1.5';
+        } else {
+            btn.className = 'bill-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-all flex items-center gap-1.5';
+        }
+    });
+    filterBilling();
+}
+
+function filterBilling(query = null) {
+    const searchInput = document.getElementById('billing-search');
+    const q = (query !== null ? query : (searchInput ? searchInput.value : '')).toLowerCase().trim();
+
+    const filtered = billingCache.filter(item => {
+        const s = item.student;
+        const b = item.billing;
+        const sName = `${s.firstName || ''} ${s.lastName || ''}`.toLowerCase();
+        const pName = (s.parentName || '').toLowerCase();
+        const pEmail = (s.parentEmail || '').toLowerCase();
+
+        const matchQuery = !q || sName.includes(q) || pName.includes(q) || pEmail.includes(q);
+        const matchStatus = currentBillingStatusFilter === 'all' || b.status === currentBillingStatusFilter;
+
+        return matchQuery && matchStatus;
+    });
+
+    renderBillingTable(filtered);
+}
+
+function renderBillingTable(list) {
+    const tbody = document.getElementById('billing-table-body');
+    if (!tbody) return;
+
+    if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-12 text-slate-400 font-medium">No students match current billing criteria.</td></tr>`;
+        return;
+    }
+
+    const settings = (typeof BillingEngine !== 'undefined') ? BillingEngine.getSettings() : {};
+
+    tbody.innerHTML = list.map(item => {
+        const s = item.student;
+        const b = item.billing;
+        const sFullName = `${s.firstName || ''} ${s.lastName || ''}`.trim();
+        const initial = (s.firstName || 'S')[0].toUpperCase();
+
+        // Status badge
+        let statusBadge = '';
+        if (b.status === 'overdue') {
+            statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-extrabold bg-rose-100 text-rose-700 border border-rose-200"><span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>Overdue (${Math.abs(b.daysRemaining)}d)</span>`;
+        } else if (b.status === 'due_soon') {
+            statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-800 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Due in ${b.daysRemaining}d</span>`;
+        } else {
+            statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Current (${b.daysRemaining}d left)</span>`;
+        }
+
+        const waUrl = (typeof BillingEngine !== 'undefined') ? BillingEngine.generateWhatsAppReminderUrl(s, b, settings) : '#';
+
+        return `
+            <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
+                <td class="py-3.5 px-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                            ${initial}
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">${sFullName}</p>
+                            <p class="text-xs text-slate-500">${s.program || 'Coding Track'}</p>
+                        </div>
+                    </div>
+                </td>
+                <td class="py-3.5 px-4 text-xs">
+                    <p class="font-bold text-slate-700">${s.parentName || 'Parent'}</p>
+                    <p class="text-slate-500">${s.parentEmail || 'No email'}</p>
+                    <p class="text-slate-400 font-mono text-[11px]">${s.parentPhone || ''}</p>
+                </td>
+                <td class="py-3.5 px-4 text-xs">
+                    <p class="font-semibold text-slate-700">${b.firstClassDate}</p>
+                    <p class="text-[10px] text-slate-400">Anchor First Class</p>
+                </td>
+                <td class="py-3.5 px-4 text-xs">
+                    <p class="font-bold text-slate-800">${b.nextDueDate}</p>
+                    <div class="mt-1">${statusBadge}</div>
+                </td>
+                <td class="py-3.5 px-4 text-xs font-bold text-slate-800 font-mono">
+                    ${b.formattedFee}
+                </td>
+                <td class="py-3.5 px-4 text-xs">
+                    <div class="flex items-center gap-2">
+                        <a href="${waUrl}" target="_blank" title="Send WhatsApp Reminder" class="p-2 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 transition-all font-bold flex items-center gap-1">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            <span class="hidden sm:inline">WhatsApp</span>
+                        </a>
+                        <button type="button" onclick="AdminEngine.sendBillingEmailReminder('${s.id}')" title="Queue Email Reminder" class="p-2 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 transition-all font-bold flex items-center gap-1">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                            <span class="hidden sm:inline">Email</span>
+                        </button>
+                        <button type="button" onclick="AdminEngine.openRecordPaymentModal('${s.id}')" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-all shadow-sm flex items-center gap-1" style="background-color:#047857!important;">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                            <span>Record Payment</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    if (window.lucide) lucide.createIcons();
+}
+
+function sendBillingEmailReminder(studentId) {
+    if (typeof DashboardEngine === 'undefined' || typeof BillingEngine === 'undefined') return;
+    const db = DashboardEngine.getDB();
+    const student = (db.students || []).find(s => s.id === studentId);
+    if (!student || !student.parentEmail) {
+        showToast('Student or parent email not found.', 'error');
+        return;
+    }
+
+    const payload = BillingEngine.generateEmailReminderPayload(student);
+    DashboardEngine.addToEmailQueue(payload);
+    showToast(`Tuition reminder queued for ${student.parentName || 'parent'} (${student.parentEmail}).`, 'success');
+}
+
+function openRecordPaymentModal(studentId = null) {
+    const modal = document.getElementById('modal-record-payment');
+    if (!modal) return;
+
+    const selectEl = document.getElementById('pay-student-select');
+    const amountEl = document.getElementById('pay-amount');
+    const dateEl = document.getElementById('pay-date');
+    const refEl = document.getElementById('pay-reference');
+    const methodEl = document.getElementById('pay-method');
+    const notesEl = document.getElementById('pay-notes');
+
+    if (selectEl) {
+        const students = DashboardEngine.getStudents() || [];
+        selectEl.innerHTML = students.map(s => `
+            <option value="${s.id}" ${s.id === studentId ? 'selected' : ''}>
+                ${s.firstName} ${s.lastName} (${s.program || 'Coding'})
+            </option>
+        `).join('');
+    }
+
+    // Set defaults
+    if (dateEl) dateEl.value = new Date().toISOString().slice(0, 10);
+    if (refEl) refEl.value = 'REC-' + Math.floor(100000 + Math.random() * 900000);
+    if (methodEl) methodEl.value = 'Bank Transfer';
+    if (notesEl) notesEl.value = 'Monthly tuition settlement';
+
+    // Auto calculate amount from selected student
+    const activeSid = studentId || (selectEl ? selectEl.value : null);
+    if (activeSid && amountEl) {
+        const bInfo = DashboardEngine.getBillingInfo(activeSid);
+        amountEl.value = (bInfo && bInfo.monthlyFee) ? bInfo.monthlyFee : 35000;
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function onRecordPaymentStudentChange(studentId) {
+    const amountEl = document.getElementById('pay-amount');
+    if (amountEl && typeof DashboardEngine !== 'undefined') {
+        const bInfo = DashboardEngine.getBillingInfo(studentId);
+        if (bInfo) amountEl.value = bInfo.monthlyFee || 35000;
+    }
+}
+
+function handleRecordPaymentSubmit(e) {
+    if (e) e.preventDefault();
+    const submitBtn = e && e.target ? e.target.querySelector('button[type="submit"]') : null;
+    if (submitBtn && submitBtn.disabled) return;
+
+    const selectEl = document.getElementById('pay-student-select');
+    const amountEl = document.getElementById('pay-amount');
+    const dateEl = document.getElementById('pay-date');
+    const refEl = document.getElementById('pay-reference');
+    const methodEl = document.getElementById('pay-method');
+    const notesEl = document.getElementById('pay-notes');
+
+    const studentId = selectEl ? selectEl.value : null;
+    if (!studentId) {
+        showToast('Please select a student.', 'error');
+        return;
+    }
+
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Processing...</span>';
+    }
+
+    try {
+        const paymentData = {
+            amount: Number(amountEl ? amountEl.value : 35000),
+            date: dateEl ? dateEl.value : new Date().toISOString().slice(0, 10),
+            reference: (refEl && refEl.value ? refEl.value.trim() : ('REC-' + Date.now())),
+            method: methodEl ? methodEl.value : 'Bank Transfer',
+            notes: notesEl ? notesEl.value : 'Monthly tuition settlement',
+            recordedBy: 'Admin'
+        };
+
+        const res = BillingEngine.recordPayment(studentId, paymentData);
+        if (res && res.success) {
+            showToast(`Payment recorded! Cycle advanced to ${res.newNextDue}`, 'success');
+            closeModal('modal-record-payment');
+            loadBillingRoster();
+            loadStudents();
+        } else {
+            showToast('Failed to record payment: ' + ((res && res.message) || 'Unknown error'), 'error');
+        }
+    } finally {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i><span>Confirm &amp; Advance Cycle</span>';
+            if (window.lucide) lucide.createIcons();
+        }
+    }
+}
+
+function openBillingSettingsModal() {
+    const modal = document.getElementById('modal-billing-settings');
+    if (!modal) return;
+
+    const settings = BillingEngine.getSettings();
+    const bankEl = document.getElementById('settings-bank-name');
+    const accNumEl = document.getElementById('settings-account-number');
+    const accNameEl = document.getElementById('settings-account-name');
+    const feeEl = document.getElementById('settings-default-fee');
+
+    if (bankEl) bankEl.value = settings.bankName || '';
+    if (accNumEl) accNumEl.value = settings.accountNumber || '';
+    if (accNameEl) accNameEl.value = settings.accountName || '';
+    if (feeEl) feeEl.value = settings.defaultMonthlyFee || 35000;
+
+    modal.classList.remove('hidden');
+}
+
+function handleBillingSettingsSubmit(e) {
+    if (e) e.preventDefault();
+    const bankEl = document.getElementById('settings-bank-name');
+    const accNumEl = document.getElementById('settings-account-number');
+    const accNameEl = document.getElementById('settings-account-name');
+    const feeEl = document.getElementById('settings-default-fee');
+
+    const updated = BillingEngine.updateSettings({
+        bankName: bankEl ? bankEl.value : 'Access Bank',
+        accountNumber: accNumEl ? accNumEl.value : '1853492019',
+        accountName: accNameEl ? accNameEl.value : 'STEMulus Kids Tech',
+        defaultMonthlyFee: Number(feeEl ? feeEl.value : 35000)
+    });
+
+    const sBank = document.getElementById('settings-card-bank-name');
+    const sAcc = document.getElementById('settings-card-account-number');
+    const sName = document.getElementById('settings-card-account-name');
+    const sFee = document.getElementById('settings-card-default-fee');
+    if (sBank) sBank.textContent = updated.bankName;
+    if (sAcc) sAcc.textContent = updated.accountNumber;
+    if (sName) sName.textContent = updated.accountName;
+    if (sFee) sFee.textContent = '₦' + Number(updated.defaultMonthlyFee || 35000).toLocaleString();
+
+    showToast('School payment settings updated successfully.', 'success');
+    closeModal('modal-billing-settings');
+    loadBillingRoster();
+}
+
+function exportBillingCSV() {
+    const roster = BillingEngine.getBillingRoster();
+    if (!roster || roster.length === 0) {
+        showToast('No billing records to export.', 'info');
+        return;
+    }
+
+    const headers = ['Student ID', 'Student Name', 'Course', 'Parent Name', 'Parent Email', 'Parent Phone', 'First Class Date', 'Cycle Start', 'Next Due Date', 'Days Remaining', 'Status', 'Monthly Fee'];
+    const rows = roster.map(r => [
+        r.student.id,
+        `"${r.student.firstName} ${r.student.lastName}"`,
+        `"${r.student.program || 'Coding'}"`,
+        `"${r.student.parentName || ''}"`,
+        r.student.parentEmail || '',
+        r.student.parentPhone || '',
+        r.billing.firstClassDate,
+        r.billing.cycleStartDate,
+        r.billing.nextDueDate,
+        r.billing.daysRemaining,
+        r.billing.status,
+        r.billing.monthlyFee
+    ]);
+
+    const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `stemulus-tuition-billing-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
 
 return {
     init,
@@ -5490,8 +6046,94 @@ return {
     onParentConfigChange,
     toggleEmailParentPreview,
     sendParentModalEmail,
+
+    // Student, Tutor & Parent CRUD Actions
+    saveStudent,
+    saveTutor,
+    saveParent,
+
+    // Schedules and Parent Cascade
+    filterSchedules,
+    onParentSelectChange,
+    loadNetlifyEnrollments,
+    loadSchedules,
+
+    // Live Radar & Class Escalation
+    renderLiveRadar,
+    refreshLiveRadar,
+
+    // Tuition & Monthly Billing Automation
+    loadBillingRoster,
+    setBillingStatusFilter,
+    filterBilling,
+    sendBillingEmailReminder,
+    openRecordPaymentModal,
+    onRecordPaymentStudentChange,
+    handleRecordPaymentSubmit,
+    openBillingSettingsModal,
+    handleBillingSettingsSubmit,
+    exportBillingCSV,
+
+    // Silicon Valley PII Privacy Protection
+    togglePrivacyMask,
+    isPrivacyMaskActive: function() { return isPrivacyMaskActive; }
 };
-}) ();
+})();
+
+// Global defensive aliases for inline HTML onclick handlers
+if (typeof window !== 'undefined') {
+    window.AdminEngine = AdminEngine;
+    window.togglePrivacyMask = AdminEngine.togglePrivacyMask;
+    window.saveStudent = AdminEngine.saveStudent;
+    window.saveTutor = AdminEngine.saveTutor;
+    window.saveParent = AdminEngine.saveParent;
+    window.openStudentModal = AdminEngine.openStudentModal;
+    window.openTutorModal = AdminEngine.openTutorModal;
+    window.openParentModal = AdminEngine.openParentModal;
+    window.openScheduleModal = AdminEngine.openScheduleModal;
+    window.openProjectModal = AdminEngine.openProjectModal;
+    window.saveReportDraft = AdminEngine.saveReportDraft;
+    window.approveAndSendReport = AdminEngine.approveAndSendReport;
+    window.promptRejectReport = AdminEngine.promptRejectReport;
+    window.previewCurrentReportPDF = AdminEngine.previewCurrentReportPDF;
+    window.previewReportPDF = AdminEngine.previewReportPDF;
+    window.setStudentStatusFilter = AdminEngine.setStudentStatusFilter;
+    window.setParentStatusFilter = AdminEngine.setParentStatusFilter;
+    window.switchRosterTab = AdminEngine.switchRosterTab;
+    window.switchQuickOnboardTab = AdminEngine.switchQuickOnboardTab;
+    window.openQuickOnboardModal = AdminEngine.openQuickOnboardModal;
+    window.openGlobalSearchModal = AdminEngine.openGlobalSearchModal;
+    window.closeGlobalSearchModal = AdminEngine.closeGlobalSearchModal;
+    window.setGlobalSearchCategory = AdminEngine.setGlobalSearchCategory;
+    window.batchApproveAllPendingAttendance = AdminEngine.batchApproveAllPendingAttendance;
+    window.openMonthlyPayrollModal = AdminEngine.openMonthlyPayrollModal;
+    window.batchApproveMonthPayroll = AdminEngine.batchApproveMonthPayroll;
+    window.exportPayrollCSV = AdminEngine.exportPayrollCSV;
+    window.dispatchSelectedEmails = AdminEngine.dispatchSelectedEmails;
+    window.dispatchAllPendingEmails = AdminEngine.dispatchAllPendingEmails;
+    window.openTutorReassignModal = AdminEngine.openTutorReassignModal;
+    window.toggleSelectAllReassignStudents = AdminEngine.toggleSelectAllReassignStudents;
+    window.toggleEmailParentPreview = AdminEngine.toggleEmailParentPreview;
+    window.sendParentModalEmail = AdminEngine.sendParentModalEmail;
+    window.filterSchedules = AdminEngine.filterSchedules;
+    window.onParentSelectChange = AdminEngine.onParentSelectChange;
+    window.loadNetlifyEnrollments = AdminEngine.loadNetlifyEnrollments;
+    window.loadSchedules = AdminEngine.loadSchedules;
+    window.renderLiveRadar = AdminEngine.renderLiveRadar;
+    window.refreshLiveRadar = AdminEngine.refreshLiveRadar;
+
+    // Billing Aliases
+    window.loadBillingRoster = AdminEngine.loadBillingRoster;
+    window.setBillingStatusFilter = AdminEngine.setBillingStatusFilter;
+    window.filterBilling = AdminEngine.filterBilling;
+    window.sendBillingEmailReminder = AdminEngine.sendBillingEmailReminder;
+    window.openRecordPaymentModal = AdminEngine.openRecordPaymentModal;
+    window.onRecordPaymentStudentChange = AdminEngine.onRecordPaymentStudentChange;
+    window.handleRecordPaymentSubmit = AdminEngine.handleRecordPaymentSubmit;
+    window.openBillingSettingsModal = AdminEngine.openBillingSettingsModal;
+    window.handleBillingSettingsSubmit = AdminEngine.handleBillingSettingsSubmit;
+    window.exportBillingCSV = AdminEngine.exportBillingCSV;
+}
 
 document.addEventListener('DOMContentLoaded', AdminEngine.init);
 // On cloud sync: only reload data, don't re-run full auth check
@@ -5500,3 +6142,4 @@ window.addEventListener('stemulusDbUpdated', function () {
         AdminEngine.reloadData();
     }
 });
+

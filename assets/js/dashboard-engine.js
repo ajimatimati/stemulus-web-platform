@@ -45,6 +45,8 @@ const DashboardEngine = (function() {
                 progress: 65, // percent
                 avatarColor: "bg-blue-700",
                 tutorName: "Sarah Jane",
+                tutorEmail: "tutor@stemuluskidstech.com",
+                tutorId: "tut-101",
                 classroomLink: '',
                 skills: { logic: 85, loops: 80, variables: 90, syntax: 75, projects: 70 },
                 metrics: { attended: 14, total: 24, projects: 3, lines: 1450 }
@@ -66,6 +68,8 @@ const DashboardEngine = (function() {
                 progress: 40,
                 avatarColor: "bg-orange-700",
                 tutorName: "Sarah Jane",
+                tutorEmail: "tutor@stemuluskidstech.com",
+                tutorId: "tut-101",
                 classroomLink: '',
                 skills: { logic: 60, loops: 70, variables: 40, syntax: 55, projects: 75 },
                 metrics: { attended: 8, total: 20, projects: 2, lines: 0 }
@@ -81,6 +85,9 @@ const DashboardEngine = (function() {
                 time: "16:00",
                 duration: "60",
                 mentor: "Sarah Jane",
+                tutorName: "Sarah Jane",
+                tutorEmail: "tutor@stemuluskidstech.com",
+                tutorId: "tut-101",
                 link: "https://zoom.us/j/1234567890",
                 attendanceStatus: "pending" // pending, present, absent
             },
@@ -93,6 +100,9 @@ const DashboardEngine = (function() {
                 time: "15:00",
                 duration: "60",
                 mentor: "Sarah Jane",
+                tutorName: "Sarah Jane",
+                tutorEmail: "tutor@stemuluskidstech.com",
+                tutorId: "tut-101",
                 link: "https://zoom.us/j/0987654321",
                 attendanceStatus: "pending"
             }
@@ -318,18 +328,37 @@ const DashboardEngine = (function() {
         attendanceRecords: [],
         monthlyReports: [],
         emailQueue: [],
-        passwordResetRequests: []
+        passwordResetRequests: [],
+        enrollments: []
     };
 
-    // Helper to retrieve data from localStorage
+    // Helper to retrieve data from localStorage (Web Crypto Vault Protected)
     function getDB() {
-        const dbStr = localStorage.getItem("stemulus_db");
-        if (!dbStr) {
-            localStorage.setItem("stemulus_db", JSON.stringify(DEFAULT_DATA));
-            return DEFAULT_DATA;
+        let parsed = null;
+        if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureDB) {
+            parsed = StemulusSecurity.getSecureDB();
+        }
+        if (!parsed) {
+            const dbStr = (typeof localStorage !== 'undefined') ? localStorage.getItem("stemulus_db") : null;
+            if (!dbStr) {
+                saveDB(DEFAULT_DATA);
+                return DEFAULT_DATA;
+            }
+            try {
+                parsed = JSON.parse(dbStr);
+                if (parsed && parsed.__sec === true && !parsed.students) {
+                    console.warn('[DashboardEngine] Corrupted or tampered vault state. Reinitializing defaults.');
+                    parsed = DEFAULT_DATA;
+                }
+            } catch (e) {
+                parsed = DEFAULT_DATA;
+            }
         }
         try {
-            const parsed = JSON.parse(dbStr);
+            if (!parsed.enrollments) {
+                parsed.enrollments = [];
+                localStorage.setItem("stemulus_db", JSON.stringify(parsed));
+            }
             if (!parsed.attendanceRecords) {
                 parsed.attendanceRecords = [];
                 localStorage.setItem("stemulus_db", JSON.stringify(parsed));
@@ -424,7 +453,633 @@ const DashboardEngine = (function() {
                 usersAppended = true;
             }
 
-            if (usersAppended) {
+
+            // Ensure core officially enrolled students from Google Sheets roster are present
+            const coreEnrolledStudents = [
+          {
+                    "id": "std-1003-8ecr",
+                    "firstName": "Abdulsalam",
+                    "lastName": "Modesire Shittu",
+                    "age": 14,
+                    "birthday": "",
+                    "hasExplicitBirthday": false,
+                    "parentName": "Abiodun Shittu",
+                    "parentEmail": "abiodunadebiyis@gmail.com",
+                    "parentPhone": "07438002358",
+                    "program": "Python Programming",
+                    "status": "active",
+                    "remindersPaused": false,
+                    "progress": 0,
+                    "tutorName": "Sarah Jane",
+                    "tutorEmail": "tutor@stemuluskidstech.com",
+                    "tutorId": "tut-101",
+                    "notes": "Relationship: Mother | Grade: Y10 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
+                    "classroomLink": "",
+                    "skills": {
+                              "logic": 50,
+                              "loops": 50,
+                              "variables": 50,
+                              "syntax": 50,
+                              "projects": 50
+                    },
+                    "metrics": {
+                              "attended": 0,
+                              "total": 8,
+                              "projects": 0,
+                              "lines": 0
+                    }
+          },
+          {
+                    "id": "std-1004-e1rm",
+                    "firstName": "Alexandra",
+                    "lastName": "Sotayo",
+                    "age": 13,
+                    "birthday": "",
+                    "hasExplicitBirthday": false,
+                    "parentName": "Alexandra Sotayo",
+                    "parentEmail": "abmsotayo@googlemail.com",
+                    "parentPhone": "+447575353416",
+                    "program": "Python Programming",
+                    "status": "active",
+                    "remindersPaused": false,
+                    "progress": 0,
+                    "tutorName": "Sarah Jane",
+                    "tutorEmail": "tutor@stemuluskidstech.com",
+                    "tutorId": "tut-101",
+                    "notes": "Relationship: Father | Grade: Year 9 | Experience: Some (Scratch, Basic coding) | Photo Consent: No",
+                    "classroomLink": "",
+                    "skills": {
+                              "logic": 50,
+                              "loops": 50,
+                              "variables": 50,
+                              "syntax": 50,
+                              "projects": 50
+                    },
+                    "metrics": {
+                              "attended": 0,
+                              "total": 8,
+                              "projects": 0,
+                              "lines": 0
+                    }
+          },
+          {
+                    "id": "std-1005-6f4y",
+                    "firstName": "Annabelle",
+                    "lastName": "Sotayo",
+                    "age": 10,
+                    "birthday": "",
+                    "hasExplicitBirthday": false,
+                    "parentName": "Matt Sotayo",
+                    "parentEmail": "abmsotayo@googlemail.com",
+                    "parentPhone": "+447575353416",
+                    "program": "Python Programming",
+                    "status": "active",
+                    "remindersPaused": false,
+                    "progress": 0,
+                    "tutorName": "Sarah Jane",
+                    "tutorEmail": "tutor@stemuluskidstech.com",
+                    "tutorId": "tut-101",
+                    "notes": "Relationship: Father | Grade: Year 5 | Experience: Some (Scratch, Basic coding) | Photo Consent: No",
+                    "classroomLink": "",
+                    "skills": {
+                              "logic": 50,
+                              "loops": 50,
+                              "variables": 50,
+                              "syntax": 50,
+                              "projects": 50
+                    },
+                    "metrics": {
+                              "attended": 0,
+                              "total": 8,
+                              "projects": 0,
+                              "lines": 0
+                    }
+          },
+          {
+                    "id": "std-1006-il0c",
+                    "firstName": "Brian",
+                    "lastName": "Osenedum Chukwuka-Mordi",
+                    "age": 9,
+                    "birthday": "",
+                    "hasExplicitBirthday": false,
+                    "parentName": "Maryrose Chukwumah-Mordi",
+                    "parentEmail": "Chukwumah.maryrose@gmail.com",
+                    "parentPhone": "44 07876180911",
+                    "program": "Scratch Creators",
+                    "status": "active",
+                    "remindersPaused": false,
+                    "progress": 0,
+                    "tutorName": "Sarah Jane",
+                    "tutorEmail": "tutor@stemuluskidstech.com",
+                    "tutorId": "tut-101",
+                    "notes": "Relationship: Mother | Grade: Grade 5 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes | Notes: I consent to his work project  to be shared but not his personal photo graph without further consent.",
+                    "classroomLink": "",
+                    "skills": {
+                              "logic": 50,
+                              "loops": 50,
+                              "variables": 50,
+                              "syntax": 50,
+                              "projects": 50
+                    },
+                    "metrics": {
+                              "attended": 0,
+                              "total": 8,
+                              "projects": 0,
+                              "lines": 0
+                    }
+          },
+          {
+                    "id": "std-1007-r4cv",
+                    "firstName": "Babalola",
+                    "lastName": "Oluwadunmininu Pearl",
+                    "age": 12,
+                    "birthday": "",
+                    "hasExplicitBirthday": false,
+                    "parentName": "Babalola Olanike",
+                    "parentEmail": "talk2nike2009@gmail.com",
+                    "parentPhone": "08055855102",
+                    "program": "Python Programming",
+                    "status": "active",
+                    "remindersPaused": false,
+                    "progress": 0,
+                    "tutorName": "Sarah Jane",
+                    "tutorEmail": "tutor@stemuluskidstech.com",
+                    "tutorId": "tut-101",
+                    "notes": "Relationship: Mother | Grade: SS1 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
+                    "classroomLink": "",
+                    "skills": {
+                              "logic": 50,
+                              "loops": 50,
+                              "variables": 50,
+                              "syntax": 50,
+                              "projects": 50
+                    },
+                    "metrics": {
+                              "attended": 0,
+                              "total": 8,
+                              "projects": 0,
+                              "lines": 0
+                    }
+          },
+          {
+                    "id": "std-1008-a0lp",
+                    "firstName": "Gbolade",
+                    "lastName": "Okesanjo",
+                    "age": 14,
+                    "birthday": "",
+                    "hasExplicitBirthday": false,
+                    "parentName": "Temi Okesanjo",
+                    "parentEmail": "Temiladeokesanjo1@gmail.com",
+                    "parentPhone": "08076000020",
+                    "program": "Web & App Development",
+                    "status": "active",
+                    "remindersPaused": false,
+                    "progress": 0,
+                    "tutorName": "Sarah Jane",
+                    "tutorEmail": "tutor@stemuluskidstech.com",
+                    "tutorId": "tut-101",
+                    "notes": "Relationship: Mother | Experience: None (Beginner) | Photo Consent: No",
+                    "classroomLink": "",
+                    "skills": {
+                              "logic": 50,
+                              "loops": 50,
+                              "variables": 50,
+                              "syntax": 50,
+                              "projects": 50
+                    },
+                    "metrics": {
+                              "attended": 0,
+                              "total": 8,
+                              "projects": 0,
+                              "lines": 0
+                    }
+          },
+          {
+                    "id": "std-1009-tbod",
+                    "firstName": "King",
+                    "lastName": "Myles Omosuyi",
+                    "age": 6,
+                    "birthday": "",
+                    "hasExplicitBirthday": false,
+                    "parentName": "Diamond Sheva Omosuyi",
+                    "parentEmail": "diamondsheva@gmail.com",
+                    "parentPhone": "08117090593",
+                    "program": "Scratch Creators",
+                    "status": "active",
+                    "remindersPaused": false,
+                    "progress": 0,
+                    "tutorName": "Sarah Jane",
+                    "tutorEmail": "tutor@stemuluskidstech.com",
+                    "tutorId": "tut-101",
+                    "notes": "Relationship: Mother | Grade: Grade 3 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes | Notes: No allergies",
+                    "classroomLink": "",
+                    "skills": {
+                              "logic": 50,
+                              "loops": 50,
+                              "variables": 50,
+                              "syntax": 50,
+                              "projects": 50
+                    },
+                    "metrics": {
+                              "attended": 0,
+                              "total": 8,
+                              "projects": 0,
+                              "lines": 0
+                    }
+          },
+          {
+                    "id": "std-1010-ilb5",
+                    "firstName": "JUNAYD",
+                    "lastName": "KARI",
+                    "age": 6,
+                    "birthday": "",
+                    "hasExplicitBirthday": false,
+                    "parentName": "Carla KARI",
+                    "parentEmail": "carlanouriat.k@gmail.com",
+                    "parentPhone": "+33610570227",
+                    "program": "Scratch Creators",
+                    "status": "active",
+                    "remindersPaused": false,
+                    "progress": 0,
+                    "tutorName": "Sarah Jane",
+                    "tutorEmail": "tutor@stemuluskidstech.com",
+                    "tutorId": "tut-101",
+                    "notes": "Relationship: Mother | Grade: GRADE 1 | Experience: None (Beginner) | Photo Consent: No",
+                    "classroomLink": "",
+                    "skills": {
+                              "logic": 50,
+                              "loops": 50,
+                              "variables": 50,
+                              "syntax": 50,
+                              "projects": 50
+                    },
+                    "metrics": {
+                              "attended": 0,
+                              "total": 8,
+                              "projects": 0,
+                              "lines": 0
+                    }
+          },
+          {
+                    "id": "std-1011-tq1u",
+                    "firstName": "Momooreoluwa",
+                    "lastName": "Sonaike",
+                    "age": 7,
+                    "birthday": "",
+                    "hasExplicitBirthday": false,
+                    "parentName": "Oladipupo Sonaike",
+                    "parentEmail": "eoosonaike@gmail.com",
+                    "parentPhone": "08186820039",
+                    "program": "Scratch Creators",
+                    "status": "active",
+                    "remindersPaused": false,
+                    "progress": 0,
+                    "tutorName": "Sarah Jane",
+                    "tutorEmail": "tutor@stemuluskidstech.com",
+                    "tutorId": "tut-101",
+                    "notes": "Relationship: Father | Grade: 3 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
+                    "classroomLink": "",
+                    "skills": {
+                              "logic": 50,
+                              "loops": 50,
+                              "variables": 50,
+                              "syntax": 50,
+                              "projects": 50
+                    },
+                    "metrics": {
+                              "attended": 0,
+                              "total": 8,
+                              "projects": 0,
+                              "lines": 0
+                    }
+          },
+          {
+                    "id": "std-1012-wq6b",
+                    "firstName": "David",
+                    "lastName": "Gjoka",
+                    "age": 10,
+                    "birthday": "",
+                    "hasExplicitBirthday": false,
+                    "parentName": "Anna Khavkina",
+                    "parentEmail": "annakhavkina@gmail.com",
+                    "parentPhone": "07898741675",
+                    "program": "Python Programming",
+                    "status": "active",
+                    "remindersPaused": false,
+                    "progress": 0,
+                    "tutorName": "Sarah Jane",
+                    "tutorEmail": "tutor@stemuluskidstech.com",
+                    "tutorId": "tut-101",
+                    "notes": "Relationship: Mother | Grade: Year 6 | Experience: Some (Scratch, Basic coding) | Photo Consent: No | Notes: None",
+                    "classroomLink": "",
+                    "skills": {
+                              "logic": 50,
+                              "loops": 50,
+                              "variables": 50,
+                              "syntax": 50,
+                              "projects": 50
+                    },
+                    "metrics": {
+                              "attended": 0,
+                              "total": 8,
+                              "projects": 0,
+                              "lines": 0
+                    }
+          }
+];
+            let studentsAppended = false;
+            parsed.students = parsed.students || [];
+            coreEnrolledStudents.forEach(ces => {
+                const cleanFirst = (ces.firstName || '').toLowerCase().trim();
+                const cleanParent = (ces.parentEmail || '').toLowerCase().trim();
+                const exists = parsed.students.some(s => {
+                    const sFirst = (s.firstName || '').toLowerCase().trim();
+                    const sParent = (s.parentEmail || '').toLowerCase().trim();
+                    return s.id === ces.id || (sFirst === cleanFirst && sParent === cleanParent);
+                });
+                if (!exists) {
+                    parsed.students.push(ces);
+                    studentsAppended = true;
+                }
+            });
+
+            // Ensure parent accounts for core enrolled students exist
+            const coreParentUsers = {
+          "abiodunadebiyis@gmail.com": {
+                    "email": "abiodunadebiyis@gmail.com",
+                    "name": "Abiodun Shittu",
+                    "role": "parent",
+                    "password": "2LaZzEqrAa"
+          },
+          "abmsotayo@googlemail.com": {
+                    "email": "abmsotayo@googlemail.com",
+                    "name": "Alexandra Sotayo",
+                    "role": "parent",
+                    "password": "6U2MXMGTWs"
+          },
+          "chukwumah.maryrose@gmail.com": {
+                    "email": "Chukwumah.maryrose@gmail.com",
+                    "name": "Maryrose Chukwumah-Mordi",
+                    "role": "parent",
+                    "password": "dwHeHA9Ns3"
+          },
+          "talk2nike2009@gmail.com": {
+                    "email": "talk2nike2009@gmail.com",
+                    "name": "Babalola Olanike",
+                    "role": "parent",
+                    "password": "PJCA47SAeK"
+          },
+          "temiladeokesanjo1@gmail.com": {
+                    "email": "Temiladeokesanjo1@gmail.com",
+                    "name": "Temi Okesanjo",
+                    "role": "parent",
+                    "password": "YJFmFHfW2J"
+          },
+          "diamondsheva@gmail.com": {
+                    "email": "diamondsheva@gmail.com",
+                    "name": "Diamond Sheva Omosuyi",
+                    "role": "parent",
+                    "password": "hEFGSx2bXG"
+          },
+          "carlanouriat.k@gmail.com": {
+                    "email": "carlanouriat.k@gmail.com",
+                    "name": "Carla KARI",
+                    "role": "parent",
+                    "password": "Ch46FgDWPw"
+          },
+          "eoosonaike@gmail.com": {
+                    "email": "eoosonaike@gmail.com",
+                    "name": "Oladipupo Sonaike",
+                    "role": "parent",
+                    "password": "299HYm5VvS"
+          },
+          "annakhavkina@gmail.com": {
+                    "email": "annakhavkina@gmail.com",
+                    "name": "Anna Khavkina",
+                    "role": "parent",
+                    "password": "mdGa7MaHVv"
+          }
+};
+            Object.keys(coreParentUsers).forEach(pk => {
+                if (!parsed.users[pk]) {
+                    parsed.users[pk] = coreParentUsers[pk];
+                    usersAppended = true;
+                }
+            });
+
+            // Ensure pending welcome emails are in emailQueue awaiting admin review/approval
+            const corePendingEmailQueue = [
+          {
+                    "id": "queue-1792137029497-6tax",
+                    "type": "welcome",
+                    "to": "abmsotayo@googlemail.com",
+                    "recipientName": "Alexandra Sotayo",
+                    "subject": "Welcome to STEMulus — Alexandra's coding journey starts!",
+                    "htmlPreview": "Parent Welcome Kit for Alexandra Sotayo. Student: Alexandra Sotayo. Track: Python Programming. Initial Temp Password: 6U2MXMGTWs",
+                    "data": {
+                              "parentEmail": "abmsotayo@googlemail.com",
+                              "parentName": "Alexandra Sotayo",
+                              "studentName": "Alexandra Sotayo",
+                              "courseName": "Python Programming",
+                              "tempPassword": "6U2MXMGTWs",
+                              "classroomLink": "",
+                              "adminApproved": false
+                    },
+                    "status": "pending",
+                    "createdAt": "2026-10-16T07:50:29.497Z",
+                    "triggeredBy": "autonomous_playwright_onboarding"
+          },
+          {
+                    "id": "queue-1792137028617-bx59",
+                    "type": "welcome",
+                    "to": "abiodunadebiyis@gmail.com",
+                    "recipientName": "Abiodun Shittu",
+                    "subject": "Welcome to STEMulus — Abdulsalam's coding journey starts!",
+                    "htmlPreview": "Parent Welcome Kit for Abiodun Shittu. Student: Abdulsalam Modesire Shittu. Track: Python Programming. Initial Temp Password: 2LaZzEqrAa",
+                    "data": {
+                              "parentEmail": "abiodunadebiyis@gmail.com",
+                              "parentName": "Abiodun Shittu",
+                              "studentName": "Abdulsalam Modesire Shittu",
+                              "courseName": "Python Programming",
+                              "tempPassword": "2LaZzEqrAa",
+                              "classroomLink": "",
+                              "adminApproved": false
+                    },
+                    "status": "pending",
+                    "createdAt": "2026-10-16T07:50:28.617Z",
+                    "triggeredBy": "autonomous_playwright_onboarding"
+          },
+          {
+                    "id": "queue-1792137038663-kgx9",
+                    "type": "welcome",
+                    "to": "annakhavkina@gmail.com",
+                    "recipientName": "Anna Khavkina",
+                    "subject": "Welcome to STEMulus — David's coding journey starts!",
+                    "htmlPreview": "Parent Welcome Kit for Anna Khavkina. Student: David Gjoka. Track: Python Programming. Initial Temp Password: mdGa7MaHVv",
+                    "data": {
+                              "parentEmail": "annakhavkina@gmail.com",
+                              "parentName": "Anna Khavkina",
+                              "studentName": "David Gjoka",
+                              "courseName": "Python Programming",
+                              "tempPassword": "mdGa7MaHVv",
+                              "classroomLink": "",
+                              "adminApproved": false
+                    },
+                    "status": "pending",
+                    "createdAt": "2026-10-16T07:50:38.663Z",
+                    "triggeredBy": "autonomous_playwright_onboarding"
+          },
+          {
+                    "id": "queue-1792137037330-n18x",
+                    "type": "welcome",
+                    "to": "eoosonaike@gmail.com",
+                    "recipientName": "Oladipupo Sonaike",
+                    "subject": "Welcome to STEMulus — Momooreoluwa's coding journey starts!",
+                    "htmlPreview": "Parent Welcome Kit for Oladipupo Sonaike. Student: Momooreoluwa Sonaike. Track: Scratch Creators. Initial Temp Password: 299HYm5VvS",
+                    "data": {
+                              "parentEmail": "eoosonaike@gmail.com",
+                              "parentName": "Oladipupo Sonaike",
+                              "studentName": "Momooreoluwa Sonaike",
+                              "courseName": "Scratch Creators",
+                              "tempPassword": "299HYm5VvS",
+                              "classroomLink": "",
+                              "adminApproved": false
+                    },
+                    "status": "pending",
+                    "createdAt": "2026-10-16T07:50:37.330Z",
+                    "triggeredBy": "autonomous_playwright_onboarding"
+          },
+          {
+                    "id": "queue-1792137036078-w7wa",
+                    "type": "welcome",
+                    "to": "carlanouriat.k@gmail.com",
+                    "recipientName": "Carla KARI",
+                    "subject": "Welcome to STEMulus — JUNAYD's coding journey starts!",
+                    "htmlPreview": "Parent Welcome Kit for Carla KARI. Student: JUNAYD KARI. Track: Scratch Creators. Initial Temp Password: Ch46FgDWPw",
+                    "data": {
+                              "parentEmail": "carlanouriat.k@gmail.com",
+                              "parentName": "Carla KARI",
+                              "studentName": "JUNAYD KARI",
+                              "courseName": "Scratch Creators",
+                              "tempPassword": "Ch46FgDWPw",
+                              "classroomLink": "",
+                              "adminApproved": false
+                    },
+                    "status": "pending",
+                    "createdAt": "2026-10-16T07:50:36.078Z",
+                    "triggeredBy": "autonomous_playwright_onboarding"
+          },
+          {
+                    "id": "queue-1792137034891-ny1d",
+                    "type": "welcome",
+                    "to": "diamondsheva@gmail.com",
+                    "recipientName": "Diamond Sheva Omosuyi",
+                    "subject": "Welcome to STEMulus — King's coding journey starts!",
+                    "htmlPreview": "Parent Welcome Kit for Diamond Sheva Omosuyi. Student: King Myles Omosuyi. Track: Scratch Creators. Initial Temp Password: hEFGSx2bXG",
+                    "data": {
+                              "parentEmail": "diamondsheva@gmail.com",
+                              "parentName": "Diamond Sheva Omosuyi",
+                              "studentName": "King Myles Omosuyi",
+                              "courseName": "Scratch Creators",
+                              "tempPassword": "hEFGSx2bXG",
+                              "classroomLink": "",
+                              "adminApproved": false
+                    },
+                    "status": "pending",
+                    "createdAt": "2026-10-16T07:50:34.891Z",
+                    "triggeredBy": "autonomous_playwright_onboarding"
+          },
+          {
+                    "id": "queue-1792137034030-v4oz",
+                    "type": "welcome",
+                    "to": "Temiladeokesanjo1@gmail.com",
+                    "recipientName": "Temi Okesanjo",
+                    "subject": "Welcome to STEMulus — Gbolade's coding journey starts!",
+                    "htmlPreview": "Parent Welcome Kit for Temi Okesanjo. Student: Gbolade Okesanjo. Track: Web & App Development. Initial Temp Password: YJFmFHfW2J",
+                    "data": {
+                              "parentEmail": "Temiladeokesanjo1@gmail.com",
+                              "parentName": "Temi Okesanjo",
+                              "studentName": "Gbolade Okesanjo",
+                              "courseName": "Web & App Development",
+                              "tempPassword": "YJFmFHfW2J",
+                              "classroomLink": "",
+                              "adminApproved": false
+                    },
+                    "status": "pending",
+                    "createdAt": "2026-10-16T07:50:34.030Z",
+                    "triggeredBy": "autonomous_playwright_onboarding"
+          },
+          {
+                    "id": "queue-1792137033048-01ie",
+                    "type": "welcome",
+                    "to": "talk2nike2009@gmail.com",
+                    "recipientName": "Babalola Olanike",
+                    "subject": "Welcome to STEMulus — Babalola's coding journey starts!",
+                    "htmlPreview": "Parent Welcome Kit for Babalola Olanike. Student: Babalola Oluwadunmininu Pearl. Track: Python Programming. Initial Temp Password: PJCA47SAeK",
+                    "data": {
+                              "parentEmail": "talk2nike2009@gmail.com",
+                              "parentName": "Babalola Olanike",
+                              "studentName": "Babalola Oluwadunmininu Pearl",
+                              "courseName": "Python Programming",
+                              "tempPassword": "PJCA47SAeK",
+                              "classroomLink": "",
+                              "adminApproved": false
+                    },
+                    "status": "pending",
+                    "createdAt": "2026-10-16T07:50:33.048Z",
+                    "triggeredBy": "autonomous_playwright_onboarding"
+          },
+          {
+                    "id": "queue-1792137032043-b8y8",
+                    "type": "welcome",
+                    "to": "Chukwumah.maryrose@gmail.com",
+                    "recipientName": "Maryrose Chukwumah-Mordi",
+                    "subject": "Welcome to STEMulus — Brian's coding journey starts!",
+                    "htmlPreview": "Parent Welcome Kit for Maryrose Chukwumah-Mordi. Student: Brian Osenedum Chukwuka-Mordi. Track: Scratch Creators. Initial Temp Password: dwHeHA9Ns3",
+                    "data": {
+                              "parentEmail": "Chukwumah.maryrose@gmail.com",
+                              "parentName": "Maryrose Chukwumah-Mordi",
+                              "studentName": "Brian Osenedum Chukwuka-Mordi",
+                              "courseName": "Scratch Creators",
+                              "tempPassword": "dwHeHA9Ns3",
+                              "classroomLink": "",
+                              "adminApproved": false
+                    },
+                    "status": "pending",
+                    "createdAt": "2026-10-16T07:50:32.043Z",
+                    "triggeredBy": "autonomous_playwright_onboarding"
+          },
+          {
+                    "id": "queue-1792137031290-mrmj",
+                    "type": "student-enrolled",
+                    "to": "abmsotayo@googlemail.com",
+                    "recipientName": "Matt Sotayo",
+                    "subject": "STEMulus Enrollment Update — Annabelle has been enrolled!",
+                    "htmlPreview": "Enrollment notice for Annabelle in Python Programming.",
+                    "data": {
+                              "parentEmail": "abmsotayo@googlemail.com",
+                              "parentName": "Matt Sotayo",
+                              "studentName": "Annabelle Sotayo",
+                              "courseName": "Python Programming",
+                              "tempPassword": "6aHXZAaqcS",
+                              "classroomLink": "",
+                              "adminApproved": false
+                    },
+                    "status": "pending",
+                    "createdAt": "2026-10-16T07:50:31.290Z",
+                    "triggeredBy": "autonomous_playwright_onboarding"
+          }
+];
+            parsed.emailQueue = parsed.emailQueue || [];
+            let queueAppended = false;
+            corePendingEmailQueue.forEach(eq => {
+                if (!parsed.emailQueue.some(q => q.id === eq.id || (q.to === eq.to && q.type === eq.type))) {
+                    parsed.emailQueue.unshift(eq);
+                    queueAppended = true;
+                }
+            });
+
+            if (usersAppended || studentsAppended || queueAppended) {
                 localStorage.setItem("stemulus_db", JSON.stringify(parsed));
             }
 
@@ -447,14 +1102,20 @@ const DashboardEngine = (function() {
             return parsed;
         } catch (e) {
             console.error("Local DB corrupt. Re-initializing...", e);
-            localStorage.setItem("stemulus_db", JSON.stringify(DEFAULT_DATA));
+            saveDB(DEFAULT_DATA);
             return DEFAULT_DATA;
         }
     }
 
-    // Helper to save data to localStorage & Cloud
+    // Helper to save data to localStorage & Cloud (Encrypted at rest via Web Crypto Vault)
     function saveDB(db) {
-        try { localStorage.setItem('stemulus_db', JSON.stringify(db)); } catch(e) { console.warn('Storage quota exceeded:', e); }
+        try {
+            if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.saveSecureDB) {
+                StemulusSecurity.saveSecureDB(db);
+            } else if (typeof localStorage !== 'undefined') {
+                localStorage.setItem('stemulus_db', JSON.stringify(db));
+            }
+        } catch(e) { console.warn('Storage quota exceeded:', e); }
         if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function' && typeof CustomEvent !== 'undefined') {
             window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
         }
@@ -473,27 +1134,41 @@ const DashboardEngine = (function() {
         }
     }
 
+    // Modular Firestore collection synchronization
+    function syncToFirestore(collectionName, docId, data) {
+        if (typeof firebase !== 'undefined' && firebase.apps.length && docId && data) {
+            try {
+                firebase.firestore().collection(collectionName).doc(String(docId)).set(data, { merge: true })
+                    .then(() => { console.log(`[STEMulus Cloud] Modular sync: ${collectionName}/${docId}`); })
+                    .catch(err => { console.warn(`[STEMulus Cloud] Modular sync ${collectionName}/${docId} failed:`, err); });
+            } catch (e) {
+                console.warn('[STEMulus Cloud] Firestore modular write error:', e);
+            }
+        }
+    }
+
     // Session time-to-live: 8 hours
     var SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 
-    // Get currently logged-in user from session
+    // Get currently logged-in user from cryptographically verified session
     function getSession() {
+        if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession) {
+            return StemulusSecurity.getSecureSession();
+        }
+
         const sessionStr = (typeof sessionStorage !== 'undefined' ? sessionStorage.getItem("stemulus_session") : null) || 
                            (typeof localStorage !== 'undefined' ? localStorage.getItem("stemulus_session") : null);
         if (!sessionStr) return null;
-        try {
-            const session = JSON.parse(sessionStr);
-            if (session && session.issuedAt) {
-                if (Date.now() - session.issuedAt > SESSION_TTL_MS) {
-                    if (typeof sessionStorage !== 'undefined') sessionStorage.removeItem("stemulus_session");
-                    if (typeof localStorage !== 'undefined') localStorage.removeItem("stemulus_session");
-                    return null;
-                }
+
+        // If it's a signed token (starts with STMSV2)
+        if (sessionStr.startsWith('STMSV2')) {
+            if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.verifySession) {
+                return StemulusSecurity.verifySession(sessionStr);
             }
-            return session;
-        } catch (e) {
             return null;
         }
+
+        return null;
     }
 
     async function login(email, password) {
@@ -512,7 +1187,7 @@ const DashboardEngine = (function() {
                     const cloudData = snap.data();
                     if (cloudData && cloudData.users) {
                         db = cloudData;
-                        localStorage.setItem('stemulus_db', JSON.stringify(db));
+                        saveDB(db);
                         user = db.users[key];
                     }
                 }
@@ -545,8 +1220,12 @@ const DashboardEngine = (function() {
 
         if (match) {
             const safeUser = { email: user.email, role: user.role, name: user.name, issuedAt: Date.now(), mustChangePassword: user.mustChangePassword === true };
-            sessionStorage.setItem("stemulus_session", JSON.stringify(safeUser));
-            localStorage.setItem("stemulus_session", JSON.stringify(safeUser));
+            if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.saveSecureSession) {
+                StemulusSecurity.saveSecureSession(safeUser);
+            } else {
+                if (typeof sessionStorage !== 'undefined') sessionStorage.setItem("stemulus_session", JSON.stringify(safeUser));
+                if (typeof localStorage !== 'undefined') localStorage.setItem("stemulus_session", JSON.stringify(safeUser));
+            }
             return { success: true, user: safeUser };
         }
         return { success: false, message: "Invalid email or password." };
@@ -554,6 +1233,9 @@ const DashboardEngine = (function() {
     }
 
     function logout() {
+        if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.clearSecureSession) {
+            StemulusSecurity.clearSecureSession();
+        }
         if (typeof sessionStorage !== 'undefined') sessionStorage.clear();
         if (typeof localStorage !== 'undefined') localStorage.removeItem('stemulus_session');
     }
@@ -562,8 +1244,15 @@ const DashboardEngine = (function() {
     function getStudents(parentEmail = null) {
         const db = getDB();
         const students = db.students || [];
-        if (parentEmail) {
-            const clean = String(parentEmail).toLowerCase().trim();
+        let filterEmail = parentEmail;
+        if (!filterEmail) {
+            const session = getSession();
+            if (session && session.role === 'parent' && session.email) {
+                filterEmail = session.email;
+            }
+        }
+        if (filterEmail) {
+            const clean = String(filterEmail).toLowerCase().trim();
             return students.filter(s => {
                 if (s.parentEmail && String(s.parentEmail).toLowerCase().trim() === clean) return true;
                 if (s.parentName && String(s.parentName).toLowerCase().trim() === clean) return true;
@@ -573,18 +1262,40 @@ const DashboardEngine = (function() {
         return students;
     }
 
+    function resolveTutorDetails(tutorInput) {
+        if (!tutorInput) return null;
+        const clean = String(tutorInput).toLowerCase().trim();
+        if (!clean || clean === 'unassigned') return null;
+
+        const allTutors = getTutors();
+
+        // 1. Exact email match
+        let found = allTutors.find(t => t.email && t.email.toLowerCase().trim() === clean);
+        if (found) return found;
+
+        // 2. Exact ID match
+        found = allTutors.find(t => t.id && t.id.toLowerCase().trim() === clean);
+        if (found) return found;
+
+        // 3. Exact name match
+        found = allTutors.find(t => t.name && t.name.toLowerCase().trim() === clean);
+        if (found) return found;
+
+        // 4. Token / Substring match (3+ chars)
+        const tokens = clean.split(/\s+/).filter(t => t.length > 2);
+        if (tokens.length > 0) {
+            found = allTutors.find(t => {
+                const tName = (t.name || '').toLowerCase().trim();
+                return tokens.some(tok => tName.includes(tok));
+            });
+            if (found) return found;
+        }
+
+        return null;
+    }
+
     function getStudentsByTutor(tutorIdentifier) {
-        var db = getDB ? getDB() : JSON.parse(localStorage.getItem('stemulus_db') || '{}');
-        var students = db.students || [];
-        if (!tutorIdentifier) return [];
-        var q = tutorIdentifier.toLowerCase().trim();
-        return students.filter(function(s) {
-            var tEmail = (s.tutorEmail || '').toLowerCase().trim();
-            var tName = (s.tutorName || '').toLowerCase().trim();
-            if (tEmail && tEmail === q) return true;
-            if (tName && tName === q) return true;
-            return false;
-        });
+        return getTutorStudents(tutorIdentifier);
     }
 
     function getParents() {
@@ -671,6 +1382,17 @@ const DashboardEngine = (function() {
         if (!student.metrics) student.metrics = { attended: 0, total: 8, projects: 0, lines: 0 };
         student.birthday = (student.birthday && typeof student.birthday === 'string' && student.birthday.trim().length >= 10) ? student.birthday.trim() : '';
         student.hasExplicitBirthday = !!(student.birthday);
+
+        // Resolve tutor identity if assigned
+        if (student.tutorName || student.tutorEmail || student.tutorId) {
+            const tutorMatch = resolveTutorDetails(student.tutorEmail || student.tutorName || student.tutorId);
+            if (tutorMatch) {
+                student.tutorName = tutorMatch.name;
+                student.tutorEmail = tutorMatch.email;
+                student.tutorId = tutorMatch.id;
+            }
+        }
+
         db.students = db.students || [];
         db.students.push(student);
         saveDB(db);
@@ -693,16 +1415,34 @@ const DashboardEngine = (function() {
         if (idx !== -1) {
             db.students[idx] = { ...db.students[idx], ...updates, id: id };
 
-            // If tutor assignment changed, synchronize pending schedules
-            if (updates.tutorName || updates.tutorEmail) {
+            // If tutor assignment changed or provided, synchronize tutor fields and pending schedules
+            if (updates.tutorName || updates.tutorEmail || updates.tutorId) {
+                const tutorInput = updates.tutorEmail || updates.tutorName || updates.tutorId;
+                const tutorMatch = resolveTutorDetails(tutorInput);
+                if (tutorMatch) {
+                    db.students[idx].tutorName = tutorMatch.name;
+                    db.students[idx].tutorEmail = tutorMatch.email;
+                    db.students[idx].tutorId = tutorMatch.id;
+                } else if (updates.tutorName === 'Unassigned' || updates.tutorEmail === '') {
+                    db.students[idx].tutorName = 'Unassigned';
+                    db.students[idx].tutorEmail = '';
+                    db.students[idx].tutorId = '';
+                }
+
                 const sName = ((db.students[idx].firstName || '') + ' ' + (db.students[idx].lastName || '')).trim().toLowerCase();
+                const assignedTutorName = db.students[idx].tutorName || '';
+                const assignedTutorEmail = db.students[idx].tutorEmail || '';
+                const assignedTutorId = db.students[idx].tutorId || '';
+
                 (db.schedules || []).forEach(sch => {
                     if (sch.attendanceStatus === 'pending') {
                         const matchId = sch.studentId && sch.studentId === id;
                         const matchName = sch.studentName && sch.studentName.trim().toLowerCase() === sName;
                         if (matchId || matchName) {
-                            if (updates.tutorName) sch.mentor = updates.tutorName;
-                            if (updates.tutorEmail !== undefined) sch.tutorEmail = updates.tutorEmail;
+                            sch.mentor = assignedTutorName;
+                            sch.tutorName = assignedTutorName;
+                            sch.tutorEmail = assignedTutorEmail;
+                            sch.tutorId = assignedTutorId;
                         }
                     }
                 });
@@ -716,8 +1456,15 @@ const DashboardEngine = (function() {
 
     function deleteStudent(id) {
         const db = getDB();
-        db.students = db.students.filter(s => s.id !== id);
+        db.deletedStudentIds = db.deletedStudentIds || [];
+        if (!db.deletedStudentIds.includes(id)) {
+            db.deletedStudentIds.push(id);
+        }
+        db.students = (db.students || []).filter(s => s.id !== id);
         saveDB(db);
+        if (typeof syncToFirestore === 'function') {
+            syncToFirestore('students', id, { isDeleted: true, status: 'withdrawn', deletedAt: new Date().toISOString() });
+        }
     }
 
     function setRemindersPaused(studentId, paused) {
@@ -912,10 +1659,11 @@ const DashboardEngine = (function() {
     function getSchedules(studentId = null) {
         reconcileHeldSchedules();
         const db = getDB();
+        const schedules = (db && Array.isArray(db.schedules)) ? db.schedules : [];
         if (studentId) {
-            return db.schedules.filter(s => s.studentId === studentId);
+            return schedules.filter(s => s && s.studentId === studentId);
         }
-        return db.schedules;
+        return schedules;
     }
 
     function addSchedule(session) {
@@ -1243,6 +1991,7 @@ const DashboardEngine = (function() {
         });
 
         saveDB(db);
+        syncToFirestore('attendance', record.id, record);
         return Object.assign({ success: true }, record);
     }
 
@@ -1355,6 +2104,7 @@ const DashboardEngine = (function() {
             db.attendanceRecords[idx].status = status;
             
             // If approved, update matching schedule and student metrics
+            let touchedSchedule = null;
             if (status === 'approved') {
                 const record = db.attendanceRecords[idx];
                 db.schedules = db.schedules || [];
@@ -1370,9 +2120,10 @@ const DashboardEngine = (function() {
                     db.schedules[schedIdx].tutorComment = record.tutorComment || record.notes;
                     db.schedules[schedIdx].conceptGrasp = record.conceptGrasp || 0;
                     db.schedules[schedIdx].whatBuilt = record.whatBuilt || '';
+                    touchedSchedule = db.schedules[schedIdx];
                 } else {
                     // Create an approved schedule entry so tutor hours & calendar reflect it
-                    db.schedules.push({
+                    touchedSchedule = {
                         id: "sch-" + Date.now(),
                         studentId: record.studentId,
                         studentName: record.studentName,
@@ -1389,7 +2140,8 @@ const DashboardEngine = (function() {
                         tutorComment: record.tutorComment || record.notes,
                         conceptGrasp: record.conceptGrasp || 0,
                         whatBuilt: record.whatBuilt || ''
-                    });
+                    };
+                    db.schedules.push(touchedSchedule);
                 }
                 
                 // Update student metrics (attended count and per-month total sessions)
@@ -1398,8 +2150,40 @@ const DashboardEngine = (function() {
                     if (!db.students[studIdx].metrics) {
                         db.students[studIdx].metrics = { attended: 0, total: 0, projects: 0, lines: 0 };
                     }
-                    db.students[studIdx].metrics.attended = (db.students[studIdx].metrics.attended || 0) + 1;
+                    // Strictly compute attended sessions by counting distinct approved records
+                    const attList = (db && Array.isArray(db.attendanceRecords)) ? db.attendanceRecords : [];
+                    const approvedCount = attList.filter(r => 
+                        r && r.studentId === record.studentId && 
+                        (r.status === 'approved' || r.isHeld) &&
+                        r.attendanceStatus !== 'absent'
+                    ).length;
+                    db.students[studIdx].metrics.attended = approvedCount;
                     db.students[studIdx].metrics.total = calculateMonthlySessionTarget(db.students[studIdx], record.classDate);
+
+                    // Anchor first class date for monthly tuition billing cycle
+                    const sRef = db.students[studIdx];
+                    if (!sRef.billing) {
+                        const nextDue = (typeof BillingEngine !== 'undefined' && BillingEngine.addMonths)
+                            ? BillingEngine.addMonths(record.classDate, 1)
+                            : new Date(new Date(record.classDate).setMonth(new Date(record.classDate).getMonth() + 1)).toISOString().slice(0, 10);
+                        sRef.billing = {
+                            firstClassDate: record.classDate,
+                            cycleStartDate: record.classDate,
+                            nextDueDate: nextDue,
+                            monthlyFee: sRef.monthlyFee || 35000,
+                            currency: 'NGN',
+                            status: 'current',
+                            history: []
+                        };
+                    } else if (!sRef.billing.firstClassDate) {
+                        sRef.billing.firstClassDate = record.classDate;
+                        if (!sRef.billing.cycleStartDate) {
+                            sRef.billing.cycleStartDate = record.classDate;
+                            sRef.billing.nextDueDate = (typeof BillingEngine !== 'undefined' && BillingEngine.addMonths)
+                                ? BillingEngine.addMonths(record.classDate, 1)
+                                : sRef.billing.nextDueDate;
+                        }
+                    }
                 }
 
                 // Add progress report
@@ -1437,6 +2221,14 @@ const DashboardEngine = (function() {
             }
             
             saveDB(db);
+            syncToFirestore('attendance', db.attendanceRecords[idx].id, db.attendanceRecords[idx]);
+            const matchedStudent = db.students.find(s => s.id === db.attendanceRecords[idx].studentId);
+            if (matchedStudent && typeof syncToFirestore === 'function') {
+                syncToFirestore('students', matchedStudent.id, matchedStudent);
+            }
+            if (touchedSchedule && typeof syncToFirestore === 'function') {
+                syncToFirestore('schedules', touchedSchedule.id, touchedSchedule);
+            }
             return db.attendanceRecords[idx];
         }
         return null;
@@ -1481,10 +2273,11 @@ const DashboardEngine = (function() {
     // --- Reschedule Requests ---
     function getRescheduleRequests(parentEmail = null) {
         const db = getDB();
+        const reqs = (db && Array.isArray(db.rescheduleRequests)) ? db.rescheduleRequests : [];
         if (parentEmail) {
-            return db.rescheduleRequests.filter(r => r.parentEmail === parentEmail);
+            return reqs.filter(r => r && r.parentEmail === parentEmail);
         }
-        return db.rescheduleRequests;
+        return reqs;
     }
 
     function submitReschedule(request) {
@@ -1562,21 +2355,24 @@ const DashboardEngine = (function() {
     // --- Onboarding Controller ---
     function getOnboarding(email) {
         const db = getDB();
-        return db.onboarding[email] || { completed: true, steps: [] };
+        db.onboarding = db.onboarding || {};
+        return (email && db.onboarding[email]) ? db.onboarding[email] : { completed: true, steps: [] };
     }
 
     function completeOnboardingStep(email, stepId) {
         const db = getDB();
-        if (db.onboarding[email]) {
-            const step = db.onboarding[email].steps.find(s => s.id === stepId);
+        db.onboarding = db.onboarding || {};
+        if (email && db.onboarding[email]) {
+            const step = (db.onboarding[email].steps || []).find(s => s.id === stepId);
             if (step) {
                 step.done = true;
                 
                 // Check if all steps completed
-                const allDone = db.onboarding[email].steps.every(s => s.done);
+                const allDone = (db.onboarding[email].steps || []).every(s => s.done);
                 if (allDone) {
                     db.onboarding[email].completed = true;
                     // Trigger welcome notification
+                    db.notifications = db.notifications || [];
                     db.notifications.push({
                         id: "not-" + Date.now(),
                         title: "Onboarding Complete!",
@@ -1612,10 +2408,11 @@ const DashboardEngine = (function() {
     // --- Certificates Controller ---
     function getCertificates(studentName = null) {
         const db = getDB();
+        const certs = (db && Array.isArray(db.certificates)) ? db.certificates : [];
         if (studentName) {
-            return db.certificates.filter(c => c.student_name.toLowerCase().includes(studentName.toLowerCase()));
+            return certs.filter(c => c && (c.student_name || c.studentName || '').toLowerCase().includes(studentName.toLowerCase()));
         }
-        return db.certificates;
+        return certs;
     }
 
     function addCertificate(cert) {
@@ -1661,9 +2458,10 @@ const DashboardEngine = (function() {
 
     function deleteCertificate(id) {
         const db = getDB();
+        db.certificates = (db && Array.isArray(db.certificates)) ? db.certificates : [];
         // Find the cert before deleting to get its credential_id for Firebase removal
-        const cert = db.certificates.find(c => c.id === id);
-        db.certificates = db.certificates.filter(c => c.id !== id);
+        const cert = db.certificates.find(c => c && c.id === id);
+        db.certificates = db.certificates.filter(c => c && c.id !== id);
         saveDB(db);
 
         // Also delete from Firebase Firestore
@@ -1763,51 +2561,92 @@ const DashboardEngine = (function() {
 
     function getTutorStudents(tutorEmail = null) {
         const session = getSession();
-        let email = (tutorEmail || (session && session.email) || '').toLowerCase().trim();
-        let name = (session && session.name || '').toLowerCase().trim();
-        let tutorId = (session && (session.id || session.tutorId) || '').toLowerCase().trim();
         const db = getDB();
         const students = db.students || [];
 
-        // Admin override only if NO specific tutor email was requested
-        if (session && session.role === 'admin' && !tutorEmail) return students;
-
-        // Enrich tutor info (name, id, email) from db.tutors / db.users if any identifier is present
-        const allTutors = (db.tutors || []).concat(
-            Object.values(db.users || {}).filter(u => u && u.role === 'tutor')
-        );
-        if (email || tutorId || name) {
-            const foundTutor = allTutors.find(t => 
-                (email && t.email && t.email.toLowerCase().trim() === email) ||
-                (tutorId && t.id && t.id.toLowerCase().trim() === tutorId) ||
-                (name && t.name && t.name.toLowerCase().trim() === name)
-            );
-            if (foundTutor) {
-                if (!email && foundTutor.email) email = foundTutor.email.toLowerCase().trim();
-                if (!name && foundTutor.name) name = foundTutor.name.toLowerCase().trim();
-                if (!tutorId && foundTutor.id) tutorId = foundTutor.id.toLowerCase().trim();
+        // Admin override: Admin viewing student roster or admin session accessing attendance
+        if (session && session.role === 'admin') {
+            const cleanTutorEmail = (tutorEmail || '').toLowerCase().trim();
+            const adminEmail = (session.email || '').toLowerCase().trim();
+            if (!cleanTutorEmail || cleanTutorEmail === adminEmail || cleanTutorEmail === 'admin') {
+                return students;
             }
         }
 
-        if (!email && !name && !tutorId) return [];
+        const allTutors = getTutors();
 
-        const nameTokens = name ? name.split(/\s+/).filter(t => t.length > 2) : [];
+        // Identify search candidates from argument, session, etc.
+        const candidateInputs = [
+            tutorEmail,
+            session ? session.email : null,
+            session ? session.name : null,
+            session ? (session.id || session.tutorId) : null
+        ].filter(Boolean).map(s => String(s).toLowerCase().trim());
+
+        if (candidateInputs.length === 0) return [];
+
+        // Resolve matching tutor profile from allTutors
+        let matchedTutor = null;
+        for (const input of candidateInputs) {
+            matchedTutor = resolveTutorDetails(input);
+            if (matchedTutor) break;
+        }
+
+        // Build sets of recognized emails, names, IDs, and tokens for this tutor
+        const tutorEmails = new Set();
+        const tutorNames = new Set();
+        const tutorIds = new Set();
+        const nameTokens = new Set();
+
+        candidateInputs.forEach(inp => {
+            if (inp.includes('@')) tutorEmails.add(inp);
+            else tutorNames.add(inp);
+        });
+
+        if (matchedTutor) {
+            if (matchedTutor.email) tutorEmails.add(matchedTutor.email.toLowerCase().trim());
+            if (matchedTutor.name) tutorNames.add(matchedTutor.name.toLowerCase().trim());
+            if (matchedTutor.id) tutorIds.add(matchedTutor.id.toLowerCase().trim());
+
+            // Core aliases for Sarah Jane / Demo Tutor
+            if (matchedTutor.email === 'tutor@stemuluskidstech.com' || matchedTutor.name === 'Sarah Jane' || matchedTutor.name === 'Demo Tutor') {
+                tutorEmails.add('tutor@stemuluskidstech.com');
+                tutorNames.add('sarah jane');
+                tutorNames.add('demo tutor');
+                tutorIds.add('tut-101');
+            }
+        }
+
+        tutorNames.forEach(n => {
+            n.split(/\s+/).forEach(tok => {
+                if (tok.length > 2) nameTokens.add(tok);
+            });
+        });
 
         const filtered = students.filter(s => {
             const sEmail = (s.tutorEmail || '').toLowerCase().trim();
             const sName = (s.tutorName || '').toLowerCase().trim();
             const sTutorId = (s.tutorId || '').toLowerCase().trim();
 
-            if (tutorId && sTutorId && sTutorId === tutorId) return true;
-            if (email && sEmail && sEmail === email) return true;
-            if (name && sName && sName === name) return true;
-            if (email && sName && sName === email) return true;
+            if (sName === 'unassigned') return false;
 
-            // Resilient token match: e.g. "Olalekan" matches "Olalekan Israel Ajimat"
-            if (nameTokens.length > 0 && sName) {
-                if (nameTokens.some(token => sName.includes(token))) return true;
+            if (sTutorId && tutorIds.has(sTutorId)) return true;
+            if (sEmail && tutorEmails.has(sEmail)) return true;
+            if (sName && tutorNames.has(sName)) return true;
+            if (sName && tutorEmails.has(sName)) return true;
+            if (sEmail && tutorNames.has(sEmail)) return true;
+
+            // Resilient token match: e.g. "Olalekan" matches "Olalekan Israel Ajimati"
+            if (sName && nameTokens.size > 0) {
+                for (const tok of nameTokens) {
+                    if (sName.includes(tok)) return true;
+                }
                 const sTokens = sName.split(/\s+/).filter(t => t.length > 2);
-                if (sTokens.some(token => name.includes(token))) return true;
+                for (const sTok of sTokens) {
+                    for (const n of tutorNames) {
+                        if (n.includes(sTok)) return true;
+                    }
+                }
             }
 
             return false;
@@ -1817,10 +2656,17 @@ const DashboardEngine = (function() {
         const schedules = db.schedules || [];
         const tutorSchedules = schedules.filter(sch => {
             const schEmail = (sch.tutorEmail || '').toLowerCase().trim();
-            const schMentor = (sch.mentor || '').toLowerCase().trim();
-            if (email && schEmail && schEmail === email) return true;
-            if (name && schMentor && schMentor === name) return true;
-            if (nameTokens.length > 0 && schMentor && nameTokens.some(t => schMentor.includes(t))) return true;
+            const schMentor = (sch.mentor || sch.tutorName || '').toLowerCase().trim();
+            const schTutorId = (sch.tutorId || '').toLowerCase().trim();
+
+            if (schTutorId && tutorIds.has(schTutorId)) return true;
+            if (schEmail && tutorEmails.has(schEmail)) return true;
+            if (schMentor && tutorNames.has(schMentor)) return true;
+            if (schMentor && nameTokens.size > 0) {
+                for (const tok of nameTokens) {
+                    if (schMentor.includes(tok)) return true;
+                }
+            }
             return false;
         });
 
@@ -1844,8 +2690,8 @@ const DashboardEngine = (function() {
                         lastName: parts.slice(1).join(' ') || '',
                         program: sch.course || 'Coding Track',
                         status: 'active',
-                        tutorName: sch.mentor,
-                        tutorEmail: sch.tutorEmail
+                        tutorName: sch.mentor || sch.tutorName || 'Tutor',
+                        tutorEmail: sch.tutorEmail || (matchedTutor ? matchedTutor.email : '')
                     });
                 }
             }
@@ -1865,10 +2711,11 @@ const DashboardEngine = (function() {
     // --- Progress Reports Controller ---
     function getReports(studentId = null) {
         const db = getDB();
+        const reps = (db && Array.isArray(db.progressReports)) ? db.progressReports : [];
         if (studentId) {
-            return db.progressReports.filter(r => r.studentId === studentId);
+            return reps.filter(r => r && r.studentId === studentId);
         }
-        return db.progressReports;
+        return reps;
     }
 
     function addReport(report) {
@@ -1896,7 +2743,7 @@ const DashboardEngine = (function() {
     // --- Enrollments (Student Registrations) Controller ---
     function getEnrollments() {
         const db = getDB();
-        return db.enrollments;
+        return db.enrollments || [];
     }
 
     function addEnrollment(enrollment) {
@@ -1939,6 +2786,8 @@ const DashboardEngine = (function() {
                 progress: 0,
                 avatarColor: "bg-purple-500",
                 tutorName: "Sarah Jane",
+                tutorEmail: "tutor@stemuluskidstech.com",
+                tutorId: "tut-101",
                 classroomLink: enr.classroomLink || ''
             };
             db.students.push(newStudent);
@@ -1953,6 +2802,9 @@ const DashboardEngine = (function() {
                 time: "16:30",
                 duration: "60",
                 mentor: "Sarah Jane",
+                tutorName: "Sarah Jane",
+                tutorEmail: "tutor@stemuluskidstech.com",
+                tutorId: "tut-101",
                 link: "https://zoom.us/j/mock-link",
                 attendanceStatus: "pending"
             });
@@ -2208,6 +3060,7 @@ const DashboardEngine = (function() {
             db.monthlyReports[existingIdx] = Object.assign({}, db.monthlyReports[existingIdx], report);
             saveDB(db);
             syncLegacyMonthlyReports(db.monthlyReports);
+            syncToFirestore('monthly_reports', report.id, db.monthlyReports[existingIdx]);
             return Object.assign({ success: true, isUpdate: true }, report);
         }
 
@@ -2232,6 +3085,7 @@ const DashboardEngine = (function() {
 
         saveDB(db);
         syncLegacyMonthlyReports(db.monthlyReports);
+        syncToFirestore('monthly_reports', report.id, report);
         return Object.assign({ success: true }, report);
     }
 
@@ -2243,6 +3097,7 @@ const DashboardEngine = (function() {
         db.monthlyReports[idx] = Object.assign({}, db.monthlyReports[idx], updates);
         saveDB(db);
         syncLegacyMonthlyReports(db.monthlyReports);
+        syncToFirestore('monthly_reports', id, db.monthlyReports[idx]);
         return db.monthlyReports[idx];
     }
 
@@ -2267,10 +3122,26 @@ const DashboardEngine = (function() {
                 read: false,
                 userEmail: r.tutorEmail.toLowerCase()
             });
+
+            // Transactional revision email to tutor
+            try {
+                fetch('/.netlify/functions/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'monthly-report-revision-tutor',
+                        to: r.tutorEmail.toLowerCase(),
+                        studentName: r.studentName,
+                        month: r.month,
+                        rejectionReason: r.rejectionReason
+                    })
+                }).catch(function(){});
+            } catch(e) {}
         }
 
         saveDB(db);
         syncLegacyMonthlyReports(db.monthlyReports);
+        syncToFirestore('monthly_reports', id, r);
         return r;
     }
 
@@ -2288,6 +3159,14 @@ const DashboardEngine = (function() {
         r.status = 'sent_to_parent';
         r.reviewedAt = new Date().toISOString();
         r.sentAt = new Date().toISOString();
+
+        // Approval Timeline matching KidzTech standards
+        r.approvalTimeline = r.approvalTimeline || {};
+        r.approvalTimeline.submittedAt = r.submittedAt || r.createdAt || new Date().toISOString();
+        r.approvalTimeline.managerApprovedAt = r.reviewedAt || new Date().toISOString();
+        r.approvalTimeline.directorApprovedAt = new Date().toISOString();
+        r.approvalTimeline.directorEmail = (getSession() ? getSession().email : 'admin@stemuluskidstech.com');
+        r.approvalTimeline.directorNote = (adminEdits && adminEdits.adminNotes) || r.adminNotes || 'Approved by Academic Director';
 
         // Find or link student
         var matchedStudent = (db.students || []).find(function(s){
@@ -2343,10 +3222,29 @@ const DashboardEngine = (function() {
                     grade: r.overallGrade,
                     month: r.month,
                     course: r.course,
-                    tutorName: r.tutorName
+                    tutorName: r.tutorName,
+                    directorNote: r.approvalTimeline.directorNote
                 },
                 triggeredBy: 'admin_monthly_report_send:' + r.id
             });
+
+            // Direct transactional email dispatch via Netlify Resend function
+            try {
+                fetch('/.netlify/functions/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'monthly_report',
+                        to: parentEmail.toLowerCase(),
+                        studentName: r.studentName,
+                        grade: r.overallGrade,
+                        month: r.month,
+                        course: r.course,
+                        tutorName: r.tutorName,
+                        directorNote: r.approvalTimeline.directorNote
+                    })
+                }).catch(function(){});
+            } catch(e) {}
         }
 
         // Notify Tutor
@@ -2364,6 +3262,7 @@ const DashboardEngine = (function() {
 
         saveDB(db);
         syncLegacyMonthlyReports(db.monthlyReports);
+        syncToFirestore('monthly_reports', r.id, r);
         r.success = true;
         return r;
     }
@@ -2474,6 +3373,7 @@ const DashboardEngine = (function() {
                 if (params.phone) db.students[existingStudIdx].parentPhone = params.phone;
                 newStudent = db.students[existingStudIdx];
             } else {
+                const matchedQoTutor = resolveTutorDetails(params.tutorName || 'Sarah Jane');
                 newStudent = {
                     id: 'std-' + Date.now(),
                     firstName: fName,
@@ -2491,7 +3391,9 @@ const DashboardEngine = (function() {
                     hasExplicitBirthday: !!(params.birthday && params.birthday.trim()),
                     progress: 0,
                     avatarColor: ['#4F46E5', '#059669', '#D97706', '#DC2626', '#7C3AED', '#2563EB', '#0891B2'][Math.floor(Math.random() * 7)],
-                    tutorName: params.tutorName || 'Sarah Jane',
+                    tutorName: matchedQoTutor ? matchedQoTutor.name : (params.tutorName || 'Sarah Jane'),
+                    tutorEmail: matchedQoTutor ? matchedQoTutor.email : 'tutor@stemuluskidstech.com',
+                    tutorId: matchedQoTutor ? matchedQoTutor.id : 'tut-101',
                     classroomLink: params.classroomLink || 'https://zoom.us/j/stemulus-class'
                 };
                 db.students.push(newStudent);
@@ -2510,6 +3412,9 @@ const DashboardEngine = (function() {
                 time: '16:30',
                 duration: '60',
                 mentor: newStudent.tutorName,
+                tutorName: newStudent.tutorName,
+                tutorEmail: newStudent.tutorEmail,
+                tutorId: newStudent.tutorId,
                 link: newStudent.classroomLink,
                 attendanceStatus: 'pending'
             });
@@ -2803,12 +3708,15 @@ const DashboardEngine = (function() {
             console.warn('[DashboardEngine] Direct email dispatch error (offline/local fallback):', mailErr);
         }
 
+        const isLocalDev = (typeof window !== 'undefined' && window.location && 
+          (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'));
+
         return {
             success: true,
             email: cleanEmail,
             role: cleanRole,
             name: user.name || cleanEmail,
-            tempPassword: tempPassword,
+            tempPassword: isLocalDev ? tempPassword : null,
             emailSent: emailSent,
             message: 'A temporary password has been generated and sent to ' + cleanEmail + '.'
         };
@@ -2846,8 +3754,12 @@ const DashboardEngine = (function() {
             issuedAt: Date.now(),
             mustChangePassword: false
         };
-        if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('stemulus_session', JSON.stringify(safeSession));
-        if (typeof localStorage !== 'undefined') localStorage.setItem('stemulus_session', JSON.stringify(safeSession));
+        if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.saveSecureSession) {
+            StemulusSecurity.saveSecureSession(safeSession);
+        } else {
+            if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('stemulus_session', JSON.stringify(safeSession));
+            if (typeof localStorage !== 'undefined') localStorage.setItem('stemulus_session', JSON.stringify(safeSession));
+        }
 
         return { success: true, message: 'Password updated successfully.', user: safeSession };
     }
@@ -2973,7 +3885,7 @@ const DashboardEngine = (function() {
 
         // List of core default tutors with Tutor2026!
         var defaultTutors = [
-            { email: 'tutor@stemuluskidstech.com', name: 'Demo Tutor' },
+            { email: 'tutor@stemuluskidstech.com', name: 'Sarah Jane' },
             { email: 'olalekan@stemuluskidstech.com', name: 'Olalekan Israel Ajimati' },
             { email: 'david.okon@stemuluskidstech.com', name: 'David Okon' }
         ];
@@ -3058,7 +3970,37 @@ const DashboardEngine = (function() {
                         });
                     }
                     
-                    localStorage.setItem("stemulus_db", JSON.stringify(cloudData));
+                    // Intelligently merge local collections with cloud data so local modifications are preserved
+                    const localDb = getDB();
+                    const mergedDb = Object.assign({}, cloudData);
+                    const deletedStudentIds = localDb.deletedStudentIds || [];
+                    ['users', 'students', 'tutors', 'parents', 'schedules', 'attendanceRecords', 'monthlyReports', 'progressReports', 'notifications', 'emailQueue', 'billingSettings'].forEach(key => {
+                        if (Array.isArray(localDb[key])) {
+                            const cloudArr = Array.isArray(cloudData[key]) ? cloudData[key] : [];
+                            let combined = [...cloudArr];
+                            if (key === 'students') {
+                                combined = combined.filter(c => !c || (!c.isDeleted && !deletedStudentIds.includes(c.id)));
+                            }
+                            localDb[key].forEach(item => {
+                                if (item && item.id) {
+                                    if (key === 'students' && (item.isDeleted || deletedStudentIds.includes(item.id))) {
+                                        return;
+                                    }
+                                    const matchIdx = combined.findIndex(c => c && c.id === item.id);
+                                    if (matchIdx === -1) {
+                                        combined.push(item);
+                                    } else {
+                                        combined[matchIdx] = Object.assign({}, combined[matchIdx], item);
+                                    }
+                                }
+                            });
+                            mergedDb[key] = combined;
+                        } else if (localDb[key] && typeof localDb[key] === 'object') {
+                            mergedDb[key] = Object.assign({}, cloudData[key] || {}, localDb[key]);
+                        }
+                    });
+                    
+                    localStorage.setItem("stemulus_db", JSON.stringify(mergedDb));
                     window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
                     console.log('[STEMulus Cloud] [Synced] Local state synchronized with Firestore cloud');
                 } else {
@@ -3149,6 +4091,46 @@ const DashboardEngine = (function() {
         generateWeeklyReport,
         generateAllWeeklyReports,
         getNtfyTopic: () => getDB().ntfyTopic,
+        // Billing & Tuition Cycle APIs
+        getBillingInfo: function(studentId) {
+            if (typeof BillingEngine !== 'undefined') {
+                const db = getDB();
+                const student = (db.students || []).find(s => s.id === studentId);
+                if (!student) return null;
+                return BillingEngine.calculateBillingInfo(student, db.attendanceRecords || [], db.schedules || []);
+            }
+            return null;
+        },
+        recordPayment: function(studentId, paymentData) {
+            if (typeof BillingEngine !== 'undefined') {
+                return BillingEngine.recordPayment(studentId, paymentData);
+            }
+            return { success: false, message: 'BillingEngine not loaded.' };
+        },
+        getBillingRoster: function() {
+            if (typeof BillingEngine !== 'undefined') {
+                return BillingEngine.getBillingRoster();
+            }
+            return [];
+        },
+        getBillingDueStudents: function() {
+            if (typeof BillingEngine !== 'undefined') {
+                return BillingEngine.getDueStudents();
+            }
+            return [];
+        },
+        getBillingSettings: function() {
+            if (typeof BillingEngine !== 'undefined') {
+                return BillingEngine.getSettings();
+            }
+            return {};
+        },
+        updateBillingSettings: function(newSettings) {
+            if (typeof BillingEngine !== 'undefined') {
+                return BillingEngine.updateSettings(newSettings);
+            }
+            return false;
+        },
         addUser: async function(userData) {
             const db = getDB();
             if (!db.users) db.users = {};
@@ -3237,6 +4219,15 @@ const DashboardEngine = (function() {
             }
             return session;
         },
+        escapeHtml: function(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        },
         initDefaultAccounts
     };
 })();
@@ -3246,9 +4237,12 @@ DashboardEngine.initDefaultAccounts();
 
 if (typeof window !== 'undefined') {
     window.DashboardEngine = DashboardEngine;
+    window.escapeHtml = DashboardEngine.escapeHtml;
+    window.STEMulusSanitizer = { escapeHtml: DashboardEngine.escapeHtml };
 }
 if (typeof globalThis !== 'undefined') {
     globalThis.DashboardEngine = DashboardEngine;
+    globalThis.escapeHtml = DashboardEngine.escapeHtml;
 }
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = DashboardEngine;
