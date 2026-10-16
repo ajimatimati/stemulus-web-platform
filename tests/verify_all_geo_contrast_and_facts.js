@@ -100,21 +100,21 @@ server.listen(PORT, async () => {
       // Assertions
       const checks = [];
 
-      // 1. Hero H1 contrast
-      const h1Ok = audit.heroH1 && audit.heroH1.color === 'rgb(255, 255, 255)';
-      checks.push({ test: 'Hero H1 Pure White Color', passed: h1Ok, value: audit.heroH1?.color });
+      // 1. Hero H1 contrast (must be dark slate #0F172A on radiant light hero)
+      const h1Ok = audit.heroH1 && (audit.heroH1.color === 'rgb(15, 23, 42)' || audit.heroH1.color === 'rgb(30, 41, 59)');
+      checks.push({ test: 'Hero H1 High Contrast Dark Slate', passed: h1Ok, value: audit.heroH1?.color });
 
-      // 2. Hero P contrast (must be #cbd5e1 rgb(203, 213, 225) NOT dark rgb(45, 55, 72) or rgba(10, 10, 10, ...))
-      const pOk = audit.heroP && audit.heroP.color === 'rgb(203, 213, 225)';
-      checks.push({ test: 'Hero Paragraph Light Slate (12.8:1 contrast)', passed: pOk, value: audit.heroP?.color });
+      // 2. Hero P contrast (must be #334155 / #475569)
+      const pOk = audit.heroP && (audit.heroP.color === 'rgb(51, 65, 85)' || audit.heroP.color === 'rgb(71, 85, 105)');
+      checks.push({ test: 'Hero Paragraph High Contrast Slate', passed: pOk, value: audit.heroP?.color });
 
       // 3. Hero Trust Badges text contrast
-      const trustOk = audit.trustStrip && audit.trustStrip.color === 'rgb(226, 232, 240)';
-      checks.push({ test: 'Hero Trust Strip Bright Silver (15.6:1 contrast)', passed: trustOk, value: audit.trustStrip?.color });
+      const trustOk = audit.trustStrip && (audit.trustStrip.color === 'rgb(71, 85, 105)' || audit.trustStrip.color === 'rgb(51, 65, 85)');
+      checks.push({ test: 'Hero Trust Strip High Contrast Slate', passed: trustOk, value: audit.trustStrip?.color });
 
-      // 4. Project Reel background
-      const reelDark = audit.projectReel && audit.projectReel.bg === 'rgb(7, 13, 31)';
-      checks.push({ test: 'Project Reel Luxury Obsidian Navy Background', passed: reelDark, value: audit.projectReel?.bg });
+      // 4. Project Reel background (radiant light pearl #FFFBF7, zero dark background)
+      const reelLight = audit.projectReel && (audit.projectReel.bg === 'rgb(255, 251, 247)' || audit.projectReel.bg === 'rgb(255, 255, 255)');
+      checks.push({ test: 'Project Reel Radiant Light Pearl Background', passed: reelLight, value: audit.projectReel?.bg });
 
       // 5. Fact-Checked Projects Verification
       const expectedProjects = [
