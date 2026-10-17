@@ -982,8 +982,8 @@ AdminWorkflows.ScheduleManager = {
                 <option value="biweekly">Bi-weekly</option>
               </select></div>
           </div>
-          <div><label class="block text-sm font-medium text-slate-600 mb-1">Zoom Link</label>
-            <input type="url" id="${id}-zoom" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="https://zoom.us/j/..."></div>
+          <div><label class="block text-sm font-medium text-slate-600 mb-1">Google Meet Link</label>
+            <input type="url" id="${id}-zoom" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="https://meet.google.com/..."></div>
           <div class="flex gap-3 pt-2">
             <button type="button" onclick="AdminWorkflows.closeModal('${id}')" class="flex-1 border border-slate-200 text-slate-600 font-semibold py-2.5 rounded-xl text-sm hover:bg-slate-50 transition-colors">Cancel</button>
             <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl text-sm">Save Session</button>
@@ -992,6 +992,18 @@ AdminWorkflows.ScheduleManager = {
       </div>`;
     document.body.appendChild(div);
     if (window.lucide) lucide.createIcons();
+
+    const studentSelectEl = document.getElementById(id + '-student');
+    if (studentSelectEl) {
+      studentSelectEl.onchange = () => {
+        const selectedId = studentSelectEl.value;
+        const st = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) ? DashboardEngine.getStudents().find(s => s.id === selectedId) : null;
+        if (st && (st.meetLink || st.classroomLink)) {
+          const linkInput = document.getElementById(id + '-zoom');
+          if (linkInput) linkInput.value = st.meetLink || st.classroomLink;
+        }
+      };
+    }
 
     document.getElementById(id + '-form').onsubmit = (e) => {
       e.preventDefault();

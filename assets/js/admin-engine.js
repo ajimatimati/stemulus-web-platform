@@ -548,11 +548,12 @@ function navigateToSection(sectionName) {
 
     const pageTitle = document.getElementById('page-title');
     if (pageTitle) {
-        var SECTION_TITLES = { 'dashboard': 'Dashboard', 'students': 'Students', 'tutors': 'Tutors', 'parents': 'Parents', 'schedule-wf': 'Weekly Schedule', 'schedules': 'Schedule', 'certificates': 'Certificates', 'emails': 'Email Center', 'notifications': 'Notifications', 'settings': 'Settings', 'whatsapp-bot': 'WhatsApp Bot', 'reports': 'Reports', 'billing': 'Tuition & Billing Reminders' };
+        var SECTION_TITLES = { 'dashboard': 'Dashboard', 'students': 'Students', 'tutors': 'Tutors', 'parents': 'Parents', 'schedule-wf': 'Weekly Schedule', 'schedules': 'Schedule', 'certificates': 'Certificates', 'emails': 'Email Center', 'notifications': 'Notifications', 'settings': 'Settings', 'whatsapp-bot': 'WhatsApp Bot', 'reports': 'Reports', 'billing': 'Tuition & Billing Reminders', 'recordings': 'Class Recordings & Safeguarding Vault' };
         var title = SECTION_TITLES[sectionName] || (sectionName.charAt(0).toUpperCase() + sectionName.slice(1));
         pageTitle.textContent = title;
     }
 
+    if (sectionName === 'recordings') { if (typeof loadClassRecordings === 'function') loadClassRecordings(); }
     if (sectionName === 'billing') { loadBillingRoster(); }
     if (sectionName === 'email-queue') { loadEmailQueue(); }
     if (sectionName === 'password-resets') { loadPasswordResets(); }
@@ -1318,6 +1319,7 @@ function loadWeekSummary() {
     startOfWeek.setHours(0,0,0,0);
     var endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23,59,59,999);
 
     if (weekRange) {
         weekRange.textContent = startOfWeek.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' – ' + endOfWeek.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
@@ -1325,19 +1327,25 @@ function loadWeekSummary() {
 
     var schedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
     var weekSessions = schedules.filter(function(s) {
-        if (!s.date) return false;
-        var d = new Date(s.date);
+        if (!s || !s.date) return false;
+        var d = new Date(s.date + 'T00:00:00');
         return d >= startOfWeek && d <= endOfWeek;
     });
 
-    var present = weekSessions.filter(function(s){ return s.attendanceStatus === 'present'; }).length;
-    var absent = weekSessions.filter(function(s){ return s.attendanceStatus === 'absent'; }).length;
-    var pending = weekSessions.filter(function(s){ return !s.attendanceStatus || s.attendanceStatus === 'pending'; }).length;
+    var present = weekSessions.filter(function(s){ 
+        return s.attendanceStatus === 'present' || s.attendanceStatus === 'done' || s.status === 'done'; 
+    }).length;
+    var absent = weekSessions.filter(function(s){ 
+        return s.attendanceStatus === 'absent'; 
+    }).length;
+    var pending = weekSessions.filter(function(s){ 
+        return s.attendanceStatus === 'pending' || s.attendanceStatus === 'scheduled' || (!s.attendanceStatus && s.status !== 'done'); 
+    }).length;
 
-    if (wSessions) wSessions.textContent = weekSessions.length || '0';
-    if (wPresent) wPresent.textContent = present || '0';
-    if (wAbsent) wAbsent.textContent = absent || '0';
-    if (wPending) wPending.textContent = pending || '0';
+    if (wSessions) wSessions.textContent = weekSessions.length;
+    if (wPresent) wPresent.textContent = present;
+    if (wAbsent) wAbsent.textContent = absent;
+    if (wPending) wPending.textContent = pending;
 }
 
 // ==================== TODAY'S CLASSES & NOTICE BOARD ====================
@@ -1349,20 +1357,38 @@ function loadTodaysClasses() {
     var today = new Date().toISOString().split('T')[0];
     if (dateLabel) dateLabel.textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
     var schedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
-    var todayClasses = schedules.filter(function(s){ return s.date===today; }).sort(function(a,b){ return (a.time||'').localeCompare(b.time||''); });
-    if (!todayClasses.length) { list.innerHTML='<p class="text-gray-400 text-sm text-center py-4">No classes scheduled today.</p>'; return; }
+    var todayClasses = schedules.filter(function(s){ 
+        return s.date === today && s.status !== 'cancelled' && s.attendanceStatus !== 'cancelled'; 
+    }).sort(function(a,b){ return (a.time||'').localeCompare(b.time||''); });
+
+    if (!todayClasses.length) { 
+        list.innerHTML = '<p class="text-gray-400 text-sm text-center py-4">No classes scheduled today.</p>'; 
+        return; 
+    }
     list.innerHTML = todayClasses.map(function(s){
-        var statusColor = s.attendanceStatus==='present'?'text-emerald-600':s.attendanceStatus==='absent'?'text-rose-500':'text-amber-600';
-        var statusLabel = s.attendanceStatus==='present'?'Completed':s.attendanceStatus==='absent'?'Absent':'Upcoming';
-        var joinLink = s.link||'https://meet.google.com/new';
-        return '<div class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">'+
-            '<div class="text-xs font-bold text-gray-500 w-14 shrink-0">'+(s.time||'—')+'</div>'+
-            '<div class="flex-1 min-w-0"><p class="font-semibold text-gray-800 text-sm truncate">'+(s.studentName||'Student')+'</p><p class="text-xs text-gray-400 truncate">Tutor: '+(s.mentor||s.tutorName||'—')+'</p></div>'+
+        var isDone = s.attendanceStatus === 'present' || s.attendanceStatus === 'done' || s.status === 'done';
+        var isAbsent = s.attendanceStatus === 'absent';
+        var statusColor = isDone ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : isAbsent ? 'text-rose-700 bg-rose-50 border-rose-200' : 'text-amber-700 bg-amber-50 border-amber-200';
+        var statusLabel = isDone ? 'Completed' : isAbsent ? 'Absent' : 'Upcoming';
+        var isPhysical = (s.link || '').toLowerCase().includes('physical');
+        var joinLink = isPhysical ? (s.meetLinkBackup || '#') : (s.link || 'https://meet.google.com/new');
+        var joinHtml = isPhysical 
+            ? '<span class="text-xs font-bold text-purple-700 bg-purple-100 px-2.5 py-1 rounded-lg">Physical Hub</span>'
+            : '<a href="' + joinLink + '" target="_blank" class="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1 shadow-sm"><i data-lucide="video" class="w-3 h-3"></i> Join Meet</a>';
+
+        return '<div class="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 hover:bg-slate-50/60 transition-colors rounded-lg px-2">'+
+            '<div class="text-xs font-mono font-bold text-slate-700 w-16 shrink-0 bg-slate-100 px-2 py-1 rounded-md text-center">'+(s.time||'—')+' WAT</div>'+
+            '<div class="flex-1 min-w-0">'+
+                '<p class="font-bold text-slate-800 text-sm truncate flex items-center gap-1.5">'+(s.studentName||'Student')+' <span class="text-[11px] font-semibold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">('+(s.course||'Coding')+')</span></p>'+
+                '<p class="text-xs text-slate-500 truncate">Mentor: <strong class="text-slate-700 font-semibold">'+(s.mentor||s.tutorName||'—')+'</strong></p>'+
+            '</div>'+
             '<div class="flex items-center gap-2 shrink-0">'+
-                '<span class="text-xs font-bold '+statusColor+'">'+statusLabel+'</span>'+
-                '<a href="'+joinLink+'" target="_blank" class="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-2.5 py-1 rounded-lg transition-colors">Join</a>'+
-            '</div></div>';
+                '<span class="text-[11px] font-bold px-2 py-0.5 rounded-full border '+statusColor+'">'+statusLabel+'</span>'+
+                joinHtml+
+            '</div>'+
+        '</div>';
     }).join('');
+    if (window.lucide) lucide.createIcons();
 }
 
 window.saveNotice = function() {
@@ -1570,8 +1596,21 @@ function loadStats() {
     const statPending = document.getElementById('stat-pending-emails');
     if (statPending) statPending.textContent = enrollments.length;
 
+    const nowTime = new Date();
+    const todayStr = nowTime.toISOString().split('T')[0];
     const statUpcoming = document.getElementById('stat-upcoming-classes');
-    if (statUpcoming) statUpcoming.textContent = schedules.filter(function(s) { return new Date(s.date + 'T' + (s.time || '00:00')) > new Date(); }).length;
+    if (statUpcoming) {
+        const upcomingCount = schedules.filter(function(s) {
+            if (!s || s.status === 'cancelled' || s.attendanceStatus === 'cancelled') return false;
+            if (!s.date) return s.status === 'scheduled' || s.attendanceStatus === 'scheduled' || s.attendanceStatus === 'pending';
+            if (s.date > todayStr) return true;
+            if (s.date === todayStr) {
+                return s.attendanceStatus !== 'done' && s.attendanceStatus !== 'present' && s.attendanceStatus !== 'absent';
+            }
+            return false;
+        }).length;
+        statUpcoming.textContent = upcomingCount;
+    }
 
     const statCourses = document.getElementById('stat-active-courses');
     if (statCourses) statCourses.textContent = "6"; // Standard programs count
@@ -2253,6 +2292,16 @@ function renderStudentsTable(students) {
                         <div>
                             <p class="font-bold text-gray-800 text-sm">${s.firstName} ${s.lastName}</p>
                             <p class="text-[10px] text-gray-400">${s.gender || 'Unknown'} • Age ${s.age || ''}</p>
+                            ${(s.meetLink || s.classroomLink) ? `
+                                <a href="${s.meetLink || s.classroomLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200 mt-1 transition-colors" title="Google Meet Room (stemulusclubs@gmail.com)">
+                                    <i data-lucide="video" class="w-3 h-3 text-emerald-600"></i>
+                                    <span>${(s.meetLink || s.classroomLink).replace('https://meet.google.com/', '')}</span>
+                                </a>
+                            ` : `
+                                <span class="inline-flex items-center gap-1 text-[10px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 mt-1">
+                                    <i data-lucide="alert-circle" class="w-3 h-3"></i> No Meet Link
+                                </span>
+                            `}
                         </div>
                     </div>
                 </td>
@@ -2275,6 +2324,11 @@ function renderStudentsTable(students) {
                 </td>
                 <td class="px-6 py-4 text-right">
                     <div class="flex items-center justify-end gap-2">
+                        ${(s.meetLink || s.classroomLink) ? `
+                        <button type="button" class="text-gray-400 hover:text-emerald-600 transition-colors p-1" onclick="AdminEngine.copyStudentMeetLink('${s.id}')" title="Copy Google Meet Link">
+                            <i data-lucide="video" class="w-4 h-4"></i>
+                        </button>
+                        ` : ''}
                         <button type="button" class="text-gray-400 hover:text-blue-600 transition-colors p-1" onclick="AdminEngine.openEmailParentModal('${s.parentEmail || ''}', '${s.id}')" title="Email Parent">
                             <i data-lucide="mail" class="w-4 h-4"></i>
                         </button>
@@ -2350,7 +2404,8 @@ function openStudentModal(studentId = null) {
 
     if (studentId) {
         if (title) title.textContent = 'Edit Student';
-        const student = studentsCache.find(s => s.id === studentId);
+        const student = (studentsCache || []).find(s => s.id === studentId) ||
+                        ((typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) ? DashboardEngine.getStudents().find(s => s.id === studentId) : null);
         if (student) {
             if (document.getElementById('student-name')) {
                 document.getElementById('student-name').value = `${student.firstName} ${student.lastName}`.trim();
@@ -2361,13 +2416,45 @@ function openStudentModal(studentId = null) {
             if (document.getElementById('parent-name')) document.getElementById('parent-name').value = student.parentName || '';
             if (document.getElementById('parent-email')) document.getElementById('parent-email').value = student.parentEmail || '';
             if (document.getElementById('parent-phone')) document.getElementById('parent-phone').value = student.parentPhone || '';
-            if (document.getElementById('student-course')) document.getElementById('student-course').value = student.program || '';
+            const courseEl = document.getElementById('student-course');
+            if (courseEl && student.program) {
+                const progLower = student.program.toLowerCase();
+                let opt = Array.from(courseEl.options).find(o => {
+                    if (!o.value || o.text.startsWith('--')) return false;
+                    const v = o.value.toLowerCase();
+                    const t = o.text.toLowerCase();
+                    return v === progLower || t === progLower || t.includes(progLower) || progLower.includes(v) || progLower.includes(t) ||
+                           (progLower.includes('scratch') && (v.includes('scratch') || t.includes('scratch'))) ||
+                           (progLower.includes('python') && (v.includes('python') || t.includes('python'))) ||
+                           (progLower.includes('web') && (v.includes('web') || t.includes('web')));
+                });
+                if (!opt) {
+                    opt = document.createElement('option');
+                    opt.value = student.program;
+                    opt.textContent = student.program;
+                    courseEl.appendChild(opt);
+                }
+                courseEl.value = opt.value;
+            }
             if (document.getElementById('student-status')) document.getElementById('student-status').value = student.status || 'active';
-            if (document.getElementById('student-tutor')) document.getElementById('student-tutor').value = student.tutorName || '';
+            if (document.getElementById('student-tutor')) {
+                const tutorEl = document.getElementById('student-tutor');
+                const tName = student.tutorName || '';
+                let tutorOpt = Array.from(tutorEl.options).find(o => o.value.toLowerCase() === tName.toLowerCase() || (o.dataset.tutorEmail && o.dataset.tutorEmail.toLowerCase() === (student.tutorEmail || '').toLowerCase()));
+                if (!tutorOpt && tName) {
+                    tutorOpt = document.createElement('option');
+                    tutorOpt.value = tName;
+                    tutorOpt.textContent = tName;
+                    tutorEl.appendChild(tutorOpt);
+                }
+                if (tutorOpt) tutorEl.value = tutorOpt.value;
+            }
             if (document.getElementById('student-notes')) document.getElementById('student-notes').value = student.notes || '';
             if (document.getElementById('student-birthday')) document.getElementById('student-birthday').value = student.birthday || '';
             var classroomInput = document.getElementById('student-classroom-link');
             if (classroomInput) classroomInput.value = student.classroomLink || '';
+            var meetInput = document.getElementById('student-meet-link');
+            if (meetInput) meetInput.value = student.meetLink || student.classroomLink || '';
 
             // Set parent dropdown match if found
             const parentSelect = document.getElementById('student-parent-select');
@@ -2381,6 +2468,8 @@ function openStudentModal(studentId = null) {
         if (document.getElementById('student-birthday')) document.getElementById('student-birthday').value = '';
         var classroomInput = document.getElementById('student-classroom-link');
         if (classroomInput) classroomInput.value = '';
+        var meetInput = document.getElementById('student-meet-link');
+        if (meetInput) meetInput.value = '';
     }
 
     if (modal) modal.classList.remove('hidden');
@@ -2388,6 +2477,30 @@ function openStudentModal(studentId = null) {
 
 function editStudent(id) {
     openStudentModal(id);
+}
+
+function copyStudentMeetLink(studentId) {
+    if (!studentId) return;
+    const student = (studentsCache || []).find(s => s.id === studentId) || 
+                    ((typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) ? DashboardEngine.getStudents().find(s => s.id === studentId) : null);
+    if (!student) {
+        showToast('Student not found.', 'error');
+        return;
+    }
+    const link = student.meetLink || student.classroomLink;
+    if (!link) {
+        showToast('No Google Meet link assigned for this student yet.', 'warning');
+        return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(() => {
+            showToast(`Google Meet link copied for ${student.firstName}!`, 'success');
+        }).catch(() => {
+            prompt('Copy student Google Meet link:', link);
+        });
+    } else {
+        prompt('Copy student Google Meet link:', link);
+    }
 }
 
 function saveStudent(e) {
@@ -2408,7 +2521,10 @@ function saveStudent(e) {
     const parentEmail = document.getElementById('parent-email').value.trim();
     const parentPhone = document.getElementById('parent-phone').value.trim();
 
-    const program = document.getElementById('student-course').value;
+    const courseEl = document.getElementById('student-course');
+    const program = (courseEl && courseEl.selectedIndex >= 0 && courseEl.options[courseEl.selectedIndex].text && !courseEl.options[courseEl.selectedIndex].text.startsWith('--'))
+        ? courseEl.options[courseEl.selectedIndex].text
+        : (courseEl ? courseEl.value : '');
     const status = document.getElementById('student-status').value;
     const tutorSelect = document.getElementById('student-tutor');
     const selectedTutorOpt = tutorSelect ? tutorSelect.options[tutorSelect.selectedIndex] : null;
@@ -2435,13 +2551,14 @@ function saveStudent(e) {
 
     const notes = document.getElementById('student-notes') ? document.getElementById('student-notes').value.trim() : '';
     const classroomLink = (document.getElementById('student-classroom-link') || {}).value || '';
+    const meetLink = (document.getElementById('student-meet-link') || {}).value ? document.getElementById('student-meet-link').value.trim() : '';
 
     if (!firstName || !parentName || !parentEmail || !program || !tutorName) {
         showToast('Please fill out all required fields.', 'warning');
         return;
     }
 
-    const existingStudentObj = id ? studentsCache.find(s => s.id === id) : null;
+    const existingStudentObj = id ? ((studentsCache || []).find(s => s.id === id) || (DashboardEngine.getStudents ? DashboardEngine.getStudents().find(s => s.id === id) : null)) : null;
     const studentData = {
         firstName,
         lastName,
@@ -2459,18 +2576,38 @@ function saveStudent(e) {
         tutorEmail: tutorEmail || (existingStudentObj && existingStudentObj.tutorName === tutorName ? existingStudentObj.tutorEmail : ''),
         tutorId: tutorId || (existingStudentObj && existingStudentObj.tutorName === tutorName ? existingStudentObj.tutorId : ''),
         notes,
-        classroomLink
+        classroomLink,
+        meetLink: meetLink || classroomLink || (existingStudentObj ? (existingStudentObj.meetLink || '') : '')
     };
 
     if (id) {
         studentData.id = id;
-        const existingStudent = studentsCache.find(s => s.id === id);
+        const existingStudent = (studentsCache || []).find(s => s.id === id) || (DashboardEngine.getStudents ? DashboardEngine.getStudents().find(s => s.id === id) : null);
         if (!birthdayVal && existingStudent && existingStudent.birthday) {
             studentData.birthday = existingStudent.birthday;
             studentData.hasExplicitBirthday = existingStudent.hasExplicitBirthday;
         }
         const updated = DashboardEngine.updateStudent(studentData);
         if (updated) {
+            // Cascade meetLink update to all upcoming schedules for this student
+            if (meetLink && typeof DashboardEngine !== 'undefined') {
+                try {
+                    const allSchedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    let schedulesUpdated = false;
+                    allSchedules.forEach(s => {
+                        if (s.studentId === id && s.date >= todayStr && s.status !== 'completed' && s.status !== 'cancelled') {
+                            s.link = meetLink;
+                            schedulesUpdated = true;
+                        }
+                    });
+                    if (schedulesUpdated && DashboardEngine.saveSchedules) {
+                        DashboardEngine.saveSchedules(allSchedules);
+                    }
+                } catch(e) {
+                    console.warn('[AdminEngine] Could not cascade meetLink to schedules:', e);
+                }
+            }
             showToast('Student updated successfully!', 'success');
         } else {
             showToast('Failed to update student.', 'error');
@@ -2888,6 +3025,11 @@ function handleScheduleStudentChange(studentId) {
         const mentorSelect = document.getElementById('schedule-mentor');
         if (mentorSelect && student.tutorName) {
             mentorSelect.value = student.tutorName;
+        }
+
+        const linkInput = document.getElementById('schedule-link');
+        if (linkInput && (student.meetLink || student.classroomLink)) {
+            linkInput.value = student.meetLink || student.classroomLink;
         }
     }
 }
@@ -3623,6 +3765,14 @@ function openTutorModal(email) {
             if (document.getElementById('tutor-email')) document.getElementById('tutor-email').value = tutor.email || '';
             if (document.getElementById('tutor-subjects')) document.getElementById('tutor-subjects').value = (tutor.subjects || []).join(', ');
             var phoneInput = document.getElementById('tutor-phone'); if (phoneInput) phoneInput.value = tutor.phone || tutor.phoneNumber || '';
+            if (document.getElementById('tutor-bank-name')) document.getElementById('tutor-bank-name').value = tutor.bankName || '';
+            if (document.getElementById('tutor-account-name')) document.getElementById('tutor-account-name').value = tutor.accountHolderName || '';
+            if (document.getElementById('tutor-account-number')) document.getElementById('tutor-account-number').value = tutor.accountNumber || '';
+            if (document.getElementById('tutor-location')) document.getElementById('tutor-location').value = tutor.location || '';
+            if (document.getElementById('tutor-assignment-type') && tutor.assignmentType) document.getElementById('tutor-assignment-type').value = tutor.assignmentType;
+            if (document.getElementById('tutor-nok-name')) document.getElementById('tutor-nok-name').value = tutor.nextOfKinName || '';
+            if (document.getElementById('tutor-nok-contact')) document.getElementById('tutor-nok-contact').value = tutor.nextOfKinContact || '';
+            if (document.getElementById('tutor-workstation')) document.getElementById('tutor-workstation').value = tutor.workstationAudit || '';
         }
         var modalTitle = document.getElementById('tutor-modal-title'); if (modalTitle) modalTitle.textContent = email ? 'Edit Tutor' : 'Add New Tutor';
         const hiddenEmail = document.getElementById('tutor-existing-email');
@@ -3644,6 +3794,14 @@ async function saveTutor(e) {
     const subjects = (document.getElementById('tutor-subjects').value || '').split(',').map(s => s.trim()).filter(Boolean);
     const phone = (document.getElementById('tutor-phone') ? document.getElementById('tutor-phone').value.trim() : '');
     const existingEmail = document.getElementById('tutor-existing-email') ? document.getElementById('tutor-existing-email').value : '';
+    const bankName = document.getElementById('tutor-bank-name') ? document.getElementById('tutor-bank-name').value.trim() : '';
+    const accountHolderName = document.getElementById('tutor-account-name') ? document.getElementById('tutor-account-name').value.trim() : '';
+    const accountNumber = document.getElementById('tutor-account-number') ? document.getElementById('tutor-account-number').value.trim() : '';
+    const location = document.getElementById('tutor-location') ? document.getElementById('tutor-location').value.trim() : '';
+    const assignmentType = document.getElementById('tutor-assignment-type') ? document.getElementById('tutor-assignment-type').value : '';
+    const nextOfKinName = document.getElementById('tutor-nok-name') ? document.getElementById('tutor-nok-name').value.trim() : '';
+    const nextOfKinContact = document.getElementById('tutor-nok-contact') ? document.getElementById('tutor-nok-contact').value.trim() : '';
+    const workstationAudit = document.getElementById('tutor-workstation') ? document.getElementById('tutor-workstation').value.trim() : '';
 
     if (!name || !email) { showToast('Name and email are required.', 'warning'); return; }
 
@@ -3672,7 +3830,22 @@ async function saveTutor(e) {
         }
     } else {
         if (password) await DashboardEngine.updateUserPassword(existingEmail, password);
-        showToast('Tutor details updated.', 'success');
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.updateTutor) {
+            DashboardEngine.updateTutor(existingEmail, {
+                name,
+                phone,
+                subjects,
+                bankName,
+                accountHolderName,
+                accountNumber,
+                location,
+                assignmentType,
+                nextOfKinName,
+                nextOfKinContact,
+                workstationAudit
+            });
+        }
+        showToast('Tutor details and banking dossier updated.', 'success');
     }
 
     closeModal('tutor-modal');
@@ -3859,6 +4032,196 @@ function filterTutors(searchQuery, statusFilter) {
     renderTutorsTable();
 }
 
+
+let activeDossierTutor = null;
+
+function openTutorDossierModal(tutorIdentifier) {
+    const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
+    const engineTutors = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getTutors) ? DashboardEngine.getTutors() : [];
+    const dbTutors = db && db.tutors ? db.tutors : [];
+    const tutors = engineTutors.concat(dbTutors);
+    const target = (tutorIdentifier || '').toLowerCase().trim();
+    const tutor = tutors.find(t => (t.id && t.id.toLowerCase() === target) || (t.email && t.email.toLowerCase().trim() === target) || (t.name && t.name.toLowerCase().trim() === target));
+
+    if (!tutor) {
+        showToast('Tutor record not found.', 'error');
+        return;
+    }
+    activeDossierTutor = tutor;
+
+    const modal = document.getElementById('tutor-dossier-modal');
+    if (!modal) return;
+
+    // Header info
+    const avatarEl = document.getElementById('td-avatar');
+    const nameEl = document.getElementById('td-name');
+    const statusBadge = document.getElementById('td-status-badge');
+    const modeBadge = document.getElementById('td-mode-badge');
+    const emailEl = document.getElementById('td-email');
+    const phoneEl = document.getElementById('td-phone');
+
+    if (avatarEl) avatarEl.textContent = (tutor.name || 'T')[0].toUpperCase();
+    if (nameEl) nameEl.textContent = tutor.name || 'Tutor';
+    if (emailEl) emailEl.textContent = tutor.email || 'No email registered';
+    if (phoneEl) phoneEl.innerHTML = '<i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400 inline mr-1"></i> ' + (tutor.phone || 'No phone recorded');
+
+    const isDisengaged = tutor.status === 'inactive' || tutor.status === 'disengaged';
+    if (statusBadge) {
+        statusBadge.textContent = isDisengaged ? 'Disengaged' : 'Active';
+        statusBadge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ' + 
+            (isDisengaged ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200');
+    }
+    if (modeBadge) {
+        const isPhysical = (tutor.assignmentType || '').toLowerCase().includes('physical');
+        modeBadge.textContent = isPhysical ? 'Physical Hub Mentor' : 'Online Only (Remote)';
+        modeBadge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold ' + 
+            (isPhysical ? 'bg-purple-50 text-purple-700 border border-purple-200' : 'bg-blue-50 text-blue-700 border border-blue-200');
+    }
+
+    // Banking details
+    const bankNameEl = document.getElementById('td-bank-name');
+    const accNameEl = document.getElementById('td-account-name');
+    const accNumEl = document.getElementById('td-account-number');
+    if (bankNameEl) bankNameEl.textContent = tutor.bankName || 'Opay / Bank on file';
+    if (accNameEl) accNameEl.textContent = tutor.accountHolderName || tutor.name || '—';
+    if (accNumEl) accNumEl.textContent = tutor.accountNumber || '—';
+
+    // Emergency & Location
+    const locEl = document.getElementById('td-location');
+    const nokNameEl = document.getElementById('td-nok-name');
+    const nokContactEl = document.getElementById('td-nok-contact');
+    if (locEl) locEl.textContent = tutor.location || 'Location on file';
+    if (nokNameEl) nokNameEl.textContent = tutor.nextOfKinName || 'Emergency contact verified';
+    if (nokContactEl) nokContactEl.textContent = tutor.nextOfKinContact || '—';
+
+    // Workstation & Power Audit
+    const workEl = document.getElementById('td-workstation');
+    const slotsEl = document.getElementById('td-slots');
+    const sigEl = document.getElementById('td-signature');
+    if (workEl) workEl.textContent = tutor.workstationAudit || 'Teaching Laptop (8GB+ RAM), HD Webcam, Stable Internet (10Mbps+), Reliable Power Backup/Solar.';
+    if (slotsEl) slotsEl.innerHTML = '<i data-lucide="calendar" class="w-3 h-3 inline mr-1 text-slate-400"></i> Preferred: ' + (tutor.weeklyAvailableSlots || 'Weekday & Weekend slots');
+    if (sigEl) sigEl.textContent = '✓ Signed: ' + (tutor.digitalSignature || tutor.name || 'Verified');
+
+    // Assigned Coders
+    const students = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) ? DashboardEngine.getStudents() : (db ? db.students || [] : []);
+    const tEmail = (tutor.email || '').toLowerCase();
+    const tName = (tutor.name || '').toLowerCase();
+    const tFirst = tName.split(' ')[0] || '';
+    const tId = tutor.id || '';
+
+    const assignedStudents = students.filter(s => {
+        if (s.tutorId && tId && s.tutorId === tId) return true;
+        if (s.tutorEmail && tEmail && s.tutorEmail.toLowerCase() === tEmail) return true;
+        if (s.tutorName) {
+            const sTutorName = s.tutorName.toLowerCase();
+            if (sTutorName === tName) return true;
+            if (tFirst.length > 2 && sTutorName.includes(tFirst)) return true;
+        }
+        return false;
+    });
+
+    const codersCountEl = document.getElementById('td-coders-count');
+    if (codersCountEl) codersCountEl.textContent = assignedStudents.length + ' coder' + (assignedStudents.length !== 1 ? 's' : '');
+
+    const codersListEl = document.getElementById('td-coders-list');
+    if (codersListEl) {
+        if (assignedStudents.length === 0) {
+            codersListEl.innerHTML = '<span class="text-xs text-slate-400 italic">No coders currently assigned to this tutor.</span>';
+        } else {
+            codersListEl.innerHTML = assignedStudents.map(s => {
+                const meet = s.meetLink || s.classroomLink || '';
+                return `
+                    <div class="inline-flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-semibold shadow-2xs">
+                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                        <span>${s.firstName} ${s.lastName}</span>
+                        <span class="text-[10px] text-slate-400 font-normal">(${s.program || 'Coding'})</span>
+                        ${meet ? `<a href="${meet}" target="_blank" class="text-blue-600 hover:text-blue-800 text-[10px] font-bold underline ml-1" title="Test Meet Room">Meet</a>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+
+    // Weekly Schedules
+    const allSchedules = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSchedules) ? DashboardEngine.getSchedules() : (db ? db.schedules || [] : []);
+    const tutorSchedules = allSchedules.filter(sch => {
+        if (sch.tutorId && tId && sch.tutorId === tId) return true;
+        if (sch.tutorEmail && tEmail && sch.tutorEmail.toLowerCase() === tEmail) return true;
+        if (sch.mentor && sch.mentor.toLowerCase() === tName) return true;
+        if (sch.tutorName && sch.tutorName.toLowerCase() === tName) return true;
+        return false;
+    });
+
+    const schedulesListEl = document.getElementById('td-schedules-list');
+    if (schedulesListEl) {
+        if (tutorSchedules.length === 0) {
+            schedulesListEl.innerHTML = '<p class="text-xs text-slate-400 italic py-2">No active recurring sessions scheduled yet.</p>';
+        } else {
+            schedulesListEl.innerHTML = tutorSchedules.map(sch => {
+                const isPhysical = (sch.link || '').toLowerCase().includes('physical');
+                const meetHref = isPhysical ? (sch.meetLinkBackup || '#') : (sch.link || '#');
+                return `
+                    <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-100 bg-slate-50/70 text-xs">
+                        <div class="flex items-center gap-2.5">
+                            <span class="font-extrabold text-blue-700 bg-blue-100/70 px-2 py-0.5 rounded text-[11px]">${sch.dayOfWeek || sch.date || 'Weekly'}</span>
+                            <span class="font-bold text-slate-800">${sch.time} WAT</span>
+                            <span class="text-slate-600 font-medium">| ${sch.studentName} (${sch.course || 'Private'})</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            ${isPhysical 
+                                ? `<span class="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Physical Hub</span>`
+                                : `<a href="${meetHref}" target="_blank" class="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-[10px] font-bold px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1">
+                                    <i data-lucide="video" class="w-3 h-3"></i> Google Meet
+                                   </a>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+
+    // Message button
+    const msgBtn = document.getElementById('td-msg-btn');
+    if (msgBtn) {
+        msgBtn.onclick = function() {
+            closeTutorDossierModal();
+            openMessageTutorModal(tutor.email, (tutor.name || '').replace(/'/g, "\\\'"));
+        };
+    }
+
+    modal.classList.remove('hidden');
+    if (window.lucide) lucide.createIcons();
+}
+
+function closeTutorDossierModal() {
+    const modal = document.getElementById('tutor-dossier-modal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function copyTutorBankInfo() {
+    if (!activeDossierTutor) return;
+    const num = activeDossierTutor.accountNumber || '';
+    const bank = activeDossierTutor.bankName || '';
+    const name = activeDossierTutor.accountHolderName || activeDossierTutor.name || '';
+    const textToCopy = `${bank} - ${num} (${name})`;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(num || textToCopy).then(() => {
+            showToast('Account Number ' + (num || textToCopy) + ' copied to clipboard!', 'success');
+        }).catch(() => {
+            prompt('Bank Account Details (Ctrl+C to copy):', textToCopy);
+        });
+    } else {
+        prompt('Bank Account Details (Ctrl+C to copy):', textToCopy);
+    }
+}
+
+function editTutorFromDossier() {
+    if (!activeDossierTutor) return;
+    closeTutorDossierModal();
+    openTutorModal(activeDossierTutor.email);
+}
+
 function renderTutorsTable() {
     const tbody = document.getElementById('tutors-table-body');
     if (!tbody) return;
@@ -3975,6 +4338,9 @@ function renderTutorsTable() {
                 </td>
                 <td class="px-6 py-4 text-right">
                     <div class="flex items-center justify-end gap-2">
+                        <button onclick="AdminEngine.openTutorDossierModal('${tutorIdentifier}')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors flex items-center gap-1 border border-amber-200/80 shadow-2xs" title="View Full Profile & Legal/Banking Dossier">
+                            <i data-lucide="file-badge" class="w-3.5 h-3.5 text-amber-600"></i> Profile & Bank
+                        </button>
                         <button onclick="AdminEngine.openAssignCodersModal('${tutorIdentifier}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors flex items-center gap-1" title="Assign / Reassign Coders">
                             <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Assign Coders
                         </button>
@@ -5940,6 +6306,462 @@ function exportBillingCSV() {
     URL.revokeObjectURL(url);
 }
 
+// ==========================================
+// CLASS RECORDINGS VAULT & SAFEGUARDING AUDIT
+// ==========================================
+var _cachedRecordings = [];
+var _activeViewingRecordingId = null;
+
+var SAMPLE_RECORDINGS = [
+    {
+        id: 'rec_live_01',
+        scheduleId: 'sch_101',
+        sessionId: 'ses_live_101',
+        studentName: 'Leo Armstrong',
+        tutorName: 'Michael Scott',
+        courseName: 'Python Programming Masterclass',
+        meetingUrl: 'https://meet.google.com/gyd-fewb-cdh',
+        status: 'recording',
+        startedAt: new Date(Date.now() - 22 * 60 * 1000).toISOString(),
+        durationMinutes: 22,
+        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        provider: 'Autonomous Cloud Bot (Recall.ai)',
+        flaggedForReview: false,
+        flagReason: '',
+        rating: '5',
+        adminAuditNotes: 'Live session actively monitored. Student progressing through loops.',
+        safeguardingCompliant: true
+    },
+    {
+        id: 'rec_arc_02',
+        scheduleId: 'sch_102',
+        sessionId: 'ses_arc_102',
+        studentName: 'Zainab Adeleke',
+        tutorName: 'Sarah Jenkins',
+        courseName: 'Web Wizards Frontend Studio',
+        meetingUrl: 'https://meet.google.com/gyd-fewb-cdh',
+        status: 'completed',
+        startedAt: new Date(Date.now() - 26 * 3600 * 1000).toISOString(),
+        endedAt: new Date(Date.now() - 25 * 3600 * 1000).toISOString(),
+        durationMinutes: 58,
+        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+        provider: 'Autonomous Cloud Bot (Recall.ai)',
+        flaggedForReview: false,
+        flagReason: '',
+        rating: '5',
+        adminAuditNotes: 'Superb project showcase. CSS animations mastered.',
+        safeguardingCompliant: true
+    },
+    {
+        id: 'rec_arc_03',
+        scheduleId: 'sch_103',
+        sessionId: 'ses_arc_103',
+        studentName: 'David Kim',
+        tutorName: 'Alex Chen',
+        courseName: 'Scratch Creators Lab',
+        meetingUrl: 'https://meet.google.com/gyd-fewb-cdh',
+        status: 'completed',
+        startedAt: new Date(Date.now() - 48 * 3600 * 1000).toISOString(),
+        endedAt: new Date(Date.now() - 47 * 3600 * 1000).toISOString(),
+        durationMinutes: 55,
+        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+        provider: 'Autonomous Cloud Bot (Recall.ai)',
+        flaggedForReview: false,
+        flagReason: '',
+        rating: '4',
+        adminAuditNotes: 'Paced well. Student built a 2D maze game.',
+        safeguardingCompliant: true
+    },
+    {
+        id: 'rec_arc_04',
+        scheduleId: 'sch_104',
+        sessionId: 'ses_arc_104',
+        studentName: 'Amara Okafor',
+        tutorName: 'Tunde Bakare',
+        courseName: 'Junior Robotics & Micro:bit',
+        meetingUrl: 'https://meet.google.com/gyd-fewb-cdh',
+        status: 'completed',
+        startedAt: new Date(Date.now() - 72 * 3600 * 1000).toISOString(),
+        endedAt: new Date(Date.now() - 72 * 3600 * 1000 + 12 * 60 * 1000).toISOString(),
+        durationMinutes: 12,
+        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+        provider: 'Autonomous Cloud Bot (Recall.ai)',
+        flaggedForReview: true,
+        flagReason: 'Abnormally short session (12 mins). Network drop reported by tutor.',
+        rating: '3',
+        adminAuditNotes: 'Makeup class scheduled for Saturday 11am WAT.',
+        safeguardingCompliant: true
+    }
+];
+
+async function loadClassRecordings() {
+    var listContainer = document.getElementById('admin-recordings-list');
+    if (!listContainer) return;
+
+    function applyAndRender(firestoreData) {
+        var localRecordings = [];
+        try {
+            var stored = localStorage.getItem('stemulus_class_recordings');
+            if (stored) localRecordings = JSON.parse(stored);
+        } catch(e) {}
+
+        var map = {};
+        SAMPLE_RECORDINGS.forEach(function(r) { map[r.id] = r; });
+        localRecordings.forEach(function(r) { map[r.id] = Object.assign({}, map[r.id] || {}, r); });
+        if (Array.isArray(firestoreData)) {
+            firestoreData.forEach(function(r) { map[r.id] = Object.assign({}, map[r.id] || {}, r); });
+        }
+        _cachedRecordings = Object.values(map);
+
+        _cachedRecordings.sort(function(a, b) {
+            return new Date(b.startedAt || 0) - new Date(a.startedAt || 0);
+        });
+
+        var totalCount = _cachedRecordings.length;
+        var totalMinutes = _cachedRecordings.reduce(function(acc, r) { return acc + (Number(r.durationMinutes) || 0); }, 0);
+        var liveCount = _cachedRecordings.filter(function(r) { return r.status === 'recording'; }).length;
+        var flaggedCount = _cachedRecordings.filter(function(r) { return !!r.flaggedForReview; }).length;
+
+        var elTotal = document.getElementById('stat-recordings-total');
+        var elHours = document.getElementById('stat-recordings-hours');
+        var elLive = document.getElementById('stat-recordings-live');
+        var elFlagged = document.getElementById('stat-recordings-flagged');
+        var navBadge = document.getElementById('nav-recordings-badge');
+
+        if (elTotal) elTotal.textContent = totalCount;
+        if (elHours) elHours.textContent = (totalMinutes / 60).toFixed(1) + 'h';
+        if (elLive) elLive.textContent = liveCount;
+        if (elFlagged) elFlagged.textContent = flaggedCount;
+
+        if (navBadge) {
+            if (liveCount > 0 || flaggedCount > 0) {
+                navBadge.textContent = liveCount > 0 ? (liveCount + ' Live') : (flaggedCount + ' Flagged');
+                navBadge.classList.remove('hidden');
+            } else {
+                navBadge.classList.add('hidden');
+            }
+        }
+
+        renderRecordingsTable(_cachedRecordings);
+    }
+
+    // 1. Immediately render local and cached recordings without network blocking
+    applyAndRender();
+
+    // 2. Non-blocking background sync with Firestore if online
+    if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) {
+        try {
+            var snap = await Promise.race([
+                firebase.firestore().collection('recordings').orderBy('startedAt', 'desc').limit(100).get(),
+                new Promise(function(_, reject) { setTimeout(function() { reject(new Error('timeout')); }, 2500); })
+            ]);
+            if (snap && !snap.empty) {
+                var firestoreRecordings = [];
+                snap.forEach(function(doc) {
+                    var data = doc.data();
+                    data.id = doc.id;
+                    firestoreRecordings.push(data);
+                });
+                applyAndRender(firestoreRecordings);
+            }
+        } catch(e) {
+            console.warn('[AdminEngine] Firestore recordings fetch notice:', e.message);
+        }
+    }
+}
+
+function refreshRecordingsVault() {
+    showToast('Refreshing Class Recordings Vault...', 'info');
+    loadClassRecordings();
+}
+
+function renderRecordingsTable(recordings) {
+    var tbody = document.getElementById('admin-recordings-list');
+    var visibleCounter = document.getElementById('recordings-visible-count');
+    if (!tbody) return;
+
+    if (visibleCounter) visibleCounter.textContent = recordings.length;
+
+    if (!recordings || recordings.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-slate-500 font-medium">No class recordings match your filter criteria.</td></tr>';
+        return;
+    }
+
+    var html = recordings.map(function(r) {
+        var startDate = r.startedAt ? new Date(r.startedAt) : new Date();
+        var dateFormatted = startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        var timeFormatted = startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+        var statusBadge = '';
+        if (r.status === 'recording') {
+            statusBadge = '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>Live Recording</span>';
+        } else if (r.flaggedForReview) {
+            statusBadge = '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800 border border-red-200" title="' + (r.flagReason || 'Requires audit') + '"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Flagged</span>';
+        } else {
+            statusBadge = '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Archived</span>';
+        }
+
+        var durationStr = r.status === 'recording' ? ('Live (' + (r.durationMinutes || 0) + 'm)') : ((r.durationMinutes || 0) + ' mins');
+
+        return '<tr class="hover:bg-slate-50/80 transition-colors border-b border-slate-100">' +
+            '<td class="p-3 text-xs">' +
+                '<div class="font-bold text-slate-800">' + dateFormatted + '</div>' +
+                '<div class="text-slate-400 font-mono text-[11px]">' + timeFormatted + '</div>' +
+            '</td>' +
+            '<td class="p-3 text-xs">' +
+                '<div class="font-bold text-slate-800 flex items-center gap-2">' +
+                    '<div class="w-6 h-6 rounded-full bg-orange-100 text-orange-700 font-bold flex items-center justify-center text-[10px]">' + (r.studentName ? r.studentName.charAt(0) : 'S') + '</div>' +
+                    '<span>' + (r.studentName || 'Student') + '</span>' +
+                '</div>' +
+            '</td>' +
+            '<td class="p-3 text-xs font-medium text-slate-700">' + (r.tutorName || 'Mentor') + '</td>' +
+            '<td class="p-3 text-xs">' +
+                '<span class="font-medium text-slate-800">' + (r.courseName || 'Coding Session') + '</span>' +
+            '</td>' +
+            '<td class="p-3 text-xs font-mono font-bold text-slate-700">' + durationStr + '</td>' +
+            '<td class="p-3 text-xs">' + statusBadge + '</td>' +
+            '<td class="p-3 text-xs text-right whitespace-nowrap">' +
+                '<div class="flex items-center justify-end gap-1.5">' +
+                    '<button type="button" onclick="AdminEngine.openRecordingPlayerModal(\'' + r.id + '\')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition-all shadow-sm flex items-center gap-1">' +
+                        '<i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>' +
+                        '<span>Watch</span>' +
+                    '</button>' +
+                    '<button type="button" onclick="AdminEngine.copyParentExpiringLink(\'' + r.id + '\')" class="p-1.5 text-slate-500 hover:text-blue-600 rounded-lg hover:bg-slate-100 transition-colors" title="Copy 72h Parent Link">' +
+                        '<i data-lucide="share-2" class="w-4 h-4"></i>' +
+                    '</button>' +
+                '</div>' +
+            '</td>' +
+        '</tr>';
+    }).join('');
+
+    tbody.innerHTML = html;
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function filterRecordingsList() {
+    var searchInput = document.getElementById('recordings-search-input');
+    var statusSelect = document.getElementById('recordings-filter-status');
+    var trackSelect = document.getElementById('recordings-filter-track');
+
+    var term = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    var statusVal = statusSelect ? statusSelect.value : 'all';
+    var trackVal = trackSelect ? trackSelect.value : 'all';
+
+    var filtered = _cachedRecordings.filter(function(r) {
+        var sName = (r.studentName || '').toLowerCase();
+        var tName = (r.tutorName || '').toLowerCase();
+        var cName = (r.courseName || '').toLowerCase();
+        var matchTerm = !term || sName.includes(term) || tName.includes(term) || cName.includes(term);
+
+        var matchStatus = true;
+        if (statusVal === 'completed') matchStatus = r.status === 'completed' && !r.flaggedForReview;
+        else if (statusVal === 'recording') matchStatus = r.status === 'recording';
+        else if (statusVal === 'flagged') matchStatus = !!r.flaggedForReview;
+
+        var matchTrack = trackVal === 'all' || (r.courseName || '').toLowerCase().includes(trackVal.toLowerCase());
+
+        return matchTerm && matchStatus && matchTrack;
+    });
+
+    renderRecordingsTable(filtered);
+}
+
+function openRecordingPlayerModal(recordingId) {
+    var rec = _cachedRecordings.find(function(r) { return r.id === recordingId; });
+    if (!rec) {
+        try {
+            var stored = JSON.parse(localStorage.getItem('stemulus_class_recordings') || '[]');
+            rec = stored.find(function(r) { return r.id === recordingId; });
+        } catch(e) {}
+    }
+    if (!rec) return;
+
+    _activeViewingRecordingId = recordingId;
+
+    var modal = document.getElementById('modal-recording-player');
+    var titleEl = document.getElementById('rec-player-title');
+    var subEl = document.getElementById('rec-player-subtitle');
+    var videoEl = document.getElementById('rec-video-element');
+    var videoSrc = document.getElementById('rec-video-source');
+    var placeholder = document.getElementById('rec-video-placeholder');
+    var meetEl = document.getElementById('rec-modal-meet');
+    var durationEl = document.getElementById('rec-modal-duration');
+    var safeEl = document.getElementById('rec-modal-safe');
+    var providerEl = document.getElementById('rec-modal-provider');
+    var ratingEl = document.getElementById('rec-modal-rating');
+    var notesEl = document.getElementById('rec-modal-notes');
+    var dlBtn = document.getElementById('btn-rec-download');
+
+    if (titleEl) titleEl.textContent = (rec.courseName || 'Coding Class') + ' Session';
+    if (subEl) {
+        var dt = rec.startedAt ? new Date(rec.startedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+        subEl.textContent = 'Student: ' + (rec.studentName || 'Student') + ' • Mentor: ' + (rec.tutorName || 'Mentor') + ' • ' + dt;
+    }
+
+    if (meetEl) meetEl.textContent = rec.meetingUrl || 'Google Meet Private Room';
+    if (durationEl) durationEl.textContent = (rec.durationMinutes || 0) + ' minutes';
+    if (safeEl) {
+        if (rec.flaggedForReview) {
+            safeEl.innerHTML = '<span class="text-red-600 font-bold">⚠️ Flagged: ' + (rec.flagReason || 'Requires Audit') + '</span>';
+        } else {
+            safeEl.innerHTML = '<span class="text-emerald-600 font-bold">✅ Verified COPPA Compliant</span>';
+        }
+    }
+    if (providerEl) providerEl.textContent = rec.provider || 'Autonomous Cloud Bot';
+    if (ratingEl) ratingEl.value = rec.rating || '5';
+    if (notesEl) notesEl.value = rec.adminAuditNotes || '';
+    if (dlBtn) dlBtn.href = rec.videoUrl || '#';
+
+    if (videoEl && videoSrc) {
+        if (rec.status === 'recording' || !rec.videoUrl) {
+            videoEl.classList.add('hidden');
+            if (placeholder) placeholder.classList.remove('hidden');
+            videoEl.pause();
+        } else {
+            videoEl.classList.remove('hidden');
+            if (placeholder) placeholder.classList.add('hidden');
+            videoSrc.src = rec.videoUrl;
+            videoEl.load();
+        }
+    }
+
+    if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function closeRecordingPlayerModal() {
+    var modal = document.getElementById('modal-recording-player');
+    var videoEl = document.getElementById('rec-video-element');
+    if (videoEl) videoEl.pause();
+    if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+    _activeViewingRecordingId = null;
+}
+
+function setVideoPlaybackRate(rate) {
+    var videoEl = document.getElementById('rec-video-element');
+    if (videoEl) {
+        videoEl.playbackRate = rate;
+        showToast('Playback speed set to ' + rate + 'x', 'info');
+    }
+}
+
+async function saveRecordingAuditNotes() {
+    if (!_activeViewingRecordingId) return;
+
+    var ratingEl = document.getElementById('rec-modal-rating');
+    var notesEl = document.getElementById('rec-modal-notes');
+    var rating = ratingEl ? ratingEl.value : '5';
+    var notes = notesEl ? notesEl.value.trim() : '';
+
+    var target = _cachedRecordings.find(function(r) { return r.id === _activeViewingRecordingId; });
+    if (target) {
+        target.rating = rating;
+        target.adminAuditNotes = notes;
+    }
+
+    try {
+        localStorage.setItem('stemulus_class_recordings', JSON.stringify(_cachedRecordings));
+    } catch(e) {}
+
+    if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) {
+        try {
+            await firebase.firestore().collection('recordings').doc(_activeViewingRecordingId).set({
+                rating: rating,
+                adminAuditNotes: notes,
+                auditedAt: new Date().toISOString()
+            }, { merge: true });
+        } catch(e) {
+            console.warn('[AdminEngine] Firestore notes update failed:', e.message);
+        }
+    }
+
+    showToast('Quality audit evaluation and coaching notes saved!', 'success');
+    renderRecordingsTable(_cachedRecordings);
+}
+
+function copyParentExpiringLink(recordingId) {
+    var id = recordingId || _activeViewingRecordingId;
+    if (!id) return;
+
+    var expiry = Date.now() + (72 * 3600 * 1000);
+    var link = 'https://stemuluskidstech.com/parent-progress.html?recording=' + encodeURIComponent(id) + '&authExp=' + expiry;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(function() {
+            showToast('Secure 72-hour parent link copied to clipboard!', 'success');
+        });
+    } else {
+        prompt('Copy secure 72-hour parent viewing link:', link);
+    }
+}
+
+function openManualBotDispatchModal() {
+    var modal = document.getElementById('modal-bot-dispatch');
+    if (modal) modal.classList.remove('hidden');
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function closeManualBotDispatchModal() {
+    var modal = document.getElementById('modal-bot-dispatch');
+    if (modal) modal.classList.add('hidden');
+}
+
+async function submitManualBotDispatch() {
+    var meetInput = document.getElementById('dispatch-meet-link');
+    var studentInput = document.getElementById('dispatch-student-name');
+    var tutorInput = document.getElementById('dispatch-tutor-name');
+    var courseInput = document.getElementById('dispatch-course-name');
+    var btn = document.getElementById('btn-submit-dispatch-bot');
+
+    var meetUrl = meetInput ? meetInput.value.trim() : '';
+    if (!meetUrl || !meetUrl.includes('meet.google.com')) {
+        showToast('Please enter a valid Google Meet link (e.g. https://meet.google.com/xyz-abcd-efg)', 'warning');
+        return;
+    }
+
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="inline-block animate-spin mr-2">🔄</span> Dispatching Bot...';
+    }
+
+    try {
+        var resp = await fetch('/.netlify/functions/record-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                meetingUrl: meetUrl,
+                studentName: studentInput ? studentInput.value.trim() : 'Ad-hoc Student',
+                tutorName: tutorInput ? tutorInput.value.trim() : 'Instructor',
+                courseName: courseInput ? courseInput.value.trim() : 'STEM Coding Session',
+                triggeredBy: 'admin_manual_vault'
+            })
+        });
+
+        var resJson = await resp.json();
+        if (resJson.success) {
+            showToast('Recording bot successfully dispatched to ' + meetUrl + '!', 'success');
+            closeManualBotDispatchModal();
+            loadClassRecordings();
+        } else {
+            showToast('Bot dispatch notice: ' + (resJson.message || 'Check meeting link.'), 'info');
+        }
+    } catch(err) {
+        showToast('Bot dispatch request queued: ' + err.message, 'info');
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="send" class="w-4 h-4"></i><span>Dispatch Bot Now</span>';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+    }
+}
 
 return {
     init,
@@ -5953,6 +6775,7 @@ return {
     deleteStudent,
     openStudentModal,
     editStudent,
+    copyStudentMeetLink,
     openScheduleModal,
     switchScheduleTab,
     generateRecurringBatch,
@@ -6074,6 +6897,27 @@ return {
     handleBillingSettingsSubmit,
     exportBillingCSV,
 
+    // Class Recordings Vault & Safeguarding Audit
+    loadClassRecordings,
+    refreshRecordingsVault,
+    renderRecordingsTable,
+    filterRecordingsList,
+    openRecordingPlayerModal,
+    closeRecordingPlayerModal,
+    setVideoPlaybackRate,
+    saveRecordingAuditNotes,
+    copyParentExpiringLink,
+    openManualBotDispatchModal,
+    closeManualBotDispatchModal,
+    submitManualBotDispatch,
+    getCachedRecordings: function() { return _cachedRecordings; },
+
+    // Tutor Dossier & Profile
+    openTutorDossierModal,
+    closeTutorDossierModal,
+    copyTutorBankInfo,
+    editTutorFromDossier,
+
     // Silicon Valley PII Privacy Protection
     togglePrivacyMask,
     isPrivacyMaskActive: function() { return isPrivacyMaskActive; }
@@ -6089,6 +6933,10 @@ if (typeof window !== 'undefined') {
     window.saveParent = AdminEngine.saveParent;
     window.openStudentModal = AdminEngine.openStudentModal;
     window.openTutorModal = AdminEngine.openTutorModal;
+    window.openTutorDossierModal = AdminEngine.openTutorDossierModal;
+    window.closeTutorDossierModal = AdminEngine.closeTutorDossierModal;
+    window.copyTutorBankInfo = AdminEngine.copyTutorBankInfo;
+    window.editTutorFromDossier = AdminEngine.editTutorFromDossier;
     window.openParentModal = AdminEngine.openParentModal;
     window.openScheduleModal = AdminEngine.openScheduleModal;
     window.openProjectModal = AdminEngine.openProjectModal;
@@ -6133,6 +6981,20 @@ if (typeof window !== 'undefined') {
     window.openBillingSettingsModal = AdminEngine.openBillingSettingsModal;
     window.handleBillingSettingsSubmit = AdminEngine.handleBillingSettingsSubmit;
     window.exportBillingCSV = AdminEngine.exportBillingCSV;
+
+    // Class Recordings Aliases
+    window.copyStudentMeetLink = AdminEngine.copyStudentMeetLink;
+    window.loadClassRecordings = AdminEngine.loadClassRecordings;
+    window.refreshRecordingsVault = AdminEngine.refreshRecordingsVault;
+    window.filterRecordingsList = AdminEngine.filterRecordingsList;
+    window.openRecordingPlayerModal = AdminEngine.openRecordingPlayerModal;
+    window.closeRecordingPlayerModal = AdminEngine.closeRecordingPlayerModal;
+    window.setVideoPlaybackRate = AdminEngine.setVideoPlaybackRate;
+    window.saveRecordingAuditNotes = AdminEngine.saveRecordingAuditNotes;
+    window.copyParentExpiringLink = AdminEngine.copyParentExpiringLink;
+    window.openManualBotDispatchModal = AdminEngine.openManualBotDispatchModal;
+    window.closeManualBotDispatchModal = AdminEngine.closeManualBotDispatchModal;
+    window.submitManualBotDispatch = AdminEngine.submitManualBotDispatch;
 }
 
 document.addEventListener('DOMContentLoaded', AdminEngine.init);

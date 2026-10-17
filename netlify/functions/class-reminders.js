@@ -206,6 +206,23 @@ exports.handler = async (event) => {
       await pushNtfy(enrollTopic, `[10m Urgent Alert] ${studentName} Class Starting`, `Classroom open now!\nJoin Link: ${link}`, { priority: 'urgent', tags: 'alarm_clock,zap' });
       await pushNtfy(tutorTopic, `[Tutor Launch Alert] 10m until ${studentName}`, `Please join classroom:\n${link}`, { priority: 'urgent', tags: 'alarm_clock,zap' });
 
+      // Automatically initialize automated recording bot for class
+      try {
+        const baseUrl = process.env.URL || process.env.DEPLOY_URL || 'https://stemuluskidstech.com';
+        fetch(`${baseUrl}/.netlify/functions/record-session`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            scheduleId: s.id,
+            studentName,
+            tutorName,
+            courseName: course,
+            meetingUrl: link,
+            triggeredBy: 'cron_countdown'
+          })
+        }).catch(err => console.warn('[ClassReminders] Recording bot trigger notice:', err.message));
+      } catch(e) {}
+
       await markMilestoneDispatched(s.id, '10m', s.remindersDispatched);
       sentMilestones.push('10m');
       s.remindersDispatched = sentMilestones.join(',');

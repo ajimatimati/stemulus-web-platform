@@ -416,6 +416,15 @@ const ParentEngine = (function() {
                             <div>
                                 <h3 class="text-lg font-bold font-nunito text-gray-800 leading-snug">${s.firstName} ${s.lastName}</h3>
                                 <p class="text-xs text-gray-500 font-medium">${s.program} • Stage ${s.stage || 'N/A'} • Age ${s.age}</p>
+                                <div class="flex flex-wrap items-center gap-2 mt-1.5 text-xs text-slate-600">
+                                    <span class="flex items-center gap-1 font-semibold text-slate-700 bg-orange-50 px-2 py-0.5 rounded-md border border-orange-100">
+                                        <i data-lucide="user-check" class="w-3.5 h-3.5 text-orange-500"></i> Mentor: <strong class="text-slate-900">${s.tutorName || 'Kafayat Abdulwahab'}</strong>
+                                    </span>
+                                    ${(s.meetLink || s.classroomLink) ? `
+                                    <a href="${s.meetLink || s.classroomLink}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-blue-700 bg-blue-50 hover:bg-blue-100 px-2 py-0.5 rounded-md border border-blue-100 font-mono text-[11px] font-semibold transition-colors">
+                                        <i data-lucide="video" class="w-3.5 h-3.5 text-blue-600"></i> ${(s.meetLink || s.classroomLink).replace('https://', '')}
+                                    </a>` : ''}
+                                </div>
                             </div>
                         </div>
                         <span class="bg-green-100 text-green-700 text-xs font-bold px-2.5 py-1 rounded-xl uppercase tracking-wider">${s.status || 'Active'}</span>
@@ -504,9 +513,14 @@ const ParentEngine = (function() {
         const studentIds = (Array.isArray(students) ? students : []).map(s => s.id);
         const rawSched = (DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : []) || [];
         const schedList = Array.isArray(rawSched) ? rawSched : [];
-        const schedules = schedList.filter(function(s) { 
+        let schedules = schedList.filter(function(s) { 
             return s && studentIds.includes(s.studentId) && new Date(s.date) >= new Date(new Date().toDateString()); 
         });
+        if (schedules.length === 0 && schedList.length > 0) {
+            schedules = schedList.filter(function(s) {
+                return s && studentIds.includes(s.studentId);
+            });
+        }
 
         if (schedules.length === 0) {
             scheduleContainer.innerHTML = `
@@ -546,7 +560,7 @@ const ParentEngine = (function() {
                         </div>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <a href="${s.link}" target="_blank" rel="noopener noreferrer" 
+                        <a href="join-class.html?id=${encodeURIComponent(s.id)}&role=parent&url=${encodeURIComponent(s.link || 'https://meet.google.com')}" target="_blank" rel="noopener noreferrer" 
                             class="btn-3d btn-3d-blue px-3 py-1.5 text-[11px] rounded-lg">
                             <i data-lucide="video" class="w-3.5 h-3.5"></i> Join Session
                         </a>
@@ -1179,7 +1193,7 @@ const ParentEngine = (function() {
                 time: "16:30",
                 duration: "60",
                 mentor: tutor,
-                link: "https://zoom.us/j/stemulus-class",
+                link: newStudent.meetLink || newStudent.classroomLink || "https://meet.google.com/nxg-rbcg-nsr",
                 attendanceStatus: "pending"
             });
             if (DashboardEngine.saveDB) DashboardEngine.saveDB(db);

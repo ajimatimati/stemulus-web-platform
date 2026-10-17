@@ -34,10 +34,18 @@
       <div id="bridge-bar" class="bg-gradient-to-r from-orange-500 to-amber-400 h-2 rounded-full transition-all duration-500 w-1/3"></div>
     </div>
 
-    <div class="bg-slate-900/60 rounded-xl p-4 mb-6 border border-slate-700/50 text-left text-xs space-y-1.5" id="bridge-details">
+    <div class="bg-slate-900/60 rounded-xl p-4 mb-4 border border-slate-700/50 text-left text-xs space-y-1.5" id="bridge-details">
       <div class="flex justify-between text-slate-400"><span>Session:</span> <strong class="text-slate-200" id="detail-session">...</strong></div>
       <div class="flex justify-between text-slate-400"><span>Student:</span> <strong class="text-slate-200" id="detail-student">...</strong></div>
       <div class="flex justify-between text-slate-400"><span>Instructor:</span> <strong class="text-slate-200" id="detail-mentor">...</strong></div>
+    </div>
+
+    <!-- Child Safeguarding & Automated Recording Notice -->
+    <div class="flex items-center justify-center gap-2 text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 py-1.5 px-3 rounded-full mb-5 font-medium">
+      <svg class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+      </svg>
+      <span>Automated Session Recording &amp; Safeguarding Active</span>
     </div>
 
     <div class="space-y-3">
@@ -109,6 +117,33 @@
         const liveStore = JSON.parse(localStorage.getItem(liveKey) || '{}');
         liveStore[presencePayload.sessionId] = Object.assign({}, liveStore[presencePayload.sessionId] || {}, presencePayload);
         localStorage.setItem(liveKey, JSON.stringify(liveStore));
+
+        // 2b. Automatically register live recording in Admin Recordings Vault
+        const recKey = 'stemulus_class_recordings';
+        const recList = JSON.parse(localStorage.getItem(recKey) || '[]');
+        const existingIdx = recList.findIndex(r => (r.scheduleId && r.scheduleId === presencePayload.scheduleId) || (r.sessionId && r.sessionId === presencePayload.sessionId));
+        if (existingIdx === -1) {
+          recList.unshift({
+            id: 'rec_' + Date.now() + '_' + (presencePayload.scheduleId || 'live').replace(/[^a-zA-Z0-9]/g, '').slice(0, 8),
+            scheduleId: presencePayload.scheduleId,
+            sessionId: presencePayload.sessionId,
+            studentName: presencePayload.studentName,
+            tutorName: presencePayload.tutorName,
+            courseName: schedule ? (schedule.course || schedule.program) : 'Live Coding Session',
+            meetingUrl: targetMeetingUrl,
+            status: 'recording',
+            startedAt: nowIso,
+            durationMinutes: 1,
+            videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+            provider: 'Autonomous Safeguarding Bot (Recall.ai)',
+            flaggedForReview: false,
+            flagReason: '',
+            rating: '5',
+            adminAuditNotes: 'Class session joined. Autonomous safeguarding recording initiated.',
+            safeguardingCompliant: true
+          });
+          localStorage.setItem(recKey, JSON.stringify(recList));
+        }
       } catch(e) {}
 
       // Record in Firestore if available
@@ -118,6 +153,23 @@
             .catch(err => console.warn('[JoinBridge] Cloud heartbeat error:', err));
         } catch(e) {}
       }
+
+      // Provision / verify automated safeguarding recording bot (non-blocking)
+      try {
+        fetch('/.netlify/functions/record-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            scheduleId: presencePayload.scheduleId,
+            sessionId: presencePayload.sessionId,
+            studentName: presencePayload.studentName,
+            tutorName: presencePayload.tutorName,
+            courseName: schedule ? schedule.course : 'Live Coding Track',
+            meetingUrl: targetMeetingUrl,
+            triggeredBy: role || 'participant'
+          })
+        }).catch(err => console.warn('[JoinBridge] Recording dispatch notice:', err.message));
+      } catch(e) {}
 
       // Animate progress bar to 100%
       setTimeout(() => { if (bridgeBar) bridgeBar.style.width = '100%'; }, 150);

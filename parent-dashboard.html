@@ -510,11 +510,11 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="assets/js/firebase-config.min.js" defer></script>
-  <script src="assets/js/dashboard-engine.min.js" defer></script>
+  <script src="assets/js/dashboard-engine.min.js?v=20261017d" defer></script>
   <script src="assets/js/billing-engine.js" defer></script>
   <script src="assets/js/report-pdf-generator.min.js" defer></script>
   <script src="assets/js/badge-passport-engine.js" defer></script>
-  <script src="assets/js/parent-engine.min.js" defer></script>
+  <script src="assets/js/parent-engine.min.js?v=20261017d" defer></script>
   <script src="assets/js/portal-scene-engine.min.js" defer></script>
 
   <script>
@@ -685,6 +685,9 @@
     window.addEventListener('storage', function(e) {
       if (e.key === 'stemulus_session' && !e.newValue) {
         window.location.href = 'parent-login.html';
+      }
+      if (e.key === 'stemulus_db' && typeof ParentEngine !== 'undefined' && typeof ParentEngine.renderDashboard === 'function') {
+        ParentEngine.renderDashboard();
       }
     });
   </script>

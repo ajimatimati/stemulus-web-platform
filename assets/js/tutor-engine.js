@@ -173,6 +173,15 @@ const TutorEngine = (function() {
                 }
             }
 
+            const meetUrl = s.meetLink || s.classroomLink || '';
+            const meetCode = meetUrl ? meetUrl.replace('https://meet.google.com/', '') : '';
+            const meetPill = meetUrl ? `
+                <a href="${meetUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-[11px] font-mono font-semibold transition-colors no-underline" title="Dedicated Google Meet Classroom: ${meetUrl}">
+                    <i data-lucide="video" style="width:12px;height:12px;" class="text-blue-600"></i>
+                    <span>${meetCode}</span>
+                </a>
+            ` : '';
+
             return `
                 <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/70 transition-colors border-b border-gray-100 last:border-0">
                     <div class="flex items-center gap-3.5">
@@ -180,9 +189,10 @@ const TutorEngine = (function() {
                             ${initials}
                         </div>
                         <div>
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 flex-wrap">
                                 <h3 class="font-bold text-slate-900 text-sm leading-tight">${fullName}</h3>
                                 <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Active</span>
+                                ${meetPill}
                             </div>
                             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 mt-1">
                                 <span class="font-semibold text-indigo-600">${track}</span>
@@ -365,9 +375,9 @@ const TutorEngine = (function() {
                         </div>
                     </div>
                     <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-                        <a href="${s.link || 'https://meet.google.com'}" target="_blank" rel="noopener noreferrer" 
-                            class="border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold text-xs px-3 py-2 rounded-xl transition-colors flex items-center gap-1">
-                            <i data-lucide="external-link" class="w-3 h-3"></i> Zoom
+                        <a href="join-class.html?id=${encodeURIComponent(s.id)}&role=tutor&url=${encodeURIComponent(s.link || 'https://meet.google.com')}" target="_blank" rel="noopener noreferrer" 
+                            class="bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-semibold text-xs px-3 py-2 rounded-xl transition-colors flex items-center gap-1.5 shadow-sm" title="Launch Google Meet session (Auto-records for safeguarding)">
+                            <i data-lucide="video" class="w-3.5 h-3.5 text-emerald-600"></i> Google Meet
                         </a>
                         ${actionBtn}
                     </div>
@@ -640,6 +650,18 @@ const TutorEngine = (function() {
         }
         if (bioInput) bioInput.value = tutor.bio || '';
 
+        const bankNameInput = document.getElementById('tp-bank-name');
+        const accNameInput = document.getElementById('tp-account-name');
+        const accNumInput = document.getElementById('tp-account-number');
+        const locInput = document.getElementById('tp-location');
+        const nokInput = document.getElementById('tp-nok');
+
+        if (bankNameInput) bankNameInput.value = tutor.bankName || '';
+        if (accNameInput) accNameInput.value = tutor.accountHolderName || tutor.name || '';
+        if (accNumInput) accNumInput.value = tutor.accountNumber || '';
+        if (locInput) locInput.value = tutor.location || '';
+        if (nokInput) nokInput.value = tutor.nextOfKinName ? (tutor.nextOfKinName + (tutor.nextOfKinContact ? ' (' + tutor.nextOfKinContact + ')' : '')) : '';
+
         // Render Availability Matrix
         const matrixTbody = document.getElementById('tp-matrix-tbody');
         if (matrixTbody) {
@@ -692,6 +714,11 @@ const TutorEngine = (function() {
             availability[dayKey] = checkedBoxes;
         });
 
+        const bankName = (document.getElementById('tp-bank-name') ? document.getElementById('tp-bank-name').value : '').trim();
+        const accountHolderName = (document.getElementById('tp-account-name') ? document.getElementById('tp-account-name').value : '').trim();
+        const accountNumber = (document.getElementById('tp-account-number') ? document.getElementById('tp-account-number').value : '').trim();
+        const location = (document.getElementById('tp-location') ? document.getElementById('tp-location').value : '').trim();
+
         const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
         if (db) {
             if (!db.tutors) db.tutors = [];
@@ -702,6 +729,10 @@ const TutorEngine = (function() {
                 db.tutors[tIdx].subjects = subjects;
                 db.tutors[tIdx].bio = bio;
                 db.tutors[tIdx].availability = availability;
+                if (bankName) db.tutors[tIdx].bankName = bankName;
+                if (accountHolderName) db.tutors[tIdx].accountHolderName = accountHolderName;
+                if (accountNumber) db.tutors[tIdx].accountNumber = accountNumber;
+                if (location) db.tutors[tIdx].location = location;
             } else {
                 db.tutors.push({
                     name,
@@ -710,6 +741,10 @@ const TutorEngine = (function() {
                     subjects,
                     bio,
                     availability,
+                    bankName,
+                    accountHolderName,
+                    accountNumber,
+                    location,
                     status: 'active'
                 });
             }

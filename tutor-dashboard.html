@@ -501,9 +501,9 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="assets/js/firebase-config.min.js" defer></script>
-  <script src="assets/js/dashboard-engine.min.js" defer></script>
+  <script src="assets/js/dashboard-engine.min.js?v=20261017d" defer></script>
   <script src="assets/js/badge-passport-engine.js" defer></script>
-  <script src="assets/js/tutor-engine.min.js" defer></script>
+  <script src="assets/js/tutor-engine.min.js?v=20261017d" defer></script>
   <script src="assets/js/portal-scene-engine.min.js" defer></script>
 
   <script>
@@ -632,6 +632,39 @@
           <div>
             <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Instructor Bio &amp; Pedagogy</label>
             <textarea id="tp-bio" rows="2" placeholder="Tell parents and students about your background, passions, and teaching style..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-500 resize-none"></textarea>
+          </div>
+
+          <!-- Official Banking & Workstation Audit -->
+          <div class="border-t border-slate-100 pt-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center gap-1.5">
+              <i data-lucide="landmark" class="w-4 h-4 text-amber-500"></i>
+              Remuneration & Banking Details (NUBAN)
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Bank Name</label>
+                <input type="text" id="tp-bank-name" placeholder="e.g. Opay, GTBank, UBA" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-blue-500 font-semibold">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Account Holder</label>
+                <input type="text" id="tp-account-name" placeholder="Account Name" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-blue-500 font-semibold">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">10-Digit NUBAN</label>
+                <input type="text" id="tp-account-number" maxlength="10" placeholder="0123456789" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono text-slate-800 focus:outline-none focus:border-blue-500 font-bold">
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Residential Location</label>
+              <input type="text" id="tp-location" placeholder="City / Address" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Emergency Contact / Next of Kin</label>
+              <input type="text" id="tp-nok" placeholder="Name & Phone Number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-blue-500">
+            </div>
           </div>
 
           <!-- Recurring Weekly Availability Matrix -->
