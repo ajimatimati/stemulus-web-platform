@@ -221,13 +221,16 @@ const TutorEngine = (function() {
         if (!currentTutor) return;
         const tutorNameLower = (currentTutor.name || '').toLowerCase().trim();
         const tutorEmailLower = (currentTutor.email || '').toLowerCase().trim();
+        const tutorAltEmailLower = (currentTutor.altEmail || '').toLowerCase().trim();
 
         const schedules = DashboardEngine.getSchedules().filter(s => {
-            const m = (s.mentor || '').toLowerCase().trim();
+            const m = (s.mentor || s.tutorName || '').toLowerCase().trim();
             const e = (s.tutorEmail || '').toLowerCase().trim();
             const matchesTutor = (tutorNameLower && (m === tutorNameLower || m.includes(tutorNameLower) || tutorNameLower.includes(m))) ||
-                                (tutorEmailLower && e === tutorEmailLower);
-            return matchesTutor && s.attendanceStatus === 'pending';
+                                (tutorEmailLower && e === tutorEmailLower) ||
+                                (tutorAltEmailLower && e === tutorAltEmailLower);
+            const isUpcoming = s.attendanceStatus === 'pending' || s.attendanceStatus === 'scheduled' || (!s.attendanceStatus && s.status === 'scheduled');
+            return matchesTutor && isUpcoming && s.status !== 'cancelled' && s.attendanceStatus !== 'cancelled';
         });
         const students = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(currentTutor.email) : [];
 
@@ -244,18 +247,22 @@ const TutorEngine = (function() {
         var db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
 
         var approvedAttendance = (db.attendanceRecords || []).filter(function(r) {
-            var mName = (r.tutorName || r.mentor || '').toLowerCase();
-            var mEmail = (r.tutorEmail || '').toLowerCase();
-            var isTutor = (tutorNameLower && mName === tutorNameLower) || (tutorEmailLower && mEmail === tutorEmailLower);
+            var mName = (r.tutorName || r.mentor || '').toLowerCase().trim();
+            var mEmail = (r.tutorEmail || '').toLowerCase().trim();
+            var isTutor = (tutorNameLower && (mName === tutorNameLower || mName.includes(tutorNameLower) || tutorNameLower.includes(mName))) ||
+                          (tutorEmailLower && mEmail === tutorEmailLower) ||
+                          (tutorAltEmailLower && mEmail === tutorAltEmailLower);
             return isTutor && (r.status === 'approved' || r.status === 'present');
         });
 
         var allSchedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
         var approvedSchedules = allSchedules.filter(function(s) {
-            var mName = (s.mentor || '').toLowerCase();
-            var mEmail = (s.tutorEmail || '').toLowerCase();
-            var isTutor = (tutorNameLower && mName === tutorNameLower) || (tutorEmailLower && mEmail === tutorEmailLower);
-            return isTutor && (s.attendanceStatus === 'present' || s.status === 'approved');
+            var mName = (s.mentor || s.tutorName || '').toLowerCase().trim();
+            var mEmail = (s.tutorEmail || '').toLowerCase().trim();
+            var isTutor = (tutorNameLower && (mName === tutorNameLower || mName.includes(tutorNameLower) || tutorNameLower.includes(mName))) ||
+                          (tutorEmailLower && mEmail === tutorEmailLower) ||
+                          (tutorAltEmailLower && mEmail === tutorAltEmailLower);
+            return isTutor && (s.attendanceStatus === 'present' || s.attendanceStatus === 'done' || s.status === 'approved' || s.status === 'done');
         });
 
         var approvedSessionMinutes = 0;
@@ -289,12 +296,14 @@ const TutorEngine = (function() {
 
         const tutorNameLower = (currentTutor.name || '').toLowerCase().trim();
         const tutorEmailLower = (currentTutor.email || '').toLowerCase().trim();
+        const tutorAltEmailLower = (currentTutor.altEmail || '').toLowerCase().trim();
 
         const schedules = DashboardEngine.getSchedules().filter(s => {
-            const m = (s.mentor || '').toLowerCase().trim();
+            const m = (s.mentor || s.tutorName || '').toLowerCase().trim();
             const e = (s.tutorEmail || '').toLowerCase().trim();
             const matchesTutor = (tutorNameLower && (m === tutorNameLower || m.includes(tutorNameLower) || tutorNameLower.includes(m))) ||
-                                (tutorEmailLower && e === tutorEmailLower);
+                                (tutorEmailLower && e === tutorEmailLower) ||
+                                (tutorAltEmailLower && e === tutorAltEmailLower);
             return matchesTutor && s.attendanceStatus !== 'cancelled';
         });
 
@@ -751,20 +760,32 @@ const TutorEngine = (function() {
 
             // Sync user name
             if (db.users) {
-                const u = db.users.find(user => user.email && user.email.toLowerCase() === email);
-                if (u) {
-                    u.name = name;
-                    u.phone = phone;
+                if (Array.isArray(db.users)) {
+                    const u = db.users.find(user => user && user.email && user.email.toLowerCase() === email);
+                    if (u) {
+                        u.name = name;
+                        u.phone = phone;
+                    }
+                } else if (typeof db.users === 'object' && db.users[email]) {
+                    db.users[email].name = name;
+                    db.users[email].phone = phone;
                 }
             }
 
             try {
-                localStorage.setItem('stemulus_db', JSON.stringify(db));
+                if (typeof DashboardEngine !== 'undefined' && DashboardEngine.saveDB) {
+                    DashboardEngine.saveDB(db);
+                } else {
+                    localStorage.setItem('stemulus_db', JSON.stringify(db));
+                }
                 // Update session
-                const session = JSON.parse(sessionStorage.getItem('stemulus_session') || '{}');
-                session.name = name;
-                session.phone = phone;
-                sessionStorage.setItem('stemulus_session', JSON.stringify(session));
+                if (currentTutor) {
+                    currentTutor.name = name;
+                    currentTutor.phone = phone;
+                    if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.saveSecureSession) {
+                        StemulusSecurity.saveSecureSession(currentTutor);
+                    }
+                }
                 window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { source: 'tutor_profile_update' } }));
             } catch(err) {}
         }

@@ -1536,6 +1536,7 @@ AdminWorkflows.NotificationCenter = {
   },
 
   scheduleReminders() {
+    if (typeof window !== 'undefined' && window.STEMULUS_AUTO_REMINDER_EMAILS !== true) return;
     const schedules = (typeof DashboardEngine !== 'undefined') ? DashboardEngine.getSchedules() : [];
     const now = new Date();
     const in24h = new Date(now.getTime() + 24 * 60 * 60 * 1000);

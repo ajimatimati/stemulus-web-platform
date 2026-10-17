@@ -103,8 +103,9 @@
     } catch (e) {}
   }
 
-  // Dispatch Automated Email Reminders to both Parent and Tutor
+  // Dispatch Automated Email Reminders to both Parent and Tutor (Gated behind explicit admin toggle)
   function dispatchReminderEmails(schedule, milestone) {
+    if (typeof window !== 'undefined' && window.STEMULUS_AUTO_REMINDER_EMAILS !== true) return;
     if (typeof EmailService === 'undefined') return;
 
     // 1. Send to Parent
@@ -149,7 +150,7 @@
       DashboardEngine.addNotification({
         userEmail: schedule.tutorEmail,
         title: isUrgent ? `🚨 Class in 10 Minutes: ${schedule.studentName}` : `⏰ Class in ${label}: ${schedule.studentName}`,
-        message: `Your 1-on-1 session for ${schedule.course} is scheduled for ${schedule.date} at ${schedule.time} (WAT). Link: ${schedule.link || 'Zoom'}`,
+        message: `Your 1-on-1 session for ${schedule.course} is scheduled for ${schedule.date} at ${schedule.time} (WAT). Link: ${schedule.link || 'Google Meet'}`,
         timestamp: new Date().toISOString(),
         read: false
       });
@@ -160,7 +161,7 @@
       DashboardEngine.addNotification({
         userEmail: schedule.parentEmail,
         title: isUrgent ? `🚨 Class in 10 Minutes: ${schedule.studentName}` : `⏰ Class in ${label}: ${schedule.studentName}`,
-        message: `${schedule.studentName}'s coding session with ${schedule.mentor || 'Mentor'} is at ${schedule.time} on ${schedule.date}. Link: ${schedule.link || 'Zoom'}`,
+        message: `${schedule.studentName}'s coding session with ${schedule.mentor || 'Mentor'} is at ${schedule.time} on ${schedule.date}. Link: ${schedule.link || 'Google Meet'}`,
         timestamp: new Date().toISOString(),
         read: false
       });
@@ -214,7 +215,7 @@
             ${studentName} &bull; ${course}
           </h4>
           <p style="margin:0 0 10px 0; font-size:12px; color:#94A3B8; line-height:1.4;">
-            Scheduled for <strong>${date} at ${time}</strong> with <strong>${tutorName}</strong>. Automatic email dispatched to parent and tutor.
+            Scheduled for <strong>${date} at ${time}</strong> with <strong>${tutorName}</strong>. In-portal reminder queued for parent and tutor.
           </p>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
             <a href="${schedule.link || 'https://meet.google.com'}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#F4600C; color:#FFFFFF; text-decoration:none; font-size:11px; font-weight:700; padding:6px 12px; border-radius:8px;">
@@ -284,11 +285,11 @@
             ${studentName} &bull; ${course}
           </h4>
           <p style="margin:0 0 10px 0; font-size:12px; color:#94A3B8; line-height:1.4;">
-            Session starts at <strong>${time}</strong> with <strong>${tutorName}</strong>. 1-hour email notification dispatched.
+            Session starts at <strong>${time}</strong> with <strong>${tutorName}</strong>. 1-hour notification queued.
           </p>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
             <a href="${schedule.link || 'https://meet.google.com'}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#2563EB; color:#FFFFFF; text-decoration:none; font-size:11px; font-weight:700; padding:6px 12px; border-radius:8px;">
-              Open Zoom &rarr;
+              Join Google Meet &rarr;
             </a>
           </div>
         </div>
@@ -361,7 +362,7 @@
         </a>
 
         <p style="margin:16px 0 0 0; font-size:11px; color:#64748B;">
-          Dual 10-minute alerts dispatched to both Parent and Mentor.
+          Dual 10-minute alerts queued for both Parent and Mentor.
         </p>
       </div>
     `;
@@ -378,10 +379,11 @@
     const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
     const ONE_HOUR_MS = 60 * 60 * 1000;
     const TEN_MINUTES_MS = 10 * 60 * 1000;
+    const isAdminPage = typeof window !== 'undefined' && window.location && window.location.pathname.includes('admin-dashboard');
 
     schedules.forEach(schedule => {
       if (!schedule.date || !schedule.time) return;
-      if (schedule.attendanceStatus === 'present' || schedule.attendanceStatus === 'absent' || schedule.attendanceStatus === 'cancelled') return;
+      if (schedule.attendanceStatus === 'present' || schedule.attendanceStatus === 'absent' || schedule.attendanceStatus === 'cancelled' || schedule.status === 'done') return;
 
       const scheduleDateTime = new Date(`${schedule.date}T${schedule.time}`).getTime();
       if (isNaN(scheduleDateTime)) return;
@@ -391,7 +393,7 @@
       // 1. 24-Hour Milestone (between 1 hour and 24 hours away)
       if (diff > ONE_HOUR_MS && diff <= TWENTY_FOUR_HOURS_MS && !schedule.reminded24h) {
         markScheduleReminded(schedule.id, '24h');
-        show24HourBanner(schedule);
+        if (!isAdminPage) show24HourBanner(schedule);
         dispatchReminderEmails(schedule, '24h');
         addPortalNotifications(schedule, '24h');
         console.log(`[ClassReminders] Dispatched 24h reminder for session #${schedule.id} (${schedule.studentName}) to Tutor and Parent`);
@@ -400,7 +402,7 @@
       // 2. 1-Hour Milestone (between 10 minutes and 1 hour away)
       if (diff > TEN_MINUTES_MS && diff <= ONE_HOUR_MS && !schedule.reminded1h) {
         markScheduleReminded(schedule.id, '1h');
-        show1HourBanner(schedule);
+        if (!isAdminPage) show1HourBanner(schedule);
         dispatchReminderEmails(schedule, '1h');
         addPortalNotifications(schedule, '1h');
         console.log(`[ClassReminders] Dispatched 1h prep briefing for session #${schedule.id} (${schedule.studentName}) to Tutor and Parent`);
@@ -409,7 +411,7 @@
       // 3. 10-Minute Milestone (between 0 and 10 minutes away)
       if (diff > 0 && diff <= TEN_MINUTES_MS && !schedule.reminded10m) {
         markScheduleReminded(schedule.id, '10m');
-        show10MinuteModal(schedule);
+        if (!isAdminPage) show10MinuteModal(schedule);
         dispatchReminderEmails(schedule, '10m');
         addPortalNotifications(schedule, '10m');
         console.log(`[ClassReminders] Dispatched 10m urgent alert for session #${schedule.id} (${schedule.studentName}) to Tutor and Parent`);

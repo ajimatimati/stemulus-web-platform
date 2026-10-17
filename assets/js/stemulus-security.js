@@ -230,13 +230,14 @@
                 const fp = getDeviceFingerprint();
                 const encrypted = encryptText(rawJson, key + '::' + fp);
 
-                const envelope = {
+                const baseObj = (typeof data === 'object' && data !== null && !Array.isArray(data)) ? data : {};
+                const envelope = Object.assign({}, baseObj, {
                     __v: 2,
                     __sec: true,
                     __ts: Date.now(),
                     __sig: generateHmacDigest(encrypted, key + '::' + fp),
                     data: encrypted
-                };
+                });
 
                 storage.setItem(key, JSON.stringify(envelope));
                 return true;
@@ -262,6 +263,16 @@
                     try {
                         const parsed = JSON.parse(raw);
                         if (parsed && parsed.__sec === true && parsed.data) {
+                            // If top-level collections are present on the hybrid envelope, return clean object directly
+                            if (Array.isArray(parsed.students) && Array.isArray(parsed.schedules)) {
+                                const cleanCopy = Object.assign({}, parsed);
+                                delete cleanCopy.__v;
+                                delete cleanCopy.__sec;
+                                delete cleanCopy.__ts;
+                                delete cleanCopy.__sig;
+                                delete cleanCopy.data;
+                                return cleanCopy;
+                            }
                             const fp = getDeviceFingerprint();
                             const expectedSig = generateHmacDigest(parsed.data, key + '::' + fp);
                             if (parsed.__sig !== expectedSig) {

@@ -1134,20 +1134,7 @@
     }
   ],
   "enrollments": [],
-  "rescheduleRequests": [
-    {
-      "id": "res-4001",
-      "scheduleId": "sch-2001",
-      "studentName": "Daniel M.",
-      "course": "Python Programming",
-      "currentDate": "2026-06-01",
-      "currentTime": "16:00",
-      "requestedDate": "2026-06-03",
-      "requestedTime": "17:30",
-      "status": "pending",
-      "parentEmail": "parent@stemuluskidstech.com"
-    }
-  ],
+  "rescheduleRequests": [],
   "progressReports": [
     {
       "id": "rep-5001",

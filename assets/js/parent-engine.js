@@ -12,6 +12,13 @@ const ParentEngine = (function() {
     }
 
     function checkAuth() {
+        const localSession = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSession) ? DashboardEngine.getSession() : null;
+        if (localSession && (localSession.role === 'parent' || localSession.role === 'admin')) {
+            currentParent = localSession;
+            hideLoginOverlay();
+            renderDashboard();
+        }
+
         const hasFirebase = (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore);
 
         if (hasFirebase) {
@@ -513,14 +520,18 @@ const ParentEngine = (function() {
         const studentIds = (Array.isArray(students) ? students : []).map(s => s.id);
         const rawSched = (DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : []) || [];
         const schedList = Array.isArray(rawSched) ? rawSched : [];
+        const todayStr = new Date().toISOString().split('T')[0];
         let schedules = schedList.filter(function(s) { 
-            return s && studentIds.includes(s.studentId) && new Date(s.date) >= new Date(new Date().toDateString()); 
+            return s && studentIds.includes(s.studentId) && s.date && s.date >= todayStr && s.status !== 'cancelled' && s.attendanceStatus !== 'cancelled' && s.attendanceStatus !== 'done' && s.attendanceStatus !== 'present' && s.attendanceStatus !== 'absent'; 
         });
         if (schedules.length === 0 && schedList.length > 0) {
             schedules = schedList.filter(function(s) {
-                return s && studentIds.includes(s.studentId);
+                return s && studentIds.includes(s.studentId) && s.status !== 'cancelled' && s.attendanceStatus !== 'cancelled';
             });
         }
+        schedules.sort(function(a, b) {
+            return ((a.date || '') + ' ' + (a.time || '')).localeCompare((b.date || '') + ' ' + (b.time || ''));
+        });
 
         if (schedules.length === 0) {
             scheduleContainer.innerHTML = `
@@ -537,32 +548,36 @@ const ParentEngine = (function() {
         }
 
         scheduleContainer.innerHTML = schedules.map(s => {
-            const dateFormatted = new Date(s.date).toLocaleDateString('en-GB', {
+            const dObj = new Date((s.date || '') + 'T12:00:00');
+            const dateFormatted = !isNaN(dObj) ? dObj.toLocaleDateString('en-GB', {
                 weekday: 'long',
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
-            });
+            }) : s.date;
+            const isPhysical = (s.link || '').toLowerCase().includes('physical');
+            const joinUrl = isPhysical ? (s.meetLinkBackup || 'https://meet.google.com') : (s.link || 'https://meet.google.com');
 
             return `
                 <div class="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-gray-50/50 transition-colors">
                     <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center shrink-0">
-                            <i data-lucide="video" class="w-5 h-5 text-orange-600"></i>
+                        <div class="w-10 h-10 rounded-xl ${isPhysical ? 'bg-purple-100' : 'bg-orange-100'} flex items-center justify-center shrink-0">
+                            <i data-lucide="${isPhysical ? 'map-pin' : 'video'}" class="w-5 h-5 ${isPhysical ? 'text-purple-600' : 'text-orange-600'}"></i>
                         </div>
                         <div class="space-y-1">
                             <p class="text-sm font-bold text-gray-800">${s.course} session for <span class="text-orange-500">${s.studentName}</span></p>
                             <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
                                 <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${dateFormatted}</span>
-                                <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${s.time} (${s.duration} min)</span>
-                                <span class="flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> Mentor: ${s.mentor}</span>
+                                <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${s.time} WAT (${s.duration || 60} min)</span>
+                                <span class="flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> Mentor: ${s.mentor || s.tutorName}</span>
                             </div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <a href="join-class.html?id=${encodeURIComponent(s.id)}&role=parent&url=${encodeURIComponent(s.link || 'https://meet.google.com')}" target="_blank" rel="noopener noreferrer" 
+                        ${isPhysical ? `<span class="bg-purple-100 text-purple-800 text-[11px] font-bold px-3 py-1.5 rounded-lg border border-purple-200">Physical Hub</span>` : ''}
+                        <a href="join-class.html?id=${encodeURIComponent(s.id)}&role=parent&url=${encodeURIComponent(joinUrl)}" target="_blank" rel="noopener noreferrer" 
                             class="btn-3d btn-3d-blue px-3 py-1.5 text-[11px] rounded-lg">
-                            <i data-lucide="video" class="w-3.5 h-3.5"></i> Join Session
+                            <i data-lucide="video" class="w-3.5 h-3.5"></i> ${isPhysical ? 'Backup Meet' : 'Join Session'}
                         </a>
                         <button onclick="ParentEngine.openRescheduleModal('${s.id}')"
                             class="btn-3d btn-3d-secondary px-3 py-1.5 text-[11px] rounded-lg border border-gray-200">

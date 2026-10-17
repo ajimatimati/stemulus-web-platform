@@ -1353,41 +1353,76 @@ function loadWeekSummary() {
 function loadTodaysClasses() {
     var list = document.getElementById('todays-classes-list');
     var dateLabel = document.getElementById('today-classes-date');
-    if (!list) return;
+    var todayScheduleList = document.getElementById('today-schedule-list');
     var today = new Date().toISOString().split('T')[0];
     if (dateLabel) dateLabel.textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
     var schedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
     var todayClasses = schedules.filter(function(s){ 
-        return s.date === today && s.status !== 'cancelled' && s.attendanceStatus !== 'cancelled'; 
+        return s && s.date === today && s.status !== 'cancelled' && s.attendanceStatus !== 'cancelled'; 
     }).sort(function(a,b){ return (a.time||'').localeCompare(b.time||''); });
 
-    if (!todayClasses.length) { 
-        list.innerHTML = '<p class="text-gray-400 text-sm text-center py-4">No classes scheduled today.</p>'; 
-        return; 
-    }
-    list.innerHTML = todayClasses.map(function(s){
-        var isDone = s.attendanceStatus === 'present' || s.attendanceStatus === 'done' || s.status === 'done';
-        var isAbsent = s.attendanceStatus === 'absent';
-        var statusColor = isDone ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : isAbsent ? 'text-rose-700 bg-rose-50 border-rose-200' : 'text-amber-700 bg-amber-50 border-amber-200';
-        var statusLabel = isDone ? 'Completed' : isAbsent ? 'Absent' : 'Upcoming';
-        var isPhysical = (s.link || '').toLowerCase().includes('physical');
-        var joinLink = isPhysical ? (s.meetLinkBackup || '#') : (s.link || 'https://meet.google.com/new');
-        var joinHtml = isPhysical 
-            ? '<span class="text-xs font-bold text-purple-700 bg-purple-100 px-2.5 py-1 rounded-lg">Physical Hub</span>'
-            : '<a href="' + joinLink + '" target="_blank" class="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1 shadow-sm"><i data-lucide="video" class="w-3 h-3"></i> Join Meet</a>';
+    if (list) {
+        if (!todayClasses.length) { 
+            list.innerHTML = '<p class="text-gray-400 text-sm text-center py-4">No classes scheduled today.</p>'; 
+        } else {
+            list.innerHTML = todayClasses.map(function(s){
+                var isDone = s.attendanceStatus === 'present' || s.attendanceStatus === 'done' || s.status === 'done';
+                var isAbsent = s.attendanceStatus === 'absent';
+                var statusColor = isDone ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : isAbsent ? 'text-rose-700 bg-rose-50 border-rose-200' : 'text-amber-700 bg-amber-50 border-amber-200';
+                var statusLabel = isDone ? 'Completed' : isAbsent ? 'Absent' : 'Upcoming';
+                var isPhysical = (s.link || '').toLowerCase().includes('physical');
+                var joinLink = isPhysical ? (s.meetLinkBackup || '#') : (s.link || 'https://meet.google.com/new');
+                var joinHtml = isPhysical 
+                    ? '<span class="text-xs font-bold text-purple-700 bg-purple-100 px-2.5 py-1 rounded-lg">Physical Hub</span>'
+                    : '<a href="' + joinLink + '" target="_blank" class="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1 shadow-sm"><i data-lucide="video" class="w-3 h-3"></i> Join Meet</a>';
 
-        return '<div class="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 hover:bg-slate-50/60 transition-colors rounded-lg px-2">'+
-            '<div class="text-xs font-mono font-bold text-slate-700 w-16 shrink-0 bg-slate-100 px-2 py-1 rounded-md text-center">'+(s.time||'—')+' WAT</div>'+
-            '<div class="flex-1 min-w-0">'+
-                '<p class="font-bold text-slate-800 text-sm truncate flex items-center gap-1.5">'+(s.studentName||'Student')+' <span class="text-[11px] font-semibold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">('+(s.course||'Coding')+')</span></p>'+
-                '<p class="text-xs text-slate-500 truncate">Mentor: <strong class="text-slate-700 font-semibold">'+(s.mentor||s.tutorName||'—')+'</strong></p>'+
-            '</div>'+
-            '<div class="flex items-center gap-2 shrink-0">'+
-                '<span class="text-[11px] font-bold px-2 py-0.5 rounded-full border '+statusColor+'">'+statusLabel+'</span>'+
-                joinHtml+
-            '</div>'+
-        '</div>';
-    }).join('');
+                return '<div class="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 hover:bg-slate-50/60 transition-colors rounded-lg px-2">'+
+                    '<div class="text-xs font-mono font-bold text-slate-700 w-16 shrink-0 bg-slate-100 px-2 py-1 rounded-md text-center">'+(s.time||'—')+' WAT</div>'+
+                    '<div class="flex-1 min-w-0">'+
+                        '<p class="font-bold text-slate-800 text-sm truncate flex items-center gap-1.5">'+(s.studentName||'Student')+' <span class="text-[11px] font-semibold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">('+(s.course||'Coding')+')</span></p>'+
+                        '<p class="text-xs text-slate-500 truncate">Mentor: <strong class="text-slate-700 font-semibold">'+(s.mentor||s.tutorName||'—')+'</strong></p>'+
+                    '</div>'+
+                    '<div class="flex items-center gap-2 shrink-0">'+
+                        '<span class="text-[11px] font-bold px-2 py-0.5 rounded-full border '+statusColor+'">'+statusLabel+'</span>'+
+                        joinHtml+
+                    '</div>'+
+                '</div>';
+            }).join('');
+        }
+    }
+
+    if (todayScheduleList) {
+        var upcomingClasses = schedules.filter(function(s) {
+            if (!s || !s.date || s.status === 'cancelled' || s.attendanceStatus === 'cancelled') return false;
+            return s.date >= today && s.attendanceStatus !== 'present' && s.attendanceStatus !== 'done' && s.attendanceStatus !== 'absent';
+        }).sort(function(a, b) {
+            return ((a.date || '') + ' ' + (a.time || '')).localeCompare((b.date || '') + ' ' + (b.time || ''));
+        }).slice(0, 6);
+
+        if (!upcomingClasses.length) {
+            todayScheduleList.innerHTML = '<p class="text-slate-500 font-medium text-center py-8">No upcoming classes scheduled.</p>';
+        } else {
+            todayScheduleList.innerHTML = upcomingClasses.map(function(s) {
+                var isTodaySlot = s.date === today;
+                var dObj = new Date(s.date + 'T12:00:00');
+                var dayBadge = isTodaySlot ? 'Today' : (!isNaN(dObj) ? dObj.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }) : s.date);
+                var isPhysical = (s.link || '').toLowerCase().includes('physical');
+                var joinLink = isPhysical ? (s.meetLinkBackup || '#') : (s.link || 'https://meet.google.com/new');
+                return '<div class="p-3 rounded-xl border border-slate-100 bg-slate-50/70 hover:bg-white hover:shadow-xs transition-all flex items-center justify-between gap-2.5">' +
+                    '<div class="min-w-0 flex-1">' +
+                        '<div class="flex items-center gap-1.5 mb-0.5">' +
+                            '<span class="text-[10px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded ' + (isTodaySlot ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-700') + '">' + dayBadge + ' • ' + (s.time || '—') + ' WAT</span>' +
+                        '</div>' +
+                        '<p class="text-xs font-bold text-slate-800 truncate">' + (s.studentName || 'Student') + ' <span class="text-slate-500 font-normal">(' + (s.course || 'Coding') + ')</span></p>' +
+                        '<p class="text-[11px] text-slate-500 truncate">Coach: <strong class="text-slate-700">' + (s.mentor || s.tutorName || '—') + '</strong></p>' +
+                    '</div>' +
+                    (isPhysical
+                        ? '<span class="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-1 rounded-lg shrink-0">Physical</span>'
+                        : '<a href="' + joinLink + '" target="_blank" class="text-[11px] font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-2.5 py-1 rounded-lg shrink-0 transition-colors">Meet</a>') +
+                '</div>';
+            }).join('');
+        }
+    }
     if (window.lucide) lucide.createIcons();
 }
 
@@ -1702,27 +1737,21 @@ async function sendBirthdayNotification(studentId) {
 // ==================== PENDING REGISTRATIONS ====================
 
 function renderPendingRegistrations() {
-    const container = document.getElementById('recent-students-list'); // Re-use recent students for registrations
+    const container = document.getElementById('recent-students-list');
     if (!container) return;
 
     const enrollments = ((DashboardEngine.getEnrollments ? DashboardEngine.getEnrollments() : []) || []).filter(e => e && e.status === 'pending');
+    const allStudents = ((DashboardEngine.getStudents ? DashboardEngine.getStudents() : []) || []).filter(s => s && !s.isDeleted);
+    const recentStudents = allStudents.slice().reverse().slice(0, 6);
 
-    if (enrollments.length === 0) {
-        container.innerHTML = `
-                <div class="text-center py-6 text-gray-400">
-                    <i data-lucide="smile" class="w-10 h-10 mx-auto mb-2 text-gray-300"></i>
-                    <p class="text-sm">No pending registrations to process.</p>
-                </div>
-            `;
-        if (window.lucide) lucide.createIcons();
-        return;
-    }
+    let html = '';
 
-    container.innerHTML = `
-            <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Pending Student Registrations (${enrollments.length})</div>
-            <div class="space-y-3">
+    if (enrollments.length > 0) {
+        html += `
+            <div class="text-xs font-bold text-amber-700 uppercase tracking-wider mb-3">Pending Student Registrations (${enrollments.length})</div>
+            <div class="space-y-3 mb-5">
                 ${enrollments.map(e => `
-                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
                             <p class="text-sm font-bold text-gray-800">${e.studentFirstName} ${e.studentLastName}</p>
                             <p class="text-xs text-gray-500">${e.program} • Age ${e.studentAge} ${e.studentBirthday ? `(DOB: ${e.studentBirthday})` : ''} • Exp: ${e.experience}</p>
@@ -1743,6 +1772,46 @@ function renderPendingRegistrations() {
                 `).join('')}
             </div>
         `;
+    }
+
+    if (recentStudents.length > 0) {
+        html += `
+            <div class="space-y-2.5">
+                ${recentStudents.map(s => {
+                    const fullName = `${s.firstName || ''} ${s.lastName || ''}`.trim() || 'Student';
+                    const initials = fullName.split(/\s+/).map(w => w[0] || '').join('').toUpperCase().slice(0, 2) || 'ST';
+                    const meetUrl = s.meetLink || s.classroomLink || '';
+                    const meetCode = meetUrl ? meetUrl.replace('https://meet.google.com/', '') : '';
+                    return `
+                        <div class="bg-slate-50/70 hover:bg-white border border-slate-100 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white font-extrabold text-xs flex items-center justify-center shrink-0 shadow-xs">
+                                    ${initials}
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-bold text-slate-800 truncate">${fullName} <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded ml-1">${s.program || 'Coding'}</span></p>
+                                    <p class="text-xs text-slate-500 truncate">Age ${s.age || '—'} • Mentor: <strong class="text-slate-700">${s.tutorName || 'Assigned'}</strong></p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                                ${meetUrl ? `<a href="${meetUrl}" target="_blank" class="text-[11px] font-mono font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-colors"><i data-lucide="video" class="w-3 h-3"></i> ${meetCode}</a>` : ''}
+                                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Active</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    } else if (enrollments.length === 0) {
+        html = `
+            <div class="text-center py-6 text-gray-400">
+                <i data-lucide="smile" class="w-10 h-10 mx-auto mb-2 text-gray-300"></i>
+                <p class="text-sm">No students enrolled yet.</p>
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
     if (window.lucide) lucide.createIcons();
 }
 
