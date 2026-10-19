@@ -133,111 +133,104 @@
 </nav>
 
 <!-- Premium 404 Hero Section -->
-<section id="main-content" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-  <!-- Dark Gradient Background -->
-  <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-purple-950 to-gray-900"></div>
+<section id="main-content" class="relative min-h-screen flex items-center justify-center overflow-hidden" style="background: #ffffff; padding: 4rem 1rem 5rem;">
   
-  <!-- Subtle Grid Pattern -->
-  <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px); background-size:60px 60px;"></div>
-  
-  <div class="container mx-auto px-6 relative z-10 text-center">
+  <div class="container mx-auto px-4 relative z-10 text-center">
     <div class="max-w-3xl mx-auto">
       
       <!-- Animated Comic Relief Video -->
-      <div class="mb-8 flex flex-col items-center gap-4">
-        <div style="position: relative; width: 240px; height: 160px; border-radius: 12px; overflow: hidden; border: 4px solid #f4600c; box-shadow: 0 8px 32px rgba(244,96,12,0.3); background: #000;">
+      <div class="mb-6 flex flex-col items-center gap-3">
+        <div style="position: relative; width: 240px; height: 160px; border-radius: 16px; overflow: hidden; border: 4px solid #f4600c; box-shadow: 0 12px 32px rgba(244,96,12,0.25); background: #000;">
           <video id="error-video-screen" src="assets/images/supermario_flashlight.mp4" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease;"></video>
         </div>
-        <button id="switch-channel-btn" class="px-3.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold tracking-wider uppercase transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105" aria-label="Switch video channel">
-          <i data-lucide="tv" class="w-3.5 h-3.5"></i> Switch Channel
+        <button id="switch-channel-btn" class="px-4 py-2 rounded-xl text-xs font-bold tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer shadow-sm hover:scale-105" style="background: #0f172a; color: #ffffff; border: 1px solid #1e293b;" aria-label="Switch video channel">
+          <i data-lucide="tv" class="w-3.5 h-3.5 text-orange-400"></i> Switch Channel
         </button>
       </div>
 
       <!-- Error Code -->
-      <h1 class="text-8xl md:text-9xl font-extrabold font-nunito text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-purple-400 to-blue-400 mb-4">404</h1>
+      <h1 class="text-7xl sm:text-8xl md:text-9xl font-black font-nunito tracking-tight mb-2" style="color: #f4600c; line-height: 1;">404</h1>
 
-      <!-- Message -->
-      <h2 class="text-3xl md:text-4xl font-bold font-nunito text-white mb-6">
+      <!-- Message (High-contrast charcoal on white) -->
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold font-nunito mb-3" style="color: #0f172a; letter-spacing: -0.02em;">
         Oops! This rocket went off course.
       </h2>
-      <p class="text-xl text-slate-100 font-medium max-w-lg mx-auto mb-8 leading-relaxed">
+      <p class="text-base sm:text-lg font-medium max-w-lg mx-auto mb-8 leading-relaxed" style="color: #475569;">
         The page you're looking for might have been moved, deleted, or maybe it never existed. Let's get you back on track!
       </p>
 
       <!-- Main CTA -->
-      <a href="index.html" class="inline-flex items-center bg-gradient-to-r from-orange-500 to-purple-600 text-white font-bold py-4 px-10 rounded-xl text-lg shadow-purple-500/25 transform hover:scale-105 transition-all duration-300 mb-16">
+      <a href="index.html" class="inline-flex items-center text-white font-extrabold py-3.5 px-8 rounded-xl text-base shadow-lg transform hover:scale-105 transition-all duration-200 mb-12" style="background: #f4600c; box-shadow: 0 10px 25px -5px rgba(244,96,12,0.4); text-decoration: none;">
         <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
         </svg>
         Back to Homepage
       </a>
       
-      <!-- Quick Links Section -->
-      <div class="bg-white/5 backdrop-blur-xl border border-gray-200 rounded-lg p-8 max-w-2xl mx-auto">
-        <h3 class="text-white font-semibold text-lg mb-6 flex items-center justify-center">
-          <svg class="w-5 h-5 mr-2 text-supernova-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 002.502-2.502m0 0l4-4a4 4 0 015.656 5.656l-1.1 1.1" />
-          </svg>
+      <!-- Quick Links Section (High contrast card) -->
+      <div class="rounded-2xl p-6 sm:p-8 max-w-2xl mx-auto shadow-sm" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <h3 class="font-extrabold text-base sm:text-lg mb-6 flex items-center justify-center gap-2" style="color: #0f172a;">
+          <i data-lucide="compass" class="w-5 h-5 text-orange-500"></i>
           Quick Navigation
         </h3>
         
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           <!-- Programs -->
-          <a href="programs.html" class="group flex flex-col items-center p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/15 hover:border-white/25 transition-all hover:-translate-y-1">
-            <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <i data-lucide="code-2" class="w-6 h-6 text-purple-400"></i>
+          <a href="programs.html" class="group flex flex-col items-center p-4 rounded-xl transition-all hover:-translate-y-1 hover:shadow-md" style="background: #ffffff; border: 1px solid #e2e8f0; text-decoration: none;">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform" style="background: #f3e8ff;">
+              <i data-lucide="code-2" class="w-6 h-6 text-purple-600"></i>
             </div>
-            <span class="text-white font-medium text-sm">Programs</span>
+            <span class="font-bold text-sm" style="color: #0f172a;">Programs</span>
           </a>
           
           <!-- For Parents -->
-          <a href="for-parents.html" class="group flex flex-col items-center p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/15 hover:border-white/25 transition-all hover:-translate-y-1">
-            <div class="w-12 h-12 rounded-lg bg-orange-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <i data-lucide="users" class="w-6 h-6 text-orange-400"></i>
+          <a href="for-parents.html" class="group flex flex-col items-center p-4 rounded-xl transition-all hover:-translate-y-1 hover:shadow-md" style="background: #ffffff; border: 1px solid #e2e8f0; text-decoration: none;">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform" style="background: #ffedd5;">
+              <i data-lucide="users" class="w-6 h-6 text-orange-600"></i>
             </div>
-            <span class="text-white font-medium text-sm">Parents</span>
+            <span class="font-bold text-sm" style="color: #0f172a;">Parents</span>
           </a>
           
           <!-- Contact -->
-          <a href="contact.html" class="group flex flex-col items-center p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/15 hover:border-white/25 transition-all hover:-translate-y-1">
-            <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <i data-lucide="mail" class="w-6 h-6 text-blue-400"></i>
+          <a href="contact.html" class="group flex flex-col items-center p-4 rounded-xl transition-all hover:-translate-y-1 hover:shadow-md" style="background: #ffffff; border: 1px solid #e2e8f0; text-decoration: none;">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform" style="background: #dbeafe;">
+              <i data-lucide="mail" class="w-6 h-6 text-blue-600"></i>
             </div>
-            <span class="text-white font-medium text-sm">Contact</span>
+            <span class="font-bold text-sm" style="color: #0f172a;">Contact</span>
           </a>
           
           <!-- Blog -->
-          <a href="blog.html" class="group flex flex-col items-center p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/15 hover:border-white/25 transition-all hover:-translate-y-1">
-            <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <i data-lucide="book-open" class="w-6 h-6 text-green-400"></i>
+          <a href="blog.html" class="group flex flex-col items-center p-4 rounded-xl transition-all hover:-translate-y-1 hover:shadow-md" style="background: #ffffff; border: 1px solid #e2e8f0; text-decoration: none;">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform" style="background: #dcfce7;">
+              <i data-lucide="book-open" class="w-6 h-6 text-emerald-600"></i>
             </div>
-            <span class="text-white font-medium text-sm">Blog</span>
+            <span class="font-bold text-sm" style="color: #0f172a;">Blog</span>
           </a>
         </div>
         
         <!-- Separator -->
-        <div class="border-t border-gray-200 mt-6 pt-6">
-          <p class="text-slate-200 text-sm mb-4 font-medium">Or explore our popular programs:</p>
+        <div class="border-t border-slate-200 mt-6 pt-5">
+          <p class="text-xs sm:text-sm mb-3 font-bold uppercase tracking-wider" style="color: #64748b;">Or explore our popular programs:</p>
           <div class="flex flex-wrap justify-center gap-2">
-            <a href="scratch-creators.html" class="px-4 py-2 rounded-lg bg-white/10 text-white/90 border border-white/15 text-sm font-medium hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-colors">Scratch</a>
-            <a href="python-programming.html" class="px-4 py-2 rounded-lg bg-white/10 text-white/90 border border-white/15 text-sm font-medium hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-colors">Python</a>
-            <a href="web-wizards.html" class="px-4 py-2 rounded-lg bg-white/10 text-white/90 border border-white/15 text-sm font-medium hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-colors">Web Dev</a>
-            <a href="arduino-robotics.html" class="px-4 py-2 rounded-lg bg-white/10 text-white/90 border border-white/15 text-sm font-medium hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-colors">Robotics</a>
-            <a href="ai-machine-learning.html" class="px-4 py-2 rounded-lg bg-white/10 text-white/90 border border-white/15 text-sm font-medium hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-colors">AI/ML</a>
+            <a href="scratch-creators.html" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:bg-orange-500 hover:text-white hover:border-orange-500" style="background: #ffffff; color: #0f172a !important; border: 1px solid #cbd5e1; text-decoration: none;">Scratch</a>
+            <a href="python-programming.html" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:bg-orange-500 hover:text-white hover:border-orange-500" style="background: #ffffff; color: #0f172a !important; border: 1px solid #cbd5e1; text-decoration: none;">Python</a>
+            <a href="web-wizards.html" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:bg-orange-500 hover:text-white hover:border-orange-500" style="background: #ffffff; color: #0f172a !important; border: 1px solid #cbd5e1; text-decoration: none;">Web Dev</a>
+            <a href="arduino-robotics.html" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:bg-orange-500 hover:text-white hover:border-orange-500" style="background: #ffffff; color: #0f172a !important; border: 1px solid #cbd5e1; text-decoration: none;">Robotics</a>
+            <a href="ai-machine-learning.html" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:bg-orange-500 hover:text-white hover:border-orange-500" style="background: #ffffff; color: #0f172a !important; border: 1px solid #cbd5e1; text-decoration: none;">AI/ML</a>
           </div>
         </div>
       </div>
       
       <!-- Footer Link -->
-      <div class="mt-12 flex items-center justify-center space-x-6">
-        <a href="https://wa.me/2347052466716" class="text-white/80 hover:text-white transition-colors flex items-center text-sm font-medium">
-          <i data-lucide="message-circle" class="w-4 h-4 mr-2"></i>
+      <div class="mt-8 flex items-center justify-center space-x-6">
+        <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer" class="hover:underline flex items-center text-sm font-bold" style="color: #0f172a; text-decoration: none;">
+          <i data-lucide="message-circle" class="w-4 h-4 mr-1.5 text-emerald-500"></i>
           Chat on WhatsApp
         </a>
-        <span class="text-white/20">|</span>
-        <a href="enroll.html" class="text-supernova-orange hover:text-orange-400 transition-colors flex items-center text-sm font-medium">
-          <i data-lucide="rocket" class="w-4 h-4 mr-2"></i>
-          Enroll Now
+        <span class="text-slate-300">|</span>
+        <a href="enroll.html" class="hover:underline flex items-center text-sm font-extrabold" style="color: #f4600c; text-decoration: none;">
+          <i data-lucide="rocket" class="w-4 h-4 mr-1.5"></i>
+          Enroll Now &rarr;
         </a>
       </div>
     </div>

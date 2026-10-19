@@ -528,10 +528,11 @@ async function sendMonthlyBillingReminders(students, schedules, adminTopic) {
               <p style="margin:4px 0;"><strong>Tuition Fee:</strong> ${amount}</p>
             </div>
             <div style="background:#EFF6FF;padding:16px;border-radius:8px;margin:16px 0;border:1px solid #BFDBFE;">
-              <h4 style="margin:0 0 8px 0;color:#1E40AF;">School Bank Account Details</h4>
-              <p style="margin:4px 0;"><strong>Bank:</strong> Access Bank</p>
-              <p style="margin:4px 0;"><strong>Account Name:</strong> STEMulus Kids Tech</p>
-              <p style="margin:4px 0;"><strong>Account Number:</strong> 1853492019</p>
+              <h4 style="margin:0 0 8px 0;color:#1E40AF;">Official STEMulus Bank Accounts</h4>
+              <p style="margin:4px 0;"><strong>Bank:</strong> Wema Nigeria</p>
+              <p style="margin:4px 0;"><strong>Account Name:</strong> STEMulus innovation Limited</p>
+              <p style="margin:4px 0;"><strong>Account Number (NGN):</strong> 0128062292</p>
+              <p style="margin:4px 0;"><strong>USD DOM Account:</strong> 0622219817 (Wema Bank)</p>
             </div>
             <p style="font-size:13px;color:#64748B;">Please share proof of payment via WhatsApp (+2347052466716) once transfer is made.</p>
           </div>

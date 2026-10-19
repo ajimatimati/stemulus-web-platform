@@ -1113,15 +1113,19 @@
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 flex-wrap bg-white/10 p-3 sm:p-3.5 rounded-xl border border-white/10 text-xs font-mono w-full lg:w-auto">
         <div class="min-w-[100px]">
           <span class="text-[10px] text-slate-400 block font-sans">Bank Name</span>
-          <span id="billing-bank-name" class="font-bold text-white">Access Bank</span>
+          <span id="billing-bank-name" class="font-bold text-white">Wema Nigeria</span>
         </div>
         <div class="min-w-[120px] sm:border-l sm:border-white/20 sm:pl-4">
           <span class="text-[10px] text-slate-400 block font-sans">Account Number</span>
-          <span id="billing-account-number" class="font-bold text-white text-sm tracking-wider">1853492019</span>
+          <span id="billing-account-number" class="font-bold text-white text-sm tracking-wider">0128062292</span>
+        </div>
+        <div class="min-w-[120px] sm:border-l sm:border-white/20 sm:pl-4">
+          <span class="text-[10px] text-teal-300 block font-sans">USD DOM Account</span>
+          <span id="billing-usd-account-number" class="font-bold text-teal-300 text-sm tracking-wider">0622219817</span>
         </div>
         <div class="min-w-[130px] sm:border-l sm:border-white/20 sm:pl-4">
           <span class="text-[10px] text-slate-400 block font-sans">Account Name</span>
-          <span id="billing-account-name" class="font-bold text-white">STEMulus Kids Tech</span>
+          <span id="billing-account-name" class="font-bold text-white">STEMulus innovation Limited</span>
         </div>
         <div class="min-w-[110px] sm:border-l sm:border-white/20 sm:pl-4">
           <span class="text-[10px] text-slate-400 block font-sans">Default Monthly Fee</span>
@@ -1430,7 +1434,11 @@
      <p class="text-slate-500 text-sm">Automated Google Meet archive, audio/video playback, faculty quality scoring, and compliance audit trail.</p>
    </div>
    <div class="flex items-center gap-2">
-     <button type="button" onclick="AdminEngine.openManualBotDispatchModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-sm flex items-center gap-2">
+     <a href="https://drive.google.com/drive/u/0/search?q=Meet%20Recordings" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-2 rounded-xl text-xs transition-all shadow-sm flex items-center gap-1.5 no-underline cursor-pointer" title="Direct access to Google Drive Meet Recordings cloud archive">
+        <i data-lucide="hard-drive" class="w-4 h-4"></i>
+        <span>Google Drive Archive</span>
+      </a>
+      <button type="button" onclick="AdminEngine.openManualBotDispatchModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-sm flex items-center gap-2">
        <i data-lucide="bot" class="w-4 h-4"></i>
        <span>Dispatch Recording Bot</span>
      </button>
@@ -2183,15 +2191,19 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
       <div>
         <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Bank Name</p>
-        <p id="settings-card-bank-name" class="font-bold text-slate-800 text-sm mt-0.5">Access Bank</p>
+        <p id="settings-card-bank-name" class="font-bold text-slate-800 text-sm mt-0.5">Wema Nigeria</p>
       </div>
       <div>
         <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Account Number</p>
-        <p id="settings-card-account-number" class="font-mono font-bold text-slate-800 text-sm mt-0.5">1853492019</p>
+        <p id="settings-card-account-number" class="font-mono font-bold text-slate-800 text-sm mt-0.5">0128062292</p>
+      </div>
+      <div>
+        <p class="text-xs text-teal-700 font-semibold uppercase tracking-wider">USD DOM Account</p>
+        <p id="settings-card-usd-account-number" class="font-mono font-bold text-teal-800 text-sm mt-0.5">0622219817</p>
       </div>
       <div>
         <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Account Name</p>
-        <p id="settings-card-account-name" class="font-bold text-slate-800 text-sm mt-0.5">STEMulus Kids Tech</p>
+        <p id="settings-card-account-name" class="font-bold text-slate-800 text-sm mt-0.5">STEMulus innovation Limited</p>
       </div>
       <div>
         <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Default Monthly Tuition</p>
@@ -4386,17 +4398,21 @@ window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger
       <form id="billing-settings-form" onsubmit="AdminEngine.handleBillingSettingsSubmit(event)" class="space-y-4">
         <div>
           <label for="settings-bank-name" class="block text-xs font-bold text-slate-600 uppercase mb-1">Bank Name *</label>
-          <input type="text" id="settings-bank-name" required placeholder="Access Bank" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:border-blue-600">
+          <input type="text" id="settings-bank-name" required placeholder="Wema Nigeria" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:border-blue-600">
         </div>
 
         <div>
           <label for="settings-account-number" class="block text-xs font-bold text-slate-600 uppercase mb-1">Account Number *</label>
-          <input type="text" id="settings-account-number" required placeholder="1853492019" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-slate-800 focus:outline-none focus:border-blue-600">
+          <input type="text" id="settings-account-number" required placeholder="0128062292" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-slate-800 focus:outline-none focus:border-blue-600">
+        </div>
+        <div>
+          <label for="settings-usd-account-number" class="block text-xs font-bold text-teal-700 uppercase mb-1">USD DOM Account Number</label>
+          <input type="text" id="settings-usd-account-number" placeholder="0622219817" class="w-full bg-slate-50 border border-teal-300 rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold text-teal-900 focus:outline-none focus:border-teal-600">
         </div>
 
         <div>
           <label for="settings-account-name" class="block text-xs font-bold text-slate-600 uppercase mb-1">Account Name *</label>
-          <input type="text" id="settings-account-name" required placeholder="STEMulus Kids Tech" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:border-blue-600">
+          <input type="text" id="settings-account-name" required placeholder="STEMulus innovation Limited" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:border-blue-600">
         </div>
 
         <div>

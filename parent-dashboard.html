@@ -30,8 +30,9 @@
     .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
 
     .parent-hero { background: linear-gradient(135deg, var(--stage-parent-1), var(--stage-parent-2)); border-radius: 28px; padding: 2.5rem; color: white; position: relative; overflow: hidden; margin-bottom: 2rem; box-shadow: var(--shadow-shell); }
-    .hero-title { font-family: 'Fredoka One', cursive; font-size: 32px; margin: 0 0 8px 0; font-weight: normal; }
-    .hero-sub { font-size: 15px; opacity: 0.95; margin: 0 0 20px 0; max-width: 500px; }
+    .hero-title { font-family: 'Fredoka One', cursive; font-size: 32px; margin: 0 0 8px 0; font-weight: normal; color: #ffffff !important; }
+    .parent-hero .hero-sub, .hero-sub { font-size: 15px; color: rgba(255, 255, 255, 0.95) !important; text-transform: none !important; letter-spacing: normal !important; font-weight: 600 !important; opacity: 0.95; margin: 0 0 20px 0; max-width: 520px; line-height: 1.5; }
+    .parent-hero .hero-sub::before, .hero-sub::before { display: none !important; }
 
     .kpi-row { display: flex; gap: 12px; flex-wrap: wrap; }
     .kpi-chip { background: rgba(255,255,255,0.22); backdrop-filter: blur(8px); padding: 8px 16px; border-radius: 16px; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.3); }
@@ -461,9 +462,13 @@
             <i data-lucide="line-chart" style="color:var(--brand-orange);"></i>
             Detailed Progress Analytics
           </a>
-          <a href="https://wa.me/2347052466716?text=Hello%20STEMulus%2C%20I'm%20a%20parent%20seeking%20support" target="_blank" class="action-btn-item">
-            <i data-lucide="message-square" style="color:#25D366;"></i>
-            Chat with Tutor on WhatsApp
+          <button type="button" onclick="if(typeof ParentEngine!=='undefined'&&ParentEngine.openInternationalPaymentGuide){ParentEngine.openInternationalPaymentGuide();}" class="action-btn-item" style="width:100%;text-align:left;background:none;border:none;cursor:pointer;font-family:inherit;padding:12px;border-radius:12px;">
+            <i data-lucide="credit-card" style="color:#059669;"></i>
+            Tuition Bank &amp; Remitly Guide
+          </button>
+          <a href="https://wa.me/2347052466716?text=Hello%20STEMulus%20Admin%2C%20I'm%20a%20parent%20seeking%20support" target="_blank" class="action-btn-item">
+            <i data-lucide="help-circle" style="color:#25D366;"></i>
+            STEMulus Admin Support
           </a>
           <a href="tutor-evaluation.html" class="action-btn-item">
             <i data-lucide="star" style="color:#F59E0B;"></i>

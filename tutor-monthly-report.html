@@ -707,7 +707,9 @@ document.addEventListener('DOMContentLoaded', function() {
   var urlParams = new URLSearchParams(window.location.search);
   var paramStudentId = urlParams.get('studentId');
   if (paramStudentId && typeof DashboardEngine !== 'undefined') {
-    var allSt = (DashboardEngine.getStudents ? DashboardEngine.getStudents() : []);
+    var allSt = (_session && _session.role === 'admin')
+      ? (DashboardEngine.getStudents ? DashboardEngine.getStudents() : [])
+      : (DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(_session ? _session.email : null) : []);
     var matchSt = allSt.find(function(s){ return s.id === paramStudentId; });
     if (matchSt) {
       var sFullName = ((matchSt.firstName || '') + ' ' + (matchSt.lastName || '')).trim();

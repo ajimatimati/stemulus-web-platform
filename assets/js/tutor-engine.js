@@ -176,9 +176,13 @@ const TutorEngine = (function() {
             const meetUrl = s.meetLink || s.classroomLink || '';
             const meetCode = meetUrl ? meetUrl.replace('https://meet.google.com/', '') : '';
             const meetPill = meetUrl ? `
-                <a href="${meetUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-[11px] font-mono font-semibold transition-colors no-underline" title="Dedicated Google Meet Classroom: ${meetUrl}">
+                <a href="${meetUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-[11px] font-mono font-semibold transition-colors no-underline" title="Dedicated Google Meet Classroom (Automatically Recorded for Student Safeguarding & Quality Assurance): ${meetUrl}">
                     <i data-lucide="video" style="width:12px;height:12px;" class="text-blue-600"></i>
                     <span>${meetCode}</span>
+                    <span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-100/80 px-1.5 py-0.5 rounded font-sans ml-0.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Auto-Recorded
+                    </span>
                 </a>
             ` : '';
 
@@ -217,22 +221,37 @@ const TutorEngine = (function() {
         if (window.lucide) lucide.createIcons();
     }
 
-    function renderStats() {
-        if (!currentTutor) return;
+    function doesItemBelongToCurrentTutor(item, myStudentIds) {
+        if (!currentTutor || !item) return false;
         const tutorNameLower = (currentTutor.name || '').toLowerCase().trim();
         const tutorEmailLower = (currentTutor.email || '').toLowerCase().trim();
-        const tutorAltEmailLower = (currentTutor.altEmail || '').toLowerCase().trim();
+        const tutorAltEmailLower = (currentTutor.altEmail || (tutorEmailLower === 'olalekan@stemuluskidstech.com' ? 'ajimatimati@gmail.com' : '')).toLowerCase().trim();
+
+        const e = (item.tutorEmail || '').toLowerCase().trim();
+        const m = (item.mentor || item.tutorName || '').toLowerCase().trim();
+
+        if (tutorEmailLower && e === tutorEmailLower) return true;
+        if (tutorAltEmailLower && e === tutorAltEmailLower) return true;
+        // Never claim an item that has an explicit email belonging to another tutor
+        if (e && e.includes('@') && e !== tutorEmailLower && e !== tutorAltEmailLower) return false;
+
+        if (myStudentIds && item.studentId && myStudentIds.has(item.studentId)) return true;
+        if (tutorNameLower.length > 2 && m.length > 2 && (m === tutorNameLower || m.includes(tutorNameLower) || tutorNameLower.includes(m))) {
+            return true;
+        }
+        return false;
+    }
+
+    function renderStats() {
+        if (!currentTutor) return;
+        const students = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(currentTutor.email) : [];
+        const myStudentIds = new Set(students.map(s => s && s.id).filter(Boolean));
 
         const schedules = DashboardEngine.getSchedules().filter(s => {
-            const m = (s.mentor || s.tutorName || '').toLowerCase().trim();
-            const e = (s.tutorEmail || '').toLowerCase().trim();
-            const matchesTutor = (tutorNameLower && (m === tutorNameLower || m.includes(tutorNameLower) || tutorNameLower.includes(m))) ||
-                                (tutorEmailLower && e === tutorEmailLower) ||
-                                (tutorAltEmailLower && e === tutorAltEmailLower);
+            const matchesTutor = doesItemBelongToCurrentTutor(s, myStudentIds);
             const isUpcoming = s.attendanceStatus === 'pending' || s.attendanceStatus === 'scheduled' || (!s.attendanceStatus && s.status === 'scheduled');
             return matchesTutor && isUpcoming && s.status !== 'cancelled' && s.attendanceStatus !== 'cancelled';
         });
-        const students = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(currentTutor.email) : [];
 
         const upcomingEl = document.getElementById('stat-upcoming');
         const studentsEl = document.getElementById('stat-students');
@@ -247,22 +266,12 @@ const TutorEngine = (function() {
         var db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
 
         var approvedAttendance = (db.attendanceRecords || []).filter(function(r) {
-            var mName = (r.tutorName || r.mentor || '').toLowerCase().trim();
-            var mEmail = (r.tutorEmail || '').toLowerCase().trim();
-            var isTutor = (tutorNameLower && (mName === tutorNameLower || mName.includes(tutorNameLower) || tutorNameLower.includes(mName))) ||
-                          (tutorEmailLower && mEmail === tutorEmailLower) ||
-                          (tutorAltEmailLower && mEmail === tutorAltEmailLower);
-            return isTutor && (r.status === 'approved' || r.status === 'present');
+            return doesItemBelongToCurrentTutor(r, myStudentIds) && (r.status === 'approved' || r.status === 'present');
         });
 
         var allSchedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
         var approvedSchedules = allSchedules.filter(function(s) {
-            var mName = (s.mentor || s.tutorName || '').toLowerCase().trim();
-            var mEmail = (s.tutorEmail || '').toLowerCase().trim();
-            var isTutor = (tutorNameLower && (mName === tutorNameLower || mName.includes(tutorNameLower) || tutorNameLower.includes(mName))) ||
-                          (tutorEmailLower && mEmail === tutorEmailLower) ||
-                          (tutorAltEmailLower && mEmail === tutorAltEmailLower);
-            return isTutor && (s.attendanceStatus === 'present' || s.attendanceStatus === 'done' || s.status === 'approved' || s.status === 'done');
+            return doesItemBelongToCurrentTutor(s, myStudentIds) && (s.attendanceStatus === 'present' || s.attendanceStatus === 'done' || s.status === 'approved' || s.status === 'done');
         });
 
         var approvedSessionMinutes = 0;
@@ -294,17 +303,11 @@ const TutorEngine = (function() {
         const listContainer = document.getElementById('schedule-list');
         if (!listContainer) return;
 
-        const tutorNameLower = (currentTutor.name || '').toLowerCase().trim();
-        const tutorEmailLower = (currentTutor.email || '').toLowerCase().trim();
-        const tutorAltEmailLower = (currentTutor.altEmail || '').toLowerCase().trim();
+        const students = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(currentTutor.email) : [];
+        const myStudentIds = new Set(students.map(s => s && s.id).filter(Boolean));
 
         const schedules = DashboardEngine.getSchedules().filter(s => {
-            const m = (s.mentor || s.tutorName || '').toLowerCase().trim();
-            const e = (s.tutorEmail || '').toLowerCase().trim();
-            const matchesTutor = (tutorNameLower && (m === tutorNameLower || m.includes(tutorNameLower) || tutorNameLower.includes(m))) ||
-                                (tutorEmailLower && e === tutorEmailLower) ||
-                                (tutorAltEmailLower && e === tutorAltEmailLower);
-            return matchesTutor && s.attendanceStatus !== 'cancelled';
+            return doesItemBelongToCurrentTutor(s, myStudentIds) && s.attendanceStatus !== 'cancelled';
         });
 
         if (schedules.length === 0) {

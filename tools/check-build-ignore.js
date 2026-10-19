@@ -74,22 +74,44 @@ function run() {
     }
   } catch (e) {}
 
+  // Portal-specific scripts and engines that run solely on the portal:
+  const isPortalSpecificJs = (file) => {
+    return (
+      file.includes('engine') ||
+      file.includes('admin-') ||
+      file.includes('parent-') ||
+      file.includes('tutor-') ||
+      file.includes('billing-') ||
+      file.includes('stemulus-security') ||
+      file.includes('badge-passport') ||
+      file.includes('class-reminder') ||
+      file.includes('class-escalation')
+    );
+  };
+
   // Classification logic:
   // 1. Shared Infrastructure files (trigger both):
   const isSharedInfrastructure = (file) => {
+    if (isPortalSpecificJs(file)) return false;
+    if (file.startsWith('scripts/')) return false;
+    if (file.startsWith('data/')) return false;
+    if (file === 'tools/check-build-ignore.js') return false;
+
     return (
       file === 'package.json' ||
       file === 'netlify.toml' ||
       file === 'src/tailwind-input.css' ||
       file.startsWith('tools/') ||
-      file.startsWith('netlify/functions/') ||
-      file.startsWith('assets/js/')
+      (file.startsWith('assets/js/') && !isPortalSpecificJs(file))
     );
   };
 
   // 2. Portal-related files:
   const isPortalFile = (file) => {
     return (
+      file === '404.html' ||
+      file === 'tools/check-build-ignore.js' ||
+      isPortalSpecificJs(file) ||
       file.includes('dashboard') ||
       file.includes('attendance') ||
       file.includes('tutor-') ||
@@ -100,7 +122,9 @@ function run() {
       file.includes('admin-') ||
       file.includes('portal-') ||
       file.includes('engine') || // dashboard-engine, admin-engine, parent-engine, tutor-engine
-      file.startsWith('netlify/functions/')
+      file.startsWith('netlify/functions/') ||
+      file.startsWith('data/') ||
+      file.startsWith('scripts/')
     );
   };
 

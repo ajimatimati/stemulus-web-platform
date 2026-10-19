@@ -378,7 +378,14 @@ const ParentEngine = (function() {
                         ? `<span class="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-amber-200">Due in ${billingInfo.daysRemaining} days</span>`
                         : `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-emerald-200">Active • Renews ${billingInfo.nextDueDate}</span>`);
 
-                const settings = (typeof BillingEngine !== 'undefined') ? BillingEngine.getSettings() : { bankName: 'Access Bank', accountNumber: '1853492019', accountName: 'STEMulus Kids Tech' };
+                const settings = (typeof BillingEngine !== 'undefined') ? BillingEngine.getSettings() : {
+                    bankName: 'Wema Nigeria',
+                    accountNumber: '0128062292',
+                    accountName: 'STEMulus innovation Limited',
+                    usdBankName: 'Wema Bank (USD DOM)',
+                    usdAccountNumber: '0622219817',
+                    usdAccountName: 'STEMulus innovation Limited'
+                };
 
                 return `
                     <div class="bg-slate-50 border border-slate-200/90 rounded-2xl p-3.5 space-y-2 mt-2">
@@ -399,14 +406,43 @@ const ParentEngine = (function() {
                                 <span class="font-bold text-slate-800">${billingInfo.nextDueDate}</span>
                             </div>
                         </div>
+
+                        <button type="button" onclick="ParentEngine.openInternationalPaymentGuide()" class="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[11px] font-bold border border-indigo-200/80 transition-colors mt-1">
+                            <i data-lucide="globe" class="w-3.5 h-3.5 text-indigo-600"></i>
+                            <span>Bank Accounts &amp; Remitly / Sendwave Guide</span>
+                        </button>
+
                         ${(isOverdue || isDueSoon) ? `
-                            <div class="bg-white border border-amber-200 rounded-xl p-2.5 text-[11px] text-slate-700 space-y-1 mt-1 shadow-2xs">
+                            <div class="bg-white border border-amber-200 rounded-xl p-3 text-[11px] text-slate-700 space-y-2 mt-2 shadow-2xs">
                                 <p class="font-bold text-amber-800 flex items-center gap-1">
-                                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i> Payment Reminder
+                                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i> Tuition Renewal Reminder
                                 </p>
-                                <p class="text-[11px] text-slate-600">
-                                    Transfer to <strong>${settings.bankName}</strong>: <span class="font-mono font-bold text-slate-900">${settings.accountNumber}</span> (${settings.accountName}) & WhatsApp proof of payment to admin.
-                                </p>
+                                <div class="space-y-1.5 pt-1 border-t border-amber-100">
+                                    <div class="flex items-center justify-between bg-slate-50 p-2 rounded-lg border border-slate-200">
+                                        <div>
+                                            <span class="text-[10px] text-slate-500 block font-medium">Nigeria (NGN) &bull; ${settings.bankName}</span>
+                                            <span class="font-mono font-bold text-slate-900 text-xs">${settings.accountNumber}</span>
+                                            <span class="text-[10px] text-slate-500 block">${settings.accountName}</span>
+                                        </div>
+                                        <button type="button" onclick="ParentEngine.copyBankDetail('${settings.accountNumber}', this)" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 font-bold text-[10px] rounded border border-slate-300 transition-colors shadow-2xs">Copy</button>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-slate-50 p-2 rounded-lg border border-slate-200">
+                                        <div>
+                                            <span class="text-[10px] text-teal-700 block font-medium">USD DOM &bull; ${settings.usdBankName || 'Wema Bank (USD DOM)'}</span>
+                                            <span class="font-mono font-bold text-teal-800 text-xs">${settings.usdAccountNumber || '0622219817'}</span>
+                                            <span class="text-[10px] text-slate-500 block">${settings.usdAccountName || settings.accountName}</span>
+                                        </div>
+                                        <button type="button" onclick="ParentEngine.copyBankDetail('${settings.usdAccountNumber || '0622219817'}', this)" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 font-bold text-[10px] rounded border border-slate-300 transition-colors shadow-2xs">Copy</button>
+                                    </div>
+                                </div>
+                                <div class="pt-1 flex items-center justify-between gap-2">
+                                    <button type="button" onclick="ParentEngine.openInternationalPaymentGuide()" class="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
+                                        <span>🌍 Remitly / Sendwave Guide</span> &rarr;
+                                    </button>
+                                    <a href="https://wa.me/2347052466716?text=${encodeURIComponent('Hello STEMulus Admin, I have completed tuition payment for ' + s.firstName + ' ' + s.lastName + '. Here is my proof:')}" target="_blank" class="text-[10px] font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-2 py-1 rounded border border-emerald-200 flex items-center gap-1">
+                                        <i data-lucide="send" class="w-3 h-3"></i> WhatsApp Proof
+                                    </a>
+                                </div>
                             </div>
                         ` : ''}
                     </div>
@@ -428,8 +464,11 @@ const ParentEngine = (function() {
                                         <i data-lucide="user-check" class="w-3.5 h-3.5 text-orange-500"></i> Mentor: <strong class="text-slate-900">${s.tutorName || 'Kafayat Abdulwahab'}</strong>
                                     </span>
                                     ${(s.meetLink || s.classroomLink) ? `
-                                    <a href="${s.meetLink || s.classroomLink}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-blue-700 bg-blue-50 hover:bg-blue-100 px-2 py-0.5 rounded-md border border-blue-100 font-mono text-[11px] font-semibold transition-colors">
+                                    <a href="${s.meetLink || s.classroomLink}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-blue-700 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-md border border-blue-200/80 font-mono text-[11px] font-semibold transition-colors no-underline" title="Dedicated Google Meet Classroom (Automatically Recorded for Child Safeguarding): ${s.meetLink || s.classroomLink}">
                                         <i data-lucide="video" class="w-3.5 h-3.5 text-blue-600"></i> ${(s.meetLink || s.classroomLink).replace('https://', '')}
+                                        <span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-100/80 px-1.5 py-0.5 rounded font-sans ml-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Auto-Recorded
+                                        </span>
                                     </a>` : ''}
                                 </div>
                             </div>
@@ -470,22 +509,22 @@ const ParentEngine = (function() {
                         const currBadge = pass.currentBadge || {};
                         const eraCol = (pass.currentEra && pass.currentEra.color) || '#f97316';
                         return `
-                            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-2xl p-3.5 shadow-sm border border-slate-800 flex items-center justify-between gap-3 my-2">
-                                <div class="flex items-center gap-3 min-w-0">
-                                    <div class="relative w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center border border-white/15 shrink-0 overflow-hidden cursor-pointer" onclick="BadgePassportEngine.openBadgeModal(${currBadge.id || 1}, ${s.age || 10})">
-                                        <img src="${currBadge.image || 'assets/images/badges/light-evolution/badge-01-fire-finder.png'}" alt="Medallion" class="w-9 h-9 object-contain drop-shadow hover:scale-110 transition-transform">
+                            <div style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%) !important; border: 1px solid #334155 !important; border-radius: 16px; padding: 12px 14px; color: #ffffff !important; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 8px 0; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);">
+                                <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+                                    <div style="position: relative; width: 44px; height: 44px; border-radius: 12px; background: rgba(255, 255, 255, 0.12) !important; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, 0.25) !important; flex-shrink: 0; overflow: hidden; cursor: pointer;" onclick="BadgePassportEngine.openBadgeModal(${currBadge.id || 1}, ${s.age || 10})">
+                                        <img src="${currBadge.image || 'assets/images/badges/light-evolution/badge-01-fire-finder.png'}" alt="Medallion" style="width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));" class="hover:scale-110 transition-transform">
                                     </div>
-                                    <div class="min-w-0">
-                                        <div class="flex items-center gap-1.5 mb-0.5">
-                                            <span class="text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.2 rounded-full" style="background:${eraCol}25;color:${eraCol};border:1px solid ${eraCol}40;">${(pass.currentEra && pass.currentEra.name) || 'Era I'}</span>
-                                            <span class="text-[9px] text-slate-300 font-mono">Badge ${pass.unlockedCount} of 48</span>
+                                    <div style="min-width: 0;">
+                                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
+                                            <span style="background: ${eraCol}33 !important; color: #ffffff !important; border: 1px solid ${eraCol}88 !important; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 9999px;">${(pass.currentEra && pass.currentEra.name) || 'Era I'}</span>
+                                            <span style="font-size: 9px; color: #cbd5e1 !important; font-family: monospace; font-weight: 600;">Badge ${pass.unlockedCount} of 48</span>
                                         </div>
-                                        <h4 class="text-xs font-bold text-white truncate">${currBadge.title || 'Fire Finder'}</h4>
-                                        <p class="text-[10px] text-slate-400 truncate">Technology Passport: Light Evolution</p>
+                                        <h4 style="color: #ffffff !important; font-size: 13px; font-weight: 800; margin: 0; line-height: 1.2; text-shadow: 0 1px 2px rgba(0,0,0,0.5); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${currBadge.title || 'Fire Finder'}</h4>
+                                        <p style="color: #94a3b8 !important; font-size: 10px; margin: 2px 0 0 0; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Technology Passport: ${(pass.currentEra && pass.currentEra.theme) || 'Light Evolution'}</p>
                                     </div>
                                 </div>
-                                <button type="button" onclick="BadgePassportEngine.openBadgeModal(${currBadge.id || 1}, ${s.age || 10})" class="px-2.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 text-white font-bold text-[11px] transition-all shrink-0">
-                                    View Badge
+                                <button type="button" onclick="BadgePassportEngine.openBadgeModal(${currBadge.id || 1}, ${s.age || 10})" style="background: #f4600c !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: none; padding: 8px 14px; border-radius: 10px; cursor: pointer; box-shadow: 0 2px 8px rgba(244,96,12,0.4); flex-shrink: 0; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; transition: transform 0.15s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                    <span>View Badge</span> &rarr;
                                 </button>
                             </div>
                         `;
@@ -604,12 +643,12 @@ const ParentEngine = (function() {
         }
 
         container.innerHTML = notifs.map(n => `
-            <div class="flex gap-3 items-start border-b border-gray-50 pb-3 last:border-0 last:pb-0">
-                <div class="w-2 h-2 rounded-full ${n.read ? 'bg-gray-300' : 'bg-orange-500'} mt-2 flex-shrink-0"></div>
+            <div class="flex gap-3 items-start border-b border-gray-100 pb-3 last:border-0 last:pb-0">
+                <div class="w-2 h-2 rounded-full ${n.read ? 'bg-gray-300' : 'bg-orange-500'} mt-1.5 flex-shrink-0"></div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm text-gray-800 font-bold leading-tight">${n.title}</p>
-                    <p class="text-xs text-gray-500 leading-normal mt-0.5">${n.message}</p>
-                    <p class="text-[9px] text-gray-400 mt-1">${new Date(n.timestamp).toLocaleString('en-GB', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})}</p>
+                    <p class="text-sm font-bold leading-tight" style="color: #0F172A !important; font-weight: 800;">${n.title}</p>
+                    <p class="text-xs leading-normal mt-0.5" style="color: #475569 !important;">${n.message}</p>
+                    <p class="text-[10px] mt-1" style="color: #94A3B8 !important; font-weight: 600;">${new Date(n.timestamp).toLocaleString('en-GB', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})}</p>
                 </div>
             </div>
         `).join('');
@@ -1222,6 +1261,215 @@ const ParentEngine = (function() {
         if (typeof updateKPIs === 'function') updateKPIs();
     }
 
+    function copyBankDetail(text, btnElement) {
+        if (!text) return;
+        const val = String(text).trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(val).then(() => {
+                showCopyFeedback(btnElement, val);
+            }).catch(() => fallbackCopy(val, btnElement));
+        } else {
+            fallbackCopy(val, btnElement);
+        }
+    }
+
+    function fallbackCopy(val, btnElement) {
+        try {
+            const ta = document.createElement('textarea');
+            ta.value = val;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showCopyFeedback(btnElement, val);
+        } catch (e) {
+            if (typeof showToast === 'function') showToast(`Account: ${val}`, 'info');
+        }
+    }
+
+    function showCopyFeedback(btnElement, val) {
+        if (btnElement) {
+            const orig = btnElement.innerHTML;
+            btnElement.innerHTML = 'Copied!';
+            btnElement.style.backgroundColor = '#10B981';
+            btnElement.style.color = '#ffffff';
+            setTimeout(() => {
+                btnElement.innerHTML = orig;
+                btnElement.style.backgroundColor = '';
+                btnElement.style.color = '';
+            }, 2000);
+        }
+        if (typeof showToast === 'function') {
+            showToast(`Copied ${val} to clipboard!`, 'success');
+        }
+    }
+
+    function createInternationalPaymentGuideModal() {
+        if (document.getElementById('modal-international-payment-guide')) return;
+
+        const settings = (typeof BillingEngine !== 'undefined') ? BillingEngine.getSettings() : {
+            bankName: 'Wema Nigeria',
+            accountNumber: '0128062292',
+            accountName: 'STEMulus innovation Limited',
+            usdBankName: 'Wema Bank (USD DOM)',
+            usdAccountNumber: '0622219817',
+            usdAccountName: 'STEMulus innovation Limited'
+        };
+
+        const modalDiv = document.createElement('div');
+        modalDiv.id = 'modal-international-payment-guide';
+        modalDiv.className = 'fixed inset-0 z-[9999] hidden flex items-center justify-center p-4 overflow-y-auto bg-slate-950/75 backdrop-blur-sm animate-fadeIn';
+        modalDiv.innerHTML = `
+            <div class="fixed inset-0" onclick="ParentEngine.closeInternationalPaymentGuide()"></div>
+            <div class="relative bg-white border border-slate-200 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 z-10 my-6">
+                <!-- Modal Header -->
+                <div class="flex items-start justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">Official Accounts</span>
+                            <span class="text-[10px] font-bold text-slate-500">Global &amp; Local Settlements</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Tuition &amp; International Payment Guide</h2>
+                        <p class="text-xs text-slate-500 mt-1">Direct Bank Transfers, Remitly, Sendwave, Send by Flutterwave, and USD Wire</p>
+                    </div>
+                    <button type="button" onclick="ParentEngine.closeInternationalPaymentGuide()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors shrink-0" aria-label="Close modal">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- STEMulus Official Bank Accounts Bento -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6">
+                    <!-- Nigeria NGN Account -->
+                    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%) !important; border: 1px solid #334155 !important; border-radius: 18px; padding: 18px; color: #ffffff !important; box-shadow: 0 4px 14px rgba(15,23,42,0.15);">
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.2) !important; color: #6ee7b7 !important; border: 1px solid rgba(16, 185, 129, 0.4) !important;">Nigeria &amp; Remitly NGN</span>
+                            <span style="font-size: 11px; font-weight: 700; color: #94a3b8 !important;">Local Currency</span>
+                        </div>
+                        <p style="font-size: 11px; color: #cbd5e1 !important; font-weight: 500; margin: 0 0 6px 0;">Bank Name: <strong style="color: #ffffff !important; font-weight: 800;">${settings.bankName || 'Wema Nigeria'}</strong></p>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.1) !important; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.18) !important; margin: 8px 0;">
+                            <div>
+                                <span style="font-size: 9px; color: #cbd5e1 !important; display: block; text-transform: uppercase; font-family: monospace; font-weight: 600;">Account Number</span>
+                                <span style="font-family: monospace; font-weight: 800; color: #ffffff !important; font-size: 17px; letter-spacing: 0.05em; display: block;">${settings.accountNumber || '0128062292'}</span>
+                            </div>
+                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.accountNumber || '0128062292'}', this)" style="background: #f4600c !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: none; padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: transform 0.15s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                Copy
+                            </button>
+                        </div>
+                        <p style="font-size: 11px; color: #cbd5e1 !important; font-weight: 500; margin: 4px 0 0 0;">Account Name: <strong style="color: #ffffff !important; font-weight: 800;">${settings.accountName || 'STEMulus innovation Limited'}</strong></p>
+                    </div>
+
+                    <!-- USD Domiciliary Account -->
+                    <div style="background: linear-gradient(135deg, #042f2e 0%, #0f172a 100%) !important; border: 1px solid #115e59 !important; border-radius: 18px; padding: 18px; color: #ffffff !important; box-shadow: 0 4px 14px rgba(4,47,46,0.15);">
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 6px; background: rgba(20, 184, 166, 0.2) !important; color: #5eead4 !important; border: 1px solid rgba(20, 184, 166, 0.4) !important;">USD Domiciliary (DOM)</span>
+                            <span style="font-size: 11px; font-weight: 700; color: #5eead4 !important;">International Wire ($)</span>
+                        </div>
+                        <p style="font-size: 11px; color: #ccfbf1 !important; font-weight: 500; margin: 0 0 6px 0;">Bank Name: <strong style="color: #ffffff !important; font-weight: 800;">${settings.usdBankName || 'Wema Bank (USD DOM)'}</strong></p>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.1) !important; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.18) !important; margin: 8px 0;">
+                            <div>
+                                <span style="font-size: 9px; color: #99f6e4 !important; display: block; text-transform: uppercase; font-family: monospace; font-weight: 600;">USD Account Number</span>
+                                <span style="font-family: monospace; font-weight: 800; color: #ffffff !important; font-size: 17px; letter-spacing: 0.05em; display: block;">${settings.usdAccountNumber || '0622219817'}</span>
+                            </div>
+                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.usdAccountNumber || '0622219817'}', this)" style="background: #0d9488 !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: none; padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: transform 0.15s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                Copy
+                            </button>
+                        </div>
+                        <p style="font-size: 11px; color: #ccfbf1 !important; font-weight: 500; margin: 4px 0 0 0;">Account Name: <strong style="color: #ffffff !important; font-weight: 800;">${settings.usdAccountName || 'STEMulus innovation Limited'}</strong></p>
+                        <p style="font-size: 10px; color: #5eead4 !important; margin: 4px 0 0 0; font-family: monospace;">SWIFT Code: <strong style="color: #ffffff !important; font-weight: 800;">WEMANGLA</strong></p>
+                    </div>
+                </div>
+
+                <!-- Step-by-Step Payment Instructions -->
+                <div class="space-y-4 mb-6">
+                    <h3 class="text-sm font-extrabold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                        <i data-lucide="help-circle" class="w-4 h-4 text-brand-orange"></i>
+                        How to Pay from the UK, US, Canada, Europe &amp; Diaspora
+                    </h3>
+
+                    <!-- Remitly Guide -->
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90">
+                        <div class="flex items-center gap-2.5 mb-2">
+                            <span class="w-6 h-6 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">1</span>
+                            <h4 class="font-bold text-slate-900 text-xs sm:text-sm">Paying via Remitly (Recommended)</h4>
+                            <span class="text-[10px] font-extrabold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full ml-auto">Lowest Fees</span>
+                        </div>
+                        <ol class="text-xs text-slate-600 space-y-1.5 list-decimal pl-5">
+                            <li>Open the <strong>Remitly app</strong> or visit <a href="https://www.remitly.com" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-semibold underline">remitly.com</a>.</li>
+                            <li>Select <strong>Nigeria</strong> as the destination country.</li>
+                            <li>Choose <strong>Bank Deposit</strong> as your delivery method.</li>
+                            <li>Select Bank: <strong>Wema Bank</strong>.</li>
+                            <li>Enter Account Number: <strong class="text-slate-900 font-mono">0128062292</strong> (Recipient Name resolves to <strong>STEMulus innovation Limited</strong>).</li>
+                            <li>Enter tuition amount in your local currency (USD, GBP, CAD, EUR) and confirm transfer.</li>
+                            <li>Save transfer receipt/screenshot to share with Admin.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Sendwave / Send by Flutterwave -->
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90">
+                        <div class="flex items-center gap-2.5 mb-2">
+                            <span class="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">2</span>
+                            <h4 class="font-bold text-slate-900 text-xs sm:text-sm">Paying via Sendwave / Send by Flutterwave (Sendnow)</h4>
+                            <span class="text-[10px] font-extrabold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full ml-auto">Instant Credit</span>
+                        </div>
+                        <ol class="text-xs text-slate-600 space-y-1.5 list-decimal pl-5">
+                            <li>Open <strong>Sendwave</strong> or <strong>Send by Flutterwave</strong> app.</li>
+                            <li>Destination country: <strong>Nigeria</strong>.</li>
+                            <li>Select <strong>Wema Bank</strong> from the bank list.</li>
+                            <li>Account Number: <strong class="text-slate-900 font-mono">0128062292</strong> (Beneficiary: <strong>STEMulus innovation Limited</strong>).</li>
+                            <li>Review exchange rate, fee waiver, and send.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Direct USD Wire Transfer -->
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90">
+                        <div class="flex items-center gap-2.5 mb-2">
+                            <span class="w-6 h-6 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">3</span>
+                            <h4 class="font-bold text-slate-900 text-xs sm:text-sm">Direct USD Wire Transfer (To USD DOM)</h4>
+                            <span class="text-[10px] font-extrabold bg-teal-100 text-teal-800 px-2 py-0.5 rounded-full ml-auto">International Wire</span>
+                        </div>
+                        <div class="text-xs text-slate-600 space-y-1">
+                            <p>For international wire transfers directly from corporate or personal foreign accounts:</p>
+                            <p>&bull; <strong>Beneficiary:</strong> STEMulus innovation Limited</p>
+                            <p>&bull; <strong>USD Account Number:</strong> <span class="font-mono font-bold text-slate-900">0622219817</span></p>
+                            <p>&bull; <strong>Bank Name:</strong> Wema Bank Plc, Nigeria</p>
+                            <p>&bull; <strong>SWIFT / BIC Code:</strong> <span class="font-mono font-bold text-slate-900">WEMANGLA</span></p>
+                            <p>&bull; <strong>Bank Address:</strong> 54 Marina, Lagos Island, Lagos, Nigeria</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instant Proof Submission Footer -->
+                <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div>
+                        <h4 class="text-xs font-bold text-emerald-950 flex items-center gap-1.5">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i> Done with payment?
+                        </h4>
+                        <p class="text-[11px] text-emerald-800 mt-0.5">WhatsApp your transfer receipt to STEMulus Admin for instant credit verification.</p>
+                    </div>
+                    <a href="https://wa.me/2347052466716?text=${encodeURIComponent('Hello STEMulus Admin, I have completed a tuition payment. Here is my transfer confirmation receipt:')}" target="_blank" class="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-emerald-600 text-white font-bold text-xs flex items-center gap-2 transition-all shadow-sm shrink-0">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i> Send Proof to Admin
+                    </a>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modalDiv);
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function openInternationalPaymentGuide() {
+        createInternationalPaymentGuideModal();
+        const modal = document.getElementById('modal-international-payment-guide');
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeInternationalPaymentGuide() {
+        const modal = document.getElementById('modal-international-payment-guide');
+        if (modal) modal.classList.add('hidden');
+    }
+
     return {
         init,
         renderDashboard,
@@ -1238,9 +1486,16 @@ const ParentEngine = (function() {
         renderProjectShowcase,
         shareProjectOnWhatsApp,
         openProjectModal,
-        closeProjectModal
+        closeProjectModal,
+        openInternationalPaymentGuide,
+        closeInternationalPaymentGuide,
+        copyBankDetail
     };
 })();
+
+if (typeof window !== 'undefined') {
+    window.ParentEngine = ParentEngine;
+}
 
 document.addEventListener('DOMContentLoaded', ParentEngine.init);
 // On cloud sync: re-render data without re-running auth redirect

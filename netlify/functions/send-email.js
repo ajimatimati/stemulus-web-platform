@@ -954,9 +954,10 @@ function tplCustom(d) {
 }
 
 function tplTuitionReminderParent(d) {
-  const bankName = d.bankName || 'Access Bank';
-  const accountName = d.accountName || 'STEMulus Kids Tech';
-  const accountNumber = d.accountNumber || '1853492019';
+  const bankName = d.bankName || 'Wema Nigeria';
+  const accountName = d.accountName || 'STEMulus innovation Limited';
+  const accountNumber = d.accountNumber || '0128062292';
+  const usdAccountNumber = d.usdAccountNumber || '0622219817';
   const amount = d.amount || '₦35,000';
   const dueDate = d.dueDate || 'End of Month';
   const studentName = d.studentName || 'Student';

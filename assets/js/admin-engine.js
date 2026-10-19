@@ -582,9 +582,11 @@ function navigateToSection(sectionName) {
             var sAcc = document.getElementById('settings-card-account-number');
             var sName = document.getElementById('settings-card-account-name');
             var sFee = document.getElementById('settings-card-default-fee');
-            if (sBank) sBank.textContent = bSettings.bankName || 'Access Bank';
-            if (sAcc) sAcc.textContent = bSettings.accountNumber || '1853492019';
-            if (sName) sName.textContent = bSettings.accountName || 'STEMulus Kids Tech';
+            if (sBank) sBank.textContent = bSettings.bankName || 'Wema Nigeria';
+            if (sAcc) sAcc.textContent = bSettings.accountNumber || '0128062292';
+            if (sName) sName.textContent = bSettings.accountName || 'STEMulus innovation Limited';
+            var sUsdAcc = document.getElementById('settings-card-usd-account-number');
+            if (sUsdAcc) sUsdAcc.textContent = bSettings.usdAccountNumber || '0622219817';
             if (sFee) sFee.textContent = '₦' + Number(bSettings.defaultMonthlyFee || 35000).toLocaleString();
         }
     }
@@ -5734,7 +5736,8 @@ function openMessageTutorModal(tutorEmail, tutorName) {
                 studentSelect.innerHTML = children.map(function(c) {
                     var cName = (c.firstName ? (c.firstName + ' ' + (c.lastName || '')).trim() : c.name) || 'Student';
                     var cProgram = c.program || 'Junior Coding Track';
-                    return '<option value="' + (c.id || '') + '" data-name="' + cName.replace(/"/g, '&quot;') + '" data-course="' + cProgram.replace(/"/g, '&quot;') + '">' + cName + ' (' + cProgram + ')</option>';
+                    var cMeet = c.meetLink || c.classroomLink || '';
+                    return '<option value="' + (c.id || '') + '" data-name="' + cName.replace(/"/g, '&quot;') + '" data-course="' + cProgram.replace(/"/g, '&quot;') + '" data-meet="' + cMeet.replace(/"/g, '&quot;') + '">' + cName + ' (' + cProgram + ')</option>';
                 }).join('');
             }
 
@@ -5748,8 +5751,9 @@ function openMessageTutorModal(tutorEmail, tutorName) {
             var opt = studentSelect.options[studentSelect.selectedIndex];
             var sName = opt.getAttribute('data-name') || '';
             var sCourse = opt.getAttribute('data-course') || '';
+            var sMeet = opt.getAttribute('data-meet') || '';
             if (sName) {
-                selectedChild = { name: sName, course: sCourse };
+                selectedChild = { name: sName, course: sCourse, meetLink: sMeet };
             }
         }
 
@@ -5757,12 +5761,14 @@ function openMessageTutorModal(tutorEmail, tutorName) {
             var firstC = children[0];
             selectedChild = {
                 name: (firstC.firstName ? (firstC.firstName + ' ' + (firstC.lastName || '')).trim() : firstC.name) || 'Student',
-                course: firstC.program || 'Junior Coding Track'
+                course: firstC.program || 'Junior Coding Track',
+                meetLink: firstC.meetLink || firstC.classroomLink || ''
             };
         }
 
         var sNameVal = selectedChild ? selectedChild.name : 'Student';
         var sCourseVal = selectedChild ? selectedChild.course : 'Junior Coding Track';
+        var sMeetVal = selectedChild ? selectedChild.meetLink : '';
 
         var cNameInput = document.getElementById('aep-student-name');
         var cCourseInput = document.getElementById('aep-course-name');
@@ -5774,7 +5780,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
         if (cNameInput) cNameInput.value = sNameVal;
         if (cCourseInput) cCourseInput.value = sCourseVal;
         if (cSchedInput && !cSchedInput.value) cSchedInput.value = 'Wednesday 4:00 PM • Friday 4:00 PM (WAT, GMT+1)';
-        if (cMeetInput && !cMeetInput.value) cMeetInput.value = 'https://meet.google.com/gyd-fewb-cdh';
+        if (cMeetInput) cMeetInput.value = sMeetVal;
         if (cClassroomInput && !cClassroomInput.value) cClassroomInput.value = 'https://classroom.google.com/c/ODg2NTc4NzE1MTgz?cjc=sfgboast';
         if (cTempPwdInput && !cTempPwdInput.value) cTempPwdInput.value = 'Parent2026!';
 
@@ -5793,6 +5799,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
         var opt = studentSelect.options[studentSelect.selectedIndex];
         var sName = opt.getAttribute('data-name');
         var sCourse = opt.getAttribute('data-course');
+        var sMeet = opt.getAttribute('data-meet');
 
         if (sName) {
             var cNameInput = document.getElementById('aep-student-name');
@@ -5801,6 +5808,10 @@ function openMessageTutorModal(tutorEmail, tutorName) {
         if (sCourse) {
             var cCourseInput = document.getElementById('aep-course-name');
             if (cCourseInput) cCourseInput.value = sCourse;
+        }
+        if (sMeet !== null && sMeet !== undefined) {
+            var cMeetInput = document.getElementById('aep-meet-link');
+            if (cMeetInput) cMeetInput.value = sMeet;
         }
 
         onParentTemplateChange();
@@ -5817,7 +5828,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
         var studentName = (document.getElementById('aep-student-name') ? document.getElementById('aep-student-name').value : '') || 'Student';
         var courseName = (document.getElementById('aep-course-name') ? document.getElementById('aep-course-name').value : '') || 'Junior Coding Track';
         var scheduleText = (document.getElementById('aep-schedule') ? document.getElementById('aep-schedule').value : '') || 'Wednesday 4:00 PM • Friday 4:00 PM (WAT, GMT+1)';
-        var meetLink = (document.getElementById('aep-meet-link') ? document.getElementById('aep-meet-link').value : '') || 'https://meet.google.com/gyd-fewb-cdh';
+        var meetLink = (document.getElementById('aep-meet-link') ? document.getElementById('aep-meet-link').value : '') || '';
         var classroomLink = (document.getElementById('aep-classroom-link') ? document.getElementById('aep-classroom-link').value : '') || 'https://classroom.google.com/c/ODg2NTc4NzE1MTgz?cjc=sfgboast';
         var tempPassword = (document.getElementById('aep-temp-password') ? document.getElementById('aep-temp-password').value : '') || 'Parent2026!';
         var portalUrl = 'https://stemuluskidstech.com/parent-login.html';
@@ -5891,7 +5902,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
         var studentName = (document.getElementById('aep-student-name') ? document.getElementById('aep-student-name').value : '').trim() || 'Student';
         var courseName = (document.getElementById('aep-course-name') ? document.getElementById('aep-course-name').value : '').trim() || 'Junior Coding Track';
         var scheduleText = (document.getElementById('aep-schedule') ? document.getElementById('aep-schedule').value : '').trim() || 'Wednesday 4:00 PM • Friday 4:00 PM (WAT, GMT+1)';
-        var meetLink = (document.getElementById('aep-meet-link') ? document.getElementById('aep-meet-link').value : '').trim() || 'https://meet.google.com/gyd-fewb-cdh';
+        var meetLink = (document.getElementById('aep-meet-link') ? document.getElementById('aep-meet-link').value : '').trim();
         var classroomLink = (document.getElementById('aep-classroom-link') ? document.getElementById('aep-classroom-link').value : '').trim() || 'https://classroom.google.com/c/ODg2NTc4NzE1MTgz?cjc=sfgboast';
         var tempPassword = (document.getElementById('aep-temp-password') ? document.getElementById('aep-temp-password').value : '').trim() || 'Parent2026!';
 
@@ -6066,9 +6077,11 @@ function loadBillingRoster() {
     const accNumEl = document.getElementById('billing-account-number');
     const accNameEl = document.getElementById('billing-account-name');
     const feeEl = document.getElementById('billing-default-fee');
-    if (bankEl) bankEl.textContent = settings.bankName;
-    if (accNumEl) accNumEl.textContent = settings.accountNumber;
-    if (accNameEl) accNameEl.textContent = settings.accountName;
+    if (bankEl) bankEl.textContent = settings.bankName || 'Wema Nigeria';
+    if (accNumEl) accNumEl.textContent = settings.accountNumber || '0128062292';
+    if (accNameEl) accNameEl.textContent = settings.accountName || 'STEMulus innovation Limited';
+    const usdAccEl = document.getElementById('billing-usd-account-number');
+    if (usdAccEl) usdAccEl.textContent = settings.usdAccountNumber || '0622219817';
     if (feeEl) feeEl.textContent = '₦' + Number(settings.defaultMonthlyFee || 35000).toLocaleString();
 
     filterBilling();
@@ -6307,7 +6320,9 @@ function openBillingSettingsModal() {
     const feeEl = document.getElementById('settings-default-fee');
 
     if (bankEl) bankEl.value = settings.bankName || '';
-    if (accNumEl) accNumEl.value = settings.accountNumber || '';
+    if (accNumEl) accNumEl.value = settings.accountNumber || '0128062292';
+    const usdAccInput = document.getElementById('settings-usd-account-number');
+    if (usdAccInput) usdAccInput.value = settings.usdAccountNumber || '0622219817';
     if (accNameEl) accNameEl.value = settings.accountName || '';
     if (feeEl) feeEl.value = settings.defaultMonthlyFee || 35000;
 
@@ -6322,9 +6337,12 @@ function handleBillingSettingsSubmit(e) {
     const feeEl = document.getElementById('settings-default-fee');
 
     const updated = BillingEngine.updateSettings({
-        bankName: bankEl ? bankEl.value : 'Access Bank',
-        accountNumber: accNumEl ? accNumEl.value : '1853492019',
-        accountName: accNameEl ? accNameEl.value : 'STEMulus Kids Tech',
+        bankName: bankEl ? bankEl.value : 'Wema Nigeria',
+        accountNumber: accNumEl ? accNumEl.value : '0128062292',
+        accountName: accNameEl ? accNameEl.value : 'STEMulus innovation Limited',
+        usdBankName: 'Wema Bank (USD DOM)',
+        usdAccountNumber: document.getElementById('settings-usd-account-number') ? document.getElementById('settings-usd-account-number').value : '0622219817',
+        usdAccountName: 'STEMulus innovation Limited',
         defaultMonthlyFee: Number(feeEl ? feeEl.value : 35000)
     });
 
@@ -6386,79 +6404,79 @@ var SAMPLE_RECORDINGS = [
         id: 'rec_live_01',
         scheduleId: 'sch_101',
         sessionId: 'ses_live_101',
-        studentName: 'Leo Armstrong',
-        tutorName: 'Michael Scott',
-        courseName: 'Python Programming Masterclass',
-        meetingUrl: 'https://meet.google.com/gyd-fewb-cdh',
+        studentName: 'Momooreoluwa Sonaike',
+        tutorName: 'Moses Oluwafemi Adebayo',
+        courseName: 'Scratch Creators',
+        meetingUrl: 'https://meet.google.com/vdp-nmbh-sjj',
         status: 'recording',
         startedAt: new Date(Date.now() - 22 * 60 * 1000).toISOString(),
         durationMinutes: 22,
         videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-        provider: 'Autonomous Cloud Bot (Recall.ai)',
+        provider: 'Google Meet Pro Cloud Archive',
         flaggedForReview: false,
         flagReason: '',
         rating: '5',
-        adminAuditNotes: 'Live session actively monitored. Student progressing through loops.',
+        adminAuditNotes: 'Live session actively monitored. Student progressing through Scratch animations.',
         safeguardingCompliant: true
     },
     {
         id: 'rec_arc_02',
         scheduleId: 'sch_102',
         sessionId: 'ses_arc_102',
-        studentName: 'Zainab Adeleke',
-        tutorName: 'Sarah Jenkins',
-        courseName: 'Web Wizards Frontend Studio',
-        meetingUrl: 'https://meet.google.com/gyd-fewb-cdh',
+        studentName: 'King Myles Omosuyi',
+        tutorName: 'Olalekan Israel Ajimati',
+        courseName: 'Scratch Creators',
+        meetingUrl: 'https://meet.google.com/nxg-rbcg-nsr',
         status: 'completed',
         startedAt: new Date(Date.now() - 26 * 3600 * 1000).toISOString(),
         endedAt: new Date(Date.now() - 25 * 3600 * 1000).toISOString(),
         durationMinutes: 58,
         videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-        provider: 'Autonomous Cloud Bot (Recall.ai)',
+        provider: 'Google Meet Pro Cloud Archive',
         flaggedForReview: false,
         flagReason: '',
         rating: '5',
-        adminAuditNotes: 'Superb project showcase. CSS animations mastered.',
+        adminAuditNotes: 'Superb project showcase. Scratch interactive variables mastered.',
         safeguardingCompliant: true
     },
     {
         id: 'rec_arc_03',
         scheduleId: 'sch_103',
         sessionId: 'ses_arc_103',
-        studentName: 'David Kim',
-        tutorName: 'Alex Chen',
-        courseName: 'Scratch Creators Lab',
+        studentName: 'JUNAYD KARI',
+        tutorName: 'Olalekan Israel Ajimati',
+        courseName: 'Scratch Creators',
         meetingUrl: 'https://meet.google.com/gyd-fewb-cdh',
         status: 'completed',
         startedAt: new Date(Date.now() - 48 * 3600 * 1000).toISOString(),
         endedAt: new Date(Date.now() - 47 * 3600 * 1000).toISOString(),
         durationMinutes: 55,
         videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-        provider: 'Autonomous Cloud Bot (Recall.ai)',
+        provider: 'Google Meet Pro Cloud Archive',
         flaggedForReview: false,
         flagReason: '',
-        rating: '4',
-        adminAuditNotes: 'Paced well. Student built a 2D maze game.',
+        rating: '5',
+        adminAuditNotes: 'Paced well. Student built a 2D game dialogue.',
         safeguardingCompliant: true
     },
     {
         id: 'rec_arc_04',
         scheduleId: 'sch_104',
         sessionId: 'ses_arc_104',
-        studentName: 'Amara Okafor',
-        tutorName: 'Tunde Bakare',
-        courseName: 'Junior Robotics & Micro:bit',
-        meetingUrl: 'https://meet.google.com/gyd-fewb-cdh',
+        studentName: 'Babalola Oluwadunmininu Pearl',
+        tutorName: 'Tola Tosin Ayanleke',
+        courseName: 'Python Programming',
+        meetingUrl: 'https://meet.google.com/yre-naci-zmp',
         status: 'completed',
         startedAt: new Date(Date.now() - 72 * 3600 * 1000).toISOString(),
-        endedAt: new Date(Date.now() - 72 * 3600 * 1000 + 12 * 60 * 1000).toISOString(),
-        durationMinutes: 12,
+        endedAt: new Date(Date.now() - 72 * 3600 * 1000 + 55 * 60 * 1000).toISOString(),
+        durationMinutes: 55,
         videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-        provider: 'Autonomous Cloud Bot (Recall.ai)',
-        flaggedForReview: true,
-        flagReason: 'Abnormally short session (12 mins). Network drop reported by tutor.',
-        rating: '3',
-        adminAuditNotes: 'Makeup class scheduled for Saturday 11am WAT.',
+        provider: 'Google Meet Pro Cloud Archive',
+        flaggedForReview: false,
+        flagReason: '',
+        rating: '5',
+        adminAuditNotes: 'Python functions and parameters covered smoothly.',
         safeguardingCompliant: true
     }
 ];

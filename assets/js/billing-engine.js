@@ -13,9 +13,12 @@ const BillingEngine = (function() {
 
   // Default School Settings for Payments
   const DEFAULT_SETTINGS = {
-    bankName: 'Access Bank',
-    accountName: 'STEMulus Kids Tech',
-    accountNumber: '1853492019',
+    bankName: 'Wema Nigeria',
+    accountName: 'STEMulus innovation Limited',
+    accountNumber: '0128062292',
+    usdBankName: 'Wema Bank (USD DOM)',
+    usdAccountName: 'STEMulus innovation Limited',
+    usdAccountNumber: '0622219817',
     defaultMonthlyFee: 35000,
     currencySymbol: '₦',
     reminderDaysNotice: 5 // Days before due date to flag 'due_soon'
@@ -315,7 +318,20 @@ const BillingEngine = (function() {
   function getSettings() {
     if (typeof DashboardEngine !== 'undefined') {
       const db = DashboardEngine.getDB();
-      if (db.billingSettings) return Object.assign({}, DEFAULT_SETTINGS, db.billingSettings);
+      if (db.billingSettings) {
+        if (db.billingSettings.accountNumber === '1853492019' || !db.billingSettings.usdAccountNumber) {
+          db.billingSettings = Object.assign({}, DEFAULT_SETTINGS, db.billingSettings, {
+            bankName: 'Wema Nigeria',
+            accountName: 'STEMulus innovation Limited',
+            accountNumber: '0128062292',
+            usdBankName: 'Wema Bank (USD DOM)',
+            usdAccountName: 'STEMulus innovation Limited',
+            usdAccountNumber: '0622219817'
+          });
+          DashboardEngine.saveDB(db);
+        }
+        return Object.assign({}, DEFAULT_SETTINGS, db.billingSettings);
+      }
     }
     return Object.assign({}, DEFAULT_SETTINGS);
   }

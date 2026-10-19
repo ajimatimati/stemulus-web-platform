@@ -103,18 +103,116 @@
     } catch (e) {}
   }
 
+  // Resolve canonical Tutor & Parent participants for a schedule from the Student record
+  function resolveScheduleParticipants(schedule) {
+    if (!schedule) return { tutorEmail: '', tutorAltEmail: '', tutorName: '', parentEmail: '', parentName: '', studentName: '' };
+    let tutorEmail = (schedule.tutorEmail || '').toLowerCase().trim();
+    let tutorAltEmail = '';
+    let tutorName = schedule.mentor || schedule.tutorName || 'Mentor';
+    let parentEmail = (schedule.parentEmail || '').toLowerCase().trim();
+    let parentName = schedule.parentName || 'Parent';
+    let studentName = schedule.studentName || schedule.student || 'Student';
+    let studentId = schedule.studentId || '';
+
+    try {
+      const db = (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getDB === 'function')
+        ? DashboardEngine.getDB()
+        : JSON.parse(localStorage.getItem('stemulus_db') || '{}');
+      const students = (db && Array.isArray(db.students)) ? db.students : [];
+      const tutors = (db && Array.isArray(db.tutors)) ? db.tutors : [];
+
+      const sNameClean = String(studentName).toLowerCase().trim();
+      const matchedStudent = students.find(s => {
+        if (!s) return false;
+        if (studentId && s.id === studentId) return true;
+        const full = ((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim();
+        return full && full === sNameClean;
+      });
+
+      if (matchedStudent) {
+        studentId = matchedStudent.id || studentId;
+        studentName = ((matchedStudent.firstName || '') + ' ' + (matchedStudent.lastName || '')).trim() || studentName;
+        if (matchedStudent.tutorEmail) tutorEmail = String(matchedStudent.tutorEmail).toLowerCase().trim();
+        if (matchedStudent.tutorName) tutorName = matchedStudent.tutorName;
+        if (matchedStudent.parentEmail) parentEmail = String(matchedStudent.parentEmail).toLowerCase().trim();
+        if (matchedStudent.parentName) parentName = matchedStudent.parentName;
+      }
+
+      if (tutorEmail || tutorName) {
+        const matchedTutor = tutors.find(t =>
+          (t && t.email && t.email.toLowerCase().trim() === tutorEmail) ||
+          (t && t.altEmail && t.altEmail.toLowerCase().trim() === tutorEmail) ||
+          (t && t.name && t.name.toLowerCase().trim() === String(tutorName).toLowerCase().trim())
+        );
+        if (matchedTutor) {
+          if (matchedTutor.email) tutorEmail = matchedTutor.email.toLowerCase().trim();
+          if (matchedTutor.altEmail) tutorAltEmail = matchedTutor.altEmail.toLowerCase().trim();
+          if (matchedTutor.name) tutorName = matchedTutor.name;
+        }
+      }
+    } catch (e) {}
+
+    return {
+      studentId,
+      studentName,
+      tutorEmail,
+      tutorAltEmail,
+      tutorName,
+      parentEmail,
+      parentName
+    };
+  }
+
+  // Strictly check whether the currently logged-in user owns this schedule
+  function isScheduleForCurrentUser(schedule) {
+    if (!schedule || typeof DashboardEngine === 'undefined' || typeof DashboardEngine.getSession !== 'function') return false;
+    const session = DashboardEngine.getSession();
+    if (!session || !session.email || !session.role) return false;
+
+    const path = (typeof window !== 'undefined' && window.location && window.location.pathname) ? window.location.pathname.toLowerCase() : '';
+    if (path.includes('login') || path.includes('admin-dashboard')) return false;
+
+    const sessionEmail = String(session.email).toLowerCase().trim();
+    const role = String(session.role).toLowerCase().trim();
+    const participants = resolveScheduleParticipants(schedule);
+
+    if (role === 'tutor') {
+      if (!participants.tutorEmail) return false;
+      if (sessionEmail === participants.tutorEmail) return true;
+      if (participants.tutorAltEmail && sessionEmail === participants.tutorAltEmail) return true;
+      // Also check if session user's tutor profile matches participants.tutorEmail
+      if (typeof DashboardEngine.getTutorStudents === 'function') {
+        const myStudents = DashboardEngine.getTutorStudents(sessionEmail) || [];
+        return myStudents.some(s =>
+          (participants.studentId && s.id === participants.studentId) ||
+          (((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim() === participants.studentName.toLowerCase().trim())
+        );
+      }
+      return false;
+    }
+
+    if (role === 'parent') {
+      if (!participants.parentEmail) return false;
+      return sessionEmail === participants.parentEmail;
+    }
+
+    return false;
+  }
+
   // Dispatch Automated Email Reminders to both Parent and Tutor (Gated behind explicit admin toggle)
   function dispatchReminderEmails(schedule, milestone) {
     if (typeof window !== 'undefined' && window.STEMULUS_AUTO_REMINDER_EMAILS !== true) return;
     if (typeof EmailService === 'undefined') return;
 
+    const participants = resolveScheduleParticipants(schedule);
+
     // 1. Send to Parent
-    if (schedule.parentEmail && typeof EmailService.sendReminderEmail === 'function') {
+    if (participants.parentEmail && typeof EmailService.sendReminderEmail === 'function') {
       EmailService.sendReminderEmail({
         student: {
-          name: schedule.studentName,
-          parentEmail: schedule.parentEmail,
-          parentName: schedule.parentName || 'Parent'
+          name: participants.studentName,
+          parentEmail: participants.parentEmail,
+          parentName: participants.parentName || 'Parent'
         },
         schedule: schedule,
         type: milestone
@@ -122,15 +220,15 @@
     }
 
     // 2. Send to Tutor
-    if (schedule.tutorEmail && typeof EmailService.sendTutorReminderEmail === 'function') {
+    if (participants.tutorEmail && typeof EmailService.sendTutorReminderEmail === 'function') {
       EmailService.sendTutorReminderEmail({
         tutor: {
-          tutorEmail: schedule.tutorEmail,
-          name: schedule.mentor || 'Mentor'
+          tutorEmail: participants.tutorEmail,
+          name: participants.tutorName || 'Mentor'
         },
         student: {
-          name: schedule.studentName,
-          parentEmail: schedule.parentEmail
+          name: participants.studentName,
+          parentEmail: participants.parentEmail
         },
         schedule: schedule,
         type: milestone
@@ -138,39 +236,97 @@
     }
   }
 
-  // Add in-portal Notifications for both Parent and Tutor
+  // Add in-portal Notifications for both Parent and Tutor (strictly scoped to canonical owner emails)
   function addPortalNotifications(schedule, milestone) {
     if (typeof DashboardEngine === 'undefined' || typeof DashboardEngine.addNotification !== 'function') return;
 
+    const participants = resolveScheduleParticipants(schedule);
     const label = milestone === '24h' ? '24 Hours' : (milestone === '10m' ? '10 Minutes' : '1 Hour');
     const isUrgent = milestone === '10m';
+    const titleStr = isUrgent ? `Class in 10 Minutes: ${participants.studentName}` : `Class in ${label}: ${participants.studentName}`;
 
-    // 1. Notification for Tutor
-    if (schedule.tutorEmail) {
-      DashboardEngine.addNotification({
-        userEmail: schedule.tutorEmail,
-        title: isUrgent ? `🚨 Class in 10 Minutes: ${schedule.studentName}` : `⏰ Class in ${label}: ${schedule.studentName}`,
-        message: `Your 1-on-1 session for ${schedule.course} is scheduled for ${schedule.date} at ${schedule.time} (WAT). Link: ${schedule.link || 'Google Meet'}`,
-        timestamp: new Date().toISOString(),
-        read: false
-      });
+    const db = (typeof DashboardEngine.getDB === 'function') ? DashboardEngine.getDB() : null;
+    const existingNotifs = (db && Array.isArray(db.notifications)) ? db.notifications : [];
+
+    // 1. Notification for Tutor (only to canonical assigned tutorEmail)
+    if (participants.tutorEmail) {
+      const tutorMsg = `Your 1-on-1 session for ${schedule.course} is scheduled for ${schedule.date} at ${schedule.time} (WAT). Link: ${schedule.link || 'Google Meet'}`;
+      const alreadyExists = existingNotifs.some(n =>
+        n && String(n.userEmail || '').toLowerCase().trim() === participants.tutorEmail &&
+        n.title === titleStr && n.message === tutorMsg
+      );
+      if (!alreadyExists) {
+        DashboardEngine.addNotification({
+          userEmail: participants.tutorEmail,
+          studentId: participants.studentId,
+          studentName: participants.studentName,
+          title: titleStr,
+          message: tutorMsg,
+          timestamp: new Date().toISOString(),
+          read: false
+        });
+      }
     }
 
-    // 2. Notification for Parent
-    if (schedule.parentEmail) {
-      DashboardEngine.addNotification({
-        userEmail: schedule.parentEmail,
-        title: isUrgent ? `🚨 Class in 10 Minutes: ${schedule.studentName}` : `⏰ Class in ${label}: ${schedule.studentName}`,
-        message: `${schedule.studentName}'s coding session with ${schedule.mentor || 'Mentor'} is at ${schedule.time} on ${schedule.date}. Link: ${schedule.link || 'Google Meet'}`,
-        timestamp: new Date().toISOString(),
-        read: false
-      });
+    // 2. Notification for Parent (only to canonical assigned parentEmail)
+    if (participants.parentEmail) {
+      const parentMsg = `${participants.studentName}'s coding session with ${participants.tutorName || 'Mentor'} is at ${schedule.time} on ${schedule.date}. Link: ${schedule.link || 'Google Meet'}`;
+      const alreadyExists = existingNotifs.some(n =>
+        n && String(n.userEmail || '').toLowerCase().trim() === participants.parentEmail &&
+        n.title === titleStr && n.message === parentMsg
+      );
+      if (!alreadyExists) {
+        DashboardEngine.addNotification({
+          userEmail: participants.parentEmail,
+          studentId: participants.studentId,
+          studentName: participants.studentName,
+          title: titleStr,
+          message: parentMsg,
+          timestamp: new Date().toISOString(),
+          read: false
+        });
+      }
     }
+  }
+
+  // Ensure keyframes and dismiss helper for refined floating alert animations
+  function ensureAlertStyles() {
+    if (typeof document === 'undefined') return;
+    if (!window.dismissStemulusCard) {
+      window.dismissStemulusCard = function(id, isTop = false) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+        el.style.opacity = '0';
+        el.style.transform = isTop ? 'translateY(-12px)' : 'translateY(16px)';
+        setTimeout(() => { if (el) el.remove(); }, 250);
+      };
+    }
+    if (document.getElementById('stemulus-alert-keyframes')) return;
+    const style = document.createElement('style');
+    style.id = 'stemulus-alert-keyframes';
+    style.textContent = `
+      @keyframes stemulusAlertSlideIn {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      @keyframes stemulusAlertTopSlideIn {
+        from { transform: translateY(-20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      @keyframes stemulusDotPulse {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+      }
+    `;
+    document.head.appendChild(style);
   }
 
   // Show 24-Hour Preparation Toast Banner
   function show24HourBanner(schedule) {
     if (typeof document === 'undefined') return;
+    ensureAlertStyles();
     const bannerId = 'reminder-banner-24h-' + schedule.id;
     if (document.getElementById(bannerId)) return;
 
@@ -184,42 +340,48 @@
     div.id = bannerId;
     div.style.cssText = `
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 24px;
+      right: 24px;
       max-width: 420px;
-      width: calc(100% - 40px);
-      background: linear-gradient(135deg, #1E293B, #0F172A);
-      border: 1px solid rgba(244, 96, 12, 0.4);
-      border-radius: 16px;
-      padding: 16px 20px;
-      color: #FFFFFF;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(244, 96, 12, 0.15);
+      width: calc(100vw - 48px);
+      background: #FFFFFF;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 18px;
+      padding: 16px 18px;
+      color: #0F172A;
+      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.14), 0 2px 6px rgba(15, 23, 42, 0.04);
       z-index: 99999;
       font-family: 'Nunito', sans-serif;
-      animation: fadeIn 0.4s ease forwards;
+      animation: stemulusAlertTopSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     `;
 
     div.innerHTML = `
-      <div style="display:flex; align-items:flex-start; gap:14px;">
-        <div style="flex-shrink:0; margin-top:2px;">
-          <span style="font-size:24px;">⏰</span>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <div style="width:38px; height:38px; border-radius:10px; background:#F8FAFC; border:1px solid #E2E8F0; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#334155;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+            <line x1="16" x2="16" y1="2" y2="6"/>
+            <line x1="8" x2="8" y1="2" y2="6"/>
+            <line x1="3" x2="21" y1="10" y2="10"/>
+          </svg>
         </div>
-        <div style="flex:1;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
-            <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#F4600C; background:rgba(244,96,12,0.12); padding:2px 8px; border-radius:6px; border:1px solid rgba(244,96,12,0.25);">
-              Class in 24 Hours
+        <div style="flex:1; min-width:0;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px;">
+            <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:#475569; background:#F1F5F9; border:1px solid #E2E8F0; padding:2px 8px; border-radius:6px;">
+              Class Tomorrow
             </span>
-            <button onclick="document.getElementById('${bannerId}').remove()" style="background:none; border:none; color:#94A3B8; font-size:16px; cursor:pointer; padding:0 4px;">&times;</button>
+            <button onclick="window.dismissStemulusCard('${bannerId}', true)" aria-label="Close notification" style="background:none; border:none; color:#94A3B8; font-size:18px; line-height:1; cursor:pointer; padding:2px 6px; border-radius:4px; transition:color 0.15s;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">&times;</button>
           </div>
-          <h4 style="margin:0 0 4px 0; font-size:14px; font-weight:800; color:#FFFFFF;">
+          <h4 style="margin:0 0 3px 0; font-size:14px; font-weight:800; color:#0F172A; line-height:1.35; word-break:break-word; font-family:'Outfit', sans-serif;">
             ${studentName} &bull; ${course}
           </h4>
-          <p style="margin:0 0 10px 0; font-size:12px; color:#94A3B8; line-height:1.4;">
-            Scheduled for <strong>${date} at ${time}</strong> with <strong>${tutorName}</strong>. In-portal reminder queued for parent and tutor.
+          <p style="margin:0 0 10px 0; font-size:12px; color:#64748B; line-height:1.45;">
+            Scheduled for <strong>${date} at ${time}</strong> with <strong>${tutorName}</strong>.
           </p>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <a href="${schedule.link || 'https://meet.google.com'}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#F4600C; color:#FFFFFF; text-decoration:none; font-size:11px; font-weight:700; padding:6px 12px; border-radius:8px;">
-              Meeting Link &rarr;
+          <div style="display:flex; gap:8px; align-items:center;">
+            <a href="${schedule.link || 'https://meet.google.com'}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#0F172A; color:#FFFFFF; text-decoration:none; font-size:12px; font-weight:700; padding:6px 14px; border-radius:8px; transition:background 0.15s ease;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#0F172A'">
+              <span>Meeting Link</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
           </div>
         </div>
@@ -229,11 +391,8 @@
     document.body.appendChild(div);
 
     setTimeout(() => {
-      if (document.getElementById(bannerId)) {
-        div.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-        div.style.opacity = '0';
-        div.style.transform = 'translateY(-10px)';
-        setTimeout(() => div.remove(), 400);
+      if (typeof window !== 'undefined' && window.dismissStemulusCard) {
+        window.dismissStemulusCard(bannerId, true);
       }
     }, 18000);
   }
@@ -241,6 +400,7 @@
   // Show 1-Hour Preparation Toast Banner
   function show1HourBanner(schedule) {
     if (typeof document === 'undefined') return;
+    ensureAlertStyles();
     const bannerId = 'reminder-banner-1h-' + schedule.id;
     if (document.getElementById(bannerId)) return;
 
@@ -254,42 +414,46 @@
     div.id = bannerId;
     div.style.cssText = `
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 24px;
+      right: 24px;
       max-width: 420px;
-      width: calc(100% - 40px);
-      background: linear-gradient(135deg, #1E293B, #0F172A);
-      border: 1px solid rgba(59, 130, 246, 0.5);
-      border-radius: 16px;
-      padding: 16px 20px;
-      color: #FFFFFF;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(59, 130, 246, 0.2);
+      width: calc(100vw - 48px);
+      background: #FFFFFF;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 18px;
+      padding: 16px 18px;
+      color: #0F172A;
+      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.14), 0 2px 6px rgba(15, 23, 42, 0.04);
       z-index: 99999;
       font-family: 'Nunito', sans-serif;
-      animation: fadeIn 0.4s ease forwards;
+      animation: stemulusAlertTopSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     `;
 
     div.innerHTML = `
-      <div style="display:flex; align-items:flex-start; gap:14px;">
-        <div style="flex-shrink:0; margin-top:2px;">
-          <span style="font-size:24px;">🔔</span>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <div style="width:38px; height:38px; border-radius:10px; background:#EFF6FF; border:1px solid #DBEAFE; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#1D4ED8;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
         </div>
-        <div style="flex:1;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
-            <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#60A5FA; background:rgba(59,130,246,0.15); padding:2px 8px; border-radius:6px; border:1px solid rgba(59,130,246,0.3);">
+        <div style="flex:1; min-width:0;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px;">
+            <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:#1D4ED8; background:#EFF6FF; border:1px solid #DBEAFE; padding:2px 8px; border-radius:6px;">
               Class in 1 Hour
             </span>
-            <button onclick="document.getElementById('${bannerId}').remove()" style="background:none; border:none; color:#94A3B8; font-size:16px; cursor:pointer; padding:0 4px;">&times;</button>
+            <button onclick="window.dismissStemulusCard('${bannerId}', true)" aria-label="Close notification" style="background:none; border:none; color:#94A3B8; font-size:18px; line-height:1; cursor:pointer; padding:2px 6px; border-radius:4px; transition:color 0.15s;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">&times;</button>
           </div>
-          <h4 style="margin:0 0 4px 0; font-size:14px; font-weight:800; color:#FFFFFF;">
+          <h4 style="margin:0 0 3px 0; font-size:14px; font-weight:800; color:#0F172A; line-height:1.35; word-break:break-word; font-family:'Outfit', sans-serif;">
             ${studentName} &bull; ${course}
           </h4>
-          <p style="margin:0 0 10px 0; font-size:12px; color:#94A3B8; line-height:1.4;">
-            Session starts at <strong>${time}</strong> with <strong>${tutorName}</strong>. 1-hour notification queued.
+          <p style="margin:0 0 10px 0; font-size:12px; color:#64748B; line-height:1.45;">
+            Session starts at <strong>${time}</strong> with <strong>${tutorName}</strong>.
           </p>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <a href="${schedule.link || 'https://meet.google.com'}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#2563EB; color:#FFFFFF; text-decoration:none; font-size:11px; font-weight:700; padding:6px 12px; border-radius:8px;">
-              Join Google Meet &rarr;
+          <div style="display:flex; gap:8px; align-items:center;">
+            <a href="${schedule.link || 'https://meet.google.com'}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#0F172A; color:#FFFFFF; text-decoration:none; font-size:12px; font-weight:700; padding:6px 14px; border-radius:8px; transition:background 0.15s ease;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#0F172A'">
+              <span>Join Google Meet</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
           </div>
         </div>
@@ -299,18 +463,16 @@
     document.body.appendChild(div);
 
     setTimeout(() => {
-      if (document.getElementById(bannerId)) {
-        div.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-        div.style.opacity = '0';
-        div.style.transform = 'translateY(-10px)';
-        setTimeout(() => div.remove(), 400);
+      if (typeof window !== 'undefined' && window.dismissStemulusCard) {
+        window.dismissStemulusCard(bannerId, true);
       }
     }, 18000);
   }
 
-  // Show 10-Minute Urgent Classroom Modal with Web Audio Chime
+  // Show 10-Minute Urgent Classroom Alert (Non-obstructive floating card, zero AI slop, zero emojis)
   function show10MinuteModal(schedule) {
     if (typeof document === 'undefined') return;
+    ensureAlertStyles();
     const modalId = 'urgent-class-modal-' + schedule.id;
     if (document.getElementById(modalId)) return;
 
@@ -320,54 +482,61 @@
     const tutorName = schedule.mentor || schedule.tutorName || 'Your Mentor';
     const course = schedule.course || 'Coding Session';
     const link = schedule.link || 'https://meet.google.com';
+    const time = schedule.time || '10 minutes';
 
-    const overlay = document.createElement('div');
-    overlay.id = modalId;
-    overlay.style.cssText = `
+    const card = document.createElement('div');
+    card.id = modalId;
+    card.style.cssText = `
       position: fixed;
-      inset: 0;
-      background: rgba(11, 15, 25, 0.85);
-      backdrop-filter: blur(12px);
-      z-index: 100000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      animation: fadeIn 0.3s ease;
+      bottom: 24px;
+      right: 24px;
+      max-width: 440px;
+      width: calc(100vw - 48px);
+      background: #FFFFFF;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 20px;
+      padding: 20px 22px;
+      box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.05);
+      z-index: 99999;
       font-family: 'Nunito', sans-serif;
+      animation: stemulusAlertSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      color: #0F172A;
     `;
 
-    overlay.innerHTML = `
-      <div style="background:linear-gradient(135deg, #1E293B, #0F172A); border:2px solid #F4600C; box-shadow:0 0 40px rgba(244,96,12,0.35); border-radius:24px; max-width:460px; width:100%; padding:32px; text-align:center; position:relative; color:#FFFFFF;">
-        <button onclick="document.getElementById('${modalId}').remove()" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; width:32px; height:32px; border-radius:50%; color:#94A3B8; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;">&times;</button>
-
-        <div style="margin-bottom:16px; font-size:44px;">
-          ⚡
+    card.innerHTML = `
+      <div style="display:flex; align-items:flex-start; gap:14px;">
+        <div style="width:42px; height:42px; border-radius:12px; background:#F8FAFC; border:1px solid #E2E8F0; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#0F172A;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m22 8-6 4 6 4V8Z"/>
+            <rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>
+          </svg>
         </div>
-
-        <span style="display:inline-block; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:#F4600C; background:rgba(244,96,12,0.15); border:1px solid rgba(244,96,12,0.3); padding:4px 12px; border-radius:20px; margin-bottom:12px;">
-          Starting in 10 Minutes!
-        </span>
-
-        <h2 style="font-size:22px; font-weight:800; margin:0 0 8px 0; font-family:'Outfit', sans-serif; color:#FFFFFF;">
-          Classroom Launching Now
-        </h2>
-
-        <p style="font-size:14px; color:#CBD5E1; line-height:1.5; margin:0 0 24px 0;">
-          <strong>${studentName}</strong>'s 1-on-1 <strong>${course}</strong> class with mentor <strong>${tutorName}</strong> begins in 10 minutes.
-        </p>
-
-        <a href="${link}" target="_blank" onclick="document.getElementById('${modalId}').remove()" style="display:block; background:#F4600C; color:#FFFFFF; text-decoration:none; font-weight:800; font-size:15px; padding:14px 28px; border-radius:14px; box-shadow:0 8px 24px rgba(244,96,12,0.4); transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-          Launch Classroom Now &rarr;
-        </a>
-
-        <p style="margin:16px 0 0 0; font-size:11px; color:#64748B;">
-          Dual 10-minute alerts queued for both Parent and Mentor.
-        </p>
+        <div style="flex:1; min-width:0;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px;">
+            <div style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; color:#047857; background:#ECFDF5; border:1px solid #A7F3D0; padding:2px 8px; border-radius:999px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:#10B981; display:inline-block; animation:stemulusDotPulse 1.8s infinite;"></span>
+              Starting in 10 Minutes
+            </div>
+            <button onclick="window.dismissStemulusCard('${modalId}', false)" aria-label="Dismiss alert" style="background:none; border:none; color:#94A3B8; font-size:18px; line-height:1; cursor:pointer; padding:2px 6px; border-radius:4px; transition:color 0.15s;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">&times;</button>
+          </div>
+          <h4 style="margin:0 0 3px 0; font-size:15px; font-weight:800; color:#0F172A; font-family:'Outfit', sans-serif; line-height:1.35; word-break:break-word;">
+            ${studentName} &bull; ${course}
+          </h4>
+          <p style="margin:0 0 12px 0; font-size:13px; color:#64748B; line-height:1.45;">
+            Class with <strong>${tutorName}</strong> starts at <strong>${time}</strong>. Google Meet room is open.
+          </p>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <a href="${link}" target="_blank" onclick="window.dismissStemulusCard('${modalId}', false)" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; background:#0F172A; color:#FFFFFF; text-decoration:none; font-weight:700; font-size:13px; padding:9px 18px; border-radius:10px; transition:background 0.15s ease, transform 0.15s ease; box-shadow:0 4px 12px rgba(15,23,42,0.15);" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#0F172A'">
+              <span>Launch Classroom</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <button onclick="window.dismissStemulusCard('${modalId}', false)" style="background:none; border:none; color:#64748B; font-size:12px; font-weight:700; cursor:pointer; padding:8px 10px; border-radius:8px; transition:color 0.15s;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#64748B'">Dismiss</button>
+          </div>
+        </div>
       </div>
     `;
 
-    document.body.appendChild(overlay);
+    document.body.appendChild(card);
   }
 
   // Periodic Schedule Evaluator (24h, 1h, 10m)
@@ -380,6 +549,24 @@
     const ONE_HOUR_MS = 60 * 60 * 1000;
     const TEN_MINUTES_MS = 10 * 60 * 1000;
     const isAdminPage = typeof window !== 'undefined' && window.location && window.location.pathname.includes('admin-dashboard');
+    const session = (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getSession === 'function') ? DashboardEngine.getSession() : null;
+    const sessionEmail = (session && session.email) ? String(session.email).toLowerCase().trim() : '';
+
+    function hasShownUserBanner(scheduleId, milestone) {
+      if (!sessionEmail) return true;
+      try {
+        return sessionStorage.getItem(`stemulus_ui_rem_${milestone}_${scheduleId}_${sessionEmail}`) === '1';
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function markShownUserBanner(scheduleId, milestone) {
+      if (!sessionEmail) return;
+      try {
+        sessionStorage.setItem(`stemulus_ui_rem_${milestone}_${scheduleId}_${sessionEmail}`, '1');
+      } catch (e) {}
+    }
 
     schedules.forEach(schedule => {
       if (!schedule.date || !schedule.time) return;
@@ -389,32 +576,48 @@
       if (isNaN(scheduleDateTime)) return;
 
       const diff = scheduleDateTime - now;
+      const belongsToCurrentUser = !isAdminPage && isScheduleForCurrentUser(schedule);
 
       // 1. 24-Hour Milestone (between 1 hour and 24 hours away)
-      if (diff > ONE_HOUR_MS && diff <= TWENTY_FOUR_HOURS_MS && !schedule.reminded24h) {
-        markScheduleReminded(schedule.id, '24h');
-        if (!isAdminPage) show24HourBanner(schedule);
-        dispatchReminderEmails(schedule, '24h');
-        addPortalNotifications(schedule, '24h');
-        console.log(`[ClassReminders] Dispatched 24h reminder for session #${schedule.id} (${schedule.studentName}) to Tutor and Parent`);
+      if (diff > ONE_HOUR_MS && diff <= TWENTY_FOUR_HOURS_MS) {
+        if (!schedule.reminded24h) {
+          markScheduleReminded(schedule.id, '24h');
+          dispatchReminderEmails(schedule, '24h');
+          addPortalNotifications(schedule, '24h');
+          console.log(`[ClassReminders] Dispatched 24h reminder for session #${schedule.id} (${schedule.studentName}) to canonical Tutor and Parent`);
+        }
+        if (belongsToCurrentUser && !hasShownUserBanner(schedule.id, '24h')) {
+          markShownUserBanner(schedule.id, '24h');
+          show24HourBanner(schedule);
+        }
       }
 
       // 2. 1-Hour Milestone (between 10 minutes and 1 hour away)
-      if (diff > TEN_MINUTES_MS && diff <= ONE_HOUR_MS && !schedule.reminded1h) {
-        markScheduleReminded(schedule.id, '1h');
-        if (!isAdminPage) show1HourBanner(schedule);
-        dispatchReminderEmails(schedule, '1h');
-        addPortalNotifications(schedule, '1h');
-        console.log(`[ClassReminders] Dispatched 1h prep briefing for session #${schedule.id} (${schedule.studentName}) to Tutor and Parent`);
+      if (diff > TEN_MINUTES_MS && diff <= ONE_HOUR_MS) {
+        if (!schedule.reminded1h) {
+          markScheduleReminded(schedule.id, '1h');
+          dispatchReminderEmails(schedule, '1h');
+          addPortalNotifications(schedule, '1h');
+          console.log(`[ClassReminders] Dispatched 1h prep briefing for session #${schedule.id} (${schedule.studentName}) to canonical Tutor and Parent`);
+        }
+        if (belongsToCurrentUser && !hasShownUserBanner(schedule.id, '1h')) {
+          markShownUserBanner(schedule.id, '1h');
+          show1HourBanner(schedule);
+        }
       }
 
       // 3. 10-Minute Milestone (between 0 and 10 minutes away)
-      if (diff > 0 && diff <= TEN_MINUTES_MS && !schedule.reminded10m) {
-        markScheduleReminded(schedule.id, '10m');
-        if (!isAdminPage) show10MinuteModal(schedule);
-        dispatchReminderEmails(schedule, '10m');
-        addPortalNotifications(schedule, '10m');
-        console.log(`[ClassReminders] Dispatched 10m urgent alert for session #${schedule.id} (${schedule.studentName}) to Tutor and Parent`);
+      if (diff > 0 && diff <= TEN_MINUTES_MS) {
+        if (!schedule.reminded10m) {
+          markScheduleReminded(schedule.id, '10m');
+          dispatchReminderEmails(schedule, '10m');
+          addPortalNotifications(schedule, '10m');
+          console.log(`[ClassReminders] Dispatched 10m urgent alert for session #${schedule.id} (${schedule.studentName}) to canonical Tutor and Parent`);
+        }
+        if (belongsToCurrentUser && !hasShownUserBanner(schedule.id, '10m')) {
+          markShownUserBanner(schedule.id, '10m');
+          show10MinuteModal(schedule);
+        }
       }
     });
   }

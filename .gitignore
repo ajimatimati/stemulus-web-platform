@@ -71,3 +71,6 @@ scratch/
 
 # Archived files
 _archive/
+
+# Test screenshots
+tests/*.png
