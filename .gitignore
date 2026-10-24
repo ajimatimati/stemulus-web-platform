@@ -74,3 +74,8 @@ _archive/
 
 # Test screenshots
 tests/*.png
+
+# Local recording and session audits
+recordings/
+data/session_audits/
+tests/autorecord_audit/

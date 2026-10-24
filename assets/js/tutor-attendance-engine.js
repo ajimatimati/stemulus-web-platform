@@ -346,6 +346,38 @@ const TutorAttendanceEngine = (function() {
                 _standInObserver.observe(selectEl, { attributes: true, attributeFilter: ['disabled'] });
             }
         }
+
+        // Check for pre-filled auto telemetry from live classroom
+        try {
+            const prefill = JSON.parse(localStorage.getItem('stemulus_prefilled_tutor_log') || 'null');
+            if (prefill) {
+                const durationEl = document.getElementById('duration_minutes');
+                if (durationEl && prefill.duration) durationEl.value = prefill.duration;
+                const timeEl = document.getElementById('class_time');
+                if (timeEl && prefill.classTime) timeEl.value = prefill.classTime;
+                const notesEl = document.getElementById('notes');
+                if (notesEl && prefill.dropoutNotes && !notesEl.value) {
+                    notesEl.value = `[Classroom Telemetry] ${prefill.dropoutNotes}\n`;
+                }
+                const formEl = document.getElementById('attendanceForm');
+                if (formEl && !document.getElementById('prefill-telemetry-banner')) {
+                    const banner = document.createElement('div');
+                    banner.id = 'prefill-telemetry-banner';
+                    banner.className = 'mb-6 p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-xs text-indigo-950 flex items-center justify-between gap-3 shadow-xs';
+                    banner.innerHTML = `
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-xl">⚡</span>
+                            <div>
+                                <span class="font-extrabold text-indigo-900">Verified Telemetry Auto-Filled:</span>
+                                <span class="text-indigo-800">${prefill.studentName} (${prefill.duration} mins). Add pedagogical notes below.</span>
+                            </div>
+                        </div>
+                        <button type="button" onclick="this.parentNode.remove(); localStorage.removeItem('stemulus_prefilled_tutor_log');" class="text-indigo-400 hover:text-indigo-700 font-bold">✕</button>
+                    `;
+                    formEl.parentNode.insertBefore(banner, formEl);
+                }
+            }
+        } catch(e) {}
     }
 
     function populateStudentDropdown() {
@@ -453,15 +485,33 @@ const TutorAttendanceEngine = (function() {
             }
         }
 
-        // CHECK 3: Schedule Tally Warning (makeup check)
-        if (!skipScheduleCheck) {
+        // CHECK 3: Schedule Verification Enforcement (Strict - No outside-schedule submissions)
+        if (typeof SessionMonitoringEngine !== 'undefined') {
+            const eligibility = SessionMonitoringEngine.validateAttendanceEligibility(pendingSubmissionData);
+            if (!eligibility.eligible) {
+                if (typeof showToast === 'function') {
+                    showToast('Submission Blocked: ' + eligibility.message, 'error');
+                }
+                showScheduleWarningModal(studentName, classDate, eligibility.message);
+                return false;
+            }
+
+            // CHECK 4: False submission / Ghost class detection
+            const falseDetection = SessionMonitoringEngine.detectFalseSubmission(pendingSubmissionData);
+            if (falseDetection.isFalseSubmission) {
+                SessionMonitoringEngine.escalateFalseSubmission(pendingSubmissionData, falseDetection);
+                pendingSubmissionData.fraudAlert = true;
+                pendingSubmissionData.auditFlag = falseDetection.type;
+                pendingSubmissionData.status = 'flagged_for_review';
+            }
+        } else if (!skipScheduleCheck) {
             const schedules = DashboardEngine.getSchedules().filter(s => 
                 s.studentId === studentId && 
                 s.date === classDate &&
-                s.mentor === currentTutor.name
+                (s.mentor === currentTutor.name || (s.tutorEmail && s.tutorEmail === currentTutor.email) || isStandIn)
             );
             if (schedules.length === 0) {
-                showScheduleWarningModal(studentName, classDate);
+                showScheduleWarningModal(studentName, classDate, 'No confirmed schedule found for this student on this date. Tutors cannot submit attendance outside scheduled sessions.');
                 return false;
             }
         }
@@ -598,29 +648,39 @@ const TutorAttendanceEngine = (function() {
         form.dispatchEvent(submitEvent);
     };
 
-    function showScheduleWarningModal(studentName, date) {
-        document.getElementById('scheduleStudentName').textContent = studentName;
-        document.getElementById('scheduleDate').textContent = date;
+    function showScheduleWarningModal(studentName, date, customMessage) {
+        const studentEl = document.getElementById('scheduleStudentName');
+        if (studentEl) studentEl.textContent = studentName;
+        const dateEl = document.getElementById('scheduleDate');
+        if (dateEl) dateEl.textContent = date;
+        const msgEl = document.getElementById('scheduleWarningMessage');
+        if (msgEl && customMessage) msgEl.textContent = customMessage;
 
         const modal = document.getElementById('scheduleWarningModal');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        } else if (typeof showToast === 'function') {
+            showToast('Schedule Verification Block: ' + (customMessage || 'Tutors cannot log attendance outside scheduled sessions.'), 'error');
+        }
     }
 
     window.closeScheduleWarningModal = function() {
         const modal = document.getElementById('scheduleWarningModal');
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
     };
 
     window.submitWithForce = function() {
+        // Strict enforcement: Force submission outside confirmed schedule is blocked
+        if (typeof showToast === 'function') {
+            showToast('Submission Blocked: Submissions outside confirmed schedule slots are prohibited by academic operations policy.', 'error');
+        } else {
+            alert('Submission Blocked: Submissions outside confirmed schedule slots are prohibited by academic operations policy.');
+        }
         closeScheduleWarningModal();
-        skipScheduleCheck = true;
-
-        // Re-submit form
-        const form = document.getElementById('attendanceForm');
-        const submitEvent = new Event('submit', { cancelable: true });
-        form.dispatchEvent(submitEvent);
     };
 
     // Helper: format time elapsed

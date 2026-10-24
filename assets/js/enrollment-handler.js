@@ -367,6 +367,7 @@ Source: ${data.referral || data.utmSource || 'direct'}
 Time: ${new Date().toLocaleTimeString()}
         `.trim();
 
+        // Tier 1: Netlify serverless proxy
         try {
             const response = await fetch('/.netlify/functions/notify', {
                 method: 'POST',
@@ -380,11 +381,37 @@ Time: ${new Date().toLocaleTimeString()}
                     click: `https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent(`Hi! Following up on enrollment for ${data.studentFirstName}`)}`
                 })
             });
-            if (!response.ok) throw new Error('Notify request failed');
-            return { success: true };
+            if (response.ok) return { success: true };
+            console.warn('[Enrollment] Netlify notify returned non-200, activating direct ntfy.sh fallback...');
         } catch (error) {
-            console.warn('[Enrollment] Phone notification failed:', error);
-            return { success: false, error };
+            console.warn('[Enrollment] Netlify notify error, activating direct ntfy.sh fallback:', error);
+        }
+
+        // Tier 2: Direct client-side fetch to ntfy.sh (permitted in CSP connect-src)
+        try {
+            const cleanTitle = (title || '').replace(/[^\x20-\x7E]/g, ' ').trim();
+            const directHeaders = {
+                'Priority': 'high',
+                'Tags': 'tada,student',
+                'Title': cleanTitle
+            };
+            await Promise.allSettled([
+                fetch(`https://ntfy.sh/${CONFIG.NTFY_TOPIC}`, {
+                    method: 'POST',
+                    headers: directHeaders,
+                    body: message
+                }),
+                fetch('https://ntfy.sh/stemulus-admin-alerts', {
+                    method: 'POST',
+                    headers: directHeaders,
+                    body: message
+                })
+            ]);
+            console.log('[Enrollment] Direct ntfy.sh fallback delivered');
+            return { success: true, fallback: true };
+        } catch (err2) {
+            console.warn('[Enrollment] Direct ntfy fallback also failed:', err2);
+            return { success: false, error: err2 };
         }
     }
 

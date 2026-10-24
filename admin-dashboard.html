@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="portal-view">
 <head>
- <script src="https://unpkg.com/lucide@latest" defer></script>
+ <script src="assets/vendor/lucide.min.js"></script>
  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
  <link rel="stylesheet" href="assets/css/tailwind-output.css?v=20260905b">
   <link rel="stylesheet" href="dist/combined.css?v=20260905b">
@@ -38,10 +38,13 @@
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
  <!-- Fonts -->
- <script src="assets/js/portal-error-tracker.js"></script>
+ <script src="assets/js/portal-error-tracker.min.js"></script>
  
  <style>
  * { box-sizing: border-box; }
+ html, body { overflow-x: hidden !important; }
+ .admin-card { min-width: 0 !important; max-width: 100% !important; }
+ .grid > * { min-width: 0 !important; }
  body { font-family: 'DM Sans', sans-serif; }
  
  /* Glassmorphism & Admin Cards */
@@ -553,6 +556,13 @@
  </a>
  </li>
  <li>
+ <a href="#" data-section="chat" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
+ <i data-lucide="messages-square" class="w-5 h-5"></i>
+ <span>Faculty Messenger</span>
+ <span id="nav-chat-badge" class="ml-auto bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded-full hidden">0</span>
+ </a>
+ </li>
+ <li>
  <a href="#" data-section="whatsapp-bot" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="message-square" class="w-5 h-5"></i>
  <span>WhatsApp Bot</span>
@@ -586,102 +596,102 @@
  <!-- Main Content Area -->
  <main class="ml-0 lg:ml-64 min-h-screen">
   <!-- Top Bar -->
-  <header class="sticky top-0 z-40 bg-gray-50/80 backdrop-blur-md border-b border-admin-border px-3 sm:px-6 lg:px-8 py-3">
+  <header class="sticky top-0 z-40 bg-gray-50/80 backdrop-blur-md border-b border-admin-border px-3 sm:px-6 lg:px-8 py-2.5">
     <div class="flex items-center justify-between gap-2">
       <div class="flex items-center gap-2 sm:gap-3 min-w-0">
         <button id="admin-menu-btn" class="lg:hidden p-1.5 text-gray-600 hover:text-slate-800 focus:outline-none shrink-0" aria-label="Toggle menu">
           <i data-lucide="menu" class="w-6 h-6"></i>
         </button>
         <div class="min-w-0">
-          <h1 id="page-title" class="text-base sm:text-xl font-nunito font-bold text-slate-800 truncate whitespace-nowrap">Dashboard</h1>
-          <p class="hidden sm:block text-xs sm:text-sm text-slate-500 truncate">Welcome back! Here's what's happening today.</p>
+          <h1 id="page-title" class="text-base sm:text-lg font-nunito font-bold text-slate-800 truncate">Dashboard</h1>
+          <p class="hidden sm:block text-[11px] sm:text-xs text-slate-500 truncate">Welcome back! Here's what's happening today.</p>
         </div>
       </div>
-      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
         <!-- Global Search Trigger (Command Palette Ctrl + K) -->
-        <button type="button" id="global-search-trigger" onclick="AdminEngine.openGlobalSearchModal()" class="flex items-center gap-2 bg-white border border-slate-300 hover:border-orange-500 text-slate-600 rounded-xl px-3 py-2 text-sm shadow-sm transition-all group w-44 sm:w-56 lg:w-64 cursor-pointer text-left">
-          <i data-lucide="search" class="w-4 h-4 text-slate-400 group-hover:text-orange-500 shrink-0"></i>
-          <span class="font-medium text-slate-500 truncate flex-1 text-xs sm:text-sm">Search anything...</span>
-          <kbd class="hidden md:inline-flex items-center text-[10px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded tracking-wide">Ctrl K</kbd>
+        <button type="button" id="global-search-trigger" onclick="AdminEngine.openGlobalSearchModal()" class="flex items-center justify-center sm:justify-start gap-2 bg-white border border-slate-300 hover:border-orange-500 text-slate-600 rounded-xl px-2 sm:px-2.5 py-1.5 text-xs shadow-sm transition-all group w-9 sm:w-44 lg:w-48 cursor-pointer text-left shrink-0">
+          <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 group-hover:text-orange-500 shrink-0"></i>
+          <span class="hidden sm:inline font-medium text-slate-500 truncate flex-1 text-xs">Search...</span>
+          <kbd class="hidden md:inline-flex items-center text-[9px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-1 py-0.5 rounded tracking-wide">Ctrl K</kbd>
         </button>
+        <div id="mount-admin-dual-switcher" class="hidden xl:inline-flex shrink-0"></div>
         <!-- Quick Actions -->
-        <button id="open-quick-onboard-btn" onclick="AdminEngine.openQuickOnboardModal()" title="Quick Onboard (Student + Parent)" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold p-2 sm:px-3.5 sm:py-2 rounded-lg transition-all flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm shadow-sm shrink-0 cursor-pointer" style="background-color: #c2410c !important;">
-          <i data-lucide="zap" class="w-4 h-4 shrink-0"></i>
-          <span class="hidden md:inline">Quick Onboard</span>
+        <button id="open-quick-onboard-btn" onclick="AdminEngine.openQuickOnboardModal()" title="Quick Onboard (Student + Parent)" class="hidden sm:flex bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold p-1.5 sm:px-3 sm:py-1.5 rounded-lg transition-all items-center gap-1.5 text-xs shadow-sm shrink-0 cursor-pointer" style="background-color: #c2410c !important;">
+          <i data-lucide="zap" class="w-3.5 h-3.5 shrink-0"></i>
+          <span class="hidden lg:inline">Quick Onboard</span>
         </button>
-        <button id="quick-add-student" onclick="AdminEngine.openStudentModal()" title="Add New Student Coder" class="bg-blue-600 hover:bg-blue-700 text-white font-bold p-2 sm:px-4 sm:py-2 rounded-xl shadow-sm transition-all flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm shrink-0 cursor-pointer">
-          <i data-lucide="plus" class="w-4 h-4 shrink-0"></i>
-          <span class="hidden md:inline">Add Student</span>
+        <button id="quick-add-student" onclick="AdminEngine.openStudentModal()" title="Add New Student Coder" class="bg-blue-600 hover:bg-blue-700 text-white font-bold p-1.5 sm:px-3 sm:py-1.5 rounded-xl shadow-sm transition-all flex items-center gap-1.5 text-xs shrink-0 cursor-pointer">
+          <i data-lucide="plus" class="w-3.5 h-3.5 shrink-0"></i>
+          <span class="hidden lg:inline">Add Student</span>
         </button>
       </div>
     </div>
   </header>
 
   <!-- Content Sections -->
-  <div class="p-3 sm:p-6 lg:p-8">
+  <div class="p-3 sm:p-5 lg:p-6">
  
  <!-- ===== DASHBOARD SECTION ===== -->
  <section id="section-dashboard" class="admin-section active animate-fadeIn">
  <!-- Hero Band -->
- <div class="hero-band rounded-2xl mb-8" style="background-color: #1A2332; background-image: linear-gradient(135deg, #1A2332, #4B49AC);">
+ <div class="hero-band rounded-2xl mb-5" style="background-color: #1A2332; background-image: linear-gradient(135deg, #1A2332, #4B49AC);">
    <div class="hero-band-content">
      <h1 style="color:white!important;">Admin Command Center</h1>
      <p>Manage students, schedules, certificates, and communications</p>
      <div class="kpi-pills">
-       <span class="kpi-pill"><i data-lucide="users" style="width:14px;height:14px;"></i> <span id="kpi-admin-students">0</span> Students</span>
-       <span class="kpi-pill"><i data-lucide="calendar" style="width:14px;height:14px;"></i> <span id="kpi-admin-classes">0</span> Classes</span>
-       <span class="kpi-pill"><i data-lucide="mail" style="width:14px;height:14px;"></i> <span id="kpi-admin-emails">0</span> Pending Enrollments</span>
+       <span class="kpi-pill"><i data-lucide="users" style="width:13px;height:13px;"></i> <span id="kpi-admin-students">0</span> Students</span>
+       <span class="kpi-pill"><i data-lucide="calendar" style="width:13px;height:13px;"></i> <span id="kpi-admin-classes">0</span> Classes</span>
+       <span class="kpi-pill"><i data-lucide="mail" style="width:13px;height:13px;"></i> <span id="kpi-admin-emails">0</span> Pending Enrollments</span>
      </div>
    </div>
 
- 
-   <img src="images/portal/standalone/admin-shield-3d.png" alt="Admin" class="hero-3d-object animate-float-band" style="width:200px;height:200px;" loading="lazy">
+   <img src="images/portal/standalone/admin-shield-3d.png" alt="Admin" class="hero-3d-object animate-float-band" style="width:145px;height:145px;" loading="eager">
  </div>
 
   <!-- Stats Cards -->
- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
- <div class="admin-card rounded-2xl p-6">
- <div class="flex items-center justify-between mb-4">
- <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
-<i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+ <div class="admin-card rounded-2xl p-4 sm:p-5">
+ <div class="flex items-center justify-between mb-3">
+ <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+<i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
 </div>
-<span class="text-emerald-800 text-sm font-bold flex items-center gap-1 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
-<i data-lucide="trending-up" class="w-4 h-4"></i> +12%
+<span class="text-emerald-800 text-xs font-bold flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+<i data-lucide="trending-up" class="w-3.5 h-3.5"></i> +12%
 </span>
  </div>
- <h3 class="text-3xl font-bold text-slate-800" id="stat-total-students">0</h3>
- <p class="text-slate-500 text-sm">Total Students</p>
+ <h3 class="text-2xl font-bold text-slate-800" id="stat-total-students">0</h3>
+ <p class="text-slate-500 text-xs">Total Students</p>
  </div>
  
- <div class="admin-card rounded-2xl p-6">
- <div class="flex items-center justify-between mb-4">
- <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
-<i data-lucide="calendar-check" class="w-6 h-6 text-emerald-600"></i>
+ <div class="admin-card rounded-2xl p-4 sm:p-5">
+ <div class="flex items-center justify-between mb-3">
+ <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
+<i data-lucide="calendar-check" class="w-5 h-5 text-emerald-600"></i>
 </div>
 <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span>
  </div>
- <h3 class="text-3xl font-bold text-slate-800" id="stat-upcoming-classes">0</h3>
- <p class="text-slate-500 text-sm">Upcoming Classes</p>
+ <h3 class="text-2xl font-bold text-slate-800" id="stat-upcoming-classes">0</h3>
+ <p class="text-slate-500 text-xs">Upcoming Classes</p>
  </div>
  
- <div class="admin-card rounded-2xl p-6">
- <div class="flex items-center justify-between mb-4">
- <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center">
-<i data-lucide="mail" class="w-6 h-6 text-amber-600"></i>
+ <div class="admin-card rounded-2xl p-4 sm:p-5">
+ <div class="flex items-center justify-between mb-3">
+ <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center">
+<i data-lucide="mail" class="w-5 h-5 text-amber-600"></i>
 </div>
  </div>
- <h3 class="text-3xl font-bold text-slate-800" id="stat-pending-emails">0</h3>
- <p class="text-slate-500 text-sm">Pending Enrollments</p>
+ <h3 class="text-2xl font-bold text-slate-800" id="stat-pending-emails">0</h3>
+ <p class="text-slate-500 text-xs">Pending Enrollments</p>
  </div>
  
- <div class="admin-card rounded-xl p-6 border border-slate-100 shadow-sm bg-white">
- <div class="flex items-center justify-between mb-4">
- <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center">
-<i data-lucide="book-open" class="w-6 h-6 text-indigo-600"></i>
+ <div class="admin-card rounded-xl p-4 sm:p-5 border border-slate-100 shadow-sm bg-white">
+ <div class="flex items-center justify-between mb-3">
+ <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center">
+<i data-lucide="book-open" class="w-5 h-5 text-indigo-600"></i>
 </div>
  </div>
- <h3 class="text-3xl font-bold text-slate-800" id="stat-active-courses">0</h3>
- <p class="text-slate-500 text-sm">Active Courses</p>
+ <h3 class="text-2xl font-bold text-slate-800" id="stat-active-courses">0</h3>
+ <p class="text-slate-500 text-xs">Active Courses</p>
  </div>
  </div>
 
@@ -712,6 +722,12 @@
     </div>
   </div>
  </div>
+
+ <!-- BIRTHDAY CELEBRATIONS HEADQUARTERS -->
+ <div id="mount-birthday-headquarters" class="mt-6"></div>
+
+ <!-- CLASSROOM & OPERATIONS HEADQUARTERS -->
+ <div id="mount-operations-suite" class="mt-6"></div>
 
  <!-- Today's Classes Widget -->
  <div class="mt-6">
@@ -1645,7 +1661,30 @@
    </div>
  </div>
 
- <!-- ===== MANUAL BOT DISPATCH MODAL ===== -->
+ <!-- ===== AI TRANSCRIPT & CONTENT ANALYSIS MODAL ===== -->
+  <div id="modal-transcript-analysis" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200 p-6">
+      <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+            <i data-lucide="shield-alert" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-800">AI Content &amp; Transcript Inspector</h3>
+            <p class="text-xs text-slate-500">Autonomous Lesson Plan Adherence &amp; Untoward Safeguarding Watchdog</p>
+          </div>
+        </div>
+        <button type="button" onclick="AdminEngine.closeTranscriptAnalysisModal()" class="text-slate-400 hover:text-slate-600 p-2 rounded-xl hover:bg-slate-100 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="mount-transcript-analysis-content">
+        <!-- Rendered dynamically by SessionContentAnalysisEngine.renderAnalysisCardHTML -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MANUAL BOT DISPATCH MODAL ===== -->
  <div id="modal-bot-dispatch" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
      <div class="flex items-center justify-between mb-4">
@@ -1796,7 +1835,7 @@
     <input type="file" id="cert-file-input" accept=".pdf,.png,.jpg,.jpeg" class="hidden">
   </div>
   <div id="cert-file-preview" class="mt-3 hidden">
-    <img id="cert-preview-img" src="" alt="Certificate preview" class="max-h-40 rounded-lg border border-gray-200 object-contain">
+    <img id="cert-preview-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Certificate preview" class="max-h-40 rounded-lg border border-gray-200 object-contain">
     <p id="cert-preview-pdf" class="text-sm text-gray-500 hidden">PDF file selected: will be attached to email</p>
   </div>
  </div>
@@ -2329,6 +2368,11 @@
       <p class="text-sm mt-1">Reports submitted by tutors will appear here.</p>
     </div>
   </div>
+ </section>
+
+ <!-- ===== FACULTY MESSENGER CHAT SECTION ===== -->
+ <section id="section-chat" class="admin-section animate-fadeIn" style="display:none;">
+ <div id="mount-faculty-chat-suite"></div>
  </section>
 
  <!-- ===== WHATSAPP BOT SECTION ===== -->
@@ -3224,10 +3268,10 @@
    <div>
      <label class="block text-sm font-semibold text-gray-700 mb-1" for="student-meet-link">
        Google Meet Link
-       <span class="text-xs font-normal text-slate-400">(stemulusclubs@gmail.com)</span>
+       <span class="text-xs font-semibold text-emerald-600 ml-1">&bull; Auto-Record 1080p (No Host Required)</span>
      </label>
      <div class="relative">
-       <input type="url" id="student-meet-link" name="meetLink" placeholder="https://meet.google.com/xxx-yyyy-zzz"
+       <input type="url" id="student-meet-link" name="meetLink" placeholder="https://meet.google.com/xxx-yyyy-zzz (Auto-generated if empty)"
          class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 pl-9 pr-4 text-gray-800 placeholder-slate-400 font-medium text-sm focus:outline-none focus:border-admin-accent transition-colors">
        <i data-lucide="video" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
      </div>
@@ -3235,10 +3279,10 @@
    <div>
      <label class="block text-sm font-semibold text-gray-700 mb-1" for="student-classroom-link">
        Google Classroom Link
-       <span class="text-xs font-normal text-slate-400">(Optional Stream)</span>
+       <span class="text-xs font-semibold text-indigo-600 ml-1">&bull; Auto-Provisioned (Student &amp; Tutor Invites)</span>
      </label>
      <div class="relative">
-       <input type="url" id="student-classroom-link" name="classroomLink" placeholder="https://classroom.google.com/c/..."
+       <input type="url" id="student-classroom-link" name="classroomLink" placeholder="https://classroom.google.com/c/... (Auto-generated if empty)"
          class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 pl-9 pr-4 text-gray-800 placeholder-slate-400 font-medium text-sm focus:outline-none focus:border-admin-accent transition-colors">
        <i data-lucide="book-open" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
      </div>
@@ -3824,17 +3868,29 @@
            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Date of Birth <span class="text-slate-500 font-normal lowercase">(optional - for birthday celebrations)</span></label>
            <input type="date" id="qo-child-birthday" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
          </div>
-         <div>
-           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Learning Track / Course</label>
-           <select id="qo-program" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-orange-500">
-             <option value="Python Programming Foundations">Python Programming Foundations</option>
-             <option value="Scratch Creators">Scratch Creators (Ages 6-9)</option>
-             <option value="Robotics &amp; Arduino">Robotics &amp; Arduino IoT</option>
-             <option value="AI &amp; Machine Learning">AI &amp; Machine Learning for Kids</option>
-             <option value="Full-Stack Web Development">Full-Stack Web Development</option>
-             <option value="Digital Art &amp; Game Design">Digital Art &amp; Game Design</option>
-           </select>
-         </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Learning Track / Course</label>
+              <select id="qo-program" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-orange-500">
+                <option value="Python Programming Foundations">Python Programming Foundations</option>
+                <option value="Scratch Creators">Scratch Creators (Ages 6-9)</option>
+                <option value="Robotics &amp; Arduino">Robotics &amp; Arduino IoT</option>
+                <option value="AI &amp; Machine Learning">AI &amp; Machine Learning for Kids</option>
+                <option value="Full-Stack Web Development">Full-Stack Web Development</option>
+                <option value="Digital Art &amp; Game Design">Digital Art &amp; Game Design</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Classroom Lesson Count</label>
+              <select id="qo-lesson-count" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-orange-500">
+                <option value="4">4 Lessons (Intro Sprint)</option>
+                <option value="8" selected>8 Lessons (Standard Term)</option>
+                <option value="12">12 Lessons (Quarter Track)</option>
+                <option value="16">16 Lessons (Extended Track)</option>
+                <option value="24">24 Lessons (Full Master Track)</option>
+              </select>
+            </div>
+          </div>
          <div>
            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Assign Lead Tutor</label>
            <select id="qo-tutor-select" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-orange-500">
@@ -3890,25 +3946,70 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="assets/js/firebase-config.min.js" defer></script>
+  <script src="assets/js/stemulus-firestore.min.js" defer></script>
  
  <!-- QRCode Generator Library -->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
  
  <!-- Core PDF Generator -->
- <script src="assets/js/report-pdf-generator.js" defer></script>
+ <script src="assets/js/report-pdf-generator.min.js" defer></script>
 
  <!-- Dashboard Engine -->
  <script src="assets/js/dashboard-engine.min.js?v=20261017d" defer></script>
  
  <!-- Tuition & Monthly Billing Automation Engine -->
- <script src="assets/js/billing-engine.js" defer></script>
+ <script src="assets/js/billing-engine.min.js" defer></script>
 
  <!-- Class Escalation & Live Radar Engine -->
- <script src="assets/js/class-escalation-engine.js" defer></script>
+ <script src="assets/js/class-escalation-engine.min.js" defer></script>
+
+ <!-- Birthday Celebration Engine -->
+ <script src="assets/js/birthday-celebration-engine.min.js" defer></script>
+
+ <!-- Classroom Manager, Operations Manager & Admin Assistant Engine -->
+ <script src="assets/js/operations-manager-engine.min.js" defer></script>
+
+ <!-- i18n & 3D Visual Engine -->
+ <script src="assets/js/gemini-config.min.js"></script>
+  <script src="assets/js/gemini-service.min.js"></script>
+  <script src="assets/js/i18n-visual-engine.min.js" defer></script>
+
+ <!-- Bilingual Classroom Translation Engine -->
+ <script src="assets/js/bilingual-classroom-engine.min.js" defer></script>
 
  <!-- Admin Engine -->
- <script src="assets/js/admin-engine.min.js?v=20261017d" defer></script>
+ <script src="assets/js/classroom-rejoin-beacon.min.js" defer></script>
+ <script src="assets/js/faculty-chat-engine.min.js" defer></script>
+ <script src="assets/js/session-content-analysis-engine.min.js" defer></script>
+ <script src="assets/js/reschedule-concierge-engine.min.js" defer></script>
+  <script src="assets/js/admin-engine.min.js?v=20261017d" defer></script>
  
+ <!-- Operations & Birthday Engines Auto-Mount -->
+ <script>
+   document.addEventListener('DOMContentLoaded', () => {
+     function initOpsAndCelebrations() {
+       const bdayEl = document.getElementById('mount-birthday-headquarters');
+       if (bdayEl && typeof BirthdayCelebrationEngine !== 'undefined') {
+         bdayEl.innerHTML = BirthdayCelebrationEngine.renderBirthdayHeadquartersHTML();
+       }
+       const opsEl = document.getElementById('mount-operations-suite');
+       const switcherEl = document.getElementById('mount-admin-dual-switcher');
+        if (switcherEl && typeof I18nVisualEngine !== 'undefined') {
+          switcherEl.innerHTML = I18nVisualEngine.renderSwitcherWidgetHTML();
+        }
+        if (opsEl && typeof OperationsManagerEngine !== 'undefined') {
+         opsEl.innerHTML = OperationsManagerEngine.renderOperationsSuiteHTML();
+       }
+       if (typeof ClassEscalationEngine !== 'undefined') {
+         ClassEscalationEngine.startWatchdog(15000);
+       }
+     }
+     setTimeout(initOpsAndCelebrations, 600);
+     window.addEventListener('stemulus_db_loaded', initOpsAndCelebrations);
+ setTimeout(() => { if (typeof FacultyChatEngine !== 'undefined') { FacultyChatEngine.init('admin'); FacultyChatEngine.renderChatSuite(); } if (typeof ClassroomRejoinBeacon !== 'undefined') { ClassroomRejoinBeacon.init(); } }, 700);
+   });
+ </script>
+
  <!-- WhatsApp Bot Integration -->
  <script>
    document.addEventListener('DOMContentLoaded', () => {
@@ -4075,7 +4176,7 @@ window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger
 <!-- Mulu AI Mascot Widget -->
 <script src="assets/js/mulu-widget.min.js" defer></script>
 <!-- Automated Dual Class Reminder Engine -->
-<script src="assets/js/class-reminder-engine.js" defer></script>
+<script src="assets/js/class-reminder-engine.min.js" defer></script>
 <script>
   window.addEventListener('storage', function(e) {
     if (e.key === 'stemulus_session' && !e.newValue) {
@@ -4084,9 +4185,9 @@ window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger
   });
 </script>
 
-<script src="assets/js/stemulus-icons.js" defer></script>
-<script src="assets/js/scroll-choreography.js" defer></script>
-<script src="assets/js/stemulus-interactive.js" defer></script>
+<script src="assets/js/stemulus-icons.min.js" defer></script>
+<script src="assets/js/scroll-choreography.min.js" defer></script>
+<script src="assets/js/stemulus-interactive.min.js" defer></script>
 
 
 <!-- ===================== GLOBAL SEARCH & COMMAND PALETTE MODAL ===================== -->

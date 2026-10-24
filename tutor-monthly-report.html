@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="portal-view">
 <head>
   <meta charset="UTF-8">
   <link rel="manifest" href="/site.webmanifest">
@@ -30,10 +30,8 @@
   <!-- Design System -->
   <link rel="stylesheet" href="assets/css/portal-design-system.css">
   <link rel="stylesheet" href="assets/css/portal-animations.css">
-  <!-- Core Security & State & PDF Generator -->
+  <!-- Core Security -->
   <script src="assets/js/stemulus-security.min.js"></script>
-  <script src="assets/js/dashboard-engine.js"></script>
-  <script src="assets/js/report-pdf-generator.js"></script>
   <script>
   (function(){
     try {
@@ -59,20 +57,74 @@
     @media(min-width:1024px){ #tutor-sidebar { transform: translateX(0) !important; } }
     #sidebar-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:40;display:none; }
     #sidebar-overlay.show { display:block; }
-    .report-section { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 2rem; margin-bottom: 1.5rem; }
+    .report-section {
+      background: white !important;
+      border: 1px solid rgba(226, 232, 240, 0.9) !important;
+      border-radius: 20px !important;
+      padding: 2rem !important;
+      margin-bottom: 1.5rem !important;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.04), 0 4px 10px -2px rgba(15, 23, 42, 0.02), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+    }
     .report-section h3 { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.1rem; color: #1A2332; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
     .report-section .section-desc { font-size: 0.8rem; color: #64748b; margin-bottom: 1.25rem; line-height: 1.6; }
     .field-label { display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 0.5rem; }
-    .field-input { width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: #1A2332; background: #f8fafc; outline: none; transition: all 0.2s; }
+    .field-input { width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: #1A2332; background: #f8fafc; outline: none; transition: all 0.2s; min-height: 42px; box-sizing: border-box; }
     .field-input:focus { border-color: #4B49AC; box-shadow: 0 0 0 3px rgba(75,73,172,0.08); background: white; }
     textarea.field-input { min-height: 120px; resize: vertical; line-height: 1.7; }
     .field-hint { font-size: 0.7rem; color: #94A3B8; margin-top: 0.4rem; font-style: italic; }
-    .student-entry { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; }
+    .student-entry {
+      background: #f8fafc !important;
+      border: 1px solid rgba(226, 232, 240, 0.9) !important;
+      border-radius: 16px !important;
+      padding: 1.5rem !important;
+      margin-bottom: 1rem !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    }
     .student-entry:last-child { margin-bottom: 0; }
     .step-number { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #4B49AC, #7978E9); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; flex-shrink: 0; }
+
+    /* WCAG 2.1 AA Touch Target Compliance (>= 36px) */
+    #logout-btn {
+      min-height: 40px !important;
+      box-sizing: border-box !important;
+    }
+    #tab-btn-create, #tab-btn-history {
+      min-height: 40px !important;
+      box-sizing: border-box !important;
+      padding: 0.6rem 1.25rem !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    #confidence-slider {
+      min-height: 38px !important;
+      padding: 10px 0 !important;
+      cursor: pointer !important;
+    }
+    .footer-editorial .footer-col a {
+      min-height: 36px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      padding: 4px 0 !important;
+      box-sizing: border-box !important;
+    }
+    #tutor-sidebar nav a {
+      min-height: 42px !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    #sidebar-close-btn {
+      min-width: 38px !important;
+      min-height: 38px !important;
+      box-sizing: border-box !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen font-inter">
+<body class="dashboard-page bg-gray-50 min-h-screen font-inter">
 
 <!-- Sidebar -->
 <aside id="tutor-sidebar" style="position:fixed;top:0;left:0;height:100%;width:256px;background:#0f1117;border-right:1px solid rgba(255,255,255,0.07);border-radius:0 24px 24px 0;display:flex;flex-direction:column;z-index:50;transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);">
@@ -146,9 +198,9 @@
 
   <!-- Hero Band -->
   <div class="hero-band" style="background: linear-gradient(135deg, #4B49AC, #7978E9);">
-    <img src="images/portal/standalone/pencil-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift" style="position:absolute; top:15%; left:8%;" loading="lazy">
-    <img src="images/portal/standalone/lightbulb-3d.png" alt="" class="float-accent float-accent--sm float-accent--soft animate-orbit motion-delay-3" style="position:absolute; bottom:18%; left:20%;" loading="lazy">
-    <img src="images/portal/standalone/paintbrush-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift-reverse motion-delay-5" style="position:absolute; top:22%; right:35%;" loading="lazy">
+    <img src="images/portal/standalone/pencil-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift" style="position:absolute; top:15%; left:8%;" loading="eager">
+    <img src="images/portal/standalone/lightbulb-3d.png" alt="" class="float-accent float-accent--sm float-accent--soft animate-orbit motion-delay-3" style="position:absolute; bottom:18%; left:20%;" loading="eager">
+    <img src="images/portal/standalone/paintbrush-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift-reverse motion-delay-5" style="position:absolute; top:22%; right:35%;" loading="eager">
     <div class="accent-sphere--pink accent-sphere animate-drift-reverse motion-delay-2" style="bottom:20%; right:30%;"></div>
     <div class="hero-band-content">
       <h1>Monthly Tutor Report</h1>
@@ -158,7 +210,7 @@
         <span class="kpi-pill"><i data-lucide="clock" style="width:14px;height:14px;"></i> ~15 min to complete</span>
       </div>
     </div>
-    <img src="images/portal/standalone/radar-chart-3d.png" alt="Report" class="hero-3d-object animate-float-band magnetic-repel" loading="lazy">
+    <img src="images/portal/standalone/radar-chart-3d.png" alt="Report" class="hero-3d-object animate-float-band magnetic-repel" loading="eager">
   </div>
 
   <!-- Report Form Container -->
@@ -405,7 +457,7 @@
 
       <!-- Submit Section -->
       <div class="report-section text-center" data-animate="enter" style="background: linear-gradient(135deg, #f8fafc, #eef2ff);">
-        <img src="images/portal/standalone/certificate-3d.png" alt="Certificate submitted" class="w-16 h-16 mx-auto mb-4 opacity-80" loading="lazy">
+        <img src="images/portal/standalone/certificate-3d.png" alt="Certificate submitted" class="w-16 h-16 mx-auto mb-4 opacity-80" loading="eager">
         <h3 class="justify-center"><span class="step-number" style="background: linear-gradient(135deg, #F4600C, #FB923C); display:inline-flex; align-items:center; justify-content:center;"><span data-stem-icon="stem-check" data-icon-size="16"></span></span> Ready to Submit</h3>
         <p class="section-desc text-center">
           Review your entries above. Once submitted, this report will be sent to the admin team for review. You can edit it until the end of the month.
@@ -479,6 +531,13 @@
 </footer>
 
 <!-- Scripts -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="assets/js/firebase-config.min.js"></script>
+<script src="assets/js/stemulus-firestore.min.js"></script>
+<script src="assets/js/dashboard-engine.min.js"></script>
+<script src="assets/js/report-pdf-generator.min.js"></script>
+<script src="assets/js/portal-scene-engine.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   // Auth check
@@ -1213,18 +1272,13 @@ function generateStudentEntry(num, data) {
 }
 </script>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="assets/js/firebase-config.min.js" defer></script>
-<script src="assets/js/portal-scene-engine.min.js" defer></script>
 <!-- Toast Notification Container -->
 <div id="toast-container" class="fixed top-5 right-5 sm:top-6 sm:right-6 z-[999999] pointer-events-none space-y-3 max-w-md w-[calc(100vw-2.5rem)] sm:w-auto"></div>
 
-
-<script src="assets/js/stemulus-icons.js" defer></script>
-<script src="assets/js/scroll-choreography.js" defer></script>
-<script src="assets/js/stemulus-interactive.js" defer></script>
+<script src="assets/js/stemulus-icons.min.js" defer></script>
+<script src="assets/js/scroll-choreography.min.js" defer></script>
+<script src="assets/js/stemulus-interactive.min.js" defer></script>
+<script src="assets/js/mulu-widget.min.js" defer></script>
 
 </body>
 </html>

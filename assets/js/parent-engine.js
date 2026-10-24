@@ -147,6 +147,7 @@ const ParentEngine = (function() {
             renderOnboardingPanel();
             renderChildren();
             renderUpcomingClasses();
+            renderBillingVault();
             renderNotifications();
             renderProjectShowcase();
             injectModals();
@@ -247,6 +248,11 @@ const ParentEngine = (function() {
             '</div>';
     }
 
+    function filterChildCards(childId) {
+        window._parentActiveChildFilter = childId;
+        renderChildren();
+    }
+
     function renderChildren() {
         const childrenContainer = document.getElementById('children-container');
         if (!childrenContainer) return;
@@ -272,7 +278,27 @@ const ParentEngine = (function() {
             return;
         }
 
-        childrenContainer.innerHTML = students.map(s => {
+        const activeFilter = window._parentActiveChildFilter || 'all';
+        const displayStudents = (activeFilter === 'all') 
+            ? students 
+            : students.filter(s => s.id === activeFilter);
+
+        const filterTabsHTML = students.length > 1 ? `
+            <div class="flex items-center gap-2 p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200/80 mb-2 overflow-x-auto">
+                <button type="button" onclick="ParentEngine.filterChildCards('all')" class="px-3.5 py-1.5 min-h-[36px] rounded-xl text-xs font-bold transition-all ${activeFilter === 'all' ? 'bg-white text-orange-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'} cursor-pointer shrink-0">
+                    All Children (${students.length})
+                </button>
+                ${students.map(s => `
+                    <button type="button" onclick="ParentEngine.filterChildCards('${s.id}')" class="px-3.5 py-1.5 min-h-[36px] rounded-xl text-xs font-bold transition-all ${activeFilter === s.id ? 'bg-white text-orange-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'} cursor-pointer shrink-0">
+                        ${s.firstName}
+                    </button>
+                `).join('')}
+            </div>
+        ` : '';
+
+        const studentsToRender = (displayStudents.length > 0) ? displayStudents : students;
+
+        childrenContainer.innerHTML = filterTabsHTML + studentsToRender.map(s => {
             // Calculate real live metrics from verified attendance logs and completed sessions
             const liveMetrics = (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateStudentLiveMetrics)
                 ? DashboardEngine.calculateStudentLiveMetrics(s.id)
@@ -407,7 +433,7 @@ const ParentEngine = (function() {
                             </div>
                         </div>
 
-                        <button type="button" onclick="ParentEngine.openInternationalPaymentGuide()" class="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[11px] font-bold border border-indigo-200/80 transition-colors mt-1">
+                        <button type="button" onclick="ParentEngine.openInternationalPaymentGuide()" class="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[11px] font-bold border border-indigo-200/80 transition-colors mt-1 cursor-pointer" style="min-height: 38px !important;">
                             <i data-lucide="globe" class="w-3.5 h-3.5 text-indigo-600"></i>
                             <span>Bank Accounts &amp; Remitly / Sendwave Guide</span>
                         </button>
@@ -424,7 +450,7 @@ const ParentEngine = (function() {
                                             <span class="font-mono font-bold text-slate-900 text-xs">${settings.accountNumber}</span>
                                             <span class="text-[10px] text-slate-500 block">${settings.accountName}</span>
                                         </div>
-                                        <button type="button" onclick="ParentEngine.copyBankDetail('${settings.accountNumber}', this)" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 font-bold text-[10px] rounded border border-slate-300 transition-colors shadow-2xs">Copy</button>
+                                        <button type="button" onclick="ParentEngine.copyBankDetail('${settings.accountNumber}', this)" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 font-bold text-[10px] rounded-lg border border-slate-300 transition-colors shadow-2xs cursor-pointer" style="min-height: 36px !important; min-width: 54px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">Copy</button>
                                     </div>
                                     <div class="flex items-center justify-between bg-slate-50 p-2 rounded-lg border border-slate-200">
                                         <div>
@@ -432,14 +458,14 @@ const ParentEngine = (function() {
                                             <span class="font-mono font-bold text-teal-800 text-xs">${settings.usdAccountNumber || '0622219817'}</span>
                                             <span class="text-[10px] text-slate-500 block">${settings.usdAccountName || settings.accountName}</span>
                                         </div>
-                                        <button type="button" onclick="ParentEngine.copyBankDetail('${settings.usdAccountNumber || '0622219817'}', this)" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 font-bold text-[10px] rounded border border-slate-300 transition-colors shadow-2xs">Copy</button>
+                                        <button type="button" onclick="ParentEngine.copyBankDetail('${settings.usdAccountNumber || '0622219817'}', this)" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 font-bold text-[10px] rounded-lg border border-slate-300 transition-colors shadow-2xs cursor-pointer" style="min-height: 36px !important; min-width: 54px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">Copy</button>
                                     </div>
                                 </div>
                                 <div class="pt-1 flex items-center justify-between gap-2">
-                                    <button type="button" onclick="ParentEngine.openInternationalPaymentGuide()" class="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
+                                    <button type="button" onclick="ParentEngine.openInternationalPaymentGuide()" class="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer" style="min-height: 36px !important;">
                                         <span>🌍 Remitly / Sendwave Guide</span> &rarr;
                                     </button>
-                                    <a href="https://wa.me/2347052466716?text=${encodeURIComponent('Hello STEMulus Admin, I have completed tuition payment for ' + s.firstName + ' ' + s.lastName + '. Here is my proof:')}" target="_blank" class="text-[10px] font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-2 py-1 rounded border border-emerald-200 flex items-center gap-1">
+                                    <a href="https://wa.me/2347052466716?text=${encodeURIComponent('Hello STEMulus Admin, I have completed tuition payment for ' + s.firstName + ' ' + s.lastName + '. Here is my proof:')}" target="_blank" class="text-[10px] font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-3 py-2 min-h-[38px] rounded-lg border border-emerald-200 inline-flex items-center gap-1 shrink-0 transition-colors cursor-pointer">
                                         <i data-lucide="send" class="w-3 h-3"></i> WhatsApp Proof
                                     </a>
                                 </div>
@@ -469,6 +495,10 @@ const ParentEngine = (function() {
                                         <span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-100/80 px-1.5 py-0.5 rounded font-sans ml-1">
                                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Auto-Recorded
                                         </span>
+                                    </a>` : ''}
+                                    ${s.googleClassroom ? `
+                                    <a href="${s.googleClassroom.studentInviteLink || s.classroomLink}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1 rounded-md border border-indigo-200/80 font-mono text-[11px] font-semibold transition-colors no-underline" title="Google Classroom: ${s.googleClassroom.courseName}">
+                                        <i data-lucide="book-open" class="w-3.5 h-3.5 text-indigo-600"></i> Classroom (${s.googleClassroom.enrollmentCode || 'Join'})
                                     </a>` : ''}
                                 </div>
                             </div>
@@ -597,14 +627,40 @@ const ParentEngine = (function() {
             const isPhysical = (s.link || '').toLowerCase().includes('physical');
             const joinUrl = isPhysical ? (s.meetLinkBackup || 'https://meet.google.com') : (s.link || 'https://meet.google.com');
 
+            // Next Class Countdown & Live Status
+            let countdownBadge = '';
+            try {
+                const now = new Date();
+                const sessionDateStr = s.date;
+                const sessionTimeStr = s.time || '16:00';
+                const [hrs, mins] = sessionTimeStr.split(':').map(Number);
+                const sessionDateTime = new Date(`${sessionDateStr}T${String(hrs).padStart(2, '0')}:${String(mins || 0).padStart(2, '0')}:00`);
+                const diffMs = sessionDateTime - now;
+                const diffMins = Math.round(diffMs / 60000);
+                const diffHours = Math.round(diffMs / 3600000);
+
+                if (diffMins >= -30 && diffMins <= 60) {
+                    if (diffMins <= 0 && diffMins >= -60) {
+                        countdownBadge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs animate-pulse"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Live Now</span>`;
+                    } else {
+                        countdownBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-orange-100 text-orange-800 border border-orange-300 shadow-xs"><i data-lucide="clock" class="w-3 h-3 text-orange-600"></i> In ${diffMins}m</span>`;
+                    }
+                } else if (diffHours > 0 && diffHours <= 24) {
+                    countdownBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200"><i data-lucide="clock" class="w-3 h-3 text-indigo-500"></i> In ${diffHours}h</span>`;
+                }
+            } catch(e) {}
+
             return `
-                <div class="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-gray-50/50 transition-colors">
+                <div class="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
                     <div class="flex items-start gap-4">
                         <div class="w-10 h-10 rounded-xl ${isPhysical ? 'bg-purple-100' : 'bg-orange-100'} flex items-center justify-center shrink-0">
                             <i data-lucide="${isPhysical ? 'map-pin' : 'video'}" class="w-5 h-5 ${isPhysical ? 'text-purple-600' : 'text-orange-600'}"></i>
                         </div>
                         <div class="space-y-1">
-                            <p class="text-sm font-bold text-gray-800">${s.course} session for <span class="text-orange-500">${s.studentName}</span></p>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <p class="text-sm font-bold text-gray-800">${s.course} session for <span class="text-orange-500 font-extrabold">${s.studentName}</span></p>
+                                ${countdownBadge}
+                            </div>
                             <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
                                 <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${dateFormatted}</span>
                                 <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${s.time} WAT (${s.duration || 60} min)</span>
@@ -615,17 +671,185 @@ const ParentEngine = (function() {
                     <div class="flex items-center gap-2 shrink-0">
                         ${isPhysical ? `<span class="bg-purple-100 text-purple-800 text-[11px] font-bold px-3 py-1.5 rounded-lg border border-purple-200">Physical Hub</span>` : ''}
                         <a href="join-class.html?id=${encodeURIComponent(s.id)}&role=parent&url=${encodeURIComponent(joinUrl)}" target="_blank" rel="noopener noreferrer" 
-                            class="btn-3d btn-3d-blue px-3 py-1.5 text-[11px] rounded-lg">
+                            class="btn-3d btn-3d-blue px-3.5 py-2 min-h-[38px] text-xs rounded-xl inline-flex items-center justify-center gap-1.5 no-underline">
                             <i data-lucide="video" class="w-3.5 h-3.5"></i> ${isPhysical ? 'Backup Meet' : 'Join Session'}
                         </a>
                         <button onclick="ParentEngine.openRescheduleModal('${s.id}')"
-                            class="btn-3d btn-3d-secondary px-3 py-1.5 text-[11px] rounded-lg border border-gray-200">
+                            class="btn-3d btn-3d-secondary px-3.5 py-2 min-h-[38px] text-xs rounded-xl border border-gray-200 inline-flex items-center justify-center cursor-pointer">
                             Reschedule
                         </button>
                     </div>
                 </div>
             `;
         }).join('');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function renderBillingVault() {
+        const container = document.getElementById('parent-billing-vault-container');
+        if (!container || !currentParent) return;
+
+        const students = (currentParent.role === 'admin' && DashboardEngine.getStudents(currentParent.email).length === 0)
+            ? DashboardEngine.getStudents()
+            : DashboardEngine.getStudents(currentParent.email);
+
+        if (!students || students.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-6 bg-slate-50/70 border border-slate-200/80 rounded-2xl p-5">
+                    <i data-lucide="receipt" class="w-8 h-8 text-slate-400 mx-auto mb-2"></i>
+                    <p class="text-xs font-bold text-slate-700">No active billing accounts found.</p>
+                </div>
+            `;
+            if (window.lucide) lucide.createIcons();
+            return;
+        }
+
+        const settings = (typeof BillingEngine !== 'undefined') ? BillingEngine.getSettings() : {
+            bankName: 'Wema Nigeria',
+            accountNumber: '0128062292',
+            accountName: 'STEMulus innovation Limited',
+            usdBankName: 'Wema Bank (USD DOM)',
+            usdAccountNumber: '0622219817',
+            usdAccountName: 'STEMulus innovation Limited'
+        };
+
+        const attRecords = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getAttendanceRecords) ? DashboardEngine.getAttendanceRecords() : [];
+        const schedules = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSchedules) ? DashboardEngine.getSchedules() : [];
+
+        // 1. Render Active Tuition Cycles for each student
+        const cyclesHTML = students.map(s => {
+            const info = (typeof BillingEngine !== 'undefined')
+                ? BillingEngine.calculateBillingInfo(s, attRecords, schedules)
+                : { formattedFee: '₦35,000', nextDueDate: '2026-11-01', status: 'current', daysRemaining: 15 };
+
+            const isOverdue = info.status === 'overdue';
+            const isDueSoon = info.status === 'due_soon';
+            const statusBadge = isOverdue
+                ? `<span class="bg-rose-100 text-rose-700 text-[10px] font-extrabold px-2.5 py-1 rounded-full border border-rose-200">Overdue by ${Math.abs(info.daysRemaining)} days</span>`
+                : (isDueSoon
+                    ? `<span class="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2.5 py-1 rounded-full border border-amber-200">Due in ${info.daysRemaining} days</span>`
+                    : `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2.5 py-1 rounded-full border border-emerald-200">Active &bull; Renews ${info.nextDueDate}</span>`);
+
+            return `
+                <div class="bg-white border border-slate-200/90 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow space-y-3">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div>
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-orange-600 block">Tuition Ledger</span>
+                            <h3 class="text-sm font-extrabold text-slate-900 font-nunito">${s.firstName} ${s.lastName} &bull; <span class="text-slate-600 font-semibold">${s.program}</span></h3>
+                        </div>
+                        ${statusBadge}
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200/70 text-xs">
+                        <div>
+                            <span class="text-[10px] text-slate-500 font-semibold block uppercase">Monthly Tuition</span>
+                            <span class="font-extrabold text-slate-900 font-mono text-sm">${info.formattedFee}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-500 font-semibold block uppercase">Cycle Renewal Due</span>
+                            <span class="font-bold text-slate-800 text-xs">${info.nextDueDate}</span>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <span class="text-[10px] text-slate-500 font-semibold block uppercase">Cycle Status</span>
+                            <span class="font-bold text-emerald-700 text-xs">${isOverdue ? 'Action Required' : 'Current'}</span>
+                        </div>
+                    </div>
+
+                    <!-- Fast Bank Transfer & WhatsApp Proof Row -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-2 pt-1 border-t border-slate-100">
+                        <div class="flex items-center gap-2 flex-wrap w-full sm:w-auto">
+                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.accountNumber}', this)" class="btn-3d px-3 py-1.5 min-h-[36px] min-w-[54px] text-[11px] rounded-xl border border-slate-200 font-bold inline-flex items-center gap-1.5 cursor-pointer bg-white text-slate-700 hover:bg-slate-50">
+                                <i data-lucide="copy" class="w-3.5 h-3.5 text-orange-500"></i>
+                                <span>Copy Wema NGN (${settings.accountNumber})</span>
+                            </button>
+                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.usdAccountNumber || '0622219817'}', this)" class="btn-3d px-3 py-1.5 min-h-[36px] min-w-[54px] text-[11px] rounded-xl border border-slate-200 font-bold inline-flex items-center gap-1.5 cursor-pointer bg-white text-slate-700 hover:bg-slate-50">
+                                <i data-lucide="copy" class="w-3.5 h-3.5 text-teal-600"></i>
+                                <span>Copy USD DOM (${settings.usdAccountNumber || '0622219817'})</span>
+                            </button>
+                        </div>
+                        <a href="https://wa.me/2347052466716?text=${encodeURIComponent('Hello STEMulus Admin, I have completed tuition payment for ' + s.firstName + ' ' + s.lastName + ' (' + s.program + '). Here is my transfer confirmation receipt:')}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-[#25D366] hover:bg-emerald-600 text-white font-bold text-xs transition-all shadow-xs shrink-0 no-underline cursor-pointer" style="min-height: 38px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
+                            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                            <span>WhatsApp Proof to Admin</span>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // 2. Gather All Archived Receipts from student billing histories
+        let allReceipts = [];
+        students.forEach(s => {
+            const hist = (s.billing && Array.isArray(s.billing.history)) ? s.billing.history : [];
+            hist.forEach(r => {
+                allReceipts.push({ ...r, studentName: `${s.firstName} ${s.lastName}`, program: s.program });
+            });
+        });
+
+        // Sort newest first
+        allReceipts.sort((a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt));
+
+        let receiptsHTML = '';
+        if (allReceipts.length > 0) {
+            receiptsHTML = `
+                <div class="mt-2 bg-slate-50/70 border border-slate-200/90 rounded-2xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="history" class="w-4 h-4 text-orange-600"></i>
+                            <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">Verified Payment Receipts Ledger</h4>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-500">${allReceipts.length} Settled Invoices</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-slate-500 font-bold uppercase text-[10px]">
+                                    <th class="py-2 px-3">Receipt Ref</th>
+                                    <th class="py-2 px-3">Student</th>
+                                    <th class="py-2 px-3">Amount</th>
+                                    <th class="py-2 px-3">Method</th>
+                                    <th class="py-2 px-3">Cycle Covered</th>
+                                    <th class="py-2 px-3 text-right">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                ${allReceipts.map(r => `
+                                    <tr class="hover:bg-white/80 transition-colors">
+                                        <td class="py-2.5 px-3 font-mono font-bold text-slate-900">${r.reference || r.id}</td>
+                                        <td class="py-2.5 px-3 font-semibold text-slate-800">${r.studentName}</td>
+                                        <td class="py-2.5 px-3 font-mono font-extrabold text-emerald-700">${r.formattedAmount || ('₦' + Number(r.amount).toLocaleString())}</td>
+                                        <td class="py-2.5 px-3 text-slate-600">${r.method || 'Bank Transfer'}</td>
+                                        <td class="py-2.5 px-3 text-slate-500 font-mono text-[11px]">${r.cyclePaidFor || r.date}</td>
+                                        <td class="py-2.5 px-3 text-right">
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                                <i data-lucide="check" class="w-3 h-3 text-emerald-600"></i> Verified
+                                            </span>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        } else {
+            receiptsHTML = `
+                <div class="mt-2 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-600 flex items-start gap-2.5">
+                    <i data-lucide="info" class="w-4 h-4 text-orange-500 shrink-0 mt-0.5"></i>
+                    <p class="leading-relaxed">
+                        <strong>Active 1-Month Cycle in Progress:</strong> Your child's enrolled tuition period is verified active. Once renewed, official receipts will be archived permanently in this ledger.
+                    </p>
+                </div>
+            `;
+        }
+
+        container.innerHTML = `
+            <div class="space-y-3.5">
+                ${cyclesHTML}
+                ${receiptsHTML}
+            </div>
+        `;
+
         if (window.lucide) lucide.createIcons();
     }
 
@@ -658,16 +882,95 @@ const ParentEngine = (function() {
     }
 
     function openRescheduleModal(scheduleId) {
-        const db = DashboardEngine.getSchedules();
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSchedules) ? DashboardEngine.getSchedules() : [];
         const session = db.find(s => s.id === scheduleId);
         if (!session) return;
 
         const modal = document.getElementById('parent-reschedule-modal');
         if (modal) {
             document.getElementById('resch-schedule-id').value = session.id;
-            document.getElementById('resch-title-course').textContent = session.course;
-            document.getElementById('resch-current-details').textContent = `${session.date} at ${session.time}`;
+            document.getElementById('resch-title-course').textContent = `${session.course} for ${session.studentName || 'Student'}`;
+            document.getElementById('resch-current-details').textContent = `${session.dayOfWeek ? session.dayOfWeek + ', ' : ''}${session.date} at ${session.time} WAT (${session.mentor || session.tutorName || 'Coach'})`;
+
+            const dateInput = document.getElementById('resch-new-date');
+            const timeInput = document.getElementById('resch-new-time');
+            if (dateInput) dateInput.value = '';
+            if (timeInput) timeInput.value = '';
+
+            // Render 1-click recommended open slots
+            const recContainer = document.getElementById('resch-recommended-container');
+            const recSlotsDiv = document.getElementById('resch-recommended-slots');
+            if (recContainer && recSlotsDiv) {
+                let slots = [];
+                if (typeof RescheduleConciergeEngine !== 'undefined') {
+                    slots = RescheduleConciergeEngine.findRecommendedSlots(session.studentId, session.tutorId || session.mentor, 7);
+                }
+                if (slots && slots.length > 0) {
+                    recContainer.style.display = 'block';
+                    recSlotsDiv.innerHTML = slots.map(function(slot) {
+                        return '<button type="button" class="btn-resch-slot text-left p-2.5 rounded-xl border border-orange-200 bg-orange-50/70 hover:bg-orange-100/90 text-xs text-orange-950 font-medium transition-all flex items-center justify-between cursor-pointer" style="min-height: 38px !important;" onclick="ParentEngine.selectRecommendedSlot(\'' + slot.date + '\', \'' + slot.time + '\', this)">' +
+                            '<span><strong>' + slot.dayOfWeek + '</strong>, ' + slot.date + ' • ' + slot.time + ' WAT</span>' +
+                            '<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Coach Free</span>' +
+                        '</button>';
+                    }).join('');
+                } else {
+                    recContainer.style.display = 'none';
+                }
+            }
+
+            const liveFeedback = document.getElementById('resch-live-availability');
+            if (liveFeedback) {
+                liveFeedback.style.display = 'none';
+                liveFeedback.innerHTML = '';
+            }
+
             modal.style.display = 'flex';
+        }
+    }
+
+    function selectRecommendedSlot(date, time, btnEl) {
+        const dateInput = document.getElementById('resch-new-date');
+        const timeInput = document.getElementById('resch-new-time');
+        if (dateInput) dateInput.value = date;
+        if (timeInput) timeInput.value = time;
+
+        const allSlotBtns = document.querySelectorAll('.btn-resch-slot');
+        allSlotBtns.forEach(function(b) {
+            b.classList.remove('ring-2', 'ring-orange-500', 'bg-orange-100');
+        });
+        if (btnEl) {
+            btnEl.classList.add('ring-2', 'ring-orange-500', 'bg-orange-100');
+        }
+
+        checkLiveRescheduleAvailability();
+    }
+
+    function checkLiveRescheduleAvailability() {
+        const scheduleId = document.getElementById('resch-schedule-id').value;
+        const requestedDate = document.getElementById('resch-new-date').value;
+        const requestedTime = document.getElementById('resch-new-time').value;
+        const feedbackEl = document.getElementById('resch-live-availability');
+        if (!feedbackEl) return;
+
+        if (!requestedDate || !requestedTime) {
+            feedbackEl.style.display = 'none';
+            return;
+        }
+
+        const schedules = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSchedules) ? DashboardEngine.getSchedules() : [];
+        const session = schedules.find(s => s.id === scheduleId);
+        if (!session) return;
+
+        if (typeof RescheduleConciergeEngine !== 'undefined') {
+            const tutorCheck = RescheduleConciergeEngine.checkTutorAvailability(session.tutorId || session.mentor, requestedDate, requestedTime, 60, scheduleId);
+            feedbackEl.style.display = 'block';
+            if (tutorCheck.available) {
+                feedbackEl.className = 'text-xs p-2.5 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 font-medium flex items-center gap-2 mt-2';
+                feedbackEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Coach ' + (session.mentor || session.tutorName || 'Olalekan') + ' is verified available for this slot!';
+            } else {
+                feedbackEl.className = 'text-xs p-2.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-900 font-medium flex items-center gap-2 mt-2';
+                feedbackEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-500"></span> Coach has a class conflict, but our Concierge will pair an approved peer coach for coverage.';
+            }
         }
     }
 
@@ -681,30 +984,34 @@ const ParentEngine = (function() {
         const scheduleId = document.getElementById('resch-schedule-id').value;
         const requestedDate = document.getElementById('resch-new-date').value;
         const requestedTime = document.getElementById('resch-new-time').value;
+        const reason = document.getElementById('resch-reason') ? document.getElementById('resch-reason').value : '';
 
         const schedules = DashboardEngine.getSchedules();
         const session = schedules.find(s => s.id === scheduleId);
         if (!session) return;
 
         DashboardEngine.submitReschedule({
-            scheduleId,
+            scheduleId: scheduleId,
+            studentId: session.studentId,
             studentName: session.studentName,
             course: session.course,
             currentDate: session.date,
             currentTime: session.time,
-            requestedDate,
-            requestedTime,
+            requestedDate: requestedDate,
+            requestedTime: requestedTime,
+            reason: reason,
             parentEmail: currentParent.email
         });
 
         // Show success feedback
         const successMsg = document.createElement('div');
         successMsg.className = 'fixed top-4 right-4 z-[9999] bg-emerald-600 text-white px-6 py-3.5 rounded-xl shadow-xl text-sm font-semibold animate-fadeIn flex items-center gap-2';
-        successMsg.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Reschedule request submitted!';
+        successMsg.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Smart Reschedule request submitted!';
         document.body.appendChild(successMsg);
         setTimeout(() => successMsg.remove(), 3500);
 
         closeRescheduleModal();
+        renderUpcomingClasses();
         renderNotifications();
     }
 
@@ -738,37 +1045,63 @@ const ParentEngine = (function() {
             resModal.style.display = 'none';
             resModal.className = 'fixed inset-0 z-50 items-center justify-center p-4 bg-black/75 backdrop-blur-sm';
             resModal.innerHTML = `
-                <div class="bg-white rounded-3xl p-6 max-w-md w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn">
+                <div class="bg-white rounded-3xl p-5 sm:p-6 max-w-md w-full border border-slate-200/90 space-y-4 animate-fadeIn" style="box-shadow: 0 20px 40px -15px rgba(0,0,0,0.2), 0 0 0 1px rgba(244,96,12,0.06);">
                     <div class="flex justify-between items-center pb-2 border-b border-slate-100">
-                        <h3 class="text-lg font-nunito font-bold text-gray-800">Reschedule Session</h3>
-                        <button type="button" onclick="ParentEngine.closeRescheduleModal()" class="text-gray-400 hover:text-gray-650 transition-colors">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <div>
+                            <h3 class="text-base font-nunito font-extrabold text-gray-900">⚡ Smart Reschedule Concierge</h3>
+                            <p class="text-[11px] text-gray-500">Autonomous conflict checking & slot verification</p>
+                        </div>
+                        <button type="button" onclick="ParentEngine.closeRescheduleModal()" class="text-gray-400 hover:text-gray-600 hover:bg-slate-100 transition-colors cursor-pointer rounded-xl" style="width: 36px !important; height: 36px !important; min-width: 36px !important; min-height: 36px !important; display: flex !important; align-items: center !important; justify-content: center !important;" aria-label="Close reschedule modal">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
 
-                    <form id="resch-form" class="space-y-4">
+                    <form id="resch-form" class="space-y-3.5">
                         <input type="hidden" id="resch-schedule-id">
                         
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Session</label>
-                            <p id="resch-title-course" class="font-bold text-gray-800 text-sm"></p>
-                            <p id="resch-current-details" class="text-xs text-gray-400 mt-0.5"></p>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Selected Session</label>
+                            <p id="resch-title-course" class="font-bold text-gray-900 text-sm"></p>
+                            <p id="resch-current-details" class="text-xs text-gray-500 mt-0.5"></p>
+                        </div>
+
+                        <!-- 1-Click Recommended Open Slots -->
+                        <div id="resch-recommended-container" style="display:none;">
+                            <label class="block text-xs font-bold text-orange-600 mb-1.5 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping"></span>
+                                1-Click Recommended Slots (Zero Conflict)
+                            </label>
+                            <div id="resch-recommended-slots" class="grid grid-cols-1 gap-1.5 max-h-36 overflow-y-auto pr-1"></div>
+                        </div>
+
+                        <div class="pt-1">
+                            <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Or Pick Custom Date</label>
+                            <input type="date" id="resch-new-date" required onchange="ParentEngine.checkLiveRescheduleAvailability()"
+                                class="w-full bg-gray-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-gray-800 focus:outline-none focus:border-orange-500 transition-colors" style="min-height: 38px !important;">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-gray-650 uppercase tracking-wider mb-2">Requested Date</label>
-                            <input type="date" id="resch-new-date" required
-                                class="w-full bg-gray-50 border border-slate-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-orange-500 transition-colors">
+                            <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Requested Time (WAT)</label>
+                            <input type="time" id="resch-new-time" required onchange="ParentEngine.checkLiveRescheduleAvailability()"
+                                class="w-full bg-gray-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-gray-800 focus:outline-none focus:border-orange-500 transition-colors" style="min-height: 38px !important;">
                         </div>
+
+                        <!-- Real-time live availability indicator -->
+                        <div id="resch-live-availability" style="display:none;"></div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-gray-650 uppercase tracking-wider mb-2">Requested Time</label>
-                            <input type="time" id="resch-new-time" required
-                                class="w-full bg-gray-50 border border-slate-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-orange-500 transition-colors">
+                            <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Reason for Adjustment</label>
+                            <select id="resch-reason" class="w-full bg-gray-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-gray-800 focus:outline-none focus:border-orange-500 transition-colors" style="min-height: 38px !important;">
+                                <option value="Family Travel / Trip">Family Travel / Trip</option>
+                                <option value="School Exams / Academic Conflict">School Exams / Academic Conflict</option>
+                                <option value="Illness / Recovery">Illness / Recovery</option>
+                                <option value="Timezone / Routine Adjustment">Timezone / Routine Adjustment</option>
+                                <option value="Other Personal Commitment">Other Personal Commitment</option>
+                            </select>
                         </div>
 
-                        <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-all">
-                            Submit Reschedule Request
+                        <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded-xl transition-all shadow-md text-xs flex items-center justify-center gap-1.5 mt-2 cursor-pointer" style="min-height: 40px !important;">
+                            <span>Confirm Reschedule Request</span>
                         </button>
                     </form>
                 </div>
@@ -1059,10 +1392,10 @@ const ParentEngine = (function() {
                         
                         <!-- Viral WhatsApp Share & Interactive Preview -->
                         <div class="pt-2 flex flex-wrap items-center gap-2.5">
-                            <button type="button" onclick="ParentEngine.shareProjectOnWhatsApp('${safeTitle}', '${safeName}', '${safeCat}', '${safeDesc}')" class="flex-1 min-w-[200px] bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-2.5 px-3.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer">
+                            <button type="button" onclick="ParentEngine.shareProjectOnWhatsApp('${safeTitle}', '${safeName}', '${safeCat}', '${safeDesc}')" class="flex-1 min-w-[200px] min-h-[38px] bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-2.5 px-3.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer shrink-0">
                                 <i data-lucide="message-circle" class="w-4 h-4"></i> Share with Family on WhatsApp
                             </button>
-                            <button type="button" onclick="ParentEngine.openProjectModal('${p.id}')" class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+                            <button type="button" onclick="ParentEngine.openProjectModal('${p.id}')" class="px-4 py-2.5 min-h-[38px] rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer shrink-0">
                                 <i data-lucide="eye" class="w-3.5 h-3.5"></i> View Details
                             </button>
                         </div>
@@ -1247,7 +1580,12 @@ const ParentEngine = (function() {
                 time: "16:30",
                 duration: "60",
                 mentor: tutor,
-                link: newStudent.meetLink || newStudent.classroomLink || "https://meet.google.com/nxg-rbcg-nsr",
+                link: newStudent.meetLink || newStudent.classroomLink,
+                autoRecord: true,
+                autoRecordEnabled: true,
+                hostNotRequired: true,
+                recordingMode: '1080p_hd_companion_and_cloud',
+                googleClassroom: newStudent.googleClassroom,
                 attendanceStatus: "pending"
             });
             if (DashboardEngine.saveDB) DashboardEngine.saveDB(db);
@@ -1335,7 +1673,7 @@ const ParentEngine = (function() {
                         <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Tuition &amp; International Payment Guide</h2>
                         <p class="text-xs text-slate-500 mt-1">Direct Bank Transfers, Remitly, Sendwave, Send by Flutterwave, and USD Wire</p>
                     </div>
-                    <button type="button" onclick="ParentEngine.closeInternationalPaymentGuide()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors shrink-0" aria-label="Close modal">
+                    <button type="button" onclick="ParentEngine.closeInternationalPaymentGuide()" class="text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors shrink-0 cursor-pointer" style="width: 36px !important; height: 36px !important; min-width: 36px !important; min-height: 36px !important; display: flex !important; align-items: center !important; justify-content: center !important;" aria-label="Close modal">
                         <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1354,7 +1692,7 @@ const ParentEngine = (function() {
                                 <span style="font-size: 9px; color: #cbd5e1 !important; display: block; text-transform: uppercase; font-family: monospace; font-weight: 600;">Account Number</span>
                                 <span style="font-family: monospace; font-weight: 800; color: #ffffff !important; font-size: 17px; letter-spacing: 0.05em; display: block;">${settings.accountNumber || '0128062292'}</span>
                             </div>
-                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.accountNumber || '0128062292'}', this)" style="background: #f4600c !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: none; padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: transform 0.15s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.accountNumber || '0128062292'}', this)" style="background: #f4600c !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: none; padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: transform 0.15s ease; min-height: 36px !important; min-width: 56px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                                 Copy
                             </button>
                         </div>
@@ -1373,7 +1711,7 @@ const ParentEngine = (function() {
                                 <span style="font-size: 9px; color: #99f6e4 !important; display: block; text-transform: uppercase; font-family: monospace; font-weight: 600;">USD Account Number</span>
                                 <span style="font-family: monospace; font-weight: 800; color: #ffffff !important; font-size: 17px; letter-spacing: 0.05em; display: block;">${settings.usdAccountNumber || '0622219817'}</span>
                             </div>
-                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.usdAccountNumber || '0622219817'}', this)" style="background: #0d9488 !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: none; padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: transform 0.15s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.usdAccountNumber || '0622219817'}', this)" style="background: #0d9488 !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: none; padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: transform 0.15s ease; min-height: 36px !important; min-width: 56px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                                 Copy
                             </button>
                         </div>
@@ -1477,6 +1815,8 @@ const ParentEngine = (function() {
         completeStep,
         openRescheduleModal,
         closeRescheduleModal,
+        selectRecommendedSlot,
+        checkLiveRescheduleAvailability,
         viewCertificate,
         closeCertModal,
         viewMonthlyReport,
@@ -1489,7 +1829,9 @@ const ParentEngine = (function() {
         closeProjectModal,
         openInternationalPaymentGuide,
         closeInternationalPaymentGuide,
-        copyBankDetail
+        filterChildCards,
+        copyBankDetail,
+        renderBillingVault
     };
 })();
 

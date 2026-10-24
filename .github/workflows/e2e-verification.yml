@@ -36,7 +36,17 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Execute End-to-End Test Suite
+      - name: Execute Complete 9-Aspect QA & UX Audit Suite
+        run: node scripts/run_all_aspect_audits.js
+        env:
+          CI: true
+
+      - name: Execute Mulu AI Mascot Engine E2E Verification
+        run: node tests/verify_mulu_ai_mascot.js
+        env:
+          CI: true
+
+      - name: Execute Core Portal Goal E2E Test Suite
         run: node tests/e2e_portal_goal_test.js
         env:
           CI: true

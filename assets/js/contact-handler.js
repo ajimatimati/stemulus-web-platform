@@ -125,6 +125,7 @@ Time: ${new Date().toLocaleString()}
 
         const mailtoLink = `mailto:${data.email}?subject=${encodeURIComponent('Re: ' + data.subject)}`;
 
+        // Tier 1: Netlify serverless proxy
         try {
             const response = await fetch('/.netlify/functions/notify', {
                 method: 'POST',
@@ -139,11 +140,37 @@ Time: ${new Date().toLocaleString()}
                 })
             });
 
-            if (!response.ok) throw new Error('NTFY post failed');
-            return { success: true };
+            if (response.ok) return { success: true };
+            console.warn('[ContactForm] Netlify notify returned non-200, activating direct ntfy.sh fallback...');
         } catch (error) {
-            console.warn('[ContactForm] NTFY failed:', error);
-            return { success: false, error };
+            console.warn('[ContactForm] Netlify notify error, activating direct ntfy.sh fallback:', error);
+        }
+
+        // Tier 2: Direct client-side fetch to ntfy.sh (permitted in CSP connect-src)
+        try {
+            const cleanTitle = (title || '').replace(/[^\x20-\x7E]/g, ' ').trim();
+            const directHeaders = {
+                'Priority': 'high',
+                'Tags': 'speech_balloon,envelope',
+                'Title': cleanTitle
+            };
+            await Promise.allSettled([
+                fetch(`https://ntfy.sh/${CONFIG.NTFY_TOPIC}`, {
+                    method: 'POST',
+                    headers: directHeaders,
+                    body: message
+                }),
+                fetch('https://ntfy.sh/stemulus-admin-alerts', {
+                    method: 'POST',
+                    headers: directHeaders,
+                    body: message
+                })
+            ]);
+            console.log('[ContactForm] Direct ntfy.sh fallback delivered');
+            return { success: true, fallback: true };
+        } catch (err2) {
+            console.warn('[ContactForm] Direct ntfy fallback also failed:', err2);
+            return { success: false, error: err2 };
         }
     }
 

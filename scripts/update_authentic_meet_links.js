@@ -7,25 +7,25 @@ let content = fs.readFileSync(dashboardEnginePath, 'utf8');
 console.log('Original content length:', content.length);
 
 // 1. Replace old meet links in initial data and schedules
-// Old: cjr-phmf-ahs (Myles) -> New: nxg-rbcg-nsr
+// Old: cjr-phmf-ahs (Myles) -> New: miz-dthg-pmt
 // Old: ocz-qcjr-cqb (David) -> New: ckd-ngjs-cth
 // Old: swf-vyjv-adm (Joshua) -> New: yko-xwce-ugd
 // Old: mxh-ndjc-gox (Gbolade) -> New: qye-ezub-uqi
-// Old: mim-qifa-avc (was on Pearl) -> New on Pearl: yre-naci-zmp (Farouq takes mim-qifa-avc)
-// Old: nxg-rbcg-nsr on Daniel -> stm-demo-dan
+// Old: mim-qifa-avc (was on Pearl) -> New on Pearl: bbx-ocde-ytw (Farouq takes mim-qifa-avc)
+// Old: miz-dthg-pmt on Daniel -> stm-demo-dan
 
 // Let's replace specifically in schedule and student mappings
 // For Pearl:
-content = content.replace(/"https:\/\/meet\.google\.com\/mim-qifa-avc"/g, '"https://meet.google.com/yre-naci-zmp"');
-content = content.replace(/'https:\/\/meet\.google\.com\/mim-qifa-avc'/g, "'https://meet.google.com/yre-naci-zmp'");
+content = content.replace(/"https:\/\/meet\.google\.com\/mim-qifa-avc"/g, '"https://meet.google.com/bbx-ocde-ytw"');
+content = content.replace(/'https:\/\/meet\.google\.com\/mim-qifa-avc'/g, "'https://meet.google.com/bbx-ocde-ytw'");
 
 // For Gbolade:
 content = content.replace(/"https:\/\/meet\.google\.com\/mxh-ndjc-gox"/g, '"https://meet.google.com/qye-ezub-uqi"');
 content = content.replace(/'https:\/\/meet\.google\.com\/mxh-ndjc-gox'/g, "'https://meet.google.com/qye-ezub-uqi'");
 
 // For Myles:
-content = content.replace(/"https:\/\/meet\.google\.com\/cjr-phmf-ahs"/g, '"https://meet.google.com/nxg-rbcg-nsr"');
-content = content.replace(/'https:\/\/meet\.google\.com\/cjr-phmf-ahs'/g, "'https://meet.google.com/nxg-rbcg-nsr'");
+content = content.replace(/"https:\/\/meet\.google\.com\/cjr-phmf-ahs"/g, '"https://meet.google.com/miz-dthg-pmt"');
+content = content.replace(/'https:\/\/meet\.google\.com\/cjr-phmf-ahs'/g, "'https://meet.google.com/miz-dthg-pmt'");
 
 // For Joshua:
 content = content.replace(/"https:\/\/meet\.google\.com\/swf-vyjv-adm"/g, '"https://meet.google.com/yko-xwce-ugd"');
@@ -35,13 +35,13 @@ content = content.replace(/'https:\/\/meet\.google\.com\/swf-vyjv-adm'/g, "'http
 content = content.replace(/"https:\/\/meet\.google\.com\/ocz-qcjr-cqb"/g, '"https://meet.google.com/ckd-ngjs-cth"');
 content = content.replace(/'https:\/\/meet\.google\.com\/ocz-qcjr-cqb'/g, "'https://meet.google.com/ckd-ngjs-cth'");
 
-// For Daniel M. (Demo): change from nxg-rbcg-nsr to stm-demo-dan so Daniel does not collide with Myles Omosuyi
-content = content.replace(/id: "std-1001",([^}]+)classroomLink:"https:\/\/meet\.google\.com\/nxg-rbcg-nsr"/g, 'id: "std-1001",$1classroomLink:"https://meet.google.com/stm-demo-dan"');
-content = content.replace(/id: "std-1001",([^}]+)meetLink:"https:\/\/meet\.google\.com\/nxg-rbcg-nsr"/g, 'id: "std-1001",$1meetLink:"https://meet.google.com/stm-demo-dan"');
+// For Daniel M. (Demo): change from miz-dthg-pmt to stm-demo-dan so Daniel does not collide with Myles Omosuyi
+content = content.replace(/id: "std-1001",([^}]+)classroomLink:"https:\/\/meet\.google\.com\/miz-dthg-pmt"/g, 'id: "std-1001",$1classroomLink:"https://meet.google.com/stm-demo-dan"');
+content = content.replace(/id: "std-1001",([^}]+)meetLink:"https:\/\/meet\.google\.com\/miz-dthg-pmt"/g, 'id: "std-1001",$1meetLink:"https://meet.google.com/stm-demo-dan"');
 
-// For Alexandra Sotayo: change from yre-naci-zmp to stm-sotayo-alex so she doesn't collide with Pearl Babalola
-content = content.replace(/id: "std-1004-e1rm",([^}]+)classroomLink:"https:\/\/meet\.google\.com\/yre-naci-zmp"/g, 'id: "std-1004-e1rm",$1classroomLink:"https://meet.google.com/stm-sotayo-alex"');
-content = content.replace(/id: "std-1004-e1rm",([^}]+)meetLink:"https:\/\/meet\.google\.com\/yre-naci-zmp"/g, 'id: "std-1004-e1rm",$1meetLink:"https://meet.google.com/stm-sotayo-alex"');
+// For Alexandra Sotayo: change from bbx-ocde-ytw to stm-sotayo-alex so she doesn't collide with Pearl Babalola
+content = content.replace(/id: "std-1004-e1rm",([^}]+)classroomLink:"https:\/\/meet\.google\.com\/bbx-ocde-ytw"/g, 'id: "std-1004-e1rm",$1classroomLink:"https://meet.google.com/stm-sotayo-alex"');
+content = content.replace(/id: "std-1004-e1rm",([^}]+)meetLink:"https:\/\/meet\.google\.com\/bbx-ocde-ytw"/g, 'id: "std-1004-e1rm",$1meetLink:"https://meet.google.com/stm-sotayo-alex"');
 
 // Also update Daniel's lines 2393-2396 if any:
 content = content.replace(/if \(s\.id === 'std-1001' && !s\.meetLink\) \{\s*s\.meetLink = '[^']+';\s*s\.classroomLink = s\.classroomLink \|\| '[^']+';/g, 
@@ -96,9 +96,9 @@ const updatedStudentMeetMap = `const studentMeetMap = {
                 "std-1004-e1rm": "https://meet.google.com/stm-sotayo-alex",
                 "std-1005-6f4y": "https://meet.google.com/kos-rxkp-bkd",
                 "std-1006-il0c": "https://meet.google.com/wvh-vwbr-hoq",
-                "std-1007-r4cv": "https://meet.google.com/yre-naci-zmp",
+                "std-1007-r4cv": "https://meet.google.com/bbx-ocde-ytw",
                 "std-1008-a0lp": "https://meet.google.com/qye-ezub-uqi",
-                "std-1009-tbod": "https://meet.google.com/nxg-rbcg-nsr",
+                "std-1009-tbod": "https://meet.google.com/miz-dthg-pmt",
                 "std-1010-ilb5": "https://meet.google.com/gyd-fewb-cdh",
                 "std-1011-tq1u": "https://meet.google.com/vdp-nmbh-sjj",
                 "std-1012-wq6b": "https://meet.google.com/ckd-ngjs-cth",
@@ -112,12 +112,12 @@ content = content.replace(targetMapRegex, updatedStudentMeetMap);
 const migrationHook = `
             // Proactive sync for Authentic Google Pro Meet Links
             const AUTH_MEET_LINKS = {
-                'pearl': 'https://meet.google.com/yre-naci-zmp',
-                'babalola': 'https://meet.google.com/yre-naci-zmp',
+                'pearl': 'https://meet.google.com/bbx-ocde-ytw',
+                'babalola': 'https://meet.google.com/bbx-ocde-ytw',
                 'gbolade': 'https://meet.google.com/qye-ezub-uqi',
                 'okesanjo': 'https://meet.google.com/qye-ezub-uqi',
-                'myles': 'https://meet.google.com/nxg-rbcg-nsr',
-                'omosuyi': 'https://meet.google.com/nxg-rbcg-nsr',
+                'myles': 'https://meet.google.com/miz-dthg-pmt',
+                'omosuyi': 'https://meet.google.com/miz-dthg-pmt',
                 'junayd': 'https://meet.google.com/gyd-fewb-cdh',
                 'kari': 'https://meet.google.com/gyd-fewb-cdh',
                 'joshua': 'https://meet.google.com/yko-xwce-ugd',

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="portal-view">
 <head>
   <meta charset="UTF-8">
   <link rel="manifest" href="/site.webmanifest">
@@ -90,6 +90,47 @@
     /* Rounded corners overrides - No Pills */
     .rounded-btn {
       border-radius: 12px !important;
+    }
+    /* WCAG 2.1 AA 36px/40px Minimum Touch Target Rules */
+    .passport-era-btn {
+      min-height: 38px !important;
+      padding: 8px 16px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    #tab-btn-vars, #tab-btn-terminal, #tab-btn-resources {
+      min-height: 38px !important;
+      padding: 8px 16px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    #pbm-tab-5_7, #pbm-tab-8_11, #pbm-tab-12_17 {
+      min-height: 36px !important;
+      padding: 6px 14px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    #variables-list-container input {
+      min-height: 36px !important;
+      padding: 6px 12px !important;
+    }
+    #variables-list-container + div button,
+    button[onclick*="addVariable"] {
+      min-height: 40px !important;
+    }
+    button[onclick*="shareOnWhatsApp"] {
+      min-height: 38px !important;
+    }
+    #sidebar-logout-btn,
+    #back-dashboard-btn {
+      min-height: 40px !important;
+    }
+    #logout-btn {
+      min-height: 40px !important;
+      min-width: 40px !important;
     }
     /* Timeline styling */
     .timeline-line:after {
@@ -193,6 +234,7 @@
         margin-left: 17rem !important;
         margin-right: 1.5rem !important;
         margin-top: 1.5rem !important;
+        width: calc(100% - 18.5rem) !important;
         border-radius: 24px !important;
       }
       main.lg\:pl-72,
@@ -234,7 +276,7 @@
     }
   </style>
 </head>
-<body class="bg-[#fcfbfa] min-h-screen text-slate-900">
+<body class="dashboard-page bg-[#fcfbfa] min-h-screen text-slate-900">
 
   <div id="sidebar-overlay" class="sidebar-overlay lg:hidden"></div>
   <!-- Parent Sidebar -->
@@ -273,7 +315,7 @@
           <p class="text-xs truncate" style="color:rgba(255,255,255,0.75);">Parent</p>
         </div>
       </div>
-      <button id="sidebar-logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=parent';" class="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors" style="border:none;background:rgba(255,255,255,0.05);cursor:pointer;">
+      <button id="sidebar-logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=parent';" class="w-full min-h-[40px] flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-bold rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors" style="border:none;background:rgba(255,255,255,0.05);cursor:pointer;">
         <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
       </button>
     </div>
@@ -281,28 +323,28 @@
 
   <!-- Top Navigation Header -->
   <nav class="portal-top-nav bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm lg:ml-64" style="transition:margin-left 0.3s;">
-    <div class="container mx-auto px-6 py-3.5 flex items-center justify-between">
-      <div class="flex items-center gap-3.5">
-        <button id="menu-btn" class="lg:hidden" style="background:none;border:none;cursor:pointer;padding:8px 4px;color:#64748b;" aria-label="Toggle sidebar">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+        <button id="menu-btn" class="lg:hidden w-10 h-10 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-xl hover:bg-slate-100 text-slate-600 transition-colors shrink-0" aria-label="Toggle sidebar">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <img src="favicon.png" alt="STEMulus Logo" class="h-9 w-9 object-contain">
-        <div>
-          <span class="text-[11px] font-extrabold uppercase tracking-widest text-[#F4600C] block leading-none mb-1">Parent Portal</span>
-          <h1 class="font-nunito font-extrabold text-slate-900 text-lg leading-tight m-0" style="color: #0F172A !important;">Child Progress Monitor</h1>
+        <img src="favicon.png" alt="STEMulus Logo" class="h-8 w-8 sm:h-9 sm:w-9 object-contain shrink-0">
+        <div class="min-w-0">
+          <span class="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-widest text-[#F4600C] block leading-none mb-0.5 sm:mb-1">Parent Portal</span>
+          <h1 class="font-nunito font-extrabold text-slate-900 text-base sm:text-lg leading-tight m-0 truncate" style="color: #0F172A !important;">Child Progress Monitor</h1>
         </div>
       </div>
       
-      <div class="flex items-center gap-3">
-        <a href="parent-dashboard.html" id="back-dashboard-btn" class="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm">
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <a href="parent-dashboard.html" id="back-dashboard-btn" class="min-h-[40px] flex items-center gap-1.5 sm:gap-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-bold px-3 sm:px-4 py-2 rounded-xl transition-all shadow-sm shrink-0">
           <i data-lucide="arrow-left" class="w-4 h-4 text-slate-600"></i>
-          <span>Portal Home</span>
+          <span class="hidden sm:inline">Portal Home</span>
         </a>
-        <button onclick="window.print()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:#6366F1;color:#fff;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:0.875rem;font-weight:600;cursor:pointer;" title="Print progress report">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Print Report
+        <button type="button" onclick="window.print()" class="min-h-[40px] hidden sm:inline-flex items-center gap-2 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm shrink-0" title="Print progress report">
+          <i data-lucide="printer" class="w-4 h-4"></i>
+          <span>Print Report</span>
         </button>
-        <button id="logout-btn" class="p-2 text-slate-600 hover:text-slate-700 transition-colors rounded-lg" title="Log Out">
+        <button type="button" id="logout-btn" class="w-10 h-10 min-h-[40px] min-w-[40px] flex items-center justify-center p-2 text-slate-600 hover:text-slate-800 hover:bg-slate-100 transition-colors rounded-xl shrink-0" title="Log Out" aria-label="Log Out">
           <i data-lucide="log-out" class="w-5 h-5"></i>
         </button>
       </div>
@@ -451,9 +493,9 @@
         </div>
 
         <!-- Right: Mentor Focus Card -->
-        <div class="bg-gradient-to-br from-indigo-900 to-[#101726] border border-gray-800 shadow-xl rounded-2xl p-6 text-white flex flex-col justify-between relative overflow-hidden">
-          <div class="absolute -right-16 -bottom-16 opacity-5 pointer-events-none">
-            <i data-lucide="cpu" class="w-64 h-64"></i>
+        <div class="bg-gradient-to-br from-indigo-900 to-[#101726] border border-gray-800 shadow-xl rounded-2xl p-6 text-white flex flex-col justify-between relative overflow-hidden" style="contain: paint;">
+          <div class="absolute -right-10 -bottom-10 opacity-5 pointer-events-none overflow-hidden max-w-[200px] max-h-[200px]">
+            <i data-lucide="cpu" class="w-48 h-48"></i>
           </div>
           
           <div class="space-y-6 relative z-10">
@@ -478,7 +520,7 @@
           </div>
           
           <div class="pt-6 relative z-10">
-            <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer" class="w-full bg-[#25D366] hover:bg-emerald-600 text-white font-bold text-sm py-3 rounded-xl transition-all shadow-lg shadow-emerald-950/20 flex items-center justify-center gap-2">
+            <a href="https://wa.me/2347052466716" target="_blank" rel="noopener noreferrer" class="w-full min-h-[44px] bg-[#25D366] hover:bg-emerald-600 text-white font-bold text-sm py-3 px-4 rounded-xl transition-all shadow-lg shadow-emerald-950/20 flex items-center justify-center gap-2">
               <i data-lucide="message-square" class="w-4 h-4"></i>
               <span>Message STEMulus Support</span>
             </a>
@@ -496,7 +538,7 @@
             </h3>
             <p class="text-xs text-gray-500 mt-1">Short video highlights of your child explaining their custom code.</p>
           </div>
-          <button class="btn-3d btn-3d-secondary px-3 py-1.5 text-xs" onclick="this.setAttribute('disabled','true'); this.title='Archive coming soon';" title="Coming soon">View Archive</button>
+          <button class="btn-3d btn-3d-secondary min-h-[36px] px-3.5 py-2 text-xs font-bold flex items-center justify-center" onclick="this.setAttribute('disabled','true'); this.title='Archive coming soon';" title="Coming soon">View Archive</button>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="milestone-highlights-grid">
@@ -531,15 +573,15 @@
 
         <!-- Era Filter Pills -->
         <div class="flex items-center gap-1.5 overflow-x-auto pb-3 mb-6 scrollbar-none" id="passport-era-filters">
-          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all whitespace-nowrap" data-era="all">All Eras (48)</button>
-          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="1">Era I: First Light (1-6)</button>
-          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="2">Era II: Flamecraft (7-12)</button>
-          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="3">Era III: Artisan Light (13-18)</button>
-          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="4">Era IV: Industrial (19-24)</button>
-          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="5">Era V: Electric (25-30)</button>
-          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="6">Era VI: Efficiency (31-36)</button>
-          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="7">Era VII: Sensing (37-42)</button>
-          <button type="button" class="passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap" data-era="8">Era VIII: Intelligent (43-48)</button>
+          <button type="button" class="passport-era-btn min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all whitespace-nowrap flex items-center justify-center" data-era="all">All Eras (48)</button>
+          <button type="button" class="passport-era-btn min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap flex items-center justify-center" data-era="1">Era I: First Light (1-6)</button>
+          <button type="button" class="passport-era-btn min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap flex items-center justify-center" data-era="2">Era II: Flamecraft (7-12)</button>
+          <button type="button" class="passport-era-btn min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap flex items-center justify-center" data-era="3">Era III: Artisan Light (13-18)</button>
+          <button type="button" class="passport-era-btn min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap flex items-center justify-center" data-era="4">Era IV: Industrial (19-24)</button>
+          <button type="button" class="passport-era-btn min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap flex items-center justify-center" data-era="5">Era V: Electric (25-30)</button>
+          <button type="button" class="passport-era-btn min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap flex items-center justify-center" data-era="6">Era VI: Efficiency (31-36)</button>
+          <button type="button" class="passport-era-btn min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap flex items-center justify-center" data-era="7">Era VII: Sensing (37-42)</button>
+          <button type="button" class="passport-era-btn min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap flex items-center justify-center" data-era="8">Era VIII: Intelligent (43-48)</button>
         </div>
 
         <!-- 48 Badges Medallion Grid -->
@@ -572,10 +614,10 @@
             </h3>
             <p class="text-xs text-gray-500 mt-1">Interactive developer architecture showing how your child's games and services connect and deploy.</p>
           </div>
-          <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
-            <button id="tab-btn-vars" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-white text-indigo-700 shadow-sm transition-all" onclick="ProjectCanvasController.switchTab('vars')">Variables</button>
-            <button id="tab-btn-terminal" class="px-4 py-1.5 rounded-lg text-xs font-bold text-gray-500 hover:text-gray-900 transition-all" onclick="ProjectCanvasController.switchTab('terminal')">Build Terminal</button>
-            <button id="tab-btn-resources" class="px-4 py-1.5 rounded-lg text-xs font-bold text-gray-500 hover:text-gray-900 transition-all" onclick="ProjectCanvasController.switchTab('resources')">Resources</button>
+          <div class="flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl flex-wrap">
+            <button id="tab-btn-vars" class="min-h-[38px] px-4 py-2 rounded-lg text-xs font-bold bg-white text-indigo-700 shadow-sm transition-all flex items-center justify-center" onclick="ProjectCanvasController.switchTab('vars')">Variables</button>
+            <button id="tab-btn-terminal" class="min-h-[38px] px-4 py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition-all flex items-center justify-center" onclick="ProjectCanvasController.switchTab('terminal')">Build Terminal</button>
+            <button id="tab-btn-resources" class="min-h-[38px] px-4 py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition-all flex items-center justify-center" onclick="ProjectCanvasController.switchTab('resources')">Resources</button>
           </div>
         </div>
 
@@ -651,10 +693,10 @@
                 </div>
               </div>
               <div class="pt-4 mt-4 border-t border-slate-200 flex flex-col gap-3">
-                <button class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm" onclick="ProjectCanvasController.addVariable()">
+                <button class="w-full min-h-[40px] bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm" onclick="ProjectCanvasController.addVariable()">
                   <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Variable
                 </button>
-                <button class="btn-3d w-full py-3" onclick="ProjectCanvasController.deployProject()">
+                <button class="btn-3d w-full min-h-[44px] py-3 flex items-center justify-center gap-2" onclick="ProjectCanvasController.deployProject()">
                   <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="deploy-btn-spinner"></i> Save & Deploy Project
                 </button>
               </div>
@@ -793,20 +835,30 @@
       </div>
 
       <!-- Certificates Earned Section -->
-      <section id="certificates-section" style="margin:1.5rem 0;padding:1.5rem;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
-        <h3 style="font-family:'Fredoka',sans-serif;font-size:1.2rem;font-weight:600;color:#2d2d4e;margin:0 0 1rem;">Certificates Earned</h3>
-        <div id="certs-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">
-          <p style="color:#6b6b8a;font-size:0.875rem;" id="certs-empty">Loading certificates...</p>
+      <div id="certificates-section" class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6">
+        <div class="mb-6">
+          <h3 class="text-lg font-outfit font-bold text-slate-800 flex items-center gap-2">
+            <i data-lucide="award" class="w-5 h-5 text-indigo-600"></i> Certificates &amp; Accreditations Earned
+          </h3>
+          <p class="text-xs text-gray-500 mt-1">Verified credentials and capstone achievement accreditations awarded to your child.</p>
         </div>
-      </section>
+        <div id="certs-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <p class="text-xs text-slate-500 p-2" id="certs-empty">Loading certificates...</p>
+        </div>
+      </div>
 
       <!-- Attendance History Section -->
-      <section style="margin:1.5rem 0;padding:1.5rem;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
-        <h3 style="font-family:'Fredoka',sans-serif;font-size:1.2rem;font-weight:600;color:#2d2d4e;margin:0 0 1rem;">Attendance History</h3>
-        <div id="attendance-history-table" style="overflow-x:auto;">
-          <p style="color:#6b6b8a;font-size:0.875rem;">Loading attendance history...</p>
+      <div class="bg-white border border-gray-200/60 shadow-sm rounded-2xl p-6">
+        <div class="mb-6">
+          <h3 class="text-lg font-outfit font-bold text-slate-800 flex items-center gap-2">
+            <i data-lucide="calendar-check" class="w-5 h-5 text-brand-orange"></i> Verified Attendance History
+          </h3>
+          <p class="text-xs text-gray-500 mt-1">Historical attendance records, taught topics, and mentor verification logs.</p>
         </div>
-      </section>
+        <div id="attendance-history-table" class="overflow-x-auto rounded-xl border border-slate-200/80">
+          <p class="text-xs text-slate-500 p-4">Loading attendance history...</p>
+        </div>
+      </div>
 
     </div>
 
@@ -821,11 +873,12 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="assets/js/firebase-config.min.js" defer></script>
+  <script src="assets/js/stemulus-firestore.min.js" defer></script>
 
   <!-- State & Controller Scripts -->
   <script src="assets/js/dashboard-engine.min.js" defer></script>
   <script src="assets/js/report-pdf-generator.min.js" defer></script>
-  <script src="assets/js/badge-passport-engine.js" defer></script>
+  <script src="assets/js/badge-passport-engine.min.js" defer></script>
   <script>
     // Self-contained page engine for parent-progress
     const ProgressPageController = (function() {
@@ -909,12 +962,33 @@
         // 3. Setup dropdown selector options
         populateDropdown();
 
-        // 4. Resolve active student ID from query string or select first child
+        // 4. Resolve active student ID from query string (studentId, id, student, coder) or select first child
         const urlParams = new URLSearchParams(window.location.search);
-        const urlStudentId = urlParams.get('studentId');
-        
-        if (urlStudentId && parentStudents.some(s => s.id === urlStudentId)) {
-          activeStudentId = urlStudentId;
+        const queryTarget = (urlParams.get('studentId') || urlParams.get('id') || urlParams.get('student') || urlParams.get('coder') || '').toLowerCase().trim();
+
+        if (queryTarget) {
+          let matched = parentStudents.find(s => 
+            (s.id && s.id.toLowerCase() === queryTarget) ||
+            (s.firstName && s.firstName.toLowerCase() === queryTarget) ||
+            ((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim() === queryTarget
+          );
+          if (!matched && typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) {
+            const allStudents = DashboardEngine.getStudents() || [];
+            matched = allStudents.find(s => 
+              (s.id && s.id.toLowerCase() === queryTarget) ||
+              (s.firstName && s.firstName.toLowerCase() === queryTarget) ||
+              ((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim() === queryTarget
+            );
+            if (matched && !parentStudents.some(s => s.id === matched.id)) {
+              parentStudents.push(matched);
+              populateDropdown();
+            }
+          }
+          if (matched) {
+            activeStudentId = matched.id;
+          } else {
+            activeStudentId = parentStudents[0].id;
+          }
         } else {
           activeStudentId = parentStudents[0].id;
         }
@@ -1072,16 +1146,25 @@
         var certsEmpty = document.getElementById('certs-empty');
         if (certsContainer && typeof DashboardEngine !== 'undefined') {
           var certs = DashboardEngine.getCertificates ? DashboardEngine.getCertificates(student.firstName + ' ' + student.lastName) : [];
-          if (!certs || certs.length === 0) { if (certsEmpty) certsEmpty.textContent = 'No certificates yet.'; }
-          else {
+          if (!certs || certs.length === 0) { 
+            if (certsEmpty) certsEmpty.textContent = 'No formal certificates issued yet for this track.'; 
+          } else {
             certsContainer.innerHTML = certs.map(function(c) {
-              return '<div style="border:1px solid #e0e7ff;border-radius:8px;padding:1rem;background:#f5f3ff;">' +
-                '<div style="margin-bottom:0.5rem;"><span data-stem-icon="stem-terminal" data-icon-size="36"></span></div>' +
-                '<strong style="font-family:Fredoka,sans-serif;color:#4338ca;font-size:0.95rem;">' + (c.program || c.title || 'Certificate') + '</strong>' +
-                '<p style="font-size:0.75rem;color:#6b6b8a;margin:0.25rem 0 0;">' + (c.credential_id || '') + '</p>' +
-                '<p style="font-size:0.75rem;color:#6b6b8a;margin:0.25rem 0 0;">' + (c.issue_date ? new Date(c.issue_date).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}) : "") + '</p>' +
+              return '<div class="bg-gradient-to-br from-indigo-50/60 via-white to-purple-50/40 border border-indigo-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">' +
+                '<div>' +
+                  '<div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center mb-3 shadow-sm">' +
+                    '<i data-lucide="award" class="w-5 h-5"></i>' +
+                  '</div>' +
+                  '<h4 class="font-outfit font-bold text-slate-800 text-base leading-snug">' + (c.program || c.title || 'Certificate of Completion') + '</h4>' +
+                  '<span class="inline-block font-mono text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-md mt-2 border border-indigo-200/60">' + (c.credential_id || 'STEM-CERT-2026') + '</span>' +
+                '</div>' +
+                '<div class="mt-4 pt-3 border-t border-indigo-50 flex items-center justify-between text-xs text-slate-500">' +
+                  '<span>Issued: ' + (c.issue_date ? new Date(c.issue_date).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) : "Verified") + '</span>' +
+                  '<span class="font-bold text-emerald-600 flex items-center gap-1"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Verified</span>' +
+                '</div>' +
               '</div>';
             }).join('');
+            if (window.lucide) lucide.createIcons();
           }
         }
 
@@ -1109,18 +1192,21 @@
             });
           }
 
-          if (!studentSessions.length) { attTable.innerHTML = "<p style='color:#6b6b8a;font-size:0.875rem;'>No sessions recorded yet.</p>"; }
-          else {
+          if (!studentSessions.length) { 
+            attTable.innerHTML = "<p class='text-xs text-slate-500 p-6 text-center'>No recorded attendance sessions found yet for this student.</p>"; 
+          } else {
             studentSessions.sort(function(a,b) { return new Date(b.date) - new Date(a.date); });
-            attTable.innerHTML = "<table style='width:100%;border-collapse:collapse;font-size:0.875rem;'><thead><tr style='background:#f8f9ff;'><th style='padding:8px 12px;text-align:left;color:#6b6b8a;font-weight:600;'>Date</th><th style='padding:8px 12px;text-align:left;color:#6b6b8a;font-weight:600;'>Topic</th><th style='padding:8px 12px;text-align:left;color:#6b6b8a;font-weight:600;'>Tutor</th><th style='padding:8px 12px;text-align:center;color:#6b6b8a;font-weight:600;'>Status</th></tr></thead><tbody>" +
+            attTable.innerHTML = "<table class='w-full text-left border-collapse text-xs'><thead class='bg-slate-50 border-b border-slate-200/80 text-slate-600 font-extrabold uppercase tracking-wider text-[10px]'><tr><th class='p-3 sm:px-4'>Date</th><th class='p-3 sm:px-4'>Topic &amp; Curriculum</th><th class='p-3 sm:px-4'>Instructor</th><th class='p-3 sm:px-4 text-center'>Status</th></tr></thead><tbody class='divide-y divide-slate-100'>" +
             studentSessions.map(function(s,i) {
-              var statusColor = s.attendanceStatus === "present" ? "#22c55e" : s.attendanceStatus === "absent" ? "#ef4444" : "#f59e0b";
-              var statusLabel = s.attendanceStatus === "present" ? "Present" : s.attendanceStatus === "absent" ? "Absent" : "Pending";
-              return "<tr style='border-bottom:1px solid #f1f5f9;" + (i%2?"background:#fafafa":"") + "'>" +
-                "<td style='padding:8px 12px;'>" + (s.date ? new Date(s.date).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) : "N/A") + "</td>" +
-                "<td style='padding:8px 12px;'>" + (s.topic || s.program || "Session") + "</td>" +
-                "<td style='padding:8px 12px;'>" + (s.mentor || s.tutorName || "N/A") + "</td>" +
-                "<td style='padding:8px 12px;text-align:center;'><span style='background:" + statusColor + "22;color:" + statusColor + ";padding:2px 8px;border-radius:12px;font-size:0.75rem;font-weight:600;'>" + statusLabel + "</span></td>" +
+              var isPresent = s.attendanceStatus === "present";
+              var isAbsent = s.attendanceStatus === "absent";
+              var statusBadgeClass = isPresent ? "bg-emerald-50 text-emerald-700 border border-emerald-200/80" : isAbsent ? "bg-rose-50 text-rose-700 border border-rose-200/80" : "bg-amber-50 text-amber-700 border border-amber-200/80";
+              var statusLabel = isPresent ? "Present" : isAbsent ? "Absent" : "Pending";
+              return "<tr class='hover:bg-slate-50/70 transition-colors'>" +
+                "<td class='p-3 sm:px-4 font-semibold text-slate-700 whitespace-nowrap'>" + (s.date ? new Date(s.date).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) : "N/A") + "</td>" +
+                "<td class='p-3 sm:px-4 font-bold text-slate-800'>" + (s.topic || s.program || "Session") + "</td>" +
+                "<td class='p-3 sm:px-4 text-slate-600'>" + (s.mentor || s.tutorName || "Faculty Instructor") + "</td>" +
+                "<td class='p-3 sm:px-4 text-center'><span class='inline-block px-2.5 py-1 rounded-xl text-[10px] font-extrabold uppercase tracking-wider " + statusBadgeClass + "'>" + statusLabel + "</span></td>" +
               "</tr>";
             }).join("") + "</tbody></table>";
           }
@@ -1709,9 +1795,9 @@
             activePassportEra = btn.getAttribute('data-era');
             filterBtns.forEach(b => {
               if (b.getAttribute('data-era') === activePassportEra) {
-                b.className = 'passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all whitespace-nowrap';
+                b.className = 'passport-era-btn min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all whitespace-nowrap flex items-center justify-center';
               } else {
-                b.className = 'passport-era-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap';
+                b.className = 'passport-era-btn min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all whitespace-nowrap flex items-center justify-center';
               }
             });
             renderPassportBadges(pass, student);
@@ -1744,9 +1830,9 @@
                 <span class="text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1" style="background:${eraColor}18;color:${eraColor};">Month ${b.month}</span>
                 <h4 class="text-xs font-black text-slate-800 leading-tight truncate w-full" title="${b.title}">${b.title}</h4>
                 <p class="text-[10px] text-slate-500 mt-0.5 truncate w-full">${b.eraTheme}</p>
-                <button type="button" class="mt-2 text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-0.5">
+                <div class="mt-2.5 w-full min-h-[36px] px-2.5 py-1.5 rounded-xl bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 text-xs font-bold transition-colors flex items-center justify-center gap-1">
                   <span>Explore</span> &rarr;
-                </button>
+                </div>
               </div>
             `;
           } else {
@@ -1867,10 +1953,10 @@
           const pane = document.getElementById(`canvas-tab-${t}`);
           if (!btn || !pane) return;
           if (t === tab) {
-            btn.className = "px-4 py-1.5 rounded-lg text-xs font-bold bg-white text-indigo-700 shadow-sm transition-all";
+            btn.className = "min-h-[38px] px-4 py-2 rounded-lg text-xs font-bold bg-white text-indigo-700 shadow-sm transition-all flex items-center justify-center";
             pane.classList.remove('hidden');
           } else {
-            btn.className = "px-4 py-1.5 rounded-lg text-xs font-bold text-gray-500 hover:text-gray-900 transition-all";
+            btn.className = "min-h-[38px] px-4 py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition-all flex items-center justify-center";
             pane.classList.add('hidden');
           }
         });
@@ -1900,7 +1986,7 @@
         container.innerHTML = list.map((v, i) => `
           <div class="flex items-center justify-between p-3.5 gap-4">
             <span class="text-xs font-mono font-bold text-slate-600 truncate max-w-[120px]">${v.key}</span>
-            <input type="text" value="${v.value}" onchange="ProjectCanvasController.updateVariable('${activeNode}', ${i}, this.value)" class="bg-slate-50 border border-slate-200 text-xs font-semibold rounded-lg px-2.5 py-1.5 text-slate-800 text-right focus:outline-none focus:bg-white focus:border-indigo-500 w-36 transition-colors">
+            <input type="text" value="${v.value}" onchange="ProjectCanvasController.updateVariable('${activeNode}', ${i}, this.value)" class="bg-slate-50 border border-slate-200 text-xs font-semibold rounded-lg px-3 py-2 min-h-[36px] text-slate-800 text-right focus:outline-none focus:bg-white focus:border-indigo-500 w-36 transition-colors">
           </div>
         `).join('');
       }
@@ -2058,9 +2144,9 @@
     });
   </script>
 
-<script src="assets/js/stemulus-icons.js" defer></script>
-<script src="assets/js/scroll-choreography.js" defer></script>
-<script src="assets/js/stemulus-interactive.js" defer></script>
+<script src="assets/js/stemulus-icons.min.js" defer></script>
+<script src="assets/js/scroll-choreography.min.js" defer></script>
+<script src="assets/js/stemulus-interactive.min.js" defer></script>
 
 </body>
 </html>

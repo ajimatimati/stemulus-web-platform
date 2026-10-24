@@ -136,6 +136,7 @@ const TutorEngine = (function() {
         renderSchedule();
         renderNotifications();
         injectReportModal();
+        injectCoverageModal();
     }
 
     function renderAssignedStudents() {
@@ -166,8 +167,8 @@ const TutorEngine = (function() {
                 if (pass && pass.currentBadge) {
                     var cb = pass.currentBadge;
                     var eraCol = (pass.currentEra && pass.currentEra.color) || '#f97316';
-                    badgeHtml = `<button type="button" onclick="BadgePassportEngine.openBadgeModal(${cb.id || 1}, ${s.age || 10})" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold transition-all hover:brightness-105 cursor-pointer" style="background:${eraCol}15;color:${eraCol};border:1px solid ${eraCol}35;" title="View ${cb.title} (Month ${pass.unlockedCount})">
-                        <img src="${cb.image}" alt="" class="w-3.5 h-3.5 object-contain">
+                    badgeHtml = `<button type="button" onclick="BadgePassportEngine.openBadgeModal(${cb.id || 1}, ${s.age || 10})" class="inline-flex items-center gap-1.5 px-3 py-1 min-h-[36px] rounded-full text-[11px] font-bold transition-all hover:brightness-105 cursor-pointer" style="background:${eraCol}15;color:${eraCol};border:1px solid ${eraCol}35;" title="View ${cb.title} (Month ${pass.unlockedCount})">
+                        <img src="${cb.image}" alt="" class="w-4 h-4 object-contain">
                         <span>Month ${pass.unlockedCount}: ${cb.title}</span>
                     </button>`;
                 }
@@ -176,13 +177,20 @@ const TutorEngine = (function() {
             const meetUrl = s.meetLink || s.classroomLink || '';
             const meetCode = meetUrl ? meetUrl.replace('https://meet.google.com/', '') : '';
             const meetPill = meetUrl ? `
-                <a href="${meetUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-[11px] font-mono font-semibold transition-colors no-underline" title="Dedicated Google Meet Classroom (Automatically Recorded for Student Safeguarding & Quality Assurance): ${meetUrl}">
-                    <i data-lucide="video" style="width:12px;height:12px;" class="text-blue-600"></i>
+                <a href="${meetUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[38px] rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-[11px] font-mono font-semibold transition-colors no-underline shadow-xs" title="Dedicated Google Meet Classroom (Automatically Recorded for Student Safeguarding & Quality Assurance): ${meetUrl}">
+                    <i data-lucide="video" style="width:13px;height:13px;" class="text-blue-600"></i>
                     <span>${meetCode}</span>
                     <span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-100/80 px-1.5 py-0.5 rounded font-sans ml-0.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                         Auto-Recorded
                     </span>
+                </a>
+            ` : '';
+
+            const classroomPill = (s.googleClassroom && s.googleClassroom.tutorInviteLink) ? `
+                <a href="${s.googleClassroom.tutorInviteLink}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[38px] rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-[11px] font-mono font-semibold transition-colors no-underline shadow-xs" title="Join Google Classroom as Teacher/Mentor: ${s.googleClassroom.courseName}">
+                    <i data-lucide="book-open" style="width:13px;height:13px;" class="text-indigo-600"></i>
+                    <span>Classroom (${s.googleClassroom.enrollmentCode || 'Join'})</span>
                 </a>
             ` : '';
 
@@ -197,6 +205,7 @@ const TutorEngine = (function() {
                                 <h3 class="font-bold text-slate-900 text-sm leading-tight">${fullName}</h3>
                                 <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Active</span>
                                 ${meetPill}
+                                ${classroomPill}
                             </div>
                             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 mt-1">
                                 <span class="font-semibold text-indigo-600">${track}</span>
@@ -207,10 +216,10 @@ const TutorEngine = (function() {
                     </div>
                     <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
                         <a href="tutor-attendance-create.html?studentId=${s.id}&course=${encodeURIComponent(track)}"
-                           class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-md inline-flex items-center gap-1.5 no-underline">
+                           class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3.5 py-2 min-h-[38px] rounded-xl transition-all shadow-md inline-flex items-center justify-center gap-1.5 no-underline">
                             <i data-lucide="clipboard-check" style="width:14px;height:14px;"></i> + Log Attendance
                         </a>
-                        <a href="tutor-students.html" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors" title="View Student Profile">
+                        <a href="tutor-students.html" style="width:38px;min-width:38px;height:38px;min-height:38px;flex-shrink:0;" class="w-10 h-10 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors shrink-0" title="View Student Profile" aria-label="View Student Profile">
                             <i data-lucide="chevron-right" style="width:18px;height:18px;"></i>
                         </a>
                     </div>
@@ -364,10 +373,10 @@ const TutorEngine = (function() {
 
             const actionBtn = (!hasAttendedLog)
                 ? `<a href="tutor-attendance-create.html?scheduleId=${s.id}&studentId=${s.studentId || ''}&date=${s.date || ''}&course=${encodeURIComponent(s.course || '')}"
-                        class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition-all shadow-md inline-flex items-center gap-1.5 no-underline">
+                        class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3.5 py-2 min-h-[38px] rounded-xl transition-all shadow-md inline-flex items-center justify-center gap-1.5 no-underline">
                         <i data-lucide="clipboard-check" style="width:14px;height:14px;"></i> Log Class & Attendance
                    </a>`
-                : `<span class="text-xs text-emerald-600 font-bold bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">Logged</span>`;
+                : `<span class="text-xs text-emerald-700 font-bold bg-emerald-50 px-3 py-2 min-h-[38px] inline-flex items-center rounded-xl border border-emerald-200">Logged</span>`;
 
             return `
                 <div class="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
@@ -386,11 +395,17 @@ const TutorEngine = (function() {
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+                    <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto flex-wrap">
                         <a href="join-class.html?id=${encodeURIComponent(s.id)}&role=tutor&url=${encodeURIComponent(s.link || 'https://meet.google.com')}" target="_blank" rel="noopener noreferrer" 
-                            class="bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-semibold text-xs px-3 py-2 rounded-xl transition-colors flex items-center gap-1.5 shadow-sm" title="Launch Google Meet session (Auto-records for safeguarding)">
+                            class="bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-semibold text-xs px-3.5 py-2 min-h-[38px] rounded-xl transition-colors inline-flex items-center gap-1.5 shadow-sm" title="Launch Google Meet session (Auto-records for safeguarding)">
                             <i data-lucide="video" class="w-3.5 h-3.5 text-emerald-600"></i> Google Meet
                         </a>
+                        ${(!hasAttendedLog && !isDone) ? `
+                        <button type="button" onclick="TutorEngine.openCoverageModal('${s.id}')"
+                            class="bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 font-semibold text-xs px-3 py-2 min-h-[38px] rounded-xl transition-colors inline-flex items-center gap-1.5 shadow-sm cursor-pointer" title="Request Peer Coverage / Report Sick Leave for this class">
+                            <i data-lucide="users" class="w-3.5 h-3.5 text-purple-600"></i> Coverage
+                        </button>
+                        ` : ''}
                         ${actionBtn}
                     </div>
                 </div>
@@ -560,8 +575,8 @@ const TutorEngine = (function() {
             <div class="bg-white rounded-3xl p-6 max-w-lg w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn max-h-[90vh] overflow-y-auto">
                 <div class="flex justify-between items-center pb-2 border-b border-slate-100">
                     <h3 class="text-lg font-nunito font-bold text-gray-800">Submit Session Report</h3>
-                    <button type="button" onclick="TutorEngine.closeReportModal()" class="text-gray-400 hover:text-gray-650 transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <button type="button" onclick="TutorEngine.closeReportModal()" class="w-10 h-10 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer" aria-label="Close modal">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
 
@@ -623,6 +638,146 @@ const TutorEngine = (function() {
         `;
         document.body.appendChild(modal);
         document.getElementById('tutor-report-form').addEventListener('submit', submitReportForm);
+    }
+
+    function openCoverageModal(scheduleId) {
+        const schedules = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSchedules) ? DashboardEngine.getSchedules() : [];
+        const session = schedules.find(s => s && s.id === scheduleId);
+        if (!session) return;
+
+        const modal = document.getElementById('tutor-coverage-modal');
+        if (modal) {
+            document.getElementById('cov-schedule-id').value = session.id;
+            document.getElementById('cov-student-name').textContent = session.studentName || 'Student';
+            document.getElementById('cov-course').textContent = session.course || 'Coding Track';
+            document.getElementById('cov-date-time').textContent = `${session.dayOfWeek ? session.dayOfWeek + ', ' : ''}${session.date} at ${session.time} WAT (${session.duration || 60} mins)`;
+
+            // Compute candidate substitutes
+            const subContainer = document.getElementById('cov-suggested-substitutes');
+            if (subContainer) {
+                let substitutes = [];
+                if (typeof RescheduleConciergeEngine !== 'undefined') {
+                    substitutes = RescheduleConciergeEngine.findQualifiedSubstitutes(session.course, 'English', session.date, session.time, session.duration || 60, currentTutor ? currentTutor.id : null);
+                }
+                if (substitutes && substitutes.length > 0) {
+                    subContainer.innerHTML = `
+                        <div class="p-3 bg-indigo-50/70 border border-indigo-200 rounded-xl space-y-2">
+                            <p class="text-[11px] font-bold text-indigo-900 uppercase tracking-wider flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Vetted Available Peer Substitutes (${substitutes.length})
+                            </p>
+                            <div class="space-y-1">
+                                ${substitutes.map(function(sub) {
+                                    return '<div class="flex items-center justify-between text-xs text-indigo-950 bg-white p-2 rounded-lg border border-indigo-100">' +
+                                        '<span><strong>Coach ' + sub.name + '</strong></span>' +
+                                        '<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Zero Conflict</span>' +
+                                    '</div>';
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    subContainer.innerHTML = `
+                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-500">
+                            Our Concierge will alert Admin to assign coverage from our on-call educator network.
+                        </div>
+                    `;
+                }
+            }
+
+            modal.style.display = 'flex';
+        }
+    }
+
+    function closeCoverageModal() {
+        const modal = document.getElementById('tutor-coverage-modal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function submitCoverageForm(e) {
+        e.preventDefault();
+        const scheduleId = document.getElementById('cov-schedule-id').value;
+        const reason = document.getElementById('cov-reason').value;
+        const notes = document.getElementById('cov-notes').value;
+
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.submitCoverageRequest) {
+            DashboardEngine.submitCoverageRequest({
+                scheduleId: scheduleId,
+                tutorId: currentTutor ? currentTutor.id : '',
+                tutorName: currentTutor ? currentTutor.name : '',
+                tutorEmail: currentTutor ? currentTutor.email : '',
+                reason: reason,
+                notes: notes
+            });
+        }
+
+        // Show toast
+        const toast = document.createElement('div');
+        toast.className = 'fixed top-4 right-4 z-[9999] bg-purple-700 text-white px-5 py-3 rounded-xl shadow-xl text-xs font-bold animate-fadeIn flex items-center gap-2';
+        toast.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Class coverage request submitted! Admin Operations Radar alerted.';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+
+        closeCoverageModal();
+        renderSchedule();
+        renderNotifications();
+    }
+
+    function injectCoverageModal() {
+        if (document.getElementById('tutor-coverage-modal')) return;
+        const modal = document.createElement('div');
+        modal.id = 'tutor-coverage-modal';
+        modal.style.display = 'none';
+        modal.className = 'fixed inset-0 z-50 items-center justify-center p-4 bg-black/75 backdrop-blur-sm';
+        modal.innerHTML = `
+            <div class="bg-white rounded-3xl p-6 max-w-md w-full border border-slate-100 shadow-2xl space-y-4 animate-fadeIn">
+                <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                    <div>
+                        <h3 class="text-base font-extrabold text-slate-900">🚨 Request Class Coverage</h3>
+                        <p class="text-[11px] text-slate-500">Autonomous peer substitute matching & admin escalation</p>
+                    </div>
+                    <button type="button" onclick="TutorEngine.closeCoverageModal()" class="w-10 h-10 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer" aria-label="Close modal">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+
+                <form id="tutor-coverage-form" class="space-y-3.5">
+                    <input type="hidden" id="cov-schedule-id">
+
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Session to Cover</p>
+                        <p class="font-bold text-slate-900 text-sm"><span id="cov-student-name"></span> — <span id="cov-course" class="text-indigo-600"></span></p>
+                        <p id="cov-date-time" class="text-xs text-slate-500 mt-0.5"></p>
+                    </div>
+
+                    <!-- Suggested Peer Substitutes -->
+                    <div id="cov-suggested-substitutes"></div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Reason for Coverage</label>
+                        <select id="cov-reason" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500 transition-colors">
+                            <option value="Illness / Medical Leave">Illness / Medical Leave</option>
+                            <option value="Internet / Power Grid Outage">Internet / Power Grid Outage</option>
+                            <option value="Academic / University Exam Conflict">Academic / University Exam Conflict</option>
+                            <option value="Family / Urgent Emergency">Family / Urgent Emergency</option>
+                            <option value="Device / Hardware Technical Fault">Device / Hardware Technical Fault</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Handover Notes for Substitute</label>
+                        <textarea id="cov-notes" rows="2" placeholder="e.g. Completed dinosaur sprite last week; today starting loop animations in Scratch..."
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-purple-500 transition-colors"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 min-h-[40px] rounded-xl transition-all shadow-md text-xs flex items-center justify-center gap-1.5 mt-2 cursor-pointer">
+                        <span>Dispatch Coverage Request</span>
+                    </button>
+                </form>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('tutor-coverage-form').addEventListener('submit', submitCoverageForm);
     }
 
     const DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -688,7 +843,7 @@ const TutorEngine = (function() {
                             const isChecked = Array.isArray(daySlots) && daySlots.includes(slot.id);
                             return `
                                 <td class="py-2.5 px-1">
-                                    <label class="inline-flex items-center justify-center p-1 cursor-pointer">
+                                    <label class="min-w-[36px] min-h-[36px] inline-flex items-center justify-center p-1 cursor-pointer">
                                         <input type="checkbox" name="avail-${dayKey}" value="${slot.id}" ${isChecked ? 'checked' : ''}
                                             class="w-4 h-4 rounded text-orange-500 focus:ring-orange-400 border-slate-300">
                                     </label>
@@ -818,7 +973,9 @@ const TutorEngine = (function() {
         closeReportModal,
         openProfileModal,
         closeProfileModal,
-        saveProfile
+        saveProfile,
+        openCoverageModal,
+        closeCoverageModal
     };
 })();
 

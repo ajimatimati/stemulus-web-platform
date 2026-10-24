@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="portal-view">
 <head>
   <meta charset="UTF-8">
   <link rel="manifest" href="/site.webmanifest">
@@ -13,9 +13,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="assets/vendor/lucide.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="assets/js/portal-error-tracker.js"></script>
+  <script src="assets/js/portal-error-tracker.min.js"></script>
 
   <!-- STEMulus Portal Design System -->
   <link rel="stylesheet" href="assets/css/tailwind-output.css">
@@ -40,15 +40,139 @@
     .hero-3d { position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); width: 200px; height: auto; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15)); }
     .hero-accent { position: absolute; pointer-events: none; }
 
-    .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-    @media (max-width: 960px) { .dash-grid { grid-template-columns: 1fr; } .hero-3d { display: none; } }
+    .dash-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      box-sizing: border-box;
+    }
+    .dash-grid > div {
+      min-width: 0 !important;
+      max-width: 100% !important;
+    }
+    @media (max-width: 960px) {
+      .dash-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+      }
+      .hero-3d { display: none; }
+    }
 
-    .dash-card { background: white; border-radius: 24px; padding: 1.5rem; border: 1px solid var(--border-soft); box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 1.5rem; }
-    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+    .dash-card {
+      background: white;
+      border-radius: 24px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      position: relative;
+      margin-bottom: 1.5rem;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .dash-card:hover {
+      box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
     .card-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 10px; }
 
-    .action-btn-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #F8FAFC; border-radius: 16px; border: 1px solid var(--border-soft); text-decoration: none; color: var(--text-main); font-weight: 700; font-size: 14px; transition: all 0.2s; }
+    .action-btn-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #F8FAFC; border-radius: 16px; border: 1px solid var(--border-soft); text-decoration: none; color: var(--text-main); font-weight: 700; font-size: 14px; transition: all 0.2s; min-height: 40px !important; box-sizing: border-box !important; }
     .action-btn-item:hover { background: #FFF5F2; border-color: var(--brand-orange); color: var(--brand-orange); }
+
+    /* Mobile Navbar Optimization & WCAG Touch Target Compliance */
+    @media (max-width: 639px) {
+      .portal-nav .nav-desktop-only {
+        display: none !important;
+      }
+    }
+    @media (min-width: 640px) {
+      .portal-nav .nav-desktop-only {
+        display: inline-flex !important;
+      }
+    }
+
+    #sidebar-logout-btn {
+      min-height: 40px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .btn-3d {
+      min-height: 38px !important;
+      box-sizing: border-box !important;
+    }
+    #parent-projects-showcase button,
+    #children-container button,
+    #children-container a.btn-3d,
+    #sessions-container button,
+    #sessions-container a.btn-3d {
+      min-height: 38px !important;
+      box-sizing: border-box !important;
+    }
+    #children-container a[href*="wa.me"] {
+      min-height: 36px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      padding: 6px 12px !important;
+      box-sizing: border-box !important;
+    }
+
+    @media (max-width: 640px) {
+      .dash-grid {
+        padding: 0 0.5rem !important;
+        margin-left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .dash-card {
+        padding: 0.875rem 0.625rem !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+      }
+      #children-container,
+      #sessions-container,
+      #parent-projects-showcase {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+      }
+      #children-container > div {
+        padding: 0.875rem 0.625rem !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      #children-container .flex.items-center.justify-between {
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+      }
+      #children-container a[href*="meet.google.com"],
+      #children-container a[href*="classroom.google.com"] {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .parent-hero { padding: 1.75rem 2.25rem !important; margin-bottom: 1.25rem !important; border-radius: 22px !important; }
+      .hero-title { font-size: 26px !important; }
+      .hero-sub { font-size: 13.5px !important; margin-bottom: 14px !important; }
+      .hero-3d { width: 140px !important; }
+      .dash-card { padding: 1.25rem !important; margin-bottom: 1.25rem !important; border-radius: 18px !important; }
+      .pill-toolbar { display: none !important; }
+    }
 
     @keyframes spin { to { transform: rotate(360deg); } }
     #sidebar { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); z-index: 50 !important; }
@@ -264,7 +388,7 @@
 })();
 </script>
 </head>
-<body>
+<body class="dashboard-page">
 
   <div id="sidebar-overlay" class="sidebar-overlay lg:hidden"></div>
   <!-- Parent Sidebar -->
@@ -331,14 +455,15 @@
         </div>
       </div>
 
-      <div style="display:flex; align-items:center; gap:12px;">
-        <a href="parent-progress.html" class="btn-3d btn-3d-secondary secondary" style="font-size:13px; padding:8px 16px;">
+      <div style="display:flex; align-items:center; gap:8px;" class="shrink-0">
+        <div id="mount-parent-dual-switcher" class="nav-desktop-only"></div>
+        <a href="parent-progress.html" class="btn-3d btn-3d-secondary secondary nav-desktop-only" style="font-size:13px; padding:8px 16px; min-height:38px;">
           <i data-lucide="bar-chart-2" style="width:16px; height:16px;"></i> Progress
         </a>
-        <a href="enroll.html" class="btn-3d orange" style="font-size:13px; padding:8px 16px;">
+        <a href="enroll.html" class="btn-3d orange nav-desktop-only" style="font-size:13px; padding:8px 16px; min-height:38px;">
           <i data-lucide="plus-circle" style="width:16px;"></i> Enroll
         </a>
-        <button id="logout-btn" style="background:none; border:none; color:#64748b; cursor:pointer; padding:8px;" title="Sign Out">
+        <button id="logout-btn" style="background:none; border:none; color:#64748b; cursor:pointer; padding:8px; min-width:38px; min-height:38px; display:inline-flex; align-items:center; justify-content:center;" title="Sign Out">
           <i data-lucide="log-out" style="width:20px;"></i>
         </button>
       </div>
@@ -410,7 +535,7 @@
             <img src="images/portal/standalone/star-badge-3d.png" alt="" width="28" height="28" style="object-fit:contain;">
             Student Project Showcase
           </h2>
-          <a href="parent-progress.html" class="text-xs text-indigo-600 font-bold hover:underline flex items-center gap-1">
+          <a href="parent-progress.html" class="text-xs text-indigo-600 font-bold hover:underline inline-flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-indigo-50 transition-colors" style="min-height: 36px !important; display: inline-flex !important; align-items: center !important;">
             Full Portfolio &rarr;
           </a>
         </div>
@@ -434,6 +559,25 @@
           <!-- Rendered by parent-engine.js -->
         </div>
         <div id="schedule-container" style="display:none;"></div>
+      </div>
+
+      <!-- Tuition Invoicing & Receipts Vault -->
+      <div class="dash-card" id="billing-vault-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <img src="images/portal/standalone/gift-3d.png" alt="" width="28" height="28" style="object-fit:contain;">
+            Tuition Invoicing &amp; Receipts Vault
+          </h2>
+          <button type="button" onclick="ParentEngine.openInternationalPaymentGuide()" class="btn-3d text-xs py-1.5 px-3 flex items-center gap-1.5 font-bold cursor-pointer" style="border-radius:12px; min-height:36px;">
+            <i data-lucide="globe" class="w-3.5 h-3.5"></i> Payment Guide
+          </button>
+        </div>
+        <p class="text-xs text-slate-500 -mt-2 mb-3 leading-relaxed">
+          Monthly tuition renewal cycles, verified receipts, and multi-currency bank accounts (NGN, USD, Remitly, Sendwave).
+        </p>
+        <div id="parent-billing-vault-container" style="display:flex; flex-direction:column; gap:12px;">
+          <!-- Rendered dynamically by parent-engine.js -->
+        </div>
       </div>
     </div>
 
@@ -515,10 +659,13 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="assets/js/firebase-config.min.js" defer></script>
+  <script src="assets/js/stemulus-firestore.min.js" defer></script>
   <script src="assets/js/dashboard-engine.min.js?v=20261017d" defer></script>
-  <script src="assets/js/billing-engine.js" defer></script>
+  <script src="assets/js/billing-engine.min.js" defer></script>
+  <script src="assets/js/payment-gateway-engine.min.js" defer></script>
   <script src="assets/js/report-pdf-generator.min.js" defer></script>
-  <script src="assets/js/badge-passport-engine.js" defer></script>
+  <script src="assets/js/badge-passport-engine.min.js" defer></script>
+  <script src="assets/js/reschedule-concierge-engine.min.js" defer></script>
   <script src="assets/js/parent-engine.min.js?v=20261017d" defer></script>
   <script src="assets/js/portal-scene-engine.min.js" defer></script>
 
@@ -685,7 +832,23 @@
     }
   })();
   </script>
-  <script src="assets/js/class-reminder-engine.js" defer></script>
+  <script src="assets/js/classroom-rejoin-beacon.min.js" defer></script>
+  <script src="assets/js/class-reminder-engine.min.js" defer></script>
+  <script src="assets/js/gemini-config.min.js"></script>
+  <script src="assets/js/gemini-service.min.js"></script>
+  <script src="assets/js/i18n-visual-engine.min.js" defer></script>
+  <script src="assets/js/bilingual-classroom-engine.min.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      setTimeout(function() {
+        var el = document.getElementById("mount-parent-dual-switcher");
+ if (typeof ClassroomRejoinBeacon !== "undefined") { ClassroomRejoinBeacon.init(); }
+        if (el && typeof I18nVisualEngine !== "undefined") {
+          el.innerHTML = I18nVisualEngine.renderSwitcherWidgetHTML();
+        }
+      }, 500);
+    });
+  </script>
   <script>
     window.addEventListener('storage', function(e) {
       if (e.key === 'stemulus_session' && !e.newValue) {
@@ -697,9 +860,10 @@
     });
   </script>
 
-<script src="assets/js/stemulus-icons.js" defer></script>
-<script src="assets/js/scroll-choreography.js" defer></script>
-<script src="assets/js/stemulus-interactive.js" defer></script>
+<script src="assets/js/stemulus-icons.min.js" defer></script>
+<script src="assets/js/scroll-choreography.min.js" defer></script>
+<script src="assets/js/stemulus-interactive.min.js" defer></script>
+<script src="assets/js/mulu-widget.min.js" defer></script>
 
 </body>
 </html>

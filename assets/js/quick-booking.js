@@ -454,7 +454,7 @@ const QuickBooking = (function() {
                         <strong style="color:#f4600c;">45 Mins:</strong> 10m Goal Assessment · 25m Live Build · 10m Parent Debrief
                     </div>
 
-                    <form id="qb-booking-form" name="free-class-booking">
+                    <form id="qb-booking-form" name="free-class-booking" method="POST" action="/" data-netlify="true">
                         <!-- Netlify forms field -->
                         <input type="hidden" name="form-name" value="free-class-booking">
                         <input type="hidden" name="age_group" value="${attr.ageGroup}">
@@ -616,7 +616,7 @@ const QuickBooking = (function() {
                 <strong style="color:#f4600c;">45 Mins:</strong> 10m Goal Assessment · 25m Live Build · 10m Parent Debrief
             </div>
 
-            <form id="qb-booking-form" name="free-class-booking">
+            <form id="qb-booking-form" name="free-class-booking" method="POST" action="/" data-netlify="true">
                 <input type="hidden" name="form-name" value="free-class-booking">
                 <input type="hidden" name="age_group" value="${attr.ageGroup}">
                 <input type="hidden" name="utm_source" value="${attr.utmSource}">
@@ -790,8 +790,9 @@ const QuickBooking = (function() {
             });
 
             // Trigger success card layout
-            showSuccessState(bookingData);
-            saveBookingLocally(bookingData);
+        const targetWrap = form.closest('#quick-booking-form-wrap') || document.getElementById('quick-booking-form-wrap');
+        showSuccessState(bookingData, targetWrap);
+        saveBookingLocally(bookingData);
 
         } catch (error) {
             console.warn('[QuickBooking] Submission error:', error);
@@ -837,7 +838,7 @@ const QuickBooking = (function() {
     async function sendParentEmail(_data) { return { skipped: true }; }
 
     /**
-     * Send push notification to admin via NTFY
+     * Send push notification to admin via NTFY (Netlify proxy with direct ntfy.sh fallback)
      */
     async function sendNtfyNotification(data) {
         const title = `Discovery Session: ${data.studentName} [${data.country || 'Global'}]`;
@@ -852,6 +853,7 @@ Contact Pref: ${data.contactPref}
 Booking ID: ${data.bookingId}
         `.trim();
 
+        // Tier 1: Netlify serverless proxy
         try {
             const response = await fetch('/.netlify/functions/notify', {
                 method: 'POST',
@@ -866,11 +868,37 @@ Booking ID: ${data.bookingId}
                 })
             });
 
-            if (!response.ok) throw new Error('NTFY post failed');
-            return { success: true };
+            if (response.ok) return { success: true };
+            console.warn('[QuickBooking] Netlify notify returned non-200, activating direct ntfy.sh fallback...');
         } catch (error) {
-            console.warn('[QuickBooking] NTFY failed:', error);
-            return { success: false, error };
+            console.warn('[QuickBooking] Netlify notify error, activating direct ntfy.sh fallback:', error);
+        }
+
+        // Tier 2: Direct client-side fetch to ntfy.sh (permitted in CSP connect-src)
+        try {
+            const cleanTitle = (title || '').replace(/[^\x20-\x7E]/g, ' ').trim();
+            const directHeaders = {
+                'Priority': 'high',
+                'Tags': 'zap,sparkles,calendar',
+                'Title': cleanTitle
+            };
+            await Promise.allSettled([
+                fetch(`https://ntfy.sh/${CONFIG.NTFY_TOPIC}`, {
+                    method: 'POST',
+                    headers: directHeaders,
+                    body: message
+                }),
+                fetch('https://ntfy.sh/stemulus-admin-alerts', {
+                    method: 'POST',
+                    headers: directHeaders,
+                    body: message
+                })
+            ]);
+            console.log('[QuickBooking] Direct ntfy.sh fallback sent successfully');
+            return { success: true, fallback: true };
+        } catch (err2) {
+            console.warn('[QuickBooking] Direct ntfy fallback also failed:', err2);
+            return { success: false, error: err2 };
         }
     }
 
@@ -898,10 +926,10 @@ Booking ID: ${data.bookingId}
     /**
      * Swap form view with success state card
      */
-    function showSuccessState(data) {
+    function showSuccessState(data, targetWrap) {
         triggerConfetti();
 
-        const wrap = document.getElementById('quick-booking-form-wrap');
+        const wrap = targetWrap || document.getElementById('quick-booking-form-wrap');
         if (!wrap) return;
 
         const waMsgText = `Hi! I just reserved a Free Discovery Session for my child (${data.studentName}) [${data.country || 'Global'}]. Booking ID: ${data.bookingId}. Let's schedule our 45-minute session!`;
@@ -1026,6 +1054,27 @@ Booking ID: ${data.bookingId}
             });
             localStorage.setItem('stemulus_bookings', JSON.stringify(bookings));
 
+            // Sync to pending enrollments queue for Admin Dashboard review
+            try {
+                const pending = JSON.parse(localStorage.getItem('stemulus_pending_enrollments') || '[]');
+                pending.push({
+                    parentName: data.parentName,
+                    email: data.email,
+                    phone: data.phone,
+                    country: data.country || 'Global',
+                    studentFirstName: data.studentName.split(',')[0].trim(),
+                    studentLastName: 'Inquiry',
+                    studentAge: data.studentName.includes('age') ? data.studentName.split('age')[1].trim() : (data.ageGroup || ''),
+                    program: 'Discovery Session (Free 45-Min Trial)',
+                    timestamp: data.timestamp,
+                    isFreeTrial: true,
+                    bookingId: data.bookingId
+                });
+                localStorage.setItem('stemulus_pending_enrollments', JSON.stringify(pending));
+            } catch (pErr) {
+                console.warn('[QuickBooking] Pending queue sync skipped:', pErr);
+            }
+
             // Central DashboardEngine sync
             if (typeof DashboardEngine !== 'undefined') {
                 DashboardEngine.addEnrollment({
@@ -1064,7 +1113,7 @@ Booking ID: ${data.bookingId}
                         </div>
                         <h2 class="qb-title" style="margin-top:0;">Free Coding Discovery Session</h2>
                         <p class="qb-subtitle">A live 1-on-1 session with a senior mentor: 10m assessment & goals, 25m interactive build, 10m personalized learning roadmap.</p>
-                        <form id="qb-booking-form" name="free-class-booking">
+                        <form id="qb-booking-inline-form" name="free-class-booking" method="POST" action="/" data-netlify="true">
                             <input type="hidden" name="form-name" value="free-class-booking">
                             <input type="hidden" name="utm_source" value="${attr.utmSource}">
                             <input type="hidden" name="utm_medium" value="${attr.utmMedium}">
@@ -1136,26 +1185,39 @@ Booking ID: ${data.bookingId}
                 </div>
             `;
 
-            // Style listeners
-            const waLabel = document.getElementById('qb-pref-wa-label');
-            const emailLabel = document.getElementById('qb-pref-email-label');
+            // Style listeners (scoped to container)
+            const waLabel = container.querySelector('#qb-pref-wa-label') || container.querySelector('.qb-pref-label:first-child');
+            const emailLabel = container.querySelector('#qb-pref-email-label') || container.querySelector('.qb-pref-label:last-child');
 
-            waLabel.querySelector('input').addEventListener('change', function() {
-                if (this.checked) {
-                    waLabel.classList.add('selected');
-                    emailLabel.classList.remove('selected');
+            if (waLabel) {
+                const waInput = waLabel.querySelector('input');
+                if (waInput) {
+                    waInput.addEventListener('change', function() {
+                        if (this.checked) {
+                            waLabel.classList.add('selected');
+                            if (emailLabel) emailLabel.classList.remove('selected');
+                        }
+                    });
                 }
-            });
+            }
 
-            emailLabel.querySelector('input').addEventListener('change', function() {
-                if (this.checked) {
-                    emailLabel.classList.add('selected');
-                    waLabel.classList.remove('selected');
+            if (emailLabel) {
+                const emailInput = emailLabel.querySelector('input');
+                if (emailInput) {
+                    emailInput.addEventListener('change', function() {
+                        if (this.checked) {
+                            emailLabel.classList.add('selected');
+                            if (waLabel) waLabel.classList.remove('selected');
+                        }
+                    });
                 }
-            });
+            }
 
-            // Form submit listener
-            document.getElementById('qb-booking-form').addEventListener('submit', handleFormSubmit);
+            // Form submit listener (strictly scoped to the inline form)
+            const inlineForm = container.querySelector('form');
+            if (inlineForm) {
+                inlineForm.addEventListener('submit', handleFormSubmit);
+            }
         }
     };
 

@@ -214,6 +214,7 @@ Source: ${data.referral}
 ID: ${data.bookingId}
         `.trim();
 
+        // Tier 1: Netlify serverless proxy
         try {
             const response = await fetch('/.netlify/functions/notify', {
                 method: 'POST',
@@ -228,11 +229,37 @@ ID: ${data.bookingId}
                 })
             });
 
-            if (!response.ok) throw new Error('NTFY request failed');
-            return { success: true };
+            if (response.ok) return { success: true };
+            console.warn('[Booking] Netlify notify returned non-200, activating direct ntfy.sh fallback...');
         } catch (error) {
             console.warn('[Booking] NTFY notification failed:', error);
-            return { success: false, error };
+        }
+
+        // Tier 2: Direct client-side fetch to ntfy.sh (permitted in CSP connect-src)
+        try {
+            const cleanTitle = (title || '').replace(/[^\x20-\x7E]/g, ' ').trim();
+            const directHeaders = {
+                'Priority': 'high',
+                'Tags': 'gift,student,calendar',
+                'Title': cleanTitle
+            };
+            await Promise.allSettled([
+                fetch(`https://ntfy.sh/${CONFIG.NTFY_TOPIC}`, {
+                    method: 'POST',
+                    headers: directHeaders,
+                    body: message
+                }),
+                fetch('https://ntfy.sh/stemulus-admin-alerts', {
+                    method: 'POST',
+                    headers: directHeaders,
+                    body: message
+                })
+            ]);
+            console.log('[Booking] Direct ntfy.sh fallback delivered');
+            return { success: true, fallback: true };
+        } catch (err2) {
+            console.warn('[Booking] Direct ntfy.sh fallback also failed:', err2);
+            return { success: false, error: err2 };
         }
     }
 

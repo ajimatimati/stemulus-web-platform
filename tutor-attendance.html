@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="portal-view">
 <head>
   <script src="https://unpkg.com/lucide@latest" defer></script>
   <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
@@ -38,6 +38,61 @@
     #sidebar-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:40;display:none; }
     #sidebar-overlay.show { display:block; }
     #sidebar nav a:hover { background:rgba(244,96,12,0.12) !important; color:#f4600c !important; }
+
+    /* Double-Bezel Luxury Cards */
+    .stat-card-luxury {
+      background: #ffffff !important;
+      border: 1px solid rgba(226, 232, 240, 0.9) !important;
+      border-radius: 20px !important;
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .stat-card-luxury:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+    }
+    .history-card-luxury {
+      background: #ffffff !important;
+      border: 1px solid rgba(226, 232, 240, 0.9) !important;
+      border-radius: 24px !important;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+    }
+
+    /* WCAG 2.1 AA Touch Target Compliance (>= 36px) */
+    #logout-btn {
+      min-height: 40px !important;
+      box-sizing: border-box !important;
+    }
+    #filter-month, #filter-status {
+      min-height: 38px !important;
+      box-sizing: border-box !important;
+      padding: 0.5rem 0.85rem !important;
+    }
+    #filter-reset-btn {
+      min-height: 38px !important;
+      box-sizing: border-box !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    #tab-my-students, #tab-stand-in {
+      min-height: 46px !important;
+      box-sizing: border-box !important;
+    }
+    #sidebar nav a {
+      min-height: 42px !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    #sidebar-close-btn {
+      min-width: 38px !important;
+      min-height: 38px !important;
+      box-sizing: border-box !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
   </style>
   <script src="assets/js/stemulus-security.min.js"></script>
   <script>
@@ -56,7 +111,7 @@
   })();
   </script>
 </head>
-<body class="bg-gray-50 min-h-screen font-inter text-gray-700 bg-dotted-grid">
+<body class="dashboard-page bg-gray-50 min-h-screen font-inter text-gray-700 bg-dotted-grid">
   <!-- Loading State -->
   <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center transition-opacity duration-500">
     <div class="text-center">
@@ -159,22 +214,22 @@
 
     <!-- Stats Summary Row -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="stat-card-luxury p-5">
         <p class="text-xs font-bold uppercase tracking-wider text-slate-500">This Month</p>
         <p class="text-3xl font-extrabold text-slate-800 mt-2" id="stat-total-submissions">0</p>
         <p class="text-xs text-slate-600 mt-1">Total submitted sessions</p>
       </div>
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="stat-card-luxury p-5">
         <p class="text-xs font-bold uppercase tracking-wider text-emerald-600">Approved</p>
         <p class="text-3xl font-extrabold text-emerald-600 mt-2" id="stat-approved-submissions">0</p>
         <p class="text-xs text-slate-600 mt-1">Verified by Admin</p>
       </div>
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="stat-card-luxury p-5">
         <p class="text-xs font-bold uppercase tracking-wider text-amber-600">Pending</p>
         <p class="text-3xl font-extrabold text-amber-600 mt-2" id="stat-pending-submissions">0</p>
         <p class="text-xs text-slate-600 mt-1">Awaiting verification</p>
       </div>
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="stat-card-luxury p-5">
         <p class="text-xs font-bold uppercase tracking-wider text-blue-600">Stand-in</p>
         <p class="text-3xl font-extrabold text-blue-600 mt-2" id="stat-standin-submissions">0</p>
         <p class="text-xs text-slate-600 mt-1">Substituted lessons</p>
@@ -182,7 +237,7 @@
     </div>
 
     <!-- Tabbed History & Filters -->
-    <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+    <div class="history-card-luxury overflow-hidden">
       <!-- Tabs -->
       <div class="flex border-b border-gray-200" id="attendance-tabs">
         <button id="tab-my-students" class="flex-1 py-4 text-center font-semibold text-blue-600 border-b-2 border-blue-600 bg-blue-50/30 transition-all focus:outline-none flex items-center justify-center gap-2">
@@ -234,6 +289,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="assets/js/firebase-config.min.js" defer></script>
+  <script src="assets/js/stemulus-firestore.min.js" defer></script>
   
   <!-- STEMulus State Controllers -->
   <script src="assets/js/dashboard-engine.min.js" defer></script>

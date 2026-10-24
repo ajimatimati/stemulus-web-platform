@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="portal-view">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +37,7 @@
   })();
   </script>
 </head>
-<body class="antialiased bg-slate-50 text-slate-800">
+<body class="dashboard-page antialiased bg-slate-50 text-slate-800">
   <div id="sidebar-overlay" class="sidebar-overlay lg:hidden"></div>
 
   <!-- Sidebar -->
@@ -161,8 +161,13 @@
     </div>
   </main>
 
-  <script src="assets/js/dashboard-engine.js"></script>
-  <script src="assets/js/badge-passport-engine.js"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="assets/js/firebase-config.min.js"></script>
+  <script src="assets/js/stemulus-firestore.min.js"></script>
+  <script src="assets/js/dashboard-engine.min.js"></script>
+  <script src="assets/js/badge-passport-engine.min.js"></script>
   <script>
     const TutorStudentsApp = (function() {
       let currentTutor = null;
@@ -422,5 +427,9 @@
       }
     });
   </script>
+  <script src="assets/js/mulu-widget.min.js" defer></script>
+  <script src="assets/js/stemulus-icons.min.js" defer></script>
+  <script src="assets/js/scroll-choreography.min.js" defer></script>
+  <script src="assets/js/stemulus-interactive.min.js" defer></script>
 </body>
 </html>

@@ -1007,3 +1007,93 @@ div.glass-card,
     box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
     color: #1e293b !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   DESKTOP COMPACT SCALING (~80% Density System)
+   Scales down portal components on desktop viewports (>= 1024px)
+   giving an executive, high-density, refined interface.
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width: 1024px) {
+    :root:has(body.dashboard-page),
+    html.portal-view {
+        font-size: 13.5px !important;
+    }
+
+    body.dashboard-page {
+        font-size: 13.5px;
+    }
+
+    /* Hero bands: streamlined padding & compact height */
+    .hero-band {
+        padding: 1.75rem 2.25rem !important;
+        min-height: 160px !important;
+    }
+
+    .hero-band-content h1 {
+        font-size: 1.5rem !important;
+    }
+
+    .hero-band .hero-3d-object {
+        width: 145px !important;
+        height: 145px !important;
+        transform: translateY(10px) !important;
+    }
+
+    /* KPI Grids: compact cards & balanced numbers */
+    .kpi-grid {
+        gap: 0.75rem !important;
+        margin-bottom: 1.25rem !important;
+    }
+
+    .kpi-card {
+        padding: 0.9rem 1rem !important;
+        border-radius: 14px !important;
+    }
+
+    .kpi-icon {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    .kpi-number {
+        font-size: 1.45rem !important;
+    }
+
+    .kpi-label {
+        font-size: 0.65rem !important;
+    }
+
+    /* Content Cards & Data Sections */
+    .data-section {
+        padding: 1.25rem 1.5rem !important;
+        margin-bottom: 1.25rem !important;
+        border-radius: 16px !important;
+    }
+
+    /* Sidebar Nav Links: compact vertical rhythm */
+    #sidebar .nav-link,
+    aside#sidebar .nav-link {
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+        font-size: 0.85rem !important;
+    }
+
+    #sidebar .nav-link i,
+    aside#sidebar .nav-link i {
+        width: 1.15rem !important;
+        height: 1.15rem !important;
+    }
+
+    /* Stat numbers and cards contrast */
+    .stat-number {
+        color: #0f172a !important;
+    }
+    .stat-label {
+        color: #475569 !important;
+    }
+
+    /* Hide redundant bottom floating toolbar on desktop where sidebar is active */
+    .pill-toolbar {
+        display: none !important;
+    }
+}

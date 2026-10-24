@@ -20,7 +20,7 @@
  */
 
 const ADMIN_EMAIL = 'admin@stemuluskidstech.com';
-const FROM_ADDRESS = 'STEMulus Kids Tech <hello@portal.stemuluskidstech.com>';
+const FROM_ADDRESS = process.env.RESEND_FROM_EMAIL || 'STEMulus Kids Tech <hello@portal.stemuluskidstech.com>';
 const SITE_URL = 'https://stemuluskidstech.com';
 const WHATSAPP_NUMBER = '2347052466716';
 
@@ -1210,15 +1210,16 @@ exports.handler = async (event) => {
 
   const results = [];
   for (const t of types) {
-    // STRICT POLICY: No emails sent automatically to parents/tutors unless explicitly approved by admin
-    const isTargetingUser = (t === 'enrollment_parent' || t === 'booking_parent' || t === 'welcome' || 
-                             t === 'tutor-welcome' || t === 'tutor_welcome' || t === 'student-enrolled' || 
-                             t === 'reminder' || t === 'tutor-reminder' || t === 'schedule' || 
-                             t === 'certificate' || t === 'certificate-delivery' || t === 'credentials-reset' || 
-                             (t === 'custom' && data.to && data.to.toLowerCase() !== ADMIN_EMAIL.toLowerCase()));
+    // STRICT POLICY: Sensitive administrative notices (welcome credentials, password resets, certificates)
+    // require explicit admin approval or x-admin-approval header before dispatching.
+    // Public booking and enrollment confirmation receipts (booking_parent, enrollment_parent) are transactional receipts
+    // that must be sent immediately to reassure the prospective parent.
+    const isSensitiveCredentialNotice = (t === 'welcome' || t === 'tutor-welcome' || t === 'tutor_welcome' || 
+                                          t === 'student-enrolled' || t === 'credentials-reset' || 
+                                          (t === 'custom' && data.to && data.to.toLowerCase() !== ADMIN_EMAIL.toLowerCase()));
 
-    if (isTargetingUser && !isApprovedByAdmin) {
-      console.log(`[send-email] Automated dispatch withheld for ${t}. Requires explicit admin approval.`);
+    if (isSensitiveCredentialNotice && !isApprovedByAdmin) {
+      console.log(`[send-email] Sensitive administrative notice withheld for ${t}. Requires explicit admin approval.`);
       results.push({ 
         type: t, 
         ok: true, 

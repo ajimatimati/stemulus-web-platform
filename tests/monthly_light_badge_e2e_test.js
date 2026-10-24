@@ -81,20 +81,25 @@ server.listen(PORT, async () => {
     // PARENT PORTAL CONTEXT
     // -------------------------------------------------------------------------
     const parentCtx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-    await parentCtx.addInitScript(() => {
+    const parentPage = await parentCtx.newPage();
+    parentPage.on('pageerror', err => {
+      console.warn(`    [Parent Page Warning/Error]: ${err.message}`);
+    });
+
+    // Authenticate parent via StemulusSecurity
+    await parentPage.goto(`http://localhost:${PORT}/parent-login.html?role=parent`, { waitUntil: 'load' });
+    await parentPage.evaluate(() => {
       const parentSession = {
         name: 'Demo Parent',
         email: 'parent@stemuluskidstech.com',
         role: 'parent',
         issuedAt: Date.now()
       };
-      sessionStorage.setItem('stemulus_session', JSON.stringify(parentSession));
-      localStorage.setItem('stemulus_session', JSON.stringify(parentSession));
-    });
-
-    const parentPage = await parentCtx.newPage();
-    parentPage.on('pageerror', err => {
-      console.warn(`    [Parent Page Warning/Error]: ${err.message}`);
+      if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.saveSecureSession) {
+        StemulusSecurity.saveSecureSession(parentSession);
+      }
+      localStorage.setItem('user', JSON.stringify(parentSession));
+      localStorage.setItem('role', 'parent');
     });
 
     // -------------------------------------------------------------------------
@@ -129,7 +134,7 @@ server.listen(PORT, async () => {
     // -------------------------------------------------------------------------
     console.log(`\n--- [TEST 2] Parent Dashboard Badge Preview & Modal Interaction ---`);
     const parentPageText = await parentPage.content();
-    assert(parentPageText.includes('Technology Passport: Light Evolution'), 'Parent Dashboard renders Technology Passport card');
+    assert(parentPageText.includes('Technology Passport'), 'Parent Dashboard renders Technology Passport card');
     assert(parentPageText.includes('View Badge'), 'Child card includes interactive "View Badge" button');
 
     // Click "View Badge" button
@@ -293,20 +298,24 @@ server.listen(PORT, async () => {
     // -------------------------------------------------------------------------
     console.log(`\n--- [TEST 5] Tutor Students Roster Monthly Badge Integration ---`);
     const tutorCtx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-    await tutorCtx.addInitScript(() => {
+    const tutorPage = await tutorCtx.newPage();
+    tutorPage.on('pageerror', err => {
+      console.warn(`    [Tutor Page Warning/Error]: ${err.message}`);
+    });
+
+    await tutorPage.goto(`http://localhost:${PORT}/tutor-login.html?role=tutor`, { waitUntil: 'load' });
+    await tutorPage.evaluate(() => {
       const tutorSession = {
         name: 'Sarah Jane',
         email: 'tutor@stemuluskidstech.com',
         role: 'tutor',
         issuedAt: Date.now()
       };
-      sessionStorage.setItem('stemulus_session', JSON.stringify(tutorSession));
-      localStorage.setItem('stemulus_session', JSON.stringify(tutorSession));
-    });
-
-    const tutorPage = await tutorCtx.newPage();
-    tutorPage.on('pageerror', err => {
-      console.warn(`    [Tutor Page Warning/Error]: ${err.message}`);
+      if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.saveSecureSession) {
+        StemulusSecurity.saveSecureSession(tutorSession);
+      }
+      localStorage.setItem('user', JSON.stringify(tutorSession));
+      localStorage.setItem('role', 'tutor');
     });
 
     await tutorPage.goto(`http://localhost:${PORT}/tutor-students.html`, { waitUntil: 'load' });

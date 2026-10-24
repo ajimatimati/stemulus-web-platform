@@ -1443,9 +1443,9 @@ const BadgePassportEngine = (function() {
                 const btn = document.getElementById('pbm-tab-' + t);
                 if (btn) {
                     if (t === tab) {
-                        btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all';
+                        btn.className = 'min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all flex items-center justify-center';
                     } else {
-                        btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all';
+                        btn.className = 'min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all flex items-center justify-center';
                     }
                 }
             });
@@ -1490,7 +1490,7 @@ const BadgePassportEngine = (function() {
                         </div>
                         <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight" id="pbm-title">Badge Title</h2>
                     </div>
-                    <button type="button" onclick="BadgePassportEngine.closeBadgeModal()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors shrink-0" aria-label="Close modal">
+                    <button type="button" onclick="BadgePassportEngine.closeBadgeModal()" class="w-10 h-10 min-h-[40px] min-w-[40px] rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors shrink-0" aria-label="Close modal">
                         <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1506,9 +1506,9 @@ const BadgePassportEngine = (function() {
                     <div class="flex items-center justify-between gap-2 mb-3 flex-wrap">
                         <span class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-900">Explanation for Age Group</span>
                         <div class="flex items-center gap-1 bg-white/80 p-1 rounded-xl border border-indigo-200/60 shadow-sm">
-                            <button type="button" id="pbm-tab-5_7" class="px-3 py-1 rounded-lg text-xs font-bold">Ages 5–7</button>
-                            <button type="button" id="pbm-tab-8_11" class="px-3 py-1 rounded-lg text-xs font-bold">Ages 8–11</button>
-                            <button type="button" id="pbm-tab-12_17" class="px-3 py-1 rounded-lg text-xs font-bold">Ages 12–17</button>
+                            <button type="button" id="pbm-tab-5_7" class="min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center">Ages 5–7</button>
+                            <button type="button" id="pbm-tab-8_11" class="min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center">Ages 8–11</button>
+                            <button type="button" id="pbm-tab-12_17" class="min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center">Ages 12–17</button>
                         </div>
                     </div>
                     <p class="text-sm text-slate-800 font-medium leading-relaxed italic" id="pbm-age-explanation"></p>
@@ -1556,7 +1556,7 @@ const BadgePassportEngine = (function() {
                         <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 block mb-0.5">Next Milestone</span>
                         <p class="text-xs text-amber-900 font-semibold" id="pbm-next"></p>
                     </div>
-                    <button type="button" onclick="BadgePassportEngine.closeBadgeModal()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs transition-colors shrink-0">
+                    <button type="button" onclick="BadgePassportEngine.closeBadgeModal()" class="min-h-[40px] px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs transition-colors shrink-0 flex items-center justify-center">
                         Got It
                     </button>
                 </div>

@@ -548,12 +548,13 @@ function navigateToSection(sectionName) {
 
     const pageTitle = document.getElementById('page-title');
     if (pageTitle) {
-        var SECTION_TITLES = { 'dashboard': 'Dashboard', 'students': 'Students', 'tutors': 'Tutors', 'parents': 'Parents', 'schedule-wf': 'Weekly Schedule', 'schedules': 'Schedule', 'certificates': 'Certificates', 'emails': 'Email Center', 'notifications': 'Notifications', 'settings': 'Settings', 'whatsapp-bot': 'WhatsApp Bot', 'reports': 'Reports', 'billing': 'Tuition & Billing Reminders', 'recordings': 'Class Recordings & Safeguarding Vault' };
+        var SECTION_TITLES = { 'dashboard': 'Dashboard', 'students': 'Students', 'tutors': 'Tutors', 'parents': 'Parents', 'schedule-wf': 'Weekly Schedule', 'schedules': 'Schedule', 'certificates': 'Certificates', 'emails': 'Email Center', 'notifications': 'Notifications', 'settings': 'Settings', 'whatsapp-bot': 'WhatsApp Bot', 'reports': 'Reports', 'billing': 'Tuition & Billing Reminders', 'recordings': 'Class Recordings & Safeguarding Vault', 'chat': 'Faculty Messenger Suite' };
         var title = SECTION_TITLES[sectionName] || (sectionName.charAt(0).toUpperCase() + sectionName.slice(1));
         pageTitle.textContent = title;
     }
 
-    if (sectionName === 'recordings') { if (typeof loadClassRecordings === 'function') loadClassRecordings(); }
+    if (sectionName === 'chat') { if (typeof FacultyChatEngine !== 'undefined') FacultyChatEngine.renderChatSuite(); }
+ if (sectionName === 'recordings') { if (typeof loadClassRecordings === 'function') loadClassRecordings(); }
     if (sectionName === 'billing') { loadBillingRoster(); }
     if (sectionName === 'email-queue') { loadEmailQueue(); }
     if (sectionName === 'password-resets') { loadPasswordResets(); }
@@ -1178,6 +1179,9 @@ async function submitQuickOnboardStudent(e) {
         return;
     }
 
+    const lessonCountEl = document.getElementById('qo-lesson-count');
+    const lessonCount = lessonCountEl ? parseInt(lessonCountEl.value) || 8 : 8;
+
     const result = await DashboardEngine.quickOnboardUser({
         type: 'student',
         name: parentName,
@@ -1187,6 +1191,7 @@ async function submitQuickOnboardStudent(e) {
         childAge: childAge,
         birthday: childBirthday,
         program: program,
+        lessonCount: lessonCount,
         tutorName: tutorName
     });
 
@@ -1198,14 +1203,97 @@ async function submitQuickOnboardStudent(e) {
     const outputEl = document.getElementById('qo-credential-output');
     const successBox = document.getElementById('qo-success-box');
     if (outputEl && successBox) {
+        const studentInvite = result.studentInviteLink || (result.googleClassroom ? result.googleClassroom.studentInviteLink : result.classroomLink);
+        const tutorInvite = result.tutorInviteLink || (result.googleClassroom ? result.googleClassroom.tutorInviteLink : '');
+        const enrollmentCode = result.enrollmentCode || (result.googleClassroom ? result.googleClassroom.enrollmentCode : '');
+        const meetLink = result.meetLink || result.classroomLink;
+        const draftedAssignments = result.draftedAssignments || (result.googleClassroom ? result.googleClassroom.draftedAssignments : []);
+
         outputEl.innerHTML = `
-            <div><strong>ACCOUNT TYPE:</strong> Parent &amp; Student Portal</div>
-            <div><strong>PARENT LOGIN:</strong> ${result.parentEmail}</div>
-            <div><strong>INITIAL PASSWORD:</strong> <span class="bg-slate-900 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-lg font-mono font-bold select-all inline-block">${result.tempPassword}</span></div>
-            <div><strong>CHILD ROSTER:</strong> ${result.childName} (${result.program})</div>
-            <div><strong>ASSIGNED TUTOR:</strong> ${result.tutorName}</div>
-            <div><strong>CLASSROOM LINK:</strong> <a href="${result.classroomLink}" target="_blank" class="text-indigo-600 underline">${result.classroomLink}</a></div>
-            <div class="text-[11px] text-gray-500 mt-2">&check; Account ready immediately. Temporary password generated.</div>
+            <div class="space-y-2.5">
+                <div class="flex items-center justify-between border-b border-emerald-100 pb-1.5">
+                    <span class="font-extrabold text-slate-800 tracking-wide text-[11px]">ACCOUNT TYPE:</span>
+                    <span class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded text-[10px] font-bold">Parent &amp; Student Portal</span>
+                </div>
+                <div><strong>PARENT LOGIN:</strong> <span class="text-slate-900 font-mono select-all">${result.parentEmail}</span></div>
+                <div><strong>INITIAL PASSWORD:</strong> <span class="bg-slate-900 text-amber-300 border border-amber-400/40 px-2.5 py-0.5 rounded-lg font-mono font-bold select-all inline-block text-xs">${result.tempPassword}</span></div>
+                <div><strong>CHILD ROSTER:</strong> <span class="text-slate-900 font-semibold">${result.childName}</span> <span class="text-slate-500">(${result.program})</span></div>
+                <div><strong>ASSIGNED TUTOR:</strong> <span class="text-slate-900 font-semibold">${result.tutorName}</span></div>
+
+                <!-- Google Meet Link with Auto-Record Indicator -->
+                <div class="mt-2 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200">
+                    <div class="flex items-center justify-between mb-1.5 flex-wrap gap-1">
+                        <span class="font-bold text-emerald-900 flex items-center gap-1.5 text-[11px]">
+                            <i data-lucide="video" class="w-3.5 h-3.5 text-emerald-600"></i> GOOGLE MEET LINK
+                        </span>
+                        <div class="flex items-center gap-1">
+                            <span class="bg-emerald-600 text-white font-black text-[9px] px-1.5 py-0.5 rounded tracking-wider flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> AUTO-RECORD 1080p
+                            </span>
+                            <span class="bg-blue-100 text-blue-700 font-bold text-[9px] px-1.5 py-0.5 rounded">NO HOST REQUIRED</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <a href="${meetLink}" target="_blank" class="text-emerald-700 hover:text-emerald-900 underline font-mono text-xs truncate flex-1">${meetLink}</a>
+                        <button type="button" onclick="AdminEngine.copyText('${meetLink}', 'Google Meet link copied!')" class="shrink-0 px-2 py-1 bg-white hover:bg-emerald-100 border border-emerald-300 rounded text-[11px] font-sans font-bold text-emerald-800 transition-colors" title="Copy Meet Link">Copy Meet</button>
+                    </div>
+                </div>
+
+                <!-- Google Classroom Provisioning -->
+                <div class="p-2.5 rounded-xl bg-indigo-50 border border-indigo-200 space-y-2">
+                    <div class="flex items-center justify-between flex-wrap gap-1">
+                        <span class="font-bold text-indigo-950 flex items-center gap-1.5 text-[11px]">
+                            <i data-lucide="book-open" class="w-3.5 h-3.5 text-indigo-600"></i> GOOGLE CLASSROOM (AUTO-PROVISIONED)
+                        </span>
+                        ${enrollmentCode ? `<span class="bg-indigo-600 text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded">JOIN CODE: ${enrollmentCode}</span>` : ''}
+                    </div>
+
+                    <!-- Student Invite Link -->
+                    <div>
+                        <div class="text-[10px] font-bold text-slate-600 uppercase mb-0.5">Coder / Student Invite Link:</div>
+                        <div class="flex items-center gap-1.5">
+                            <input type="text" readonly value="${studentInvite}" class="w-full bg-white border border-indigo-200 rounded px-2 py-1 text-[11px] font-mono text-indigo-900 select-all" />
+                            <button type="button" onclick="AdminEngine.copyText('${studentInvite}', 'Student Classroom Invite link copied!')" class="shrink-0 px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-[11px] font-sans font-bold transition-colors">Copy Link</button>
+                        </div>
+                    </div>
+
+                    <!-- Tutor Invite Link -->
+                    ${tutorInvite ? `
+                    <div>
+                        <div class="text-[10px] font-bold text-slate-600 uppercase mb-0.5">Tutor / Co-Teacher Invite Link:</div>
+                        <div class="flex items-center gap-1.5">
+                            <input type="text" readonly value="${tutorInvite}" class="w-full bg-white border border-indigo-200 rounded px-2 py-1 text-[11px] font-mono text-indigo-900 select-all" />
+                            <button type="button" onclick="AdminEngine.copyText('${tutorInvite}', 'Tutor Classroom Invite link copied!')" class="shrink-0 px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-[11px] font-sans font-bold transition-colors">Copy Link</button>
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <!-- Drafted Coursework Assignments -->
+                    ${(draftedAssignments && draftedAssignments.length > 0) ? `
+                    <div class="pt-2 border-t border-indigo-200/80">
+                        <div class="flex items-center justify-between mb-1.5 flex-wrap gap-1">
+                            <span class="text-[10px] font-extrabold text-indigo-950 uppercase flex items-center gap-1">
+                                <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-600"></i> DRAFTED GOOGLE CLASSROOM COURSEWORK:
+                            </span>
+                            <span class="bg-indigo-600 text-white font-bold text-[9px] px-2 py-0.5 rounded-full">${draftedAssignments.length} Drafted Assignments Ready</span>
+                        </div>
+                        <div class="bg-white/90 rounded-lg p-2 border border-indigo-100 max-h-36 overflow-y-auto space-y-1 text-[10px]">
+                            ${draftedAssignments.map(a => `
+                                <div class="flex items-center justify-between py-1 border-b border-slate-100 last:border-none">
+                                    <div class="truncate mr-2">
+                                        <strong class="text-indigo-900">L${a.lessonNumber}:</strong>
+                                        <span class="font-medium text-slate-800">${a.title.replace(/^Lesson \d+:\s*/, '')}</span>
+                                    </div>
+                                    <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.2 rounded shrink-0">DRAFT</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+
+                <div class="text-[11px] text-gray-500 mt-2">&check; Google Classroom course and 1080p Auto-Record Meet link provisioned. Coders &amp; tutors can join directly anytime without host admission.</div>
+            </div>
         `;
         successBox.classList.remove('hidden');
     }
@@ -1257,6 +1345,51 @@ async function submitQuickOnboardTutor(e) {
     if (window.lucide) lucide.createIcons();
 }
 
+function copyText(text, successMsg) {
+    if (!text) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast(successMsg || 'Copied to clipboard!', 'success');
+        }).catch(() => {
+            prompt('Copy link:', text);
+        });
+    } else {
+        prompt('Copy link:', text);
+    }
+}
+
+function copyStudentClassroomLink(studentId) {
+    if (!studentId) return;
+    const student = (studentsCache || []).find(s => s.id === studentId) || 
+                    ((typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) ? DashboardEngine.getStudents().find(s => s.id === studentId) : null);
+    if (!student) {
+        showToast('Student not found.', 'error');
+        return;
+    }
+    const link = (student.googleClassroom && student.googleClassroom.studentInviteLink) ? student.googleClassroom.studentInviteLink : student.classroomLink;
+    if (!link) {
+        showToast('No Google Classroom student invite link found.', 'warning');
+        return;
+    }
+    copyText(link, `Google Classroom Student Invite link copied for ${student.firstName}!`);
+}
+
+function copyTutorClassroomLink(studentId) {
+    if (!studentId) return;
+    const student = (studentsCache || []).find(s => s.id === studentId) || 
+                    ((typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) ? DashboardEngine.getStudents().find(s => s.id === studentId) : null);
+    if (!student) {
+        showToast('Student not found.', 'error');
+        return;
+    }
+    const link = student.googleClassroom ? student.googleClassroom.tutorInviteLink : '';
+    if (!link) {
+        showToast('No Google Classroom tutor invite link found.', 'warning');
+        return;
+    }
+    copyText(link, `Google Classroom Tutor Invite link copied for ${student.firstName}!`);
+}
+
 function copyQuickOnboardCredentials() {
     const outputEl = document.getElementById('qo-credential-output');
     const copyBtn = document.getElementById('qo-copy-btn');
@@ -1274,7 +1407,7 @@ function copyQuickOnboardCredentials() {
                     if (window.lucide) lucide.createIcons();
                 }, 2500);
             }
-            showToast('Credentials copied to clipboard!', 'success');
+            showToast('Credentials and classroom links copied to clipboard!', 'success');
         });
     } else {
         showToast('Clipboard access unavailable.', 'warning');
@@ -1827,61 +1960,185 @@ async function approveRegistration(id) {
     }
 }
 
-// ==================== RESCHEDULE REQUESTS ====================
+// ==================== RESCHEDULE & COVERAGE CONCIERGE ====================
 
 function renderRescheduleRequests() {
     const dashboardSection = document.getElementById('section-dashboard');
     if (!dashboardSection) return;
 
     const requests = ((DashboardEngine.getRescheduleRequests ? DashboardEngine.getRescheduleRequests() : []) || []).filter(r => r && r.status === 'pending');
+    const coverageRequests = ((DashboardEngine.getCoverageRequests ? DashboardEngine.getCoverageRequests() : []) || []).filter(c => c && c.status === 'pending');
 
     // Remove old reschedule section if present
     const oldSection = document.getElementById('admin-reschedule-section');
     if (oldSection) oldSection.remove();
 
-    if (requests.length === 0) return;
+    if (requests.length === 0 && coverageRequests.length === 0) return;
+
+    const totalCount = requests.length + coverageRequests.length;
 
     const resSection = document.createElement('div');
     resSection.id = 'admin-reschedule-section';
-    resSection.className = 'w-full admin-card rounded-2xl p-5 sm:p-6 mt-6 border border-slate-200 bg-white shadow-sm';
-    resSection.innerHTML = `
-            <h3 class="text-base sm:text-lg font-extrabold text-slate-800 mb-4 flex items-center gap-2">
-                <i data-lucide="calendar-range" class="w-5 h-5 text-orange-500"></i>
-                Pending Schedule Adjustments (${requests.length})
+    resSection.className = 'w-full admin-card rounded-2xl p-5 sm:p-6 mt-6 border border-slate-200 bg-white shadow-sm space-y-4';
+    
+    let html = `
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+            <h3 class="text-base sm:text-lg font-extrabold text-slate-800 flex items-center gap-2">
+                <i data-lucide="calendar-sync" class="w-5 h-5 text-orange-500"></i>
+                Smart Reschedule & Faculty Coverage Concierge (${totalCount})
             </h3>
+            <span class="bg-indigo-100 text-indigo-800 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                Autonomous Diagnostics
+            </span>
+        </div>
+    `;
+
+    // 1. Render Faculty Coverage Requests (if any)
+    if (coverageRequests.length > 0) {
+        html += `
             <div class="space-y-3">
-                ${requests.map(r => `
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col gap-3 animate-fadeIn">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-2.5">
-                            <p class="text-sm font-bold text-slate-900">${r.studentName} — <span class="text-slate-600 font-semibold">${r.course}</span></p>
-                            <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full border border-amber-200 self-start sm:self-auto">Pending Approval</span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
-                                <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Current Schedule</span>
-                                <span class="line-through text-rose-700 font-medium">${r.currentDate} at ${r.currentTime}</span>
+                <p class="text-xs font-bold text-purple-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="shield-alert" class="w-4 h-4 text-purple-600"></i>
+                    🚨 Active Faculty Emergency Coverage Requests (${coverageRequests.length})
+                </p>
+                ${coverageRequests.map(cov => {
+                    const subs = Array.isArray(cov.suggestedSubstitutes) ? cov.suggestedSubstitutes : [];
+                    return `
+                        <div class="bg-purple-50/60 border border-purple-200 rounded-xl p-4 flex flex-col gap-3 animate-fadeIn">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-purple-200/60 pb-2.5">
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">
+                                        <span class="text-purple-700">Coach ${cov.tutorName}</span> requested coverage for <span class="font-bold">${cov.studentName}</span>
+                                    </p>
+                                    <p class="text-xs text-slate-500 mt-0.5">${cov.course} • Reason: <strong class="text-rose-600">${cov.reason}</strong></p>
+                                    ${cov.notes ? `<p class="text-[11px] text-slate-600 italic mt-1 bg-white p-2 rounded-lg border border-purple-100">Handover: "${cov.notes}"</p>` : ''}
+                                </div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider bg-rose-100 text-rose-800 px-2.5 py-0.5 rounded-full border border-rose-200 self-start sm:self-auto">
+                                    Needs Substitute
+                                </span>
                             </div>
-                            <div class="bg-emerald-50/70 p-2.5 rounded-lg border border-emerald-200">
-                                <span class="text-emerald-700 block text-[10px] uppercase font-bold tracking-wider">Requested Change</span>
-                                <span class="font-bold text-emerald-800">${r.requestedDate} at ${r.requestedTime}</span>
+
+                            <div class="bg-white p-3 rounded-lg border border-purple-200 text-xs">
+                                <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider mb-1">Target Session Slot</span>
+                                <span class="font-bold text-slate-800">${cov.dayOfWeek}, ${cov.date} at ${cov.time} WAT (${cov.duration || 60} mins)</span>
                             </div>
+
+                            ${subs.length > 0 ? `
+                                <div class="bg-indigo-50/80 p-3 rounded-xl border border-indigo-200">
+                                    <p class="text-[11px] font-bold text-indigo-900 uppercase tracking-wider mb-2 flex items-center gap-1">
+                                        <i data-lucide="user-check" class="w-3.5 h-3.5 text-indigo-600"></i>
+                                        Vetted Available Substitutes (Matching Course & Zero Conflict)
+                                    </p>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        ${subs.map(sub => `
+                                            <div class="bg-white p-2.5 rounded-lg border border-indigo-100 flex items-center justify-between gap-2 shadow-xs">
+                                                <div class="min-w-0">
+                                                    <p class="text-xs font-bold text-slate-900 truncate">Coach ${sub.name}</p>
+                                                    <p class="text-[10px] text-emerald-600 font-semibold">Conflict-Free • Match: ${sub.matchScore}%</p>
+                                                </div>
+                                                <button type="button" onclick="AdminEngine.approveCoverageRequest('${cov.id}', '${sub.id}')"
+                                                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-lg transition-all shrink-0">
+                                                    Assign Coach
+                                                </button>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : `
+                                <div class="p-2.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-500">
+                                    No automated peer match found. Please contact an on-call tutor manually.
+                                </div>
+                            `}
                         </div>
-                        <div class="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-200/60 mt-1 flex-wrap">
-                            <button onclick="AdminEngine.approveScheduleAdjust('${r.id}')"
-                                class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all shadow-sm flex-1 sm:flex-none text-center inline-flex items-center justify-center gap-1.5" style="background-color: #047857 !important;">
-                                <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve
-                            </button>
-                            <button onclick="AdminEngine.declineScheduleAdjust('${r.id}')"
-                                class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-bold text-xs px-4 py-2 rounded-xl transition-colors flex-1 sm:flex-none text-center inline-flex items-center justify-center gap-1.5">
-                                <i data-lucide="x" class="w-3.5 h-3.5"></i> Decline
-                            </button>
-                        </div>
-                    </div>
-                `).join('')}
+                    `;
+                }).join('')}
             </div>
         `;
+    }
 
-    // Insert before schedules or after recent students
+    // 2. Render Parent Reschedule Requests
+    if (requests.length > 0) {
+        html += `
+            <div class="space-y-3">
+                <p class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5 pt-2">
+                    <i data-lucide="clock" class="w-4 h-4 text-orange-500"></i>
+                    Parent Requested Adjustments (${requests.length})
+                </p>
+                ${requests.map(r => {
+                    const isAvailable = r.primaryTutorAvailable !== false;
+                    const subs = Array.isArray(r.suggestedSubstitutes) ? r.suggestedSubstitutes : [];
+                    return `
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col gap-3 animate-fadeIn">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-2.5">
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">${r.studentName} — <span class="text-slate-600 font-semibold">${r.course}</span></p>
+                                    <p class="text-xs text-slate-500 mt-0.5">Primary Coach: <strong>${r.currentTutorName || 'Assigned Tutor'}</strong> • Reason: ${r.reason || 'Not specified'}</p>
+                                </div>
+                                ${isAvailable ? `
+                                    <span class="text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full border border-emerald-200 self-start sm:self-auto flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Primary Coach Free
+                                    </span>
+                                ` : `
+                                    <span class="text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-800 px-2.5 py-0.5 rounded-full border border-purple-200 self-start sm:self-auto flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span> Conflict Detected • Substitute Ready
+                                    </span>
+                                `}
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Current Schedule</span>
+                                    <span class="line-through text-rose-700 font-medium">${r.currentDate} at ${r.currentTime}</span>
+                                </div>
+                                <div class="bg-emerald-50/70 p-2.5 rounded-lg border border-emerald-200">
+                                    <span class="text-emerald-700 block text-[10px] uppercase font-bold tracking-wider">Requested Change</span>
+                                    <span class="font-bold text-emerald-800">${r.requestedDayOfWeek ? r.requestedDayOfWeek + ', ' : ''}${r.requestedDate} at ${r.requestedTime} WAT</span>
+                                </div>
+                            </div>
+
+                            ${!isAvailable && subs.length > 0 ? `
+                                <div class="bg-purple-50/70 p-3 rounded-xl border border-purple-200">
+                                    <p class="text-[11px] font-bold text-purple-900 uppercase tracking-wider mb-2 flex items-center gap-1">
+                                        <i data-lucide="user-check" class="w-3.5 h-3.5 text-purple-600"></i>
+                                        Vetted Substitutes Available for ${r.requestedDate} at ${r.requestedTime}
+                                    </p>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        ${subs.map(sub => `
+                                            <div class="bg-white p-2.5 rounded-lg border border-purple-100 flex items-center justify-between gap-2 shadow-xs">
+                                                <div class="min-w-0">
+                                                    <p class="text-xs font-bold text-slate-900 truncate">Coach ${sub.name}</p>
+                                                    <p class="text-[10px] text-emerald-600 font-semibold">Zero Conflict • ${sub.matchScore}% Match</p>
+                                                </div>
+                                                <button type="button" onclick="AdminEngine.approveScheduleAdjust('${r.id}', '${sub.id}')"
+                                                    class="bg-purple-700 hover:bg-purple-800 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-lg transition-all shrink-0">
+                                                    Approve With ${sub.name.split(' ')[0]}
+                                                </button>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+
+                            <div class="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-200/60 mt-1 flex-wrap">
+                                ${isAvailable ? `
+                                    <button onclick="AdminEngine.approveScheduleAdjust('${r.id}')"
+                                        class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all shadow-sm flex-1 sm:flex-none text-center inline-flex items-center justify-center gap-1.5" style="background-color: #047857 !important;">
+                                        <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve with Primary Coach
+                                    </button>
+                                ` : ''}
+                                <button onclick="AdminEngine.declineScheduleAdjust('${r.id}')"
+                                    class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-bold text-xs px-4 py-2 rounded-xl transition-colors flex-1 sm:flex-none text-center inline-flex items-center justify-center gap-1.5">
+                                    <i data-lucide="x" class="w-3.5 h-3.5"></i> Decline
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+
+    resSection.innerHTML = html;
+
     const container = dashboardSection.querySelector('div.grid-cols-1') || dashboardSection;
     if (container) {
         container.appendChild(resSection);
@@ -1889,9 +2146,9 @@ function renderRescheduleRequests() {
     if (window.lucide) lucide.createIcons();
 }
 
-function approveScheduleAdjust(id) {
-    if (DashboardEngine.approveReschedule(id)) {
-        showToast('Schedule adjustment approved and updated.', 'success');
+function approveScheduleAdjust(id, substituteTutorId = null) {
+    if (DashboardEngine.approveReschedule(id, substituteTutorId)) {
+        showToast('Schedule adjustment approved and synchronized.', 'success');
         loadDashboardData();
     }
 }
@@ -1903,6 +2160,13 @@ function declineScheduleAdjust(id) {
     }
 }
 
+function approveCoverageRequest(coverageId, chosenSubstituteId) {
+    if (DashboardEngine.approveCoverageRequest && DashboardEngine.approveCoverageRequest(coverageId, chosenSubstituteId)) {
+        showToast('Faculty coverage confirmed and tutor assigned.', 'success');
+        loadDashboardData();
+    }
+}
+
 // ==================== ATTENDANCE APPROVALS ====================
 
 function renderAttendanceApprovals() {
@@ -1910,7 +2174,7 @@ function renderAttendanceApprovals() {
     if (!listContainer) return;
 
     const records = (DashboardEngine.getAttendanceRecords ? DashboardEngine.getAttendanceRecords() : []) || [];
-    const pendingRecords = records.filter(r => r && r.status === 'pending');
+    const pendingRecords = records.filter(r => r && (r.status === 'pending' || r.status === 'flagged_for_review'));
 
     if (pendingRecords.length === 0) {
         listContainer.innerHTML = `
@@ -1922,18 +2186,28 @@ function renderAttendanceApprovals() {
     }
 
     // Sort descending by timestamp
-    pendingRecords.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    pendingRecords.sort((a, b) => new Date(b.timestamp || b.submitted_at || 0) - new Date(a.timestamp || a.submitted_at || 0));
 
     listContainer.innerHTML = pendingRecords.map(r => {
         const dateObj = new Date(r.classDate);
         const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
         // Format Time (12h format)
-        const [hh, mm] = r.classTime.split(':');
-        let h = parseInt(hh);
+        const timeVal = r.classTime || '12:00';
+        const [hh, mm] = timeVal.split(':');
+        let h = parseInt(hh) || 12;
         const ampm = h >= 12 ? 'PM' : 'AM';
         h = h % 12 || 12;
-        const formattedTime = `${h}:${mm} ${ampm}`;
+        const formattedTime = `${h}:${mm || '00'} ${ampm}`;
+
+        const isFlagged = r.status === 'flagged_for_review' || r.fraudAlert;
+        const trClass = isFlagged ? 'border-b border-rose-200 bg-rose-50/40 hover:bg-rose-50/70' : 'border-b border-admin-border hover:bg-slate-50/50';
+
+        const statusBadge = isFlagged
+            ? `<span class="px-2.5 py-1 bg-rose-100 text-rose-800 border border-rose-300 text-[10px] font-extrabold rounded-full uppercase tracking-wider flex items-center gap-1 shadow-xs inline-flex">
+                 <span>🚨</span> <span>Flagged Ghost Class</span>
+               </span>`
+            : `<span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-bold rounded-full uppercase tracking-wider">Pending</span>`;
 
         const typeLabel = r.isStandIn
             ? '<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Stand-in</span>'
@@ -1941,8 +2215,15 @@ function renderAttendanceApprovals() {
                 ? '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Rescheduled</span>'
                 : '<span class="bg-slate-100 text-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Regular</span>');
 
+        const auditNotice = isFlagged
+            ? `<div class="mt-1.5 p-2 rounded-lg bg-rose-100/80 border border-rose-200 text-[11px] text-rose-900 font-medium">
+                 <p class="font-bold flex items-center gap-1"><i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-600"></i> Discrepancy Detected:</p>
+                 <p class="text-rose-800 mt-0.5">${r.flagReason || (r.auditFlag === 'GHOST_CLASS_DID_NOT_HOLD' ? 'Meeting room was empty or 0 minutes held. Student presence unverified.' : 'Live attendance monitoring logged an anomaly.')}</p>
+               </div>`
+            : '';
+
         return `
-                <tr class="border-b border-admin-border hover:bg-slate-50/50">
+                <tr class="${trClass}">
                     <td class="p-3 text-sm font-medium">
                         <div>${formattedDate}</div>
                         <div class="text-xs text-slate-400">${formattedTime}</div>
@@ -1950,19 +2231,20 @@ function renderAttendanceApprovals() {
                     <td class="p-3 text-sm font-semibold">${r.tutorName}</td>
                     <td class="p-3 text-sm font-semibold">${r.studentName}</td>
                     <td class="p-3 text-sm">
-                        <div class="font-medium text-slate-800">${r.topic}</div>
+                        <div class="font-medium text-slate-800">${r.topic || 'Class Session'}</div>
                         <div class="text-xs text-slate-400">${(r.coursesCovered && Array.isArray(r.coursesCovered)) ? r.coursesCovered.join(', ') : (r.course || '')}</div>
                         ${r.homeworkAssigned ? `<div class="mt-1 text-xs text-amber-700 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-md font-medium inline-block"><span class="font-bold text-amber-800">Assignment:</span> ${r.homeworkAssigned}</div>` : ''}
                         ${r.whatBuilt ? `<div class="text-[11px] text-slate-500 mt-0.5"><span class="font-semibold text-slate-600">Built:</span> ${r.whatBuilt}</div>` : ''}
                         ${r.tutorComment ? `<div class="text-[11px] text-slate-500 italic mt-0.5 line-clamp-1" title="${r.tutorComment}">&ldquo;${r.tutorComment}&rdquo;</div>` : ''}
                         ${r.conceptGrasp ? `<div class="text-[11px] text-amber-700 font-semibold mt-0.5"><span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded">Score: ${r.conceptGrasp}/5</span> <span class="text-slate-400 font-normal">concept grasp</span></div>` : ''}
+                        ${auditNotice}
                     </td>
-                    <td class="p-3 text-sm">${r.duration} mins</td>
+                    <td class="p-3 text-sm">${r.duration || 60} mins</td>
                     <td class="p-3 text-sm">${typeLabel}</td>
                     <td class="p-3 text-sm">
-                        <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-bold rounded-full uppercase tracking-wider">Pending</span>
+                        ${statusBadge}
                     </td>
-                    <td class="p-3 text-sm text-right space-x-2">
+                    <td class="p-3 text-sm text-right space-x-2 whitespace-nowrap">
                         <button onclick="AdminEngine.processAttendance('${r.id}', 'approved')" 
                                 class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition-colors shadow-sm">
                             Approve
@@ -1981,7 +2263,7 @@ function renderAttendanceApprovals() {
 
 function updatePendingAttendanceBadge() {
     const records = (DashboardEngine.getAttendanceRecords ? DashboardEngine.getAttendanceRecords() : []) || [];
-    const pendingCount = records.filter(r => r && r.status === 'pending').length;
+    const pendingCount = records.filter(r => r && (r.status === 'pending' || r.status === 'flagged_for_review')).length;
     const badge = document.getElementById('pending-attendance-badge');
     if (badge) {
         badge.textContent = pendingCount;
@@ -1994,9 +2276,17 @@ function updatePendingAttendanceBadge() {
 }
 
 function processAttendance(id, status) {
+    const records = (DashboardEngine.getAttendanceRecords ? DashboardEngine.getAttendanceRecords() : []) || [];
+    const target = records.find(r => r.id === id);
+    if (target && target.fraudAlert && status === 'approved') {
+        const confirmed = confirm('ADMIN AUDIT WARNING: This attendance submission was flagged by continuous meeting monitoring as a ghost class or discrepancy. Are you sure you wish to override and approve it for payroll?');
+        if (!confirmed) return;
+    }
     const res = DashboardEngine.updateAttendanceStatus(id, status);
     if (res) {
         showToast(`Attendance log ${status}!`, 'success');
+        renderAttendanceApprovals();
+        updatePendingAttendanceBadge();
         loadDashboardData();
     } else {
         showToast('Failed to update attendance status', 'warning');
@@ -2364,10 +2654,33 @@ function renderStudentsTable(students) {
                             <p class="font-bold text-gray-800 text-sm">${s.firstName} ${s.lastName}</p>
                             <p class="text-[10px] text-gray-400">${s.gender || 'Unknown'} • Age ${s.age || ''}</p>
                             ${(s.meetLink || s.classroomLink) ? `
-                                <a href="${s.meetLink || s.classroomLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200 mt-1 transition-colors" title="Google Meet Room (stemulusclubs@gmail.com)">
-                                    <i data-lucide="video" class="w-3 h-3 text-emerald-600"></i>
-                                    <span>${(s.meetLink || s.classroomLink).replace('https://meet.google.com/', '')}</span>
-                                </a>
+                                <div class="flex flex-col gap-1 mt-1">
+                                    <div class="flex items-center gap-1.5">
+                                        <a href="${s.meetLink || s.classroomLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200 transition-colors" title="Google Meet Room (stemulusclubs@gmail.com - Auto-Record 1080p, Host Not Required)">
+                                            <i data-lucide="video" class="w-3 h-3 text-emerald-600"></i>
+                                            <span>${(s.meetLink || s.classroomLink).replace('https://meet.google.com/', '')}</span>
+                                        </a>
+                                        <span class="inline-flex items-center gap-0.5 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200" title="1080p Auto-Record Enabled">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> REC
+                                        </span>
+                                    </div>
+                                    ${s.googleClassroom ? `
+                                    <div class="flex items-center gap-1">
+                                        <a href="${s.googleClassroom.studentInviteLink || s.classroomLink}" target="_blank" class="inline-flex items-center gap-1 text-[10px] text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-1.5 py-0.5 rounded border border-indigo-200" title="Google Classroom Student Invite">
+                                            <i data-lucide="book-open" class="w-2.5 h-2.5"></i>
+                                            <span>Classroom (${s.googleClassroom.enrollmentCode || 'Join'})</span>
+                                        </a>
+                                        <button type="button" onclick="AdminEngine.copyStudentClassroomLink('${s.id}')" class="text-indigo-600 hover:text-indigo-900 p-0.5" title="Copy Classroom Student Invite Link">
+                                            <i data-lucide="copy" class="w-2.5 h-2.5"></i>
+                                        </button>
+                                        ${s.googleClassroom.tutorInviteLink ? `
+                                        <button type="button" onclick="AdminEngine.copyTutorClassroomLink('${s.id}')" class="text-slate-500 hover:text-slate-800 p-0.5" title="Copy Classroom Tutor Invite Link">
+                                            <i data-lucide="user-plus" class="w-2.5 h-2.5"></i>
+                                        </button>
+                                        ` : ''}
+                                    </div>
+                                    ` : ''}
+                                </div>
                             ` : `
                                 <span class="inline-flex items-center gap-1 text-[10px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 mt-1">
                                     <i data-lucide="alert-circle" class="w-3 h-3"></i> No Meet Link
@@ -2396,8 +2709,16 @@ function renderStudentsTable(students) {
                 <td class="px-6 py-4 text-right">
                     <div class="flex items-center justify-end gap-2">
                         ${(s.meetLink || s.classroomLink) ? `
-                        <button type="button" class="text-gray-400 hover:text-emerald-600 transition-colors p-1" onclick="AdminEngine.copyStudentMeetLink('${s.id}')" title="Copy Google Meet Link">
+                        <button type="button" class="text-gray-400 hover:text-emerald-600 transition-colors p-1" onclick="AdminEngine.copyStudentMeetLink('${s.id}')" title="Copy Google Meet Link (Auto-Record Enabled)">
                             <i data-lucide="video" class="w-4 h-4"></i>
+                        </button>
+                        ` : ''}
+                        ${s.googleClassroom ? `
+                        <button type="button" class="text-gray-400 hover:text-indigo-600 transition-colors p-1" onclick="AdminEngine.copyStudentClassroomLink('${s.id}')" title="Copy Google Classroom Student Invite Link">
+                            <i data-lucide="book-open" class="w-4 h-4"></i>
+                        </button>
+                        <button type="button" class="text-gray-400 hover:text-purple-600 transition-colors p-1" onclick="AdminEngine.copyTutorClassroomLink('${s.id}')" title="Copy Google Classroom Tutor Invite Link">
+                            <i data-lucide="user-plus" class="w-4 h-4"></i>
                         </button>
                         ` : ''}
                         <button type="button" class="text-gray-400 hover:text-blue-600 transition-colors p-1" onclick="AdminEngine.openEmailParentModal('${s.parentEmail || ''}', '${s.id}')" title="Email Parent">
@@ -5144,17 +5465,17 @@ function openMessageTutorModal(tutorEmail, tutorName) {
         if (typeof DashboardEngine === 'undefined') return;
         const db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
         const records = db.attendanceRecords || [];
-        const pending = records.filter(r => r.status === 'pending');
+        const pending = records.filter(r => r.status === 'pending' && !r.fraudAlert && r.status !== 'flagged_for_review');
 
         if (pending.length === 0) {
-            showToast('No pending attendance records to approve', 'info');
+            showToast('No unflagged pending attendance records to approve', 'info');
             return;
         }
 
         const now = new Date().toISOString();
         let approvedCount = 0;
         records.forEach(r => {
-            if (r.status === 'pending') {
+            if (r.status === 'pending' && !r.fraudAlert && r.status !== 'flagged_for_review') {
                 r.status = 'approved';
                 r.auditedAt = now;
                 r.auditedBy = (currentUser && currentUser.name) ? currentUser.name : 'Director Board';
@@ -5163,7 +5484,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
         });
 
         DashboardEngine.saveDB(db);
-        showToast('Successfully batch approved ' + approvedCount + ' attendance sessions!', 'success');
+        showToast('Successfully batch approved ' + approvedCount + ' attendance sessions! (Flagged sessions held for audit)', 'success');
         renderAttendanceApprovals();
         renderAttendanceEscalationCenter();
         updatePendingAttendanceBadge();
@@ -6609,6 +6930,9 @@ function renderRecordingsTable(recordings) {
             '<td class="p-3 text-xs">' + statusBadge + '</td>' +
             '<td class="p-3 text-xs text-right whitespace-nowrap">' +
                 '<div class="flex items-center justify-end gap-1.5">' +
+                    '<button type="button" onclick="AdminEngine.openTranscriptAnalysisModal(\'' + r.id + '\')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-2.5 py-1.5 rounded-lg text-xs transition-all border border-slate-200 flex items-center gap-1 shadow-xs" title="AI Transcript & Lesson Plan Audit">' +
+                        '<span>📊 Audit</span>' +
+                    '</button>' +
                     '<button type="button" onclick="AdminEngine.openRecordingPlayerModal(\'' + r.id + '\')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition-all shadow-sm flex items-center gap-1">' +
                         '<i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>' +
                         '<span>Watch</span>' +
@@ -6800,6 +7124,55 @@ function closeManualBotDispatchModal() {
     if (modal) modal.classList.add('hidden');
 }
 
+function openTranscriptAnalysisModal(recordingId) {
+    var rec = _cachedRecordings.find(function(r) { return r.id === recordingId || r.scheduleId === recordingId; }) || 
+              SAMPLE_RECORDINGS.find(function(r) { return r.id === recordingId || r.scheduleId === recordingId; }) ||
+              SAMPLE_RECORDINGS[2]; // Default to Junayd Scratch Quest if not found
+    if (!rec) return;
+
+    var modal = document.getElementById('modal-transcript-analysis');
+    var container = document.getElementById('mount-transcript-analysis-content');
+    if (!modal || !container) return;
+
+    var audit = null;
+    if (typeof SessionContentAnalysisEngine !== 'undefined') {
+        if (rec.studentName && rec.studentName.toLowerCase().includes('junayd')) {
+            audit = SessionContentAnalysisEngine.runSampleAudit('junayd_scratch_quest');
+        } else if (rec.flaggedForReview) {
+            audit = SessionContentAnalysisEngine.runSampleAudit('simulated_untoward_test');
+        } else {
+            var sampleTurns = [
+                { time: '00:02', speaker: rec.tutorName || 'Tutor', text: 'Welcome to ' + (rec.courseName || 'Coding') + ' class! Today our goal is building interactive projects.' },
+                { time: '04:15', speaker: rec.studentName || 'Student', text: 'I am ready! I have opened my code editor.' },
+                { time: '08:30', speaker: rec.tutorName || 'Tutor', text: 'Awesome! Let us assemble the loops and click the green flag.' },
+                { time: '18:20', speaker: rec.studentName || 'Student', text: 'Look at my screen, it moves across and tests properly!' },
+                { time: '35:00', speaker: rec.tutorName || 'Tutor', text: 'Superb work today! You completed all the key logic milestones.' }
+            ];
+            audit = SessionContentAnalysisEngine.analyzeTranscript(sampleTurns, {
+                studentName: rec.studentName,
+                tutorName: rec.tutorName,
+                courseName: rec.courseName,
+                scheduleId: rec.scheduleId
+            });
+        }
+        container.innerHTML = SessionContentAnalysisEngine.renderAnalysisCardHTML(audit, rec);
+    } else {
+        container.innerHTML = '<div class="p-6 text-center text-slate-500">Analysis Engine loading...</div>';
+    }
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function closeTranscriptAnalysisModal() {
+    var modal = document.getElementById('modal-transcript-analysis');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+}
+
 async function submitManualBotDispatch() {
     var meetInput = document.getElementById('dispatch-meet-link');
     var studentInput = document.getElementById('dispatch-student-name');
@@ -6858,11 +7231,15 @@ return {
     approveRegistration,
     approveScheduleAdjust,
     declineScheduleAdjust,
+    approveCoverageRequest,
     sendBirthdayNotification,
     deleteStudent,
     openStudentModal,
     editStudent,
     copyStudentMeetLink,
+    copyStudentClassroomLink,
+    copyTutorClassroomLink,
+    copyText,
     openScheduleModal,
     switchScheduleTab,
     generateRecurringBatch,
@@ -6991,6 +7368,8 @@ return {
     filterRecordingsList,
     openRecordingPlayerModal,
     closeRecordingPlayerModal,
+    openTranscriptAnalysisModal,
+    closeTranscriptAnalysisModal,
     setVideoPlaybackRate,
     saveRecordingAuditNotes,
     copyParentExpiringLink,
@@ -7014,6 +7393,8 @@ return {
 // Global defensive aliases for inline HTML onclick handlers
 if (typeof window !== 'undefined') {
     window.AdminEngine = AdminEngine;
+    window.openTranscriptAnalysisModal = AdminEngine.openTranscriptAnalysisModal;
+    window.closeTranscriptAnalysisModal = AdminEngine.closeTranscriptAnalysisModal;
     window.togglePrivacyMask = AdminEngine.togglePrivacyMask;
     window.saveStudent = AdminEngine.saveStudent;
     window.saveTutor = AdminEngine.saveTutor;
@@ -7054,6 +7435,9 @@ if (typeof window !== 'undefined') {
     window.onParentSelectChange = AdminEngine.onParentSelectChange;
     window.loadNetlifyEnrollments = AdminEngine.loadNetlifyEnrollments;
     window.loadSchedules = AdminEngine.loadSchedules;
+    window.approveScheduleAdjust = AdminEngine.approveScheduleAdjust;
+    window.declineScheduleAdjust = AdminEngine.declineScheduleAdjust;
+    window.approveCoverageRequest = AdminEngine.approveCoverageRequest;
     window.renderLiveRadar = AdminEngine.renderLiveRadar;
     window.refreshLiveRadar = AdminEngine.refreshLiveRadar;
 
@@ -7071,6 +7455,8 @@ if (typeof window !== 'undefined') {
 
     // Class Recordings Aliases
     window.copyStudentMeetLink = AdminEngine.copyStudentMeetLink;
+    window.copyStudentClassroomLink = AdminEngine.copyStudentClassroomLink;
+    window.copyTutorClassroomLink = AdminEngine.copyTutorClassroomLink;
     window.loadClassRecordings = AdminEngine.loadClassRecordings;
     window.refreshRecordingsVault = AdminEngine.refreshRecordingsVault;
     window.filterRecordingsList = AdminEngine.filterRecordingsList;

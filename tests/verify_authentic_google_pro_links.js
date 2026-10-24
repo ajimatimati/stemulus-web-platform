@@ -51,9 +51,9 @@ async function run() {
         if (!db) return { error: 'DashboardEngine not loaded' };
 
         const EXPECTED_MAPPING = {
-          'Pearl Babalola': 'https://meet.google.com/yre-naci-zmp',
+          'Pearl Babalola': 'https://meet.google.com/bbx-ocde-ytw',
           'Gbolade Okesanjo': 'https://meet.google.com/qye-ezub-uqi',
-          'King Myles Omosuyi': 'https://meet.google.com/nxg-rbcg-nsr',
+          'King Myles Omosuyi': 'https://meet.google.com/miz-dthg-pmt',
           'JUNAYD KARI': 'https://meet.google.com/gyd-fewb-cdh',
           'Joshua Ogba': 'https://meet.google.com/yko-xwce-ugd',
           'Momooreoluwa Sonaike': 'https://meet.google.com/vdp-nmbh-sjj',

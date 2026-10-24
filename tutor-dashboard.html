@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="portal-view">
 <head>
   <meta charset="UTF-8">
   <link rel="manifest" href="/site.webmanifest">
@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="assets/vendor/lucide.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
   <!-- Tailwind utilities (required for sidebar positioning: fixed, w-64, h-full, etc.) -->
@@ -24,10 +24,14 @@
   <link rel="stylesheet" href="assets/css/portal-design-system.css">
   <link rel="stylesheet" href="assets/css/portal-animations.css">
   <style>
+    html, body {
+      overflow-x: hidden !important;
+      max-width: 100vw !important;
+    }
     body { background-color: var(--bg-page); min-height: 100vh; font-family: 'Nunito', sans-serif; margin: 0; padding-bottom: 5rem; }
 
-    .tutor-nav { background: white; border-bottom: 1px solid var(--border-soft); position: sticky; top: 0; z-index: 40; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .tutor-nav { background: white; border-bottom: 1px solid var(--border-soft); position: sticky; top: 0; z-index: 40; box-shadow: 0 2px 10px rgba(0,0,0,0.03); overflow-x: hidden; max-width: 100vw; }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
 
     .tutor-hero { background: linear-gradient(135deg, var(--stage-tutor-1), var(--stage-tutor-2)); border-radius: 28px; padding: 2.5rem; color: white; position: relative; overflow: hidden; margin-bottom: 2rem; box-shadow: var(--shadow-shell); }
     .hero-title { font-family: 'Fredoka One', cursive; font-size: 32px; margin: 0 0 8px 0; font-weight: normal; color: #ffffff !important; }
@@ -43,19 +47,73 @@
     .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
     @media (max-width: 960px) { .dash-grid { grid-template-columns: 1fr; } .hero-3d { display: none; } }
 
-    .dash-card { background: white; border-radius: 24px; padding: 1.5rem; border: 1px solid var(--border-soft); box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 1.5rem; }
+    .dash-card {
+      background: white;
+      border-radius: 24px;
+      padding: 1.5rem;
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.04), 0 8px 10px -6px rgba(15, 23, 42, 0.02), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
     .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
     .card-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 10px; }
 
     .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
-    .stat-card { background: #F8FAFC; border-radius: 20px; padding: 1.25rem; border: 1px solid var(--border-soft); text-align: center; transition: all 0.2s; }
-    .stat-card:hover { background: white; box-shadow: var(--shadow-float); transform: translateY(-2px); }
-    .stat-number { font-size: 28px; font-weight: 800; color: var(--text-main); margin: 0; }
-    .stat-label { font-size: 12px; font-weight: 700; color: var(--text-muted); margin: 4px 0 0; }
+    .stat-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border-radius: 20px;
+      padding: 1.25rem;
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      text-align: center;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stat-card:hover {
+      background: white;
+      box-shadow: 0 12px 28px -6px rgba(244, 96, 12, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.04);
+      transform: translateY(-3px);
+      border-color: rgba(244, 96, 12, 0.35);
+    }
+    .stat-number { font-size: 28px; font-weight: 800; color: #0f172a !important; margin: 0; }
+    .stat-label { font-size: 12px; font-weight: 700; color: #475569 !important; margin: 4px 0 0; }
     .stat-icon { width: 36px; height: 36px; object-fit: contain; margin: 0 auto 8px; }
 
-    .action-btn-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #F8FAFC; border-radius: 16px; border: 1px solid var(--border-soft); text-decoration: none; color: var(--text-main); font-weight: 700; font-size: 14px; transition: all 0.2s; }
-    .action-btn-item:hover { background: #F3E8FF; border-color: var(--stage-tutor-1); color: var(--stage-tutor-1); }
+    @media (min-width: 1024px) {
+      .tutor-hero { padding: 1.75rem 2.25rem !important; margin-bottom: 1.25rem !important; border-radius: 22px !important; }
+      .hero-title { font-size: 26px !important; }
+      .hero-sub { font-size: 13.5px !important; margin-bottom: 14px !important; }
+      .hero-3d { width: 140px !important; }
+      .stat-grid { margin-bottom: 1.25rem !important; gap: 0.85rem !important; }
+      .stat-card { padding: 1rem !important; border-radius: 16px !important; }
+      .stat-number { font-size: 22px !important; color: #0f172a !important; }
+      .stat-label { font-size: 11px !important; color: #475569 !important; }
+      .stat-icon { width: 32px !important; height: 32px !important; margin-bottom: 6px !important; }
+      .dash-card { padding: 1.25rem !important; margin-bottom: 1.25rem !important; border-radius: 18px !important; }
+      .pill-toolbar { display: none !important; }
+    }
+
+    .action-btn-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      min-height: 44px;
+      background: #F8FAFC;
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .action-btn-item:hover {
+      background: #F3E8FF;
+      border-color: var(--stage-tutor-1);
+      color: var(--stage-tutor-1);
+      transform: translateX(4px);
+    }
 
     @keyframes spin { to { transform: rotate(360deg); } }
     #sidebar { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
@@ -107,8 +165,10 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      min-height: 38px;
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.12) !important;
       border: 1px solid rgba(255, 255, 255, 0.22) !important;
@@ -137,8 +197,10 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      min-height: 38px;
       border-radius: 10px;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -150,6 +212,48 @@
       background: #f1f5f9;
       color: #0f172a;
       border-color: #cbd5e1;
+    }
+
+    @media (max-width: 639px) {
+      .tutor-nav .nav-desktop-only {
+        display: none !important;
+      }
+    }
+    @media (min-width: 640px) {
+      .tutor-nav .nav-desktop-only {
+        display: inline-flex !important;
+      }
+    }
+
+    /* WCAG 2.1 AA Touch Target Enforcement (38px min height for all interactive elements) */
+    #sidebar-logout-btn {
+      min-height: 40px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .card-header a {
+      min-height: 36px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      padding: 0.35rem 0.75rem !important;
+      border-radius: 10px !important;
+    }
+    #assigned-students-list a,
+    #assigned-students-list button,
+    #schedule-list a,
+    #schedule-list button,
+    .tutor-pill-btn,
+    .tutor-action-btn {
+      min-width: 38px !important;
+      min-height: 38px !important;
+      box-sizing: border-box !important;
+    }
+    #assigned-students-list a.inline-flex,
+    #schedule-list a.inline-flex,
+    #schedule-list button.inline-flex {
+      display: inline-flex !important;
+      align-items: center !important;
     }
 
     /* Collapsible Desktop Sidebar & Layout Alignment */
@@ -232,7 +336,7 @@
 })();
 </script>
 </head>
-<body>
+<body class="dashboard-page">
 
   <div id="sidebar-overlay" class="sidebar-overlay lg:hidden"></div>
   <!-- Tutor Sidebar -->
@@ -271,7 +375,11 @@
       <a href="#schedule-list" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="My Schedule">
         <i data-lucide="calendar" class="w-5 h-5 shrink-0"></i> <span class="nav-text">My Schedule</span>
       </a>
-      <a href="javascript:void(0)" onclick="TutorEngine.openProfileModal()" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="Profile &amp; Availability">
+      <a href="javascript:void(0)" onclick="if(typeof FacultyChatEngine!=='undefined'){FacultyChatEngine.openTutorDrawer();}" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="Admin Direct Line">
+ <i data-lucide="messages-square" class="w-5 h-5 shrink-0"></i> <span class="nav-text">Admin Direct Line</span>
+ <span id="tutor-chat-badge" class="ml-auto bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded-full hidden">0</span>
+ </a>
+ <a href="javascript:void(0)" onclick="TutorEngine.openProfileModal()" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="Profile &amp; Availability">
         <i data-lucide="user-cog" class="w-5 h-5 shrink-0"></i> <span class="nav-text">Profile &amp; Availability</span>
       </a>
     </nav>
@@ -300,32 +408,33 @@
   <!-- Navbar -->
   <nav class="tutor-nav lg:ml-64">
     <div class="nav-inner">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <button id="menu-btn" class="lg:hidden" style="background:none;border:none;cursor:pointer;padding:8px;color:#64748b;" aria-label="Toggle sidebar">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <div style="display:flex; align-items:center; gap:10px;" class="min-w-0">
+        <button id="menu-btn" class="lg:hidden w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer shrink-0" aria-label="Toggle sidebar">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <button type="button" id="desktop-sidebar-toggle" onclick="toggleTutorSidebar()" class="hidden lg:inline-flex nav-icon-btn" title="Toggle Sidebar">
+        <button type="button" id="desktop-sidebar-toggle" onclick="toggleTutorSidebar()" class="hidden lg:inline-flex nav-icon-btn shrink-0" title="Toggle Sidebar" aria-label="Toggle Sidebar">
           <i data-lucide="panel-left-close" style="width:18px;height:18px;"></i>
         </button>
-        <div id="avatar-initials" style="width:36px; height:36px; border-radius:50%; background:var(--stage-tutor-1); color:white; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">T</div>
-        <div>
-          <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--stage-tutor-1); display:block;">Mentor Center</span>
-          <span style="font-weight:800; font-size:16px; color:var(--text-main);" id="tutor-name">Tutor Account</span>
+        <div id="avatar-initials" style="width:36px; height:36px; border-radius:50%; background:var(--stage-tutor-1); color:white; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;" class="shrink-0">T</div>
+        <div class="min-w-0">
+          <span style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--stage-tutor-1); display:block;">Mentor Center</span>
+          <span style="font-weight:800; font-size:15px; color:var(--text-main);" id="tutor-name" class="truncate block max-w-[120px] sm:max-w-xs">Tutor Account</span>
         </div>
       </div>
 
-      <div style="display:flex; align-items:center; gap:12px;">
-        <a href="tutor-attendance.html" class="btn-3d btn-3d-secondary secondary" style="font-size:13px; padding:8px 16px;">
-          <i data-lucide="clipboard-check" style="width:16px; height:16px;"></i> Attendance
+      <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+        <div id="mount-tutor-dual-switcher" class="nav-desktop-only"></div>
+        <a href="tutor-attendance.html" class="nav-desktop-only btn-3d btn-3d-secondary secondary min-h-[38px] text-xs font-bold items-center gap-1.5 px-3.5 py-2">
+          <i data-lucide="clipboard-check" style="width:16px; height:16px;"></i> <span>Attendance</span>
         </a>
-        <a href="tutor-attendance-create.html" class="btn-3d brand" style="font-size:13px; padding:8px 16px; background:var(--stage-tutor-1);">
-          <i data-lucide="plus-circle" style="width:16px; height:16px;"></i> Log Session
+        <a href="tutor-attendance-create.html" class="nav-desktop-only btn-3d brand min-h-[38px] text-xs font-bold items-center gap-1.5 px-3.5 py-2" style="background:var(--stage-tutor-1);">
+          <i data-lucide="plus-circle" style="width:16px; height:16px;"></i> <span>Log Session</span>
         </a>
-        <button type="button" onclick="TutorEngine.openProfileModal()" class="btn-3d btn-3d-secondary secondary" style="font-size:13px; padding:8px 14px; cursor:pointer;">
-          <i data-lucide="user-cog" style="width:16px; height:16px;"></i> Profile
+        <button type="button" onclick="TutorEngine.openProfileModal()" class="btn-3d btn-3d-secondary secondary min-h-[38px] min-w-[38px] inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold cursor-pointer" title="Profile & Availability">
+          <i data-lucide="user-cog" style="width:16px; height:16px;"></i> <span class="hidden md:inline">Profile</span>
         </button>
-        <button id="logout-btn" style="background:none; border:none; color:#64748b; cursor:pointer; padding:8px;" title="Sign Out">
-          <i data-lucide="log-out" style="width:20px; height:20px;"></i>
+        <button id="logout-btn" class="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer shrink-0" title="Sign Out" aria-label="Sign Out">
+          <i data-lucide="log-out" style="width:18px; height:18px;"></i>
         </button>
       </div>
     </div>
@@ -502,8 +611,10 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="assets/js/firebase-config.min.js" defer></script>
+  <script src="assets/js/stemulus-firestore.min.js" defer></script>
   <script src="assets/js/dashboard-engine.min.js?v=20261017d" defer></script>
-  <script src="assets/js/badge-passport-engine.js" defer></script>
+  <script src="assets/js/badge-passport-engine.min.js" defer></script>
+  <script src="assets/js/reschedule-concierge-engine.min.js" defer></script>
   <script src="assets/js/tutor-engine.min.js?v=20261017d" defer></script>
   <script src="assets/js/portal-scene-engine.min.js" defer></script>
 
@@ -511,9 +622,11 @@
     document.addEventListener('DOMContentLoaded', () => {
       if (window.lucide) lucide.createIcons();
 
-      gsap.from("#hero-banner", { y: 30, opacity: 0, duration: 0.7, ease: "power2.out" });
-      gsap.from(".stat-card", { y: 15, opacity: 0, duration: 0.5, stagger: 0.08, delay: 0.3 });
-      gsap.from(".dash-card", { y: 20, opacity: 0, duration: 0.6, stagger: 0.1, delay: 0.4 });
+      if (typeof gsap !== 'undefined') {
+        gsap.from("#hero-banner", { y: 15, opacity: 0, duration: 0.3, ease: "power2.out" });
+        gsap.from(".stat-card", { y: 10, opacity: 0, duration: 0.25, stagger: 0.03, ease: "power2.out" });
+        gsap.from(".dash-card", { y: 10, opacity: 0, duration: 0.3, stagger: 0.04, ease: "power2.out" });
+      }
 
       document.body.classList.add('portal-loaded');
     });
@@ -575,7 +688,7 @@
     };
   })();
   </script>
-  <script src="assets/js/class-reminder-engine.js" defer></script>
+  <script src="assets/js/class-reminder-engine.min.js" defer></script>
   <script>
     window.addEventListener('storage', function(e) {
       if (e.key === 'stemulus_session' && !e.newValue) {
@@ -602,7 +715,7 @@
               <p class="text-xs text-slate-500 font-medium">Keep your credentials, contact, and teaching hours updated</p>
             </div>
           </div>
-          <button type="button" onclick="TutorEngine.closeProfileModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition-colors">
+          <button type="button" onclick="TutorEngine.closeProfileModal()" class="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer" aria-label="Close modal">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
@@ -699,10 +812,10 @@
           </div>
 
           <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-            <button type="button" onclick="TutorEngine.closeProfileModal()" class="px-5 py-2.5 text-slate-500 hover:text-slate-800 font-bold text-sm rounded-xl">
+            <button type="button" onclick="TutorEngine.closeProfileModal()" class="px-5 py-2.5 min-h-[40px] text-slate-500 hover:text-slate-800 font-bold text-sm rounded-xl transition-colors cursor-pointer">
               Cancel
             </button>
-            <button type="submit" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-6 py-2.5 rounded-xl shadow-md text-sm transition-all" style="background-color:#ea580c !important;">
+            <button type="submit" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-6 py-2.5 min-h-[40px] rounded-xl shadow-md text-sm transition-all cursor-pointer" style="background-color:#ea580c !important;">
               Save Profile &amp; Availability
             </button>
           </div>
@@ -710,10 +823,31 @@
       </div>
     </div>
   </div>
+  <script src="assets/js/gemini-config.min.js"></script>
+  <script src="assets/js/gemini-service.min.js"></script>
+  <script src="assets/js/i18n-visual-engine.min.js" defer></script>
+  <script src="assets/js/classroom-rejoin-beacon.min.js" defer></script>
+  <script src="assets/js/faculty-chat-engine.min.js" defer></script>
+  <script src="assets/js/bilingual-classroom-engine.min.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      setTimeout(function() {
+        var el = document.getElementById("mount-tutor-dual-switcher");
+ if (typeof ClassroomRejoinBeacon !== "undefined") { ClassroomRejoinBeacon.init(); }
+ if (typeof FacultyChatEngine !== "undefined") { FacultyChatEngine.init('tutor'); }
+        if (el && typeof I18nVisualEngine !== "undefined") {
+          el.innerHTML = I18nVisualEngine.renderSwitcherWidgetHTML();
+        }
+      }, 500);
+    });
+  </script>
 
-<script src="assets/js/stemulus-icons.js" defer></script>
-<script src="assets/js/scroll-choreography.js" defer></script>
-<script src="assets/js/stemulus-interactive.js" defer></script>
+<script src="assets/js/stemulus-icons.min.js" defer></script>
+<script src="assets/js/scroll-choreography.min.js" defer></script>
+<script src="assets/js/stemulus-interactive.min.js" defer></script>
+<script src="assets/js/mulu-widget.min.js" defer></script>
 
+ <!-- Mount for Tutor Direct Line Chat Drawer -->
+ <div id="mount-tutor-chat-drawer"></div>
 </body>
 </html>

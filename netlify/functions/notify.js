@@ -3,18 +3,19 @@
  *
  * Keeps ntfy topic names and auth token server-side in environment variables.
  * Client JS sends a structured payload here; this function resolves the real
- * topic and forwards to ntfy.sh with authentication.
+ * topic and forwards to ntfy.sh with automatic anonymous fallback if token is invalid.
  *
  * Required Netlify environment variables:
- *   NTFY_TOKEN: ntfy access token (from ntfy.sh account → Access Tokens)
- *   NTFY_TOPIC_ENROLL: enrollment + booking notifications (e.g. stm-enr-lx7k9w2mq8vp4tz)
- *   NTFY_TOPIC_CONTACT: contact form notifications (e.g. stemulus-messages-admin2026)
- *   NTFY_TOPIC_TUTOR: tutor application notifications (e.g. stm-ttr-nb3r5y6jd1cx8ws)
- *   NTFY_TOPIC_BIRTHDAY: birthday alerts (e.g. stm-bday-qm4p7s9ke2ax1nf)
+ *   NTFY_TOKEN: ntfy access token (optional; if missing or invalid, anonymous post is used)
+ *   NTFY_TOPIC_ENROLL: enrollment + booking notifications (default: stm-enr-lx7k9w2mq8vp4tz)
+ *   NTFY_TOPIC_CONTACT: contact form notifications (default: stemulus-messages-admin2026)
+ *   NTFY_TOPIC_TUTOR: tutor application notifications (default: stm-ttr-nb3r5y6jd1cx8ws)
+ *   NTFY_TOPIC_BIRTHDAY: birthday alerts (default: stm-bday-qm4p7s9ke2ax1nf)
+ *   NTFY_TOPIC_ADMIN: primary admin escalation channel (default: stemulus-admin-alerts)
  *
  * Request body (JSON):
  *   {
- *     channel: 'enroll' | 'contact' | 'tutor' | 'birthday',
+ *     channel: 'enroll' | 'contact' | 'tutor' | 'birthday' | 'admin',
  *     title:   string,
  *     message: string,
  *     priority?: 'min'|'low'|'default'|'high'|'urgent',
@@ -45,6 +46,7 @@ const TOPIC_MAP = {
   tutor:           'NTFY_TOPIC_TUTOR',
   birthday:        'NTFY_TOPIC_BIRTHDAY',
   schedule_digest: 'NTFY_TOPIC_BIRTHDAY',
+  admin:           'NTFY_TOPIC_ADMIN',
 };
 
 // Fallback topic values: used when env vars are not set in Netlify dashboard
@@ -53,7 +55,53 @@ const TOPIC_FALLBACKS = {
   NTFY_TOPIC_CONTACT:  'stemulus-messages-admin2026',
   NTFY_TOPIC_TUTOR:    'stm-ttr-nb3r5y6jd1cx8ws',
   NTFY_TOPIC_BIRTHDAY: 'stm-bday-qm4p7s9ke2ax1nf',
+  NTFY_TOPIC_ADMIN:    'stemulus-admin-alerts',
 };
+
+/**
+ * Sanitize header strings to strictly ASCII (ISO-8859-1 safe) to prevent Node fetch ERR_INVALID_CHAR
+ */
+function sanitizeHeader(val) {
+  if (!val) return '';
+  return String(val).replace(/[^\x20-\x7E]/g, ' ').trim();
+}
+
+/**
+ * Robust dispatcher to ntfy.sh with automatic 401/403 recovery
+ */
+async function dispatchToNtfy(topic, baseHeaders, body) {
+  const headers = { ...baseHeaders };
+  try {
+    let resp = await fetch(`https://ntfy.sh/${topic}`, {
+      method: 'POST',
+      headers,
+      body,
+    });
+
+    // If unauthorized / forbidden because NTFY_TOKEN in Netlify is expired or bad,
+    // automatically retry anonymously without the Authorization header.
+    if ((resp.status === 401 || resp.status === 403) && headers['Authorization']) {
+      console.warn(`[notify] Auth failed (${resp.status}) on ${topic}. Retrying anonymously...`);
+      delete headers['Authorization'];
+      resp = await fetch(`https://ntfy.sh/${topic}`, {
+        method: 'POST',
+        headers,
+        body,
+      });
+    }
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      console.error(`[notify] ntfy error ${resp.status} for topic ${topic}:`, errText);
+      return { ok: false, status: resp.status, error: errText };
+    }
+
+    return { ok: true, status: resp.status };
+  } catch (err) {
+    console.error(`[notify] fetch exception for topic ${topic}:`, err.message);
+    return { ok: false, error: err.message };
+  }
+}
 
 exports.handler = async (event) => {
   const CORS = getCorsHeaders(event);
@@ -87,40 +135,51 @@ exports.handler = async (event) => {
   }
 
   const topicKey = TOPIC_MAP[channel];
-  const topic = process.env[topicKey] || TOPIC_FALLBACKS[topicKey];
+  const primaryTopic = process.env[topicKey] || TOPIC_FALLBACKS[topicKey];
+  const adminTopic = process.env.NTFY_TOPIC_ADMIN || TOPIC_FALLBACKS.NTFY_TOPIC_ADMIN;
   const token = process.env.NTFY_TOKEN;
 
-  if (!topic) {
+  if (!primaryTopic) {
     console.warn(`[notify] ${topicKey} not configured: skipping`);
     return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true, skipped: true, reason: 'topic not configured' }) };
   }
 
   const ntfyHeaders = {
     'Content-Type': 'text/plain',
-    'Priority': priority,
+    'Priority': sanitizeHeader(priority) || 'high',
   };
 
-  if (token) ntfyHeaders['Authorization'] = `Bearer ${token}`;
-  if (title)  ntfyHeaders['Title'] = title;
-  if (tags)   ntfyHeaders['Tags'] = tags;
-  if (click)  ntfyHeaders['Click'] = click;
-
-  try {
-    const resp = await fetch(`https://ntfy.sh/${topic}`, {
-      method: 'POST',
-      headers: ntfyHeaders,
-      body: message,
-    });
-
-    if (!resp.ok) {
-      const err = await resp.text();
-      console.error(`[notify] ntfy error ${resp.status}:`, err);
-      return { statusCode: 502, headers: CORS, body: JSON.stringify({ ok: false, error: err }) };
-    }
-
-    return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true }) };
-  } catch (err) {
-    console.error('[notify] fetch failed:', err.message);
-    return { statusCode: 502, headers: CORS, body: JSON.stringify({ ok: false, error: err.message }) };
+  if (token && token.trim()) {
+    ntfyHeaders['Authorization'] = `Bearer ${token.trim()}`;
   }
+  if (title) {
+    ntfyHeaders['Title'] = sanitizeHeader(title);
+  }
+  if (tags) {
+    ntfyHeaders['Tags'] = sanitizeHeader(tags);
+  }
+  if (click) {
+    ntfyHeaders['Click'] = click.trim();
+  }
+
+  // 1. Dispatch to primary channel topic
+  const primaryResult = await dispatchToNtfy(primaryTopic, ntfyHeaders, message);
+
+  // 2. Dual-broadcast high-priority lead channels ('enroll' and 'contact') to main admin topic
+  // ensuring admin receives alerts regardless of which topic they subscribed to.
+  if ((channel === 'enroll' || channel === 'contact') && adminTopic && adminTopic !== primaryTopic) {
+    dispatchToNtfy(adminTopic, ntfyHeaders, message).catch(e => {
+      console.warn(`[notify] Admin dual-broadcast error:`, e.message);
+    });
+  }
+
+  if (!primaryResult.ok) {
+    return {
+      statusCode: 502,
+      headers: CORS,
+      body: JSON.stringify({ ok: false, error: primaryResult.error || 'Failed to dispatch to ntfy.sh' })
+    };
+  }
+
+  return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true }) };
 };

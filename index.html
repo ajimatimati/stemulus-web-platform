@@ -20,11 +20,8 @@
   <link rel="alternate" hreflang="en-ca" href="https://stemuluskidstech.com/coding-classes-for-kids-canada.html">
   <link rel="alternate" hreflang="en-au" href="https://stemuluskidstech.com/coding-classes-for-kids-australia.html">
   <link rel="alternate" hreflang="en-ng" href="https://stemuluskidstech.com/coding-classes-for-kids-nigeria.html">
-  <!-- SEO: GEO TARGETING (Nigeria HQ & Global Diaspora Reach) -->
-  <meta name="geo.region" content="NG-LA">
-  <meta name="geo.placename" content="Lagos, Nigeria">
-  <meta name="geo.position" content="6.5244;3.3792">
-  <meta name="ICBM" content="6.5244, 3.3792">
+  <!-- SEO: GLOBAL COVERAGE & DIASPORA REACH -->
+  <meta name="geo.region" content="GLOBAL">
   <meta name="target" content="all">
   <meta name="coverage" content="Worldwide">
   <meta name="distribution" content="Global">
@@ -2565,6 +2562,26 @@ function dismissExitIntent() { document.getElementById('exit-intent-overlay').st
   });
 })();
 </script>
+
+<!-- Netlify static honeypot form - must exist in HTML at build time for JS-injected form POSTs to be captured -->
+<form name="free-class-booking" data-netlify="true" style="display:none;" aria-hidden="true">
+  <input type="hidden" name="form-name" value="free-class-booking">
+  <input type="text" name="parent_name">
+  <input type="text" name="student_name">
+  <input type="email" name="email">
+  <input type="tel" name="phone">
+  <input type="text" name="contact_pref">
+  <input type="text" name="country">
+  <input type="text" name="location">
+  <input type="text" name="lead_source">
+  <input type="text" name="age_group">
+  <input type="text" name="utm_source">
+  <input type="text" name="utm_medium">
+  <input type="text" name="utm_campaign">
+  <input type="text" name="referrer">
+  <input type="text" name="time_zone">
+</form>
+
 </body>
 
 </html>
