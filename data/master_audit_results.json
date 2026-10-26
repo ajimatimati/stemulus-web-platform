@@ -1,0 +1,268 @@
+{
+  "inventory": {
+    "totalHtml": 57,
+    "publicRoutes": [
+      {
+        "file": "404.html"
+      },
+      {
+        "file": "academy.html"
+      },
+      {
+        "file": "admin-login.html"
+      },
+      {
+        "file": "ai-machine-learning.html"
+      },
+      {
+        "file": "arduino-robotics.html"
+      },
+      {
+        "file": "blog-coding-nigeria-primary.html"
+      },
+      {
+        "file": "blog-coding-readiness.html"
+      },
+      {
+        "file": "blog-daniel-spotlight.html"
+      },
+      {
+        "file": "blog-nigeria-diaspora-coding.html"
+      },
+      {
+        "file": "blog-python-kids-nigeria.html"
+      },
+      {
+        "file": "blog-scratch-first-language.html"
+      },
+      {
+        "file": "blog-template.html"
+      },
+      {
+        "file": "blog.html"
+      },
+      {
+        "file": "book-class.html"
+      },
+      {
+        "file": "child-safety.html"
+      },
+      {
+        "file": "coding-classes-for-kids-australia.html"
+      },
+      {
+        "file": "coding-classes-for-kids-canada.html"
+      },
+      {
+        "file": "coding-classes-for-kids-nigeria.html"
+      },
+      {
+        "file": "coding-classes-for-kids-uk.html"
+      },
+      {
+        "file": "coding-classes-for-kids-usa.html"
+      },
+      {
+        "file": "coding-for-kids-ages-11-13.html"
+      },
+      {
+        "file": "coding-for-kids-ages-14-17.html"
+      },
+      {
+        "file": "coding-for-kids-ages-5-7.html"
+      },
+      {
+        "file": "coding-for-kids-ages-8-10.html"
+      },
+      {
+        "file": "contact.html"
+      },
+      {
+        "file": "creative-coding.html"
+      },
+      {
+        "file": "digital-art.html"
+      },
+      {
+        "file": "enroll.html"
+      },
+      {
+        "file": "for-parents.html"
+      },
+      {
+        "file": "fullstack-web-dev.html"
+      },
+      {
+        "file": "index.html"
+      },
+      {
+        "file": "issue-certificate.html"
+      },
+      {
+        "file": "join-as-tutor.html"
+      },
+      {
+        "file": "join-class.html"
+      },
+      {
+        "file": "junior-robotics.html"
+      },
+      {
+        "file": "parent-login.html"
+      },
+      {
+        "file": "privacy-policy.html"
+      },
+      {
+        "file": "programs.html"
+      },
+      {
+        "file": "python-programming.html"
+      },
+      {
+        "file": "scratch-creators.html"
+      },
+      {
+        "file": "tutor-evaluation.html"
+      },
+      {
+        "file": "tutor-login.html"
+      },
+      {
+        "file": "tutor-students.html"
+      },
+      {
+        "file": "verify-certificate.html"
+      },
+      {
+        "file": "verifyforzoho.html"
+      },
+      {
+        "file": "web-wizards.html"
+      },
+      {
+        "file": "webmcp.html"
+      },
+      {
+        "file": "zoho-domain-verification.html"
+      },
+      {
+        "file": "zohoverify.html"
+      }
+    ],
+    "protectedRoutes": [
+      {
+        "file": "admin-dashboard.html",
+        "role": "admin"
+      },
+      {
+        "file": "parent-dashboard.html",
+        "role": "parent"
+      },
+      {
+        "file": "parent-progress.html",
+        "role": "parent"
+      },
+      {
+        "file": "referral-dashboard.html",
+        "role": "public"
+      },
+      {
+        "file": "tutor-attendance-create.html",
+        "role": "tutor"
+      },
+      {
+        "file": "tutor-attendance.html",
+        "role": "tutor"
+      },
+      {
+        "file": "tutor-dashboard.html",
+        "role": "tutor"
+      },
+      {
+        "file": "tutor-monthly-report.html",
+        "role": "tutor"
+      }
+    ],
+    "functions": [
+      "auto-reminders.js",
+      "class-reminders.js",
+      "mcp.js",
+      "notify.js",
+      "record-session.js",
+      "recording-webhook.js",
+      "scheduled-notifications.js",
+      "send-email.js"
+    ]
+  },
+  "security": {
+    "passed": [
+      "No live private keys or credentials exposed in client-side JavaScript bundles.",
+      "X-Frame-Options: DENY configured against clickjacking.",
+      "X-Content-Type-Options: nosniff configured against MIME sniffing.",
+      "Content-Security-Policy (CSP) configured."
+    ],
+    "warnings": [],
+    "critical": []
+  },
+  "privacy": {
+    "findings": [
+      "Parental photo and project work consent flags recorded in student profiles.",
+      "Firestore Rules strictly isolate minors: parents can only read their own children.",
+      "Session recording vault restricted: only parents and authorized admins can access recordings."
+    ],
+    "coppaCompliance": true,
+    "ndpaCompliance": true
+  },
+  "copy": {
+    "emDashViolations": [
+      {
+        "file": "admin-dashboard.html",
+        "line": 3126,
+        "snippet": "<p id=\"td-account-number\" class=\"font-mono font-extrabold text-slate-800 text-sm"
+      },
+      {
+        "file": "admin-dashboard.html",
+        "line": 3157,
+        "snippet": "<p id=\"td-workstation\" class=\"text-xs text-slate-700 leading-relaxed font-medium"
+      },
+      {
+        "file": "assets/js/monthly-report-engine.js",
+        "line": 17,
+        "snippet": "// Absolute Constraint: NO EM-DASHES (— or --)"
+      },
+      {
+        "file": "assets/js/monthly-report-engine.js",
+        "line": 18,
+        "snippet": "let cleaned = text.replace(/—/g, ', ').replace(/--/g, ', ');"
+      }
+    ],
+    "placeholderViolations": [],
+    "pricingMatches": [
+      "programs.html accurately reflects realigned rates (₦48k / ₦75k / ₦120k and £80 parallel)."
+    ]
+  },
+  "email": {
+    "templates": [],
+    "deliverabilityHeaders": [
+      "x-admin-approval authentication enforcement active on custom email dispatches."
+    ],
+    "designCompliance": []
+  },
+  "qa": {
+    "testSuites": [
+      {
+        "name": "test_full_system_verification.js",
+        "passed": 44,
+        "failed": 0,
+        "status": "PASSED"
+      },
+      {
+        "name": "test_pricing_and_smart_detector.js",
+        "passed": 21,
+        "failed": 0,
+        "status": "PASSED"
+      }
+    ]
+  }
+}

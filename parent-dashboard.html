@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <script src="assets/vendor/lucide.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
   <script src="assets/js/portal-error-tracker.min.js"></script>
 
   <!-- STEMulus Portal Design System -->
@@ -412,11 +412,21 @@
       <a href="parent-progress.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
         <i data-lucide="bar-chart-2" class="w-5 h-5"></i> My Child's Progress
       </a>
+      <a href="curriculum/slides/index.html?role=parent" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
+        <i data-lucide="presentation" class="w-5 h-5" style="color:#f4600c;"></i> Interactive Curriculum
+      </a>
+      <a href="curriculum/prompt_lab/prompt_tester.html?role=parent" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
+        <i data-lucide="sparkles" class="w-5 h-5" style="color:#06b6d4;"></i> AI Prompt Lab
+      </a>
       <a href="book-class.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
         <i data-lucide="calendar-plus" class="w-5 h-5"></i> Book a Class
       </a>
       <a href="contact.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
         <i data-lucide="message-circle" class="w-5 h-5"></i> Contact Us
+      </a>
+      <a href="#" onclick="if(window.ParentEngine&&ParentEngine.openNoticesModal){ParentEngine.openNoticesModal();} return false;" class="flex items-center justify-between px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);">
+        <span class="flex items-center gap-3"><i data-lucide="bell" class="w-5 h-5"></i> Academy Notices</span>
+        <span id="parent-unread-notices-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-black bg-orange-500 text-white">0</span>
       </a>
     </nav>
     <div class="p-4" style="border-top:1px solid rgba(255,255,255,0.07);">
@@ -444,14 +454,14 @@
   <!-- Navbar -->
   <nav class="portal-nav lg:ml-64" style="transition:margin-left 0.3s;">
     <div class="nav-inner">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <button id="menu-btn" class="lg:hidden" style="background:none;border:none;cursor:pointer;padding:8px;color:#64748b;" aria-label="Toggle sidebar">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <div style="display:flex; align-items:center; gap:10px;" class="min-w-0">
+        <button id="menu-btn" class="lg:hidden w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer shrink-0" aria-label="Toggle sidebar">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <img src="favicon.png" alt="STEMulus Logo" width="36" height="36" style="object-fit:contain;">
-        <div>
-          <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--brand-orange); display:block;">Parent Portal</span>
-          <span style="font-weight:800; font-size:16px; color:var(--text-main);" id="user-name">Parent Account</span>
+        <img src="favicon.png" alt="STEMulus Logo" width="34" height="34" style="object-fit:contain;" class="shrink-0">
+        <div class="min-w-0">
+          <span style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--brand-orange); display:block;">Parent Portal</span>
+          <span style="font-weight:800; font-size:15px; color:var(--text-main);" id="user-name" class="truncate block max-w-[120px] sm:max-w-xs md:max-w-none">Parent Account</span>
         </div>
       </div>
 
@@ -460,11 +470,18 @@
         <a href="parent-progress.html" class="btn-3d btn-3d-secondary secondary nav-desktop-only" style="font-size:13px; padding:8px 16px; min-height:38px;">
           <i data-lucide="bar-chart-2" style="width:16px; height:16px;"></i> Progress
         </a>
+        <a href="academy.html" class="btn-3d btn-3d-secondary secondary nav-desktop-only" style="font-size:13px; padding:8px 16px; min-height:38px; color:#EA580C; font-weight:800;">
+          <i data-lucide="sparkles" style="width:16px; height:16px; color:#EA580C;"></i> Digital Pass
+        </a>
         <a href="enroll.html" class="btn-3d orange nav-desktop-only" style="font-size:13px; padding:8px 16px; min-height:38px;">
           <i data-lucide="plus-circle" style="width:16px;"></i> Enroll
         </a>
-        <button id="logout-btn" style="background:none; border:none; color:#64748b; cursor:pointer; padding:8px; min-width:38px; min-height:38px; display:inline-flex; align-items:center; justify-content:center;" title="Sign Out">
-          <i data-lucide="log-out" style="width:20px;"></i>
+        <button type="button" id="parent-nav-notices-btn" onclick="if(window.ParentEngine&&ParentEngine.openNoticesModal){ParentEngine.openNoticesModal();}" class="relative w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer shrink-0" title="Academy Notices" aria-label="Academy Notices">
+          <i data-lucide="bell" style="width:18px; height:18px;"></i>
+          <span id="parent-nav-unread-dot" class="hidden absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-orange-500 ring-2 ring-white"></span>
+        </button>
+        <button id="logout-btn" class="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer shrink-0" title="Sign Out" aria-label="Sign Out">
+          <i data-lucide="log-out" style="width:18px; height:18px;"></i>
         </button>
       </div>
     </div>
@@ -473,6 +490,25 @@
   <!-- Content Container -->
   <div class="lg:ml-64" style="transition:margin 0.3s;">
   <div style="max-width:1200px; margin:2rem auto 0; padding:0 1.5rem;">
+
+    <!-- SCHOOL NOTICES & ANNOUNCEMENTS BANNER -->
+    <div id="parent-notices-banner" class="mb-5 p-4 rounded-2xl bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 border border-orange-200/90 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-slate-800" style="display:none;">
+      <div class="flex items-center gap-3">
+        <span class="w-9 h-9 rounded-xl bg-orange-600 text-white flex items-center justify-center font-black shrink-0 shadow-xs">
+          <i data-lucide="bell-ring" class="w-5 h-5"></i>
+        </span>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-orange-200 text-orange-950" id="parent-notice-badge">Announcement</span>
+            <h4 class="font-bold text-sm text-slate-900" id="parent-notice-title">Academy Update</h4>
+          </div>
+          <p class="text-xs text-slate-600 line-clamp-1 mt-0.5" id="parent-notice-summary">Notice description...</p>
+        </div>
+      </div>
+      <button type="button" onclick="if(window.ParentEngine&&ParentEngine.openNoticesModal){ParentEngine.openNoticesModal();}" class="px-4 py-2 rounded-xl text-xs font-bold bg-orange-600 text-white hover:bg-orange-700 transition-colors shadow-xs cursor-pointer shrink-0 flex items-center gap-1.5">
+        <i data-lucide="eye" class="w-4 h-4"></i> View Notice
+      </button>
+    </div>
 
     <!-- HERO BANNER -->
     <div class="parent-hero" id="hero-banner">
@@ -602,6 +638,14 @@
           <h2 class="card-title">Quick Actions</h2>
         </div>
         <div style="display:flex; flex-direction:column; gap:8px;">
+          <a href="curriculum/slides/index.html?role=parent" class="action-btn-item" style="background:linear-gradient(135deg, #FFF7ED, #FFEDD5); border-color:#FDBA74;">
+            <i data-lucide="presentation" style="color:var(--brand-orange);"></i>
+            Interactive Curriculum &amp; Quests (215)
+          </a>
+          <a href="curriculum/prompt_lab/prompt_tester.html?role=parent" class="action-btn-item">
+            <i data-lucide="sparkles" style="color:#0891B2;"></i>
+            AI Prompt Engineering Lab
+          </a>
           <a href="parent-progress.html" class="action-btn-item">
             <i data-lucide="line-chart" style="color:var(--brand-orange);"></i>
             Detailed Progress Analytics
@@ -678,8 +722,10 @@
         if(loader) { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 400); }
       }, 500);
 
-      gsap.from("#hero-banner", { y: 30, opacity: 0, duration: 0.7, ease: "power2.out" });
-      gsap.from(".dash-card", { y: 20, opacity: 0, duration: 0.6, stagger: 0.1, delay: 0.2 });
+      if (typeof gsap !== 'undefined') {
+        gsap.from("#hero-banner", { y: 30, opacity: 0, duration: 0.7, ease: "power2.out" });
+        gsap.from(".dash-card", { y: 20, opacity: 0, duration: 0.6, stagger: 0.1, delay: 0.2 });
+      }
     });
 
     window.addEventListener('stemulusDbUpdated', updateKPIs);
@@ -750,12 +796,12 @@
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
             <div>
-              <label style="display:block;font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Age *</label>
-              <input type="number" id="add-child-age" min="4" max="18" value="10" required style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px 14px;font-size:13px;color:#0f172a;outline:none;">
+              <label style="display:block;font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Date of Birth *</label>
+              <input type="date" id="add-child-birthday" required onchange="(function(el){if(!el.value)return;var d=new Date(el.value),n=new Date(),a=n.getFullYear()-d.getFullYear();if(n.getMonth()<d.getMonth()||(n.getMonth()===d.getMonth()&&n.getDate()<d.getDate()))a--;var ageEl=document.getElementById('add-child-age');if(ageEl&&a>=4&&a<=18)ageEl.value=a;})(this)" style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px 14px;font-size:13px;color:#0f172a;outline:none;">
             </div>
             <div>
-              <label style="display:block;font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Birthday (Optional)</label>
-              <input type="date" id="add-child-birthday" style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px 14px;font-size:13px;color:#0f172a;outline:none;">
+              <label style="display:block;font-size:11px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Age *</label>
+              <input type="number" id="add-child-age" min="4" max="18" value="10" required style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px 14px;font-size:13px;color:#0f172a;outline:none;">
             </div>
           </div>
 
@@ -799,6 +845,34 @@
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PARENT NOTICES MODAL ===================== -->
+  <div id="parent-notices-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs hidden animate-fadeIn">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-orange-50/50 to-amber-50/50">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-orange-600 text-white flex items-center justify-center shadow-xs">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base text-slate-900">Academy Notices &amp; Policy Directives</h3>
+            <p class="text-xs text-slate-500">Official communications from STEMulus Academic Directorate</p>
+          </div>
+        </div>
+        <button type="button" onclick="if(window.ParentEngine&&ParentEngine.closeNoticesModal){ParentEngine.closeNoticesModal();}" class="w-9 h-9 rounded-xl hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-4" id="parent-notices-container">
+        <!-- Rendered by ParentEngine -->
+      </div>
+      <div class="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+        <button type="button" onclick="if(window.ParentEngine&&ParentEngine.closeNoticesModal){ParentEngine.closeNoticesModal();}" class="px-5 py-2.5 rounded-xl font-bold text-xs bg-slate-200 text-slate-700 hover:bg-slate-300 transition-colors cursor-pointer">
+          Close
+        </button>
       </div>
     </div>
   </div>

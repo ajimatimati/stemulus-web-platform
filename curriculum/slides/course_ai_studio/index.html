@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generative AI Studio: Prompt, Loop & Graph Engineering | STEMulus Kids Tech Academy</title>
+  <link rel="icon" type="image/png" href="../assets/3d/stemulus-logo.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <style>
+    :root {
+      --brand-orange: #F4600C;
+      --brand-orange-deep: #C2410C;
+      --brand-orange-shadow: #9A3412;
+      --brand-indigo: #4F46E5;
+      --brand-indigo-deep: #3730A3;
+      --bg-page: #F1F5F9;
+      --bg-subtle: #F8FAFC;
+      --surface-white: #FFFFFF;
+      --text-main: #1A2332;
+      --text-muted: #475569;
+      --text-light: #64748B;
+      --border-neutral: #E2E8F0;
+      --border-subtle: #EDF2F7;
+      --shadow-shell: 0 20px 45px -10px rgba(15, 23, 42, 0.08);
+      --shadow-card: 0 4px 16px rgba(15, 23, 42, 0.04);
+      --radius-card: 20px;
+      --radius-badge: 8px;
+      --radius-tag: 10px;
+      --radius-pill: 10px;
+      --radius-btn: 14px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    header.site-header {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 18px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03), inset 0 1px 0 #FFFFFF;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-badge);
+      color: var(--text-muted);
+      font-family: 'Nunito', sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: inset 0 1px 0.5px #FFFFFF, 0 2px 4px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+    }
+    .back-btn:hover {
+      color: var(--brand-indigo);
+      border-color: #CBD5E1;
+      transform: translateX(-2px);
+    }
+    .back-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 10px;
+      filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.1));
+    }
+    .brand-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .brand-sub {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .header-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .stat-badge {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      padding: 6px 14px;
+      border-radius: var(--radius-badge);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-badge strong {
+      color: var(--text-main);
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 36px 40px 80px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Hero Course Starting Banner */
+    .course-hero {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 60%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 2px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 36px 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 10px 30px -4px rgba(15, 23, 42, 0.05);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .course-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    .hero-content {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-badge-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .course-tag {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .ages-tag {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: #F8FAFC;
+      border: 1px solid var(--border-neutral);
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .course-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .course-tagline {
+      font-size: 17px;
+      color: var(--brand-indigo);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+    .course-overview {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 24px;
+      max-width: 820px;
+      font-weight: 600;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-3d-primary {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: var(--radius-btn);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      background: linear-gradient(180deg, #FF7E36 0%, #F4600C 45%, #DF4E00 100%);
+      color: #ffffff !important;
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.65), inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 0 #9A3412, 0 8px 18px rgba(244, 96, 12, 0.28);
+      transition: all 0.12s ease;
+      overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    .btn-3d-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 6px 0 #9A3412, 0 12px 24px rgba(244, 96, 12, 0.32);
+    }
+    .btn-3d-primary svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      fill: none;
+    }
+    .btn-classroom-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 22px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-btn);
+      color: var(--text-main);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      box-shadow: inset 0 1.5px 0.5px #FFFFFF, 0 2px 0 #CBD5E1, 0 3px 6px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+    }
+    .btn-classroom-link:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+    }
+    
+    /* Live XP Tracker & Status Pills */
+    .hero-xp-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FEF3C7 60%, #FDE68A 100%);
+      border: 1px solid #F59E0B;
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-btn);
+      box-shadow: inset 0 1.5px 0.5px #FFFFFF, 0 2px 0 #D97706, 0 4px 10px rgba(245, 158, 11, 0.15);
+    }
+    .xp-trophy-img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.3));
+    }
+    .xp-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .xp-main-label {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #92400E;
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+    }
+    .xp-progress-bar-bg {
+      width: 140px;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(217, 119, 6, 0.3);
+    }
+    .xp-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #F59E0B, #D97706);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    .lesson-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: var(--radius-badge);
+      background: #F1F5F9;
+      color: #64748B;
+      border: 1px solid #CBD5E1;
+    }
+    .lesson-status-pill .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #94A3B8;
+    }
+    .lesson-status-pill.in-progress {
+      background: #FEF3C7;
+      color: #92400E;
+      border-color: #FCD34D;
+    }
+    .lesson-status-pill.in-progress .status-dot {
+      background: #F59E0B;
+    }
+    .lesson-status-pill.completed {
+      background: #ECFDF5;
+      color: #065F46;
+      border-color: #6EE7B7;
+    }
+    .lesson-status-pill.completed .status-dot {
+      background: #10B981;
+    }
+
+    .hero-3d-illus {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(15, 23, 42, 0.12));
+      flex-shrink: 0;
+    }
+
+    /* Mentoring & Pedagogical Blueprint */
+    .mentoring-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 70%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 28px 32px;
+      margin-bottom: 36px;
+      box-shadow: var(--shadow-card);
+    }
+    .mc-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .mc-head img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+    .mc-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .mc-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-weight: 600;
+      margin-bottom: 22px;
+    }
+    
+    .toolkit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .toolkit-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #EDF2F7 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 1px 0.5px #FFFFFF, 0 2px 4px rgba(15, 23, 42, 0.02);
+    }
+    .toolkit-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .toolkit-type-badge {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--brand-indigo);
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+      padding: 2px 8px;
+      border-radius: var(--radius-badge);
+    }
+    .toolkit-free-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #059669;
+    }
+    .toolkit-name {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .toolkit-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      font-weight: 600;
+      margin-bottom: 14px;
+      flex-grow: 1;
+    }
+    .toolkit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brand-indigo);
+      text-decoration: none;
+      align-self: flex-start;
+      padding: 4px 0;
+    }
+    .toolkit-btn:hover {
+      text-decoration: underline;
+    }
+    .toolkit-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+
+    /* Tier Sections & Lesson Cards */
+    .tier-section {
+      margin-bottom: 40px;
+    }
+    .tier-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      border-bottom: 2px solid var(--border-neutral);
+    }
+    .tier-badge-label {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+    }
+    .tier-lesson-count {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: #FFFFFF;
+      border: 1px solid var(--border-neutral);
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .tier-lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 22px;
+    }
+    .lesson-hub-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 60%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 4px 12px rgba(15, 23, 42, 0.03);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+    }
+    .lesson-hub-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 35%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    .lesson-hub-card:hover {
+      transform: translateY(-4px);
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 14px 30px -4px rgba(15, 23, 42, 0.08), 0 3px 0 #CBD5E1;
+      border-color: #CBD5E1;
+    }
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .lesson-num-badge {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #EDF2F7 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1px solid #FFFFFF;
+      padding: 4px 10px;
+      border-radius: var(--radius-badge);
+      color: var(--text-muted);
+    }
+    .xp-preview-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9A3412;
+      background: #FFF7ED;
+      border: 1px solid #FFEDD5;
+      padding: 3px 8px;
+      border-radius: var(--radius-badge);
+    }
+    .card-lesson-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .card-hook-text {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      font-weight: 600;
+      flex-grow: 1;
+    }
+    .card-concept-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .card-concept-row img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+    .quest-preview-box {
+      background: #FFFFFF;
+      border: 1px solid #EDF2F7;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .qp-title {
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .qp-item {
+      margin-bottom: 3px;
+    }
+    .qp-item:last-child {
+      margin-bottom: 0;
+    }
+    .btn-launch-lesson {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 18px;
+      border-radius: var(--radius-btn);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 13.5px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      background: linear-gradient(180deg, #FF7E36 0%, #F4600C 45%, #DF4E00 100%);
+      color: #ffffff !important;
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.65), inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2), 0 3px 0 #9A3412, 0 6px 14px rgba(244, 96, 12, 0.24);
+      transition: all 0.12s ease;
+      overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    .btn-launch-lesson:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 5px 0 #9A3412, 0 10px 20px rgba(244, 96, 12, 0.28);
+    }
+    .btn-launch-lesson svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+    
+    footer {
+      background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #FFFFFF 100%);
+      border-top: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 24px 40px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <a href="../index.html" class="back-btn">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>All Courses (Master Portal)</span>
+        </a>
+        <div class="brand-wrap">
+          <img src="../assets/3d/stemulus-logo.png" class="brand-logo" alt="STEMulus">
+          <div>
+            <div class="brand-title">STEMulus Kids Tech Academy</div>
+            <div class="brand-sub">Course Syllabus &amp; Interactive Learning Hub</div>
+          </div>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-badge">
+          <span>Target: <strong>Ages 5 - 18</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Curriculum: <strong>24 Lessons</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Tiers: <strong>3 Creative Tracks</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Pacing: <strong>45 - 60 Mins / Lesson</strong></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Hero Course Starting Banner -->
+    <div class="course-hero">
+      <div class="hero-content">
+        <div class="hero-badge-row">
+          <span class="course-tag">Course Starting Hub</span>
+          <span class="ages-tag">Ages 5 - 18</span>
+          <span class="ages-tag">24 Interactive Slide Decks</span>
+        </div>
+        <h1 class="course-title">Generative AI Studio: Prompt, Loop & Graph Engineering</h1>
+        <p class="course-tagline">From Words to Worlds: Multimodal Storytelling, Animations, Audio & Game Worlds</p>
+        <p class="course-overview">The future of technology belongs to creators who can steer autonomous intelligence with precision. Generative AI Studio immerses learners into Prompt Engineering, Recursive Evaluation Loops, and Multi-Agent Graph Workflows across 5 creative domains: Storytelling, Keyframe Animation, Adaptive Music Composition, Cinematic Video Direction, and Game Design. All projects leverage 100% free-to-use Generative AI platforms.</p>
+        <div class="hero-actions">
+          <a href="early_explorers_ages_5_7/lesson_01_magic_wand_prompt.html" class="btn-3d-primary" target="_blank">
+            <span>Start Lesson 01: The Magic Wand Prompt (Words into Pictures)</span>
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <div class="hero-xp-card" id="hero-xp-tracker">
+            <img src="../assets/3d/gold-trophy-3d.png" class="xp-trophy-img" alt="XP">
+            <div class="xp-text-group">
+              <span class="xp-main-label"><strong id="hub-xp-count">0</strong> / 8400 Course XP</span>
+              <div class="xp-progress-bar-bg">
+                <div class="xp-progress-fill" id="hub-xp-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img src="../assets/3d/lightbulb-3d.png" class="hero-3d-illus" alt="Generative AI Studio: Prompt, Loop & Graph Engineering">
+    </div>
+
+    <!-- Student Learning Journey & Software Sandbox Toolkit -->
+    <div class="mentoring-card">
+      <div class="mc-head">
+        <img src="../assets/3d/rocket-launch-3d.png" alt="Learning Journey">
+        <div class="mc-title">Your Learning Journey: Hands-On Mentoring &amp; Creative Sandboxes</div>
+      </div>
+      <p class="mc-body">Every session is a hands-on coding workshop with your dedicated mentor. You take the driver seat at the keyboard, building real apps, animations, and game worlds in zero-install browser sandboxes. Test your theories, conquer interactive checkpoints, and earn Bronze (+50 XP), Silver (+100 XP), and Gold (+200 XP) mastery badges as you advance!</p>
+      
+      <div style="font-family: 'Fredoka', 'Nunito', sans-serif; font-size: 16px; font-weight: 700; color: var(--brand-indigo); margin-bottom: 12px;">
+        100% Free Software &amp; Sandbox Setup for This Course:
+      </div>
+      <div class="toolkit-grid">
+        
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Gemini 1.5 Pro / Flash</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Google AI Studio</div>
+          <p class="toolkit-desc">State-of-the-art multimodal reasoning, system instructions, and structured outputs.</p>
+          <a href="https://aistudio.google.com/" class="toolkit-btn" target="_blank">
+            <span>Open Google AI Studio</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Generative Audio Scoring</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Suno AI &amp; Google MusicFX</div>
+          <p class="toolkit-desc">AI music generators transforming text prompts into genre-accurate theme songs.</p>
+          <a href="https://suno.com/" class="toolkit-btn" target="_blank">
+            <span>Open Suno AI &amp; Google MusicFX</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Visual Art &amp; Motion</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Leonardo.ai &amp; Kling AI</div>
+          <p class="toolkit-desc">Consistent character concept art, sprite sheets, and high-framerate AI video cutscenes.</p>
+          <a href="https://leonardo.ai/" class="toolkit-btn" target="_blank">
+            <span>Open Leonardo.ai &amp; Kling AI</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Interactive Game Sandboxes</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Phaser &amp; Scratch 3.0</div>
+          <p class="toolkit-desc">In-browser engines where AI assets, voiceovers, and sprites become playable games.</p>
+          <a href="https://scratch.mit.edu/" class="toolkit-btn" target="_blank">
+            <span>Open Phaser &amp; Scratch 3.0</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Syllabus & Lesson Decks By Developmental Tier -->
+    
+        <section class="tier-section">
+          <div class="tier-header-bar">
+            <div class="tier-badge-label">Early Explorers (Ages 5–7)</div>
+            <div class="tier-lesson-count">8 Interactive Lessons</div>
+          </div>
+          <div class="tier-lessons-grid">
+            
+            <div class="lesson-hub-card" data-slug="lesson_01_magic_wand_prompt">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 01</span>
+                <div class="lesson-status-pill" id="status-lesson_01_magic_wand_prompt"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Magic Wand Prompt (Words into Pictures)</h3>
+              <p class="card-hook-text">Imagine having a magic wand that paints whatever picture you describe out loud! What magical animal hero will you create?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/speech-bubble-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Prompt Engineering: The Magic Spell Formula</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Speak or type a 3-part magic prompt (Who + What + Style) to generate your brand new animal hero.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Generate your hero's cozy secret hideout or home treehouse using the same art style ingredients.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Create a sidekick creature for your hero that wears matching accessories and explain their friendship!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_01_magic_wand_prompt.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_02_magic_mirror_loop">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 02</span>
+                <div class="lesson-status-pill" id="status-lesson_02_magic_mirror_loop"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Magic Mirror Loop (Try-Again Refinement)</h3>
+              <p class="card-hook-text">What happens when the magic wand draws your dragon with the wrong hat? We do not give up—we use the Magic Mirror Loop!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/pencil-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Loop Engineering: Look, Spot &amp; Tweak</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Run 2 loops: generate an outfit, spot one thing to change, and refine your prompt.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Run a 3rd loop to add a glowing magical crystal necklace to your hero's outfit.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Create a 'Before and After' side-by-side card showing how your loop made the picture better!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_02_magic_mirror_loop.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_03_singing_cloud_machine">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 03</span>
+                <div class="lesson-status-pill" id="status-lesson_03_singing_cloud_machine"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Singing Cloud Machine (Rhymes into Music)</h3>
+              <p class="card-hook-text">Every great cartoon hero has an epic theme song! Today we turn our hero's story into a catchy 30-second song using AI music.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/play-button-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Prompt Engineering: Mood, Style &amp; Song Prompts</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Generate a 30-second hero theme song with your hero's name in the lyrics.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add a silly sound effect into the lyrics prompt like 'HONK HONK!' or 'WHOOSH!'.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Make a slow gentle bedtime remix of your hero's theme song using 'soft piano and chime bells'!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_03_singing_cloud_machine.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_04_waking_up_the_drawing">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 04</span>
+                <div class="lesson-status-pill" id="status-lesson_04_waking_up_the_drawing"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Waking Up the Drawing (Bringing Art to Life)</h3>
+              <p class="card-hook-text">Your hero is standing still on the page. Let's cast an animation spell so they wave their hand, blink their eyes, and jump!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/project-canvas-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Loop Engineering: Motion Prompts &amp; Keyframes</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Turn your still hero drawing into a 3-second animated waving clip using Pika or Canva.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add a flying background element like floating stars or gentle falling autumn leaves.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Create an animation where your hero jumps up and lands with a happy smile!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_04_waking_up_the_drawing.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_05_story_train_graph">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 05</span>
+                <div class="lesson-status-pill" id="status-lesson_05_story_train_graph"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Story Train Map (Beginning, Middle &amp; End)</h3>
+              <p class="card-hook-text">A great story is not one big blob of words—it is a train ride with three magical stations! Let's build our visual Story Train graph.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/radar-chart-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Graph Engineering: The 3-Station Story Graph</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Draw or map out your 3-station Story Train on paper or in Canva.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Generate 3 matching storybook illustrations—one for each station of the train.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add an optional bonus station: 'The Funny Secret Detour' between Station 1 and 2!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_05_story_train_graph.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_06_sound_effect_magic_box">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 06</span>
+                <div class="lesson-status-pill" id="status-lesson_06_sound_effect_magic_box"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Sound Effect Magic Box (Foley &amp; Creature Voices)</h3>
+              <p class="card-hook-text">Close your eyes: *TIP-TAP-TIP-TAP... SQUISH!* That is Foley sound magic! Let's generate cartoon sound effects for our hero.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/alphabet-blocks-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Prompt Engineering: Describing Sounds &amp; Textures</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Generate 3 cartoon sound effects: footsteps, an action sound, and a celebration chime.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Generate a unique speaking voice greeting for your hero: 'Hello Explorer! Let's go!'</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Create a mystery sound guessing game for your mentor: play a sound and let them guess the action!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_06_sound_effect_magic_box.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_07_movie_magic_cutscene">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 07</span>
+                <div class="lesson-status-pill" id="status-lesson_07_movie_magic_cutscene"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Movie Magic Cutscene (Putting It All Together)</h3>
+              <p class="card-hook-text">We have our hero animation, our theme song, and our cartoon sound effects. Now you are the Movie Director assembling the big cutscene!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/radar-chart-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Graph Engineering: The Multi-Media Assembly Graph</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Assemble your hero animation clip and theme song into a 15-second movie teaser.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add a text title banner at the start showing your hero's official name.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add an ending title card that says: 'To Be Continued in Our Playable Game!' with a celebration chime!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_07_movie_magic_cutscene.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_08_magic_story_game_capstone">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 08</span>
+                <div class="lesson-status-pill" id="status-lesson_08_magic_story_game_capstone"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Magic Story Game Capstone (Playable Scratch Arcade)</h3>
+              <p class="card-hook-text">Today your hero enters the video game world! We import our AI hero, our theme song, and sounds into Scratch to build a playable game!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/alphabet-blocks-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Full Systems Integration: Playable Generative Game</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Import your AI character into Scratch and make them say a greeting when clicked.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add your AI theme song so it loops in the background with a volume control button.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a 3-scene story game where clicking the hero teleports them to different AI-generated worlds!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_08_magic_story_game_capstone.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section class="tier-section">
+          <div class="tier-header-bar">
+            <div class="tier-badge-label">Junior Innovators (Ages 8–12)</div>
+            <div class="tier-lesson-count">8 Interactive Lessons</div>
+          </div>
+          <div class="tier-lessons-grid">
+            
+            <div class="lesson-hub-card" data-slug="lesson_01_architect_prompt_framework">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 01</span>
+                <div class="lesson-status-pill" id="status-lesson_01_architect_prompt_framework"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Architect Prompt Framework (The C-R-E-A-T-E System)</h3>
+              <p class="card-hook-text">Amateur coders type 'make a robot picture'. Professional AI engineers use the C-R-E-A-T-E formula to generate high-fidelity worldbuilding assets on the first try!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Prompt Engineering: The C-R-E-A-T-E Framework</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Write a 5-line C-R-E-A-T-E prompt to generate a futuristic vehicle or fantasy mount for your game.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add specific camera and lighting constraints (e.g., volumetric fog, golden hour lighting, isometric 45-degree angle).</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Generate a complete Game Lore Dossier for your world including faction names, planetary climate, and tech levels!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_01_architect_prompt_framework.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_02_critic_creator_refinement_loop">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 02</span>
+                <div class="lesson-status-pill" id="status-lesson_02_critic_creator_refinement_loop"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Critic-Creator Refinement Loop (Consistent Character Seeds)</h3>
+              <p class="card-hook-text">In movies, Spider-Man does not look like a completely different person in every scene! How do video game studios keep AI characters consistent?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Loop Engineering: Seed Locking &amp; Critic Loops</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Generate an original game character in Leonardo.ai and copy down their unique Seed number.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Generate 2 distinct action poses (idle stance and running) while keeping the same hair and costume colors.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a 4-panel Character Turnaround Sheet (Front, Side, 3/4 View, Action Pose) for your game design document!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_02_critic_creator_refinement_loop.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_03_branching_lore_graphs">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 03</span>
+                <div class="lesson-status-pill" id="status-lesson_03_branching_lore_graphs"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Interactive Branching Lore Graphs (CYOA Decision Trees)</h3>
+              <p class="card-hook-text">In games like Zelda and Minecraft, you choose your path: enter the dark cavern or climb the snowy peak. How do game writers build branching story graphs?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Graph Engineering: State Nodes &amp; Choice Edges</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Map out a 4-node branching Choose-Your-Own-Adventure story tree with 2 distinct endings.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Use Google AI Studio or Claude to generate vivid dialogue and descriptive text for each of your 4 nodes.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add an inventory condition: 'IF player has Magic Compass -&gt; Unlock Secret Node 5'!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_03_branching_lore_graphs.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_04_soundtrack_scoring_adaptive_stems">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 04</span>
+                <div class="lesson-status-pill" id="status-lesson_04_soundtrack_scoring_adaptive_stems"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Soundtrack Scoring &amp; Adaptive Stems (Exploration vs Boss Battle)</h3>
+              <p class="card-hook-text">In your favorite game, notice how the music changes the exact millisecond a boss appears? That is adaptive audio! Let's score two matching soundtracks for our game world.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/tally-counter-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Prompt Engineering: Dynamic Audio Prompting</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Generate a 1-minute ambient exploration track for your game world on Suno or Google MusicFX.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Generate a high-tempo combat version of the theme with heavy percussion and intense bass.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Export both tracks and test a 3-second crossfade transition between them in an audio editor or Scratch!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_04_soundtrack_scoring_adaptive_stems.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_05_sprite_sheets_keyframe_animations">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 05</span>
+                <div class="lesson-status-pill" id="status-lesson_05_sprite_sheets_keyframe_animations"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Sprite Sheets &amp; Keyframe Animations (2D Pixel Art Motion Vectors)</h3>
+              <p class="card-hook-text">In retro arcade games and indie hits like Celeste, characters are made of sprite sheets! How do we prompt generative AI to draw multi-frame animation strips?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/project-canvas-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Loop Engineering: Frame Interpolation &amp; Sprite Strips</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Generate an 8-frame sprite sheet of a game character performing a walk or idle animation.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Remove the background using a free transparent cutout tool and crop out frame 1 and frame 2.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Import the cropped frames into Scratch costumes and program a working 'Next Costume' animation loop!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_05_sprite_sheets_keyframe_animations.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_06_cinematic_game_trailer_pipeline">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 06</span>
+                <div class="lesson-status-pill" id="status-lesson_06_cinematic_game_trailer_pipeline"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Cinematic Game Trailer Pipeline (The 5-Station DAG)</h3>
+              <p class="card-hook-text">Top studios release pulse-pounding 30-second trailers that ignite global hype! Today, you are the Creative Director engineering a 5-node AI trailer pipeline.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Graph Engineering: The Directed Acyclic Video Pipeline</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build a 15-second teaser featuring 1 motion video shot, 1 voiceover line, and background music.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Produce a 30-second trailer with 3 distinct camera perspectives (Wide Establishing Shot, Character Close-Up, Action Beat).</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add custom Foley sound effects (explosions, laser zaps, power-ups) synchronized to visual motion hits!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_06_cinematic_game_trailer_pipeline.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_07_generative_npc_dialogue_trees">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 07</span>
+                <div class="lesson-status-pill" id="status-lesson_07_generative_npc_dialogue_trees"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Generative NPC Dialogue Trees (In-Character Memory Conditioning)</h3>
+              <p class="card-hook-text">Old games had NPCs that said the exact same line 50 times: 'I like shorts!' What if game characters had AI brains and remembered player actions?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/registration-stack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Prompt Engineering: Persona Conditioning &amp; Guardrails</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Design an NPC System Prompt with Name, Personality, Secret Knowledge, and 2 Guardrails.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Roleplay-test your NPC in Google AI Studio: try to trick them into breaking character and verify your guardrails hold.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build 3 distinct NPC personas (Cranky Wizard, Friendly Shopkeeper, Sneaky Goblin) that interact differently with the player!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_07_generative_npc_dialogue_trees.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_08_playable_ai_arcade_capstone">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 08</span>
+                <div class="lesson-status-pill" id="status-lesson_08_playable_ai_arcade_capstone"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Playable AI Arcade Capstone (Full Indie Release)</h3>
+              <p class="card-hook-text">Today you graduate from AI explorer to Indie Game Developer! We assemble our AI character sprites, background tiles, adaptive music, and dialogue into a playable game.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Full Systems Integration: End-to-End Indie Game Release</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Import your AI character, custom background, and background music into Scratch or MakeCode Arcade.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add working player movement controls, collision detection, and custom ElevenLabs sound effects.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Integrate an NPC dialogue encounter with custom AI dialogue lines and a victory state screen!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_08_playable_ai_arcade_capstone.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section class="tier-section">
+          <div class="tier-header-bar">
+            <div class="tier-badge-label">Senior Engineers (Ages 13–18)</div>
+            <div class="tier-lesson-count">8 Interactive Lessons</div>
+          </div>
+          <div class="tier-lessons-grid">
+            
+            <div class="lesson-hub-card" data-slug="lesson_01_deterministic_prompt_json_schema">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 01</span>
+                <div class="lesson-status-pill" id="status-lesson_01_deterministic_prompt_json_schema"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs)</h3>
+              <p class="card-hook-text">Modern software architectures cannot parse conversational rambling like 'Sure! Here is a cool sword...'. Professional AI engineers enforce strict, deterministic JSON schemas for game engines.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/holo-database-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Prompt Engineering: Structured JSON Schemas &amp; Sampling</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Configure a System Prompt in Google AI Studio that enforces strict JSON schema output for 3 video game weapons.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add nested data structures including status effects, drop rates, and equipment requirements with type validation.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Write a Python or JavaScript script that parses the returned JSON string into game objects without error!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_01_deterministic_prompt_json_schema.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_02_self_reflexion_evaluation_loops">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 02</span>
+                <div class="lesson-status-pill" id="status-lesson_02_self_reflexion_evaluation_loops"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Self-Reflexion &amp; Evaluation Loops (LLM-as-a-Judge)</h3>
+              <p class="card-hook-text">Top AI research labs like DeepMind do not rely on single prompts. They build automated Reflexion loops where one model writes and a judge model critiques!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/pencil-feedback-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Loop Engineering: Self-Correction &amp; LLM-as-a-Judge</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Design a 4-point evaluation rubric for a Cyberpunk game narrative scene.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Run a manual 2-model Reflexion loop: Model A writes, Model B scores and critiques, Model A refines.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Adapt the refined scene into two distinct literary styles (Hardboiled Noir vs Epic High Fantasy) using the same loop!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_02_self_reflexion_evaluation_loops.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_03_stategraphs_branching_quest_architecture">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 03</span>
+                <div class="lesson-status-pill" id="status-lesson_03_stategraphs_branching_quest_architecture"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">StateGraphs &amp; Branching Quest Architecture (Finite State Machines)</h3>
+              <p class="card-hook-text">In games like Elden Ring and Skyrim, quests aren't static text. They are state machines that track: Did you talk to the blacksmith? Did you slay the dragon?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Graph Engineering: StateGraphs &amp; Transition Predicates</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Model a 4-state Quest StateGraph (Unstarted, Active, Objective_Met, Finished) in Mermaid.js or Flowise.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add branching failure and betrayal states (`FAILED_BETRAYED` vs `HEROIC_VICTORY`) based on NPC trust score.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Generate procedural dialogue for each state node using Gemini conditioned on the current state context!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_03_stategraphs_branching_quest_architecture.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_04_procedural_audio_adaptive_stems">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 04</span>
+                <div class="lesson-status-pill" id="status-lesson_04_procedural_audio_adaptive_stems"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Procedural Audio &amp; Adaptive Stem Generation (Dynamic Game Sound)</h3>
+              <p class="card-hook-text">AAA games like DOOM and Cyberpunk use multi-channel audio stems that evolve as your heart races. How do we prompt generative AI to build modular game audio?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/category-labels-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Prompt Engineering: Audio Arrangement Tags &amp; Stems</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Generate an instrumental game track on Suno using structural prompt tags (`[Intro]`, `[Drop]`, `[Outro]`).</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Generate two matching stems (Ambient Mystery vs Combat Intensity) and verify their tempo and key match.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Edit the tracks in Audacity to create a seamless 30-second infinite loop with zero audible popping!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_04_procedural_audio_adaptive_stems.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_05_character_animation_lora_pipelines">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 05</span>
+                <div class="lesson-status-pill" id="status-lesson_05_character_animation_lora_pipelines"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Consistent Character Animation Pipelines (LoRA &amp; Image-to-Video)</h3>
+              <p class="card-hook-text">How do professional AI animation studios make entire 3D animated shorts without characters morphing into different faces every second?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/hourglass-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Loop Engineering: Latent Anchors &amp; Motion Vectors</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Animate a static character drawing into a smooth 4-second motion clip on Luma Dream Machine or Runway.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Control camera trajectory using explicit prompt vectors (e.g. Orbit 90 degrees around character).</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Generate two sequential shots of the same character in different camera perspectives and edit them seamlessly!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_05_character_animation_lora_pipelines.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_06_production_video_pipeline_dag">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 06</span>
+                <div class="lesson-status-pill" id="status-lesson_06_production_video_pipeline_dag"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Production Video Pipeline (DAG) (Multi-Stage Cutscene)</h3>
+              <p class="card-hook-text">Big film studios use production pipelines where hundreds of computers work in parallel. Let's engineer a multi-stage Directed Acyclic Graph (DAG) for a 60-second game intro!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Graph Engineering: Automated Multi-Stage Production DAG</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Map out a 4-shot cinematic intro sequence for your game with duration timings and camera angles.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Generate all 4 visual clips and synthesize character voice lines matching the shot timings.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Assemble a complete 60-second broadcast cutscene in CapCut Web or DaVinci Resolve Free with sound design!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_06_production_video_pipeline_dag.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_07_dynamic_npc_brain_engine">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 07</span>
+                <div class="lesson-status-pill" id="status-lesson_07_dynamic_npc_brain_engine"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">LLM-Powered Dynamic NPC Engine (Persistent State &amp; Action Dispatch)</h3>
+              <p class="card-hook-text">What if an NPC didn't just talk, but actually remembered your past choices and could open locked doors when convinced?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/signpost-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Prompt &amp; Loop Engineering: ReAct Loops &amp; Action Calling</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Design an NPC System Prompt that outputs both spoken dialogue and a structured action dispatch key.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Test the NPC with positive and negative player prompts in Google AI Studio to verify reputation logic.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Write a lightweight JavaScript or Python script that reads the NPC's JSON output and triggers game state changes!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_07_dynamic_npc_brain_engine.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_08_generative_web_game_capstone">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 08</span>
+                <div class="lesson-status-pill" id="status-lesson_08_generative_web_game_capstone"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Generative Web Game Capstone (Full-Stack HTML5/Phaser Release)</h3>
+              <p class="card-hook-text">Today you publish an authentic Generative Web Game to the world! Combining custom 2D textures, adaptive audio stems, a cinematic video intro, and dynamic NPC lore.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/registration-stack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Full Systems Architecture: Production Web Game Release</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Import your custom AI character sprite, background art, and ambient audio into a playable HTML5 / Phaser sandbox project.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Implement character movement, collision mechanics, sound effect triggers, and dynamic combat music switching.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Deploy your complete game live on GitHub Pages or Replit with your 60-second video trailer on the landing page!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_08_generative_web_game_capstone.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+
+  </main>
+
+  <footer>
+    STEMulus Kids Tech Academy &bull; Generative AI Studio: Prompt, Loop & Graph Engineering Starting Hub &bull; 1-on-1 Mentoring Curriculum &bull; 100% Offline Resilience
+  </footer>
+
+  <script>
+    (function() {
+      const lessons = document.querySelectorAll('.lesson-hub-card');
+      let totalCourseXp = 0;
+      let completedLessons = 0;
+      const maxCourseXp = lessons.length * 350;
+
+      lessons.forEach(card => {
+        const slug = card.getAttribute('data-slug');
+        if (!slug) return;
+        try {
+          const raw = localStorage.getItem('stemulus_quest_' + slug);
+          if (raw) {
+            const state = JSON.parse(raw);
+            let lessonXp = 0;
+            if (state.Bronze) lessonXp += 50;
+            if (state.Silver) lessonXp += 100;
+            if (state.Gold) lessonXp += 200;
+            
+            if (lessonXp > 0) {
+              totalCourseXp += lessonXp;
+              const statusEl = document.getElementById('status-' + slug);
+              if (statusEl) {
+                if (lessonXp >= 350) {
+                  statusEl.className = 'lesson-status-pill completed';
+                  statusEl.innerHTML = '<span class="status-dot"></span><span>Gold Mastered (+350 XP)</span>';
+                  completedLessons++;
+                } else {
+                  statusEl.className = 'lesson-status-pill in-progress';
+                  statusEl.innerHTML = '<span class="status-dot"></span><span>In Progress (+' + lessonXp + ' XP)</span>';
+                }
+              }
+            }
+          }
+        } catch(e) {}
+      });
+
+      const xpCountEl = document.getElementById('hub-xp-count');
+      const xpFillEl = document.getElementById('hub-xp-fill');
+      if (xpCountEl) xpCountEl.innerText = totalCourseXp;
+      if (xpFillEl && maxCourseXp > 0) {
+        const pct = Math.min(100, Math.round((totalCourseXp / maxCourseXp) * 100));
+        xpFillEl.style.width = pct + '%';
+      }
+    })();
+  </script>
+</body>
+</html>

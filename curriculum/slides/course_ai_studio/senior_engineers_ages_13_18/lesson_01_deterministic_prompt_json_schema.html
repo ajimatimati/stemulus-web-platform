@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1: Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs) | Generative AI Studio: Prompt, Loop &amp; Graph Engineering</title>
+  <link rel="icon" type="image/png" href="../../assets/3d/stemulus-logo.png">
+  <link rel="stylesheet" href="../../assets/slide_engine.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="slide-header">
+    <div class="logo-badge">
+      <img src="../../assets/3d/stemulus-logo.png" class="logo-img" alt="STEMulus">
+      <span class="brand-text">STEMulus Kids Tech</span>
+    </div>
+    <div class="lesson-tag">
+      <img src="../../assets/3d/planet-3d.png" style="width: 18px; height: 18px; object-fit: contain;" alt="Track">
+      <span>Generative AI Studio: Prompt, Loop &amp; Graph Engineering &bull; Senior Engineers (Ages 13–18) &bull; Lesson 1</span>
+    </div>
+    <div class="slide-dots-ribbon" id="slide-dots-ribbon"></div>
+    <div class="header-controls">
+      <button class="ctrl-btn" onclick="printMissionBrief()" title="Print Student Brief (P)">
+        <svg class="ui-svg" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        <span>Print (P)</span>
+      </button>
+      <button class="ctrl-btn" id="sound-btn" onclick="toggleSound()">
+        <svg class="ui-svg" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+        <span>Sound: On</span>
+      </button>
+      <button class="ctrl-btn mission-btn" id="mission-btn" onclick="toggleLearningJourney()" title="My Mission & Learning Journey (M)">
+        <img src="../../assets/3d/gold-trophy-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Journey">
+        <span>My Journey (M)</span>
+      </button>
+      <button class="ctrl-btn glossary-btn" id="glossary-btn" onclick="toggleGlossary()" title="Canonical Concept Glossary (G)">
+        <img src="../../assets/3d/backpack-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Glossary">
+        <span>Glossary (G)</span>
+      </button>
+      <button class="ctrl-btn tutor-btn" id="tutor-btn" onclick="toggleTutorCockpit()" title="Mentor Guide (T or S)">
+        <img src="../../assets/3d/admin-shield-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Tutor">
+        <span>Tutor Cockpit (T)</span>
+      </button>
+      <button class="ctrl-btn" onclick="toggleFullscreen()" title="Fullscreen (F)">
+        <svg class="ui-svg" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+        <span>Fullscreen (F)</span>
+      </button>
+      <a href="../../index.html" class="ctrl-btn" style="text-decoration: none;" title="Curriculum Portal">
+        <svg class="ui-svg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Portal</span>
+      </a>
+    </div>
+    <div class="progress-container">
+      <div class="progress-bar"></div>
+    </div>
+  </header>
+
+  <!-- Slide Viewport -->
+  <main class="slide-viewport">
+
+    <!-- Slide 1: Mission Launch & Hook -->
+    <div class="slide active" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Mission Dilemma &amp;amp; Child Analogy&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Explain the core problem: Why do computers or humans need Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs)? Relate this to an everyday child mental model: Think of this like crafting a master recipe, tuning an arcade engine, or building with LEGO bricks where each piece has an exact purpose. Today we are solving: Modern software architectures cannot parse conversational rambling like 'Sure! Here is a cool sword...'. Professional AI engineers enforce strict, deterministic JSON schemas for game engines. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Tutor Conversational Script&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; &quot;Welcome back! Today we are unlocking Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs) in our Generative AI Studio: Prompt, Loop &amp; Graph Engineering track. Before we look at any code or blueprints, imagine this challenge: Modern software architectures cannot parse conversational rambling like 'Sure! Here is a cool sword...'. Professional AI engineers enforce strict, deterministic JSON schemas for game engines.. If you were the engineer designing this system, how would you solve it?&quot; Listen actively, validate their instinct, and transition to the mission card. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Predict-First Cognitive Check&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Prompt the learner: &quot;Look at the Predict Banner below: Before writing any code, how do you hypothesize computers solve this dilemma? Share your theory with me!&quot; This activates schema before presenting the formal rule. &lt;/div&gt; &lt;/div&gt;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span class="badge-tag">Lesson 1</span>
+        <span style="font-size: 13px; font-weight: 700; color: var(--text-light);">Senior Engineers (Ages 13–18)</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+        <div class="global-horizon-badge">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          <span>UN SDG 3: Good Health & Well-Being &bull; London DeepMind AI Hub & Silicon Valley Foundation Models</span>
+        </div>
+        <div class="global-telemetry-chip">
+          <span class="chip-dot"></span>
+          <span>JSON Schema Strict Validation • Zero Hallucination Bound</span>
+        </div>
+      </div>
+      <h1>Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs)</h1>
+      <p class="subtitle">Generative AI Studio: Prompt, Loop &amp; Graph Engineering</p>
+      
+      <div class="hero-3d-layout">
+        <div class="mission-card" style="flex: 1;">
+          <div class="mission-card-content">
+            <div class="mission-title">The Mission Hook</div>
+            <p class="mission-text">Modern software architectures cannot parse conversational rambling like 'Sure! Here is a cool sword...'. Professional AI engineers enforce strict, deterministic JSON schemas for game engines.</p>
+          </div>
+        </div>
+        <img src="../../assets/3d/rocket-launch-3d.png" class="hero-3d-object" alt="Mission Launch">
+      </div>
+      <div class="global-context-banner">
+        <div class="global-context-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        </div>
+        <div class="global-context-text">
+          <strong>Global Engineering Horizon:</strong> Deterministic schema enforcement powers life-saving clinical AI: healthcare networks in Scandinavia and rural clinics in Rwanda use structured JSON prompts for reliable medical intake and emergency triage.
+        </div>
+      </div>
+
+      <div class="predict-banner">
+        <img src="../../assets/3d/lightbulb-3d.png" class="predict-banner-icon" alt="Predict">
+        <div class="predict-banner-text">
+          <strong>Predict &amp; Hypothesize:</strong> When directing AI models in Deterministic Prompt Engineering &amp; JSON Schema: Why does controlling Prompt Engineering: Structured JSON Schemas &amp; Sampling give you radically more consistent results than just typing random prompts?
+        </div>
+      </div>
+      
+      
+        <div style="margin-top: 20px;">
+          <div style="font-family: 'Fredoka', 'Nunito', sans-serif; font-size: 17px; font-weight: 700; color: var(--brand-indigo); margin-bottom: 8px;">
+            Mission Toolkit: Required Course Software & Web Platforms
+          </div>
+          <div class="tool-setup-grid">
+            
+            <div class="tool-setup-card">
+              <div class="tool-badge-row">
+                <span class="tool-type-badge">Schema-Validated Model API</span>
+                <span style="font-size: 11px; font-weight: 700; color: var(--text-light);">Free Student Sandbox</span>
+              </div>
+              <div class="tool-name">
+                <img src="../../assets/3d/holo-database-3d.png" class="concept-icon-3d" alt="Google AI Studio (Structured Mode)">
+                <span>Google AI Studio (Structured Mode)</span>
+              </div>
+              <p class="tool-desc">Enterprise-grade generative model API with strict JSON schema validation and function calling capabilities.</p>
+              <div class="tool-steps">
+                <strong>Setup Checklist:</strong><br>&bull; Navigate to aistudio.google.com<br>&bull; Configure response_mime_type to application/json with your schema<br>&bull; Test deterministic output generation with temperature set to 0.2
+              </div>
+              <a href="https://aistudio.google.com/" class="tool-launch-btn" target="_blank">
+                <span>Launch & Configure Google AI Studio (Structured Mode)</span>
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+            <div class="tool-setup-card">
+              <div class="tool-badge-row">
+                <span class="tool-type-badge">Visual Node-Based Agent Workbench</span>
+                <span style="font-size: 11px; font-weight: 700; color: var(--text-light);">Free Student Sandbox</span>
+              </div>
+              <div class="tool-name">
+                <img src="../../assets/3d/backpack-3d.png" class="concept-icon-3d" alt="Flowise AI Graph Studio">
+                <span>Flowise AI Graph Studio</span>
+              </div>
+              <p class="tool-desc">Open-source node-based orchestration canvas for designing StateGraphs and branching agent loops.</p>
+              <div class="tool-steps">
+                <strong>Setup Checklist:</strong><br>&bull; Visit flowiseai.com demo or launch local Docker/npx instance<br>&bull; Drag LLM nodes, prompt template nodes, and memory buffers onto canvas<br>&bull; Connect directed edges to orchestrate your multi-stage quest pipeline
+              </div>
+              <a href="https://flowiseai.com/" class="tool-launch-btn" target="_blank">
+                <span>Launch & Configure Flowise AI Graph Studio</span>
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+            <div class="tool-setup-card">
+              <div class="tool-badge-row">
+                <span class="tool-type-badge">Production 2D Web Framework</span>
+                <span style="font-size: 11px; font-weight: 700; color: var(--text-light);">Free Student Sandbox</span>
+              </div>
+              <div class="tool-name">
+                <img src="../../assets/3d/registration-stack-3d.png" class="concept-icon-3d" alt="Phaser 3 Web Game Engine">
+                <span>Phaser 3 Web Game Engine</span>
+              </div>
+              <p class="tool-desc">High-performance JavaScript 2D game engine for assembling full-stack browser games with AI assets.</p>
+              <div class="tool-steps">
+                <strong>Setup Checklist:</strong><br>&bull; Open phaser.io/sandbox in browser<br>&bull; Preload your custom AI sprites, audio stems, and background textures<br>&bull; Code player physics, collision handlers, and publish live
+              </div>
+              <a href="https://phaser.io/sandbox" class="tool-launch-btn" target="_blank">
+                <span>Launch & Configure Phaser 3 Web Game Engine</span>
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      
+      <div style="margin-top: auto; display: flex; gap: 16px; font-size: 13px; font-weight: 700; color: var(--text-light); padding-top: 16px;">
+        <span>Use Arrow Keys or Space to advance</span>
+        <span>&bull;</span>
+        <span>Press 'T' or 'S' for Tutor Cockpit</span>
+      </div>
+    </div>
+
+    <!-- Slide 2: Core Concept Breakdown -->
+    <div class="slide" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Deep Concept Explanation (Simple Language)&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Break down Prompt Engineering: Structured JSON Schemas &amp; Sampling into simple, relatable building blocks:&lt;br&gt; &bull; &lt;strong&gt;System Prompts &amp; Temperature:&lt;/strong&gt; Temperature = 0.2 for deterministic JSON schemas; 0.9 for creative prose.&lt;br&gt;&bull; &lt;strong&gt;Structured Schema Validation:&lt;/strong&gt; Enforcing typed keys: `item_name: string`, `damage: integer`, `element: enum`.&lt;br&gt;&bull; &lt;strong&gt;Game Parser Pipeline:&lt;/strong&gt; Directly deserializing LLM outputs into native game engine data structures without regex parsing.&lt;br&gt; Explain what the code snippet actually tells the computer: Each syntax token is a specific instruction—keywords define actions, values define parameters, and containers store data. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Interactive Sandbox Coaching Guide&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Guide the student to click the sandbox button right below the snippet. Have them interact with the controls (sliders, color presets, or code runner). Ask: &quot;When we adjust this parameter, how does the output react? Why does that change happen?&quot; This cements the direct cause-and-effect relationship. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Diagnostic Check&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Ask: &quot;If you had to explain Prompt Engineering: Structured JSON Schemas &amp; Sampling to a younger friend who has never coded, what simple real-world comparison would you use?&quot; Listen for understanding rather than rote memorization. &lt;/div&gt; &lt;/div&gt;">
+      <h2>
+        <img src="../../assets/3d/lightbulb-3d.png" class="slide-title-3d" alt="Concept">
+        <span>The Big Idea: Prompt Engineering: Structured JSON Schemas &amp; Sampling</span>
+      </h2>
+      <p style="font-size: 14.5px; color: var(--text-muted); font-weight: 600;">Explore the essential building blocks for this lesson:</p>
+      
+      
+        <div class="video-module">
+          <div class="video-header-row">
+            <div class="video-title">
+              <img src="../../assets/3d/video-camera-3d.png" style="width: 22px; height: 22px; object-fit: contain;" alt="Video">
+              <span>Concept Watch: Structured LLM Outputs &amp; JSON Schema in 2 Minutes</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="video-duration-pill">
+                <span>2:15 Micro-Video</span>
+              </span>
+              <a href="https://www.youtube.com/watch?v=iiADhChRriM" class="video-launch-btn video-watch-btn" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>Watch on YouTube</span>
+              </a>
+            </div>
+          </div>
+          <div class="video-body-grid">
+            <div class="video-stage-card">
+              <div class="video-frame-container">
+                <iframe src="https://www.youtube.com/embed/iiADhChRriM?enablejsapi=1&rel=0" title="Structured LLM Outputs &amp; JSON Schema in 2 Minutes" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+              </div>
+              <div class="video-local-hint">
+                <span>Video not loading? Open it directly:</span>
+                <a href="https://www.youtube.com/watch?v=iiADhChRriM" target="_blank" rel="noopener noreferrer">
+                  <span>Watch on YouTube</span>
+                  <span style="font-size: 13px;">&nearr;</span>
+                </a>
+              </div>
+            </div>
+            <div class="video-takeaway-grid">
+              <div class="video-takeaway-box">
+                <div class="video-takeaway-title">
+                  <img src="../../assets/3d/golden-key-3d.png" style="width: 20px; height: 20px; object-fit: contain;" alt="Key">
+                  <span>What to Look For:</span>
+                </div>
+                <div style="font-size: 13.5px; color: var(--text-dark); line-height: 1.5;"><div style="margin-bottom: 6px;">&bull; Unstructured text cannot be directly parsed by game engines and databases</div><div style="margin-bottom: 6px;">&bull; JSON schemas establish a contractual interface between the LLM and your code</div><div style="margin-bottom: 6px;">&bull; Temperature controls entropy: low for schemas, high for creative narrative</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      <div class="content-grid">
+        
+        <div class="card">
+          <div class="card-title">
+            <img src="../../assets/3d/holo-database-3d.png" class="concept-icon-3d" alt="System Prompts &amp; Temperature">
+            <span>System Prompts &amp; Temperature</span>
+          </div>
+          <p class="card-desc">Temperature = 0.2 for deterministic JSON schemas; 0.9 for creative prose.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <img src="../../assets/3d/alphabet-blocks-3d.png" class="concept-icon-3d" alt="Structured Schema Validation">
+            <span>Structured Schema Validation</span>
+          </div>
+          <p class="card-desc">Enforcing typed keys: `item_name: string`, `damage: integer`, `element: enum`.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <img src="../../assets/3d/terminal-screen-3d.png" class="concept-icon-3d" alt="Game Parser Pipeline">
+            <span>Game Parser Pipeline</span>
+          </div>
+          <p class="card-desc">Directly deserializing LLM outputs into native game engine data structures without regex parsing.</p>
+        </div>
+      </div>
+      
+      
+    </div>
+
+    <!-- Slide 3: Co-Pilot Step-by-Step Build + Live Code Workbench -->
+    <div class="slide" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Paired Programming Protocol (Driver vs Navigator)&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Remind the student: &quot;You are the Driver at the keyboard today; I am your Navigator co-pilot.&quot; Guide them through the 3 steps:&lt;br&gt; &bull; &lt;strong&gt;Step 1:&lt;/strong&gt; Open Google AI Studio and select Gemini 1.5 Flash.&lt;br&gt; &bull; &lt;strong&gt;Step 2:&lt;/strong&gt; In the System Instructions, add: 'You are an API endpoint. Output ONLY valid JSON matching the schema. No markdown backticks.'&lt;br&gt; &bull; &lt;strong&gt;Step 3:&lt;/strong&gt; Set Temperature to 0.2 and test generating RPG item databases! &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Navigator Inquiry &amp;amp; Bug Protocol&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; If the student makes a syntax typo or error, resist taking over the keyboard! Instead, use Socratic inquiry: &quot;Hmm, look at line 2—what character or symbol looks different from our blueprint?&quot; Let the student experience the triumph of spotting and squashing their own bug. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Frustration Buster&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Remind the student: &quot;Professional software engineers spend up to 80% of their day debugging. Bugs are not failures; they are puzzle clues pointing us to the solution!&quot; &lt;/div&gt; &lt;/div&gt;">
+      <h2>
+        <img src="../../assets/3d/terminal-screen-3d.png" class="slide-title-3d" alt="Build">
+        <span>Guided Co-Pilot Activity</span>
+      </h2>
+      <p style="font-size: 14.5px; color: var(--text-muted); font-weight: 600;">Follow the three steps in order. Stuck? Ask your mentor for a hint, not the answer.</p>
+      
+      <div class="copilot-workbench-grid">
+        <div class="copilot-list">
+        <div class="copilot-item">
+          <div class="step-number">1</div>
+          <div style="flex: 1;">
+            <div class="step-title">Open Your AI Workbench</div>
+            <p class="step-desc">Open Google AI Studio and select Gemini 1.5 Flash.</p>
+            <div class="step-action-tag">
+              <svg class="ui-svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Action: Open the tool, check you are signed in, read the starting prompt</span>
+            </div>
+          </div>
+        </div>
+        <div class="copilot-item">
+          <div class="step-number">2</div>
+          <div style="flex: 1;">
+            <div class="step-title">Write Your Prompt Recipe</div>
+            <p class="step-desc">In the System Instructions, add: 'You are an API endpoint. Output ONLY valid JSON matching the schema. No markdown backticks.'</p>
+            <div class="step-action-tag">
+              <svg class="ui-svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Action: Type your prompt with a role, a task and a format</span>
+            </div>
+          </div>
+        </div>
+        <div class="copilot-item">
+          <div class="step-number">3</div>
+          <div style="flex: 1;">
+            <div class="step-title">Generate, Review and Refine</div>
+            <p class="step-desc">Set Temperature to 0.2 and test generating RPG item databases!</p>
+            <div class="step-action-tag">
+              <svg class="ui-svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Action: Run it, compare with what you expected, then improve one thing</span>
+            </div>
+          </div>
+        </div>
+        </div>
+        
+        <div class="code-container">
+          <div class="code-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <img src="../../assets/3d/terminal-screen-3d.png" style="width: 18px; height: 18px; object-fit: contain;" alt="Code">
+              <span>Strict JSON Schema Output Snippet</span>
+            </div>
+            <div class="code-header-actions">
+              <button class="code-action-btn" onclick="copyCodeSnippet(this)">
+                <svg class="ui-svg" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copy Snippet</span>
+              </button>
+              <button class="code-action-btn verify-btn" onclick="verifyLessonSolution(this)" title="Verify Code Solution (V)">
+                <svg class="ui-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Verify (V)</span>
+              </button>
+              
+              <button class="code-action-btn" onclick="toggleSandbox(this)">
+                <svg class="ui-svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>Open Prompt Studio</span>
+              </button>
+            </div>
+          </div>
+          <pre class="code-block"><code>{ <span class="tok-str">&quot;item_id&quot;</span>: <span class="tok-str">&quot;frost_fang_katana&quot;</span>, <span class="tok-str">&quot;name&quot;</span>: <span class="tok-str">&quot;Frostfang Katana&quot;</span>, <span class="tok-str">&quot;rarity&quot;</span>: <span class="tok-str">&quot;Legendary&quot;</span>, <span class="tok-str">&quot;stats&quot;</span>: { <span class="tok-str">&quot;attack&quot;</span>: <span class="tok-num">85</span>, <span class="tok-str">&quot;speed&quot;</span>: <span class="tok-num">1</span>.<span class="tok-num">4</span>, <span class="tok-str">&quot;elemental_damage&quot;</span>: {<span class="tok-str">&quot;type&quot;</span>: <span class="tok-str">&quot;ice&quot;</span>, <span class="tok-str">&quot;value&quot;</span>: <span class="tok-num">30</span>} }, <span class="tok-str">&quot;lore_flavor_text&quot;</span>: <span class="tok-str">&quot;Forged in the heart of an ancient glacial collapse.&quot;</span>, <span class="tok-str">&quot;sprite_prompt_tag&quot;</span>: <span class="tok-str">&quot;16bit pixel art katana with translucent cyan frost edge&quot;</span> }</code></pre>
+          
+              <div class="sandbox-engine-card prompt-card">
+                <div class="sandbox-header">
+                  <div class="sandbox-title-badge">
+                    <span class="sandbox-live-dot"></span>
+                    <span>Prompt Studio: Prompt Engineering: Structured JSON...</span>
+                  </div>
+                  <span class="sandbox-hint">Prompt Check</span>
+                </div>
+                <div class="sandbox-prompt-tool">
+                  <div class="crypto-field-group">
+                    <label class="crypto-label">Your lesson prompt (first lines):</label>
+                    <div class="prompt-compiled-text" style="background: #F8FAFC; border: 1px solid #CBD5E1; padding: 12px; border-radius: 8px; font-size: 13px;">
+                      { &quot;item_id&quot;: &quot;frost_fang_katana&quot;, &quot;name&quot;: &quot;Frostfang Katana&quot;, &quot;rarity&quot;: &quot;Legendary&quot;, &quot;stats&quot;: { &quot;attack&quot;: 85, &quot;speed&quot;: 1.4, &quot;elemental_damage&quot;: {&quot;type&quot;: &quot;ice&quot;, &quot;value&quot;: 30} }, &quot;lore_flavor_text&quot;: &quot;Forged in the heart of an...
+                    </div>
+                  </div>
+                  <div class="sandbox-knobs-row" style="padding: 6px 0; border: none;">
+                    <div class="sandbox-knob">
+                      <span>Creativity (temperature):</span>
+                      <input type="range" min="0" max="100" value="70" class="sandbox-slider" oninput="this.parentElement.querySelector('.knob-val').innerText = (this.value/100).toFixed(1)">
+                      <span class="knob-val">0.7</span>
+                    </div>
+                    <div class="sandbox-knob">
+                      <span>Prompt size:</span>
+                      <span class="knob-val">about 53 tokens</span>
+                    </div>
+                  </div>
+                  <div class="prompt-output-preview">
+                    <div class="prompt-preview-title">Prompt Recipe Check</div>
+                    <div style="font-size: 13px; color: #1E293B; line-height: 1.9;">
+                      <span class="knob-val" style="margin-right: 6px; background: #FEF3C7; color: #92400E;">Role: add one</span><span class="knob-val" style="margin-right: 6px; background: #FEF3C7; color: #92400E;">Task: add one</span><span class="knob-val" style="margin-right: 6px; background: #FEF3C7; color: #92400E;">Format: add one</span><span class="knob-val" style="margin-right: 6px; background: #FEF3C7; color: #92400E;">Constraint: add one</span>
+                    </div>
+                    <div style="font-size: 12px; color: #475569; margin-top: 6px;">A strong prompt usually has all four. Add the missing ones and compare the results.</div>
+                  </div>
+                </div>
+              </div>
+          <div class="solution-verification-feedback" id="solution-verification-feedback" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Checkpoint Challenge -->
+    <div class="slide" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Socratic Checkpoint Facilitation&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Read the challenge question aloud: &quot;Why do engineers lower the Temperature parameter (e.g. to 0.1 or 0.2) when requesting structured JSON data from an LLM?&quot;. Do not reveal the answer! Have the student eliminate 2 incorrect choices first and explain why those options cannot be true. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Why Option B is Correct&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Low temperature flattens token sampling probabilities, forcing the model toward the most predictable, syntactically valid tokens! &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;If the Student Chooses Incorrectly&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Click 'Try Another Choice' to reset the quiz. Ask: &quot;Let's re-read the dilemma—what clue in the question helps us decide between these options?&quot; Guide them gently to the correct insight. &lt;/div&gt; &lt;/div&gt;">
+      <h2>
+        <img src="../../assets/3d/golden-key-3d.png" class="slide-title-3d" alt="Checkpoint">
+        <span>Checkpoint Challenge</span>
+      </h2>
+      <p style="font-size: 14.5px; color: var(--text-muted); font-weight: 600;">Demonstrate your understanding before starting your solo quest:</p>
+      
+      <div class="quiz-box">
+        <div class="quiz-question">
+          <img src="../../assets/3d/admin-shield-3d.png" style="width: 26px; height: 26px; object-fit: contain;" alt="Question">
+          <span>Why do engineers lower the Temperature parameter (e.g. to 0.1 or 0.2) when requesting structured JSON data from an LLM?</span>
+        </div>
+        <div class="quiz-options">
+          
+          <button class="quiz-btn" data-correct="false" onclick="handleQuiz(this, false)">
+            <span style="font-weight: 800; color: #4F46E5; min-width: 20px;">A)</span>
+            <span>To make the computer run cooler</span>
+          </button>
+          <button class="quiz-btn" data-correct="true" onclick="handleQuiz(this, true)">
+            <span style="font-weight: 800; color: #4F46E5; min-width: 20px;">B)</span>
+            <span>To minimize stochastic randomness and prevent broken JSON syntax or hallucinated keys</span>
+          </button>
+          <button class="quiz-btn" data-correct="false" onclick="handleQuiz(this, false)">
+            <span style="font-weight: 800; color: #4F46E5; min-width: 20px;">C)</span>
+            <span>Because high temperature consumes more battery</span>
+          </button>
+          <button class="quiz-btn" data-correct="false" onclick="handleQuiz(this, false)">
+            <span style="font-weight: 800; color: #4F46E5; min-width: 20px;">D)</span>
+            <span>To delete the conversation history</span>
+          </button>
+        </div>
+        <div class="quiz-explanation" style="display: none;">
+          <div>
+            <span class="quiz-status"></span>
+            <span class="quiz-explanation-text">Low temperature flattens token sampling probabilities, forcing the model toward the most predictable, syntactically valid tokens!</span>
+          </div>
+          <button class="quiz-retry-btn" onclick="resetQuiz(this)">
+            <svg class="ui-svg" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            <span>Try Another Choice</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: The Solo Quest -->
+    <div class="slide" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Solo Quest Scaffolding Protocol&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Explain the 3 quest tiers:&lt;br&gt; &bull; &lt;strong&gt;Bronze (+50 XP):&lt;/strong&gt; Configure a System Prompt in Google AI Studio that enforces strict JSON schema output for 3 video game weapons. &amp;mdash; Core confidence milestone.&lt;br&gt; &bull; &lt;strong&gt;Silver (+100 XP):&lt;/strong&gt; Add nested data structures including status effects, drop rates, and equipment requirements with type validation. &amp;mdash; Power-up creative expansion.&lt;br&gt; &bull; &lt;strong&gt;Gold (+200 XP):&lt;/strong&gt; Write a Python or JavaScript script that parses the returned JSON string into game objects without error! &amp;mdash; Boss level mastery challenge! &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Tutor Cheering &amp;amp; Autonomy Coaching&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Give the student 5&amp;ndash;8 minutes of independent build time for Bronze. Keep microphone open for quick hints. Click the quest cards to toggle XP and trigger the celebration fanfare when all 3 are completed! &lt;/div&gt; &lt;/div&gt;">
+      <h2>
+        <img src="../../assets/3d/gold-trophy-3d.png" class="slide-title-3d" alt="Solo Quest">
+        <span>Your Solo Quest</span>
+      </h2>
+      <p style="font-size: 14.5px; color: var(--text-muted); font-weight: 600;">Choose your achievement level and take the wheel:</p>
+      
+      <div class="quest-total-header">
+        <span style="font-size: 13.5px; font-weight: 700; color: var(--text-muted);">Interactive Quest Checklist (Click to Claim):</span>
+        <div class="quest-xp-counter" id="lesson-xp-counter">
+          <img src="../../assets/3d/tally-counter-3d.png" class="xp-counter-icon" alt="XP">
+          <span id="xp-counter-val">0 / 350 XP</span>
+        </div>
+      </div>
+
+      <div class="quest-tier bronze" data-tier="bronze" data-xp="50" onclick="handleQuestToggle(this, 'bronze', 50)">
+        <div class="quest-badge-wrap">
+          <img src="../../assets/3d/star-badge-3d.png" class="tier-icon-3d" alt="Bronze">
+          <div class="quest-combined-badge bronze">
+            <span class="badge-tier">Bronze</span>
+            <span class="badge-sep">&bull;</span>
+            <span class="badge-xp">+50 XP</span>
+          </div>
+        </div>
+        <div class="quest-info">
+          <div class="quest-title">First Step</div>
+          <p class="quest-desc">Configure a System Prompt in Google AI Studio that enforces strict JSON schema output for 3 video game weapons.</p>
+        </div>
+        <div class="quest-checkbox-interactive">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+      
+      <div class="quest-tier silver" data-tier="silver" data-xp="100" onclick="handleQuestToggle(this, 'silver', 100)">
+        <div class="quest-badge-wrap">
+          <img src="../../assets/3d/medal-3d.png" class="tier-icon-3d" alt="Silver">
+          <div class="quest-combined-badge silver">
+            <span class="badge-tier">Silver</span>
+            <span class="badge-sep">&bull;</span>
+            <span class="badge-xp">+100 XP</span>
+          </div>
+        </div>
+        <div class="quest-info">
+          <div class="quest-title">Skill Practice</div>
+          <p class="quest-desc">Add nested data structures including status effects, drop rates, and equipment requirements with type validation.</p>
+        </div>
+        <div class="quest-checkbox-interactive">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+      
+      <div class="quest-tier gold" data-tier="gold" data-xp="200" onclick="handleQuestToggle(this, 'gold', 200)">
+        <div class="quest-badge-wrap">
+          <img src="../../assets/3d/gold-trophy-3d.png" class="tier-icon-3d" alt="Gold">
+          <div class="quest-combined-badge gold">
+            <span class="badge-tier">Gold</span>
+            <span class="badge-sep">&bull;</span>
+            <span class="badge-xp">+200 XP</span>
+          </div>
+        </div>
+        <div class="quest-info">
+          <div class="quest-title">Creative Challenge</div>
+          <p class="quest-desc">Write a Python or JavaScript script that parses the returned JSON string into game objects without error!</p>
+        </div>
+        <div class="quest-checkbox-interactive">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Show & Tell + Home Mission -->
+    <div class="slide" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;60-Second Student Show &amp;amp; Tell Protocol&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Have the student present their finished project: 1) &quot;What did you build today?&quot; 2) &quot;What was the toughest bug you squashed?&quot; 3) &quot;What feature are you proudest of?&quot; &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Take-Home Project Guidance (25-30 Mins)&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Walk through the take-home mission: &lt;strong&gt;Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs): Independent Build&lt;/strong&gt;.&lt;br&gt; &bull; &lt;strong&gt;Challenge:&lt;/strong&gt; Demonstrate your schema-validated weapon generator to your mentor and explain how temperature affects token selection.&lt;br&gt; &bull; &lt;strong&gt;Submission:&lt;/strong&gt; Remind the student to submit their project link or screenshot to Google Classroom before the next session.&lt;br&gt; &bull; &lt;strong&gt;Next Session Check-In:&lt;/strong&gt; Open next lesson with a 3-minute celebration of their take-home build and award bonus XP! &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Parent Takeaway &amp;amp; Mission Brief&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Click 'Print (P)' in the header or on this slide to generate a 1-page PDF summary for the student's portfolio and parents. Celebrate their growth and bridge to the next lesson! &lt;/div&gt; &lt;/div&gt;">
+      <h2>
+        <img src="../../assets/3d/party-hat-3d.png" class="slide-title-3d" alt="Wrap Up">
+        <span>Lesson Summary & Practice</span>
+      </h2>
+      <p style="font-size: 14.5px; color: var(--text-muted); font-weight: 600;">Celebrate your progress and prepare for your next level:</p>
+      
+      <div class="content-grid" style="margin-top: 20px;">
+        <div class="card">
+          <div class="card-title">
+            <img src="../../assets/3d/clock-face-3d.png" class="slide-card-3d" alt="Show and Tell">
+            <span>60-Second Show and Tell</span>
+          </div>
+          <p class="card-desc">
+            Present your screen to your mentor and explain:
+            <br>&bull; What did you build today?
+            <br>&bull; Which challenge did you solve?
+          </p>
+        </div>
+        
+        <div class="card take-home-card">
+          <div class="card-title" style="justify-content: space-between; align-items: flex-start;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <img src="../../assets/3d/calendar-cube-3d.png" class="slide-card-3d" alt="Take-Home Project">
+              <span>Take-Home Project: Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs): Independent Build</span>
+            </div>
+            <span class="take-home-badge">
+              <svg class="ui-svg" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>25-30 Mins &bull; Independent Practice</span>
+            </span>
+          </div>
+          
+          <div class="take-home-challenge-box">
+            <strong>The Challenge:</strong> Demonstrate your schema-validated weapon generator to your mentor and explain how temperature affects token selection.
+          </div>
+          
+          <div class="take-home-steps">
+            <div class="take-home-step-item">
+              <span class="step-badge">1</span>
+              <div><strong>Build:</strong> Craft 2 new prompt variations: Test how changing adjectives or parameters alters the model's output.</div>
+            </div>
+            <div class="take-home-step-item">
+              <span class="step-badge">2</span>
+              <div><strong>Self-Test:</strong> Evaluate output quality: Check for accuracy, creativity, and consistency against your criteria.</div>
+            </div>
+            <div class="take-home-step-item">
+              <span class="step-badge">3</span>
+              <div><strong>Turn In:</strong> Turn in on Google Classroom: Share your project link, file, or screenshot under this lesson's assignment before our next session.</div>
+            </div>
+          </div>
+          
+          <div class="take-home-footer-note">
+            <svg class="ui-svg" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <span>Mentor Review: Ready for 3-minute project showcase at the start of next session!</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="global-changemaker-ribbon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        <div class="global-changemaker-text">
+          <strong>International Youth Impact (UN SDG 3):</strong> High school researchers published open-source benchmark datasets verifying that strict schema validation eliminates hallucinated medical drug dosages in multimodal triage models.
+        </div>
+      </div>
+
+      <div class="next-lesson-ribbon">
+        <div style="font-family: 'Fredoka', 'Nunito', sans-serif; font-size: 20px; font-weight: 700; color: var(--text-main);">
+          Lesson Completed!
+        </div>
+        <div class="next-lesson-row">
+          <a href="lesson_02_self_reflexion_evaluation_loops.html" class="btn-next-lesson">
+            <span>Continue to Lesson 2: Self-Reflexion & Evaluation Loops</span>
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+          <button class="btn-3d neutral" style="padding: 10px 20px; font-size: 13.5px;" onclick="printMissionBrief()">
+            <svg class="ui-svg" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Print Summary (P)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Mentor Guide Cockpit (Dual HUD) -->
+  <aside class="tutor-cockpit-drawer" id="tutor-cockpit">
+    <div class="cockpit-header">
+      <div class="cockpit-title">
+        <img src="../../assets/3d/admin-shield-3d.png" class="cockpit-icon" alt="Shield">
+        <div>
+          <div class="cockpit-headline">Mentor Guide</div>
+          <div class="cockpit-subline">Lesson 1 &bull; Slide <span id="cockpit-slide-num">1</span> of 6</div>
+        </div>
+      </div>
+      <div class="cockpit-actions">
+        <button class="cockpit-btn" onclick="openPresenterPopout()" title="Open Presenter View (Dual-Screen)">
+          <svg class="ui-svg" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          <span>Presenter View</span>
+        </button>
+        <button class="cockpit-close-btn" onclick="toggleTutorCockpit()">&times;</button>
+      </div>
+    </div>
+
+    <!-- Cockpit Tabs -->
+    <div class="cockpit-tabs">
+      <button class="cockpit-tab active" data-tab="socratic" onclick="switchCockpitTab('socratic')">
+        <img src="../../assets/3d/speech-bubble-3d.png" class="tab-icon-3d" alt="Script">
+        <span>Socratic Script</span>
+      </button>
+      <button class="cockpit-tab" data-tab="bug-radar" onclick="switchCockpitTab('bug-radar')">
+        <img src="../../assets/3d/radar-chart-3d.png" class="tab-icon-3d" alt="Radar">
+        <span>Bug Radar</span>
+      </button>
+      <button class="cockpit-tab" data-tab="pacing" onclick="switchCockpitTab('pacing')">
+        <img src="../../assets/3d/clock-face-3d.png" class="tab-icon-3d" alt="Pacing">
+        <span>Pacing Clock</span>
+      </button>
+      <button class="cockpit-tab" data-tab="classroom" onclick="switchCockpitTab('classroom')">
+        <img src="../../assets/3d/calendar-cube-3d.png" class="tab-icon-3d" alt="Classroom">
+        <span>Classroom Copy</span>
+      </button>
+    </div>
+
+    <!-- Cockpit Body Panes -->
+    <div class="cockpit-body">
+      <!-- Pane 1: Socratic Playbook & Metaphor -->
+      <div class="cockpit-tab-pane active" id="pane-socratic">
+        <div class="cockpit-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/lightbulb-3d.png" style="width: 18px; height: 18px;" alt="Metaphor">
+            <span>Child Metaphor &amp; Mental Anchor</span>
+          </div>
+          <div class="cockpit-card-body" id="cockpit-metaphor">
+            The Ultra-Smart Alien Chef: The AI knows every recipe in the galaxy, but if you just say 'make food', it might bring you a bowl of raw onion soup! If you tell it 'bake a chocolate cake with 3 sprinkles and no nuts', it makes perfection. • Diagnostic Check: Ask: 'Why did the AI give us a generic boring answer? Which ingredient was missing from our prompt recipe?' • Frustration Buster: Students treating AI as a human mind. Gently re-anchor that AI is pattern matching and needs clear constraints.
+          </div>
+        </div>
+
+        <div class="cockpit-card" style="border-left: 3px solid #10B981;">
+          <div class="cockpit-card-title">
+            <svg class="ui-svg" style="width: 16px; height: 16px; stroke: #10B981;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            <span style="color: #065F46;">Global Facilitation &amp; Cross-Border Exposure</span>
+          </div>
+          <div class="cockpit-card-body">
+            Global Facilitation: Train young engineers to treat AI models as non-deterministic reasoning engines that require rigorous mathematical schemas to interface safely with society.
+          </div>
+        </div>
+
+        <div class="cockpit-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/speech-bubble-3d.png" style="width: 18px; height: 18px;" alt="Dialogue">
+            <span>Slide Socratic Inquiries (<span id="cockpit-slide-title-tag">Slide 1</span>)</span>
+          </div>
+          <div class="cockpit-card-body" id="cockpit-slide-notes">
+            &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Mission Dilemma &amp;amp; Child Analogy&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Explain the core problem: Why do computers or humans need Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs)? Relate this to an everyday child mental model: Think of this like crafting a master recipe, tuning an arcade engine, or building with LEGO bricks where each piece has an exact purpose. Today we are solving: Modern software architectures cannot parse conversational rambling like 'Sure! Here is a cool sword...'. Professional AI engineers enforce strict, deterministic JSON schemas for game engines. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Tutor Conversational Script&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; &quot;Welcome back! Today we are unlocking Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs) in our Generative AI Studio: Prompt, Loop &amp; Graph Engineering track. Before we look at any code or blueprints, imagine this challenge: Modern software architectures cannot parse conversational rambling like 'Sure! Here is a cool sword...'. Professional AI engineers enforce strict, deterministic JSON schemas for game engines.. If you were the engineer designing this system, how would you solve it?&quot; Listen actively, validate their instinct, and transition to the mission card. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Predict-First Cognitive Check&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Prompt the learner: &quot;Look at the Predict Banner below: Before writing any code, how do you hypothesize computers solve this dilemma? Share your theory with me!&quot; This activates schema before presenting the formal rule. &lt;/div&gt; &lt;/div&gt;
+          </div>
+        </div>
+
+        <div class="cockpit-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/clock-face-3d.png" style="width: 18px; height: 18px;" alt="Debrief">
+            <span>Tutor 60-Second Debrief Protocol</span>
+          </div>
+          <div class="cockpit-card-body">
+            Ask: 'If your game expects attack as an integer, why would an output of "attack": "very strong" break the game engine?'
+          </div>
+        </div>
+      </div>
+
+      <!-- Pane 2: Bug Radar -->
+      <div class="cockpit-tab-pane" id="pane-bug-radar">
+        <div class="cockpit-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/alert-sphere-3d.png" style="width: 18px; height: 18px;" alt="Alert">
+            <span>Common Traps for this Lesson</span>
+          </div>
+          <div class="cockpit-card-body" id="cockpit-bug-radar">
+            <div class="bug-radar-item">
+          <div class="bug-radar-head">
+            <img src="../../assets/3d/alert-sphere-3d.png" style="width: 15px; height: 15px; object-fit: contain;" alt="Trap">
+            <span>One-Line Prompts</span>
+          </div>
+          <p class="bug-radar-desc">Ask for a role, a task, a format and one constraint. Compare the result with the one-line version.</p>
+        </div><div class="bug-radar-item">
+          <div class="bug-radar-head">
+            <img src="../../assets/3d/alert-sphere-3d.png" style="width: 15px; height: 15px; object-fit: contain;" alt="Trap">
+            <span>Vague Single-Sentence Prompts</span>
+          </div>
+          <p class="bug-radar-desc">Students write 2-word prompts. Remind them of the 3-part formula: Role, Task, Format Constraints.</p>
+        </div><div class="bug-radar-item">
+          <div class="bug-radar-head">
+            <img src="../../assets/3d/alert-sphere-3d.png" style="width: 15px; height: 15px; object-fit: contain;" alt="Trap">
+            <span>AI Hallucination Trust</span>
+          </div>
+          <p class="bug-radar-desc">Model answers must always be fact-checked against official documentation or math tests.</p>
+        </div>
+          </div>
+        </div>
+
+        <div class="cockpit-card protocol-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/admin-shield-3d.png" style="width: 18px; height: 18px;" alt="Protocol">
+            <span>Rule of Two Questions (Zero Touch Typing)</span>
+          </div>
+          <div class="cockpit-card-body">
+            <p><strong>Never take over the student's mouse or keyboard.</strong> Ask two progressive questions:</p>
+            <ol style="margin: 8px 0 0 18px; padding: 0;">
+              <li><em>"Look at the line right above the cursor: how does it differ from our example?"</em></li>
+              <li><em>"If the computer reads left-to-right, what character did it encounter first?"</em></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pane 3: Pacing Clock -->
+      <div class="cockpit-tab-pane" id="pane-pacing">
+        <div class="pacing-timer-box">
+          <div class="pacing-clock-display" id="cockpit-timer-display">60:00</div>
+          <div class="pacing-timer-btns">
+            <button class="timer-btn" onclick="startTimer()">Start</button>
+            <button class="timer-btn" onclick="pauseTimer()">Pause</button>
+            <button class="timer-btn" onclick="resetTimer()">Reset</button>
+          </div>
+        </div>
+
+        <div class="pacing-milestones-list">
+          <div class="milestone-row" data-stage="1">
+            <span class="milestone-badge">00–05m</span>
+            <span class="milestone-text">Hook &amp; Dilemma Prediction</span>
+          </div>
+          <div class="milestone-row" data-stage="2">
+            <span class="milestone-badge">05–15m</span>
+            <span class="milestone-text">Big Idea &amp; Discovery Concept Cards</span>
+          </div>
+          <div class="milestone-row" data-stage="3">
+            <span class="milestone-badge">15–35m</span>
+            <span class="milestone-text">Co-Pilot Step-by-Step Build &amp; Live Sandbox</span>
+          </div>
+          <div class="milestone-row" data-stage="4">
+            <span class="milestone-badge">35–42m</span>
+            <span class="milestone-text">Checkpoint Challenge (Solo Diagnostic)</span>
+          </div>
+          <div class="milestone-row" data-stage="5">
+            <span class="milestone-badge">42–55m</span>
+            <span class="milestone-text">Solo Quest XP Hunt (Bronze, Silver, Gold)</span>
+          </div>
+          <div class="milestone-row" data-stage="6">
+            <span class="milestone-badge">55–60m</span>
+            <span class="milestone-text">60-Sec Show &amp; Tell + Take-Home Mission Briefing</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pane 4: Classroom Quick Copy -->
+      <div class="cockpit-tab-pane" id="pane-classroom">
+        <div class="cockpit-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/calendar-cube-3d.png" style="width: 18px; height: 18px;" alt="Calendar">
+            <span>Google Classroom Post Formatter</span>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+            Copy the pre-formatted mission post with homework instructions, challenge rubrics, and turn-in guidelines:
+          </p>
+          <button class="btn-3d" style="width: 100%;" onclick="copyClassroomAssignment(this)">
+            <svg class="ui-svg" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Mission Post to Clipboard</span>
+          </button>
+        </div>
+        <pre class="classroom-copy-preview" id="classroom-copy-preview">[STEMulus Home Mission] Lesson 1: Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs)
+Course: Generative AI Studio: Prompt, Loop &amp; Graph Engineering (Senior Engineers (Ages 13–18))
+Estimated Time: 25-30 Mins (Independent Practice)
+
+Mission Challenge:
+Demonstrate your schema-validated weapon generator to your mentor and explain how temperature affects token selection.
+
+Action Steps:
+1. Build: Craft 2 new prompt variations: Test how changing adjectives or parameters alters the model's output.
+2. Self-Test: Evaluate output quality: Check for accuracy, creativity, and consistency against your criteria.
+3. Turn In: Turn in on Google Classroom: Share your project link, file, or screenshot under this lesson's assignment before our next session.
+
+Showcase: Bring your project to our next session for a 3-minute screen-share celebration!</pre>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Student Mission & Learning Records Drawer (Educational ADRs) -->
+  <aside class="learning-journey-drawer" id="learning-journey-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <img src="../../assets/3d/gold-trophy-3d.png" class="drawer-icon-3d" alt="Journey">
+        <div>
+          <div class="drawer-headline">Student Mission &amp; ADR Records</div>
+          <div class="drawer-subline">Generative AI Studio: Prompt, Loop &amp; Graph Engineering &bull; Lesson 1</div>
+        </div>
+      </div>
+      <button class="drawer-close-btn" onclick="toggleLearningJourney()">&times;</button>
+    </div>
+    <div class="drawer-body">
+      
+    <div class="journey-mission-box">
+      <div class="journey-section-tag">Active Student Mission &bull; Senior Engineers (Ages 13–18)</div>
+      <div class="journey-mission-title">Generative AI Studio: Prompt, Loop &amp; Graph Engineering Mastery</div>
+      <p class="journey-mission-desc">Architect production-grade multimodal prompts, RAG retrieval pipelines, and autonomous agent loops.</p>
+    </div>
+    
+    <div class="zpd-meter-card">
+      <div class="zpd-metric">
+        <div class="zpd-val" id="zpd-lessons-count">0</div>
+        <div class="zpd-lbl">Milestones</div>
+      </div>
+      <div class="zpd-metric" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px 12px;">
+        <div class="zpd-val" id="zpd-total-xp">0 XP</div>
+        <div class="zpd-lbl">Storage Mastery</div>
+      </div>
+      <div class="zpd-metric" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px 12px;">
+        <div class="zpd-val" style="color: #10B981;">ZPD Prime</div>
+        <div class="zpd-lbl">Challenge Band</div>
+      </div>
+    </div>
+    
+    <div>
+      <div style="font-family: 'Fredoka', 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+        <span>Educational ADR Records (Learning Records):</span>
+        <span style="font-size: 11px; color: #64748B;">Auto-saved locally</span>
+      </div>
+      <div class="journey-records-list" id="journey-records-list">
+        <!-- Rendered dynamically by slide_engine.js from localStorage -->
+      </div>
+    </div>
+    
+    <button class="export-journey-btn" onclick="exportLearningJourney()">
+      <svg class="ui-svg" viewBox="0 0 24 24" style="stroke: #FFFFFF; width: 16px; height: 16px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      <span>Export Learning Record (Markdown / Google Classroom)</span>
+    </button>
+    
+    </div>
+  </aside>
+
+  <!-- Canonical Concept Glossary Drawer (Opinionated Vocabulary) -->
+  <aside class="glossary-drawer" id="glossary-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <img src="../../assets/3d/backpack-3d.png" class="drawer-icon-3d" alt="Glossary">
+        <div>
+          <div class="drawer-headline">Canonical Concept Glossary</div>
+          <div class="drawer-subline">Formal vocabulary for Generative AI Studio: Prompt, Loop &amp; Graph Engineering</div>
+        </div>
+      </div>
+      <button class="drawer-close-btn" onclick="toggleGlossary()">&times;</button>
+    </div>
+    <div class="drawer-body">
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">
+        Mastering precise software vocabulary avoids conceptual ambiguity. Define what terms <em>ARE</em> and avoid loose slang:
+      </p>
+      
+        <div class="glossary-term-card">
+          <div class="glossary-term-name">
+            <img src="../../assets/3d/golden-key-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Term">
+            <span>System Prompts &amp; Temperature</span>
+          </div>
+          <div class="glossary-def-is"><strong>Definition:</strong> Temperature = 0.2 for deterministic JSON schemas; 0.9 for creative prose.</div>
+          <div class="glossary-avoid"><strong>Rule:</strong> Avoid: Vague one-word questions without role or format</div>
+        </div>
+        <div class="glossary-term-card">
+          <div class="glossary-term-name">
+            <img src="../../assets/3d/golden-key-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Term">
+            <span>Structured Schema Validation</span>
+          </div>
+          <div class="glossary-def-is"><strong>Definition:</strong> Enforcing typed keys: `item_name: string`, `damage: integer`, `element: enum`.</div>
+          <div class="glossary-avoid"><strong>Rule:</strong> Avoid: Imprecise jargon or loose synonyms without formal definitions</div>
+        </div>
+        <div class="glossary-term-card">
+          <div class="glossary-term-name">
+            <img src="../../assets/3d/golden-key-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Term">
+            <span>Game Parser Pipeline</span>
+          </div>
+          <div class="glossary-def-is"><strong>Definition:</strong> Directly deserializing LLM outputs into native game engine data structures without regex parsing.</div>
+          <div class="glossary-avoid"><strong>Rule:</strong> Avoid: Imprecise jargon or loose synonyms without formal definitions</div>
+        </div>
+    </div>
+  </aside>
+
+  <script>
+    window.STEMULUS_LESSON_META = {
+      lessonNum: 1,
+      lessonTitle: "Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs)",
+      trackTitle: "Generative AI Studio: Prompt, Loop &amp; Graph Engineering",
+      levelTitle: "Senior Engineers (Ages 13–18)",
+      conceptTitle: "Prompt Engineering: Structured JSON Schemas &amp; Sampling"
+    };
+  </script>
+
+  <!-- Embedded Tutor Cockpit JSON Dataset for Client-Side JS -->
+  <script type="application/json" id="tutor-cockpit-data">
+  {"lessonNum": 1, "lessonTitle": "Deterministic Prompt Engineering &amp; JSON Schema (Game GDDs)", "trackTitle": "Generative AI Studio: Prompt, Loop &amp; Graph Engineering", "levelTitle": "Senior Engineers (Ages 13–18)", "metaphor": "The Ultra-Smart Alien Chef: The AI knows every recipe in the galaxy, but if you just say 'make food', it might bring you a bowl of raw onion soup! If you tell it 'bake a chocolate cake with 3 sprinkles and no nuts', it makes perfection. • Diagnostic Check: Ask: 'Why did the AI give us a generic boring answer? Which ingredient was missing from our prompt recipe?' • Frustration Buster: Students treating AI as a human mind. Gently re-anchor that AI is pattern matching and needs clear constraints.", "debrief": "Ask: 'If your game expects attack as an integer, why would an output of "attack": "very strong" break the game engine?'", "notes": {"s1": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eMission Dilemma &amp; Child Analogy\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Explain the core problem: Why do computers or humans need Deterministic Prompt Engineering & JSON Schema (Game GDDs)? Relate this to an everyday child mental model: Think of this like crafting a master recipe, tuning an arcade engine, or building with LEGO bricks where each piece has an exact purpose. Today we are solving: Modern software architectures cannot parse conversational rambling like 'Sure! Here is a cool sword...'. Professional AI engineers enforce strict, deterministic JSON schemas for game engines. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eTutor Conversational Script\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e \"Welcome back! Today we are unlocking Deterministic Prompt Engineering & JSON Schema (Game GDDs) in our Generative AI Studio: Prompt, Loop & Graph Engineering track. Before we look at any code or blueprints, imagine this challenge: Modern software architectures cannot parse conversational rambling like 'Sure! Here is a cool sword...'. Professional AI engineers enforce strict, deterministic JSON schemas for game engines.. If you were the engineer designing this system, how would you solve it?\" Listen actively, validate their instinct, and transition to the mission card. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003ePredict-First Cognitive Check\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Prompt the learner: \"Look at the Predict Banner below: Before writing any code, how do you hypothesize computers solve this dilemma? Share your theory with me!\" This activates schema before presenting the formal rule. \u003c/div\u003e \u003c/div\u003e", "s2": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eDeep Concept Explanation (Simple Language)\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Break down Prompt Engineering: Structured JSON Schemas & Sampling into simple, relatable building blocks:\u003cbr\u003e &bull; \u003cstrong\u003eSystem Prompts & Temperature:\u003c/strong\u003e Temperature = 0.2 for deterministic JSON schemas; 0.9 for creative prose.\u003cbr\u003e&bull; \u003cstrong\u003eStructured Schema Validation:\u003c/strong\u003e Enforcing typed keys: `item_name: string`, `damage: integer`, `element: enum`.\u003cbr\u003e&bull; \u003cstrong\u003eGame Parser Pipeline:\u003c/strong\u003e Directly deserializing LLM outputs into native game engine data structures without regex parsing.\u003cbr\u003e Explain what the code snippet actually tells the computer: Each syntax token is a specific instruction—keywords define actions, values define parameters, and containers store data. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eInteractive Sandbox Coaching Guide\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Guide the student to click the sandbox button right below the snippet. Have them interact with the controls (sliders, color presets, or code runner). Ask: \"When we adjust this parameter, how does the output react? Why does that change happen?\" This cements the direct cause-and-effect relationship. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eDiagnostic Check\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Ask: \"If you had to explain Prompt Engineering: Structured JSON Schemas & Sampling to a younger friend who has never coded, what simple real-world comparison would you use?\" Listen for understanding rather than rote memorization. \u003c/div\u003e \u003c/div\u003e", "s3": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003ePaired Programming Protocol (Driver vs Navigator)\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Remind the student: \"You are the Driver at the keyboard today; I am your Navigator co-pilot.\" Guide them through the 3 steps:\u003cbr\u003e &bull; \u003cstrong\u003eStep 1:\u003c/strong\u003e Open Google AI Studio and select Gemini 1.5 Flash.\u003cbr\u003e &bull; \u003cstrong\u003eStep 2:\u003c/strong\u003e In the System Instructions, add: 'You are an API endpoint. Output ONLY valid JSON matching the schema. No markdown backticks.'\u003cbr\u003e &bull; \u003cstrong\u003eStep 3:\u003c/strong\u003e Set Temperature to 0.2 and test generating RPG item databases! \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eNavigator Inquiry &amp; Bug Protocol\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e If the student makes a syntax typo or error, resist taking over the keyboard! Instead, use Socratic inquiry: \"Hmm, look at line 2—what character or symbol looks different from our blueprint?\" Let the student experience the triumph of spotting and squashing their own bug. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eFrustration Buster\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Remind the student: \"Professional software engineers spend up to 80% of their day debugging. Bugs are not failures; they are puzzle clues pointing us to the solution!\" \u003c/div\u003e \u003c/div\u003e", "s4": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eSocratic Checkpoint Facilitation\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Read the challenge question aloud: \"Why do engineers lower the Temperature parameter (e.g. to 0.1 or 0.2) when requesting structured JSON data from an LLM?\". Do not reveal the answer! Have the student eliminate 2 incorrect choices first and explain why those options cannot be true. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eWhy Option B is Correct\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Low temperature flattens token sampling probabilities, forcing the model toward the most predictable, syntactically valid tokens! \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eIf the Student Chooses Incorrectly\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Click 'Try Another Choice' to reset the quiz. Ask: \"Let's re-read the dilemma—what clue in the question helps us decide between these options?\" Guide them gently to the correct insight. \u003c/div\u003e \u003c/div\u003e", "s5": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eSolo Quest Scaffolding Protocol\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Explain the 3 quest tiers:\u003cbr\u003e &bull; \u003cstrong\u003eBronze (+50 XP):\u003c/strong\u003e Configure a System Prompt in Google AI Studio that enforces strict JSON schema output for 3 video game weapons. &mdash; Core confidence milestone.\u003cbr\u003e &bull; \u003cstrong\u003eSilver (+100 XP):\u003c/strong\u003e Add nested data structures including status effects, drop rates, and equipment requirements with type validation. &mdash; Power-up creative expansion.\u003cbr\u003e &bull; \u003cstrong\u003eGold (+200 XP):\u003c/strong\u003e Write a Python or JavaScript script that parses the returned JSON string into game objects without error! &mdash; Boss level mastery challenge! \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eTutor Cheering &amp; Autonomy Coaching\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Give the student 5&ndash;8 minutes of independent build time for Bronze. Keep microphone open for quick hints. Click the quest cards to toggle XP and trigger the celebration fanfare when all 3 are completed! \u003c/div\u003e \u003c/div\u003e", "s6": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003e60-Second Student Show &amp; Tell Protocol\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Have the student present their finished project: 1) \"What did you build today?\" 2) \"What was the toughest bug you squashed?\" 3) \"What feature are you proudest of?\" \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eTake-Home Project Guidance (25-30 Mins)\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Walk through the take-home mission: \u003cstrong\u003eDeterministic Prompt Engineering & JSON Schema (Game GDDs): Independent Build\u003c/strong\u003e.\u003cbr\u003e &bull; \u003cstrong\u003eChallenge:\u003c/strong\u003e Demonstrate your schema-validated weapon generator to your mentor and explain how temperature affects token selection.\u003cbr\u003e &bull; \u003cstrong\u003eSubmission:\u003c/strong\u003e Remind the student to submit their project link or screenshot to Google Classroom before the next session.\u003cbr\u003e &bull; \u003cstrong\u003eNext Session Check-In:\u003c/strong\u003e Open next lesson with a 3-minute celebration of their take-home build and award bonus XP! \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eParent Takeaway &amp; Mission Brief\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Click 'Print (P)' in the header or on this slide to generate a 1-page PDF summary for the student's portfolio and parents. Celebrate their growth and bridge to the next lesson! \u003c/div\u003e \u003c/div\u003e"}, "bugRadar": [{"trap": "One-Line Prompts", "hint": "Ask for a role, a task, a format and one constraint. Compare the result with the one-line version."}, {"trap": "Vague Single-Sentence Prompts", "hint": "Students write 2-word prompts. Remind them of the 3-part formula: Role, Task, Format Constraints."}, {"trap": "AI Hallucination Trust", "hint": "Model answers must always be fact-checked against official documentation or math tests."}], "classroomPost": "[STEMulus Home Mission] Lesson 1: Deterministic Prompt Engineering & JSON Schema (Game GDDs) Course: Generative AI Studio: Prompt, Loop & Graph Engineering (Senior Engineers (Ages 13–18)) Estimated Time: 25-30 Mins (Independent Practice) Mission Challenge: Demonstrate your schema-validated weapon generator to your mentor and explain how temperature affects token selection. Action Steps: 1. Build: Craft 2 new prompt variations: Test how changing adjectives or parameters alters the model's output. 2. Self-Test: Evaluate output quality: Check for accuracy, creativity, and consistency against your criteria. 3. Turn In: Turn in on Google Classroom: Share your project link, file, or screenshot under this lesson's assignment before our next session. Showcase: Bring your project to our next session for a 3-minute screen-share celebration!"}
+  </script>
+
+  <!-- Footer -->
+  <footer class="slide-footer">
+    <div class="slide-counter" id="slide-counter">Slide 1 of 6</div>
+    <div class="nav-buttons">
+      <button class="btn-3d neutral" id="prev-btn" disabled>Previous</button>
+      <button class="btn-3d" id="next-btn">Next Slide</button>
+    </div>
+  </footer>
+
+  <script src="../../assets/slide_engine.js"></script>
+</body>
+</html>

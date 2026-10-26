@@ -360,6 +360,45 @@ Return strictly valid JSON:
     }
   }
 
+  async function polishTutorComment(rawNotes, studentName, courseName) {
+    const raw = (rawNotes || '').trim();
+    if (!raw) return '';
+
+    const systemPrompt = `You are an encouraging, expert STEM educator assistant at STEMulus Kids Tech.
+Your job is to polish the tutor's raw session notes into clear, grammatically sound, and encouraging feedback suitable for the student's learning log and weekly parent report.
+CRITICAL RULES:
+1. STRICTLY PRESERVE all factual student accomplishments, struggles, concepts, and project details mentioned by the tutor.
+2. NEVER invent, hallucinate, or assume achievements that were not stated.
+3. Keep the tone warm, constructive, and concise (2-3 sentences max).
+4. Return ONLY the polished text with no surrounding quotes, markdown fences, or commentary.`;
+
+    const userPrompt = `Student: ${studentName || 'Student'}\nCourse: ${courseName || 'STEM Program'}\nTutor Raw Notes:\n${raw}`;
+
+    try {
+      if (hasKey()) {
+        const response = await callGemini(userPrompt, systemPrompt, PRIMARY_MODEL);
+        if (response && response.trim().length > 10) {
+          return response.replace(/^["']|["']$/g, '').trim();
+        }
+      }
+    } catch (e) {
+      console.warn('[GeminiService] polishTutorComment AI fallback:', e.message);
+    }
+
+    // Deterministic fallback polisher
+    let polished = raw;
+    polished = polished.charAt(0).toUpperCase() + polished.slice(1);
+    polished = polished
+      .replace(/\bcongrats\b/gi, 'Congratulations')
+      .replace(/\bw\/\b/gi, 'with')
+      .replace(/\bstmt\b/gi, 'statement')
+      .replace(/\bfn\b/gi, 'function')
+      .replace(/\bprog\b/gi, 'programming')
+      .replace(/\bthru\b/gi, 'through');
+    if (!/[.!?]$/.test(polished)) polished += '.';
+    return polished;
+  }
+
   return {
     isAvailable: hasKey,
     getApiKey,
@@ -370,6 +409,7 @@ Return strictly valid JSON:
     translateBilingualTurn,
     auditSessionTranscript,
     generateParentProgressReport,
+    polishTutorComment,
     PRIMARY_MODEL,
     FALLBACK_MODEL
   };

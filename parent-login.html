@@ -11,7 +11,8 @@
 
   <link rel="stylesheet" href="assets/css/portal-design-system.css">
   <link rel="stylesheet" href="assets/css/portal-animations.css">
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="assets/vendor/lucide.min.js"></script>
+  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
 
   <style>
@@ -92,22 +93,11 @@
         <!-- Logo Badge -->
         <div class="portal-badge">
           <img src="favicon.png" alt="STEMulus">
-          <span>Portal Access</span>
+          <span>Family &amp; Parent Portal</span>
         </div>
 
-        <h2 class="form-title">Sign In</h2>
-        <p class="form-sub">Select your role to continue</p>
-
-        <!-- Role Tabs -->
-        <div class="role-tabs">
-          <div class="role-pill" id="role-pill"></div>
-          <button class="role-btn active" id="btn-parent" onclick="switchRole('parent', 0)">
-            <i data-lucide="shield" style="width:14px;height:14px;"></i> Parent
-          </button>
-          <button class="role-btn" id="btn-tutor" onclick="switchRole('tutor', 1)">
-            <i data-lucide="graduation-cap" style="width:14px;height:14px;"></i> Tutor
-          </button>
-        </div>
+        <h2 class="form-title">Parent Sign In</h2>
+        <p class="form-sub">Track your child's coding journey &amp; session schedules</p>
 
         <!-- Login Form -->
         <form id="login-form" onsubmit="handleLogin(event)">
@@ -143,6 +133,14 @@
             Sign In to Parent Portal <i data-lucide="arrow-right" style="width: 16px;"></i>
           </button>
         </form>
+
+        <!-- Portal Cross-Link for Tutors -->
+        <div style="margin-top:1.75rem;padding-top:1.25rem;border-top:1px solid #f1f5f9;text-align:center;font-size:13px;color:#64748b;">
+          Are you an instructor or mentor? <br class="sm:hidden">
+          <a href="tutor-login.html" style="color:var(--brand-orange,#f4600c);font-weight:800;text-decoration:none;margin-left:4px;">
+            Sign In to Faculty Gateway &rarr;
+          </a>
+        </div>
 
 
 
@@ -300,9 +298,12 @@
   <script src="assets/js/portal-scene-engine.min.js" defer></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Auto-switch tab based on ?role= URL param
+      // Auto-forward to dedicated tutor portal if ?role=tutor
       const urlRole = new URLSearchParams(window.location.search).get('role');
-      if (urlRole === 'tutor') switchRole('tutor', 1);
+      if (urlRole === 'tutor') {
+        window.location.replace('tutor-login.html');
+        return;
+      }
 
       if (typeof DashboardEngine !== 'undefined') {
         var existingSession = DashboardEngine.getSession ? DashboardEngine.getSession() : null;
@@ -440,8 +441,9 @@
             window.location.href = 'admin-dashboard.html';
             return;
           }
-          if (res.user.role !== role) {
-            showError('Your credentials are correct but you selected the ' + role + ' tab. Please switch to the ' + res.user.role + ' tab and try again.');
+          if (res.user && res.user.role === 'tutor') {
+            // Tutor signed in on family portal -> forward to tutor dashboard smoothly
+            window.location.href = 'tutor-dashboard.html';
             return;
           }
 
@@ -451,8 +453,7 @@
             return;
           }
 
-          if (role === 'parent') window.location.href = 'parent-dashboard.html';
-          if (role === 'tutor') window.location.href = 'tutor-dashboard.html';
+          window.location.href = 'parent-dashboard.html';
           return;
         } else {
           errorBox.style.display = 'flex';

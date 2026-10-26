@@ -11,16 +11,19 @@
  *    - Immediate start class notification with roster link to Tutor
  */
 
+const { handler: sendEmailHandler } = require('./send-email');
+
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@stemuluskidstech.com';
 const RESEND_KEY = process.env.RESEND_API_KEY;
 const NTFY_TOKEN = process.env.NTFY_TOKEN;
-const FB_PROJECT = process.env.FIREBASE_PROJECT_ID || 'stemulus-kidstech';
+const FB_PROJECT = process.env.FIREBASE_PROJECT_ID || 'stemulus-lms';
 const FB_API_KEY = process.env.FIREBASE_API_KEY;
 
 // Query Firestore schedules
 async function getFirestoreSchedules() {
-  if (!FB_PROJECT || !FB_API_KEY) return [];
-  const url = `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents/schedules?key=${FB_API_KEY}&pageSize=300`;
+  if (!FB_PROJECT) return [];
+  const keyParam = FB_API_KEY ? `&key=${FB_API_KEY}` : '';
+  const url = `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents/schedules?pageSize=300${keyParam}`;
   try {
     const resp = await fetch(url);
     if (!resp.ok) return [];
@@ -41,11 +44,12 @@ async function getFirestoreSchedules() {
 
 // Mark reminder milestone as dispatched in Firestore to guarantee idempotency across cron ticks
 async function markMilestoneDispatched(scheduleId, milestone, currentDispatched) {
-  if (!FB_PROJECT || !FB_API_KEY || !scheduleId) return;
+  if (!FB_PROJECT || !scheduleId) return;
   const list = currentDispatched ? currentDispatched.split(',').map(s => s.trim()).filter(Boolean) : [];
   if (!list.includes(milestone)) list.push(milestone);
   const updatedStr = list.join(',');
-  const url = `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents/schedules/${scheduleId}?updateMask.fieldPaths=remindersDispatched&key=${FB_API_KEY}`;
+  const keyParam = FB_API_KEY ? `&key=${FB_API_KEY}` : '';
+  const url = `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents/schedules/${scheduleId}?updateMask.fieldPaths=remindersDispatched${keyParam}`;
   try {
     await fetch(url, {
       method: 'PATCH',
@@ -61,85 +65,20 @@ async function markMilestoneDispatched(scheduleId, milestone, currentDispatched)
   }
 }
 
-// Push NTFY Notification
+// Push NTFY Notification with automatic anonymous retry and stemulus-admin-alerts mirror
 async function pushNtfy(topic, title, message, { priority = 'high', tags = '' } = {}) {
   if (!topic) return;
-  const headers = { 'Content-Type': 'text/plain', 'Title': title, 'Priority': priority };
-  if (NTFY_TOKEN) headers['Authorization'] = `Bearer ${NTFY_TOKEN}`;
+  const cleanTitle = String(title || '').replace(/[^\x20-\x7E]/g, ' ').trim();
+  const headers = { 'Content-Type': 'text/plain', 'Title': cleanTitle, 'Priority': priority };
+  if (NTFY_TOKEN && NTFY_TOKEN.trim()) headers['Authorization'] = `Bearer ${NTFY_TOKEN.trim()}`;
   if (tags) headers['Tags'] = tags;
   try {
-    await fetch(`https://ntfy.sh/${topic}`, { method: 'POST', headers, body: message });
+    let resp = await fetch(`https://ntfy.sh/${topic}`, { method: 'POST', headers, body: message });
+    if ((resp.status === 401 || resp.status === 403) && headers['Authorization']) {
+      delete headers['Authorization'];
+      await fetch(`https://ntfy.sh/${topic}`, { method: 'POST', headers, body: message });
+    }
   } catch (e) {}
-}
-
-// Send Transactional Email via Resend
-async function sendEmail(to, subject, html) {
-  if (!RESEND_KEY || !to) return;
-  try {
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${RESEND_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: 'STEMulus Kids Tech <hello@portal.stemuluskidstech.com>',
-        to: Array.isArray(to) ? to : [to],
-        subject,
-        html
-      })
-    });
-  } catch (e) {
-    console.error('[ClassReminders] Resend error:', e.message);
-  }
-}
-
-// HTML Email Template Builder
-function buildEmailTemplate({ title, subtitle, studentName, tutorName, course, date, time, link, isUrgent }) {
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head><meta charset="utf-8"></head>
-    <body style="font-family:'Helvetica Neue',Arial,sans-serif; background:#f8fafc; margin:0; padding:0; color:#1e293b;">
-      <div style="max-width:580px; margin:32px auto; background:#ffffff; border-radius:16px; overflow:hidden; border:1px solid #e2e8f0; box-shadow:0 4px 20px rgba(0,0,0,0.05);">
-        <div style="background:linear-gradient(135deg, #1A237E, #312E81); padding:28px 32px; text-align:center;">
-          <h1 style="color:#ffffff; margin:0; font-size:20px; font-weight:800; letter-spacing:-0.02em;">STEMulus Kids Tech</h1>
-          <p style="color:#F4600C; margin:6px 0 0 0; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;">${title}</p>
-        </div>
-
-        <div style="padding:32px;">
-          <h2 style="font-size:18px; color:#1A237E; margin:0 0 12px 0;">${subtitle}</h2>
-          <p style="font-size:14px; color:#475569; line-height:1.6; margin:0 0 20px 0;">
-            This is an automated class reminder for your upcoming 1-on-1 session.
-          </p>
-
-          <div style="background:#f1f5f9; border-radius:12px; padding:20px; margin-bottom:24px; border:1px solid #e2e8f0;">
-            <table style="width:100%; border-collapse:collapse; font-size:14px;">
-              <tr><td style="color:#64748b; padding:6px 0; width:35%;">Student:</td><td style="font-weight:700; color:#1e293b;">${studentName}</td></tr>
-              <tr><td style="color:#64748b; padding:6px 0;">Mentor:</td><td style="font-weight:700; color:#1e293b;">${tutorName}</td></tr>
-              <tr><td style="color:#64748b; padding:6px 0;">Course:</td><td style="font-weight:700; color:#1e293b;">${course}</td></tr>
-              <tr><td style="color:#64748b; padding:6px 0;">Date &amp; Time:</td><td style="font-weight:700; color:#F4600C;">${date} at ${time} (WAT)</td></tr>
-            </table>
-          </div>
-
-          <div style="text-align:center; margin:28px 0;">
-            <a href="${link}" style="display:inline-block; background:${isUrgent ? '#F4600C' : '#1A237E'}; color:#ffffff; text-decoration:none; font-weight:800; font-size:15px; padding:14px 32px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
-              ${isUrgent ? 'Launch Classroom Now &rarr;' : 'Open Meeting Room &rarr;'}
-            </a>
-          </div>
-
-          <p style="font-size:12px; color:#94a3b8; line-height:1.5; margin:0; text-align:center;">
-            Need help or need to reschedule? Reply directly or message our coordinator on WhatsApp at +234 705 246 6716.
-          </p>
-        </div>
-
-        <div style="background:#f8fafc; padding:16px 32px; text-align:center; font-size:11px; color:#94a3b8; border-top:1px solid #e2e8f0;">
-          STEMulus Kids Tech &bull; Private 1-on-1 Coding for Kids &bull; <a href="https://stemuluskidstech.com" style="color:#F4600C; text-decoration:none;">stemuluskidstech.com</a>
-        </div>
-      </div>
-    </body>
-    </html>
-  `;
 }
 
 exports.handler = async (event) => {
@@ -154,7 +93,7 @@ exports.handler = async (event) => {
 
   const now = new Date();
   const schedules = await getFirestoreSchedules();
-  const enrollTopic = process.env.NTFY_TOPIC_ENROLL || 'stm-enr-lx7k9w2mq8vp4tz';
+  const adminTopic = process.env.NTFY_TOPIC_ADMIN || 'stemulus-admin-alerts';
   const tutorTopic = process.env.NTFY_TOPIC_TUTOR || 'stm-ttr-nb3r5y6jd1cx8ws';
 
   const dispatched = [];
@@ -171,62 +110,106 @@ exports.handler = async (event) => {
     const studentName = s.studentName || s.student || 'Student';
     const tutorName = s.mentor || s.tutorName || 'Mentor';
     const course = s.course || 'Coding Class';
-    const link = s.link || 'https://meet.google.com';
+    const link = (s.link && s.link.startsWith('http')) ? s.link : (s.meetLink || 'https://meet.google.com/stm-prog-live');
     const parentEmail = s.parentEmail;
     const tutorEmail = s.tutorEmail;
     const sentMilestones = (s.remindersDispatched || '').split(',').map(x => x.trim()).filter(Boolean);
 
-    // ── Milestone 1: 24 Hours Before Class (1380 to 1470 minutes window) ──
+    let activeMilestone = null;
     if (!sentMilestones.includes('24h') && diffMinutes >= 1380 && diffMinutes <= 1470) {
-      // POLICY: Direct emails to parent/tutor require explicit admin approval. Keep internal NTFY alert.
-      await pushNtfy(enrollTopic, `[24h Alert] ${studentName} &bull; ${course}`, `Class tomorrow at ${s.time} WAT.\nTutor: ${tutorName}\nLink: ${link}`, { priority: 'high', tags: 'clock,calendar' });
-      await pushNtfy(tutorTopic, `[24h Alert] Tomorrow: ${studentName}`, `Starts tomorrow at ${s.time} WAT.\nCourse: ${course}`, { priority: 'high', tags: 'mortar_board,calendar' });
-
-      await markMilestoneDispatched(s.id, '24h', s.remindersDispatched);
-      sentMilestones.push('24h');
-      s.remindersDispatched = sentMilestones.join(',');
-      dispatched.push({ milestone: '24h', scheduleId: s.id, studentName });
+      activeMilestone = '24h';
+    } else if (!sentMilestones.includes('1h') && diffMinutes >= 45 && diffMinutes <= 75) {
+      activeMilestone = '1h';
+    } else if (!sentMilestones.includes('10m') && diffMinutes >= 0 && diffMinutes <= 15) {
+      activeMilestone = '10m';
     }
 
-    // ── Milestone 2: 1 Hour Before Class (45 to 75 minutes window) ──
-    if (!sentMilestones.includes('1h') && diffMinutes >= 45 && diffMinutes <= 75) {
-      // POLICY: Direct emails to parent/tutor require explicit admin approval. Keep internal NTFY alert.
-      await pushNtfy(enrollTopic, `[1h Alert] ${studentName} Class in 1h`, `Session begins in 60 minutes (${s.time} WAT).\nJoin: ${link}`, { priority: 'high', tags: 'bell,computer' });
-      await pushNtfy(tutorTopic, `[1h Alert] Session in 1h with ${studentName}`, `Class at ${s.time} WAT.\nLink: ${link}`, { priority: 'high', tags: 'teacher,bell' });
+    if (activeMilestone) {
+      const isUrgent = activeMilestone === '10m';
+      await pushNtfy(
+        adminTopic,
+        `[${activeMilestone} Class Reminder] ${studentName} (${course})`,
+        `Session at ${s.time} WAT with Tutor ${tutorName}.\nMeeting Link: ${link}`,
+        { priority: isUrgent ? 'urgent' : 'high', tags: isUrgent ? 'alarm_clock,zap' : 'bell,calendar' }
+      );
+      await pushNtfy(
+        tutorTopic,
+        `[${activeMilestone} Faculty Alert] ${studentName}`,
+        `Session at ${s.time} WAT (${course}).\nJoin Link: ${link}`,
+        { priority: isUrgent ? 'urgent' : 'high', tags: 'mortar_board,calendar' }
+      );
 
-      await markMilestoneDispatched(s.id, '1h', s.remindersDispatched);
-      sentMilestones.push('1h');
+      // Dispatch strategic email with meeting link to Parent
+      if (parentEmail) {
+        try {
+          await sendEmailHandler({
+            httpMethod: 'POST',
+            body: JSON.stringify({
+              type: 'reminder',
+              data: {
+                parentEmail,
+                parentName: s.parentName || 'Parent',
+                studentName,
+                courseName: course,
+                classDate: s.date,
+                classTime: s.time,
+                duration: s.duration || 60,
+                link,
+                meetLink: link,
+                mentorName: tutorName,
+                reminderType: activeMilestone
+              }
+            })
+          });
+        } catch (e) {}
+      }
+
+      // Dispatch strategic email with meeting link to Tutor
+      if (tutorEmail) {
+        try {
+          await sendEmailHandler({
+            httpMethod: 'POST',
+            body: JSON.stringify({
+              type: 'tutor-reminder',
+              data: {
+                tutorEmail,
+                tutorName,
+                studentName,
+                courseName: course,
+                classDate: s.date,
+                classTime: s.time,
+                duration: s.duration || 60,
+                link,
+                meetLink: link,
+                reminderType: activeMilestone
+              }
+            })
+          });
+        } catch (e) {}
+      }
+
+      if (activeMilestone === '10m') {
+        try {
+          const baseUrl = process.env.URL || process.env.DEPLOY_URL || 'https://stemuluskidstech.com';
+          fetch(`${baseUrl}/.netlify/functions/record-session`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              scheduleId: s.id,
+              studentName,
+              tutorName,
+              courseName: course,
+              meetingUrl: link,
+              triggeredBy: 'cron_countdown'
+            })
+          }).catch(() => {});
+        } catch (e) {}
+      }
+
+      await markMilestoneDispatched(s.id, activeMilestone, s.remindersDispatched);
+      sentMilestones.push(activeMilestone);
       s.remindersDispatched = sentMilestones.join(',');
-      dispatched.push({ milestone: '1h', scheduleId: s.id, studentName });
-    }
-
-    // ── Milestone 3: 10 Minutes Before Class (0 to 15 minutes window) ──
-    if (!sentMilestones.includes('10m') && diffMinutes >= 0 && diffMinutes <= 15) {
-      // POLICY: Direct emails to parent/tutor require explicit admin approval. Keep internal NTFY alert.
-      await pushNtfy(enrollTopic, `[10m Urgent Alert] ${studentName} Class Starting`, `Classroom open now!\nJoin Link: ${link}`, { priority: 'urgent', tags: 'alarm_clock,zap' });
-      await pushNtfy(tutorTopic, `[Tutor Launch Alert] 10m until ${studentName}`, `Please join classroom:\n${link}`, { priority: 'urgent', tags: 'alarm_clock,zap' });
-
-      // Automatically initialize automated recording bot for class
-      try {
-        const baseUrl = process.env.URL || process.env.DEPLOY_URL || 'https://stemuluskidstech.com';
-        fetch(`${baseUrl}/.netlify/functions/record-session`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            scheduleId: s.id,
-            studentName,
-            tutorName,
-            courseName: course,
-            meetingUrl: link,
-            triggeredBy: 'cron_countdown'
-          })
-        }).catch(err => console.warn('[ClassReminders] Recording bot trigger notice:', err.message));
-      } catch(e) {}
-
-      await markMilestoneDispatched(s.id, '10m', s.remindersDispatched);
-      sentMilestones.push('10m');
-      s.remindersDispatched = sentMilestones.join(',');
-      dispatched.push({ milestone: '10m', scheduleId: s.id, studentName });
+      dispatched.push({ milestone: activeMilestone, scheduleId: s.id, studentName, link });
     }
   }
 

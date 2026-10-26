@@ -1,0 +1,368 @@
+{
+  "title": "STEMulus Scratch Progressive Mastery Pathway",
+  "totalProjects": 36,
+  "educatorAccount": "@STEMulusKids-Tech",
+  "studioId": "52032160",
+  "levels": [
+    {
+      "level": 1,
+      "name": "First Sparks: Direct Cause & Effect",
+      "target": "Ages 5–7 • Absolute Beginners",
+      "complexity": "1–4 Blocks",
+      "description": "Immediate tactile feedback connecting mouse click to audio & visual output. Zero math, zero frustration, 100% delight.",
+      "projects": [
+        {
+          "step": "01",
+          "code": "J-A01",
+          "title": "Click to Meow",
+          "assets": "Scratch Cat | Blue Sky",
+          "blocks": "when this sprite clicked, play sound Meow, say Hello!",
+          "outcome": "The quintessential first-touch coding lesson. Immediate tactile feedback connecting mouse click to audio & visual output."
+        },
+        {
+          "step": "02",
+          "code": "J-A03",
+          "title": "Color Morph Balloon",
+          "assets": "Balloon | Rays Backdrop",
+          "blocks": "when this sprite clicked, change color effect by 25, play sound Pop",
+          "outcome": "Vibrant visual transformation. Every tap shifts the balloon through the rainbow with an auditory pop."
+        },
+        {
+          "step": "03",
+          "code": "J-A02",
+          "title": "Grow and Shrink Cat",
+          "assets": "Scratch Cat | Room Backdrop",
+          "blocks": "when this sprite clicked, change size by 20, wait 0.5, change size by -20",
+          "outcome": "Teaches reversible scale transformations and time delays (`wait`) in just 4 simple blocks."
+        },
+        {
+          "step": "04",
+          "code": "J-A08",
+          "title": "Roaring Lion",
+          "assets": "Lion | Savanna",
+          "blocks": "when this sprite clicked, repeat 5 [change size by 10], play sound Roar",
+          "outcome": "Introduces the mini-repeat loop to create an explosive, roaring visual shockwave."
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "name": "Living Characters: Loops & Animation",
+      "target": "Ages 6–8 • Early Elementary",
+      "complexity": "3–6 Blocks",
+      "description": "Teaching the computer to repeat actions automatically. Students learn costume flipping and forever loops.",
+      "projects": [
+        {
+          "step": "05",
+          "code": "J-A04",
+          "title": "Spinning Monkey",
+          "assets": "Monkey | Jungle Backdrop",
+          "blocks": "repeat 10 [turn right 36 degrees, wait 0.05]",
+          "outcome": "Unlocks circular geometry naturally: 10 repeats of 36 degrees yields a flawless full somersault."
+        },
+        {
+          "step": "06",
+          "code": "J-A07",
+          "title": "Flapping Bat",
+          "assets": "Bat (Costumes a/b/c/d) | Night City",
+          "blocks": "forever [next costume, wait 0.2]",
+          "outcome": "Classic frame-by-frame cartoon animation. Transforms static sprites into flying, living creatures."
+        },
+        {
+          "step": "07",
+          "code": "J-A10",
+          "title": "Jumping Hare",
+          "assets": "Hare | Meadow Backdrop",
+          "blocks": "when space key pressed, change y by 60, wait 0.2, change y by -60",
+          "outcome": "First keyboard interactivity! Connects the spacebar to vertical y-axis jumping motion."
+        },
+        {
+          "step": "08",
+          "code": "A01",
+          "title": "Waving Scratch Cat",
+          "assets": "Scratch Cat | Colorful City",
+          "blocks": "when flag clicked, repeat 6 [switch costume, wait 0.2], meow audio",
+          "outcome": "A richer, multi-frame character welcome that feels like a polished television cartoon intro."
+        },
+        {
+          "step": "09",
+          "code": "A10",
+          "title": "Aquarium Fish Swim",
+          "assets": "Fish 1, Fish 2, Starfish | Underwater 1",
+          "blocks": "forever [move 3 steps, if on edge bounce, next costume]",
+          "outcome": "Multi-sprite ambient ecosystem. Creates a peaceful digital aquarium where independent sprites swim."
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "name": "Storytelling & Dialogue: Directing a Scene",
+      "target": "Ages 6–8 • Narrative Coders",
+      "complexity": "4–8 Blocks",
+      "description": "Connecting code to language and storytelling. Script character conversations and choreograph turn-taking.",
+      "projects": [
+        {
+          "step": "10",
+          "code": "J-S01",
+          "title": "Say Hello to Scratch Cat",
+          "assets": "Scratch Cat | Blue Sky",
+          "blocks": "say [Hello!] for 2 secs, say [Welcome to STEMulus!] for 2 secs",
+          "outcome": "Introduces narrative pacing and timed speech bubbles, turning code into written self-expression."
+        },
+        {
+          "step": "11",
+          "code": "J-S03",
+          "title": "The Knock Knock Joke",
+          "assets": "Scratch Cat, Bear | Brick Wall",
+          "blocks": "Timed say and wait blocks alternating between two characters",
+          "outcome": "Teaches conversational rhythm. Sprites take turns so they never speak over each other."
+        },
+        {
+          "step": "12",
+          "code": "J-S07",
+          "title": "Two Friends Greeting",
+          "assets": "Dee, Devon | School Playground",
+          "blocks": "Broadcast message or synchronized dialogue delays",
+          "outcome": "Simulates a genuine social interaction between two human characters meeting at school."
+        },
+        {
+          "step": "13",
+          "code": "J-S09",
+          "title": "Switch the Scene",
+          "assets": "Scratch Cat | Bedroom, Playground, Space",
+          "blocks": "when space key pressed, next backdrop, play sound Cheer",
+          "outcome": "Teaches scene management. The student learns that changing backdrops transitions the story world."
+        },
+        {
+          "step": "14",
+          "code": "S01",
+          "title": "Meet Scratch and Abby",
+          "assets": "Scratch Cat, Abby | Theater Stage",
+          "blocks": "Costume expressions, synchronized cues, musical intro",
+          "outcome": "A full theatrical skit demonstrating how professional digital storybooks and animations are directed."
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "name": "Interactive Toys & Clickers: User Input",
+      "target": "Ages 7–9 • Interactive Explorers",
+      "complexity": "5–9 Blocks",
+      "description": "Connecting user input directly to game states with mouse tracking, coordinate hops, and rapid-response clickers.",
+      "projects": [
+        {
+          "step": "15",
+          "code": "J-A13",
+          "title": "Slithering Snake",
+          "assets": "Snake | Garden Backdrop",
+          "blocks": "forever [point towards mouse-pointer, move 4 steps]",
+          "outcome": "Instant kinetic feedback! The snake smoothly tracks the player's cursor across the canvas in real time."
+        },
+        {
+          "step": "16",
+          "code": "J-G01",
+          "title": "Pop the Balloon Blitz",
+          "assets": "Balloon | Party Backdrop",
+          "blocks": "when this sprite clicked, change score by 1, go to random position, play Pop",
+          "outcome": "The world's purest complete game loop: User action -> Audio feedback -> Data increment -> State reset."
+        },
+        {
+          "step": "17",
+          "code": "J-G03",
+          "title": "Catch the Cat",
+          "assets": "Scratch Cat | Playground",
+          "blocks": "forever [wait 1 sec, go to random pos], when clicked [score + 1]",
+          "outcome": "Whack-a-mole mechanics. Tests reaction speed by pitting the player's reflexes against an automated timer."
+        },
+        {
+          "step": "18",
+          "code": "J-G08",
+          "title": "Whack-a-Monkey",
+          "assets": "Monkey | Jungle",
+          "blocks": "hide, wait pick random 1 to 3, go to random pos, show, wait 1, hide",
+          "outcome": "Introduces controlled chaos using `pick random () to ()` to make game difficulty unpredictable and exciting."
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "name": "First True Games: Variables & Catchers",
+      "target": "Ages 7–10 • Game Designers",
+      "complexity": "8–14 Blocks",
+      "description": "Transforming toys into full games with clear win/loss conditions, variables (Score, Lives, Timer), and collision detection.",
+      "projects": [
+        {
+          "step": "19",
+          "code": "J-G02",
+          "title": "Catch the Falling Apple",
+          "assets": "Apple, Bowl | Tree Backdrop",
+          "blocks": "Bowl: set x to mouse x; Apple: change y by -5, if touching Bowl score + 1",
+          "outcome": "The classic arcade catcher. Teaches separation of player paddle movement and automated object gravity."
+        },
+        {
+          "step": "20",
+          "code": "G01",
+          "title": "Balloon Pop Blitz (Core Edition)",
+          "assets": "Balloons, Party Backdrop",
+          "blocks": "Multi-colored balloons floating up, timer countdown variable, combo scoring",
+          "outcome": "Elevates the junior clicker into an arcade sprint with a 30-second countdown timer and game over screen."
+        },
+        {
+          "step": "21",
+          "code": "G02",
+          "title": "Apple Catcher Basket",
+          "assets": "Apple, Basket | Orchard",
+          "blocks": "Falling speed acceleration variable, miss detection (y < -160 loses life)",
+          "outcome": "Introduces progressive difficulty: as score increases, apple falling speed accelerates dynamically."
+        },
+        {
+          "step": "22",
+          "code": "J-G14",
+          "title": "Fruit Basket Catcher",
+          "assets": "Apple, Bananas, Strawberries, Bowl",
+          "blocks": "Multiple fruit types with costume switching and distinct score values",
+          "outcome": "Visual variety using built-in fruit sprites, rewarding students for catching rare bonus items."
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "name": "Avatar Controls & Mazes: 2D Coordinates",
+      "target": "Ages 8–10 • Coordinate Navigators",
+      "complexity": "10–18 Blocks",
+      "description": "True 2D player navigation with 4-directional arrow controls, maze boundaries, and obstacle avoidance.",
+      "projects": [
+        {
+          "step": "23",
+          "code": "J-G05",
+          "title": "Simple Arrow Maze",
+          "assets": "Beetle / Mouse, Cheese | Clean Maze",
+          "blocks": "4 arrow key scripts (change x/y), if touching wall color bounce back",
+          "outcome": "The ideal beginner maze: crystal clear 4-direction navigation and collision boundary logic without complexity."
+        },
+        {
+          "step": "24",
+          "code": "G03",
+          "title": "Mouse Maze Escape",
+          "assets": "Mouse, Cheese | Labyrinth Backdrop",
+          "blocks": "Continuous velocity sensing, wall reflection, cheese victory broadcast",
+          "outcome": "Smooth, lag-free maze engine with celebratory win fanfare when reaching the cheese goal."
+        },
+        {
+          "step": "25",
+          "code": "J-G15",
+          "title": "Frog Pond Hop",
+          "assets": "Frog, Lily Pad, Water Backdrop",
+          "blocks": "Hop distance steps, boundary reset if falling into deep water",
+          "outcome": "Grid-based discrete hopping. Teaches safe zone vs. hazard zone state logic."
+        },
+        {
+          "step": "26",
+          "code": "J-G19",
+          "title": "Road Crossing Frogger Junior",
+          "assets": "Frog, City Bus | City Road",
+          "blocks": "Autonomous traffic patrolling horizontally, timing player cross",
+          "outcome": "Teaches timing and pattern recognition as the student times their crossing between moving buses."
+        }
+      ]
+    },
+    {
+      "level": 7,
+      "name": "Arcade Physics: Gravity, Jumpers & Pong",
+      "target": "Ages 9–11 • Physics Engineers",
+      "complexity": "15–25 Blocks",
+      "description": "Simulating real-world physical forces: gravity loops, angle reflection formulas for bouncing balls, and jump timing.",
+      "projects": [
+        {
+          "step": "27",
+          "code": "J-G06",
+          "title": "Keep the Balloon Up",
+          "assets": "Balloon, Paddle | Sky",
+          "blocks": "Balloon y-drop, paddle upward impulse on touch, floor hazard",
+          "outcome": "A gentle first simulation of upward impulse and falling momentum that feels remarkably natural."
+        },
+        {
+          "step": "28",
+          "code": "G04",
+          "title": "Pong Solo Wall Bounce",
+          "assets": "Ball, Paddle, Red Line | Neon Tunnel",
+          "blocks": "point in direction (180 - direction), speed multiplier variable",
+          "outcome": "The cornerstone of video game history. Demystifies geometric angles and paddle deflection in under 20 blocks."
+        },
+        {
+          "step": "29",
+          "code": "G07",
+          "title": "Dino Desert Jump",
+          "assets": "Dinosaur, Cactus | Desert",
+          "blocks": "Cactus scrolls left, Dino jumps with y-velocity gravity loop",
+          "outcome": "Chrome Dino runner clone using 100% native assets! Pure arcade thrill requiring precise jumping reflexes."
+        },
+        {
+          "step": "30",
+          "code": "G08",
+          "title": "Space Asteroid Dodge",
+          "assets": "Rocketship, Rocks | Stars Backdrop",
+          "blocks": "Smooth ship steering, multi-speed tumbling asteroid rocks",
+          "outcome": "Thrilling space survival requiring students to balance evasive maneuvering with score bonuses."
+        },
+        {
+          "step": "31",
+          "code": "G10",
+          "title": "Fruit Salad Avoid Bombs",
+          "assets": "Apple, Banana, Bomb / Hazard | Kitchen",
+          "blocks": "Compound boolean conditions (if touching fruit vs. if touching bomb)",
+          "outcome": "Teaches logical operators (`and`, `or`, `not`) and risk-vs-reward gameplay decisions."
+        }
+      ]
+    },
+    {
+      "level": 8,
+      "name": "Studio Masters: Clones, Platformers & 3D Runner",
+      "target": "Ages 10–12 • Advanced Creators",
+      "complexity": "25+ Blocks",
+      "description": "The pinnacle of block-based programming: dynamic sprite cloning, authentic Mario-style platformer physics, and 3D pseudo-perspective.",
+      "projects": [
+        {
+          "step": "32",
+          "code": "G13",
+          "title": "Snake Nibbler",
+          "assets": "Snake Head, Food Dot | Retro Grid",
+          "blocks": "Clone body segment trail following head, grid step loop, self-bite collision",
+          "outcome": "Classic retro Nokia Snake. Uses clone life timers to maintain a growing body trail behind the head."
+        },
+        {
+          "step": "33",
+          "code": "G14",
+          "title": "Brick Breaker Arcade",
+          "assets": "Ball, Paddle, Brick Clones | Arcade",
+          "blocks": "Nested loop clone grid generator (4 rows x 6 cols), hit detection",
+          "outcome": "Demonstrates the power of cloning: a single brick sprite generates an entire colorful breakable wall!"
+        },
+        {
+          "step": "34",
+          "code": "G15",
+          "title": "Space Invaders Defense",
+          "assets": "Rocketship, Alien, Laser | Space",
+          "blocks": "Alien fleet marching & dropping, player laser projectile cloning",
+          "outcome": "Multi-clone interaction: clones detecting collisions with other clones, simulating classic 1978 arcade action."
+        },
+        {
+          "step": "35",
+          "code": "G17",
+          "title": "Platformer Hero Jump & Climb",
+          "assets": "Hero Cat | Castle Platform Backdrop",
+          "blocks": "x-velocity + friction, y-velocity gravity, ground collision check",
+          "outcome": "The holy grail of Scratch coding! A responsive, authentic platformer engine with zero glitching."
+        },
+        {
+          "step": "36",
+          "code": "G20",
+          "title": "Subway Surfers 3D Track Runner",
+          "assets": "Runner Cat, Trains, Rails (100% Vector Built-in)",
+          "blocks": "3-lane perspective scaling (distance z-factor), lane-switching jump & slide",
+          "outcome": "The master capstone project! Proves that Scratch can produce a fast-paced 3D runner using purely native assets."
+        }
+      ]
+    }
+  ]
+}

@@ -85,6 +85,7 @@ const TutorApplicationHandler = (function() {
 
             const applicationData = {
                 fullname: formData.get('fullname'),
+                birthday: formData.get('birthday') || '',
                 email: formData.get('email'),
                 phone: formData.get('phone'),
                 portfolio: formData.get('portfolio'),
@@ -97,13 +98,14 @@ const TutorApplicationHandler = (function() {
 
             // Send notifications in parallel
             const results = await Promise.allSettled([
+                sendEmailNotification(applicationData),
                 sendPhoneNotification(applicationData),
                 submitToNetlify(form, formData)
             ]);
 
             // Log results
             results.forEach((result, index) => {
-                const services = ['Phone Push (ntfy)', 'Netlify Forms'];
+                const services = ['Admin Email (Resend)', 'Phone Push (ntfy)', 'Netlify Forms'];
                 if (result.status === 'fulfilled') {
                     console.log(`[TutorApp] ${services[index]} notification sent`);
                 } else {
@@ -114,7 +116,7 @@ const TutorApplicationHandler = (function() {
             // Show success screen
             showSuccessScreen(applicationData);
             
-            // Save locally as backup
+            // Save locally & cloud
             saveApplicationLocally(applicationData);
 
         } catch (error) {
@@ -132,13 +134,40 @@ const TutorApplicationHandler = (function() {
     }
 
     /**
-     * Send push notification to phone via NTFY
+     * Send email alert to Admin (Zoho + Gmail) via send-email function
+     */
+    async function sendEmailNotification(data) {
+        try {
+            const resp = await fetch('/.netlify/functions/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: 'contact',
+                    data: {
+                        firstName: data.fullname || 'Applicant',
+                        lastName: `(Mentor Application ${data.applicationId})`,
+                        email: data.email,
+                        subject: `[Mentor Application] ${data.fullname} — ${(data.expertise || []).join(', ')}`,
+                        message: `Date of Birth: ${data.birthday || 'N/A'}\nPhone: ${data.phone}\nPortfolio: ${data.portfolio || 'N/A'}\nExpertise: ${(data.expertise || []).join(', ')}\nExperience: ${data.experience || 'N/A'}\n\nMotivation:\n${data.motivation || ''}`
+                    }
+                })
+            });
+            return await resp.json();
+        } catch (err) {
+            console.warn('[TutorApp] Admin email alert notice:', err);
+            return { ok: false };
+        }
+    }
+
+    /**
+     * Send push notification to phone via NTFY (Serverless Proxy + Direct Fallback)
      */
     async function sendPhoneNotification(data) {
         const title = `New Mentor Application: ${data.fullname}`;
         
         const message = `
 Name: ${data.fullname}
+DOB: ${data.birthday || 'N/A'}
 Email: ${data.email}
 Phone: ${data.phone}
 Portfolio: ${data.portfolio}
@@ -169,11 +198,35 @@ App ID: ${data.applicationId}
                 })
             });
 
-            if (!response.ok) throw new Error('NTFY request failed');
-            return { success: true };
+            if (response.ok) return { success: true };
+            console.warn('[TutorApp] Netlify notify returned non-200, activating direct ntfy.sh fallback...');
         } catch (error) {
-            console.warn('[TutorApp] Phone notification failed:', error);
-            return { success: false, error };
+            console.warn('[TutorApp] Phone notification proxy failed, activating direct fallback:', error);
+        }
+
+        // Tier 2: Direct client-side fetch to ntfy.sh
+        try {
+            const cleanTitle = (title || '').replace(/[^\x20-\x7E]/g, ' ').trim();
+            const directHeaders = {
+                'Priority': 'high',
+                'Tags': 'mortar_board,sparkles',
+                'Title': cleanTitle
+            };
+            await Promise.allSettled([
+                fetch(`https://ntfy.sh/${CONFIG.NTFY_TOPIC}`, {
+                    method: 'POST',
+                    headers: directHeaders,
+                    body: message
+                }),
+                fetch('https://ntfy.sh/stemulus-admin-alerts', {
+                    method: 'POST',
+                    headers: directHeaders,
+                    body: message
+                })
+            ]);
+            return { success: true, fallback: true };
+        } catch (err2) {
+            return { success: false, error: err2 };
         }
     }
 
@@ -342,6 +395,43 @@ App ID: ${data.applicationId}
             console.log('[TutorApp] Saved locally as backup');
         } catch (e) {
             console.warn('[TutorApp] Could not save locally:', e);
+        }
+
+        // Also sync to Firestore 'leads' collection for cloud persistence
+        try {
+            if (window.firebase && firebase.firestore) {
+                firebase.firestore().collection('leads').doc(data.applicationId || ('TTR-' + Date.now())).set({
+                    ...data,
+                    leadType: 'tutor_application',
+                    syncedAt: new Date().toISOString()
+                }, { merge: true }).catch(err => console.warn('[TutorApp] Firestore sync warning:', err.message));
+            } else {
+                // Direct REST API fallback
+                const docId = String(data.applicationId || ('TTR-' + Date.now())).replace(/[^a-zA-Z0-9_-]/g, '-');
+                fetch(`https://firestore.googleapis.com/v1/projects/stemulus-lms/databases/(default)/documents/leads?documentId=${encodeURIComponent(docId)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fields: {
+                            id:         { stringValue: docId },
+                            leadType:   { stringValue: 'tutor_application' },
+                            fullname:   { stringValue: String(data.fullname || '') },
+                            birthday:   { stringValue: String(data.birthday || '') },
+                            email:      { stringValue: String(data.email || '').toLowerCase().trim() },
+                            phone:      { stringValue: String(data.phone || '') },
+                            portfolio:  { stringValue: String(data.portfolio || '') },
+                            expertise:  { stringValue: (data.expertise || []).join(', ') },
+                            experience: { stringValue: String(data.experience || '') },
+                            motivation: { stringValue: String(data.motivation || '') },
+                            status:     { stringValue: 'pending' },
+                            source:     { stringValue: 'public_tutor_application' },
+                            timestamp:  { stringValue: String(data.timestamp || new Date().toISOString()) }
+                        }
+                    })
+                }).catch(() => {});
+            }
+        } catch (e) {
+            // Non-blocking
         }
     }
 

@@ -120,10 +120,14 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="space-y-3">
+        <div class="space-y-2.5">
           <a id="btn-manual-join" href="#" target="_blank" class="inline-flex items-center justify-center w-full bg-orange-600 hover:bg-orange-500 text-white font-extrabold py-3.5 px-6 rounded-2xl text-sm transition-all shadow-md hover:shadow-lg shadow-orange-600/25 gap-2">
             <span data-i18n="companion_open_meet">🚀 Open Google Meet Room</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+
+          <a id="btn-open-curriculum-slides" href="curriculum/slides/index.html" target="_blank" class="inline-flex items-center justify-center w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold py-3 px-5 rounded-2xl text-xs transition-all border border-indigo-200 gap-2 no-underline">
+            <span>📚 Open Interactive Lesson Slides (215 Decks)</span>
           </a>
 
           <button id="btn-end-session" class="inline-flex items-center justify-center w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-4 rounded-xl text-xs transition-all border border-slate-200">
@@ -166,12 +170,12 @@
         </div>
 
         <!-- Speech Translator Controls -->
-        <div class="flex flex-wrap items-center gap-2 mb-4">
-          <button id="btn-mic-junayd" onclick="BilingualClassroomEngine.toggleListening('fr-FR')" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition-all shadow-sm flex items-center gap-1.5" style="min-height: 38px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
-            <span>🎙️ Junayd Speaks (French ➔ English)</span>
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-4">
+          <button id="btn-mic-junayd" onclick="BilingualClassroomEngine.toggleListening('fr-FR')" class="flex-1 w-full sm:w-auto px-3.5 sm:px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition-all shadow-sm flex items-center justify-center gap-1.5 min-h-[40px]">
+            <span>🎙️ <span class="hidden sm:inline">Junayd Speaks (French ➔ English)</span><span class="sm:hidden">Junayd (French ➔ English)</span></span>
           </button>
-          <button id="btn-mic-coach" onclick="BilingualClassroomEngine.toggleListening('en-US')" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-all shadow-sm flex items-center gap-1.5" style="min-height: 38px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
-            <span>🎙️ Coach Speaks (English ➔ French)</span>
+          <button id="btn-mic-coach" onclick="BilingualClassroomEngine.toggleListening('en-US')" class="flex-1 w-full sm:w-auto px-3.5 sm:px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-all shadow-sm flex items-center justify-center gap-1.5 min-h-[40px]">
+            <span>🎙️ <span class="hidden sm:inline">Coach Speaks (English ➔ French)</span><span class="sm:hidden">Coach (English ➔ French)</span></span>
           </button>
         </div>
 
@@ -205,45 +209,57 @@
       const statusBadge = document.getElementById('session-status-badge');
       const statusText = document.getElementById('session-status-text');
 
-      // 1. Resolve schedule from DB with flexible parameter resolution
+      // 1. Resolve schedule from DB with flexible parameter resolution (supports direct 1-click from reminder emails)
       let schedule = null;
       let targetMeetingUrl = directUrl || '';
+
+      const studentParam = urlParams.get('student') || urlParams.get('studentName') || urlParams.get('coder') || '';
+      const studentIdParam = urlParams.get('studentId') || '';
+      const tutorParam = urlParams.get('tutor') || urlParams.get('tutorName') || urlParams.get('mentor') || '';
+      const tutorEmailParam = (urlParams.get('tutorEmail') || urlParams.get('email') || '').toLowerCase().trim();
+      const courseParam = urlParams.get('course') || urlParams.get('courseName') || '';
+      const dateParam = urlParams.get('date') || new Date().toISOString().split('T')[0];
 
       if (typeof DashboardEngine !== 'undefined') {
         const db = DashboardEngine.getDB();
         const scheds = (db && db.schedules) || [];
         const students = (db && db.students) || [];
 
-        const studentParam = urlParams.get('student') || urlParams.get('studentName') || urlParams.get('coder');
-
         if (sessionId) {
           schedule = scheds.find(s => s.id === sessionId || s.sessionId === sessionId) || null;
         }
 
-        if (!schedule && studentParam) {
+        if (!schedule && (studentIdParam || studentParam)) {
           const sParamClean = decodeURIComponent(studentParam).toLowerCase().trim();
           const matchedStudent = students.find(st => {
-            const full = ((st.firstName || '') + ' ' + (st.lastName || '')).toLowerCase();
-            return full.includes(sParamClean) || sParamClean.includes(full);
+            if (!st) return false;
+            if (studentIdParam && st.id === studentIdParam) return true;
+            const full = ((st.firstName || '') + ' ' + (st.lastName || '')).toLowerCase().trim();
+            return sParamClean && (full.includes(sParamClean) || sParamClean.includes(full));
           });
           if (matchedStudent) {
             schedule = scheds.find(s => s.studentId === matchedStudent.id || (s.studentName && s.studentName.toLowerCase().includes(matchedStudent.firstName.toLowerCase())));
             if (!schedule) {
               schedule = {
-                id: 'ses-' + matchedStudent.id,
-                course: matchedStudent.program || 'STEMulus Coding Track',
+                id: sessionId || ('ses-' + matchedStudent.id),
+                studentId: matchedStudent.id,
+                course: courseParam || matchedStudent.program || 'STEMulus Coding Track',
                 studentName: `${matchedStudent.firstName} ${matchedStudent.lastName}`.trim(),
-                mentor: matchedStudent.tutorName || 'Lead Instructor',
-                link: matchedStudent.meetLink || 'https://meet.google.com'
+                mentor: tutorParam || matchedStudent.tutorName || 'Lead Instructor',
+                tutorEmail: tutorEmailParam || matchedStudent.tutorEmail || '',
+                date: dateParam,
+                link: directUrl || matchedStudent.meetLink || 'https://meet.google.com'
               };
             }
           }
         }
       }
 
-      const courseName = schedule ? (schedule.course || schedule.program) : 'Scratch Creators';
-      const studentName = schedule ? schedule.studentName : 'Junayd Kari';
-      const tutorName = schedule ? (schedule.mentor || schedule.tutorName) : 'Olalekan Israel Ajimati';
+      const courseName = courseParam || (schedule ? (schedule.course || schedule.program) : 'Scratch Creators');
+      const studentName = studentParam || (schedule ? schedule.studentName : 'Junayd Kari');
+      const studentId = studentIdParam || (schedule ? (schedule.studentId || '') : '');
+      const tutorName = tutorParam || (schedule ? (schedule.mentor || schedule.tutorName) : 'Olalekan Israel Ajimati');
+      const scheduleDate = (schedule && schedule.date) || dateParam;
       const userName = (role === 'tutor') ? tutorName : studentName;
       targetMeetingUrl = directUrl || (schedule ? (schedule.link || schedule.meetLink) : 'https://meet.google.com/gyd-fewb-cdh');
 
@@ -251,6 +267,20 @@
       detailStudent.textContent = studentName;
       detailMentor.textContent = tutorName;
       btnManual.href = targetMeetingUrl;
+
+      const btnSlides = document.getElementById('btn-open-curriculum-slides');
+      if (btnSlides) {
+        const cLow = (courseName || '').toLowerCase();
+        let trk = 'all';
+        if (cLow.includes('scratch') || cLow.includes('fundamental')) trk = 'course_fundamentals';
+        else if (cLow.includes('web') || cLow.includes('html') || cLow.includes('full-stack')) trk = 'track_1_web_engineering';
+        else if (cLow.includes('ai') || cLow.includes('machine')) trk = 'track_2_ai_automation';
+        else if (cLow.includes('art') || cLow.includes('game') || cLow.includes('design')) trk = 'track_3_product_design';
+        else if (cLow.includes('python') || cLow.includes('data')) trk = 'track_4_python_data';
+        else if (cLow.includes('cyber')) trk = 'track_5_cybersecurity';
+        else if (cLow.includes('robot') || cLow.includes('arduino')) trk = 'track_6_robotics';
+        btnSlides.href = `curriculum/slides/index.html?role=${encodeURIComponent(role)}&track=${encodeURIComponent(trk)}&studentId=${encodeURIComponent(studentId)}`;
+      }
 
       // 2. Mount Scratch Bilingual Block Bank
       if (typeof BilingualClassroomEngine !== 'undefined') {
@@ -272,20 +302,29 @@
       let isCleanExit = false;
       const scheduleId = schedule ? schedule.id : sessionId;
       const activeIntervals = [];
+      const resolveActiveEmail = () => {
+        if (role === 'tutor' && tutorEmailParam) return tutorEmailParam;
+        if (role === 'tutor' && schedule && schedule.tutorEmail) return schedule.tutorEmail;
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSession) {
+          const sess = DashboardEngine.getSession();
+          if (sess && sess.email) return sess.email;
+        }
+        return tutorEmailParam || '';
+      };
 
       if (typeof ClassEscalationEngine !== 'undefined') {
+        const hbExtra = { courseName, studentName, tutorName, meetingUrl: targetMeetingUrl };
         ClassEscalationEngine.recordReconnect(sessionId, scheduleId, role, userName, courseName);
-        ClassEscalationEngine.recordHeartbeat(sessionId, scheduleId, role, userName);
+        ClassEscalationEngine.recordHeartbeat(sessionId, scheduleId, role, userName, hbExtra);
 
         if (typeof SessionMonitoringEngine !== 'undefined') {
-          const userEmail = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSession) ? ((DashboardEngine.getSession() && DashboardEngine.getSession().email) || '') : '';
           SessionMonitoringEngine.recordMeetingHeartbeat({
             scheduleId: scheduleId,
             sessionId: sessionId,
             role: role,
             userName: userName,
-            userEmail: userEmail,
-            studentId: schedule ? schedule.studentId : '',
+            userEmail: resolveActiveEmail(),
+            studentId: studentId,
             studentName: studentName,
             tutorName: tutorName,
             course: courseName
@@ -294,16 +333,15 @@
 
         const hbTimer = setInterval(() => {
           if (!isCleanExit) {
-            ClassEscalationEngine.recordHeartbeat(sessionId, scheduleId, role, userName);
+            ClassEscalationEngine.recordHeartbeat(sessionId, scheduleId, role, userName, hbExtra);
             if (typeof SessionMonitoringEngine !== 'undefined') {
-              const userEmail = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSession) ? ((DashboardEngine.getSession() && DashboardEngine.getSession().email) || '') : '';
               SessionMonitoringEngine.recordMeetingHeartbeat({
                 scheduleId: scheduleId,
                 sessionId: sessionId,
                 role: role,
                 userName: userName,
-                userEmail: userEmail,
-                studentId: schedule ? schedule.studentId : '',
+                userEmail: resolveActiveEmail(),
+                studentId: studentId,
                 studentName: studentName,
                 tutorName: tutorName,
                 course: courseName
@@ -365,6 +403,21 @@
         let modal = document.getElementById('session-ended-modal');
         if (modal) modal.remove();
 
+        const attendanceCreateHref = `tutor-attendance-create.html?scheduleId=${encodeURIComponent(scheduleId || '')}&studentId=${encodeURIComponent(studentId || '')}&date=${encodeURIComponent(scheduleDate || '')}&course=${encodeURIComponent(courseName || '')}`;
+        const primaryActionHtml = role === 'tutor'
+          ? `<a href="${attendanceCreateHref}" class="block w-full py-3 bg-orange-600 hover:bg-orange-500 text-white font-extrabold rounded-xl text-xs shadow-md shadow-orange-600/30 transition-all active:scale-95 text-center">
+               📋 Log Session Attendance Now
+             </a>
+             <a href="tutor-dashboard.html" class="block w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs border border-slate-200 transition-all active:scale-95 text-center">
+               Return to Tutor Dashboard
+             </a>`
+          : `<a href="parent-dashboard.html" class="block w-full py-3 bg-orange-600 hover:bg-orange-500 text-white font-extrabold rounded-xl text-xs shadow-md shadow-orange-600/30 transition-all active:scale-95 text-center">
+               Return to Parent Dashboard
+             </a>
+             <button onclick="document.getElementById('session-ended-modal').remove()" class="block w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs border border-slate-200 transition-all active:scale-95">
+               Stay on Companion
+             </button>`;
+
         modal = document.createElement('div');
         modal.id = 'session-ended-modal';
         modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-fadeIn';
@@ -384,12 +437,7 @@
               </div>
 
               <div class="space-y-2">
-                <a href="parent-dashboard.html" class="block w-full py-3 bg-orange-600 hover:bg-orange-500 text-white font-extrabold rounded-xl text-xs shadow-md shadow-orange-600/30 transition-all active:scale-95 text-center">
-                  Return to Dashboard
-                </a>
-                <button onclick="document.getElementById('session-ended-modal').remove()" class="block w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs border border-slate-200 transition-all active:scale-95">
-                  Stay on Companion
-                </button>
+                ${primaryActionHtml}
               </div>
             </div>
           </div>
@@ -397,29 +445,94 @@
         document.body.appendChild(modal);
       };
 
-      // Partner presence monitor (Alerts safely if student or tutor drops connection)
-      const presenceTimer = setInterval(() => {
+      // Partner presence & contact routing monitor (Alerts immediately who is waiting and who to contact for class to hold)
+      const renderPartnerPresenceStatus = () => {
         try {
           const presStore = JSON.parse(localStorage.getItem('stemulus_live_presence') || '{}');
           const pres = presStore[sessionId] || presStore[scheduleId];
           const mountEl = document.getElementById('partner-alert-container');
+          if (!mountEl) return;
+
           let partnerAlert = document.getElementById('partner-status-alert');
+          if (!partnerAlert) {
+            partnerAlert = document.createElement('div');
+            partnerAlert.id = 'partner-status-alert';
+            mountEl.appendChild(partnerAlert);
+          }
+
+          const schedObj = schedule || { id: scheduleId || sessionId, studentName, mentor: tutorName, tutorName, course: courseName, link: targetMeetingUrl };
+          const contacts = (typeof ClassEscalationEngine !== 'undefined' && ClassEscalationEngine.resolveSessionContacts)
+            ? ClassEscalationEngine.resolveSessionContacts(schedObj)
+            : {
+                studentName: studentName,
+                studentFirstName: (studentName || 'Student').split(' ')[0],
+                tutorName: tutorName,
+                tutorFirstName: (tutorName || 'Tutor').split(' ')[0],
+                tutorPhone: '+234 705 246 6716',
+                parentName: (studentName || 'Student').split(' ')[0] + "'s Parent",
+                parentPhone: '+234 705 246 6716'
+              };
+          const tutorAlertUrl = (typeof ClassEscalationEngine !== 'undefined' && ClassEscalationEngine.generateTutorAlertUrl)
+            ? ClassEscalationEngine.generateTutorAlertUrl(schedObj)
+            : 'https://wa.me/2347052466716';
+          const parentNudgeUrl = (typeof ClassEscalationEngine !== 'undefined' && ClassEscalationEngine.generateParentNudgeUrl)
+            ? ClassEscalationEngine.generateParentNudgeUrl(schedObj)
+            : 'https://wa.me/2347052466716';
 
           if (pres && pres.status === 'disconnected') {
-            if (!partnerAlert && mountEl) {
-              partnerAlert = document.createElement('div');
-              partnerAlert.id = 'partner-status-alert';
-              partnerAlert.className = 'p-3 rounded-2xl bg-amber-50 border border-amber-200 text-xs font-bold text-amber-900 flex items-center gap-2 animate-pulse shadow-xs';
-              partnerAlert.innerHTML = `<span>⚠️</span><span><strong>${pres.disconnectedParty}</strong> left the call. Rejoin beacon active; waiting for reconnection...</span>`;
-              mountEl.appendChild(partnerAlert);
-            }
-          } else if (pres && pres.status === 'reconnected' && partnerAlert) {
-            partnerAlert.className = 'p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-900 flex items-center gap-2 shadow-xs';
-            partnerAlert.innerHTML = `<span>✅</span><span><strong>${pres.reconnectedParty}</strong> reconnected! Class resumed.</span>`;
-            setTimeout(() => { if (partnerAlert) partnerAlert.remove(); }, 6000);
+            partnerAlert.className = 'p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs font-bold text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-xs';
+            partnerAlert.innerHTML = `
+              <div class="flex items-center gap-2">
+                <span>⚠️</span>
+                <span><strong>${pres.disconnectedParty}</strong> left the call. Rejoin beacon active; waiting for reconnection...</span>
+              </div>
+              <a href="${role === 'tutor' ? parentNudgeUrl : tutorAlertUrl}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-[11px] whitespace-nowrap no-underline">
+                💬 Contact ${role === 'tutor' ? contacts.studentFirstName + "'s Parent" : 'Tutor ' + contacts.tutorFirstName}
+              </a>`;
+          } else if (pres && pres.studentPresent && pres.tutorPresent) {
+            partnerAlert.className = 'p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-900 flex items-center justify-between gap-2 shadow-xs';
+            partnerAlert.innerHTML = `
+              <div class="flex items-center gap-2">
+                <span>✅</span>
+                <span>Both <strong>${contacts.studentFirstName}</strong> and <strong>Tutor ${contacts.tutorFirstName}</strong> have joined. Class is holding live!</span>
+              </div>`;
+          } else if (role !== 'tutor' && (!pres || !pres.tutorPresent)) {
+            partnerAlert.className = 'p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs';
+            partnerAlert.innerHTML = `
+              <div class="space-y-0.5">
+                <div class="font-extrabold text-rose-900 flex items-center gap-1.5">
+                  <span class="inline-block w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>
+                  <span>${contacts.studentFirstName} is now in class waiting for ${contacts.tutorFirstName}.</span>
+                </div>
+                <p class="text-[11px] text-rose-800 font-semibold">Please reach out to <strong>Tutor ${contacts.tutorFirstName}${contacts.tutorPhone ? ' (' + contacts.tutorPhone + ')' : ''}</strong> in order for the class to hold. Admin &amp; Tutor have been alerted autonomously.</p>
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <a href="${tutorAlertUrl}" target="_blank" rel="noopener" class="px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-[11px] whitespace-nowrap no-underline shadow-xs">
+                  💬 Reach Out to Tutor ${contacts.tutorFirstName}
+                </a>
+              </div>`;
+          } else if (role === 'tutor' && (!pres || !pres.studentPresent)) {
+            partnerAlert.className = 'p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs';
+            partnerAlert.innerHTML = `
+              <div class="space-y-0.5">
+                <div class="font-extrabold text-amber-900 flex items-center gap-1.5">
+                  <span class="inline-block w-2 h-2 rounded-full bg-amber-600 animate-ping"></span>
+                  <span>Tutor ${contacts.tutorFirstName} is now in class waiting for ${contacts.studentFirstName}.</span>
+                </div>
+                <p class="text-[11px] text-amber-800 font-semibold">Please reach out to <strong>${contacts.studentFirstName}'s Parent (${contacts.parentName}${contacts.parentPhone ? ' · ' + contacts.parentPhone : ''})</strong> in order for the class to hold.</p>
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <a href="${parentNudgeUrl}" target="_blank" rel="noopener" class="px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-[11px] whitespace-nowrap no-underline shadow-xs">
+                  💬 Reach Out to ${contacts.studentFirstName}'s Parent
+                </a>
+              </div>`;
           }
         } catch(e) {}
-      }, 5000);
+      };
+
+      renderPartnerPresenceStatus();
+      const presenceTimer = setInterval(renderPartnerPresenceStatus, 4000);
+      window.addEventListener('stemulus_presence_updated', renderPartnerPresenceStatus);
       activeIntervals.push(presenceTimer);
 
       // Autonomous Background Live Recording Trigger (local desktop helper if enabled)

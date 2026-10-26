@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fundamental Concepts of Coding | STEMulus Kids Tech Academy</title>
+  <link rel="icon" type="image/png" href="../assets/3d/stemulus-logo.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <style>
+    :root {
+      --brand-orange: #F4600C;
+      --brand-orange-deep: #C2410C;
+      --brand-orange-shadow: #9A3412;
+      --brand-indigo: #4F46E5;
+      --brand-indigo-deep: #3730A3;
+      --bg-page: #F1F5F9;
+      --bg-subtle: #F8FAFC;
+      --surface-white: #FFFFFF;
+      --text-main: #1A2332;
+      --text-muted: #475569;
+      --text-light: #64748B;
+      --border-neutral: #E2E8F0;
+      --border-subtle: #EDF2F7;
+      --shadow-shell: 0 20px 45px -10px rgba(15, 23, 42, 0.08);
+      --shadow-card: 0 4px 16px rgba(15, 23, 42, 0.04);
+      --radius-card: 20px;
+      --radius-badge: 8px;
+      --radius-tag: 10px;
+      --radius-pill: 10px;
+      --radius-btn: 14px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    header.site-header {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 18px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03), inset 0 1px 0 #FFFFFF;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-badge);
+      color: var(--text-muted);
+      font-family: 'Nunito', sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: inset 0 1px 0.5px #FFFFFF, 0 2px 4px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+    }
+    .back-btn:hover {
+      color: var(--brand-indigo);
+      border-color: #CBD5E1;
+      transform: translateX(-2px);
+    }
+    .back-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 10px;
+      filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.1));
+    }
+    .brand-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .brand-sub {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .header-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .stat-badge {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      padding: 6px 14px;
+      border-radius: var(--radius-badge);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-badge strong {
+      color: var(--text-main);
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 36px 40px 80px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Hero Course Starting Banner */
+    .course-hero {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 60%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 2px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 36px 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 10px 30px -4px rgba(15, 23, 42, 0.05);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .course-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    .hero-content {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-badge-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .course-tag {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .ages-tag {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: #F8FAFC;
+      border: 1px solid var(--border-neutral);
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .course-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .course-tagline {
+      font-size: 17px;
+      color: var(--brand-indigo);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+    .course-overview {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 24px;
+      max-width: 820px;
+      font-weight: 600;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-3d-primary {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: var(--radius-btn);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      background: linear-gradient(180deg, #FF7E36 0%, #F4600C 45%, #DF4E00 100%);
+      color: #ffffff !important;
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.65), inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 0 #9A3412, 0 8px 18px rgba(244, 96, 12, 0.28);
+      transition: all 0.12s ease;
+      overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    .btn-3d-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 6px 0 #9A3412, 0 12px 24px rgba(244, 96, 12, 0.32);
+    }
+    .btn-3d-primary svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      fill: none;
+    }
+    .btn-classroom-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 22px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-btn);
+      color: var(--text-main);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      box-shadow: inset 0 1.5px 0.5px #FFFFFF, 0 2px 0 #CBD5E1, 0 3px 6px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+    }
+    .btn-classroom-link:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+    }
+    
+    /* Live XP Tracker & Status Pills */
+    .hero-xp-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FEF3C7 60%, #FDE68A 100%);
+      border: 1px solid #F59E0B;
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-btn);
+      box-shadow: inset 0 1.5px 0.5px #FFFFFF, 0 2px 0 #D97706, 0 4px 10px rgba(245, 158, 11, 0.15);
+    }
+    .xp-trophy-img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.3));
+    }
+    .xp-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .xp-main-label {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #92400E;
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+    }
+    .xp-progress-bar-bg {
+      width: 140px;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(217, 119, 6, 0.3);
+    }
+    .xp-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #F59E0B, #D97706);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    .lesson-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: var(--radius-badge);
+      background: #F1F5F9;
+      color: #64748B;
+      border: 1px solid #CBD5E1;
+    }
+    .lesson-status-pill .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #94A3B8;
+    }
+    .lesson-status-pill.in-progress {
+      background: #FEF3C7;
+      color: #92400E;
+      border-color: #FCD34D;
+    }
+    .lesson-status-pill.in-progress .status-dot {
+      background: #F59E0B;
+    }
+    .lesson-status-pill.completed {
+      background: #ECFDF5;
+      color: #065F46;
+      border-color: #6EE7B7;
+    }
+    .lesson-status-pill.completed .status-dot {
+      background: #10B981;
+    }
+
+    .hero-3d-illus {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(15, 23, 42, 0.12));
+      flex-shrink: 0;
+    }
+
+    /* Mentoring & Pedagogical Blueprint */
+    .mentoring-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 70%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 28px 32px;
+      margin-bottom: 36px;
+      box-shadow: var(--shadow-card);
+    }
+    .mc-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .mc-head img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+    .mc-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .mc-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-weight: 600;
+      margin-bottom: 22px;
+    }
+    
+    .toolkit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .toolkit-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #EDF2F7 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 1px 0.5px #FFFFFF, 0 2px 4px rgba(15, 23, 42, 0.02);
+    }
+    .toolkit-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .toolkit-type-badge {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--brand-indigo);
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+      padding: 2px 8px;
+      border-radius: var(--radius-badge);
+    }
+    .toolkit-free-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #059669;
+    }
+    .toolkit-name {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .toolkit-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      font-weight: 600;
+      margin-bottom: 14px;
+      flex-grow: 1;
+    }
+    .toolkit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brand-indigo);
+      text-decoration: none;
+      align-self: flex-start;
+      padding: 4px 0;
+    }
+    .toolkit-btn:hover {
+      text-decoration: underline;
+    }
+    .toolkit-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+
+    /* Tier Sections & Lesson Cards */
+    .tier-section {
+      margin-bottom: 40px;
+    }
+    .tier-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      border-bottom: 2px solid var(--border-neutral);
+    }
+    .tier-badge-label {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+    }
+    .tier-lesson-count {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: #FFFFFF;
+      border: 1px solid var(--border-neutral);
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .tier-lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 22px;
+    }
+    .lesson-hub-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 60%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 4px 12px rgba(15, 23, 42, 0.03);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+    }
+    .lesson-hub-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 35%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    .lesson-hub-card:hover {
+      transform: translateY(-4px);
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 14px 30px -4px rgba(15, 23, 42, 0.08), 0 3px 0 #CBD5E1;
+      border-color: #CBD5E1;
+    }
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .lesson-num-badge {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #EDF2F7 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1px solid #FFFFFF;
+      padding: 4px 10px;
+      border-radius: var(--radius-badge);
+      color: var(--text-muted);
+    }
+    .xp-preview-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9A3412;
+      background: #FFF7ED;
+      border: 1px solid #FFEDD5;
+      padding: 3px 8px;
+      border-radius: var(--radius-badge);
+    }
+    .card-lesson-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .card-hook-text {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      font-weight: 600;
+      flex-grow: 1;
+    }
+    .card-concept-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .card-concept-row img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+    .quest-preview-box {
+      background: #FFFFFF;
+      border: 1px solid #EDF2F7;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .qp-title {
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .qp-item {
+      margin-bottom: 3px;
+    }
+    .qp-item:last-child {
+      margin-bottom: 0;
+    }
+    .btn-launch-lesson {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 18px;
+      border-radius: var(--radius-btn);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 13.5px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      background: linear-gradient(180deg, #FF7E36 0%, #F4600C 45%, #DF4E00 100%);
+      color: #ffffff !important;
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.65), inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2), 0 3px 0 #9A3412, 0 6px 14px rgba(244, 96, 12, 0.24);
+      transition: all 0.12s ease;
+      overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    .btn-launch-lesson:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 5px 0 #9A3412, 0 10px 20px rgba(244, 96, 12, 0.28);
+    }
+    .btn-launch-lesson svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+    
+    footer {
+      background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #FFFFFF 100%);
+      border-top: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 24px 40px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <a href="../index.html" class="back-btn">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>All Courses (Master Portal)</span>
+        </a>
+        <div class="brand-wrap">
+          <img src="../assets/3d/stemulus-logo.png" class="brand-logo" alt="STEMulus">
+          <div>
+            <div class="brand-title">STEMulus Kids Tech Academy</div>
+            <div class="brand-sub">Course Syllabus &amp; Interactive Learning Hub</div>
+          </div>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-badge">
+          <span>Target: <strong>Ages 5 - 18</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Curriculum: <strong>21 Lessons</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Tiers: <strong>3 Developmental Tracks</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Pacing: <strong>45 Mins / Lesson</strong></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Hero Course Starting Banner -->
+    <div class="course-hero">
+      <div class="hero-content">
+        <div class="hero-badge-row">
+          <span class="course-tag">Course Starting Hub</span>
+          <span class="ages-tag">Ages 5 - 18</span>
+          <span class="ages-tag">21 Interactive Slide Decks</span>
+        </div>
+        <h1 class="course-title">Fundamental Concepts of Coding</h1>
+        <p class="course-tagline">The Algorithmic Superpower Behind Every Game, App, and Robot</p>
+        <p class="course-overview">Coding is not about memorizing strange punctuation into a dark screen—it is giving crystal-clear, step-by-step recipes to a computer. Designed around the STEMulus Core Coding Concepts Mastery Map, this course translates abstract computational logic into physical, everyday mental models: recipes for sequences, music choruses for loops, traffic lights for conditionals, labeled storage boxes for variables, smoothie buttons for functions, and missing puzzle pieces for debugging.</p>
+        <div class="hero-actions">
+          <a href="early_explorers_ages_5_7/lesson_01_robot_dance_algorithms.html" class="btn-3d-primary" target="_blank">
+            <span>Start Lesson 01: The Robot Dance (Sequences &amp; Algorithms)</span>
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <div class="hero-xp-card" id="hero-xp-tracker">
+            <img src="../assets/3d/gold-trophy-3d.png" class="xp-trophy-img" alt="XP">
+            <div class="xp-text-group">
+              <span class="xp-main-label"><strong id="hub-xp-count">0</strong> / 7350 Course XP</span>
+              <div class="xp-progress-bar-bg">
+                <div class="xp-progress-fill" id="hub-xp-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img src="../assets/3d/code-brackets-3d.png" class="hero-3d-illus" alt="Fundamental Concepts of Coding">
+    </div>
+
+    <!-- Student Learning Journey & Software Sandbox Toolkit -->
+    <div class="mentoring-card">
+      <div class="mc-head">
+        <img src="../assets/3d/rocket-launch-3d.png" alt="Learning Journey">
+        <div class="mc-title">Your Learning Journey: Hands-On Mentoring &amp; Creative Sandboxes</div>
+      </div>
+      <p class="mc-body">Every session is a hands-on coding workshop with your dedicated mentor. You take the driver seat at the keyboard, building real apps, animations, and game worlds in zero-install browser sandboxes. Test your theories, conquer interactive checkpoints, and earn Bronze (+50 XP), Silver (+100 XP), and Gold (+200 XP) mastery badges as you advance!</p>
+      
+      <div style="font-family: 'Fredoka', 'Nunito', sans-serif; font-size: 16px; font-weight: 700; color: var(--brand-indigo); margin-bottom: 12px;">
+        100% Free Software &amp; Sandbox Setup for This Course:
+      </div>
+      <div class="toolkit-grid">
+        
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Ages 5-7 Sequencing</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Kidlo Coding Games</div>
+          <p class="toolkit-desc">Arrow-driven puzzles and robot mazes with instant visual feedback.</p>
+          <a href="https://www.kidlocoding.com/games.php" class="toolkit-btn" target="_blank">
+            <span>Open Kidlo Coding Games</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Ages 5-12 Visual Logic</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Code.org Express Courses</div>
+          <p class="toolkit-desc">The global standard for block coding, loops, events, and sprite games.</p>
+          <a href="https://studio.code.org/" class="toolkit-btn" target="_blank">
+            <span>Open Code.org Express Courses</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Ages 8-18 Google Puzzles</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Blockly Games</div>
+          <p class="toolkit-desc">Puzzles from Google teaching branching bird logic, math turtle, and pond functions.</p>
+          <a href="https://blockly.games/" class="toolkit-btn" target="_blank">
+            <span>Open Blockly Games</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Ages 13-18 Dungeon Coding</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">CodeCombat</div>
+          <p class="toolkit-desc">Real typed Python &amp; JavaScript gameplay navigating heroes through dungeons.</p>
+          <a href="https://codecombat.com/play" class="toolkit-btn" target="_blank">
+            <span>Open CodeCombat</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Syllabus & Lesson Decks By Developmental Tier -->
+    
+        <section class="tier-section">
+          <div class="tier-header-bar">
+            <div class="tier-badge-label">Early Explorers (Ages 5–7)</div>
+            <div class="tier-lesson-count">7 Interactive Lessons</div>
+          </div>
+          <div class="tier-lessons-grid">
+            
+            <div class="lesson-hub-card" data-slug="lesson_01_robot_dance_algorithms">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 01</span>
+                <div class="lesson-status-pill" id="status-lesson_01_robot_dance_algorithms"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Robot Dance (Sequences &amp; Algorithms)</h3>
+              <p class="card-hook-text">Computers follow directions step-by-step in exact order, just like a dance choreography or baking cupcakes!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/radar-chart-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Algorithms &amp; Sequences</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Guide your character across 3 squares on the grid.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Rearrange 4 arrow cards so the puppy reaches the bone without bumping a wall.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Invent a 5-step Robot Dance algorithm and teach it to your mentor!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_01_robot_dance_algorithms.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_02_magic_echo_loops">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 02</span>
+                <div class="lesson-status-pill" id="status-lesson_02_magic_echo_loops"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Magic Echo (Loops &amp; Repetition)</h3>
+              <p class="card-hook-text">Doing an action multiple times without writing it ten times! Like a chorus in your favorite song.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/hourglass-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Loops (Repetition)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Wrap a single Walk block inside a Repeat 3 times loop.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Clear a zigzag maze using 2 loop blocks instead of 10 individual arrows.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Make your character do 4 jumping jacks and spin around using a nested loop!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_02_magic_echo_loops.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_03_traffic_light_conditionals">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 03</span>
+                <div class="lesson-status-pill" id="status-lesson_03_traffic_light_conditionals"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Traffic Light (If / Else Decisions)</h3>
+              <p class="card-hook-text">Computers make smart choices based on simple rules: If green, Go! Else if red, Stop!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/signpost-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Conditionals (If / Else)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create a rule: IF character touches water -&gt; Jump; ELSE -&gt; Walk.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add an ELSE IF branch for touching a slippery banana peel.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a complete mini obstacle sensor that makes 3 different sounds based on color tiles!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_03_traffic_light_conditionals.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_04_magic_doorbell_events">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 04</span>
+                <div class="lesson-status-pill" id="status-lesson_04_magic_doorbell_events"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Magic Doorbell (Events &amp; Triggers)</h3>
+              <p class="card-hook-text">An action that makes something happen! Ringing a doorbell or pressing a giant jump button.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/notification-orb-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Events &amp; Triggers</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Add an event: WHEN green flag clicked -&gt; Say 'Welcome Explorer!'.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add a second event: WHEN character tapped -&gt; Play a drum roll sound.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build an interactive soundboard with 4 characters that each perform a dance move when clicked!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_04_magic_doorbell_events.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_05_treasure_backpack_variables">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 05</span>
+                <div class="lesson-status-pill" id="status-lesson_05_treasure_backpack_variables"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Treasure Backpack (Variables &amp; Data)</h3>
+              <p class="card-hook-text">Labeled storage boxes that hold information changing over time, like your game score or coin count!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Variables &amp; Data</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create a variable called 'Stars' and set it to 0 at the start.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Make each star pickup increase the Stars counter by +1.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add a Game Over win screen that triggers when Stars reaches 10!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_05_treasure_backpack_variables.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_06_smoothie_button_functions">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 06</span>
+                <div class="lesson-status-pill" id="status-lesson_06_smoothie_button_functions"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Smoothie Button (Functions &amp; Procedures)</h3>
+              <p class="card-hook-text">Reusable mini-programs packaged under a single name! One button that chops, blends, and pours.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/registration-stack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Functions / Procedures</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create a function named 'Jump_and_Cheer' with 3 actions.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Call your 'Jump_and_Cheer' function 3 times using just 3 single blocks.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a complete Dance Party routine with 2 different named functions (SpinMove &amp; RobotFreeze)!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_06_smoothie_button_functions.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_07_bug_detective_debugging">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 07</span>
+                <div class="lesson-status-pill" id="status-lesson_07_bug_detective_debugging"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Bug Detective (Playful Debugging)</h3>
+              <p class="card-hook-text">Finding mistakes in logic and fixing them calmly like a detective solving a puzzle!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Debugging</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Spot the incorrect arrow in a 4-step maze path and flip it.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Fix a loop counter that made the character walk into a pond.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Help a fellow student debug a broken game project with 3 intentional bugs!</div>
+              </div>
+              <a href="early_explorers_ages_5_7/lesson_07_bug_detective_debugging.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section class="tier-section">
+          <div class="tier-header-bar">
+            <div class="tier-badge-label">Junior Innovators (Ages 8–12)</div>
+            <div class="tier-lesson-count">7 Interactive Lessons</div>
+          </div>
+          <div class="tier-lessons-grid">
+            
+            <div class="lesson-hub-card" data-slug="lesson_01_fork_in_the_road_branching">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 01</span>
+                <div class="lesson-status-pill" id="status-lesson_01_fork_in_the_road_branching"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Fork in the Road (If / Else Logic)</h3>
+              <p class="card-hook-text">Teach decision-making branches using conditions: If touching wall, turn right; Else, move forward!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/signpost-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Conditionals (If / Else)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build an IF statement that turns your bird toward the worm.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add an ELSE statement to keep the bird flying level when no worm is detected.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Complete all 5 levels of Blockly Bird without crashing into walls!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_01_fork_in_the_road_branching.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_02_scoreboard_vault_variables_events">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 02</span>
+                <div class="lesson-status-pill" id="status-lesson_02_scoreboard_vault_variables_events"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Scoreboard Vault (Variables &amp; Events)</h3>
+              <p class="card-hook-text">Master variables as storage memory and events as triggers: When Space Key Pressed -&gt; Change Score by +1!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Variables &amp; Events</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create a score counter that adds +1 when a star is clicked.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add an enemy obstacle: touching the rock drops lives by -1.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a full Flappy Bird style game with high score tracking and sound effects!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_02_scoreboard_vault_variables_events.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_03_loop_master_counters">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 03</span>
+                <div class="lesson-status-pill" id="status-lesson_03_loop_master_counters"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Loop Master (For &amp; While Loops with Counters)</h3>
+              <p class="card-hook-text">Count and iterate with precision! Repeat code a specific number of times while tracking the index counter.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/tally-counter-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Loops (Iteration)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Write a loop that moves a bee forward 5 times to gather nectar.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Use the loop index counter to draw expanding spiral stairs.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build an automatic geometric polygon drawer in Blockly Turtle that draws any shape from 3 to 12 sides!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_03_loop_master_counters.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_04_swiss_army_functions_parameters">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 04</span>
+                <div class="lesson-status-pill" id="status-lesson_04_swiss_army_functions_parameters"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Swiss Army Knife (Functions with Parameters)</h3>
+              <p class="card-hook-text">Supercharge your functions! Give them parameters so one function can draw shapes of ANY size or color.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/pencil-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Functions / Parameters</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create a function `jump_hero(height)` that uses a parameter.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Call `jump_hero(10)` for a small hop and `jump_hero(50)` for a mega leap.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a procedural night sky generator with a `draw_star(size, x, y)` function that spawns 20 random stars!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_04_swiss_army_functions_parameters.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_05_decision_matrix_booleans">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 05</span>
+                <div class="lesson-status-pill" id="status-lesson_05_decision_matrix_booleans"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Decision Matrix (Nested Conditionals &amp; Boolean Logic)</h3>
+              <p class="card-hook-text">Combine logic rules with AND, OR, and NOT! Solve complex mazes and build multi-layered security gates.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Conditionals &amp; Booleans</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build a conditional with AND logic for player health and ammo.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add an OR conditional that lets a player pass if they have 50 coins OR a diamond key.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Complete all levels of Blockly Maze using advanced boolean conditionals!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_05_decision_matrix_booleans.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_06_glitch_hunter_debugging">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 06</span>
+                <div class="lesson-status-pill" id="status-lesson_06_glitch_hunter_debugging"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Glitch Hunter (Systematic Debugging Strategies)</h3>
+              <p class="card-hook-text">Level up your debugging toolkit! Use console logs, breakpoints, and binary search debugging to solve tricky bugs.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Debugging</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Add 2 console print statements to inspect variable values in a live game.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Identify an off-by-one loop error in a sample puzzle and correct it.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Solve a multi-bug Code.org debugging challenge without mentor hints!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_06_glitch_hunter_debugging.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_07_arcade_builder_capstone">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 07</span>
+                <div class="lesson-status-pill" id="status-lesson_07_arcade_builder_capstone"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Arcade Studio (Capstone Integration)</h3>
+              <p class="card-hook-text">Assemble all core concepts: Sequences, Loops, Conditionals, Events, Variables, and Functions into a complete game!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Full-Stack Integration</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create a playable character with event-driven movement controls.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add collectible items that increment a score variable and play sound effects.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Publish your finished Scratch / Code.org arcade game and host a 3-minute live demonstration!</div>
+              </div>
+              <a href="junior_innovators_ages_8_12/lesson_07_arcade_builder_capstone.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section class="tier-section">
+          <div class="tier-header-bar">
+            <div class="tier-badge-label">Senior Engineers (Ages 13–18)</div>
+            <div class="tier-lesson-count">7 Interactive Lessons</div>
+          </div>
+          <div class="tier-lessons-grid">
+            
+            <div class="lesson-hub-card" data-slug="lesson_01_dont_repeat_yourself_functions">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 01</span>
+                <div class="lesson-status-pill" id="status-lesson_01_dont_repeat_yourself_functions"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Don't Repeat Yourself (Functions, Scope &amp; Recursion)</h3>
+              <p class="card-hook-text">Modularize code into callable functions with parameters and clean variable scope. DRY: Don't Repeat Yourself!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Functions &amp; Scope</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Refactor 20 lines of repetitive code into a single parameterized function.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Program your duck in Blockly Pond to scan for enemies at variable angles using a custom function.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a recursive function that calculates factorials or navigates a nested tree structure!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_01_dont_repeat_yourself_functions.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_02_thinking_like_a_machine_arrays">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 02</span>
+                <div class="lesson-status-pill" id="status-lesson_02_thinking_like_a_machine_arrays"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Thinking Like a Machine (Arrays &amp; Indexing)</h3>
+              <p class="card-hook-text">Introduce ordered lists, zero-indexed access, and how computers store and retrieve items systematically.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Arrays &amp; Indexing</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create an inventory array of 4 items and access the last item using length - 1.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Write a loop that prints every item in an array formatted as an numbered list.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Complete CodeCombat Kithgard Dungeon by selecting items from an array to bypass enemy traps!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_02_thinking_like_a_machine_arrays.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_03_algorithmic_efficiency_search">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 03</span>
+                <div class="lesson-status-pill" id="status-lesson_03_algorithmic_efficiency_search"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Algorithmic Efficiency (Linear vs Binary Search &amp; Big-O)</h3>
+              <p class="card-hook-text">Compare how computers search data: checking every item one-by-one (Linear) vs halving a sorted list (Binary Search).</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Algorithmic Efficiency &amp; Big-O</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Play the high-low guessing game and use binary search to guess any number under 100 in &lt;= 7 steps.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Implement a Python/JS binary search algorithm on a sorted list of 10,000 player IDs.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Benchmark the execution time of Linear Search vs Binary Search on a list of 1,000,000 items!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_03_algorithmic_efficiency_search.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_04_state_machines_control_flow">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 04</span>
+                <div class="lesson-status-pill" id="status-lesson_04_state_machines_control_flow"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">State Machines &amp; Control Flow (Complex Architecture)</h3>
+              <p class="card-hook-text">Structure professional games and web apps using finite state machines: IDLE -&gt; RUNNING -&gt; JUMPING -&gt; GAME OVER.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Control Flow &amp; State Machines</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Map out a 4-state diagram for an elevator or traffic light system on paper.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Implement a state machine in JavaScript/Python controlling an enemy patrol AI.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a game loop with clean Menu, Play, Pause, and GameOver state transitions!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_04_state_machines_control_flow.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_05_structured_data_objects_json">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 05</span>
+                <div class="lesson-status-pill" id="status-lesson_05_structured_data_objects_json"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Structured Data (Objects, Dictionaries &amp; JSON)</h3>
+              <p class="card-hook-text">Organize complex real-world data with key-value pairs! Player attributes, game levels, and REST API payloads.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Objects &amp; Key-Value Stores</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create a JSON player profile object with 5 attributes including a nested stats object.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Write a function that accepts a character object and prints a formatted superhero bio.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a mock inventory trading system where two player objects swap items between arrays!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_05_structured_data_objects_json.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_06_defensive_coding_testing">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 06</span>
+                <div class="lesson-status-pill" id="status-lesson_06_defensive_coding_testing"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Defensive Coding &amp; Unit Testing (Reliable Systems)</h3>
+              <p class="card-hook-text">Write code that anticipates failure! Input validation, try/catch exception handling, and automated unit testing.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/alert-sphere-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Defensive Coding &amp; Testing</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Add input validation to a calculator function to block invalid data types.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Write a try/catch wrapper around an API request or division function.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Author 3 automated unit test assertions for a shopping cart checkout function!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_06_defensive_coding_testing.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_07_senior_systems_capstone">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 07</span>
+                <div class="lesson-status-pill" id="status-lesson_07_senior_systems_capstone"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Systems Engineer Capstone (Algorithmic Engine)</h3>
+              <p class="card-hook-text">Engineer a complete algorithmic system from scratch: state machine, optimized data structures, and modular architecture!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Full-Stack Systems Architecture</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Design a comprehensive system architecture diagram on paper or FigJam.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Implement your core algorithmic engine with state management and structured data.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Conduct a 5-minute technical walkthrough with your mentor explaining your architectural decisions!</div>
+              </div>
+              <a href="senior_engineers_ages_13_18/lesson_07_senior_systems_capstone.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+
+  </main>
+
+  <footer>
+    STEMulus Kids Tech Academy &bull; Fundamental Concepts of Coding Starting Hub &bull; 1-on-1 Mentoring Curriculum &bull; 100% Offline Resilience
+  </footer>
+
+  <script>
+    (function() {
+      const lessons = document.querySelectorAll('.lesson-hub-card');
+      let totalCourseXp = 0;
+      let completedLessons = 0;
+      const maxCourseXp = lessons.length * 350;
+
+      lessons.forEach(card => {
+        const slug = card.getAttribute('data-slug');
+        if (!slug) return;
+        try {
+          const raw = localStorage.getItem('stemulus_quest_' + slug);
+          if (raw) {
+            const state = JSON.parse(raw);
+            let lessonXp = 0;
+            if (state.Bronze) lessonXp += 50;
+            if (state.Silver) lessonXp += 100;
+            if (state.Gold) lessonXp += 200;
+            
+            if (lessonXp > 0) {
+              totalCourseXp += lessonXp;
+              const statusEl = document.getElementById('status-' + slug);
+              if (statusEl) {
+                if (lessonXp >= 350) {
+                  statusEl.className = 'lesson-status-pill completed';
+                  statusEl.innerHTML = '<span class="status-dot"></span><span>Gold Mastered (+350 XP)</span>';
+                  completedLessons++;
+                } else {
+                  statusEl.className = 'lesson-status-pill in-progress';
+                  statusEl.innerHTML = '<span class="status-dot"></span><span>In Progress (+' + lessonXp + ' XP)</span>';
+                }
+              }
+            }
+          }
+        } catch(e) {}
+      });
+
+      const xpCountEl = document.getElementById('hub-xp-count');
+      const xpFillEl = document.getElementById('hub-xp-fill');
+      if (xpCountEl) xpCountEl.innerText = totalCourseXp;
+      if (xpFillEl && maxCourseXp > 0) {
+        const pct = Math.min(100, Math.round((totalCourseXp / maxCourseXp) * 100));
+        xpFillEl.style.width = pct + '%';
+      }
+    })();
+  </script>
+</body>
+</html>

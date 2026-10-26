@@ -1,0 +1,778 @@
+// STEMulus Kids Tech Unified Assessment Registry (CORS-free standalone bundle)
+window.MASTER_ASSESSMENT_DATA = {
+  "version": "2.0.0",
+  "system": "STEMulus Kids Tech Unified Assessment & Certification Registry",
+  "grading_scale": {
+    "distinction": {
+      "min": 90,
+      "max": 100,
+      "badge": "Master Builder Distinction",
+      "certificate": "Verified Honors Certificate"
+    },
+    "merit": {
+      "min": 75,
+      "max": 89,
+      "badge": "Proficient Engineer",
+      "certificate": "Standard Certificate of Completion"
+    },
+    "pass": {
+      "min": 60,
+      "max": 74,
+      "badge": "Junior Practitioner",
+      "certificate": "Foundation Certificate"
+    },
+    "remediation": {
+      "min": 0,
+      "max": 59,
+      "badge": "In-Progress Apprentice",
+      "certificate": "Needs Revision & Retest"
+    }
+  },
+  "courses": [
+    {
+      "course_id": "COURSE-AI-PROMPT",
+      "track_id": "track_2_ai_automation",
+      "course_title": "Generative AI Engineering & Prompt Laboratory",
+      "tier": "Innovators (Ages 12-16+)",
+      "total_lessons": 16,
+      "assessment_type": "Hybrid: 20-Question Situational Exam + Portfolio Capstone Project",
+      "situational_exam": [
+        {
+          "question_id": "AI-Q01",
+          "concept": "Hallucination Mitigation",
+          "scenario": "A student asks an LLM: 'List 5 books written by Ada Lovelace in 1980.' The model makes up five plausible-sounding book titles with publisher names.",
+          "question": "What is the technical term for this phenomenon, and which prompt engineering strategy best prevents it?",
+          "options": [
+            "Overfitting; tell the model to generate fewer words.",
+            "Hallucination; instruct the model: 'If the information is not factual or historical, respond strictly with: Information not available.'",
+            "Token drift; restart the computer session.",
+            "Latency; increase the model temperature to 1.5."
+          ],
+          "correct_index": 1,
+          "explanation": "LLMs predict the most statistically probable next tokens. When asked for impossible or ungrounded facts, they hallucinate plausible text unless explicitly constrained with a factual fallback instruction."
+        },
+        {
+          "question_id": "AI-Q02",
+          "concept": "Few-Shot In-Context Conditioning",
+          "scenario": "You want an AI to extract dates and city names from long student travel paragraphs and output them in a table format.",
+          "question": "Which technique ensures the model follows your output format without drifting?",
+          "options": [
+            "Zero-shot prompting: simply say 'Be very smart and make a table.'",
+            "Few-shot prompting: provide 2 to 3 completed input/output demonstration pairs in the prompt before the real target text.",
+            "Negative prompting: tell the model to never write sentences.",
+            "Role prompting: telling the model it is a geography teacher."
+          ],
+          "correct_index": 1,
+          "explanation": "Few-shot prompting provides concrete exemplars that condition the attention heads of the transformer model to follow the exact pattern, schema, and formatting."
+        },
+        {
+          "question_id": "AI-Q03",
+          "concept": "Chain-of-Thought (CoT)",
+          "scenario": "When asked a complex multi-step math word problem, an AI frequently gives an incorrect final number despite sounding confident.",
+          "question": "Which instruction forces the model to decompose its mathematical reasoning step by step before outputting the answer?",
+          "options": [
+            "'Answer quickly in one word.'",
+            "'Think step by step, showing your intermediate calculations for each stage before stating the final answer.'",
+            "'Translate your answer to French first.'",
+            "'Repeat the question five times.'"
+          ],
+          "correct_index": 1,
+          "explanation": "Chain-of-Thought prompting directs the model to allocate intermediate token generation to logical deduction steps, dramatically increasing accuracy on complex reasoning tasks."
+        },
+        {
+          "question_id": "AI-Q04",
+          "concept": "Multimodal Visual Prompt Architecture",
+          "scenario": "A student wants to generate an illustration for a children's fantasy story. Their prompt is: 'A cool tree in the forest.' The generated image is muddy, dark, and blurry.",
+          "question": "Which refined prompt incorporates proper lighting, medium, material, and aesthetic tokens for a clean modern result?",
+          "options": [
+            "'A very cool tree in the best forest 4k 8k hd quality.'",
+            "'Isometric 3D tactile render of an ancient willow tree with translucent crystal leaves glowing in soft amber morning sunlight, Pixar animation aesthetic, clean pastel backdrop, 8k octane render.'",
+            "'Draw tree now please fast.'",
+            "'Photo of real tree taken with iPhone.'"
+          ],
+          "correct_index": 1,
+          "explanation": "Effective visual prompts specify camera perspective (isometric), artistic medium (3D tactile render), material textures (translucent crystal), lighting (soft amber morning sunlight), and reference style (Pixar animation aesthetic)."
+        }
+      ],
+      "capstone_project": {
+        "title": "The Multi-Agent Illustrated Storybook Studio",
+        "brief": "Design and execute an end-to-end creative digital publication. You will engineer prompt workflows across 3 distinct modalities: narrative text generation (LLM), visual illustration synthesis (Diffusion), and character narration (TTS).",
+        "deliverables": [
+          "1. Master Prompt Journal documenting system instructions, input variables, and negative prompts for every asset.",
+          "2. A 4-page illustrated digital storybook with cohesive character design across all scenes.",
+          "3. At least 3 documented prompt iterations where an initial model failure/hallucination was systematically corrected.",
+          "4. An AI Ethics and Disclosure Statement detailing human agency, data sources, and copyright integrity."
+        ],
+        "rubric": {
+          "functional_execution": {
+            "weight": 30,
+            "criteria": "All prompt templates execute successfully, produce coherent story arcs, and maintain character visual consistency across all 4 scenes."
+          },
+          "prompt_architecture": {
+            "weight": 25,
+            "criteria": "Systematic use of personas, delimiters, few-shot formatting, chain-of-thought, and output constraints."
+          },
+          "ui_ux_and_craft": {
+            "weight": 25,
+            "criteria": "Visual clarity, readable typography, harmonious color palette, high contrast, and clean layout presentation."
+          },
+          "critical_thinking_and_ethics": {
+            "weight": 20,
+            "criteria": "Documented iteration logs showing how prompt drift was diagnosed and resolved; thorough AI ethics disclosure."
+          }
+        }
+      }
+    },
+    {
+      "course_id": "COURSE-WEB-DEV",
+      "track_id": "track_1_web_engineering",
+      "course_title": "Full-Stack Web Engineering & Interactive Applications",
+      "tier": "Creators & Innovators (Ages 10-16)",
+      "total_lessons": 24,
+      "assessment_type": "Automated Code Test Suite + Interactive Web Capstone",
+      "situational_exam": [
+        {
+          "question_id": "WEB-Q01",
+          "concept": "Semantic HTML vs Div Soup",
+          "scenario": "A screen reader user navigates a website that uses only `<div>` tags with `onClick` attributes for buttons and navigation links.",
+          "question": "What critical accessibility failure occurs on this page?",
+          "options": [
+            "The webpage will fail to load in Chrome.",
+            "Screen readers cannot announce interactive button roles or allow keyboard Tab focus navigation.",
+            "The browser converts the divs to images automatically.",
+            "CSS styles will refuse to apply to generic divs."
+          ],
+          "correct_index": 1,
+          "explanation": "Native semantic elements like `<button>` and `<nav>` provide built-in keyboard accessibility (Tab, Enter, Space) and ARIA accessibility tree announcements that generic `<div>` tags lack."
+        },
+        {
+          "question_id": "WEB-Q02",
+          "concept": "CSS Flexbox Axis Distribution",
+          "scenario": "A developer sets `display: flex; flex-direction: column; justify-content: center; align-items: center;` on a `.card-container` with `height: 100vh;`.",
+          "question": "Which axis does `justify-content` align in this layout?",
+          "options": [
+            "Horizontal X-axis.",
+            "Vertical Y-axis.",
+            "Diagonal 45-degree axis.",
+            "Z-depth axis."
+          ],
+          "correct_index": 1,
+          "explanation": "When `flex-direction` is set to `column`, the main axis switches from horizontal to vertical. Therefore, `justify-content` controls vertical alignment."
+        },
+        {
+          "question_id": "WEB-Q03",
+          "concept": "JavaScript DOM Event Delegation",
+          "scenario": "You have a dynamic to-do list where users can add 50 new task items. Each item needs a 'Delete' button.",
+          "question": "What is the most performant way to listen for clicks on all delete buttons?",
+          "options": [
+            "Run a for-loop attaching 50 individual `addEventListener` handlers to every delete button.",
+            "Attach a single `addEventListener` to the parent `<ul>` container and check `event.target.classList.contains('delete-btn')`.",
+            "Reload the entire page on every click.",
+            "Use inline `onclick` attributes in the HTML."
+          ],
+          "correct_index": 1,
+          "explanation": "Event delegation leverages browser event bubbling: attaching one listener to the common parent avoids memory overhead and automatically handles newly appended children."
+        }
+      ],
+      "capstone_project": {
+        "title": "Interactive STEMulus Cyber Pet & Habit Dashboard",
+        "brief": "Build a responsive, single-page interactive application from scratch using semantic HTML5, modern CSS custom properties (variables), and ES6+ JavaScript. The app must feature persistent state, responsive layout, and zero external framework dependencies.",
+        "deliverables": [
+          "1. Semantic HTML5 layout with `<header>`, `<main>`, `<section>`, `<nav>`, and `<aside>`.",
+          "2. Centralized CSS design tokens in `:root` with fluid typography and Flexbox/Grid responsive cards.",
+          "3. Dynamic pet state machine (Happiness, Energy, Knowledge) updating smoothly on timer intervals.",
+          "4. `localStorage` state persistence preserving user points and pet health across browser refreshes.",
+          "5. Accessible sound effects and visual feedback alerts for leveling up."
+        ],
+        "rubric": {
+          "functional_execution": {
+            "weight": 30,
+            "criteria": "Zero runtime JS errors in console; all interactive buttons update state instantly; localStorage correctly serializes and restores app state."
+          },
+          "code_architecture": {
+            "weight": 25,
+            "criteria": "Clean separation of concerns (HTML structure, CSS styles, JS logic); modular functions; descriptive variable names; proper event delegation."
+          },
+          "ui_ux_and_craft": {
+            "weight": 25,
+            "criteria": "Responsive on mobile (375px) and desktop (1200px); WCAG AA 4.5:1 text contrast; smooth transitions on button click and hover states."
+          },
+          "innovation_and_polish": {
+            "weight": 20,
+            "criteria": "Creative theme execution, delightful micro-animations, keyboard shortcuts, and sound effects."
+          }
+        }
+      }
+    },
+    {
+      "course_id": "COURSE-PYTHON-CORE",
+      "track_id": "track_4_python_data",
+      "course_title": "Python Engineering & Computational Science",
+      "tier": "Innovators (Ages 12-17)",
+      "total_lessons": 20,
+      "assessment_type": "Automated Unit Test Challenge + OOP Capstone Game",
+      "situational_exam": [
+        {
+          "question_id": "PY-Q01",
+          "concept": "Mutability & Object References",
+          "scenario": "Consider the following Python code:\n`list_a = [1, 2, 3]`\n`list_b = list_a`\n`list_b.append(4)`\n`print(list_a)`",
+          "question": "What is printed in the terminal, and why?",
+          "options": [
+            "`[1, 2, 3]` because list_b is a completely independent copy.",
+            "`[1, 2, 3, 4]` because lists are mutable objects and both variables point to the same memory reference.",
+            "`[4]` because append overwrites previous items.",
+            "`TypeError` because lists cannot be assigned to another variable."
+          ],
+          "correct_index": 1,
+          "explanation": "Assignment in Python binds a new name to the existing object reference. To create a separate copy, one must use `list_a.copy()` or slicing `list_a[:]`."
+        },
+        {
+          "question_id": "PY-Q02",
+          "concept": "Algorithmic Complexity & Lookups",
+          "scenario": "You have a database of 100,000 student usernames. You need to check if a username exists 1,000 times per minute.",
+          "question": "Which Python data structure provides the fastest O(1) average lookup time?",
+          "options": [
+            "A standard Python `list`.",
+            "A Python `set` or `dict` (hash table).",
+            "A `tuple`.",
+            "A linked list."
+          ],
+          "correct_index": 1,
+          "explanation": "Python sets and dictionary keys use hash tables, allowing O(1) constant-time membership lookups compared to O(N) linear scans through lists."
+        }
+      ],
+      "capstone_project": {
+        "title": "Space Pioneer: OOP Arcade Game Engine",
+        "brief": "Architect a complete, object-oriented 2D arcade physics game using Python and Pygame/Arcade. The architecture must enforce clean encapsulation with Player, Obstacle, Particle, and Scoreboard classes.",
+        "deliverables": [
+          "1. Modular OOP structure with separate classes for Player, Projectile, Enemy, and GameController.",
+          "2. Bounding-box or radius-based collision detection logic with particle explosion effects.",
+          "3. High-score file persistence using Python file I/O (`with open('scores.txt', 'r+') as f:`) or JSON.",
+          "4. Comprehensive PyTest test suite verifying math logic, score increments, and health boundary limits."
+        ],
+        "rubric": {
+          "functional_execution": {
+            "weight": 30,
+            "criteria": "Stable 60 FPS gameplay, responsive controls, zero crash exceptions, clean restart loop."
+          },
+          "code_architecture": {
+            "weight": 25,
+            "criteria": "Strict OOP principles; no global variable abuse; methods take proper parameters; clean encapsulation."
+          },
+          "pythonic_style": {
+            "weight": 25,
+            "criteria": "PEP8 compliance, descriptive snake_case naming, type hints, docstrings on all classes and functions."
+          },
+          "polish_and_game_feel": {
+            "weight": 20,
+            "criteria": "Particle effects, audio cues on collision, visual score counter, clean start and game-over UI."
+          }
+        }
+      }
+    },
+    {
+      "course_id": "COURSE-SCRATCH-MASTERY",
+      "track_id": "course_fundamentals",
+      "course_title": "Scratch 3.0 Creative Computing & Game Engineering",
+      "tier": "Creators (Ages 7-12)",
+      "total_lessons": 24,
+      "assessment_type": "Interactive Project Playtest + sb3 Code Architecture Audit",
+      "situational_exam": [
+        {
+          "question_id": "SCRATCH-Q01",
+          "concept": "Race Conditions & Broadcast Timing",
+          "scenario": "A player clicks a Sprite. The script broadcasts 'Start Game'. In another sprite, a script immediately checks `if score > 0` right under `When I receive Start Game`.",
+          "question": "What is the best block to ensure that background setup finishes before score checks execute?",
+          "options": [
+            "Use standard `Broadcast [message]`.",
+            "Use `Broadcast [message] and wait` to ensure all receivers finish their setup before proceeding.",
+            "Add 100 `wait 1 seconds` blocks.",
+            "Delete the second sprite."
+          ],
+          "correct_index": 1,
+          "explanation": "`Broadcast and wait` pauses the broadcasting script until all recipient scripts triggered by the message run to completion, preventing race conditions."
+        },
+        {
+          "question_id": "SCRATCH-Q02",
+          "concept": "Cloning & Memory Leaks",
+          "scenario": "A laser cannon fires lasers using `create clone of [myself]`. Over 2 minutes of gameplay, the game becomes extremely laggy and stops firing.",
+          "question": "What common clone management bug is causing this slowdown?",
+          "options": [
+            "The computer ran out of electricity.",
+            "The clones are never deleted after touching the edge, hitting the 300-clone limit in Scratch.",
+            "The laser sprite needs to be bigger.",
+            "Scratch only allows 5 clones per day."
+          ],
+          "correct_index": 1,
+          "explanation": "Scratch has a hard cap of 300 active clones. If clones aren't deleted using `delete this clone` when they exit the screen or hit a target, the engine reaches the limit and throttles performance."
+        }
+      ],
+      "capstone_project": {
+        "title": "The Quest for the Crystal Core: Multi-Level Scrolling Platformer",
+        "brief": "Engineer a complete, polished platformer game in Scratch 3.0 featuring realistic velocity physics, custom functions (My Blocks), collision detection, enemy AI patrol logic, and at least 2 distinct levels.",
+        "deliverables": [
+          "1. Custom gravity and friction engine using variables `x_vel` and `y_vel`.",
+          "2. Modular Custom Blocks (`Make a Block`) for `Jump`, `Check Ground Collision`, and `Reset Level`.",
+          "3. Smart enemy patrol clones that turn around at platform edges or upon touching walls.",
+          "4. Sound effects, animated sprite walk cycles, and victory/defeat broadcast states."
+        ],
+        "rubric": {
+          "functional_physics": {
+            "weight": 30,
+            "criteria": "Smooth platformer movement without glitching through ceilings or floors; responsive jump mechanics."
+          },
+          "code_modular_cleanliness": {
+            "weight": 25,
+            "criteria": "Extensive use of My Blocks; no duplicate script spaghetti; proper clone cleanup upon level transition."
+          },
+          "level_design_and_art": {
+            "weight": 25,
+            "criteria": "Cohesive visual theme; clear level progression from tutorial to challenge; animated walk and jump cycles."
+          },
+          "creativity_and_sound": {
+            "weight": 20,
+            "criteria": "Original storyline, dynamic background music, collectible coins with audio feedback, secret easter egg."
+          }
+        }
+      }
+    },
+    {
+      "course_id": "COURSE-ROBOTICS-SIM",
+      "track_id": "track_6_robotics",
+      "course_title": "Virtual Robotics, Sensors & Autonomous Navigation",
+      "tier": "Creators & Innovators (Ages 10-16)",
+      "total_lessons": 16,
+      "assessment_type": "Virtual Arena Maze Benchmark + Logic Test",
+      "situational_exam": [
+        {
+          "question_id": "ROBOT-Q01",
+          "concept": "Ultrasonic Distance Sensor Triggering",
+          "scenario": "An autonomous rover travels at 30 cm/s toward a brick wall. Its ultrasonic sensor sends a ping every 100 milliseconds.",
+          "question": "Why must the obstacle detection threshold be set to at least 15 cm instead of 2 cm?",
+          "options": [
+            "The ultrasonic waves only bounce off metal.",
+            "To account for motor deceleration distance and sensor latency so the robot doesn't crash before stopping.",
+            "The robot's wheels get tired close to walls.",
+            "Sensors stop working at close range."
+          ],
+          "correct_index": 1,
+          "explanation": "Physical robots and simulation models possess mechanical inertia. A safe sensor threshold accounts for deceleration distance and processing cycle latency."
+        }
+      ],
+      "capstone_project": {
+        "title": "Autonomous Search-and-Rescue Arena Rover",
+        "brief": "Program a virtual differential-drive robot to autonomously solve a 3D obstacle maze, locate 3 distressed beacons using ultrasonic distance and color sensors, and safely return to the home base zone.",
+        "deliverables": [
+          "1. Closed-loop PID or proportional line-following algorithm.",
+          "2. Reactive obstacle avoidance logic that navigates dead ends without getting stuck.",
+          "3. State machine implementation: Searching, Approaching, Rescuing, Returning.",
+          "4. Simulation run telemetry log showing sensor readings and decision timestamps."
+        ],
+        "rubric": {
+          "autonomous_navigation": {
+            "weight": 35,
+            "criteria": "Rover successfully completes the maze within the time limit without colliding with walls."
+          },
+          "sensor_logic": {
+            "weight": 25,
+            "criteria": "Accurate distance thresholding and color detection; robust handling of noise and unexpected obstacles."
+          },
+          "state_machine_cleanliness": {
+            "weight": 20,
+            "criteria": "Clean state transitions; modular control functions; clear decision-making loop."
+          },
+          "telemetry_and_documentation": {
+            "weight": 20,
+            "criteria": "Clear documentation of sensor calibration values, PID constants, and navigation strategy."
+          }
+        }
+      }
+    },
+    {
+      "course_id": "COURSE-UIUX-DESIGN",
+      "track_id": "track_3_product_design",
+      "course_title": "UI/UX Product Design & Figma Design Systems",
+      "tier": "Innovators (Ages 12-17)",
+      "total_lessons": 16,
+      "assessment_type": "Figma Design System Specification + Interactive Prototype",
+      "situational_exam": [
+        {
+          "question_id": "UI-Q01",
+          "concept": "WCAG Contrast & Accessibility",
+          "scenario": "A designer places light gray text (#94A3B8) on a white background (#FFFFFF) for a primary checkout button.",
+          "question": "Why does this fail WCAG AA accessibility standards, and how should it be fixed?",
+          "options": [
+            "Light gray is an outdated color; use neon pink.",
+            "The contrast ratio is below 4.5:1, making it unreadable for users with low vision; darken the text to at least #475569 or use a solid high-contrast button base.",
+            "Text must always be pure black #000000 on every screen.",
+            "Buttons can only use icons, never text."
+          ],
+          "correct_index": 1,
+          "explanation": "WCAG AA requires a minimum contrast ratio of 4.5:1 for normal body text to guarantee readability across different lighting conditions and visual acuities."
+        }
+      ],
+      "capstone_project": {
+        "title": "EcoHero: Kids Environmental Action Mobile App Design System",
+        "brief": "Design a complete 5-screen mobile application in Figma using a strict design system with tokens, auto-layout components, variants, and interactive prototype transitions.",
+        "deliverables": [
+          "1. Master Style Guide: Color tokens with WCAG AA compliance, 8pt spacing grid, modular typography scale.",
+          "2. Reusable Component Library: Buttons (Default, Hover, Pressed, Disabled), Cards, Navigation Bar, and Badges using Figma Component Variants and Auto Layout.",
+          "3. 5 High-Fidelity Screens: Splash, Onboarding, Daily Mission Dashboard, Badge Showcase, and Mission Detail.",
+          "4. Clickable interactive prototype with smart animate transitions between screens."
+        ],
+        "rubric": {
+          "design_system_architecture": {
+            "weight": 30,
+            "criteria": "100% of screens built with Auto Layout and reusable component instances; consistent design tokens."
+          },
+          "visual_craft_and_hierarchy": {
+            "weight": 25,
+            "criteria": "Balanced whitespace, clear visual focal points, accessible color contrast, harmonious typography."
+          },
+          "prototyping_and_micro_interactions": {
+            "weight": 25,
+            "criteria": "Smooth screen transitions, interactive button states, intuitive user flow without dead ends."
+          },
+          "design_rationale_and_presentation": {
+            "weight": 20,
+            "criteria": "Well-organized Figma file with page dividers; documented user personas and design decisions."
+          }
+        }
+      }
+    },
+    {
+      "course_id": "COURSE-INTRO-CS",
+      "track_id": "course_fundamentals",
+      "course_title": "Computer Science Principles & Digital Hardware Diagnostic",
+      "tier": "Foundations & Creators (Ages 7-14)",
+      "total_lessons": 16,
+      "assessment_type": "30-Question Diagnostic Exam + Interactive Hardware Capstone",
+      "situational_exam": [
+        {
+          "question_id": "CS-Q01",
+          "concept": "Von Neumann Architecture & Memory Hierarchy",
+          "scenario": "A student is playing a 3D game. When the game launches, it takes 30 seconds to load from the SSD into RAM. Once loaded, levels transition smoothly without stuttering.",
+          "question": "Why does the computer load the game data into RAM instead of running it directly from the storage drive?",
+          "options": [
+            "RAM has more storage space than the SSD.",
+            "RAM communicates directly with the CPU at nanosecond speeds (gigabytes per second), whereas storage drives are much slower despite holding data permanently.",
+            "Storage drives erase data if read too quickly.",
+            "The CPU cannot physically connect to an SSD."
+          ],
+          "correct_index": 1,
+          "explanation": "In the Von Neumann model, the CPU requires immediate, low-latency access to machine instructions and active variables. RAM provides high-speed volatile memory, bridging the performance gap between persistent storage (SSD/HDD) and CPU cache registers."
+        },
+        {
+          "question_id": "CS-Q02",
+          "concept": "Operating System Kernel & Hardware Abstraction",
+          "scenario": "A student writes a Python script that reads a text file. The student does not have to write code to rotate the magnetic platters or control the electrical voltage of the SSD pins.",
+          "question": "Which software layer manages physical hardware communication and provides standardized file APIs to user applications?",
+          "options": [
+            "The web browser.",
+            "The Operating System (OS) kernel via Hardware Abstraction.",
+            "The monitor firmware.",
+            "The antivirus scanner."
+          ],
+          "correct_index": 1,
+          "explanation": "The Operating System kernel acts as the master intermediary between user software and raw silicon. It manages memory allocation, CPU scheduling, and hardware drivers, exposing clean APIs like file read/write."
+        },
+        {
+          "question_id": "CS-Q03",
+          "concept": "Input/Output Ergonomics & Keyboard Processing",
+          "scenario": "A programmer is writing code and needs to duplicate a block of code, undo an accidental deletion, and jump to the beginning of a line without touching the mouse.",
+          "question": "Which keyboard shortcut sequence achieves these actions in standard operating systems?",
+          "options": [
+            "Ctrl+C / Ctrl+V to duplicate, Ctrl+Z to undo, and the Home key to jump to line start.",
+            "Caps Lock to duplicate, Shift to undo, and Backspace to jump.",
+            "Alt+F4 to duplicate, Enter to undo, and Tab to jump.",
+            "Ctrl+P to duplicate, Esc to undo, and Delete to jump."
+          ],
+          "correct_index": 0,
+          "explanation": "Standard OS keyboard shortcuts streamline developer productivity: Ctrl+C/Ctrl+V for clipboard operations, Ctrl+Z for history rollback (undo), and Home/End for text navigation."
+        },
+        {
+          "question_id": "CS-Q04",
+          "concept": "Hierarchical File Systems & Path Resolution",
+          "scenario": "A student saves an image in C:\\Users\\Alex\\Projects\\Robotics\\chassis.png and tries to load it in a webpage located at C:\\Users\\Alex\\Projects\\Web\\index.html using <img src='chassis.png'>. The image appears broken.",
+          "question": "Why did the browser fail to display the image, and what is the correct relative path?",
+          "options": [
+            "The computer does not allow PNG images on web pages.",
+            "The browser looks for chassis.png inside the Web folder; the student must specify ../Robotics/chassis.png to step up one directory and enter the sibling folder.",
+            "The file name must be written in all capital letters.",
+            "The student needs to restart their monitor."
+          ],
+          "correct_index": 1,
+          "explanation": "Relative path resolution begins at the directory containing the HTML document. ../ traverses up to Projects, and Robotics/chassis.png resolves into the target subfolder."
+        }
+      ],
+      "capstone_project": {
+        "title": "Silicon Pioneer: The Interactive Computer Architecture Atlas",
+        "brief": "Design and build an interactive digital blueprint explaining the internal anatomy of a computer system. You must diagram the Motherboard, CPU, RAM, GPU, Storage, and I/O buses, demonstrating how an instruction cycles through Fetch-Decode-Execute.",
+        "deliverables": [
+          "1. Interactive system block diagram identifying CPU (ALU, Control Unit, Registers), RAM, Storage, and Peripheral buses.",
+          "2. Step-by-step visual trace of the Fetch-Decode-Execute instruction cycle for an addition operation.",
+          "3. Comparative memory hierarchy table detailing Capacity, Speed (Latency), and Volatility across Registers, L1/L2/L3 Cache, RAM, and NVMe SSD.",
+          "4. Hardware troubleshooting guide documenting 3 common failure symptoms (RAM seating beep codes, thermal CPU throttling, corrupted bootloader)."
+        ],
+        "rubric": {
+          "hardware_accuracy": {
+            "weight": 30,
+            "criteria": "Accurate representation of the Von Neumann architecture, bus bandwidths, and component interconnections."
+          },
+          "instruction_cycle_trace": {
+            "weight": 25,
+            "criteria": "Clear sequential breakdown of clock cycles, program counter increments, and register data transfers."
+          },
+          "visual_clarity_and_ui": {
+            "weight": 25,
+            "criteria": "Clean diagrams, color-coded data pathways, readable labels, and modern aesthetic presentation."
+          },
+          "troubleshooting_and_rigor": {
+            "weight": 20,
+            "criteria": "Technically sound diagnostic steps for hardware maintenance, ESD precautions, and operating system recovery."
+          }
+        }
+      }
+    },
+    {
+      "course_id": "COURSE-MOBILE-DEV",
+      "track_id": "track_mobile_apps",
+      "course_title": "Mobile App Engineering & Event-Driven Architecture",
+      "tier": "Creators & Innovators (Ages 10-16)",
+      "total_lessons": 16,
+      "assessment_type": "Event-Driven Logic Exam + Modular Mobile Capstone",
+      "situational_exam": [
+        {
+          "question_id": "MOB-Q01",
+          "concept": "Event-Driven Reactive Architecture",
+          "scenario": "In a mobile app built with Kodular / MIT App Inventor, a student wants to update a pedometer count every time the phone accelerometer senses a step and play a chime when the user reaches 1,000 steps.",
+          "question": "Which architecture pattern correctly handles this without freezing the mobile user interface?",
+          "options": [
+            "A while(true) infinite loop in Screen1.Initialize that continuously polls the sensor.",
+            "An asynchronous event handler `when Pedometer.SimpleStep do` with an `if steps = 1000 then Sound.Play` check.",
+            "Restarting the app every 10 steps.",
+            "Setting the screen refresh rate to 0 Hz."
+          ],
+          "correct_index": 1,
+          "explanation": "Mobile operating systems run an event dispatch loop on the main UI thread. Long-running or infinite loops block the thread, triggering an Application Not Responding (ANR) crash. Event listeners (`when Sensor.Event`) react asynchronously to hardware interrupts."
+        },
+        {
+          "question_id": "MOB-Q02",
+          "concept": "Client-Side Persistence & TinyDB Serialization",
+          "scenario": "A student builds a quiz app with 5 screens. When the player navigates from Screen1 to Screen2, their score resets to 0.",
+          "question": "Why did the score reset, and how should cross-screen state be maintained?",
+          "options": [
+            "The phone battery is low.",
+            "Each screen in App Inventor/Kodular initializes its own independent memory scope; the student must store the score in TinyDB.StoreValue with a tag or pass it via `open another screen with start value`.",
+            "Scores cannot be saved on Android devices.",
+            "The student forgot to plug in headphones."
+          ],
+          "correct_index": 1,
+          "explanation": "Mobile screens are created and destroyed as discrete activities in Android. Global variables are scoped to a single screen instance; persistent cross-screen state requires local key-value storage (TinyDB) or explicit intent parameter bundles."
+        },
+        {
+          "question_id": "MOB-Q03",
+          "concept": "Asynchronous REST API Integration & JSON Parsing",
+          "scenario": "A mobile weather app requests current temperatures using the Web.Get component. The server responds with {\"location\": \"London\", \"temp\": 18.5, \"humidity\": 65}.",
+          "question": "Which block sequence correctly extracts the temperature value to display in a label?",
+          "options": [
+            "Set Label.Text directly to responseContent.",
+            "Parse responseContent using Web.JsonTextDecodeWithDictionaries and look up the key \"temp\" using `get value for key in dictionary`.",
+            "Split the string by spaces and pick item 1.",
+            "Delete the dictionary and ask the user to type the temperature."
+          ],
+          "correct_index": 1,
+          "explanation": "Web APIs return serialized JSON strings. Parsing them into native dictionary key-value structures allows resilient, programmatic access to nested keys without fragile string slicing."
+        }
+      ],
+      "capstone_project": {
+        "title": "Smart Community Alert & Sensor Mobile Application",
+        "brief": "Architect and publish a functional Android mobile application (.apk / .aia) utilizing mobile sensors (GPS, Accelerometer, or Camera), local state persistence (TinyDB), and REST API integration (OpenWeather, News, or Emergency Dispatch).",
+        "deliverables": [
+          "1. Complete modular app project file (.aia) with clean component naming conventions.",
+          "2. Responsive UI design utilizing vertical and horizontal arrangements adapted for both phone and tablet viewports.",
+          "3. Multi-screen navigation architecture with safe parameter passing and persistent user profile storage in TinyDB.",
+          "4. Working sensor integration with error handling for denied runtime permissions (Location/Camera)."
+        ],
+        "rubric": {
+          "functional_execution": {
+            "weight": 30,
+            "criteria": "Zero crash bugs; all sensor events trigger smoothly; data persists across app closing and relaunching."
+          },
+          "event_driven_architecture": {
+            "weight": 25,
+            "criteria": "Clean block logic; proper use of procedures/functions with arguments; robust JSON decoding and error trapping."
+          },
+          "mobile_ui_ux": {
+            "weight": 25,
+            "criteria": "Touch-friendly tap targets (minimum 48x48dp), high-contrast text, clear visual hierarchy, fluid screen transitions."
+          },
+          "innovation_and_utility": {
+            "weight": 20,
+            "criteria": "Real-world utility addressing a community or school need; thoughtful privacy handling for location and user data."
+          }
+        }
+      }
+    },
+    {
+      "course_id": "COURSE-GAME-DEV",
+      "track_id": "track_5_game_dev",
+      "course_title": "Game Engine Architecture & Spatial Scripting",
+      "tier": "Innovators (Ages 11-17)",
+      "total_lessons": 20,
+      "assessment_type": "Spatial Lua Physics Exam + 3D Multiplayer Capstone",
+      "situational_exam": [
+        {
+          "question_id": "GAME-Q01",
+          "concept": "Client-Server Authoritative Architecture",
+          "scenario": "In Roblox Studio, a developer writes a LocalScript inside a player's character that gives the player 1,000 gold coins when they touch a chest. When other players view the leaderboard, the player still has 0 gold coins.",
+          "question": "Why did the gold update only on the player's screen, and what is the secure solution under FilteringEnabled?",
+          "options": [
+            "The player's computer has internet lag.",
+            "Under FilteringEnabled, client-side changes in LocalScripts do not replicate to the server; the client must fire a RemoteEvent to a server Script that validates the chest distance and securely increments the gold on the server.",
+            "Gold cannot be saved in Roblox games.",
+            "Roblox requires all scripts to be written in Python."
+          ],
+          "correct_index": 1,
+          "explanation": "Modern multiplayer game engines enforce server authority. If clients could modify game state directly, exploiters could inject infinite currency. Clients fire requests via RemoteEvents, and the server validates proximity and updates shared state."
+        },
+        {
+          "question_id": "GAME-Q02",
+          "concept": "3D Spatial Vectors & CFrame Matrix Math",
+          "scenario": "A game developer wants to spawn a magic laser beam exactly 5 studs directly in front of the player's camera, pointing along the camera's forward vector.",
+          "question": "Which Lua spatial transformation computes this coordinate accurately regardless of which way the player is facing?",
+          "options": [
+            "Vector3.new(camera.Position.X + 5, camera.Position.Y, camera.Position.Z)",
+            "camera.CFrame * CFrame.new(0, 0, -5) (using CFrame multiplication along the negative Z-axis).",
+            "camera.Position + Vector3.new(5, 5, 5)",
+            "CFrame.Angles(0, 90, 0)"
+          ],
+          "correct_index": 1,
+          "explanation": "In 3D game engines (Roblox, Unity), camera forward corresponds to the negative local Z-axis. Multiplying the camera's CFrame (Coordinate Frame) by a local offset transforms the offset by the camera's rotational matrix."
+        },
+        {
+          "question_id": "GAME-Q03",
+          "concept": "Game Loop & Frame Delta Time",
+          "scenario": "A developer writes a custom fireball projectile in RunService.Heartbeat:Connect(function() fireball.Position = fireball.Position + Vector3.new(0, 0, 1) end). On a 60 FPS monitor, the fireball travels at normal speed. On a 144 FPS monitor, it travels more than twice as fast.",
+          "question": "How must the movement formula be adjusted to ensure frame-rate independent physics?",
+          "options": [
+            "Lock all player monitors to 30 FPS.",
+            "Multiply the velocity vector by step (the delta time parameter passed by Heartbeat): velocity * deltaTime.",
+            "Add a wait(1) block inside the connection.",
+            "Delete the fireball after 1 second."
+          ],
+          "correct_index": 1,
+          "explanation": "Frame-rate independence requires scaling movement by delta time (seconds elapsed since the previous frame). This guarantees consistent real-world velocity regardless of whether the game runs at 30, 60, or 144 FPS."
+        }
+      ],
+      "capstone_project": {
+        "title": "Infinite Horizon: 3D Multiplayer Obstacle Arena",
+        "brief": "Architect, model, and script a fully playable 3D multiplayer arena game in Roblox Studio or GameMaker Studio. The project must implement server-authoritative scoring, custom procedural hazards, Leaderstats data persistence (DataStoreService), and visual juice/particles.",
+        "deliverables": [
+          "1. Published place/experience (.rbxl or GameMaker package) featuring at least 3 distinct obstacle stages.",
+          "2. Secure client-server communication using RemoteEvents with server-side validation against teleportation/exploits.",
+          "3. Persistent player leaderboard saving Stage, Coins, and Badges using DataStoreService with pcall error handling.",
+          "4. Dynamic audio design and ParticleEmitter VFX on checkpoints, hazards, and victory podiums."
+        ],
+        "rubric": {
+          "multiplayer_architecture": {
+            "weight": 30,
+            "criteria": "Strict separation of Client (LocalScript) and Server (Script); zero client replication vulnerabilities; robust DataStore error handling."
+          },
+          "spatial_scripting_and_physics": {
+            "weight": 25,
+            "criteria": "Smooth character controllers, accurate raycasting for hazards, predictable CFrame rotations, and delta-time scaled movement."
+          },
+          "game_feel_and_level_design": {
+            "weight": 25,
+            "criteria": "Engaging difficulty progression, responsive obstacle hitboxes, rewarding particle VFX, and immersive soundscapes."
+          },
+          "code_organization_and_optimization": {
+            "weight": 20,
+            "criteria": "Modular ModuleScripts, clean event disconnections (:Disconnect()) to prevent memory leaks, and descriptive Lua naming conventions."
+          }
+        }
+      }
+    },
+    {
+      "course_id": "COURSE-DIGITAL-SAFETY",
+      "track_id": "track_cyber_safety",
+      "course_title": "Cyber Defense, Digital Literacy & Network Safety",
+      "tier": "Foundations & Creators (Ages 8-16)",
+      "total_lessons": 12,
+      "assessment_type": "Situational Cyber Threat Diagnostic + Security Lab Capstone",
+      "situational_exam": [
+        {
+          "question_id": "SEC-Q01",
+          "concept": "Phishing & Domain Impersonation (Homoglyphs)",
+          "scenario": "A student receives an urgent email claiming: 'Your account is suspended! Log in immediately at www.g00gle-security-verify.com to prevent account termination!'",
+          "question": "What two red flags identify this as a malicious social engineering attack?",
+          "options": [
+            "The email uses black text and arrives on a Tuesday.",
+            "Artificial urgency designed to cause panic, and a suspicious non-authentic domain replacing the letter 'o' with zeros ('00') and using extra hyphenated keywords.",
+            "The email contains an exclamation point.",
+            "The email has an email signature."
+          ],
+          "correct_index": 1,
+          "explanation": "Phishers rely on psychological manipulation (artificial urgency/fear) and spoofed look-alike domains (homoglyphs/typosquatting) to deceive users into surrendering credentials."
+        },
+        {
+          "question_id": "SEC-Q02",
+          "concept": "Cryptographic Authentication & Multi-Factor Security",
+          "scenario": "A student uses the password password123 across their school portal, email, gaming accounts, and social media. One of their gaming accounts is compromised in a data breach.",
+          "question": "Why are all of the student's other accounts now at immediate risk, and what is the best defensive countermeasure?",
+          "options": [
+            "The hacker can guess passwords through computer magic; the student should delete the internet.",
+            "Credential stuffing: hackers use automated bots to test leaked passwords across hundreds of popular services. The student must use unique passwords managed by a password manager and enable Multi-Factor Authentication (MFA).",
+            "The hacker can only access accounts on the same day.",
+            "The student only needs to turn off their Wi-Fi router."
+          ],
+          "correct_index": 1,
+          "explanation": "Password reuse enables credential stuffing attacks across unrelated platforms. Multi-Factor Authentication (MFA) requires a second independent verification factor (time-based token, biometric), stopping attacks even if the password is leaked."
+        },
+        {
+          "question_id": "SEC-Q03",
+          "concept": "Digital Footprint & Image Metadata (EXIF)",
+          "scenario": "A student takes a photo with their smartphone in their bedroom and posts the original image file directly to a public forum.",
+          "question": "What hidden data embedded inside the image file could accidentally reveal their exact home address?",
+          "options": [
+            "The color palette of their wall paint.",
+            "EXIF metadata containing precise GPS latitude and longitude coordinates, camera model, and timestamp.",
+            "The battery percentage of the camera.",
+            "The file size in kilobytes."
+          ],
+          "correct_index": 1,
+          "explanation": "Exchangeable Image File Format (EXIF) headers automatically record camera settings and fine-grained GPS geolocations. Unless stripped before uploading, EXIF data leaks physical locations."
+        }
+      ],
+      "capstone_project": {
+        "title": "Cyber Guardian: The Interactive Threat Defense & Privacy Audit",
+        "brief": "Conduct a comprehensive security and privacy audit of a simulated school digital environment. You will engineer a Password Strength Validator, design an Anti-Phishing Interactive Trainer, and draft a Zero-Trust Digital Citizenship Code of Conduct.",
+        "deliverables": [
+          "1. Interactive Password Entropy & Strength Checker calculating crack time against brute-force dictionary attacks.",
+          "2. 5-Scenario Phishing Simulation Lab training users to identify spear phishing, spear vishing, and URL manipulation.",
+          "3. Digital Footprint & Data Privacy Checklist guiding young creators on disabling EXIF location tags and configuring privacy settings on social and gaming accounts.",
+          "4. Responsible AI & Intellectual Property Charter establishing ethical guidelines for using AI tools and protecting original work."
+        ],
+        "rubric": {
+          "threat_analysis_rigor": {
+            "weight": 30,
+            "criteria": "Accurate identification of threat vectors (malware, phishing, social engineering, metadata leakage); technically sound explanations."
+          },
+          "interactive_lab_design": {
+            "weight": 25,
+            "criteria": "Engaging simulation scenarios that challenge the user to apply defensive security concepts in real-world contexts."
+          },
+          "practical_actionability": {
+            "weight": 25,
+            "criteria": "Clear step-by-step guidance for configuring MFA, managing passwords, and protecting personal data."
+          },
+          "ethics_and_digital_citizenship": {
+            "weight": 20,
+            "criteria": "Thorough consideration of ethical technology use, empathy online, and intellectual property respect."
+          }
+        }
+      }
+    }
+  ]
+};

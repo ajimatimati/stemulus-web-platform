@@ -1,0 +1,521 @@
+
+
+STEMULUS CODING ACADEMY • CURATED CURRICULUM
+Scratch Progressive Mastery Pathway
+A sweet, carefully sequenced 36-project learning journey from first click to advanced 3D arcade creations. Every project uses 100% native Scratch library sprites & backdrops, keeping projects lightweight, intuitive, and brilliant.
+
+
+Verified Classroom & Studio Access: 
+• Official Educator Account: @STEMulusKids-Tech   |   • Live Class Studio: Showcase Studio (ID: 52032160)
+
+[LEVEL 1] First Sparks: Direct Cause & Effect
+Target: Ages 5–7 • Absolute Beginners  •  Complexity: 1–4 BlocksThe golden first touch for young kids. The child clicks a sprite, and the computer instantly reacts with sound, scale, or color changes. Zero math, zero frustration, 100% delight.
+
+
+Step / Code
+
+Project Title & Link
+
+Scratch Assets
+
+Core Blocks
+
+Pedagogical Brilliance
+
+Step 01J-A01
+
+Click to Meow
+▶ Open on Scratch
+
+Scratch Cat | Blue Sky
+
+when this sprite clicked, play sound Meow, say Hello!
+
+The quintessential first-touch coding lesson. Immediate tactile feedback connecting mouse click to audio & visual output.
+
+Step 02J-A03
+
+Color Morph Balloon
+▶ Open on Scratch
+
+Balloon | Rays Backdrop
+
+when this sprite clicked, change color effect by 25, play sound Pop
+
+Vibrant visual transformation. Every tap shifts the balloon through the rainbow with an auditory pop.
+
+Step 03J-A02
+
+Grow and Shrink Cat
+▶ Open on Scratch
+
+Scratch Cat | Room Backdrop
+
+when this sprite clicked, change size by 20, wait 0.5, change size by -20
+
+Teaches reversible scale transformations and time delays (`wait`) in just 4 simple blocks.
+
+Step 04J-A08
+
+Roaring Lion
+▶ Open on Scratch
+
+Lion | Savanna
+
+when this sprite clicked, repeat 5 [change size by 10], play sound Roar
+
+Introduces the mini-repeat loop to create an explosive, roaring visual shockwave.
+
+[LEVEL 2] Living Characters: Loops & Animation
+Target: Ages 6–8 • Early Elementary  •  Complexity: 3–6 BlocksTeaching the computer to repeat actions automatically. Students learn how flipping costumes creates real motion (the principle of film and cartoons) and how forever loops run continuously.
+
+
+Step / Code
+
+Project Title & Link
+
+Scratch Assets
+
+Core Blocks
+
+Pedagogical Brilliance
+
+Step 05J-A04
+
+Spinning Monkey
+▶ Open on Scratch
+
+Monkey | Jungle Backdrop
+
+repeat 10 [turn right 36 degrees, wait 0.05]
+
+Unlocks circular geometry naturally: 10 repeats of 36 degrees yields a flawless full somersault.
+
+Step 06J-A07
+
+Flapping Bat
+▶ Open on Scratch
+
+Bat (Costumes a/b/c/d) | Night City
+
+forever [next costume, wait 0.2]
+
+Classic frame-by-frame cartoon animation. Transforms static sprites into flying, living creatures.
+
+Step 07J-A10
+
+Jumping Hare
+▶ Open on Scratch
+
+Hare | Meadow Backdrop
+
+when space key pressed, change y by 60, wait 0.2, change y by -60
+
+First keyboard interactivity! Connects the spacebar to vertical y-axis jumping motion.
+
+Step 08A01
+
+Waving Scratch Cat
+▶ Open on Scratch
+
+Scratch Cat | Colorful City
+
+when flag clicked, repeat 6 [switch costume, wait 0.2], meow audio
+
+A richer, multi-frame character welcome that feels like a polished television cartoon intro.
+
+Step 09A10
+
+Aquarium Fish Swim
+▶ Open on Scratch
+
+Fish 1, Fish 2, Starfish | Underwater 1
+
+forever [move 3 steps, if on edge bounce, next costume]
+
+Multi-sprite ambient ecosystem. Creates a peaceful digital aquarium where independent sprites swim.
+
+[LEVEL 3] Storytelling & Dialogue: Directing a Scene
+Target: Ages 6–8 • Narrative Coders  •  Complexity: 4–8 BlocksConnecting code to language and storytelling. Students script character conversations, choreograph turn-taking, and direct backdrop changes like a theater director.
+
+
+Step / Code
+
+Project Title & Link
+
+Scratch Assets
+
+Core Blocks
+
+Pedagogical Brilliance
+
+Step 10J-S01
+
+Say Hello to Scratch Cat
+▶ Open on Scratch
+
+Scratch Cat | Blue Sky
+
+say [Hello!] for 2 secs, say [Welcome to STEMulus!] for 2 secs
+
+Introduces narrative pacing and timed speech bubbles, turning code into written self-expression.
+
+Step 11J-S03
+
+The Knock Knock Joke
+▶ Open on Scratch
+
+Scratch Cat, Bear | Brick Wall
+
+Timed say and wait blocks alternating between two characters
+
+Teaches conversational rhythm. Sprites take turns so they never speak over each other.
+
+Step 12J-S07
+
+Two Friends Greeting
+▶ Open on Scratch
+
+Dee, Devon | School Playground
+
+Broadcast message or synchronized dialogue delays
+
+Simulates a genuine social interaction between two human characters meeting at school.
+
+Step 13J-S09
+
+Switch the Scene
+▶ Open on Scratch
+
+Scratch Cat | Bedroom, Playground, Space
+
+when space key pressed, next backdrop, play sound Cheer
+
+Teaches scene management. The student learns that changing backdrops transitions the story world.
+
+Step 14S01
+
+Meet Scratch and Abby
+▶ Open on Scratch
+
+Scratch Cat, Abby | Theater Stage
+
+Costume expressions, synchronized cues, musical intro
+
+A full theatrical skit demonstrating how professional digital storybooks and animations are directed.
+
+[LEVEL 4] Interactive Toys & Clickers: User Input
+Target: Ages 7–9 • Interactive Explorers  •  Complexity: 5–9 BlocksConnecting user input directly to game states. Students program mouse tracking, random coordinate hops, and rapid-response clickers.
+
+
+Step / Code
+
+Project Title & Link
+
+Scratch Assets
+
+Core Blocks
+
+Pedagogical Brilliance
+
+Step 15J-A13
+
+Slithering Snake
+▶ Open on Scratch
+
+Snake | Garden Backdrop
+
+forever [point towards mouse-pointer, move 4 steps]
+
+Instant kinetic feedback! The snake smoothly tracks the player's cursor across the canvas in real time.
+
+Step 16J-G01
+
+Pop the Balloon Blitz
+▶ Open on Scratch
+
+Balloon | Party Backdrop
+
+when this sprite clicked, change score by 1, go to random position, play Pop
+
+The world's purest complete game loop: User action -> Audio feedback -> Data increment -> State reset.
+
+Step 17J-G03
+
+Catch the Cat
+▶ Open on Scratch
+
+Scratch Cat | Playground
+
+forever [wait 1 sec, go to random pos], when clicked [score + 1]
+
+Whack-a-mole mechanics. Tests reaction speed by pitting the player's reflexes against an automated timer.
+
+Step 18J-G08
+
+Whack-a-Monkey
+▶ Open on Scratch
+
+Monkey | Jungle
+
+hide, wait pick random 1 to 3, go to random pos, show, wait 1, hide
+
+Introduces controlled chaos using `pick random () to ()` to make game difficulty unpredictable and exciting.
+
+[LEVEL 5] First True Games: Variables & Catchers
+Target: Ages 7–10 • Game Designers  •  Complexity: 8–14 BlocksTransforming toys into full games with clear win/loss conditions. Students master variables (Score, Lives, Timer) and sensing collision between falling objects and player baskets.
+
+
+Step / Code
+
+Project Title & Link
+
+Scratch Assets
+
+Core Blocks
+
+Pedagogical Brilliance
+
+Step 19J-G02
+
+Catch the Falling Apple
+▶ Open on Scratch
+
+Apple, Bowl | Tree Backdrop
+
+Bowl: set x to mouse x; Apple: change y by -5, if touching Bowl score + 1
+
+The classic arcade catcher. Teaches separation of player paddle movement and automated object gravity.
+
+Step 20G01
+
+Balloon Pop Blitz (Core Edition)
+▶ Open on Scratch
+
+Balloons, Party Backdrop
+
+Multi-colored balloons floating up, timer countdown variable, combo scoring
+
+Elevates the junior clicker into an arcade sprint with a 30-second countdown timer and game over screen.
+
+Step 21G02
+
+Apple Catcher Basket
+▶ Open on Scratch
+
+Apple, Basket | Orchard
+
+Falling speed acceleration variable, miss detection (y < -160 loses life)
+
+Introduces progressive difficulty: as score increases, apple falling speed accelerates dynamically.
+
+Step 22J-G14
+
+Fruit Basket Catcher
+▶ Open on Scratch
+
+Apple, Bananas, Strawberries, Bowl
+
+Multiple fruit types with costume switching and distinct score values
+
+Visual variety using built-in fruit sprites, rewarding students for catching rare bonus items.
+
+[LEVEL 6] Avatar Controls & Mazes: 2D Coordinates
+Target: Ages 8–10 • Coordinate Navigators  •  Complexity: 10–18 BlocksTrue 2D player navigation. Students program responsive 4-directional arrow key controls, sense maze boundaries, and create obstacle-dodging adventures.
+
+
+Step / Code
+
+Project Title & Link
+
+Scratch Assets
+
+Core Blocks
+
+Pedagogical Brilliance
+
+Step 23J-G05
+
+Simple Arrow Maze
+▶ Open on Scratch
+
+Beetle / Mouse, Cheese | Clean Maze
+
+4 arrow key scripts (change x/y), if touching wall color bounce back
+
+The ideal beginner maze: crystal clear 4-direction navigation and collision boundary logic without complexity.
+
+Step 24G03
+
+Mouse Maze Escape
+▶ Open on Scratch
+
+Mouse, Cheese | Labyrinth Backdrop
+
+Continuous velocity sensing, wall reflection, cheese victory broadcast
+
+Smooth, lag-free maze engine with celebratory win fanfare when reaching the cheese goal.
+
+Step 25J-G15
+
+Frog Pond Hop
+▶ Open on Scratch
+
+Frog, Lily Pad, Water Backdrop
+
+Hop distance steps, boundary reset if falling into deep water
+
+Grid-based discrete hopping. Teaches safe zone vs. hazard zone state logic.
+
+Step 26J-G19
+
+Road Crossing Frogger Junior
+▶ Open on Scratch
+
+Frog, City Bus | City Road
+
+Autonomous traffic patrolling horizontally, timing player cross
+
+Teaches timing and pattern recognition as the student times their crossing between moving buses.
+
+[LEVEL 7] Arcade Physics: Gravity, Jumpers & Pong
+Target: Ages 9–11 • Physics Engineers  •  Complexity: 15–25 BlocksSimulating real-world physical forces. Students write gravity loops, angle reflection formulas for bouncing balls, and timing-based jump mechanics.
+
+
+Step / Code
+
+Project Title & Link
+
+Scratch Assets
+
+Core Blocks
+
+Pedagogical Brilliance
+
+Step 27J-G06
+
+Keep the Balloon Up
+▶ Open on Scratch
+
+Balloon, Paddle | Sky
+
+Balloon y-drop, paddle upward impulse on touch, floor hazard
+
+A gentle first simulation of upward impulse and falling momentum that feels remarkably natural.
+
+Step 28G04
+
+Pong Solo Wall Bounce
+▶ Open on Scratch
+
+Ball, Paddle, Red Line | Neon Tunnel
+
+point in direction (180 - direction), speed multiplier variable
+
+The cornerstone of video game history. Demystifies geometric angles and paddle deflection in under 20 blocks.
+
+Step 29G07
+
+Dino Desert Jump
+▶ Open on Scratch
+
+Dinosaur, Cactus | Desert
+
+Cactus scrolls left, Dino jumps with y-velocity gravity loop
+
+Chrome Dino runner clone using 100% native assets! Pure arcade thrill requiring precise jumping reflexes.
+
+Step 30G08
+
+Space Asteroid Dodge
+▶ Open on Scratch
+
+Rocketship, Rocks | Stars Backdrop
+
+Smooth ship steering, multi-speed tumbling asteroid rocks
+
+Thrilling space survival requiring students to balance evasive maneuvering with score bonuses.
+
+Step 31G10
+
+Fruit Salad Avoid Bombs
+▶ Open on Scratch
+
+Apple, Banana, Bomb / Hazard | Kitchen
+
+Compound boolean conditions (if touching fruit vs. if touching bomb)
+
+Teaches logical operators (`and`, `or`, `not`) and risk-vs-reward gameplay decisions.
+
+[LEVEL 8] Studio Masters: Clones, Platformers & 3D Runner
+Target: Ages 10–12 • Advanced Creators  •  Complexity: 25+ BlocksThe pinnacle of block-based programming. Students master dynamic sprite cloning, authentic Mario-style platformer physics with ground sensing, and 3D pseudo-perspective.
+
+
+Step / Code
+
+Project Title & Link
+
+Scratch Assets
+
+Core Blocks
+
+Pedagogical Brilliance
+
+Step 32G13
+
+Snake Nibbler
+▶ Open on Scratch
+
+Snake Head, Food Dot | Retro Grid
+
+Clone body segment trail following head, grid step loop, self-bite collision
+
+Classic retro Nokia Snake. Uses clone life timers to maintain a growing body trail behind the head.
+
+Step 33G14
+
+Brick Breaker Arcade
+▶ Open on Scratch
+
+Ball, Paddle, Brick Clones | Arcade
+
+Nested loop clone grid generator (4 rows x 6 cols), hit detection
+
+Demonstrates the power of cloning: a single brick sprite generates an entire colorful breakable wall!
+
+Step 34G15
+
+Space Invaders Defense
+▶ Open on Scratch
+
+Rocketship, Alien, Laser | Space
+
+Alien fleet marching & dropping, player laser projectile cloning
+
+Multi-clone interaction: clones detecting collisions with other clones, simulating classic 1978 arcade action.
+
+Step 35G17
+
+Platformer Hero Jump & Climb
+▶ Open on Scratch
+
+Hero Cat | Castle Platform Backdrop
+
+x-velocity + friction, y-velocity gravity, ground collision check
+
+The holy grail of Scratch coding! A responsive, authentic platformer engine with zero glitching.
+
+Step 36G20
+
+Subway Surfers 3D Track Runner
+▶ Open on Scratch
+
+Runner Cat, Trains, Rails (100% Vector Built-in)
+
+3-lane perspective scaling (distance z-factor), lane-switching jump & slide
+
+The master capstone project! Proves that Scratch can produce a fast-paced 3D runner using purely native assets.
+
+Tutor & Parent Implementation Best Practices
+
+1. The Three-Moment Lesson Flow (45–60 Minutes):   • Explore (10 Mins): Open the completed project link, let the student play, and ask 'What happens when you click? What code blocks do you think make that happen?'   • Build (25 Mins): Start from a clean Scratch project. Follow the progressive block sequence step-by-step together.   • Remix & Shine (15 Mins): Ask the student to customize one thing (e.g., change the sound, change the animal costume, or add a bonus score rule).2. Zero External Assets Rule:   Every project in this curated pathway uses 100% built-in Scratch library sprites and backdrops. This guarantees:   • Instant loading with zero 404 broken image bugs.   • Children can easily replicate every asset inside Scratch without hunting for files on their computer.   • Safe, kid-friendly vector graphics that scale cleanly at full screen.3. Mastery Pacing Recommendations:   • Ages 5–7: Complete 1 to 2 projects per week across Levels 1–3.   • Ages 7–9: Progress smoothly through Levels 3–6.   • Ages 9–12: Tackle Levels 6–8, culminating in the 3D Subway Surfers runner capstone.

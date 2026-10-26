@@ -27,6 +27,15 @@ const DashboardEngine = (function() {
     // Default seed data for the STEMulus system
     const DEFAULT_DATA = {
     "users": {
+        "oojekudo@gmail.com": {
+            "id": "usr-tut-107b",
+            "name": "Ojekudo Oghenemaro Emmanuel",
+            "email": "oojekudo@gmail.com",
+            "role": "tutor",
+            "password": "ed9f63ccbac9636a57844776385a1169871fa0b42e9b83a98585e648fa058493",
+            "phone": "08076000020",
+            "status": "active"
+        },
         "tutor@stemuluskidstech.com": {
             "id": "usr-tut-101",
             "name": "Sarah Jane",
@@ -170,495 +179,405 @@ const DashboardEngine = (function() {
         }
     },
     "students": [
+  {
+    "id": "std-1001",
+    "firstName": "Daniel",
+    "lastName": "M.",
+    "age": 11,
+    "gender": "Male",
+    "experience": "Beginner",
+    "program": "Python Programming",
+    "status": "active",
+    "remindersPaused": false,
+    "parentEmail": "parent@stemuluskidstech.com",
+    "parentName": "John Doe",
+    "parentPhone": "+2347052466716",
+    "birthday": "2015-06-01",
+    "progress": 65,
+    "avatarColor": "bg-blue-700",
+    "tutorName": "Sarah Jane",
+    "tutorEmail": "tutor@stemuluskidstech.com",
+    "tutorId": "tut-101",
+    "classroomLink": "https://meet.google.com/stm-demo-dan",
+    "skills": {
+      "logic": 85,
+      "loops": 80,
+      "variables": 90,
+      "syntax": 75,
+      "projects": 70
+    },
+    "metrics": {
+      "attended": 14,
+      "total": 24,
+      "projects": 3,
+      "lines": 1450
+    },
+    "meetLink": "https://meet.google.com/stm-demo-dan",
+    "billing": {
+      "firstClassDate": "2026-10-01",
+      "anchorDay": 1,
+      "cycleStartDate": "2026-10-01",
+      "nextDueDate": "2026-11-01",
+      "monthlyFee": 75000,
+      "packageRate": 75000,
+      "tier": "intermediate",
+      "octoberBridge": 37500,
+      "nextCycleFee": 75000,
+      "combinedRealignment": 112500,
+      "status": "renewal_pending",
+      "uncollectedOctober": true,
+      "notes": "Intermediate package (Age 13): ₦75,000/month. October bridge (Oct 19-31, 4 sessions): ₦37,500. November cycle: ₦75,000. Realignment total: ₦112,500 (or ₦37,500 bridge now + ₦75,000 on Nov 1).",
+      "history": [
         {
-            "id": "std-1001",
-            "firstName": "Daniel",
-            "lastName": "M.",
-            "age": 11,
-            "gender": "Male",
-            "experience": "Beginner",
-            "program": "Python Programming",
-            "status": "active",
-            "remindersPaused": false,
-            "parentEmail": "parent@stemuluskidstech.com",
-            "parentName": "John Doe",
-            "parentPhone": "+2347052466716",
-            "birthday": "2015-06-01",
-            "progress": 65,
-            "avatarColor": "bg-blue-700",
-            "tutorName": "Sarah Jane",
-            "tutorEmail": "tutor@stemuluskidstech.com",
-            "tutorId": "tut-101",
-            "classroomLink": "https://meet.google.com/nxg-rbcg-nsr",
-            "skills": {
-                "logic": 85,
-                "loops": 80,
-                "variables": 90,
-                "syntax": 75,
-                "projects": 70
-            },
-            "metrics": {
-                "attended": 14,
-                "total": 24,
-                "projects": 3,
-                "lines": 1450
-            },
-            "meetLink": "https://meet.google.com/nxg-rbcg-nsr",
-            "billing": {
-                "firstClassDate": "2026-10-01",
-                "anchorDay": 1,
-                "cycleStartDate": "2026-10-01",
-                "nextDueDate": "2026-11-01",
-                "monthlyFee": 35000,
-                "status": "current",
-                "history": [
-                    {
-                        "id": "pay-std-1001-rec1",
-                        "reference": "REC-2026-8819",
-                        "amount": 35000,
-                        "formattedAmount": "₦35,000",
-                        "date": "2026-10-01",
-                        "method": "Bank Transfer (Wema)",
-                        "notes": "Monthly Tuition Renewal - Python Track",
-                        "cyclePaidFor": "2026-10-01 to 2026-11-01",
-                        "recordedBy": "Admin",
-                        "createdAt": "2026-10-01T10:00:00Z"
-                    }
-                ]
-            }
-        },
-        {
-            "id": "std-1002",
-            "firstName": "Sarah",
-            "lastName": "M.",
-            "age": 8,
-            "gender": "Female",
-            "experience": "None",
-            "program": "Scratch Creators",
-            "status": "active",
-            "remindersPaused": false,
-            "parentEmail": "parent@stemuluskidstech.com",
-            "parentName": "John Doe",
-            "parentPhone": "+2347052466716",
-            "birthday": "2018-05-31",
-            "progress": 40,
-            "avatarColor": "bg-orange-700",
-            "tutorName": "Sarah Jane",
-            "tutorEmail": "tutor@stemuluskidstech.com",
-            "tutorId": "tut-101",
-            "classroomLink": "https://meet.google.com/gua-sisg-tei",
-            "skills": {
-                "logic": 60,
-                "loops": 70,
-                "variables": 40,
-                "syntax": 55,
-                "projects": 75
-            },
-            "metrics": {
-                "attended": 8,
-                "total": 20,
-                "projects": 2,
-                "lines": 0
-            },
-            "meetLink": "https://meet.google.com/gua-sisg-tei",
-            "billing": {
-                "firstClassDate": "2026-10-05",
-                "anchorDay": 5,
-                "cycleStartDate": "2026-10-05",
-                "nextDueDate": "2026-11-05",
-                "monthlyFee": 35000,
-                "status": "current",
-                "history": [
-                    {
-                        "id": "pay-std-1002-rec1",
-                        "reference": "REC-2026-9240",
-                        "amount": 35000,
-                        "formattedAmount": "₦35,000",
-                        "date": "2026-10-05",
-                        "method": "Remitly Transfer",
-                        "notes": "Monthly Tuition Renewal - Scratch Track",
-                        "cyclePaidFor": "2026-10-05 to 2026-11-05",
-                        "recordedBy": "Admin",
-                        "createdAt": "2026-10-05T14:30:00Z"
-                    }
-                ]
-            }
-        },
-        {
-            "id": "std-1003-8ecr",
-            "firstName": "Abdulsalam",
-            "lastName": "Modesire Shittu",
-            "age": 14,
-            "birthday": "",
-            "hasExplicitBirthday": false,
-            "parentName": "Abiodun Shittu",
-            "parentEmail": "abiodunadebiyis@gmail.com",
-            "parentPhone": "07438002358",
-            "program": "Python Programming",
-            "status": "active",
-            "remindersPaused": false,
-            "progress": 0,
-            "tutorName": "Sarah Jane",
-            "tutorEmail": "tutor@stemuluskidstech.com",
-            "tutorId": "tut-101",
-            "notes": "Relationship: Mother | Grade: Y10 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
-            "classroomLink": "https://meet.google.com/zhv-jquf-rem",
-            "skills": {
-                "logic": 50,
-                "loops": 50,
-                "variables": 50,
-                "syntax": 50,
-                "projects": 50
-            },
-            "metrics": {
-                "attended": 0,
-                "total": 8,
-                "projects": 0,
-                "lines": 0
-            },
-            "meetLink": "https://meet.google.com/zhv-jquf-rem"
-        },
-        {
-            "id": "std-1004-e1rm",
-            "firstName": "Alexandra",
-            "lastName": "Sotayo",
-            "age": 13,
-            "birthday": "",
-            "hasExplicitBirthday": false,
-            "parentName": "Alexandra Sotayo",
-            "parentEmail": "abmsotayo@googlemail.com",
-            "parentPhone": "+447575353416",
-            "program": "Python Programming",
-            "status": "active",
-            "remindersPaused": false,
-            "progress": 0,
-            "tutorName": "Sarah Jane",
-            "tutorEmail": "tutor@stemuluskidstech.com",
-            "tutorId": "tut-101",
-            "notes": "Relationship: Father | Grade: Year 9 | Experience: Some (Scratch, Basic coding) | Photo Consent: No",
-            "classroomLink": "https://meet.google.com/yre-naci-zmp",
-            "skills": {
-                "logic": 50,
-                "loops": 50,
-                "variables": 50,
-                "syntax": 50,
-                "projects": 50
-            },
-            "metrics": {
-                "attended": 0,
-                "total": 8,
-                "projects": 0,
-                "lines": 0
-            },
-            "meetLink": "https://meet.google.com/yre-naci-zmp"
-        },
-        {
-            "id": "std-1005-6f4y",
-            "firstName": "Annabelle",
-            "lastName": "Sotayo",
-            "age": 10,
-            "birthday": "",
-            "hasExplicitBirthday": false,
-            "parentName": "Matt Sotayo",
-            "parentEmail": "abmsotayo@googlemail.com",
-            "parentPhone": "+447575353416",
-            "program": "Python Programming",
-            "status": "active",
-            "remindersPaused": false,
-            "progress": 0,
-            "tutorName": "Sarah Jane",
-            "tutorEmail": "tutor@stemuluskidstech.com",
-            "tutorId": "tut-101",
-            "notes": "Relationship: Father | Grade: Year 5 | Experience: Some (Scratch, Basic coding) | Photo Consent: No",
-            "classroomLink": "https://meet.google.com/kos-rxkp-bkd",
-            "skills": {
-                "logic": 50,
-                "loops": 50,
-                "variables": 50,
-                "syntax": 50,
-                "projects": 50
-            },
-            "metrics": {
-                "attended": 0,
-                "total": 8,
-                "projects": 0,
-                "lines": 0
-            },
-            "meetLink": "https://meet.google.com/kos-rxkp-bkd"
-        },
-        {
-            "id": "std-1006-il0c",
-            "firstName": "Brian",
-            "lastName": "Osenedum Chukwuka-Mordi",
-            "age": 9,
-            "birthday": "",
-            "hasExplicitBirthday": false,
-            "parentName": "Maryrose Chukwumah-Mordi",
-            "parentEmail": "Chukwumah.maryrose@gmail.com",
-            "parentPhone": "44 07876180911",
-            "program": "Scratch Creators",
-            "status": "active",
-            "remindersPaused": false,
-            "progress": 0,
-            "tutorName": "Sarah Jane",
-            "tutorEmail": "tutor@stemuluskidstech.com",
-            "tutorId": "tut-101",
-            "notes": "Relationship: Mother | Grade: Grade 5 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes | Notes: I consent to his work project  to be shared but not his personal photo graph without further consent.",
-            "classroomLink": "https://meet.google.com/wvh-vwbr-hoq",
-            "skills": {
-                "logic": 50,
-                "loops": 50,
-                "variables": 50,
-                "syntax": 50,
-                "projects": 50
-            },
-            "metrics": {
-                "attended": 0,
-                "total": 8,
-                "projects": 0,
-                "lines": 0
-            },
-            "meetLink": "https://meet.google.com/wvh-vwbr-hoq"
-        },
-        {
-            "id": "std-1007-r4cv",
-            "firstName": "Babalola",
-            "lastName": "Oluwadunmininu Pearl",
-            "age": 12,
-            "birthday": "",
-            "hasExplicitBirthday": false,
-            "parentName": "Babalola Olanike",
-            "parentEmail": "talk2nike2009@gmail.com",
-            "parentPhone": "08055855102",
-            "program": "Python Programming",
-            "status": "active",
-            "remindersPaused": false,
-            "progress": 0,
-            "tutorName": "Tola Tosin Ayanleke",
-            "tutorEmail": "tonetbod@gmail.com",
-            "tutorId": "tut-106-tola",
-            "notes": "Relationship: Mother | Grade: SS1 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
-            "classroomLink": "https://meet.google.com/yre-naci-zmp",
-            "skills": {
-                "logic": 50,
-                "loops": 50,
-                "variables": 50,
-                "syntax": 50,
-                "projects": 50
-            },
-            "metrics": {
-                "attended": 0,
-                "total": 8,
-                "projects": 0,
-                "lines": 0
-            },
-            "meetLink": "https://meet.google.com/yre-naci-zmp"
-        },
-        {
-            "id": "std-1008-a0lp",
-            "firstName": "Gbolade",
-            "lastName": "Okesanjo",
-            "age": 14,
-            "birthday": "",
-            "hasExplicitBirthday": false,
-            "parentName": "Temi Okesanjo",
-            "parentEmail": "Temiladeokesanjo1@gmail.com",
-            "parentPhone": "08076000020",
-            "program": "Web & App Development",
-            "status": "active",
-            "remindersPaused": false,
-            "progress": 0,
-            "tutorName": "Emmanuel O.",
-            "tutorEmail": "emmanuel@stemuluskidstech.com",
-            "tutorId": "tut-107-emmanuel",
-            "notes": "Relationship: Mother | Experience: None (Beginner) | Photo Consent: No",
-            "classroomLink": "https://meet.google.com/qye-ezub-uqi",
-            "skills": {
-                "logic": 50,
-                "loops": 50,
-                "variables": 50,
-                "syntax": 50,
-                "projects": 50
-            },
-            "metrics": {
-                "attended": 0,
-                "total": 8,
-                "projects": 0,
-                "lines": 0
-            },
-            "meetLink": "https://meet.google.com/qye-ezub-uqi"
-        },
-        {
-            "id": "std-1009-tbod",
-            "firstName": "King",
-            "lastName": "Myles Omosuyi",
-            "age": 6,
-            "birthday": "",
-            "hasExplicitBirthday": false,
-            "parentName": "Diamond Sheva Omosuyi",
-            "parentEmail": "diamondsheva@gmail.com",
-            "parentPhone": "08117090593",
-            "program": "Scratch Creators",
-            "status": "active",
-            "remindersPaused": false,
-            "progress": 0,
-            "tutorName": "Olalekan Israel Ajimati",
-            "tutorEmail": "olalekan@stemuluskidstech.com",
-            "tutorId": "tut-103",
-            "notes": "Relationship: Mother | Grade: Grade 3 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes | Notes: No allergies",
-            "classroomLink": "https://meet.google.com/nxg-rbcg-nsr",
-            "skills": {
-                "logic": 50,
-                "loops": 50,
-                "variables": 50,
-                "syntax": 50,
-                "projects": 50
-            },
-            "metrics": {
-                "attended": 0,
-                "total": 8,
-                "projects": 0,
-                "lines": 0
-            },
-            "meetLink": "https://meet.google.com/nxg-rbcg-nsr"
-        },
-        {
-            "id": "std-1010-ilb5",
-            "firstName": "JUNAYD",
-            "lastName": "KARI",
-            "age": 6,
-            "birthday": "",
-            "hasExplicitBirthday": false,
-            "parentName": "Carla KARI",
-            "parentEmail": "carlanouriat.k@gmail.com",
-            "parentPhone": "+33610570227",
-            "program": "Scratch Creators",
-            "status": "active",
-            "remindersPaused": false,
-            "progress": 0,
-            "tutorName": "Olalekan Israel Ajimati",
-            "tutorEmail": "olalekan@stemuluskidstech.com",
-            "tutorId": "tut-103",
-            "notes": "Relationship: Mother | Grade: GRADE 1 | Experience: None (Beginner) | Photo Consent: No",
-            "classroomLink": "https://meet.google.com/gyd-fewb-cdh",
-            "skills": {
-                "logic": 50,
-                "loops": 50,
-                "variables": 50,
-                "syntax": 50,
-                "projects": 50
-            },
-            "metrics": {
-                "attended": 0,
-                "total": 8,
-                "projects": 0,
-                "lines": 0
-            },
-            "meetLink": "https://meet.google.com/gyd-fewb-cdh"
-        },
-        {
-            "id": "std-1011-tq1u",
-            "firstName": "Momooreoluwa",
-            "lastName": "Sonaike",
-            "age": 7,
-            "birthday": "",
-            "hasExplicitBirthday": false,
-            "parentName": "Oladipupo Sonaike",
-            "parentEmail": "eoosonaike@gmail.com",
-            "parentPhone": "08186820039",
-            "program": "Scratch Creators",
-            "status": "active",
-            "remindersPaused": false,
-            "progress": 0,
-            "tutorName": "Moses Oluwafemi Adebayo",
-            "tutorEmail": "adefemiadebayo20@gmail.com",
-            "tutorId": "tut-104-moses",
-            "notes": "Relationship: Father | Grade: 3 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
-            "classroomLink": "https://meet.google.com/vdp-nmbh-sjj",
-            "skills": {
-                "logic": 50,
-                "loops": 50,
-                "variables": 50,
-                "syntax": 50,
-                "projects": 50
-            },
-            "metrics": {
-                "attended": 0,
-                "total": 8,
-                "projects": 0,
-                "lines": 0
-            },
-            "meetLink": "https://meet.google.com/vdp-nmbh-sjj"
-        },
-        {
-            "id": "std-1012-wq6b",
-            "firstName": "David",
-            "lastName": "Gjoka",
-            "age": 10,
-            "birthday": "",
-            "hasExplicitBirthday": false,
-            "parentName": "Anna Khavkina",
-            "parentEmail": "annakhavkina@gmail.com",
-            "parentPhone": "07898741675",
-            "program": "Python Programming",
-            "status": "active",
-            "remindersPaused": false,
-            "progress": 0,
-            "tutorName": "Olalekan Israel Ajimati",
-            "tutorEmail": "olalekan@stemuluskidstech.com",
-            "tutorId": "tut-103",
-            "notes": "Relationship: Mother | Grade: Year 6 | Experience: Some (Scratch, Basic coding) | Photo Consent: No | Notes: None",
-            "classroomLink": "https://meet.google.com/ckd-ngjs-cth",
-            "skills": {
-                "logic": 50,
-                "loops": 50,
-                "variables": 50,
-                "syntax": 50,
-                "projects": 50
-            },
-            "metrics": {
-                "attended": 0,
-                "total": 8,
-                "projects": 0,
-                "lines": 0
-            },
-            "meetLink": "https://meet.google.com/ckd-ngjs-cth"
-        },
-        {
-            "id": "std-1013-jogb",
-            "firstName": "Joshua",
-            "lastName": "Ogba",
-            "age": 10,
-            "birthday": "",
-            "hasExplicitBirthday": false,
-            "parentName": "Mrs. Ogba",
-            "parentEmail": "joshuaogba.parent@gmail.com",
-            "parentPhone": "+2348060000000",
-            "program": "Scratch Creators",
-            "status": "active",
-            "remindersPaused": false,
-            "progress": 0,
-            "tutorName": "Kafayat Abdulwahab",
-            "tutorEmail": "kafayatabdulwahab.et@gmail.com",
-            "tutorId": "tut-105-kafa",
-            "notes": "Assigned to Kafayat Abdulwahab. 4 weekly sessions: Tue 3pm, Wed 3pm, Sat 12pm, Sun 7pm WAT.",
-            "classroomLink": "https://meet.google.com/yko-xwce-ugd",
-            "meetLink": "https://meet.google.com/yko-xwce-ugd",
-            "skills": {
-                "logic": 50,
-                "loops": 50,
-                "variables": 50,
-                "syntax": 50,
-                "projects": 50
-            },
-            "metrics": {
-                "attended": 0,
-                "total": 16,
-                "projects": 0,
-                "lines": 0
-            }
+          "id": "pay-pearl-sep2026",
+          "reference": "REC-2026-PEARL-01",
+          "amount": 35000,
+          "formattedAmount": "₦35,000",
+          "date": "2026-09-18",
+          "method": "Bank Transfer (Wema)",
+          "notes": "Initial Month Enrollment - JavaScript & Python",
+          "cyclePaidFor": "2026-09-18 to 2026-10-18",
+          "recordedBy": "Admin",
+          "createdAt": "2026-09-18T10:00:00Z"
         }
+      ]
+    },
+    "nextDueDate": "2026-11-01",
+    "tier": "intermediate"
+  },
+  {
+    "id": "std-1012-goke",
+    "firstName": "Gbolade",
+    "lastName": "Okesanjo",
+    "age": 14,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Temi Okesanjo",
+    "parentEmail": "Temiladeokesanjo1@gmail.com",
+    "parentPhone": "08076000020",
+    "program": "Web & App Development",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Ojekudo Oghenemaro Emmanuel",
+    "tutorEmail": "oojekudo@gmail.com",
+    "tutorId": "tut-107-emmanuel",
+    "notes": "Relationship: Mother | Experience: None (Beginner) | Photo Consent: No",
+    "classroomLink": "Physical Lab",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 4,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "meetLink": "Physical Lab",
+    "classesAttended": 4,
+    "startDate": "2026-10-04",
+    "billing": {
+      "firstClassDate": "2026-10-04",
+      "anchorDay": 4,
+      "cycleStartDate": "2026-10-04",
+      "nextDueDate": "2026-11-04",
+      "monthlyFee": 48000,
+      "status": "active",
+      "paidThrough": "2026-11-04",
+      "notes": "Physical sessions paid. Next cycle due Nov 4, 2026."
+    },
+    "nextDueDate": "2026-11-04"
+  },
+  {
+    "id": "std-1009-tbod",
+    "firstName": "King",
+    "lastName": "Myles Omosuyi",
+    "age": 6,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Diamond Sheva Omosuyi",
+    "parentEmail": "diamondsheva@gmail.com",
+    "parentPhone": "08117090593",
+    "program": "Scratch Creators",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Olalekan Israel Ajimati",
+    "tutorEmail": "olalekan@stemuluskidstech.com",
+    "tutorId": "tut-103",
+    "notes": "Relationship: Mother | Grade: Grade 3 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes | Notes: No allergies",
+    "classroomLink": "https://meet.google.com/miz-dthg-pmt",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 0,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "meetLink": "https://meet.google.com/miz-dthg-pmt",
+    "tier": "beginners",
+    "billing": {
+      "monthlyFee": 48000,
+      "tier": "beginners",
+      "status": "active"
+    },
+    "nextDueDate": "2026-11-01"
+  },
+  {
+    "id": "std-1010-ilb5",
+    "firstName": "JUNAYD",
+    "lastName": "KARI",
+    "age": 6,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Carla KARI",
+    "parentEmail": "carlanouriat.k@gmail.com",
+    "parentPhone": "+33610570227",
+    "program": "Scratch Creators",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Olalekan Israel Ajimati",
+    "tutorEmail": "olalekan@stemuluskidstech.com",
+    "tutorId": "tut-103",
+    "notes": "Relationship: Mother | Grade: GRADE 1 | Experience: None (Beginner) | Photo Consent: No",
+    "classroomLink": "https://meet.google.com/gyd-fewb-cdh",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 0,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "meetLink": "https://meet.google.com/gyd-fewb-cdh",
+    "tier": "beginners",
+    "billing": {
+      "monthlyFee": 48000,
+      "tier": "beginners",
+      "status": "active"
+    },
+    "nextDueDate": "2026-11-01"
+  },
+  {
+    "id": "std-1011-momo",
+    "firstName": "Momooreoluwa",
+    "lastName": "Sonaike",
+    "age": 7,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Oladipupo Sonaike",
+    "parentEmail": "eoosonaike@gmail.com",
+    "parentPhone": "08186820039",
+    "program": "Scratch Creators",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Moses Oluwafemi Adebayo",
+    "tutorEmail": "adefemiadebayo20@gmail.com",
+    "tutorId": "tut-104-moses",
+    "notes": "Relationship: Father | Grade: 3 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
+    "classroomLink": "https://meet.google.com/vdp-nmbh-sjj",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 6,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "meetLink": "https://meet.google.com/vdp-nmbh-sjj",
+    "classesAttended": 6,
+    "startDate": "2026-10-05",
+    "billing": {
+      "firstClassDate": "2026-10-05",
+      "anchorDay": 5,
+      "cycleStartDate": "2026-10-05",
+      "nextDueDate": "2026-11-05",
+      "monthlyFee": 48000,
+      "status": "active",
+      "uncollectedOctober": true,
+      "notes": "Paid for 1 month initially. Next cycle due Nov 5, 2026."
+    },
+    "nextDueDate": "2026-11-05"
+  },
+  {
+    "id": "std-1012-wq6b",
+    "firstName": "David",
+    "lastName": "Gjoka",
+    "age": 10,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Anna Khavkina",
+    "parentEmail": "annakhavkina@gmail.com",
+    "parentPhone": "07898741675",
+    "program": "Python Programming",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Olalekan Israel Ajimati",
+    "tutorEmail": "olalekan@stemuluskidstech.com",
+    "tutorId": "tut-103",
+    "notes": "Relationship: Mother | Grade: Year 6 | Experience: Some (Scratch, Basic coding) | Photo Consent: No | Notes: None",
+    "classroomLink": "https://meet.google.com/ckd-ngjs-cth",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 0,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "meetLink": "https://meet.google.com/ckd-ngjs-cth",
+    "tier": "intermediate",
+    "billing": {
+      "monthlyFee": 75000,
+      "tier": "intermediate",
+      "status": "active"
+    },
+    "nextDueDate": "2026-11-01"
+  },
+  {
+    "id": "std-1013-jogb",
+    "firstName": "Joshua",
+    "lastName": "Ogba",
+    "age": 10,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Mrs. Ogba",
+    "parentEmail": "joshuaogba.parent@gmail.com",
+    "parentPhone": "+2348060000000",
+    "program": "Scratch Creators",
+    "status": "paid_annual",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Kafayat Abdulwahab",
+    "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+    "tutorId": "tut-105-kafa",
+    "notes": "Assigned to Kafayat Abdulwahab. 4 weekly sessions: Tue 3pm, Wed 3pm, Sat 12pm, Sun 7pm WAT.",
+    "classroomLink": "https://meet.google.com/yko-xwce-ugd",
+    "meetLink": "https://meet.google.com/yko-xwce-ugd",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 14,
+      "total": 16,
+      "projects": 0,
+      "lines": 0
+    },
+    "classesAttended": 14,
+    "startDate": "2026-10-03",
+    "billing": {
+      "firstClassDate": "2026-10-03",
+      "anchorDay": 3,
+      "cycleStartDate": "2026-10-03",
+      "nextDueDate": "2027-01-03",
+      "paidThrough": "2026-12-31",
+      "annualPaid": true,
+      "monthlyFee": 35000,
+      "status": "paid_annual",
+      "notes": "Paid for the rest of 2026 (through Dec 31, 2026)."
+    },
+    "paidThrough": "2026-12-31",
+    "nextDueDate": "2027-01-03"
+  },
+  {
+    "id": "std-1007-r4cv",
+    "firstName": "Babalola",
+    "lastName": "Oluwadunmininu Pearl",
+    "age": 13,
+    "tier": "intermediate",
+    "package": "Intermediate Young Engineers",
+    "classesAttended": 27,
+    "metrics": {
+      "attended": 27
+    },
+    "currentMonth": 7,
+    "badgeMonth": 7,
+    "badgeLevel": "Fire Master",
+    "earnedBadges": [
+      "fire-finder",
+      "ember-keeper",
+      "hearth-builder",
+      "torch-bearer",
+      "signal-fire",
+      "forge-master"
     ],
+    "unlockedEras": [
+      "Era I: The First Light"
+    ],
+    "classroomLink": "https://meet.google.com/yre-naci-zmp",
+    "meetLink": "https://meet.google.com/yre-naci-zmp",
+    "startDate": "2026-09-18",
+    "billing": {
+      "firstClassDate": "2026-09-18",
+      "anchorDay": 18,
+      "cycleStartDate": "2026-09-18",
+      "nextDueDate": "2026-11-18",
+      "monthlyFee": 75000,
+      "packageRate": 75000,
+      "tier": "intermediate",
+      "octoberBridge": 37500,
+      "nextCycleFee": 75000,
+      "combinedRealignment": 112500,
+      "status": "renewal_pending",
+      "uncollectedOctober": true,
+      "notes": "Intermediate package (Age 13): ₦75,000/month. October bridge (Oct 19-31, 4 sessions): ₦37,500. November cycle: ₦75,000. Realignment total: ₦112,500 (or ₦37,500 bridge now + ₦75,000 on Nov 1)."
+    }
+  },
+  {
+    "id": "std-1012-goke",
+    "firstName": "Gbolade",
+    "lastName": "Okesanjo",
+    "classesAttended": 4,
+    "metrics": {
+      "attended": 4
+    },
+    "classroomLink": "Physical Lab",
+    "meetLink": "Physical Lab",
+    "startDate": "2026-10-04",
+    "billing": {
+      "firstClassDate": "2026-10-04",
+      "anchorDay": 4,
+      "cycleStartDate": "2026-10-04",
+      "nextDueDate": "2026-11-04",
+      "monthlyFee": 48000,
+      "status": "active",
+      "paidThrough": "2026-11-04",
+      "notes": "Physical sessions paid. Next cycle due Nov 4, 2026."
+    }
+  }
+],
     "schedules": [
         {
             "id": "sch-115-sun-josh-w1",
@@ -760,7 +679,7 @@ const DashboardEngine = (function() {
             "tutorName": "Tola Tosin Ayanleke",
             "tutorEmail": "tonetbod@gmail.com",
             "tutorId": "tut-106-tola",
-            "link": "https://meet.google.com/yre-naci-zmp",
+            "link": "https://meet.google.com/bbx-ocde-ytw",
             "status": "scheduled",
             "attendanceStatus": "scheduled"
         },
@@ -777,7 +696,7 @@ const DashboardEngine = (function() {
             "tutorName": "Olalekan Israel Ajimati",
             "tutorEmail": "olalekan@stemuluskidstech.com",
             "tutorId": "tut-103",
-            "link": "https://meet.google.com/nxg-rbcg-nsr",
+            "link": "https://meet.google.com/miz-dthg-pmt",
             "status": "done",
             "attendanceStatus": "present"
         },
@@ -811,7 +730,7 @@ const DashboardEngine = (function() {
             "tutorName": "Tola Tosin Ayanleke",
             "tutorEmail": "tonetbod@gmail.com",
             "tutorId": "tut-106-tola",
-            "link": "https://meet.google.com/yre-naci-zmp",
+            "link": "https://meet.google.com/bbx-ocde-ytw",
             "status": "done",
             "attendanceStatus": "present"
         },
@@ -862,7 +781,7 @@ const DashboardEngine = (function() {
             "tutorName": "Olalekan Israel Ajimati",
             "tutorEmail": "olalekan@stemuluskidstech.com",
             "tutorId": "tut-103",
-            "link": "https://meet.google.com/nxg-rbcg-nsr",
+            "link": "https://meet.google.com/miz-dthg-pmt",
             "status": "done",
             "attendanceStatus": "present"
         },
@@ -916,38 +835,6 @@ const DashboardEngine = (function() {
             "link": "https://meet.google.com/vdp-nmbh-sjj",
             "status": "done",
             "attendanceStatus": "present"
-        },
-        {
-            "id": "sch-2001",
-            "studentId": "std-1001",
-            "studentName": "Daniel M.",
-            "course": "Python Programming",
-            "date": "2026-06-01",
-            "time": "16:00",
-            "duration": "60",
-            "mentor": "Sarah Jane",
-            "tutorName": "Sarah Jane",
-            "tutorEmail": "tutor@stemuluskidstech.com",
-            "tutorId": "tut-101",
-            "link": "https://meet.google.com/nxg-rbcg-nsr",
-            "attendanceStatus": "scheduled",
-            "status": "scheduled"
-        },
-        {
-            "id": "sch-2002",
-            "studentId": "std-1002",
-            "studentName": "Sarah M.",
-            "course": "Scratch Creators",
-            "date": "2026-05-31",
-            "time": "15:00",
-            "duration": "60",
-            "mentor": "Sarah Jane",
-            "tutorName": "Sarah Jane",
-            "tutorEmail": "tutor@stemuluskidstech.com",
-            "tutorId": "tut-101",
-            "link": "https://meet.google.com/gua-sisg-tei",
-            "attendanceStatus": "done",
-            "status": "done"
         },
         {
             "id": "sch-101-mon-momo",
@@ -1013,7 +900,7 @@ const DashboardEngine = (function() {
             "tutorName": "Olalekan Israel Ajimati",
             "tutorEmail": "olalekan@stemuluskidstech.com",
             "tutorId": "tut-103",
-            "link": "https://meet.google.com/nxg-rbcg-nsr",
+            "link": "https://meet.google.com/miz-dthg-pmt",
             "status": "scheduled",
             "attendanceStatus": "scheduled"
         },
@@ -1064,7 +951,7 @@ const DashboardEngine = (function() {
             "tutorName": "Tola Tosin Ayanleke",
             "tutorEmail": "tonetbod@gmail.com",
             "tutorId": "tut-106-tola",
-            "link": "https://meet.google.com/yre-naci-zmp",
+            "link": "https://meet.google.com/bbx-ocde-ytw",
             "status": "scheduled",
             "attendanceStatus": "scheduled"
         },
@@ -1098,7 +985,7 @@ const DashboardEngine = (function() {
             "tutorName": "Olalekan Israel Ajimati",
             "tutorEmail": "olalekan@stemuluskidstech.com",
             "tutorId": "tut-103",
-            "link": "https://meet.google.com/nxg-rbcg-nsr",
+            "link": "https://meet.google.com/miz-dthg-pmt",
             "status": "scheduled",
             "attendanceStatus": "scheduled"
         },
@@ -1115,7 +1002,7 @@ const DashboardEngine = (function() {
             "tutorName": "Tola Tosin Ayanleke",
             "tutorEmail": "tonetbod@gmail.com",
             "tutorId": "tut-106-tola",
-            "link": "https://meet.google.com/yre-naci-zmp",
+            "link": "https://meet.google.com/bbx-ocde-ytw",
             "status": "scheduled",
             "attendanceStatus": "scheduled"
         },
@@ -1505,8 +1392,8 @@ const DashboardEngine = (function() {
         },
         {
             "id": "tut-107-emmanuel",
-            "name": "Emmanuel O.",
-            "email": "emmanuel@stemuluskidstech.com",
+            "name": "Ojekudo Oghenemaro Emmanuel",
+            "email": "oojekudo@gmail.com",
             "phone": "+2348030000000",
             "subjects": [
                 "Robotics & Arduino",
@@ -1527,142 +1414,1187 @@ const DashboardEngine = (function() {
     ],
     "attendanceRecords": [
         {
-            "id": "att-sch-101-mon-momo-w1",
-            "scheduleId": "sch-101-mon-momo-w1",
-            "studentId": "std-1011-tq1u",
-            "studentName": "Momooreoluwa Sonaike",
-            "course": "Scratch Creators",
-            "mentor": "Moses Oluwafemi Adebayo",
-            "tutorName": "Moses Oluwafemi Adebayo",
-            "tutorEmail": "adefemiadebayo20@gmail.com",
-            "date": "2026-10-12",
-            "time": "19:00",
-            "duration": "60",
-            "status": "approved",
-            "notes": "Student attended live session and made progress on curriculum goals."
+                "id": "att-gsheet-1-1793004547574",
+                "studentId": "std-olasunkanmi-01",
+                "studentName": "Olasunkanmi",
+                "parentEmail": "admin@stemuluskidstech.com",
+                "parentName": "Academy Review",
+                "tutorName": "Samuel",
+                "tutorEmail": "olasamzy13@gmail.com",
+                "course": "Diagnostic Assessment",
+                "date": "2026-08-14",
+                "dateFormatted": "8/14/2026",
+                "startTime": "10:00:00 PM",
+                "endTime": "11:00:00 PM",
+                "topic": "Test",
+                "summary": "Test",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Good",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-14T06:38:22.000Z"
         },
         {
-            "id": "att-sch-102-tue-josh-w1",
-            "scheduleId": "sch-102-tue-josh-w1",
-            "studentId": "std-1013-jogb",
-            "studentName": "Joshua Ogba",
-            "course": "Scratch Creators",
-            "mentor": "Kafayat Abdulwahab",
-            "tutorName": "Kafayat Abdulwahab",
-            "tutorEmail": "kafayatabdulwahab.et@gmail.com",
-            "date": "2026-10-13",
-            "time": "15:00",
-            "duration": "60",
-            "status": "approved",
-            "notes": "Student attended live session and made progress on curriculum goals."
+                "id": "att-gsheet-2-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-08-14",
+                "dateFormatted": "8/14/2026",
+                "startTime": "1:00:00 PM",
+                "endTime": "2:00:00 PM",
+                "topic": "for Loop and do...while Loop",
+                "summary": "A. Review of Previous Assignment\nThe assignment required the student to identify the different positions where JavaScript code can be placed within an HTML file and explain the reasoning behind each position.\nThe student completed the assignment correctly, showing an accurate understanding of how JavaScript integrates into an HTML document.\n\nB. for Loop and do...while Loop\nThe session built on the earlier introduction to the for loop and introduced the do...while loop as an additional looping structure. Areas covered included:\n•Continued practice with the for loop through further examples.\n•Introduction to the do...while loop and how it differs from the while and for loops.\n•Practical examples for both loop types.\n\nThe student attempted the practical examples independently while I observed her progress on screen, providing guidance and feedback throughout.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student continues to make encouraging progress. She successfully completed the previous assignment and worked through today’s loop exercises with growing confidence. Continued practice between sessions is recommended to reinforce these concepts before we move on to functions in the next class. An assignment on for loops was also given to Her for additional practice.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-14T07:00:37.000Z"
         },
         {
-            "id": "att-sch-103-tue-davi-w1",
-            "scheduleId": "sch-103-tue-davi-w1",
-            "studentId": "std-1012-wq6b",
-            "studentName": "David Gjoka",
-            "course": "Python Programming",
-            "mentor": "Olalekan Israel Ajimati",
-            "tutorName": "Olalekan Israel Ajimati",
-            "tutorEmail": "olalekan@stemuluskidstech.com",
-            "date": "2026-10-13",
-            "time": "16:00",
-            "duration": "60",
-            "status": "approved",
-            "notes": "Student attended live session and made progress on curriculum goals."
+                "id": "att-gsheet-3-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-08-15",
+                "dateFormatted": "8/15/2026",
+                "startTime": "1:00:00 PM",
+                "endTime": "2:00:00 PM",
+                "topic": "•Review of previous assignment (for loop). •Introduction to Functions – definition, syntax, and the parts of a function. •Worked examples: Addition of Two Numbers; Greeting Program. •JavaScript Output Methods – window.alert(), console.log(), textContent, and innerHTML.",
+                "summary": "The session opened with a review of the previous assignment on the for loop, which the student completed correctly. Functions were then introduced for the first time, covering their purpose, basic syntax, and the different parts that make up a function – the function keyword, function name, parentheses, curly braces, function body, and function call.\n\nTwo worked examples reinforced the concept: an Addition of Two Numbers program, which stored values, performed a calculation, and displayed the result; and a Greeting Program triggered by a button click. The greeting program was then rewritten several times to demonstrate four different JavaScript output methods – window.alert(), console.log(), textContent, and innerHTML – helping the student see how the same result can be produced in different ways.\n\nThe student engaged well throughout, followed each example attentively, and was able to distinguish between defining a function and calling it. To reinforce the session, she was given a new assignment:\nAssignment: Rewrite the greeting program to use the textContent and window.alert() output methods to display the message, instead of innerHTML.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student had a strong session today, picking up functions quickly and engaging well with each output method. She completed the for loop assignment correctly and followed each example with good attention. I've given her a short assignment on textContent and window.alert() to keep building her confidence.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-15T05:26:24.000Z"
         },
         {
-            "id": "att-sch-104-tue-myle-w1",
-            "scheduleId": "sch-104-tue-myle-w1",
-            "studentId": "std-1009-tbod",
-            "studentName": "King Myles Omosuyi",
-            "course": "Scratch Creators",
-            "mentor": "Olalekan Israel Ajimati",
-            "tutorName": "Olalekan Israel Ajimati",
-            "tutorEmail": "olalekan@stemuluskidstech.com",
-            "date": "2026-10-13",
-            "time": "19:00",
-            "duration": "60",
-            "status": "approved",
-            "notes": "Student attended live session and made progress on curriculum goals."
+                "id": "att-gsheet-4-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola  Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-08-17",
+                "dateFormatted": "8/17/2026",
+                "startTime": "2:00:00 PM",
+                "endTime": "3:00:00 AM",
+                "topic": "•Introduction to the Document Object Model (DOM) and why JavaScript uses it. •Finding HTML elements with document.getElementById(). •Changing content using textContent and innerHTML. •Changing CSS styles using JavaScript (style.color, style.backgroundColor). •Linking an external JavaScript file to an HTML page. •Introduction to JavaScript Events.",
+                "summary": "This session opened a new module covering the DOM, DOM Events, APIs, async/await, and ES6+ (the modern JavaScript standard introduced in 2015 and updated every year since). Today's class focused specifically on the DOM: what it is, and how JavaScript uses it to change text, styles, and images, show or hide elements, create or remove elements, respond to clicks, and read information from forms.\n\nThe student was introduced to document.getElementById() as the standard way to locate an element by its id, and saw how it can be combined with innerHTML and textContent to change what appears on the page. A further example showed how JavaScript can change an element's appearance directly using style.color and style.backgroundColor.\n\nThe class then covered how to move JavaScript out of the HTML file and into a separate external script.js file, linked using <script src=\"script.js\"></script>. To close, JavaScript events were introduced as a lead-in to the next topic – anything that “happens” on a page, such as a click, a keystroke, a form submission, or a page load – which JavaScript can be written to respond to.\n\nTo reinforce the session, the student was given the following assignment:\nAssignment: Research the difference between a website and a web app (web application), and read about page types such as parent/menu pages and child/sub-menu pages.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Today's class introduced the DOM, a significant step up that opens the door to real interactivity on webpages. We covered the core methods for finding and changing elements, alongside a first look at external JavaScript files and events. I'd encourage continued practice with document.getElementById(), textContent, and innerHTML at home to build fluency before we move further into DOM Events next session.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-17T06:48:23.000Z"
         },
         {
-            "id": "att-sch-105-wed-josh-w1",
-            "scheduleId": "sch-105-wed-josh-w1",
-            "studentId": "std-1013-jogb",
-            "studentName": "Joshua Ogba",
-            "course": "Scratch Creators",
-            "mentor": "Kafayat Abdulwahab",
-            "tutorName": "Kafayat Abdulwahab",
-            "tutorEmail": "kafayatabdulwahab.et@gmail.com",
-            "date": "2026-10-14",
-            "time": "15:00",
-            "duration": "60",
-            "status": "approved",
-            "notes": "Student attended live session and made progress on curriculum goals."
+                "id": "att-gsheet-5-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-08-20",
+                "dateFormatted": "8/20/2026",
+                "startTime": "1:00:00 PM",
+                "endTime": "2:10:00 PM",
+                "topic": "JavaScript Events – addEventListener(), mouseover Event, and mouseout Event",
+                "summary": "The class began with a review of the previous assignment on parent and child pages, which she answered correctly. The lesson then moved into JavaScript events, starting with what an event is (clicks, key presses, mouse movement, form submissions, page loads) and how JavaScript can respond to them. She learned addEventListener(), demonstrated with a button that changes a heading's text on click. This was followed by the mouseover event (triggered when the mouse enters an element) and mouseout event (triggered when it leaves), each shown with a coloured box that updates a message on hover. Two assignments were set: one on 5 selector types, and a second requiring her to build an HTML page where a box changes background colour on mouseover and reverts on mouseout, using HTML, CSS, and JavaScript. The class closed with a preview of the next topic, the keydown Event.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "She came into class with a solid grasp of the previous topic — the parent/child pages assignment was correct, which made for a smooth start. She followed the addEventListener, mouseover, and mouseout demonstrations without difficulty. The two new assignments (selector types, and the mouseover/mouseout box exercise) offer good hands-on practice — worth checking both at the start of next class, alongside the keydown Event topic.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-20T05:40:04.000Z"
         },
         {
-            "id": "att-sch-106-wed-juna-w1",
-            "scheduleId": "sch-106-wed-juna-w1",
-            "studentId": "std-1010-ilb5",
-            "studentName": "JUNAYD KARI",
-            "course": "Scratch Creators",
-            "mentor": "Olalekan Israel Ajimati",
-            "tutorName": "Olalekan Israel Ajimati",
-            "tutorEmail": "olalekan@stemuluskidstech.com",
-            "date": "2026-10-14",
-            "time": "16:00",
-            "duration": "60",
-            "status": "approved",
-            "notes": "Student attended live session and made progress on curriculum goals."
+                "id": "att-gsheet-6-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola  Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-08-21",
+                "dateFormatted": "8/21/2026",
+                "startTime": "1:00:00 PM",
+                "endTime": "2:15:00 PM",
+                "topic": "JavaScript Events – keydown Event | setInterval() (Timer Function)",
+                "summary": "We started by accessing her assignment, which she got correctly.\nToday's class covered the keydown event, triggered when a key is pressed on the keyboard, first demonstrated with a simple input box that displays a confirmation message (\"You just pressed a key. Well done!\") as soon as any key is pressed. \n\nThe lesson then introduced setInterval(), a JavaScript timer function that repeatedly runs a piece of code at a set time interval—noted specifically as a timer function, not an event. Both concepts were combined in a \"JavaScript Typewriter\" demo: pressing a key inside an input box triggers a typewriter effect that types out \"Programming is fun!\" one letter at a time, with a flag (typing) built in to stop the effect from restarting on every keystroke while it's already running. \n\nAn assignment was set requiring her to:\n(1) add a background colour to the \"Programming is fun!\" text, and \n(2) apply border-radius to the input box's border and change the border outline style",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "This lesson stepped up in complexity, moving from single-purpose event demos to combining keydown with setInterval() in one working example — a good bridge into more advanced scripting. Worth confirming she understands why the typing flag is needed, since that's the trickiest part of the logic and easy to gloss over. The assignment builds directly on the typewriter demo, so checking it next session should also confirm whether the keydown/setInterval pairing landed.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-21T05:33:49.000Z"
         },
         {
-            "id": "att-sch-107-fri-pear-w1",
-            "scheduleId": "sch-107-fri-pear-w1",
-            "studentId": "std-1007-r4cv",
-            "studentName": "Babalola Oluwadunmininu Pearl",
-            "course": "Python Programming",
-            "mentor": "Tola Tosin Ayanleke",
-            "tutorName": "Tola Tosin Ayanleke",
-            "tutorEmail": "tonetbod@gmail.com",
-            "date": "2026-10-16",
-            "time": "16:00",
-            "duration": "60",
-            "status": "approved",
-            "notes": "Student attended live session and made progress on curriculum goals."
+                "id": "att-gsheet-7-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-08-22",
+                "dateFormatted": "8/22/2026",
+                "startTime": "1:00:00 PM",
+                "endTime": "2:13:00 PM",
+                "topic": "JavaScript Events — input Event and submit Event  The session also included a review of the student's previous assignment and practical application of HTML forms, CSS styling, and JavaScript event handling.",
+                "summary": "The class began with a review of the assignment from the previous lesson. The student completed the assignment well, demonstrating a good understanding of the concepts previously covered.\n\nThe lesson then progressed to other JavaScript events, particularly the input event and submit event.\n\nThe student was introduced to the input event and learned that it occurs when the value of an input field changes, such as when a user types into an input box.\n\nThe submit event was also introduced. The student learned that the submit event occurs when a user submits an HTML form, usually by clicking a Submit button. Also HTML Marquee was used on the form caption and due to network, the class was extended to 2:13pm",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Memory updated  Understood. I’ll use these three sections for the student reports going forward:  Topic Covered Class Summary Tutor Remarks Today 10:26 AM give me three assgnments on this   JavaScript Events — 3 Assignments Assignment 1: keydown Event  Create an HTML page with an input box.  When the student presses any keyboard key, use addEventListener() with the keydown event to change a message on the webpage to:  \"You pressed a key! Well done!\"  Requirement: Use HTML, CSS, and JavaScript.  Assignment 2: Typewriter Effect  Create a simple webpage with an input box.  When the student presses any key, display the following sentence one letter at a time using setInterval():  \"I am learning JavaScript!\"  Requirements:  Use keydown. Use setInterval(). Use textContent. Add a background colour to the displayed sentence. Use CSS to style the input box. Assignment 3: Improve the Design  Using the typewriter project from class, make the webpage more attractive.  The student should:  Change the background colour of the page. Change the text colour of \"Programming is fun!\". Apply border-radius to the input box. Change the input box outline to dotted, dashed, or double. Add a box-shadow to the input box. Change the placeholder text to: \"Press any key to start...\"  Requirement: The student should use HTML, CSS, and JavaScript and write the code independently.  Today 2:25 PM give me report based on the 3 criterials i typed yesterday, today we started with her assignment which she did well, then to other js events which are:  input type event, and submit Event and assignment on 10 input rypes with modern ui/ux and displaying form output on browser frontend was given.   What does submit mean?  The submit event happens when a user submits a form.  For example, clicking a Submit button.  Example:  <!DOCTYPE html> <html>  <head>      <title>Submit Event</title>      <style>          form {             width: 300px;             padding: 20px;             background-color: lightblue;         }          input {             padding: 8px;             margin-bottom: 10px;         }          button {             background-color: blue;             color: white;             padding: 8px 15px;             border: none;         }          #message {             color: green;         }      </style>  </head>  <body>      <h2>Student Form</h2>      <form id=\"myForm\">          <!-- Student enters their name -->         <input type=\"text\" id=\"name\" placeholder=\"Enter your name\">          <br><br>          <button type=\"submit\">Submit</button>      </form>      <p id=\"message\"></p>      <script>          // Find the form         let form = document.getElementById(\"myForm\");          // Run when the form is submitted         form.addEventListener(\"submit\", function(event) {              // Stop the page from refreshing             event.preventDefault();              // Display a message             document.getElementById(\"message\").textContent =                 \"Form submitted successfully!\";          });      </script>  </body> </html STEMulus Kids Tech Academy JavaScript Class Report Topic Covered  JavaScript Events — input Event and submit Event  The session also included a review of the student's previous assignment and practical application of HTML forms, CSS styling, and JavaScript event handling.  Class Summary  The class began with a review of the assignment from the previous lesson. The student completed the assignment well, demonstrating a good understanding of the concepts previously covered.  The lesson then progressed to other JavaScript events, particularly the input event and submit event.  The student was introduced to the input event and learned that it occurs when the value of an input field changes, such as when a user types into an input box.  The submit event was also introduced. The student learned that the submit event occurs when a user submits an HTML form, usually by clicking a Submit button.  A practical HTML, CSS, and JavaScript form example was used to demonstrate how addEventListener() can be used to detect form submission. The student was also introduced to:  event.preventDefault();  and learned that it can be used to prevent the browser from refreshing or performing its normal form-submission action, allowing JavaScript to handle the form.  The lesson further focused on connecting HTML form elements, CSS styling, and JavaScript events to create interactive frontend forms.  Tutor Remarks  The student performed well during the review of the previous assignment and was able to progress into new JavaScript event concepts.  The student was encouraged to continue practising the input and submit events, particularly how JavaScript can collect information entered into a form and display the result directly on the browser frontend.  As a practical assignment, the student was asked to create a form containing 10 different HTML input types, apply a modern UI/UX design, and use JavaScript to display the submitted form information on the browser frontend.  The assignment is intended to strengthen the student's understanding of HTML forms, CSS styling, JavaScript events, DOM manipulation, and frontend interaction.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-22T05:31:44.000Z"
         },
         {
-            "id": "att-sch-108-fri-juna-w1",
-            "scheduleId": "sch-108-fri-juna-w1",
-            "studentId": "std-1010-ilb5",
-            "studentName": "JUNAYD KARI",
-            "course": "Scratch Creators",
-            "mentor": "Olalekan Israel Ajimati",
-            "tutorName": "Olalekan Israel Ajimati",
-            "tutorEmail": "olalekan@stemuluskidstech.com",
-            "date": "2026-10-16",
-            "time": "16:00",
-            "duration": "60",
-            "status": "approved",
-            "notes": "Student attended live session and made progress on curriculum goals."
+                "id": "att-gsheet-8-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-08-24",
+                "dateFormatted": "8/24/2026",
+                "startTime": "4:00:00 PM",
+                "endTime": "5:10:00 PM",
+                "topic": "Application Programming Interface (API), fetch(), JSON, and HTTP Status Codes  The class focused on introducing the student to APIs and how JavaScript can communicate with external services to retrieve and display information on a webpage.",
+                "summary": "The class began with assignment checking, and the student completed the assignment correctly, demonstrating a good understanding of the concepts covered in the previous lesson, and the project image was shown to her and has been sent to her, and the project guide will be given to her next class.\n\nThe lesson then introduced an API (Application Programming Interface). The student learned that an API allows one program or application to communicate with another program or service. A simple real-world example of a weather application requesting weather information from a weather API was used to make the concept easier to understand.\n\nPractical examples were demonstrated using JavaScript's fetch() method. The student learned how a webpage can request information from an online API and use the returned information on the webpage.\n\nSeveral API examples were explored, including:\n\n- A general data API using JSONPlaceholder.\n- A Weather API for retrieving temperature and wind-speed information.\n- An Image API for displaying random dog images.\n- A Student/School API example for retrieving and displaying user information.\n\nThe student was also introduced to JSON (JavaScript Object Notation) and learned that JSON is a common format used for sending and receiving data between applications and APIs.\n\nThe following flow was explained:\n\nJavaScript → fetch() → API → JSON Data → JavaScript → Webpage\n\nThe student also learned the basic structure of JSON using keys and values, such as:\n\nname → John\nage → 15\ncountry → Nigeria\n\nThe use of:\n\nresponse.json()\n\nwas explained as the process of converting the API response into JavaScript data that can be used by the application.\n\nThe lesson also introduced HTTP status codes, including the meaning of common codes such as 200 (successful request) and 404 (resource not found), to help the student understand how a browser or application can know whether an API request was successful or encountered a problem.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student performed well during the assignment review and was able to proceed successfully into the new topic of APIs.  The practical examples helped demonstrate how JavaScript can be used to retrieve text, weather information, images, and other data from external services. The student was encouraged to continue practising fetch(), JSON, and displaying API data using the DOM.  Two assignments were given to reinforce the lesson:  Assignment 1: Fetch information from three different APIs/websites using HTML, CSS, and JavaScript and display the returned information on the webpage.  Assignment 2: Study the common HTTP status codes and their meanings, with particular attention to codes such as 200, 201, 400, 401, 403, 404, 500, and 503.  Overall, the student showed good progress and is beginning to understand how JavaScript can communicate with external services and use the received data to create interactive web applications.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-24T08:19:01.000Z"
         },
         {
-            "id": "att-sch-109-fri-myle-w1",
-            "scheduleId": "sch-109-fri-myle-w1",
-            "studentId": "std-1009-tbod",
-            "studentName": "King Myles Omosuyi",
-            "course": "Scratch Creators",
-            "mentor": "Olalekan Israel Ajimati",
-            "tutorName": "Olalekan Israel Ajimati",
-            "tutorEmail": "olalekan@stemuluskidstech.com",
-            "date": "2026-10-16",
-            "time": "17:00",
-            "duration": "60",
-            "status": "approved",
-            "notes": "Student attended live session and made progress on curriculum goals."
+                "id": "att-gsheet-9-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-08-27",
+                "dateFormatted": "8/27/2026",
+                "startTime": "1:00:00 PM",
+                "endTime": "2:06:00 PM",
+                "topic": "Assignment Review Kiditorial Project Introduction Async and Await Asynchronous JavaScript Practical async/await Examples Introduction to ES6+",
+                "summary": "The class began with a review and assessment of the student's previous assignment. The student completed the assignment correctly, demonstrating a good understanding of the concepts covered in the previous lesson.\n\nThe Kiditorial project documentation and video demonstration were then introduced to the student. The project guide was explained to give the student an understanding of the expected final project, its features, technologies, and overall functionality. The student was also informed that the administrator would provide the project guide and video demonstration so that she could begin working on the project immediately.\n\nThe lesson then progressed to a new JavaScript topic: async and await. The student was introduced to asynchronous JavaScript and why it is useful when JavaScript needs to wait for an operation to complete, such as retrieving information from an API, downloading data, or waiting for a response.\n\nThe student learned that:\n\nasync is used to indicate that a function can perform an asynchronous task.\nawait is used to wait for an asynchronous operation to finish before continuing.\n\nSeveral practical examples were demonstrated using HTML and internal JavaScript, including retrieving information from an API and creating a timed operation that waits before displaying an output.\n\nThe student was also shown how async/await can be used together with the Fetch API to retrieve data and display the result on a webpage.\n\nA simple way of remembering the concepts was provided:\n\nasync — This function can wait for something.\nawait — Wait for this operation to finish.\n\nTowards the end of the lesson, ES6+ (ECMAScript 6 and later JavaScript features) was introduced. The student was given an overview of modern JavaScript features including let, const, arrow functions, template literals, destructuring, default parameters, classes, Promises, and async/await. The ES6+ topic will be continued in the next class.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student demonstrated good understanding and participation throughout the lesson. She successfully completed the previous assignment and was able to follow the introduction to the new async/await concepts.  The practical examples were used to make asynchronous programming easier to understand, particularly the relationship between async, await, APIs, and waiting for operations to complete.  The introduction of the Kiditorial project also provides the student with a practical project through which she can apply the HTML, CSS, and JavaScript concepts being learned during the training.  The student will continue with ES6+ in the next class, after which the newly learned concepts can progressively be incorporated into the Kiditorial project.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-27T05:20:05.000Z"
+        },
+        {
+                "id": "att-gsheet-10-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola  Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-08-28",
+                "dateFormatted": "8/28/2026",
+                "startTime": "1:00:00 PM",
+                "endTime": "2:09:00 PM",
+                "topic": "Project Progress Review ES6+ Introduction let and const Arrow Functions Practical Arrow Function Examples Introduction to Template Literals",
+                "summary": "The class started with a review of the student's ongoing Kiditorial project. The student had completed approximately 40% of the project and demonstrated a good understanding of the work completed so far.\n\nThe lesson then focused on ES6+ (modern JavaScript). The student was introduced to let and const, followed by arrow functions and their differences from traditional JavaScript functions.\n\nPractical HTML, CSS, and JavaScript examples were used to demonstrate arrow functions, including a greeting application, simple calculator for addition, subtraction, multiplication and division, and a background-colour changer. Classwork was given during the lesson, and the student was able to complete it correctly.\n\nThe student was also introduced to Template Literals, with further explanation and practical examples scheduled for the next class. Destructuring will also be covered alongside the continuation of the classwork and examples.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student is progressing well and is demonstrating an increasing ability to understand and apply JavaScript concepts practically. Her progress on the Kiditorial project is encouraging, with approximately 40% completed.  She responded well to the ES6+ lesson and successfully understood the practical arrow-function exercises. Continued practice will help strengthen her confidence and ability to apply modern JavaScript features independently.  Next class: Continue with Template Literals and Destructuring, including practical examples and classwork.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-28T05:20:31.000Z"
+        },
+        {
+                "id": "att-gsheet-11-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-08-29",
+                "dateFormatted": "8/29/2026",
+                "startTime": "1:00:00 PM",
+                "endTime": "2:07:00 PM",
+                "topic": "ES6+ Template Literals Destructuring Classes Practical HTML, CSS and JavaScript examples Ongoing Kiditorial Project",
+                "summary": "The class began with a review of the student's ongoing Kiditorial project, which is currently about 60% completed. She demonstrated good understanding and is making steady progress with the project.\n\nThe lesson then continued with ES6+ JavaScript. Practical examples and classwork were provided, which she completed successfully.\n\nTemplate Literals were introduced, including the use of backticks and ${variable} to easily combine text and variables. Several UI/UX-based examples were demonstrated, including a Student Profile Card, Student Score Card, XP & Gems Dashboard, and Achievement Message.\n\nDestructuring and Classes were also introduced. These will be the final ES6+ topics to be covered before completing the JavaScript lessons.\n\n3. Tutor Remarks\n\nThe student is progressing very well and is showing a good understanding of the JavaScript concepts taught so far. Her ability to complete the practical classwork correctly and her progress on the Kiditorial project demonstrate that she is applying the concepts effectively.\n\nShe is currently approximately 60% through the Kiditorial project. The remaining lessons will focus on Destructuring and Classes, after which the JavaScript class is scheduled to conclude on Thursday, 3 September 2026.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student is progressing very well and is showing a good understanding of the JavaScript concepts taught so far. Her ability to complete the practical classwork correctly and her progress on the Kiditorial project demonstrate that she is applying the concepts effectively.  She is currently approximately 60% through the Kiditorial project. The remaining lessons will focus on Destructuring and Classes, after which the JavaScript class is scheduled to conclude on Thursday, 3 September 2026.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-29T05:23:16.000Z"
+        },
+        {
+                "id": "att-gsheet-12-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-08-31",
+                "dateFormatted": "8/31/2026",
+                "startTime": "1:00:00 PM",
+                "endTime": "2:13:00 PM",
+                "topic": "ES6+ Destructuring Array destructuring Object destructuring Using destructuring to extract values into variables Understanding array indexes JavaScript Classes Understanding what a class is Creating a class using the class keyword Using a constructor Creating objects with new Using the this keyword Adding properties such as name, age, address, state, and country Creating methods inside a class",
+                "summary": "The class session focused on Destructuring and Classes, which are important ES6+ JavaScript concepts. The student was introduced to destructuring as a simple way of taking values from arrays and objects and storing them in variables. Practical HTML, CSS, and JavaScript examples were used to demonstrate both array and object destructuring.\n\nThe student was also introduced to JavaScript Classes, using a Student example to demonstrate how a class acts as a blueprint for creating objects. She practiced using constructors, parameters, this, and the new keyword. A class with additional student information such as address, state, and country was also demonstrated.\n\nA class method was introduced to show that a method is a function that belongs to a class. Practical examples were used throughout the session to reinforce the concepts.\n\nAfter the class session, the student's Kiditorial project progress was checked and found to be approximately 98% complete, showing very good progress toward completing the project.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student demonstrated a good understanding of the topics covered and was able to follow the practical examples on Destructuring and Classes. She participated well during the practical session and showed improved confidence in applying JavaScript concepts.  Her Kiditorial project is approximately 98% completed, which indicates excellent progress. Only final review, testing, and any necessary adjustments remain before completion.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-08-31T08:25:12.000Z"
+        },
+        {
+                "id": "att-gsheet-13-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-09-03",
+                "dateFormatted": "9/3/2026",
+                "startTime": "1:03:00 PM",
+                "endTime": "2:04:00 PM",
+                "topic": "JavaScript Optional Chaining (?.), Nullish Coalescing (??) and Project Deployment  The student learned how to use Optional Chaining (?.) to safely access properties that may not exist in a JavaScript object. She also learned how Nullish Coalescing (??) can be used to provide a default value when information is missing.  The lesson was reinforced with a practical Student Profile Dashboard project using HTML, CSS, and JavaScript.",
+                "summary": "The class began with a review and checking of the student's project, which she performed well. I also introduced her to the process of deploying a web project for production using Netlify, allowing the project to be accessed online.\n\nThe student was taught how Optional Chaining works by comparing normal object property access with the safer ?. approach. Practical examples such as student.address?.city and student.contact?.phone were used to demonstrate how JavaScript can safely handle missing information without producing an error.\n\nThe student also worked with the Nullish Coalescing operator (??) to display alternative information when a property is undefined or null. These concepts were implemented in a Student Profile Dashboard alongside previously learned concepts such as objects, DOM manipulation, textContent, getElementById(), and addEventListener().\n\nThe class also included a practical introduction to web deployment, where the student was shown how her completed project could be deployed for production on Netlify.\n\nAfter the class, the student was informed that an assessment would be provided through the admin.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student performed well during the project review and demonstrated a good understanding of the concepts covered. She was able to follow the practical implementation of Optional Chaining and understand its importance when working with objects containing missing information.  She also successfully progressed from developing a project locally to understanding the basic process of making a web project available online through deployment. This is an important step toward applying her HTML, CSS, and JavaScript skills to real-world projects.  Overall, the student is making good progress and should continue practicing modern JavaScript features and building small interactive projects to strengthen her confidence and problem-solving ability.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-09-03T05:16:03.000Z"
+        },
+        {
+                "id": "att-gsheet-14-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-09-05",
+                "dateFormatted": "9/5/2026",
+                "startTime": "1:01:00 PM",
+                "endTime": "2:19:00 PM",
+                "topic": "Node.js, Express.js and Database (PostgreSQL)  The class introduced the student to the fundamentals of backend web development using Node.js, Express.js, and PostgreSQL.  The following concepts were covered:  Node.js – A JavaScript runtime that allows JavaScript to run outside the web browser and is commonly used for server-side development. Express.js – A Node.js framework used to create web servers, backend applications, and API routes. PostgreSQL – A relational database system used to store, manage, and retrieve application data. Understanding the relationship between the three technologies: Node.js → The engine/runtime Express.js → The server/backend framework PostgreSQL → The database/storage system Installation of the LTS version of Node.js. Understanding npm (Node Package Manager) and its purpose in installing and managing Node.js packages. Checking Node.js and npm installation using: node --version npm --version Introduction to creating a backend project using VS Code. Creating a package.json file using: npm init -y Installing Express.js using: npm install express Checking the installed Express version using: npm list express Understanding the purpose of: node_modules package.json package-lock.json Introduction to PostgreSQL installation and the PostgreSQL VS Code extension. Installing the PostgreSQL Node.js package using: npm install pg Understanding the use of the pg package for connecting Node.js applications to PostgreSQL databases. Checking PostgreSQL installation using: psql --version Understanding how Express and PostgreSQL packages appear under the project's dependencies.",
+                "summary": "The class focused on introducing the student to backend development with Node.js and Express.js, together with database management using PostgreSQL.\n\nThe student learned that Node.js provides the environment for executing JavaScript on the server, while Express.js can be used to build the backend server and API routes. PostgreSQL was introduced as the database where application information can be permanently stored and managed.\n\nThe student was also guided through the initial setup of a backend project in VS Code. This included creating a project folder named backend-project, initializing the project with npm init -y, installing Express.js, and understanding the files and folders automatically created by npm.\n\nThe class further introduced PostgreSQL and the pg Node.js package, which will allow the backend application to communicate with the PostgreSQL database.\n\nBy the end of the lesson, the student had an understanding of the basic backend architecture:\n\nClient/Browser → Express.js → Node.js → PostgreSQL Database",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student was introduced to important backend development concepts and successfully learned the roles of Node.js, Express.js, and PostgreSQL in a modern web application.  The student demonstrated an understanding of the purpose of npm, project initialization, package installation, and the basic structure of a Node.js backend project. The introduction to PostgreSQL also provided a good foundation for understanding how backend applications interact with databases.  The next stage will be focused on creating the Express server, connecting Node.js to PostgreSQL to display if the server, framework and database are working.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-09-05T05:39:39.000Z"
+        },
+        {
+                "id": "att-gsheet-15-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-09-07",
+                "dateFormatted": "9/7/2026",
+                "startTime": "1:02:00 PM",
+                "endTime": "2:08:00 PM",
+                "topic": "Review of previous assignment. PostgreSQL database setup. Introduction to Node.js + Express without database. HTTP methods: GET and POST. Understanding request (req) and response (res). Starting and stopping a Node.js server.",
+                "summary": "She successfully completed the previous classwork. We then set up PostgreSQL for future classes before practicing Node.js + Express using sample student data. The concepts of req, res, GET, POST, routes, and server execution were explained with practical examples.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "She participated well and understood the basic Node.js + Express concepts. An assignment involving 9 student data records was given for practice.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-09-07T12:01:38.000Z"
+        },
+        {
+                "id": "att-gsheet-16-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola  Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-09-10",
+                "dateFormatted": "9/10/2026",
+                "startTime": "1:02:00 PM",
+                "endTime": "2:08:00 PM",
+                "topic": "HTTP Methods, Requests and Routes: GET, POST, PUT, PATCH, and DELETE, with focus on POST, PUT, and DELETE using Node.js and Express.",
+                "summary": "The class started with checking her assignment on creating a new student record, which she did well. She then learned how HTTP methods relate to database operations and practiced POST, PUT, and DELETE requests using Express, including req.body and req.params.\n\nPOST will be practically implemented with PostgreSQL for record insertion tomorrow, as promised, while DELETE will also be practiced with PostgreSQL.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "She understood the concepts well and participated actively in the practical exercises. She is making good progress in understanding HTTP requests, routes, and CRUD operations.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-09-10T06:23:40.000Z"
+        },
+        {
+                "id": "att-gsheet-17-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-09-18",
+                "dateFormatted": "9/18/2026",
+                "startTime": "4:02:00 PM",
+                "endTime": "5:07:00 PM",
+                "topic": "REST API, JSON, GET & POST with Node.js, Express and PostgreSQL.",
+                "summary": "Students learned how to connect Express to PostgreSQL, create API routes, use GET to retrieve student records, and use POST to add new records through an HTML form which will be continued tomorrow.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student participated well and demonstrated an understanding of REST APIs, JSON, and database integration.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-09-18T11:08:17.000Z"
+        },
+        {
+                "id": "att-gsheet-18-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-09-19",
+                "dateFormatted": "9/19/2026",
+                "startTime": "10:00:00 AM",
+                "endTime": "11:07:00 AM",
+                "topic": "Implementing Email-Only Student Authentication via REST API (Node.js, Express, PostgreSQL, and JavaScript Frontend).",
+                "summary": "The student extended the full-stack workflow by implementing an email-based login system using the existing students table. The lesson covered creating the frontend interface (login.html, login.js), building a backend POST /login route in app.js to query PostgreSQL, and handling JSON requests and responses. An assignment was given to insert 10 additional records via the browser, research CSS morphism types, and define the umbrella term for GET, POST, PUT/UPDATE, and DELETE (CRUD).",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Good progress and practical understanding of how frontend requests integrate with backend database lookups.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-09-19T02:16:41.000Z"
+        },
+        {
+                "id": "att-gsheet-19-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-09-25",
+                "dateFormatted": "9/25/2026",
+                "startTime": "4:03:00 PM",
+                "endTime": "5:26:00 PM",
+                "topic": "RESTful PUT API implementation with PostgreSQL.  Updating records (students table) by ID vs. batch updates.  Modern UI styling using glassmorphism principles for update forms.",
+                "summary": "I Reviewed the previous assignment covering 10 new database records and glassmorphism styling.\n\nWe Built public/update.html and public/update.js to handle form submissions and send PUT requests to http://localhost:3000/update.html.\n\nWe Connected the frontend forms to an existing Express backend and PostgreSQL database to update fields: name, age, course, and email.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student performed very well on the assignment, demonstrating a solid grasp of database record insertion and modern form design. She successfully implemented the update logic and showed great understanding of PUT request workflows.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-09-25T08:30:24.000Z"
+        },
+        {
+                "id": "att-gsheet-20-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-09-26",
+                "dateFormatted": "9/26/2026",
+                "startTime": "10:00:00 AM",
+                "endTime": "11:03:00 AM",
+                "topic": "RESTful PATCH updates for student records.  DELETE operations in PostgreSQL (deleting by ID, name, age, course, email, and bulk deletion).  Frontend integration via public/delete.html and public/delete.js at http://localhost:3000/delete.html",
+                "summary": "Reviewed and verified the previous assignment.\n\nCovered partial record updates using PATCH before transitioning to record deletion workflows.\n\nBuilt the frontend and backend logic to handle single-criteria and full table deletions on the students table.\n\nAssigned a new project focused on designing a landing page and dashboard.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student performed well on the previous assignment and grasped the PATCH and DELETE concepts quickly. She is well-prepared to tackle the upcoming landing page and dashboard assignment.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-09-26T02:29:24.000Z"
+        },
+        {
+                "id": "att-gsheet-21-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-10-02",
+                "dateFormatted": "10/2/2026",
+                "startTime": "4:01:00 PM",
+                "endTime": "5:04:00 PM",
+                "topic": "JWT Authentication and Authorization (Header, Payload, Signature)  Express & PostgreSQL Integration  Password Hashing with Bcrypt  Project Assignment: Student Management System (Deployment to Railway)",
+                "summary": "The session focused on securing Node.js/Express applications using JSON Web Tokens (JWT) and PostgreSQL. Key concepts included the 3-part token structure, safe payload handling (avoiding plain-text sensitive data), and the end-to-end authentication lifecycle using Express middleware. Practical implementation covered essential npm packages (express, pg, jsonwebtoken, bcrypt/bcryptjs, dotenv), designing a secure users table schema, and hashing passwords before database storage. \n\nThe class concluded with assigning a Student Management System project to be deployed on Railway.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Well done today. Student understood how login tokens and password security work, and the database setup was clear, and the student should Keep the momentum going as She build and deploy the Student Management System to Railway.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-02T08:12:30.000Z"
+        },
+        {
+                "id": "att-gsheet-22-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola  Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-10-03",
+                "dateFormatted": "10/3/2026",
+                "startTime": "10:01:00 AM",
+                "endTime": "11:17:00 AM",
+                "topic": "Building a secure backend authentication system using Express, PostgreSQL, and JSON Web Tokens (JWT).",
+                "summary": "The session focused on setting up essential dependencies (express, pg, jsonwebtoken, bcryptjs, dotenv, and nodemon) and organizing a modular project directory separating server setup, database configuration, auth routes, and static client files. \n\nThe end-to-end authentication lifecycle was established: hashing passwords with bcryptjs for registration into PostgreSQL, validating credentials and issuing JWTs upon login, and enforcing authorization on protected routes via token verification middleware.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The core architectural flow is solid and shows a clear grasp of stateless token authentication. To make this production-ready, ensure PostgreSQL queries always use parameterized inputs ($1, $2) to block SQL injection, set explicit token expiration times, and store JWTs in HttpOnly cookies to protect against XSS vulnerabilities.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-03T02:40:38.000Z"
+        },
+        {
+                "id": "att-gsheet-23-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-03",
+                "dateFormatted": "10/3/2026",
+                "startTime": "12:00:00 PM",
+                "endTime": "1:10:00 PM",
+                "topic": "Introduction to Python",
+                "summary": "Joshua had no prior knowledge of Python, so the session focused mainly on introducing him to Python, the programming environment, and basic concepts such as strings. We also spent a bit of time setting up the coding environment",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Responsive",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-04T11:32:59.000Z"
+        },
+        {
+                "id": "att-gsheet-24-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-04",
+                "dateFormatted": "10/4/2026",
+                "startTime": "7:00:00 PM",
+                "endTime": "8:00:00 PM",
+                "topic": "Introduction to python; comment, string/variable",
+                "summary": "Joshua practiced what was taught yesterday, created his own variable, string method(,upper and .lower) and also learn about variable rule",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Satisfactory",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-04T11:40:37.000Z"
+        },
+        {
+                "id": "att-gsheet-25-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-06",
+                "dateFormatted": "10/6/2026",
+                "startTime": "3:00:00 PM",
+                "endTime": "4:00:00 PM",
+                "topic": "Variable Naming style & Concatenation",
+                "summary": "We reviewed last session's assignment. Joshua completed it and presented his work confidently.\nWent deeper into variables, including the rules for naming them and the common naming styles programmers use(Camel case, Snake case and Pascal case).\nLearned concatenation, and was introduced to f-strings, a cleaner way of putting variables directly inside a sentence.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "satisfactory, he completed his assignment and explained his work with confidence, which is a very good sign, building the habit of presenting his own code will help him understand it more deeply.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-06T07:32:22.000Z"
+        },
+        {
+                "id": "att-gsheet-26-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-07",
+                "dateFormatted": "10/7/2026",
+                "startTime": "3:00:00 PM",
+                "endTime": "4:00:00 PM",
+                "topic": "String formating using f'string method",
+                "summary": "Joshua learnt about string formatting as a continuation of concatenation. He presented his assignment confidently and shows improved learning",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Satisfactory",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-07T12:12:31.000Z"
+        },
+        {
+                "id": "att-gsheet-27-1793004547602",
+                "studentId": "std-momoore-01",
+                "studentName": "Momooreoluwa Shittu",
+                "parentEmail": "abiodunadebiyis@gmail.com",
+                "parentName": "Abiodun Shittu",
+                "tutorName": "Moses Adebayo",
+                "tutorEmail": "adefemiadebayo20@gmail.com",
+                "course": "Scratch & Creative Coding",
+                "date": "2026-10-05",
+                "dateFormatted": "10/5/2026",
+                "startTime": "7:00:00 PM",
+                "endTime": "8:00:00 PM",
+                "topic": "Scratch Programming: Story Telling About Myself",
+                "summary": "Scratch Programming is a block based coding language. The task was to develop a story telling project “about myself”",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Momoore did very well and pays good attention to details. Keep it up!",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-08T02:20:37.000Z"
+        },
+        {
+                "id": "att-gsheet-28-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola  Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-10-09",
+                "dateFormatted": "10/9/2026",
+                "startTime": "4:03:00 PM",
+                "endTime": "5:21:00 PM",
+                "topic": "Pearls Project Completion, GitHub Repository Setup, PostgreSQL Deployment on Railway, and Intro to Python will be her next programme",
+                "summary": "Successfully completed the Pearls project, created the GitHub repository, and deployed PostgreSQL online via Railway. Next phase shifts to Python programming.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Excellent execution on the project and cloud database deployment; well-prepared to transition into Python.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-09T08:36:24.000Z"
+        },
+        {
+                "id": "att-gsheet-29-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-10-10",
+                "dateFormatted": "10/10/2026",
+                "startTime": "10:00:00 AM",
+                "endTime": "11:22:00 AM",
+                "topic": "STEMulus Full-Stack Web Dev Arena Assessment; Introduction to Python Backend Development with Flask and MySQL.",
+                "summary": "The student completed an assessment on STEMulus Full-Stack Web Dev Arena. The class then introduced Python programming, Flask web development, and MySQL databases, including installation, basic concepts, and version-checking commands.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student was introduced to the fundamentals of Python, Flask, and MySQL and will continue with practical exercises and project development.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-10T02:29:28.000Z"
+        },
+        {
+                "id": "att-gsheet-30-1793004547602",
+                "studentId": "std-momoore-01",
+                "studentName": "Momooreoluwa Shittu",
+                "parentEmail": "abiodunadebiyis@gmail.com",
+                "parentName": "Abiodun Shittu",
+                "tutorName": "Adebayo Moses",
+                "tutorEmail": "adefemiadebayo20@gmail.com",
+                "course": "Scratch & Creative Coding",
+                "date": "2026-10-10",
+                "dateFormatted": "10/10/2026",
+                "startTime": "12:00:00 PM",
+                "endTime": "1:00:00 PM",
+                "topic": "Animation: About myself",
+                "summary": "Momoore did a project on story telling about myself. He completed the project on his downloaded scratch application on the laptop. He is doing very well.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Momoore did a project on story telling about myself. He is doing very well.  Keep it up !",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-10T04:25:57.000Z"
+        },
+        {
+                "id": "att-gsheet-31-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-10",
+                "dateFormatted": "10/10/2026",
+                "startTime": "12:00:00 PM",
+                "endTime": "1:00:00 PM",
+                "topic": "Data type; String",
+                "summary": "Joshua was introduced to Python data types, with a focus on strings. We covered what strings are, how to find the length of a string using len(), how to identify a data type using type(), and using f-strings for formatting text.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Satisfactory",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-10T07:14:05.000Z"
+        },
+        {
+                "id": "att-gsheet-32-1793004547602",
+                "studentId": "std-gbolade-01",
+                "studentName": "Gbolade Okesanjo",
+                "parentEmail": "temiladeokesanjo1@gmail.com",
+                "parentName": "Temi Okesanjo",
+                "tutorName": "Ojekudo Oghenemaro Emmanuel",
+                "tutorEmail": "oojekudo@gmail.com",
+                "course": "Physical Robotics & Creative Computing",
+                "date": "2026-10-11",
+                "dateFormatted": "10/11/2026",
+                "startTime": "5:09:00 PM",
+                "endTime": "6:20:00 PM",
+                "topic": "Color flipper",
+                "summary": "In today's lesson, the covered linking css file to the html and the class attributes and values in css.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The class was fun, although I had to wait a few minutes before the class started. Gbolade is getting a grasp of text base programming. I know for a fact, with continuous independent learning and support from Stemulus that would sharpens his problem solving skills.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-11T11:16:02.000Z"
+        },
+        {
+                "id": "att-gsheet-33-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-11",
+                "dateFormatted": "10/11/2026",
+                "startTime": "7:00:00 PM",
+                "endTime": "8:00:00 PM",
+                "topic": "Data types continuation; Integer, Float and Boolean",
+                "summary": "Joshua was introduced to the other data types, integer, float and boolean",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Satisfactory",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-11T12:45:56.000Z"
+        },
+        {
+                "id": "att-gsheet-34-1793004547602",
+                "studentId": "std-momoore-01",
+                "studentName": "Momooreoluwa Shittu",
+                "parentEmail": "abiodunadebiyis@gmail.com",
+                "parentName": "Abiodun Shittu",
+                "tutorName": "Adebayo Moses",
+                "tutorEmail": "adefemiadebayo20@gmail.com",
+                "course": "Scratch & Creative Coding",
+                "date": "2026-10-12",
+                "dateFormatted": "10/12/2026",
+                "startTime": "7:00:00 PM",
+                "endTime": "8:00:00 PM",
+                "topic": "Game: Ping pong",
+                "summary": "Momoore did very well designing the ping pong game. He also learn how to debug by tracing steps.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Momoore is progressing very well. He should try to logging scratch account on web so he can share his link conveniently.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-12T11:31:49.000Z"
+        },
+        {
+                "id": "att-gsheet-35-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-13",
+                "dateFormatted": "10/13/2026",
+                "startTime": "3:00:00 PM",
+                "endTime": "4:00:00 PM",
+                "topic": "Data Casting",
+                "summary": "Joshua was introduce to data casting, converting from int to str and converting float to int",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Satisfactory",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-13T07:39:21.000Z"
+        },
+        {
+                "id": "att-gsheet-36-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-14",
+                "dateFormatted": "10/14/2026",
+                "startTime": "3:00:00 PM",
+                "endTime": "4:00:00 PM",
+                "topic": "Arithmetic Operator",
+                "summary": "We revised data casting and Joshua was introduced to arithmetic operator (+,-,*,/)",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Satisfactory",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-14T07:10:00.000Z"
+        },
+        {
+                "id": "att-gsheet-37-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-10-16",
+                "dateFormatted": "10/16/2026",
+                "startTime": "4:02:00 PM",
+                "endTime": "5:14:00 PM",
+                "topic": "MySQL Basics: Relational database fundamentals (databases, tables, rows, columns, SQL) and connecting Python Flask using mysql-connector-python.  - Introduction to Python, running scripts in VS Code, variables, and primitive data types (String, Integer, Float, Boolean).  - Control flow using if/else conditions, iteration with for loops, and defining reusable functions introduction.",
+                "summary": "The student was introduced to backend development concepts across three sessions, in which she installed the MySQL local server. \n\nIn Python fundamentals, the student practiced running code, storing information in typed variables, directing program flow with conditional logic, executing loops, and structuring logic with functions.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Pearl demonstrated a solid understanding of foundational Python programming concepts and handled hands-on syntax exercises with ease.   Continued practice writing custom functions and combining loops with conditional statements will further strengthen backend problem-solving skills.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-16T08:22:45.000Z"
+        },
+        {
+                "id": "att-gsheet-38-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-10-17",
+                "dateFormatted": "10/17/2026",
+                "startTime": "10:01:00 AM",
+                "endTime": "11:07:00 AM",
+                "topic": "Python Functions and Introduction to Flask Web Development.",
+                "summary": "The student learned how to create and use Python functions, then explored Flask installation, routes, and creating a simple web server, and assignment was given to her.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student was introduced to Flask and practised creating basic web routes. Further practical exercises will improve her understanding.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-17T03:14:08.000Z"
+        },
+        {
+                "id": "att-gsheet-39-1793004547602",
+                "studentId": "std-momoore-01",
+                "studentName": "Momooreoluwa Shittu",
+                "parentEmail": "abiodunadebiyis@gmail.com",
+                "parentName": "Abiodun Shittu",
+                "tutorName": "Moses Adebayo",
+                "tutorEmail": "adefemiadebayo20@gmail.com",
+                "course": "Scratch & Creative Coding",
+                "date": "2026-10-17",
+                "dateFormatted": "10/17/2026",
+                "startTime": "12:00:00 PM",
+                "endTime": "1:00:00 PM",
+                "topic": "Game Design: Pop the balloon",
+                "summary": "Momoore did great with the project. The game was good.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Momoore is doing great!",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-17T04:14:47.000Z"
+        },
+        {
+                "id": "att-gsheet-40-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-17",
+                "dateFormatted": "10/17/2026",
+                "startTime": "12:30:00 PM",
+                "endTime": "1:30:00 PM",
+                "topic": "Assignment Correction & Arithmetic Operation Recap",
+                "summary": "Based on Joshua's performance with his assignment, we had a recap of Arithmetic Operation and did the correction to the assignment.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Satisfactory",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-17T11:22:02.000Z"
+        },
+        {
+                "id": "att-gsheet-41-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-18",
+                "dateFormatted": "10/18/2026",
+                "startTime": "7:00:00 PM",
+                "endTime": "8:00:00 PM",
+                "topic": "Introduction to User Input",
+                "summary": "We had a recap of yesterday session and Joshua also presented his assignment. He keeps improving greatly. He was also introduced to user input in python",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Satisfactory",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-18T12:06:02.000Z"
+        },
+        {
+                "id": "att-gsheet-42-1793004547602",
+                "studentId": "std-gbolade-01",
+                "studentName": "Gbolade Okesanjo",
+                "parentEmail": "temiladeokesanjo1@gmail.com",
+                "parentName": "Temi Okesanjo",
+                "tutorName": "Ojekudo Oghenemaro Emmanuel",
+                "tutorEmail": "oojekudo@gmail.com",
+                "course": "Physical Robotics & Creative Computing",
+                "date": "2026-10-19",
+                "dateFormatted": "10/19/2026",
+                "startTime": "5:09:00 PM",
+                "endTime": "7:04:00 PM",
+                "topic": "Gbolade’s home work",
+                "summary": "We fixed Gbolade’s home work, importing images, sounds and linked pages",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Showed him how to navigate code ai application.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-19T10:04:37.000Z"
+        },
+        {
+                "id": "att-gsheet-43-1793004547602",
+                "studentId": "std-momoore-01",
+                "studentName": "Momooreoluwa Shittu",
+                "parentEmail": "abiodunadebiyis@gmail.com",
+                "parentName": "Abiodun Shittu",
+                "tutorName": "Adebayo Moses",
+                "tutorEmail": "adefemiadebayo20@gmail.com",
+                "course": "Scratch & Creative Coding",
+                "date": "2026-10-19",
+                "dateFormatted": "10/19/2026",
+                "startTime": "7:00:00 PM",
+                "endTime": "8:00:00 PM",
+                "topic": "Game Design: Obstacle game",
+                "summary": "The class today involved creating a game on scratch which demonstrates the use of loops, sequences and sound.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Momoore is doing well. He is progressing!",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-19T11:12:30.000Z"
+        },
+        {
+                "id": "att-gsheet-44-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-20",
+                "dateFormatted": "10/20/2026",
+                "startTime": "3:00:00 PM",
+                "endTime": "4:00:00 PM",
+                "topic": "User Input; Continuation",
+                "summary": "We continued to practice more exercise on user input to reinforce the learning and also introduce using type casting with user input e.g using int() along with input()",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Satisfactory",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-20T07:46:43.000Z"
+        },
+        {
+                "id": "att-gsheet-45-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-21",
+                "dateFormatted": "10/21/2026",
+                "startTime": "3:15:00 PM",
+                "endTime": "4:15:00 PM",
+                "topic": "Recap/Assessment",
+                "summary": "We had a recap and assessment on previous lessons, it was a vey impressive session seeing Joshua take an assessment on previous lesson and he performed above average",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Impressive",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-21T08:36:05.000Z"
+        },
+        {
+                "id": "att-gsheet-46-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-10-23",
+                "dateFormatted": "10/23/2026",
+                "startTime": "6:00:00 PM",
+                "endTime": "7:00:00 PM",
+                "topic": "MySQL Database Operations and Flask–MySQL Integration.",
+                "summary": "Assignment was first checked , which she got, later the student learned basic SQL operations and how to connect Flask to MySQL to retrieve student records.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student practised database operations and Flask–MySQL connectivity",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-23T10:52:07.000Z"
+        },
+        {
+                "id": "att-gsheet-47-1793004547602",
+                "studentId": "std-pearl-01",
+                "studentName": "Pearl Babalola",
+                "parentEmail": "talk2nike2009@gmail.com",
+                "parentName": "Babalola Olanike",
+                "tutorName": "Tola Ayanleke",
+                "tutorEmail": "tonetbod@gmail.com",
+                "course": "JavaScript & Web Innovation",
+                "date": "2026-10-24",
+                "dateFormatted": "10/24/2026",
+                "startTime": "10:01:00 AM",
+                "endTime": "11:04:00 AM",
+                "topic": "Assignment checked, which she did well, later Flask Form Handling and MySQL Database Integration was thought.",
+                "summary": "The student learned to receive form data, validate inputs, save student records to MySQL, and redirect users to the homepage.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "The student practised connecting Flask forms to MySQL and understanding basic database operations.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-24T02:27:12.000Z"
+        },
+        {
+                "id": "att-gsheet-48-1793004547602",
+                "studentId": "std-momoore-01",
+                "studentName": "Momooreoluwa Shittu",
+                "parentEmail": "abiodunadebiyis@gmail.com",
+                "parentName": "Abiodun Shittu",
+                "tutorName": "Adebayo Moses",
+                "tutorEmail": "adefemiadebayo20@gmail.com",
+                "course": "Scratch & Creative Coding",
+                "date": "2026-10-24",
+                "dateFormatted": "10/24/2026",
+                "startTime": "12:00:00 PM",
+                "endTime": "1:00:00 PM",
+                "topic": "Game Design: Falling fruits",
+                "summary": "The class went well with Momoore working on the game: Falling Fruits on scratch.",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Momoore is progressing well. Keep it up!",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-24T04:23:00.000Z"
+        },
+        {
+                "id": "att-gsheet-49-1793004547602",
+                "studentId": "std-gbolade-01",
+                "studentName": "Gbolade Okesanjo",
+                "parentEmail": "temiladeokesanjo1@gmail.com",
+                "parentName": "Temi Okesanjo",
+                "tutorName": "Ojekudo oghenemaro",
+                "tutorEmail": "oojekudo@gmail.com",
+                "course": "Physical Robotics & Creative Computing",
+                "date": "2026-10-24",
+                "dateFormatted": "10/24/2026",
+                "startTime": "1:58:00 PM",
+                "endTime": "3:04:00 PM",
+                "topic": "Colour flipper",
+                "summary": "CSS styling",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Almost done with the ui, worked on button styling for today",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-24T06:06:24.000Z"
+        },
+        {
+                "id": "att-gsheet-50-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-24",
+                "dateFormatted": "10/24/2026",
+                "startTime": "2:00:00 PM",
+                "endTime": "3:00:00 PM",
+                "topic": "Assessment Correction and Introduction to Conditional Statement",
+                "summary": "today's class was for assessment correction and introduction to conditional statement",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Satisfactory",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-24T07:58:30.000Z"
+        },
+        {
+                "id": "att-gsheet-51-1793004547602",
+                "studentId": "std-gbolade-01",
+                "studentName": "Gbolade Okesanjo",
+                "parentEmail": "temiladeokesanjo1@gmail.com",
+                "parentName": "Temi Okesanjo",
+                "tutorName": "Oghenemaro",
+                "tutorEmail": "oojekudo@gmail.com",
+                "course": "Physical Robotics & Creative Computing",
+                "date": "2026-10-25",
+                "dateFormatted": "10/25/2026",
+                "startTime": "5:01:00 PM",
+                "endTime": "6:12:00 PM",
+                "topic": "Colour flipper",
+                "summary": "Button css",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Taught Gbolade the css hover function on buttons and links, also gave an eye opener to the vast world of software development.",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-25T09:17:14.000Z"
+        },
+        {
+                "id": "att-gsheet-52-1793004547602",
+                "studentId": "std-joshua-01",
+                "studentName": "Joshua Ogba",
+                "parentEmail": "joshuaogba.parent@gmail.com",
+                "parentName": "Mrs. Ogba",
+                "tutorName": "Kafayat Abdulwahab",
+                "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+                "course": "Python Programming & AI",
+                "date": "2026-10-25",
+                "dateFormatted": "10/25/2026",
+                "startTime": "7:00:00 PM",
+                "endTime": "8:00:00 PM",
+                "topic": "Conditional Statement Cont.",
+                "summary": "Today's class was a continuation of conditional statement; if statement",
+                "status": "present",
+                "attendanceStatus": "present",
+                "tutorRemark": "Satisfactory",
+                "source": "GoogleSheetVerifiedAttendance",
+                "verified": true,
+                "createdAt": "2026-10-25T12:16:21.000Z"
+        }
+],
+    "monthlyReports": [],
+    "notices": [
+        {
+            "id": "notice-policy-01",
+            "title": "STEMulus Faculty Punctuality & 24h Attendance Logging Standard",
+            "category": "Operational Policy",
+            "priority": "urgent",
+            "targetAudience": "all",
+            "content": "All tutors must submit attendance via the portal within 24 hours of session completion. Timely submission directly impacts verified hours certification and monthly remittance. Classes logged past 48 hours without prior coordinator approval incur a delayed review flag.",
+            "author": "Academic Director",
+            "publishedAt": "2026-10-20T08:00:00.000Z",
+            "status": "published"
+        },
+        {
+            "id": "notice-curriculum-02",
+            "title": "Q4 2026 215 Curriculum Slide Decks & Assessment Runner Live",
+            "category": "Curriculum Update",
+            "priority": "high",
+            "targetAudience": "all",
+            "content": "All 215 lesson slide decks across Python, Scratch, Web, Robotics, Creative Coding, and AI are now active in the portal. Tutors can launch slides directly from the schedule matrix with pre-populated attendance logging.",
+            "author": "Curriculum Lead",
+            "publishedAt": "2026-10-22T10:30:00.000Z",
+            "status": "published"
+        },
+        {
+            "id": "notice-safeguard-03",
+            "title": "Safeguarding Protocol: 1080p Recording & Emergency Hotlines",
+            "category": "Safeguarding Alert",
+            "priority": "urgent",
+            "targetAudience": "all",
+            "content": "Ensure Google Meet auto-recording is initiated for every minor 1-on-1 session. Any unexplained student absence or untoward incident must be flagged within 10 minutes using the Emergency WhatsApp Hotline.",
+            "author": "Safeguarding Lead",
+            "publishedAt": "2026-10-24T12:00:00.000Z",
+            "status": "published"
         }
     ],
-    "monthlyReports": [],
+    "payrollDisbursements": [],
     "emailQueue": [
         {
             "id": "queue-1792137029497-6tax",
@@ -2348,15 +3280,15 @@ const DashboardEngine = (function() {
             try {
                 parsed = JSON.parse(dbStr);
                 if (parsed && parsed.__sec === true && !Array.isArray(parsed.students)) {
-                    console.warn('[DashboardEngine] Corrupted or tampered vault state. Reinitializing defaults.');
-                    parsed = JSON.parse(JSON.stringify(DEFAULT_DATA));
+                    console.warn('[DashboardEngine] Corrupted or tampered vault state. Attempting recovery from Snapshot Vault.');
+                    parsed = recoverFromSnapshotVault() || JSON.parse(JSON.stringify(DEFAULT_DATA));
                 }
             } catch (e) {
-                parsed = JSON.parse(JSON.stringify(DEFAULT_DATA));
+                parsed = recoverFromSnapshotVault() || JSON.parse(JSON.stringify(DEFAULT_DATA));
             }
         }
         try {
-            const DB_SYNC_VERSION = '2026.10.18.v7';
+            const DB_SYNC_VERSION = '2026.10.26.v103_full_operational';
             if (!parsed || parsed._syncVersion !== DB_SYNC_VERSION || !Array.isArray(parsed.schedules) || parsed.schedules.length < 30 || !Array.isArray(parsed.students) || parsed.students.length < 13) {
                 const prevUsers = (parsed && parsed.users) ? parsed.users : {};
                 const prevNotices = (parsed && Array.isArray(parsed.notices)) ? parsed.notices : [];
@@ -2522,419 +3454,554 @@ const DashboardEngine = (function() {
 
             // Ensure core officially enrolled students from Google Sheets roster are present
             const coreEnrolledStudents = [
-          {
-                    "id": "std-1014-faro",
-                    "firstName": "Farouq",
-                    "lastName": "",
-                    "age": 10,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Parent of Farouq",
-                    "parentEmail": "farouq.parent@stemuluskidstech.com",
-                    "parentPhone": "",
-                    "program": "Coding Track",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Sarah Jane",
-                    "tutorEmail": "tutor@stemuluskidstech.com",
-                    "tutorId": "tut-101",
-                    "notes": "Authentic Google Pro Meet link mapped from Coders Class Links.",
-                    "classroomLink": "https://meet.google.com/bbx-ocde-ytw",
-                    "meetLink": "https://meet.google.com/bbx-ocde-ytw",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 8,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          },
-
-          {
-                    "id": "std-1003-8ecr",
-                    "firstName": "Abdulsalam",
-                    "lastName": "Modesire Shittu",
-                    "age": 14,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Abiodun Shittu",
-                    "parentEmail": "abiodunadebiyis@gmail.com",
-                    "parentPhone": "07438002358",
-                    "program": "Python Programming",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Sarah Jane",
-                    "tutorEmail": "tutor@stemuluskidstech.com",
-                    "tutorId": "tut-101",
-                    "notes": "Relationship: Mother | Grade: Y10 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
-                    "classroomLink": "",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 8,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          },
-          {
-                    "id": "std-1004-e1rm",
-                    "firstName": "Alexandra",
-                    "lastName": "Sotayo",
-                    "age": 13,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Alexandra Sotayo",
-                    "parentEmail": "abmsotayo@googlemail.com",
-                    "parentPhone": "+447575353416",
-                    "program": "Python Programming",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Sarah Jane",
-                    "tutorEmail": "tutor@stemuluskidstech.com",
-                    "tutorId": "tut-101",
-                    "notes": "Relationship: Father | Grade: Year 9 | Experience: Some (Scratch, Basic coding) | Photo Consent: No",
-                    "classroomLink": "",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 8,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          },
-          {
-                    "id": "std-1005-6f4y",
-                    "firstName": "Annabelle",
-                    "lastName": "Sotayo",
-                    "age": 10,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Matt Sotayo",
-                    "parentEmail": "abmsotayo@googlemail.com",
-                    "parentPhone": "+447575353416",
-                    "program": "Python Programming",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Sarah Jane",
-                    "tutorEmail": "tutor@stemuluskidstech.com",
-                    "tutorId": "tut-101",
-                    "notes": "Relationship: Father | Grade: Year 5 | Experience: Some (Scratch, Basic coding) | Photo Consent: No",
-                    "classroomLink": "",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 8,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          },
-          {
-                    "id": "std-1006-il0c",
-                    "firstName": "Brian",
-                    "lastName": "Osenedum Chukwuka-Mordi",
-                    "age": 9,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Maryrose Chukwumah-Mordi",
-                    "parentEmail": "Chukwumah.maryrose@gmail.com",
-                    "parentPhone": "44 07876180911",
-                    "program": "Scratch Creators",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Sarah Jane",
-                    "tutorEmail": "tutor@stemuluskidstech.com",
-                    "tutorId": "tut-101",
-                    "notes": "Relationship: Mother | Grade: Grade 5 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes | Notes: I consent to his work project  to be shared but not his personal photo graph without further consent.",
-                    "classroomLink": "",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 8,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          },
-          {
-                    "id": "std-1007-r4cv",
-                    "firstName": "Babalola",
-                    "lastName": "Oluwadunmininu Pearl",
-                    "age": 12,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Babalola Olanike",
-                    "parentEmail": "talk2nike2009@gmail.com",
-                    "parentPhone": "08055855102",
-                    "program": "Python Programming",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Tola Tosin Ayanleke",
-                    "tutorEmail": "tonetbod@gmail.com",
-                    "tutorId": "tut-106-tola",
-                    "notes": "Relationship: Mother | Grade: SS1 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
-                    "classroomLink": "https://meet.google.com/yre-naci-zmp",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 8,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          },
-          {
-                    "id": "std-1008-a0lp",
-                    "firstName": "Gbolade",
-                    "lastName": "Okesanjo",
-                    "age": 14,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Temi Okesanjo",
-                    "parentEmail": "Temiladeokesanjo1@gmail.com",
-                    "parentPhone": "08076000020",
-                    "program": "Web & App Development",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Emmanuel O.",
-                    "tutorEmail": "emmanuel@stemuluskidstech.com",
-                    "tutorId": "tut-107-emmanuel",
-                    "notes": "Relationship: Mother | Experience: None (Beginner) | Photo Consent: No",
-                    "classroomLink": "https://meet.google.com/qye-ezub-uqi",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 8,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          },
-          {
-                    "id": "std-1009-tbod",
-                    "firstName": "King",
-                    "lastName": "Myles Omosuyi",
-                    "age": 6,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Diamond Sheva Omosuyi",
-                    "parentEmail": "diamondsheva@gmail.com",
-                    "parentPhone": "08117090593",
-                    "program": "Scratch Creators",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Olalekan Israel Ajimati",
-                    "tutorEmail": "olalekan@stemuluskidstech.com",
-                    "tutorId": "tut-103",
-                    "notes": "Relationship: Mother | Grade: Grade 3 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes | Notes: No allergies",
-                    "classroomLink": "https://meet.google.com/nxg-rbcg-nsr",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 8,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          },
-          {
-                    "id": "std-1010-ilb5",
-                    "firstName": "JUNAYD",
-                    "lastName": "KARI",
-                    "age": 6,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Carla KARI",
-                    "parentEmail": "carlanouriat.k@gmail.com",
-                    "parentPhone": "+33610570227",
-                    "program": "Scratch Creators",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Olalekan Israel Ajimati",
-                    "tutorEmail": "olalekan@stemuluskidstech.com",
-                    "tutorId": "tut-103",
-                    "notes": "Relationship: Mother | Grade: GRADE 1 | Experience: None (Beginner) | Photo Consent: No",
-                    "classroomLink": "https://meet.google.com/gyd-fewb-cdh",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 8,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          },
-          {
-                    "id": "std-1011-tq1u",
-                    "firstName": "Momooreoluwa",
-                    "lastName": "Sonaike",
-                    "age": 7,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Oladipupo Sonaike",
-                    "parentEmail": "eoosonaike@gmail.com",
-                    "parentPhone": "08186820039",
-                    "program": "Scratch Creators",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Moses Oluwafemi Adebayo",
-                    "tutorEmail": "adefemiadebayo20@gmail.com",
-                    "tutorId": "tut-104-moses",
-                    "notes": "Relationship: Father | Grade: 3 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
-                    "classroomLink": "https://meet.google.com/vdp-nmbh-sjj",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 8,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          },
-          {
-                    "id": "std-1012-wq6b",
-                    "firstName": "David",
-                    "lastName": "Gjoka",
-                    "age": 10,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Anna Khavkina",
-                    "parentEmail": "annakhavkina@gmail.com",
-                    "parentPhone": "07898741675",
-                    "program": "Python Programming",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Olalekan Israel Ajimati",
-                    "tutorEmail": "olalekan@stemuluskidstech.com",
-                    "tutorId": "tut-103",
-                    "notes": "Relationship: Mother | Grade: Year 6 | Experience: Some (Scratch, Basic coding) | Photo Consent: No | Notes: None",
-                    "classroomLink": "https://meet.google.com/ckd-ngjs-cth",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 8,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          },
-          {
-                    "id": "std-1013-jogb",
-                    "firstName": "Joshua",
-                    "lastName": "Ogba",
-                    "age": 10,
-                    "birthday": "",
-                    "hasExplicitBirthday": false,
-                    "parentName": "Mrs. Ogba",
-                    "parentEmail": "joshuaogba.parent@gmail.com",
-                    "parentPhone": "+2348060000000",
-                    "program": "Scratch Creators",
-                    "status": "active",
-                    "remindersPaused": false,
-                    "progress": 0,
-                    "tutorName": "Kafayat Abdulwahab",
-                    "tutorEmail": "kafayatabdulwahab.et@gmail.com",
-                    "tutorId": "tut-105-kafa",
-                    "notes": "Assigned to Kafayat Abdulwahab. 4 weekly sessions: Tue 3pm, Wed 3pm, Sat 12pm, Sun 7pm WAT.",
-                    "classroomLink": "https://meet.google.com/yko-xwce-ugd",
-                    "meetLink": "https://meet.google.com/yko-xwce-ugd",
-                    "skills": {
-                              "logic": 50,
-                              "loops": 50,
-                              "variables": 50,
-                              "syntax": 50,
-                              "projects": 50
-                    },
-                    "metrics": {
-                              "attended": 0,
-                              "total": 16,
-                              "projects": 0,
-                              "lines": 0
-                    }
-          }
+  {
+    "id": "std-1014-faro",
+    "firstName": "Farouq",
+    "lastName": "",
+    "age": 10,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Parent of Farouq",
+    "parentEmail": "farouq.parent@stemuluskidstech.com",
+    "parentPhone": "",
+    "program": "Coding Track",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Sarah Jane",
+    "tutorEmail": "tutor@stemuluskidstech.com",
+    "tutorId": "tut-101",
+    "notes": "Authentic Google Pro Meet link mapped from Coders Class Links.",
+    "classroomLink": "https://meet.google.com/bbx-ocde-ytw",
+    "meetLink": "https://meet.google.com/bbx-ocde-ytw",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 0,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "tier": "intermediate",
+    "billing": {
+      "monthlyFee": 75000,
+      "tier": "intermediate",
+      "uncollectedOctober": true,
+      "status": "pending"
+    }
+  },
+  {
+    "id": "std-1003-8ecr",
+    "firstName": "Abdulsalam",
+    "lastName": "Modesire Shittu",
+    "age": 14,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Abiodun Shittu",
+    "parentEmail": "abiodunadebiyis@gmail.com",
+    "parentPhone": "07438002358",
+    "program": "Python Programming",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Sarah Jane",
+    "tutorEmail": "tutor@stemuluskidstech.com",
+    "tutorId": "tut-101",
+    "notes": "Relationship: Mother | Grade: Y10 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
+    "classroomLink": "https://meet.google.com/zhv-jquf-rem",
+    "meetLink": "https://meet.google.com/zhv-jquf-rem",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 0,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "tier": "advanced",
+    "billing": {
+      "monthlyFee": 120000,
+      "tier": "advanced",
+      "uncollectedOctober": true,
+      "status": "pending"
+    }
+  },
+  {
+    "id": "std-1004-e1rm",
+    "firstName": "Alexandra",
+    "lastName": "Sotayo",
+    "age": 13,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Alexandra Sotayo",
+    "parentEmail": "abmsotayo@googlemail.com",
+    "parentPhone": "+447575353416",
+    "program": "Python Programming",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Sarah Jane",
+    "tutorEmail": "tutor@stemuluskidstech.com",
+    "tutorId": "tut-101",
+    "notes": "Relationship: Father | Grade: Year 9 | Experience: Some (Scratch, Basic coding) | Photo Consent: No",
+    "classroomLink": "https://meet.google.com/stm-sotayo-alex",
+    "meetLink": "https://meet.google.com/stm-sotayo-alex",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 0,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "tier": "intermediate",
+    "billing": {
+      "monthlyFee": 75000,
+      "tier": "intermediate",
+      "uncollectedOctober": true,
+      "status": "pending"
+    }
+  },
+  {
+    "id": "std-1005-6f4y",
+    "firstName": "Annabelle",
+    "lastName": "Sotayo",
+    "age": 10,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Matt Sotayo",
+    "parentEmail": "abmsotayo@googlemail.com",
+    "parentPhone": "+447575353416",
+    "program": "Python Programming",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Sarah Jane",
+    "tutorEmail": "tutor@stemuluskidstech.com",
+    "tutorId": "tut-101",
+    "notes": "Relationship: Father | Grade: Year 5 | Experience: Some (Scratch, Basic coding) | Photo Consent: No",
+    "classroomLink": "https://meet.google.com/kos-rxkp-bkd",
+    "meetLink": "https://meet.google.com/kos-rxkp-bkd",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 0,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "tier": "intermediate",
+    "billing": {
+      "monthlyFee": 75000,
+      "tier": "intermediate",
+      "uncollectedOctober": true,
+      "status": "pending"
+    }
+  },
+  {
+    "id": "std-1006-il0c",
+    "firstName": "Brian",
+    "lastName": "Osenedum Chukwuka-Mordi",
+    "age": 9,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Maryrose Chukwumah-Mordi",
+    "parentEmail": "Chukwumah.maryrose@gmail.com",
+    "parentPhone": "44 07876180911",
+    "program": "Scratch Creators",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Sarah Jane",
+    "tutorEmail": "tutor@stemuluskidstech.com",
+    "tutorId": "tut-101",
+    "notes": "Relationship: Mother | Grade: Grade 5 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes | Notes: I consent to his work project  to be shared but not his personal photo graph without further consent.",
+    "classroomLink": "https://meet.google.com/wvh-vwbr-hoq",
+    "meetLink": "https://meet.google.com/wvh-vwbr-hoq",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 0,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "tier": "beginner",
+    "billing": {
+      "monthlyFee": 48000,
+      "tier": "beginner",
+      "uncollectedOctober": true,
+      "status": "pending"
+    }
+  },
+  {
+    "id": "std-1007-r4cv",
+    "firstName": "Babalola",
+    "lastName": "Oluwadunmininu Pearl",
+    "age": 13,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Babalola Olanike",
+    "parentEmail": "talk2nike2009@gmail.com",
+    "parentPhone": "08055855102",
+    "program": "Python Programming",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Tola Tosin Ayanleke",
+    "tutorEmail": "tonetbod@gmail.com",
+    "tutorId": "tut-106-tola",
+    "notes": "Relationship: Mother | Grade: SS1 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
+    "classroomLink": "https://meet.google.com/yre-naci-zmp",
+    "meetLink": "https://meet.google.com/yre-naci-zmp",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 27,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "tier": "intermediate",
+    "package": "Intermediate Young Engineers",
+    "classesAttended": 27,
+    "currentMonth": 7,
+    "badgeMonth": 7,
+    "badgeLevel": "Fire Master",
+    "earnedBadges": [
+      "fire-finder",
+      "ember-keeper",
+      "hearth-builder",
+      "torch-bearer",
+      "signal-fire",
+      "forge-master"
+    ],
+    "unlockedEras": [
+      "Era I: The First Light"
+    ],
+    "startDate": "2026-09-18",
+    "billing": {
+      "firstClassDate": "2026-09-18",
+      "anchorDay": 18,
+      "cycleStartDate": "2026-09-18",
+      "nextDueDate": "2026-11-18",
+      "monthlyFee": 75000,
+      "packageRate": 75000,
+      "tier": "intermediate",
+      "octoberBridge": 37500,
+      "nextCycleFee": 75000,
+      "combinedRealignment": 112500,
+      "status": "renewal_pending",
+      "uncollectedOctober": true,
+      "notes": "Intermediate package (Age 13): ₦75,000/month. October bridge (Oct 19-31, 4 sessions): ₦37,500. November cycle: ₦75,000. Realignment total: ₦112,500 (or ₦37,500 bridge now + ₦75,000 on Nov 1)."
+    }
+  },
+  {
+    "id": "std-1012-goke",
+    "firstName": "Gbolade",
+    "lastName": "Okesanjo",
+    "age": 14,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Temi Okesanjo",
+    "parentEmail": "Temiladeokesanjo1@gmail.com",
+    "parentPhone": "08076000020",
+    "program": "Web & App Development",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Emmanuel O.",
+    "tutorEmail": "emmanuel@stemuluskidstech.com",
+    "tutorId": "tut-107-emmanuel",
+    "notes": "Relationship: Mother | Experience: None (Beginner) | Photo Consent: No",
+    "classroomLink": "Physical Lab",
+    "meetLink": "Physical Lab",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 4,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "classesAttended": 4,
+    "startDate": "2026-10-04",
+    "billing": {
+      "firstClassDate": "2026-10-04",
+      "anchorDay": 4,
+      "cycleStartDate": "2026-10-04",
+      "nextDueDate": "2026-11-04",
+      "monthlyFee": 48000,
+      "status": "active",
+      "paidThrough": "2026-11-04",
+      "notes": "Physical sessions paid. Next cycle due Nov 4, 2026."
+    }
+  },
+  {
+    "id": "std-1009-tbod",
+    "firstName": "King",
+    "lastName": "Myles Omosuyi",
+    "age": 6,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Diamond Sheva Omosuyi",
+    "parentEmail": "diamondsheva@gmail.com",
+    "parentPhone": "08117090593",
+    "program": "Scratch Creators",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Olalekan Israel Ajimati",
+    "tutorEmail": "olalekan@stemuluskidstech.com",
+    "tutorId": "tut-103",
+    "notes": "Relationship: Mother | Grade: Grade 3 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes | Notes: No allergies",
+    "classroomLink": "https://meet.google.com/miz-dthg-pmt",
+    "meetLink": "https://meet.google.com/miz-dthg-pmt",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 0,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "tier": "beginner",
+    "billing": {
+      "monthlyFee": 48000,
+      "tier": "beginner",
+      "uncollectedOctober": true,
+      "status": "pending"
+    }
+  },
+  {
+    "id": "std-1010-ilb5",
+    "firstName": "JUNAYD",
+    "lastName": "KARI",
+    "age": 6,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Carla KARI",
+    "parentEmail": "carlanouriat.k@gmail.com",
+    "parentPhone": "+33610570227",
+    "program": "Scratch Creators",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Olalekan Israel Ajimati",
+    "tutorEmail": "olalekan@stemuluskidstech.com",
+    "tutorId": "tut-103",
+    "notes": "Relationship: Mother | Grade: GRADE 1 | Experience: None (Beginner) | Photo Consent: No",
+    "classroomLink": "https://meet.google.com/gyd-fewb-cdh",
+    "meetLink": "https://meet.google.com/gyd-fewb-cdh",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 0,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "tier": "beginner",
+    "billing": {
+      "monthlyFee": 48000,
+      "tier": "beginner",
+      "uncollectedOctober": true,
+      "status": "pending"
+    }
+  },
+  {
+    "id": "std-1011-momo",
+    "firstName": "Momooreoluwa",
+    "lastName": "Sonaike",
+    "age": 7,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Oladipupo Sonaike",
+    "parentEmail": "eoosonaike@gmail.com",
+    "parentPhone": "08186820039",
+    "program": "Scratch Creators",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Moses Oluwafemi Adebayo",
+    "tutorEmail": "adefemiadebayo20@gmail.com",
+    "tutorId": "tut-104-moses",
+    "notes": "Relationship: Father | Grade: 3 | Experience: Some (Scratch, Basic coding) | Photo Consent: Yes",
+    "classroomLink": "https://meet.google.com/vdp-nmbh-sjj",
+    "meetLink": "https://meet.google.com/vdp-nmbh-sjj",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 6,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "classesAttended": 6,
+    "startDate": "2026-10-05",
+    "billing": {
+      "firstClassDate": "2026-10-05",
+      "anchorDay": 5,
+      "cycleStartDate": "2026-10-05",
+      "nextDueDate": "2026-11-05",
+      "monthlyFee": 48000,
+      "status": "active",
+      "uncollectedOctober": true,
+      "notes": "Paid for 1 month initially. Next cycle due Nov 5, 2026."
+    }
+  },
+  {
+    "id": "std-1012-wq6b",
+    "firstName": "David",
+    "lastName": "Gjoka",
+    "age": 10,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Anna Khavkina",
+    "parentEmail": "annakhavkina@gmail.com",
+    "parentPhone": "07898741675",
+    "program": "Python Programming",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Olalekan Israel Ajimati",
+    "tutorEmail": "olalekan@stemuluskidstech.com",
+    "tutorId": "tut-103",
+    "notes": "Relationship: Mother | Grade: Year 6 | Experience: Some (Scratch, Basic coding) | Photo Consent: No | Notes: None",
+    "classroomLink": "https://meet.google.com/ckd-ngjs-cth",
+    "meetLink": "https://meet.google.com/ckd-ngjs-cth",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 0,
+      "total": 8,
+      "projects": 0,
+      "lines": 0
+    },
+    "tier": "intermediate",
+    "billing": {
+      "monthlyFee": 75000,
+      "tier": "intermediate",
+      "uncollectedOctober": true,
+      "status": "pending"
+    }
+  },
+  {
+    "id": "std-1013-jogb",
+    "firstName": "Joshua",
+    "lastName": "Ogba",
+    "age": 10,
+    "birthday": "",
+    "hasExplicitBirthday": false,
+    "parentName": "Mrs. Ogba",
+    "parentEmail": "joshuaogba.parent@gmail.com",
+    "parentPhone": "+2348060000000",
+    "program": "Scratch Creators",
+    "status": "active",
+    "remindersPaused": false,
+    "progress": 0,
+    "tutorName": "Kafayat Abdulwahab",
+    "tutorEmail": "kafayatabdulwahab.et@gmail.com",
+    "tutorId": "tut-105-kafa",
+    "notes": "Assigned to Kafayat Abdulwahab. 4 weekly sessions: Tue 3pm, Wed 3pm, Sat 12pm, Sun 7pm WAT.",
+    "classroomLink": "https://meet.google.com/yko-xwce-ugd",
+    "meetLink": "https://meet.google.com/yko-xwce-ugd",
+    "skills": {
+      "logic": 50,
+      "loops": 50,
+      "variables": 50,
+      "syntax": 50,
+      "projects": 50
+    },
+    "metrics": {
+      "attended": 14,
+      "total": 16,
+      "projects": 0,
+      "lines": 0
+    },
+    "classesAttended": 14,
+    "startDate": "2026-10-03",
+    "billing": {
+      "firstClassDate": "2026-10-03",
+      "anchorDay": 3,
+      "cycleStartDate": "2026-10-03",
+      "nextDueDate": "2027-01-03",
+      "paidThrough": "2026-12-31",
+      "annualPaid": true,
+      "monthlyFee": 35000,
+      "status": "paid_annual",
+      "notes": "Paid for the rest of 2026 (through Dec 31, 2026)."
+    }
+  }
 ];
             let studentsAppended = false;
             parsed.students = parsed.students || [];
 
             // 1. Ensure Daniel and Sarah have their assigned Google Meet links
             parsed.students.forEach(s => {
-                if (s.id === 'std-1001' && !s.meetLink) {
+                if (s.id === 'std-1001' && (!s.meetLink || s.meetLink !== 'https://meet.google.com/stm-demo-dan')) {
                     s.meetLink = 'https://meet.google.com/stm-demo-dan';
-                    s.classroomLink = s.classroomLink || 'https://meet.google.com/stm-demo-dan';
+                    s.classroomLink = 'https://meet.google.com/stm-demo-dan';
                     studentsAppended = true;
                 }
-                if (s.id === 'std-1002' && !s.meetLink) {
+                if (s.id === 'std-1002' && (!s.meetLink || s.meetLink !== 'https://meet.google.com/gua-sisg-tei')) {
                     s.meetLink = 'https://meet.google.com/gua-sisg-tei';
-                    s.classroomLink = s.classroomLink || 'https://meet.google.com/gua-sisg-tei';
+                    s.classroomLink = 'https://meet.google.com/gua-sisg-tei';
                     studentsAppended = true;
                 }
             });
@@ -2947,7 +4014,7 @@ const DashboardEngine = (function() {
                 "std-1004-e1rm": "https://meet.google.com/stm-sotayo-alex",
                 "std-1005-6f4y": "https://meet.google.com/kos-rxkp-bkd",
                 "std-1006-il0c": "https://meet.google.com/wvh-vwbr-hoq",
-                "std-1007-r4cv": "https://meet.google.com/bbx-ocde-ytw",
+                "std-1007-r4cv": "https://meet.google.com/yre-naci-zmp",
                 "std-1008-a0lp": "https://meet.google.com/qye-ezub-uqi",
                 "std-1009-tbod": "https://meet.google.com/miz-dthg-pmt",
                 "std-1010-ilb5": "https://meet.google.com/gyd-fewb-cdh",
@@ -2961,7 +4028,7 @@ const DashboardEngine = (function() {
                 const assignedLink = studentMeetMap[ces.id] || ces.meetLink || '';
                 if (assignedLink) {
                     ces.meetLink = assignedLink;
-                    ces.classroomLink = ces.classroomLink || assignedLink;
+                    ces.classroomLink = assignedLink;
                 }
                 const cleanFirst = (ces.firstName || '').toLowerCase().trim();
                 const cleanParent = (ces.parentEmail || '').toLowerCase().trim();
@@ -2973,14 +4040,40 @@ const DashboardEngine = (function() {
                 if (!matched) {
                     parsed.students.push(ces);
                     studentsAppended = true;
-                } else if (!matched.meetLink && assignedLink) {
+                } else if (assignedLink && (matched.meetLink !== assignedLink || matched.classroomLink !== assignedLink)) {
                     matched.meetLink = assignedLink;
-                    matched.classroomLink = matched.classroomLink || assignedLink;
+                    matched.classroomLink = assignedLink;
                     studentsAppended = true;
                 }
             });
 
-            
+            // Deduplicate parsed.students by ID and by (firstName + lastName + parentEmail) so tautology never happens
+            if (Array.isArray(parsed.students)) {
+                const delStuIds = Array.isArray(parsed.deletedStudentIds) ? parsed.deletedStudentIds : [];
+                const seenStudentIds = new Set();
+                const seenStudentNames = new Set();
+                const dedupedStudents = [];
+                parsed.students.forEach(s => {
+                    if (!s || s.isDeleted === true || (s.id && delStuIds.includes(s.id))) {
+                        studentsAppended = true;
+                        return;
+                    }
+                    const idKey = String(s.id || '').trim();
+                    const nameKey = `${String(s.firstName || '').toLowerCase().trim()}_${String(s.lastName || '').toLowerCase().trim()}_${String(s.parentEmail || '').toLowerCase().trim()}`;
+                    if ((idKey && seenStudentIds.has(idKey)) || (nameKey.length > 3 && seenStudentNames.has(nameKey))) {
+                        studentsAppended = true;
+                        return;
+                    }
+                    if (idKey) seenStudentIds.add(idKey);
+                    if (nameKey.length > 3) seenStudentNames.add(nameKey);
+                    dedupedStudents.push(s);
+                });
+                if (dedupedStudents.length !== parsed.students.length) {
+                    parsed.students = dedupedStudents;
+                    studentsAppended = true;
+                }
+            }
+
             // Proactive sync for Authentic Google Pro Meet Links
             const AUTH_MEET_LINKS = {
                 'pearl': 'https://meet.google.com/bbx-ocde-ytw',
@@ -3012,8 +4105,8 @@ const DashboardEngine = (function() {
             if (parsed.students && Array.isArray(parsed.students)) {
                 parsed.students.forEach(s => {
                     const fullName = ((s.firstName || '') + ' ' + (s.lastName || '')).trim();
-                    const authM = getAuthMeet(fullName) || studentMeetMap[s.id];
-                    if (authM && s.meetLink !== authM) {
+                    const authM = studentMeetMap[s.id] || getAuthMeet(fullName);
+                    if (authM && (s.meetLink !== authM || s.classroomLink !== authM)) {
                         s.meetLink = authM;
                         s.classroomLink = authM;
                         studentsAppended = true;
@@ -3023,7 +4116,7 @@ const DashboardEngine = (function() {
 
             if (parsed.schedules && Array.isArray(parsed.schedules)) {
                 parsed.schedules.forEach(sch => {
-                    const authM = getAuthMeet(sch.studentName);
+                    const authM = studentMeetMap[sch.studentId] || getAuthMeet(sch.studentName);
                     if (authM) {
                         if (sch.link && sch.link.includes('Physical')) {
                             if (sch.meetLinkBackup !== authM) {
@@ -3037,7 +4130,6 @@ const DashboardEngine = (function() {
                     }
                 });
             }
-
 
             // 2b. Sync official tutor reassignments as dispatched
             const officialTutorAssignments = {
@@ -3066,13 +4158,13 @@ const DashboardEngine = (function() {
                 { id: "sch-101-mon-momo-w1", studentId: "std-1011-tq1u", studentName: "Momooreoluwa Sonaike", course: "Scratch Creators", dayOfWeek: "Monday", date: "2026-10-12", time: "19:00", duration: "60", mentor: "Moses Oluwafemi Adebayo", tutorName: "Moses Oluwafemi Adebayo", tutorEmail: "adefemiadebayo20@gmail.com", tutorId: "tut-104-moses", link: "https://meet.google.com/vdp-nmbh-sjj", status: "done", attendanceStatus: "present" },
                 { id: "sch-102-tue-josh-w1", studentId: "std-1013-jogb", studentName: "Joshua Ogba", course: "Scratch Creators", dayOfWeek: "Tuesday", date: "2026-10-13", time: "15:00", duration: "60", mentor: "Kafayat Abdulwahab", tutorName: "Kafayat Abdulwahab", tutorEmail: "kafayatabdulwahab.et@gmail.com", tutorId: "tut-105-kafa", link: "https://meet.google.com/yko-xwce-ugd", status: "done", attendanceStatus: "present" },
                 { id: "sch-103-tue-davi-w1", studentId: "std-1012-wq6b", studentName: "David Gjoka", course: "Python Programming", dayOfWeek: "Tuesday", date: "2026-10-13", time: "16:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/ckd-ngjs-cth", status: "done", attendanceStatus: "present" },
-                { id: "sch-104-tue-myle-w1", studentId: "std-1009-tbod", studentName: "King Myles Omosuyi", course: "Scratch Creators", dayOfWeek: "Tuesday", date: "2026-10-13", time: "19:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/nxg-rbcg-nsr", status: "done", attendanceStatus: "present" },
+                { id: "sch-104-tue-myle-w1", studentId: "std-1009-tbod", studentName: "King Myles Omosuyi", course: "Scratch Creators", dayOfWeek: "Tuesday", date: "2026-10-13", time: "19:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/miz-dthg-pmt", status: "done", attendanceStatus: "present" },
                 { id: "sch-105-wed-josh-w1", studentId: "std-1013-jogb", studentName: "Joshua Ogba", course: "Scratch Creators", dayOfWeek: "Wednesday", date: "2026-10-14", time: "15:00", duration: "60", mentor: "Kafayat Abdulwahab", tutorName: "Kafayat Abdulwahab", tutorEmail: "kafayatabdulwahab.et@gmail.com", tutorId: "tut-105-kafa", link: "https://meet.google.com/yko-xwce-ugd", status: "done", attendanceStatus: "present" },
                 { id: "sch-106-wed-juna-w1", studentId: "std-1010-ilb5", studentName: "JUNAYD KARI", course: "Scratch Creators", dayOfWeek: "Wednesday", date: "2026-10-14", time: "16:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/gyd-fewb-cdh", status: "done", attendanceStatus: "present" },
-                { id: "sch-107-fri-pear-w1", studentId: "std-1007-r4cv", studentName: "Babalola Oluwadunmininu Pearl", course: "Python Programming", dayOfWeek: "Friday", date: "2026-10-16", time: "16:00", duration: "60", mentor: "Tola Tosin Ayanleke", tutorName: "Tola Tosin Ayanleke", tutorEmail: "tonetbod@gmail.com", tutorId: "tut-106-tola", link: "https://meet.google.com/yre-naci-zmp", status: "done", attendanceStatus: "present" },
+                { id: "sch-107-fri-pear-w1", studentId: "std-1007-r4cv", studentName: "Babalola Oluwadunmininu Pearl", course: "Python Programming", dayOfWeek: "Friday", date: "2026-10-16", time: "16:00", duration: "60", mentor: "Tola Tosin Ayanleke", tutorName: "Tola Tosin Ayanleke", tutorEmail: "tonetbod@gmail.com", tutorId: "tut-106-tola", link: "https://meet.google.com/bbx-ocde-ytw", status: "done", attendanceStatus: "present" },
                 { id: "sch-108-fri-juna-w1", studentId: "std-1010-ilb5", studentName: "JUNAYD KARI", course: "Scratch Creators", dayOfWeek: "Friday", date: "2026-10-16", time: "16:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/gyd-fewb-cdh", status: "done", attendanceStatus: "present" },
-                { id: "sch-109-fri-myle-w1", studentId: "std-1009-tbod", studentName: "King Myles Omosuyi", course: "Scratch Creators", dayOfWeek: "Friday", date: "2026-10-16", time: "17:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/nxg-rbcg-nsr", status: "done", attendanceStatus: "present" },
-                { id: "sch-110-sat-pear-w1", studentId: "std-1007-r4cv", studentName: "Babalola Oluwadunmininu Pearl", course: "Python Programming", dayOfWeek: "Saturday", date: "2026-10-17", time: "10:00", duration: "60", mentor: "Tola Tosin Ayanleke", tutorName: "Tola Tosin Ayanleke", tutorEmail: "tonetbod@gmail.com", tutorId: "tut-106-tola", link: "https://meet.google.com/yre-naci-zmp", status: "scheduled", attendanceStatus: "scheduled" },
+                { id: "sch-109-fri-myle-w1", studentId: "std-1009-tbod", studentName: "King Myles Omosuyi", course: "Scratch Creators", dayOfWeek: "Friday", date: "2026-10-16", time: "17:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/miz-dthg-pmt", status: "done", attendanceStatus: "present" },
+                { id: "sch-110-sat-pear-w1", studentId: "std-1007-r4cv", studentName: "Babalola Oluwadunmininu Pearl", course: "Python Programming", dayOfWeek: "Saturday", date: "2026-10-17", time: "10:00", duration: "60", mentor: "Tola Tosin Ayanleke", tutorName: "Tola Tosin Ayanleke", tutorEmail: "tonetbod@gmail.com", tutorId: "tut-106-tola", link: "https://meet.google.com/bbx-ocde-ytw", status: "scheduled", attendanceStatus: "scheduled" },
                 { id: "sch-111-sat-momo-w1", studentId: "std-1011-tq1u", studentName: "Momooreoluwa Sonaike", course: "Scratch Creators", dayOfWeek: "Saturday", date: "2026-10-17", time: "12:00", duration: "60", mentor: "Moses Oluwafemi Adebayo", tutorName: "Moses Oluwafemi Adebayo", tutorEmail: "adefemiadebayo20@gmail.com", tutorId: "tut-104-moses", link: "https://meet.google.com/vdp-nmbh-sjj", status: "scheduled", attendanceStatus: "scheduled" },
                 { id: "sch-112-sat-josh-w1", studentId: "std-1013-jogb", studentName: "Joshua Ogba", course: "Scratch Creators", dayOfWeek: "Saturday", date: "2026-10-17", time: "12:00", duration: "60", mentor: "Kafayat Abdulwahab", tutorName: "Kafayat Abdulwahab", tutorEmail: "kafayatabdulwahab.et@gmail.com", tutorId: "tut-105-kafa", link: "https://meet.google.com/yko-xwce-ugd", status: "scheduled", attendanceStatus: "scheduled" },
                 { id: "sch-113-sat-gbol-w1", studentId: "std-1008-a0lp", studentName: "Gbolade Okesanjo", course: "Web & App Development", dayOfWeek: "Saturday", date: "2026-10-17", time: "12:00", duration: "60", mentor: "Emmanuel O.", tutorName: "Emmanuel O.", tutorEmail: "emmanuel@stemuluskidstech.com", tutorId: "tut-107-emmanuel", link: "Physical (In-Person Hub)", meetLinkBackup: "https://meet.google.com/qye-ezub-uqi", status: "scheduled", attendanceStatus: "scheduled" },
@@ -3081,13 +4173,13 @@ const DashboardEngine = (function() {
                 { id: "sch-101-mon-momo", studentId: "std-1011-tq1u", studentName: "Momooreoluwa Sonaike", course: "Scratch Creators", dayOfWeek: "Monday", date: "2026-10-19", time: "19:00", duration: "60", mentor: "Moses Oluwafemi Adebayo", tutorName: "Moses Oluwafemi Adebayo", tutorEmail: "adefemiadebayo20@gmail.com", tutorId: "tut-104-moses", link: "https://meet.google.com/vdp-nmbh-sjj", status: "scheduled", attendanceStatus: "scheduled" },
                 { id: "sch-102-tue-josh", studentId: "std-1013-jogb", studentName: "Joshua Ogba", course: "Scratch Creators", dayOfWeek: "Tuesday", date: "2026-10-20", time: "15:00", duration: "60", mentor: "Kafayat Abdulwahab", tutorName: "Kafayat Abdulwahab", tutorEmail: "kafayatabdulwahab.et@gmail.com", tutorId: "tut-105-kafa", link: "https://meet.google.com/yko-xwce-ugd", status: "scheduled", attendanceStatus: "scheduled" },
                 { id: "sch-103-tue-davi", studentId: "std-1012-wq6b", studentName: "David Gjoka", course: "Python Programming", dayOfWeek: "Tuesday", date: "2026-10-20", time: "16:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/ckd-ngjs-cth", status: "scheduled", attendanceStatus: "scheduled" },
-                { id: "sch-104-tue-myle", studentId: "std-1009-tbod", studentName: "King Myles Omosuyi", course: "Scratch Creators", dayOfWeek: "Tuesday", date: "2026-10-20", time: "19:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/nxg-rbcg-nsr", status: "scheduled", attendanceStatus: "scheduled" },
+                { id: "sch-104-tue-myle", studentId: "std-1009-tbod", studentName: "King Myles Omosuyi", course: "Scratch Creators", dayOfWeek: "Tuesday", date: "2026-10-20", time: "19:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/miz-dthg-pmt", status: "scheduled", attendanceStatus: "scheduled" },
                 { id: "sch-105-wed-josh", studentId: "std-1013-jogb", studentName: "Joshua Ogba", course: "Scratch Creators", dayOfWeek: "Wednesday", date: "2026-10-21", time: "15:00", duration: "60", mentor: "Kafayat Abdulwahab", tutorName: "Kafayat Abdulwahab", tutorEmail: "kafayatabdulwahab.et@gmail.com", tutorId: "tut-105-kafa", link: "https://meet.google.com/yko-xwce-ugd", status: "scheduled", attendanceStatus: "scheduled" },
                 { id: "sch-106-wed-juna", studentId: "std-1010-ilb5", studentName: "JUNAYD KARI", course: "Scratch Creators", dayOfWeek: "Wednesday", date: "2026-10-21", time: "16:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/gyd-fewb-cdh", status: "scheduled", attendanceStatus: "scheduled" },
-                { id: "sch-107-fri-pear", studentId: "std-1007-r4cv", studentName: "Babalola Oluwadunmininu Pearl", course: "Python Programming", dayOfWeek: "Friday", date: "2026-10-23", time: "16:00", duration: "60", mentor: "Tola Tosin Ayanleke", tutorName: "Tola Tosin Ayanleke", tutorEmail: "tonetbod@gmail.com", tutorId: "tut-106-tola", link: "https://meet.google.com/yre-naci-zmp", status: "scheduled", attendanceStatus: "scheduled" },
+                { id: "sch-107-fri-pear", studentId: "std-1007-r4cv", studentName: "Babalola Oluwadunmininu Pearl", course: "Python Programming", dayOfWeek: "Friday", date: "2026-10-23", time: "16:00", duration: "60", mentor: "Tola Tosin Ayanleke", tutorName: "Tola Tosin Ayanleke", tutorEmail: "tonetbod@gmail.com", tutorId: "tut-106-tola", link: "https://meet.google.com/bbx-ocde-ytw", status: "scheduled", attendanceStatus: "scheduled" },
                 { id: "sch-108-fri-juna", studentId: "std-1010-ilb5", studentName: "JUNAYD KARI", course: "Scratch Creators", dayOfWeek: "Friday", date: "2026-10-23", time: "16:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/gyd-fewb-cdh", status: "scheduled", attendanceStatus: "scheduled" },
-                { id: "sch-109-fri-myle", studentId: "std-1009-tbod", studentName: "King Myles Omosuyi", course: "Scratch Creators", dayOfWeek: "Friday", date: "2026-10-23", time: "17:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/nxg-rbcg-nsr", status: "scheduled", attendanceStatus: "scheduled" },
-                { id: "sch-110-sat-pear", studentId: "std-1007-r4cv", studentName: "Babalola Oluwadunmininu Pearl", course: "Python Programming", dayOfWeek: "Saturday", date: "2026-10-24", time: "10:00", duration: "60", mentor: "Tola Tosin Ayanleke", tutorName: "Tola Tosin Ayanleke", tutorEmail: "tonetbod@gmail.com", tutorId: "tut-106-tola", link: "https://meet.google.com/yre-naci-zmp", status: "scheduled", attendanceStatus: "scheduled" },
+                { id: "sch-109-fri-myle", studentId: "std-1009-tbod", studentName: "King Myles Omosuyi", course: "Scratch Creators", dayOfWeek: "Friday", date: "2026-10-23", time: "17:00", duration: "60", mentor: "Olalekan Israel Ajimati", tutorName: "Olalekan Israel Ajimati", tutorEmail: "olalekan@stemuluskidstech.com", tutorId: "tut-103", link: "https://meet.google.com/miz-dthg-pmt", status: "scheduled", attendanceStatus: "scheduled" },
+                { id: "sch-110-sat-pear", studentId: "std-1007-r4cv", studentName: "Babalola Oluwadunmininu Pearl", course: "Python Programming", dayOfWeek: "Saturday", date: "2026-10-24", time: "10:00", duration: "60", mentor: "Tola Tosin Ayanleke", tutorName: "Tola Tosin Ayanleke", tutorEmail: "tonetbod@gmail.com", tutorId: "tut-106-tola", link: "https://meet.google.com/bbx-ocde-ytw", status: "scheduled", attendanceStatus: "scheduled" },
                 { id: "sch-111-sat-momo", studentId: "std-1011-tq1u", studentName: "Momooreoluwa Sonaike", course: "Scratch Creators", dayOfWeek: "Saturday", date: "2026-10-24", time: "12:00", duration: "60", mentor: "Moses Oluwafemi Adebayo", tutorName: "Moses Oluwafemi Adebayo", tutorEmail: "adefemiadebayo20@gmail.com", tutorId: "tut-104-moses", link: "https://meet.google.com/vdp-nmbh-sjj", status: "scheduled", attendanceStatus: "scheduled" },
                 { id: "sch-112-sat-josh", studentId: "std-1013-jogb", studentName: "Joshua Ogba", course: "Scratch Creators", dayOfWeek: "Saturday", date: "2026-10-24", time: "12:00", duration: "60", mentor: "Kafayat Abdulwahab", tutorName: "Kafayat Abdulwahab", tutorEmail: "kafayatabdulwahab.et@gmail.com", tutorId: "tut-105-kafa", link: "https://meet.google.com/yko-xwce-ugd", status: "scheduled", attendanceStatus: "scheduled" },
                 { id: "sch-113-sat-gbol", studentId: "std-1008-a0lp", studentName: "Gbolade Okesanjo", course: "Web & App Development", dayOfWeek: "Saturday", date: "2026-10-24", time: "12:00", duration: "60", mentor: "Emmanuel O.", tutorName: "Emmanuel O.", tutorEmail: "emmanuel@stemuluskidstech.com", tutorId: "tut-107-emmanuel", link: "Physical (In-Person Hub)", meetLinkBackup: "https://meet.google.com/qye-ezub-uqi", status: "scheduled", attendanceStatus: "scheduled" },
@@ -3102,7 +4194,7 @@ const DashboardEngine = (function() {
                     studentsAppended = true;
                 } else {
                     const ex = parsed.schedules[sIdx];
-                    if (!ex.link || ex.link.includes('zoom.us')) {
+                    if (ex.link !== cs.link) {
                         ex.link = cs.link;
                         studentsAppended = true;
                     }
@@ -3144,15 +4236,27 @@ const DashboardEngine = (function() {
                 });
             });
 
-            // 3. Cascade Google Meet links AND canonical Tutor/Parent ownership to all schedules
+            // 3. Cascade Google Meet links, canonical Tutor/Parent ownership, AND deduplicate schedules by (studentId, date, time)
             if (parsed.schedules && Array.isArray(parsed.schedules)) {
+                const daysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                const dedupScheduleMap = new Map();
+                const dedupedSchedules = [];
+
                 parsed.schedules.forEach(sch => {
                     if (!sch) return;
+                    if (sch.id === 'sch-2001' || sch.id === 'sch-2002' || (sch.date && (sch.date.startsWith('2026-05') || sch.date.startsWith('2026-06')))) {
+                        studentsAppended = true;
+                        return;
+                    }
                     const matchedSt = (parsed.students || []).find(s =>
                         s && ((sch.studentId && s.id === sch.studentId) ||
                         (sch.studentName && ((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim() === String(sch.studentName).toLowerCase().trim()))
                     );
                     if (matchedSt) {
+                        if (!sch.studentId) {
+                            sch.studentId = matchedSt.id;
+                            studentsAppended = true;
+                        }
                         if (matchedSt.tutorEmail && sch.tutorEmail !== matchedSt.tutorEmail) {
                             sch.tutorEmail = matchedSt.tutorEmail;
                             studentsAppended = true;
@@ -3171,14 +4275,48 @@ const DashboardEngine = (function() {
                             studentsAppended = true;
                         }
                     }
-                    if (!sch.link || sch.link.includes('zoom.us') || sch.link.trim() === '') {
-                        const targetMeet = studentMeetMap[sch.studentId] || (matchedSt && matchedSt.meetLink);
-                        if (targetMeet) {
+                    const targetMeet = studentMeetMap[sch.studentId] || (matchedSt && matchedSt.meetLink) || getAuthMeet(sch.studentName);
+                    if (targetMeet) {
+                        if (sch.link && sch.link.includes('Physical')) {
+                            if (sch.meetLinkBackup !== targetMeet) {
+                                sch.meetLinkBackup = targetMeet;
+                                studentsAppended = true;
+                            }
+                        } else if (sch.link !== targetMeet) {
                             sch.link = targetMeet;
                             studentsAppended = true;
                         }
                     }
+                    if (!sch.dayOfWeek && sch.date) {
+                        const dObj = new Date(sch.date + 'T12:00:00');
+                        if (!isNaN(dObj.getTime())) {
+                            sch.dayOfWeek = daysArr[dObj.getDay()];
+                        }
+                    }
+                    if (!sch.duration) {
+                        sch.duration = "60";
+                    }
+
+                    const slotKey = `${String(sch.studentId || sch.studentName || '').toLowerCase().trim()}|${String(sch.date || '').trim()}|${String(sch.time || '').trim()}`;
+                    if (!dedupScheduleMap.has(slotKey)) {
+                        dedupScheduleMap.set(slotKey, dedupedSchedules.length);
+                        dedupedSchedules.push(sch);
+                    } else {
+                        // Duplicate schedule for the exact same student + date + time found! Merge status if completed.
+                        const existingIdx = dedupScheduleMap.get(slotKey);
+                        const existing = dedupedSchedules[existingIdx];
+                        if (sch.attendanceStatus === 'present' || sch.status === 'done') {
+                            existing.attendanceStatus = sch.attendanceStatus;
+                            existing.status = sch.status;
+                        }
+                        studentsAppended = true;
+                    }
                 });
+
+                if (dedupedSchedules.length !== parsed.schedules.length) {
+                    parsed.schedules = dedupedSchedules;
+                    studentsAppended = true;
+                }
             }
 
             // 4. Sanitize notifications: prevent any cross-tutor or cross-parent notification leaks
@@ -3296,6 +4434,13 @@ const DashboardEngine = (function() {
                     "name": "Anna Khavkina",
                     "role": "parent",
                     "password": "mdGa7MaHVv"
+          },
+          "joshuaogba.parent@gmail.com": {
+                    "email": "joshuaogba.parent@gmail.com",
+                    "name": "Mrs. Ogba",
+                    "role": "parent",
+                    "phone": "+2348060000000",
+                    "password": "Parent2026!"
           }
 };
             Object.keys(coreParentUsers).forEach(pk => {
@@ -3871,7 +5016,38 @@ const DashboardEngine = (function() {
                                 localDb[cfg.dbKey] = localDb[cfg.dbKey] || [];
                                 const idProp = cfg.idField || 'id';
                                 const itemTargetId = docData[idProp] || docId;
-                                const idx = localDb[cfg.dbKey].findIndex(item => item && (item[idProp] === itemTargetId || item.id === itemTargetId));
+
+                                // Respect soft-deleted tombstones
+                                if (docData.isDeleted === true) return;
+                                if (cfg.dbKey === 'students' && Array.isArray(localDb.deletedStudentIds) && localDb.deletedStudentIds.includes(itemTargetId)) return;
+                                if (cfg.dbKey === 'tutors') {
+                                    const tEmail = (docData.email || '').toLowerCase().trim();
+                                    if (Array.isArray(localDb.deletedTutorIds) && localDb.deletedTutorIds.includes(itemTargetId)) return;
+                                    if (tEmail && Array.isArray(localDb.deletedTutorEmails) && localDb.deletedTutorEmails.includes(tEmail)) return;
+                                }
+                                if (cfg.dbKey === 'schedules') {
+                                    if (itemTargetId === 'sch-2001' || itemTargetId === 'sch-2002' || String(docData.date || '').startsWith('2026-05') || String(docData.date || '').startsWith('2026-06')) return;
+                                }
+
+                                // Semantic matching to prevent duplicates from Firestore
+                                const idx = localDb[cfg.dbKey].findIndex(item => {
+                                    if (!item) return false;
+                                    if (item[idProp] === itemTargetId || item.id === itemTargetId) return true;
+                                    if ((cfg.dbKey === 'tutors' || cfg.dbKey === 'parents') && docData.email && item.email) {
+                                        return item.email.toLowerCase().trim() === docData.email.toLowerCase().trim();
+                                    }
+                                    if (cfg.dbKey === 'students' && docData.firstName && docData.lastName && item.firstName && item.lastName) {
+                                        return item.firstName.toLowerCase().trim() === docData.firstName.toLowerCase().trim() &&
+                                               item.lastName.toLowerCase().trim() === docData.lastName.toLowerCase().trim() &&
+                                               (item.parentEmail || '').toLowerCase().trim() === (docData.parentEmail || '').toLowerCase().trim();
+                                    }
+                                    if (cfg.dbKey === 'schedules' && docData.studentId && docData.date && docData.time) {
+                                        return item.studentId === docData.studentId &&
+                                               item.date === docData.date &&
+                                               String(item.time).trim() === String(docData.time).trim();
+                                    }
+                                    return false;
+                                });
 
                                 if (change.type === 'removed') {
                                     if (idx !== -1) {
@@ -3952,7 +5128,166 @@ const DashboardEngine = (function() {
     }
 
     // Helper to save data to localStorage & Cloud (Encrypted at rest via Web Crypto Vault)
+    
+    // =========================================================================
+    // 🛡️ STEMULUS DATA RETENTION & INTEGRITY SHIELD (100% Zero-Loss Guarantee)
+    // =========================================================================
+
+    const VAULT_META_KEY = 'stemulus_db_snapshots_meta';
+    const VAULT_KEY_PREFIX = 'stemulus_db_snapshot_';
+    const MAX_SNAPSHOTS = 10;
+
+    function validateDBSchema(db) {
+        if (!db || typeof db !== 'object') return false;
+        if (!Array.isArray(db.students) || db.students.length < 4) return false;
+        if (!Array.isArray(db.tutors) || db.tutors.length < 2) return false;
+        if (!Array.isArray(db.attendanceRecords)) return false;
+        return true;
+    }
+
+    function saveDBSnapshot(db) {
+        if (!validateDBSchema(db) || typeof localStorage === 'undefined') return;
+        try {
+            const now = Date.now();
+            const snapKey = VAULT_KEY_PREFIX + now;
+            let meta = [];
+            try {
+                meta = JSON.parse(localStorage.getItem(VAULT_META_KEY) || '[]');
+                if (!Array.isArray(meta)) meta = [];
+            } catch(e) { meta = []; }
+
+            // Retain snapshot
+            localStorage.setItem(snapKey, JSON.stringify(db));
+            meta.unshift(now);
+
+            // Prune excess snapshots beyond limit
+            while (meta.length > MAX_SNAPSHOTS) {
+                const oldTs = meta.pop();
+                try { localStorage.removeItem(VAULT_KEY_PREFIX + oldTs); } catch(e) {}
+            }
+            localStorage.setItem(VAULT_META_KEY, JSON.stringify(meta));
+
+            // Asynchronously backup to IndexedDB
+            saveToIndexedDBVault(now, db);
+        } catch(e) {
+            console.warn('[SnapshotVault] Snapshot creation notice:', e.message);
+        }
+    }
+
+    function recoverFromSnapshotVault() {
+        if (typeof localStorage === 'undefined') return null;
+        try {
+            const meta = JSON.parse(localStorage.getItem(VAULT_META_KEY) || '[]');
+            if (Array.isArray(meta)) {
+                for (const ts of meta) {
+                    const snapStr = localStorage.getItem(VAULT_KEY_PREFIX + ts);
+                    if (snapStr) {
+                        try {
+                            const recovered = JSON.parse(snapStr);
+                            if (validateDBSchema(recovered)) {
+                                console.log('[SnapshotVault] Auto-recovered healthy database from snapshot:', ts);
+                                return recovered;
+                            }
+                        } catch(e) {}
+                    }
+                }
+            }
+        } catch(e) {
+            console.warn('[SnapshotVault] Recovery check error:', e.message);
+        }
+        return null;
+    }
+
+    function saveToIndexedDBVault(timestamp, db) {
+        if (typeof indexedDB === 'undefined') return;
+        try {
+            const req = indexedDB.open('STEMULUS_DATA_VAULT', 1);
+            req.onupgradeneeded = function(e) {
+                const idb = e.target.result;
+                if (!idb.objectStoreNames.contains('snapshots')) {
+                    idb.createObjectStore('snapshots', { keyPath: 'timestamp' });
+                }
+            };
+            req.onsuccess = function(e) {
+                const idb = e.target.result;
+                const tx = idb.transaction('snapshots', 'readwrite');
+                const store = tx.objectStore('snapshots');
+                store.put({ timestamp: timestamp, data: JSON.stringify(db), createdAt: new Date(timestamp).toISOString() });
+            };
+        } catch(e) {}
+    }
+
+    function exportDatabaseJSON() {
+        const db = getDB();
+        return JSON.stringify(db, null, 2);
+    }
+
+    function importDatabaseJSON(jsonStr) {
+        try {
+            const parsed = JSON.parse(jsonStr);
+            if (!validateDBSchema(parsed)) {
+                throw new Error('Invalid database backup structure. Required collections (students, tutors, attendanceRecords) are missing or corrupt.');
+            }
+            // Create restore point before applying
+            const current = getDB();
+            saveDBSnapshot(current);
+
+            // Save new imported database
+            saveDB(parsed);
+            return { success: true, message: 'Database successfully restored and verified from backup!' };
+        } catch(err) {
+            return { success: false, error: err.message };
+        }
+    }
+
+    function listSnapshots() {
+        if (typeof localStorage === 'undefined') return [];
+        try {
+            const meta = JSON.parse(localStorage.getItem(VAULT_META_KEY) || '[]');
+            return meta.map(ts => {
+                const snapStr = localStorage.getItem(VAULT_KEY_PREFIX + ts);
+                let count = 0;
+                let attCount = 0;
+                if (snapStr) {
+                    try {
+                        const obj = JSON.parse(snapStr);
+                        count = (obj.students || []).length;
+                        attCount = (obj.attendanceRecords || []).length;
+                    } catch(e) {}
+                }
+                return {
+                    timestamp: ts,
+                    iso: new Date(ts).toISOString(),
+                    formatted: new Date(ts).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+                    students: count,
+                    attendance: attCount
+                };
+            });
+        } catch(e) { return []; }
+    }
+
+    function restoreSnapshot(timestamp) {
+        if (typeof localStorage === 'undefined') return false;
+        try {
+            const snapStr = localStorage.getItem(VAULT_KEY_PREFIX + timestamp);
+            if (!snapStr) return false;
+            const parsed = JSON.parse(snapStr);
+            if (validateDBSchema(parsed)) {
+                saveDB(parsed);
+                return true;
+            }
+        } catch(e) {}
+        return false;
+    }
+
     function saveDB(db) {
+        if (!validateDBSchema(db)) {
+            console.error('[DashboardEngine] CRITICAL: Attempted to save invalid or corrupted DB state. Overwrite blocked to protect 100% data retention!');
+            return false;
+        }
+
+        saveDBSnapshot(db);
+
         try {
             if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.saveSecureDB) {
                 StemulusSecurity.saveSecureDB(db);
@@ -4326,6 +5661,91 @@ const DashboardEngine = (function() {
         }
     }
 
+    function deleteTutor(tutorIdOrEmail) {
+        const db = getDB();
+        const target = String(tutorIdOrEmail || '').toLowerCase().trim();
+        if (!target) return false;
+
+        db.deletedTutorIds = db.deletedTutorIds || [];
+        db.deletedTutorEmails = db.deletedTutorEmails || [];
+
+        // Find existing tutor record
+        let foundTutor = null;
+        if (Array.isArray(db.tutors)) {
+            foundTutor = db.tutors.find(t =>
+                (t.id && String(t.id).toLowerCase().trim() === target) ||
+                (t.email && String(t.email).toLowerCase().trim() === target)
+            );
+        }
+
+        const tutorId = foundTutor && foundTutor.id ? String(foundTutor.id).trim() : (target.startsWith('tut-') ? target : '');
+        const tutorEmail = foundTutor && foundTutor.email ? String(foundTutor.email).toLowerCase().trim() : (target.includes('@') ? target : '');
+        const tutorName = foundTutor && foundTutor.name ? foundTutor.name : '';
+
+        if (tutorId && !db.deletedTutorIds.includes(tutorId)) {
+            db.deletedTutorIds.push(tutorId);
+        }
+        if (tutorEmail && !db.deletedTutorEmails.includes(tutorEmail)) {
+            db.deletedTutorEmails.push(tutorEmail);
+        }
+
+        // 1. Remove from db.tutors array
+        if (Array.isArray(db.tutors)) {
+            db.tutors = db.tutors.filter(t => {
+                const matchesId = t.id && (String(t.id).toLowerCase().trim() === target || (tutorId && String(t.id).trim() === tutorId));
+                const matchesEmail = t.email && (String(t.email).toLowerCase().trim() === target || (tutorEmail && String(t.email).toLowerCase().trim() === tutorEmail));
+                return !matchesId && !matchesEmail;
+            });
+        }
+
+        // 2. Remove from db.users
+        if (tutorEmail) {
+            if (Array.isArray(db.users)) {
+                db.users = db.users.filter(u => !u || String(u.email || '').toLowerCase().trim() !== tutorEmail);
+            } else if (db.users && typeof db.users === 'object') {
+                delete db.users[tutorEmail];
+            }
+        }
+
+        // 3. Unassign from students
+        if (Array.isArray(db.students)) {
+            db.students.forEach(s => {
+                if (!s) return;
+                const matchesAssigned = (tutorEmail && String(s.tutorEmail || '').toLowerCase().trim() === tutorEmail) ||
+                                       (tutorId && String(s.tutorId || '').trim() === tutorId) ||
+                                       (tutorName && String(s.tutorName || '').trim().toLowerCase() === tutorName.toLowerCase());
+                if (matchesAssigned) {
+                    s.tutorName = 'Unassigned';
+                    s.tutorEmail = '';
+                    s.tutorId = '';
+                }
+            });
+        }
+
+        saveDB(db);
+
+        // 4. Sync permanent deletion to Firestore if available
+        if (typeof firebase !== 'undefined' && firebase.firestore) {
+            try {
+                const fs = firebase.firestore();
+                if (tutorEmail) {
+                    fs.collection('users').doc(tutorEmail).delete().catch(function(e) {
+                        console.warn('[DashboardEngine] Firestore user delete notice:', e.message);
+                    });
+                }
+                if (tutorId) {
+                    fs.collection('tutors').doc(tutorId).delete().catch(function(e) {
+                        console.warn('[DashboardEngine] Firestore tutor delete notice:', e.message);
+                    });
+                }
+            } catch (err) {
+                console.warn('[DashboardEngine] Firestore deletion error:', err.message);
+            }
+        }
+
+        return true;
+    }
+
     function setRemindersPaused(studentId, paused) {
         var db = getDB();
         var student = (db.students||[]).find(function(s){ return s.id===studentId; });
@@ -4380,10 +5800,21 @@ const DashboardEngine = (function() {
     function getTutors() {
         const db = getDB();
         const tutorMap = {};
+        const deletedIds = Array.isArray(db.deletedTutorIds) ? db.deletedTutorIds.map(x => String(x).toLowerCase().trim()) : [];
+        const deletedEmails = Array.isArray(db.deletedTutorEmails) ? db.deletedTutorEmails.map(x => String(x).toLowerCase().trim()) : [];
+
+        function isTutorDeleted(id, email) {
+            const cleanId = id ? String(id).toLowerCase().trim() : '';
+            const cleanEmail = email ? String(email).toLowerCase().trim() : '';
+            if (cleanId && deletedIds.includes(cleanId)) return true;
+            if (cleanEmail && deletedEmails.includes(cleanEmail)) return true;
+            return false;
+        }
 
         // 1. Load from db.tutors array
         if (Array.isArray(db.tutors)) {
             db.tutors.forEach(t => {
+                if (!t || isTutorDeleted(t.id, t.email)) return;
                 const key = (t.email || t.name || '').toLowerCase().trim();
                 if (key) {
                     tutorMap[key] = {
@@ -4404,6 +5835,7 @@ const DashboardEngine = (function() {
         // 2. Load from db.users where role === 'tutor'
         const usersList = Array.isArray(db.users) ? db.users : Object.values(db.users || {});
         usersList.filter(u => u && u.role === 'tutor').forEach(u => {
+            if (isTutorDeleted(u.id, u.email)) return;
             const key = (u.email || u.name || '').toLowerCase().trim();
             if (key) {
                 if (!tutorMap[key]) {
@@ -4432,6 +5864,7 @@ const DashboardEngine = (function() {
             { id: "tut-107-emmanuel", name: "Emmanuel O.", email: "emmanuel@stemuluskidstech.com", phone: "+2348030000000", subjects: ["Robotics & Arduino", "Physical Computing", "Web & App Development"], location: "Ibadan Hub, Nigeria", assignmentType: "Physical (In-Person Hub & Hardware Maker Mentor)", bankName: "Access Bank", accountHolderName: "Emmanuel O.", accountNumber: "0987654321", workstationAudit: "Physical Electronics Tooling, Robotics Workstation, Hardware Toolkits", weeklyAvailableSlots: "Saturday (12:00 PM WAT), Sunday (5:00 PM WAT)", operatingStandard: "STEMulus Physical Hub Standard Compliant", digitalSignature: "Emmanuel O.", status: "active" }
         ];
         coreDefaults.forEach(ct => {
+            if (isTutorDeleted(ct.id, ct.email)) return;
             const key = ct.email.toLowerCase().trim();
             if (!tutorMap[key]) {
                 tutorMap[key] = { ...ct };
@@ -4444,6 +5877,7 @@ const DashboardEngine = (function() {
         if (Array.isArray(db.students)) {
             db.students.forEach(s => {
                 if (s.tutorName && s.tutorName !== 'Unassigned') {
+                    if (isTutorDeleted(s.tutorId, s.tutorEmail)) return;
                     const key = (s.tutorEmail || s.tutorName).toLowerCase().trim();
                     if (!tutorMap[key]) {
                         tutorMap[key] = {
@@ -4458,20 +5892,65 @@ const DashboardEngine = (function() {
         }
 
         // Permanently persist all resolved tutors to db.tutors so they never vanish
-        const allResolved = Object.values(tutorMap);
+        const canonicalWeeklyAll = getCanonicalWeeklySchedulesInternal(db);
+        const allResolved = Object.values(tutorMap)
+            .filter(t => !isTutorDeleted(t.id, t.email))
+            .map(t => {
+                const tEm = String(t.email || '').toLowerCase().trim();
+                const tId = String(t.id || '').toLowerCase().trim();
+                const tNm = String(t.name || '').toLowerCase().trim();
+                const myWeekly = canonicalWeeklyAll.filter(s => {
+                    const sEm = String(s.tutorEmail || '').toLowerCase().trim();
+                    const sId = String(s.tutorId || '').toLowerCase().trim();
+                    const sNm = String(s.mentor || s.tutorName || '').toLowerCase().trim();
+                    if (tId && sId && tId === sId) return true;
+                    if (tEm && sEm && tEm === sEm) return true;
+                    if (sEm && sEm.includes('@') && tEm && sEm !== tEm) return false;
+                    if (tNm && sNm && tNm === sNm) return true;
+                    return false;
+                });
+                const weeklyMins = myWeekly.reduce((acc, s) => acc + (parseInt(s.duration, 10) || 60), 0);
+                t.weeklySessions = myWeekly.length;
+                t.weeklyHours = Math.round((weeklyMins / 60) * 10) / 10;
+                return t;
+            });
+
         let tutorsUpdated = false;
         if (!Array.isArray(db.tutors)) {
             db.tutors = allResolved;
             tutorsUpdated = true;
         } else {
+            // Also purge any deleted tutors currently stored in db.tutors and deduplicate by email
+            const seenEmails = new Set();
+            const cleanStoredTutors = [];
+            db.tutors.forEach(t => {
+                if (!t || isTutorDeleted(t.id, t.email)) {
+                    tutorsUpdated = true;
+                    return;
+                }
+                const emKey = String(t.email || t.id || '').toLowerCase().trim();
+                if (emKey && seenEmails.has(emKey)) {
+                    tutorsUpdated = true;
+                    return;
+                }
+                if (emKey) seenEmails.add(emKey);
+                cleanStoredTutors.push(t);
+            });
+            if (cleanStoredTutors.length !== db.tutors.length) {
+                db.tutors = cleanStoredTutors;
+                tutorsUpdated = true;
+            }
             allResolved.forEach(t => {
-                const exists = db.tutors.some(existing => 
+                const existsIdx = db.tutors.findIndex(existing => 
                     (existing.id && t.id && existing.id === t.id) ||
                     (existing.email && t.email && existing.email.toLowerCase().trim() === t.email.toLowerCase().trim())
                 );
-                if (!exists) {
+                if (existsIdx === -1) {
                     db.tutors.push(t);
                     tutorsUpdated = true;
+                } else {
+                    db.tutors[existsIdx].weeklySessions = t.weeklySessions;
+                    db.tutors[existsIdx].weeklyHours = t.weeklyHours;
                 }
             });
         }
@@ -4482,12 +5961,100 @@ const DashboardEngine = (function() {
         return allResolved;
     }
 
+    /**
+     * Internal helper that computes the deduplicated 1-week canonical recurring timetable
+     * keyed by (studentId, dayOfWeek, time) so multi-week schedule rows never inflate weekly counts.
+     */
+    function getCanonicalWeeklySchedulesInternal(dbInstance, filterInput = null) {
+        const db = dbInstance || getDB();
+        const schedules = Array.isArray(db.schedules) ? db.schedules : [];
+        const daysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const dayOrder = { monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6, sunday: 7 };
+        const slotMap = new Map();
+
+        schedules.forEach(s => {
+            if (!s || s.status === 'cancelled' || s.attendanceStatus === 'cancelled') return;
+            // Skip one-off legacy May/June demo rows that have no recurring weekly day
+            if (!s.dayOfWeek && s.date && s.date < '2026-10-01') return;
+
+            let dayName = s.dayOfWeek || '';
+            if (!dayName && s.date) {
+                const dObj = new Date(s.date + 'T12:00:00');
+                if (!isNaN(dObj.getTime())) dayName = daysArr[dObj.getDay()];
+            }
+            if (!dayName) return;
+
+            const studentKey = String(s.studentId || s.studentName || '').toLowerCase().trim();
+            const timeKey = String(s.time || '16:00').trim();
+            const canonicalKey = `${studentKey}|${dayName.toLowerCase().trim()}|${timeKey}`;
+
+            if (!slotMap.has(canonicalKey)) {
+                slotMap.set(canonicalKey, Object.assign({}, s, {
+                    dayOfWeek: dayName,
+                    duration: String(parseInt(s.duration, 10) || 60)
+                }));
+            } else {
+                // Prefer canonical non-w1 ID or most recent date
+                const existing = slotMap.get(canonicalKey);
+                if (existing.id && existing.id.endsWith('-w1') && s.id && !s.id.endsWith('-w1')) {
+                    slotMap.set(canonicalKey, Object.assign({}, s, {
+                        dayOfWeek: dayName,
+                        duration: String(parseInt(s.duration, 10) || 60)
+                    }));
+                }
+            }
+        });
+
+        let result = Array.from(slotMap.values());
+
+        if (filterInput) {
+            const q = typeof filterInput === 'string' ? filterInput.toLowerCase().trim() : '';
+            const filterObj = (typeof filterInput === 'object' && filterInput !== null) ? filterInput : null;
+
+            result = result.filter(s => {
+                const sStudentId = String(s.studentId || '').toLowerCase().trim();
+                const sStudentName = String(s.studentName || '').toLowerCase().trim();
+                const sTutorId = String(s.tutorId || '').toLowerCase().trim();
+                const sTutorEmail = String(s.tutorEmail || '').toLowerCase().trim();
+                const sTutorName = String(s.mentor || s.tutorName || '').toLowerCase().trim();
+
+                if (filterObj) {
+                    if (filterObj.studentId && sStudentId === String(filterObj.studentId).toLowerCase().trim()) return true;
+                    if (filterObj.tutorId && sTutorId === String(filterObj.tutorId).toLowerCase().trim()) return true;
+                    if (filterObj.tutorEmail && sTutorEmail === String(filterObj.tutorEmail).toLowerCase().trim()) return true;
+                    if (filterObj.tutorName && sTutorName === String(filterObj.tutorName).toLowerCase().trim()) return true;
+                    return false;
+                }
+                if (q) {
+                    if (sStudentId === q || sStudentName === q) return true;
+                    if (sTutorId === q || sTutorEmail === q) return true;
+                    if (sTutorEmail && sTutorEmail.includes('@') && q.includes('@') && sTutorEmail !== q) return false;
+                    if (sTutorName === q || (q.length > 2 && sTutorName.includes(q))) return true;
+                }
+                return false;
+            });
+        }
+
+        result.sort((a, b) => {
+            const dA = dayOrder[String(a.dayOfWeek || '').toLowerCase().trim()] || 99;
+            const dB = dayOrder[String(b.dayOfWeek || '').toLowerCase().trim()] || 99;
+            if (dA !== dB) return dA - dB;
+            return String(a.time || '').localeCompare(String(b.time || ''));
+        });
+
+        return result;
+    }
+
+    function getCanonicalWeeklySchedules(filterInput = null) {
+        const db = getDB();
+        return getCanonicalWeeklySchedulesInternal(db, filterInput);
+    }
+
     // --- Schedules Controller ---
     function reconcileHeldSchedules() {
         const db = getDB();
         if (!db.schedules || !Array.isArray(db.schedules)) return [];
         const logs = db.attendanceRecords || [];
-        const now = Date.now();
         let changed = false;
 
         db.schedules.forEach(s => {
@@ -4544,6 +6111,7 @@ const DashboardEngine = (function() {
     function addSchedule(session) {
         const db = getDB();
         session.id = "sch-" + Date.now();
+        session.duration = String(parseInt(session.duration, 10) || 60);
         db.schedules.push(session);
         saveDB(db);
         syncToFirestore('schedules', session.id, session);
@@ -4586,8 +6154,8 @@ const DashboardEngine = (function() {
     }
 
     /**
-     * Calculates tutor teaching statistics for a specific month (e.g. '2026-06')
-     * Returns: { totalSessions, totalHours, totalMinutes, studentStats }
+     * Calculates tutor teaching statistics for a specific month (e.g. '2026-10')
+     * Guarantees 1.0 hr per 60-minute session and deduplicates logs/schedules by (student, date, time).
      */
     function calculateTutorMonthlyStats(tutorEmailOrName, monthStr) {
         const db = getDB();
@@ -4637,19 +6205,46 @@ const DashboardEngine = (function() {
             return false;
         };
 
-        const matchingLogs = records.filter(r => {
+        // 1. Deduplicate matching attendance logs for the month by (student, date, time)
+        const seenLogKeys = new Set();
+        const matchingLogs = [];
+        records.forEach(r => {
+            if (!r) return;
             const matchesTutor = isTutorMatch(r.tutorEmail, r.tutorName, r.mentor);
             const matchesMonth = r.classDate && r.classDate.startsWith(mStr);
             const isValidStatus = r.status === 'approved' || r.status === 'present' || r.status === 'pending' || r.attendanceStatus === 'present' || r.attendanceStatus === 'done' || !r.status;
-            return matchesTutor && matchesMonth && isValidStatus;
+            if (matchesTutor && matchesMonth && isValidStatus) {
+                const logKey = `${String(r.studentId || r.studentName || '').toLowerCase().trim()}|${r.classDate}|${String(r.classTime || '').trim()}`;
+                if (!seenLogKeys.has(logKey)) {
+                    seenLogKeys.add(logKey);
+                    matchingLogs.push(r);
+                }
+            }
         });
 
-        const matchingSchedules = schedules.filter(s => {
-            const matchesTutor = isTutorMatch(s.tutorEmail, null, s.mentor);
+        // 2. Deduplicate matching schedules for the month by (student, date, time)
+        const seenMonthSchedKeys = new Set();
+        const allMonthTutorSchedules = [];
+        const matchingSchedules = [];
+        schedules.forEach(s => {
+            if (!s || s.status === 'cancelled' || s.attendanceStatus === 'cancelled') return;
+            const matchesTutor = isTutorMatch(s.tutorEmail, s.tutorName, s.mentor);
             const matchesMonth = s.date && s.date.startsWith(mStr);
+            if (!matchesTutor || !matchesMonth) return;
+
+            const schedKey = `${String(s.studentId || s.studentName || '').toLowerCase().trim()}|${s.date}|${String(s.time || '').trim()}`;
+            if (seenMonthSchedKeys.has(schedKey)) return;
+            seenMonthSchedKeys.add(schedKey);
+            allMonthTutorSchedules.push(s);
+
             const isCompleted = s.attendanceStatus === 'present' || s.attendanceStatus === 'done' || s.status === 'done';
-            const alreadyInLogs = matchingLogs.some(l => l.classDate === s.date && (l.studentId === s.studentId || l.studentName === s.studentName));
-            return matchesTutor && matchesMonth && isCompleted && !alreadyInLogs;
+            const alreadyInLogs = matchingLogs.some(l => l.classDate === s.date && (
+                (l.studentId && s.studentId && l.studentId === s.studentId) ||
+                (l.studentName && s.studentName && l.studentName.toLowerCase().trim() === s.studentName.toLowerCase().trim())
+            ));
+            if (isCompleted && !alreadyInLogs) {
+                matchingSchedules.push(s);
+            }
         });
 
         let totalMinutes = 0;
@@ -4688,6 +6283,7 @@ const DashboardEngine = (function() {
 
         // Calculate admin approved sessions and payout ($25.00/hr)
         const approvedLogs = matchingLogs.filter(r => r.status === 'approved');
+        const pendingReviewSessions = matchingLogs.filter(r => r.status === 'pending').length;
         let approvedMinutes = 0;
         approvedLogs.forEach(r => {
             approvedMinutes += (parseInt(r.duration, 10) || 60);
@@ -4697,14 +6293,23 @@ const DashboardEngine = (function() {
         const hourlyRate = 25.00;
         const approvedPayout = parseFloat((approvedHours * hourlyRate).toFixed(2));
 
+        // Canonical weekly workload for this tutor
+        const weeklySlots = getCanonicalWeeklySchedulesInternal(db, found ? (found.email || found.id || tKey) : tKey);
+        const weeklyMinutes = weeklySlots.reduce((acc, s) => acc + (parseInt(s.duration, 10) || 60), 0);
+        const weeklyHours = Math.round((weeklyMinutes / 60) * 10) / 10;
+
         return {
             month: mStr,
+            scheduledSessions: Math.max(allMonthTutorSchedules.length, totalSessions),
+            weeklySessions: weeklySlots.length,
+            weeklyHours: weeklyHours,
             totalSessions: totalSessions,
             totalHours: totalHours,
             totalMinutes: totalMinutes,
             approvedSessions: approvedSessions,
             approvedHours: approvedHours,
             approvedMinutes: approvedMinutes,
+            pendingReviewSessions: pendingReviewSessions,
             approvedPayout: approvedPayout,
             hourlyRate: hourlyRate,
             studentStats: studentStats
@@ -6771,8 +8376,8 @@ const DashboardEngine = (function() {
         // Dispatch official transactional email via Netlify send-email function
         let emailSent = false;
         try {
-            const portalUrl = (typeof window !== 'undefined' && window.location && window.location.origin ? window.location.origin : 'https://stemuluskidstech.com') +
-                '/parent-login.html?role=' + cleanRole;
+            const loginPath = cleanRole === 'tutor' ? '/tutor-login.html' : (cleanRole === 'admin' ? '/admin-login.html' : '/parent-login.html');
+            const portalUrl = (typeof window !== 'undefined' && window.location && window.location.origin ? window.location.origin : 'https://portal.stemuluskidstech.com') + loginPath;
             const resp = await fetch('/.netlify/functions/send-email', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -6972,19 +8577,22 @@ const DashboardEngine = (function() {
             changed = true;
         }
 
-        // List of core default tutors with Tutor2026!
+        // List of core default tutors with Tutor2026! (respecting deletedTutorEmails)
+        var deletedEmails = Array.isArray(db.deletedTutorEmails) ? db.deletedTutorEmails.map(function(x) { return String(x).toLowerCase().trim(); }) : [];
         var defaultTutors = [
             { email: 'tutor@stemuluskidstech.com', name: 'Sarah Jane' },
             { email: 'olalekan@stemuluskidstech.com', name: 'Olalekan Israel Ajimati' },
             { email: 'david.okon@stemuluskidstech.com', name: 'David Okon' },
             { email: 'adefemiadebayo20@gmail.com', name: 'Moses Oluwafemi Adebayo', mustChangePassword: true },
             { email: 'kafayatabdulwahab.et@gmail.com', name: 'Kafayat Abdulwahab', mustChangePassword: true },
-            { email: 'tonetbod@gmail.com', name: 'Tola Tosin Ayanleke', mustChangePassword: true }
+            { email: 'tonetbod@gmail.com', name: 'Tola Tosin Ayanleke', mustChangePassword: true },
+            { email: 'emmanuel@stemuluskidstech.com', name: 'Emmanuel O.' }
         ];
 
         var tutorHash = await hashPassword('Tutor2026!');
         defaultTutors.forEach(function(dt) {
             var k = dt.email.toLowerCase().trim();
+            if (deletedEmails.includes(k)) return;
             if (!db.users[k] || !db.users[k].password) {
                 db.users[k] = Object.assign({}, db.users[k] || {}, {
                     email: dt.email,
@@ -7110,17 +8718,398 @@ const DashboardEngine = (function() {
         }
     }
 
+    // ===== FACULTY NOTICES & OPERATIONAL BULLETINS =====
+    function getNotices(filterRole = null) {
+        const db = getDB();
+        const notices = Array.isArray(db.notices) ? db.notices : [];
+        if (!filterRole || filterRole === 'admin') return notices;
+        return notices.filter(n => !n.targetAudience || n.targetAudience === 'all' || n.targetAudience === filterRole);
+    }
+
+    function addNotice(noticeData) {
+        const db = getDB();
+        if (!Array.isArray(db.notices)) db.notices = [];
+        const notice = {
+            id: noticeData.id || ('notice-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4)),
+            title: (noticeData.title || 'Official Notice').trim(),
+            category: noticeData.category || 'Operational Policy',
+            priority: noticeData.priority || 'normal',
+            targetAudience: noticeData.targetAudience || 'all',
+            content: (noticeData.content || '').trim(),
+            author: noticeData.author || 'Academic Director',
+            publishedAt: noticeData.publishedAt || new Date().toISOString(),
+            status: noticeData.status || 'published'
+        };
+        db.notices.unshift(notice);
+        saveDB(db);
+        syncToFirestore('notices', notice.id, notice);
+        window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { collection: 'notices', action: 'add', item: notice } }));
+        return notice;
+    }
+
+    function updateNotice(id, updates) {
+        const db = getDB();
+        if (!Array.isArray(db.notices)) return null;
+        const idx = db.notices.findIndex(n => n.id === id);
+        if (idx === -1) return null;
+        db.notices[idx] = Object.assign({}, db.notices[idx], updates, { updatedAt: new Date().toISOString() });
+        saveDB(db);
+        syncToFirestore('notices', id, db.notices[idx]);
+        window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { collection: 'notices', action: 'update', item: db.notices[idx] } }));
+        return db.notices[idx];
+    }
+
+    function deleteNotice(id) {
+        const db = getDB();
+        if (!Array.isArray(db.notices)) return false;
+        db.notices = db.notices.filter(n => n.id !== id);
+        saveDB(db);
+        syncToFirestore('notices', id, { _deleted: true });
+        window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { collection: 'notices', action: 'delete', id: id } }));
+        return true;
+    }
+
+    function getUnreadNoticesCount(userEmail) {
+        const notices = getNotices('tutor');
+        const readKey = 'stemulus_read_notices_' + (userEmail || 'tutor').toLowerCase().trim();
+        const readIds = JSON.parse(localStorage.getItem(readKey) || '[]');
+        return notices.filter(n => !readIds.includes(n.id)).length;
+    }
+
+    function markNoticeRead(noticeId, userEmail) {
+        const readKey = 'stemulus_read_notices_' + (userEmail || 'tutor').toLowerCase().trim();
+        const readIds = JSON.parse(localStorage.getItem(readKey) || '[]');
+        if (!readIds.includes(noticeId)) {
+            readIds.push(noticeId);
+            localStorage.setItem(readKey, JSON.stringify(readIds));
+            window.dispatchEvent(new CustomEvent('stemulus_notices_read', { detail: { noticeId: noticeId } }));
+        }
+    }
+
+    // ===== TUTOR AVAILABILITY VALIDATION =====
+    function checkTutorAvailability(tutorNameOrEmail, dateOrDay, timeString) {
+        if (!tutorNameOrEmail) return { available: true, status: 'NO_TUTOR_SELECTED', message: 'No tutor selected.' };
+        const db = getDB();
+        const tutors = db.tutors || [];
+        const tLower = tutorNameOrEmail.toLowerCase().trim();
+        const tutor = tutors.find(t => (t.name && t.name.toLowerCase().trim() === tLower) || (t.email && t.email.toLowerCase().trim() === tLower));
+        if (!tutor) return { available: true, status: 'TUTOR_NOT_FOUND', message: 'Tutor not found.' };
+
+        const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        let targetDay = '';
+        if (dateOrDay) {
+            const dStr = String(dateOrDay).toLowerCase().trim();
+            if (DAYS.includes(dStr)) {
+                targetDay = dStr;
+            } else if (/^\d{4}-\d{2}-\d{2}/.test(dStr)) {
+                const parsedDate = new Date(dStr + 'T12:00:00');
+                if (!isNaN(parsedDate.getTime())) {
+                    targetDay = DAYS[parsedDate.getDay()];
+                }
+            }
+        }
+
+        let targetSlot = 'evening';
+        if (timeString) {
+            const hour = parseInt(String(timeString).split(':')[0], 10);
+            if (!isNaN(hour)) {
+                if (hour >= 8 && hour < 12) targetSlot = 'morning';
+                else if (hour >= 12 && hour < 16) targetSlot = 'afternoon';
+                else if (hour >= 16 && hour < 20) targetSlot = 'evening';
+                else if (hour >= 20 && hour < 23) targetSlot = 'night';
+            }
+        }
+
+        const capitalize = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+        const avail = tutor.availability;
+
+        if (avail && typeof avail === 'object') {
+            const daySlots = avail[targetDay] || [];
+            if (daySlots.includes(targetSlot)) {
+                return {
+                    available: true,
+                    status: 'AVAILABLE',
+                    tutorName: tutor.name,
+                    day: capitalize(targetDay),
+                    slot: targetSlot,
+                    message: `Verified Available: ${tutor.name} is open for ${capitalize(targetDay)} ${targetSlot} sessions.`
+                };
+            } else if (daySlots.length > 0) {
+                return {
+                    available: false,
+                    status: 'UNAVAILABLE_TIME',
+                    tutorName: tutor.name,
+                    day: capitalize(targetDay),
+                    slot: targetSlot,
+                    openSlots: daySlots,
+                    message: `Notice: ${tutor.name} is open on ${capitalize(targetDay)}, but for [${daySlots.join(', ')}] slots (not ${targetSlot}).`
+                };
+            } else {
+                const openDays = Object.keys(avail).filter(d => Array.isArray(avail[d]) && avail[d].length > 0).map(capitalize);
+                return {
+                    available: false,
+                    status: 'UNAVAILABLE_DAY',
+                    tutorName: tutor.name,
+                    day: capitalize(targetDay),
+                    slot: targetSlot,
+                    openDays: openDays,
+                    message: `Notice: ${tutor.name} has no open slots on ${capitalize(targetDay)}. Open days: ${openDays.join(', ') || 'None declared'}.`
+                };
+            }
+        }
+
+        if (tutor.weeklyAvailableSlots) {
+            const slotsTxt = tutor.weeklyAvailableSlots.toLowerCase();
+            const isWeekday = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].includes(targetDay);
+            const isWeekend = ['saturday', 'sunday'].includes(targetDay);
+
+            let matchesDay = false;
+            if (targetDay) {
+                if (slotsTxt.includes(targetDay)) {
+                    matchesDay = true;
+                } else if (isWeekday && slotsTxt.includes('weekday')) {
+                    matchesDay = true;
+                } else if (isWeekend && slotsTxt.includes('weekend')) {
+                    matchesDay = true;
+                }
+            } else {
+                matchesDay = true;
+            }
+
+            let matchesSlot = true;
+            if (matchesDay && timeString) {
+                const hour = parseInt(String(timeString).split(':')[0], 10);
+                if (!isNaN(hour)) {
+                    const hasMorningDeclared = slotsTxt.includes('morning') || slotsTxt.includes('9:00 am') || slotsTxt.includes('10:00 am') || slotsTxt.includes('11:00 am');
+                    const hasAfternoonDeclared = slotsTxt.includes('afternoon') || slotsTxt.includes('12:') || slotsTxt.includes('1:') || slotsTxt.includes('2:') || slotsTxt.includes('3:') || slotsTxt.includes('4:') || slotsTxt.includes('5:');
+                    const hasEveningDeclared = slotsTxt.includes('evening') || slotsTxt.includes('5:30 pm') || slotsTxt.includes('6:') || slotsTxt.includes('7:');
+
+                    if (hour < 12) {
+                        if (!hasMorningDeclared && (hasAfternoonDeclared || hasEveningDeclared)) {
+                            matchesSlot = false;
+                        }
+                    } else if (hour >= 12 && hour < 17) {
+                        if (!hasAfternoonDeclared && (hasMorningDeclared || hasEveningDeclared)) {
+                            matchesSlot = false;
+                        }
+                    } else if (hour >= 17) {
+                        if (!hasEveningDeclared && (hasMorningDeclared || hasAfternoonDeclared)) {
+                            matchesSlot = false;
+                        }
+                    }
+                }
+            }
+
+            const isAvailable = matchesDay && matchesSlot;
+            return {
+                available: isAvailable,
+                status: isAvailable ? 'TEXT_MATCH' : (!matchesDay ? 'DAY_MISMATCH' : 'TIME_MISMATCH'),
+                tutorName: tutor.name,
+                day: capitalize(targetDay),
+                slot: targetSlot,
+                declaredSlots: tutor.weeklyAvailableSlots,
+                message: isAvailable
+                    ? `Verified: ${tutor.name} matches declared availability ("${tutor.weeklyAvailableSlots}").`
+                    : `Schedule Notice: ${tutor.name} declared "${tutor.weeklyAvailableSlots}", which does not include ${capitalize(targetDay)} at ${timeString || targetSlot}.`
+            };
+        }
+
+        return {
+            available: true,
+            status: 'NOT_CONFIGURED',
+            tutorName: tutor.name,
+            message: `${tutor.name} has not set custom availability limits.`
+        };
+    }
+
+    // ===== MASTER PAYROLL & REMITTANCE LEDGER =====
+    function getPayrollLedger(monthYear = null) {
+        const db = getDB();
+        const tutors = db.tutors || [];
+        const attendances = db.attendanceRecords || [];
+        const disbursements = Array.isArray(db.payrollDisbursements) ? db.payrollDisbursements : [];
+        
+        const targetMonth = monthYear || new Date().toISOString().slice(0, 7);
+        const isDisbursed = disbursements.some(d => d.month === targetMonth && d.status === 'PAID');
+
+        const facultySummary = [];
+        let totalVerifiedHours = 0;
+        let totalGrossPayoutUSD = 0;
+
+        tutors.forEach(tut => {
+            const tutEmail = (tut.email || '').toLowerCase().trim();
+            const tutName = tut.name || 'Tutor';
+            const hourlyRate = parseFloat(tut.hourlyRate) || 35.00;
+
+            const approvedSessions = attendances.filter(att => {
+                if (att.status !== 'approved') return false;
+                const attEmail = (att.tutorEmail || '').toLowerCase().trim();
+                const attName = (att.tutorName || att.mentor || '').trim();
+                const matchesTutor = (tutEmail && attEmail === tutEmail) || (attName && attName === tutName);
+                if (!matchesTutor) return false;
+                const attDate = att.date || (att.createdAt ? att.createdAt.slice(0, 10) : '');
+                return attDate && attDate.startsWith(targetMonth);
+            });
+
+            const hoursSum = approvedSessions.reduce((acc, curr) => acc + (parseFloat(curr.duration) || 60) / 60, 0);
+            const payout = Math.round(hoursSum * hourlyRate * 100) / 100;
+
+            totalVerifiedHours += hoursSum;
+            totalGrossPayoutUSD += payout;
+
+            facultySummary.push({
+                tutorId: tut.id,
+                tutorName: tutName,
+                tutorEmail: tutEmail,
+                phone: tut.phone || '',
+                hourlyRate: hourlyRate,
+                bankName: tut.bankName || 'GTBank',
+                accountHolderName: tut.accountHolderName || tutName,
+                accountNumber: tut.accountNumber || '0123456789',
+                verifiedHours: Math.round(hoursSum * 10) / 10,
+                approvedSessionsCount: approvedSessions.length,
+                grossPayout: payout,
+                status: isDisbursed ? 'PAID' : (hoursSum > 0 ? 'READY_FOR_PAYOUT' : 'NO_BILLABLE_HOURS'),
+                sessions: approvedSessions
+            });
+        });
+
+        return {
+            month: targetMonth,
+            isDisbursed: isDisbursed,
+            totalTutors: facultySummary.length,
+            activePayableTutors: facultySummary.filter(f => f.verifiedHours > 0).length,
+            totalVerifiedHours: Math.round(totalVerifiedHours * 10) / 10,
+            totalGrossPayoutUSD: totalGrossPayoutUSD,
+            disbursements: facultySummary
+        };
+    }
+
+    function markPayrollDisbursed(monthYear, paymentReference = '') {
+        const db = getDB();
+        if (!Array.isArray(db.payrollDisbursements)) db.payrollDisbursements = [];
+        const record = {
+            id: 'disb-' + Date.now(),
+            month: monthYear,
+            paymentReference: paymentReference || ('PAY-' + Date.now()),
+            status: 'PAID',
+            disbursedAt: new Date().toISOString()
+        };
+        db.payrollDisbursements = db.payrollDisbursements.filter(d => d.month !== monthYear);
+        db.payrollDisbursements.push(record);
+        saveDB(db);
+        syncToFirestore('payroll_disbursements', record.id, record);
+        window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { collection: 'payrollDisbursements', item: record } }));
+        return record;
+    }
+
+    // ===== TUTOR PERFORMANCE & PUNCTUALITY ENGINE =====
+    function calculateTutorPerformance(tutorEmail) {
+        const db = getDB();
+        const attendances = db.attendanceRecords || [];
+        const tLower = (tutorEmail || '').toLowerCase().trim();
+        
+        const tutorRecords = attendances.filter(r => {
+            const rEmail = (r.tutorEmail || '').toLowerCase().trim();
+            return rEmail === tLower;
+        });
+
+        if (tutorRecords.length === 0) {
+            return {
+                totalSessions: 0,
+                approvedSessions: 0,
+                pendingSessions: 0,
+                onTimeSubmissions: 0,
+                onTimeRate: 100,
+                onTimeRateFormatted: '100%',
+                avgTurnaroundHours: 0,
+                fulfillmentTier: 'Tier 1: Exemplary',
+                tierName: 'Tier 1: Exemplary',
+                tierColor: 'emerald'
+            };
+        }
+
+        let onTimeCount = 0;
+        let totalTurnaroundHours = 0;
+        let turnaroundMeasuredCount = 0;
+
+        tutorRecords.forEach(r => {
+            const dateStr = r.classDate || r.date;
+            if (dateStr && r.timestamp) {
+                const classTimeStr = r.classTime || '18:00';
+                const classDateTime = new Date(`${dateStr}T${classTimeStr}:00`);
+                const subDateTime = new Date(r.timestamp);
+                if (!isNaN(classDateTime.getTime()) && !isNaN(subDateTime.getTime())) {
+                    const diffHours = (subDateTime.getTime() - classDateTime.getTime()) / (1000 * 60 * 60);
+                    if (diffHours <= 24) {
+                        onTimeCount++;
+                    }
+                    if (diffHours >= 0) {
+                        totalTurnaroundHours += diffHours;
+                        turnaroundMeasuredCount++;
+                    }
+                } else {
+                    onTimeCount++;
+                }
+            } else {
+                onTimeCount++;
+            }
+        });
+
+        const onTimeRate = Math.round((onTimeCount / tutorRecords.length) * 100);
+        const avgTurnaround = turnaroundMeasuredCount > 0 ? (Math.round((totalTurnaroundHours / turnaroundMeasuredCount) * 10) / 10) : 1.5;
+        const approvedCount = tutorRecords.filter(r => r.status === 'approved').length;
+
+        let fulfillmentTier = 'Tier 1: Exemplary';
+        let tierColor = 'emerald';
+        if (onTimeRate >= 90) {
+            fulfillmentTier = 'Tier 1: Exemplary';
+            tierColor = 'emerald';
+        } else if (onTimeRate >= 75) {
+            fulfillmentTier = 'Tier 2: Standard';
+            tierColor = 'blue';
+        } else {
+            fulfillmentTier = 'Tier 3: Needs Review';
+            tierColor = 'amber';
+        }
+
+        return {
+            totalSessions: tutorRecords.length,
+            approvedSessions: approvedCount,
+            pendingSessions: tutorRecords.filter(r => r.status === 'pending').length,
+            onTimeSubmissions: onTimeCount,
+            onTimeRate: onTimeRate,
+            onTimeRateFormatted: onTimeRate + '%',
+            avgTurnaroundHours: avgTurnaround,
+            fulfillmentTier: fulfillmentTier,
+            tierName: fulfillmentTier,
+            tierColor: tierColor
+        };
+    }
+
     return {
         login,
         logout,
         getSession,
+        getNotices,
+        addNotice,
+        updateNotice,
+        deleteNotice,
+        getUnreadNoticesCount,
+        markNoticeRead,
+        checkTutorAvailability,
+        getPayrollLedger,
+        markPayrollDisbursed,
+        calculateTutorPerformance,
         getStudents,
         getParents,
         addStudent,
         updateStudent,
         deleteStudent,
         getTutors,
+        deleteTutor,
         getSchedules,
+        getCanonicalWeeklySchedules,
         reconcileHeldSchedules,
         addSchedule,
         updateSchedule,
@@ -7309,7 +9298,14 @@ const DashboardEngine = (function() {
                 const tut = (db.tutors || []).find(t => t.email && t.email.toLowerCase().trim() === key);
                 if (tut) syncToFirestore('tutors', tut.id || key, tut);
             }
-            return { success: true, updated: true, user: db.users[key] };
+            return {
+        // Data Retention & Integrity Shield
+        exportDatabaseJSON: exportDatabaseJSON,
+        importDatabaseJSON: importDatabaseJSON,
+        listSnapshots: listSnapshots,
+        restoreSnapshot: restoreSnapshot,
+        validateDBSchema: validateDBSchema,
+ success: true, updated: true, user: db.users[key] };
         },
         updateUserPassword: async function(email, newPassword) {
             const db = getDB();
@@ -7324,12 +9320,14 @@ const DashboardEngine = (function() {
             var session = this.getSession ? this.getSession() : JSON.parse(sessionStorage.getItem('stemulus_session') || 'null');
             if (!session || !session.role) {
                 if (requiredRole === 'admin') { window.location.href = 'admin-login.html'; return null; }
+                if (requiredRole === 'tutor') { window.location.href = 'tutor-login.html'; return null; }
                 window.location.href = 'parent-login.html';
                 return null;
             }
             if (requiredRole && session.role !== requiredRole) {
                 if (requiredRole === 'admin') { window.location.href = 'admin-login.html'; return null; }
-                window.location.href = 'parent-login.html?role=' + requiredRole;
+                if (requiredRole === 'tutor') { window.location.href = 'tutor-login.html'; return null; }
+                window.location.href = 'parent-login.html';
                 return null;
             }
             return session;

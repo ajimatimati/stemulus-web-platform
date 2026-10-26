@@ -1,0 +1,41 @@
+[
+  {
+    "page": "join-class.html",
+    "viewport": "iPhone_SE_375",
+    "width": 375,
+    "anomalies": [
+      {
+        "type": "ELEMENT_EXTENDS_OFFSCREEN",
+        "selector": "button.category-filter-pill.min-h-[38px].px-3.5",
+        "text": "Control",
+        "details": "Element bounds right (392px) exceeds viewport width (375px)"
+      }
+    ]
+  },
+  {
+    "page": "join-class.html",
+    "viewport": "iPhone_14_390",
+    "width": 390,
+    "anomalies": [
+      {
+        "type": "ELEMENT_EXTENDS_OFFSCREEN",
+        "selector": "button.category-filter-pill.min-h-[38px].px-3.5",
+        "text": "Control",
+        "details": "Element bounds right (392px) exceeds viewport width (390px)"
+      }
+    ]
+  },
+  {
+    "page": "join-class.html",
+    "viewport": "iPhone_Plus_414",
+    "width": 414,
+    "anomalies": [
+      {
+        "type": "ELEMENT_EXTENDS_OFFSCREEN",
+        "selector": "button.category-filter-pill.min-h-[38px].px-3.5",
+        "text": "Looks",
+        "details": "Element bounds right (463px) exceeds viewport width (414px)"
+      }
+    ]
+  }
+]

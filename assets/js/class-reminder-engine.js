@@ -163,6 +163,62 @@
     };
   }
 
+  // Resolve direct Google Meet / Zoom meeting link for a schedule
+  function resolveMeetingLink(schedule, participants) {
+    if (!schedule) return 'https://meet.google.com/stm-prog-live';
+    if (schedule.link && schedule.link.trim() && schedule.link.startsWith('http')) return schedule.link.trim();
+    if (schedule.meetLink && schedule.meetLink.trim() && schedule.meetLink.startsWith('http')) return schedule.meetLink.trim();
+    if (schedule.googleMeetLink && schedule.googleMeetLink.trim() && schedule.googleMeetLink.startsWith('http')) return schedule.googleMeetLink.trim();
+    if (schedule.zoomLink && schedule.zoomLink.trim() && schedule.zoomLink.startsWith('http')) return schedule.zoomLink.trim();
+
+    // Look up student default link from database
+    try {
+      const db = (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getDB === 'function')
+        ? DashboardEngine.getDB()
+        : JSON.parse(localStorage.getItem('stemulus_db') || '{}');
+      const students = (db && Array.isArray(db.students)) ? db.students : [];
+      const sId = schedule.studentId || (participants && participants.studentId);
+      const student = students.find(s => s && ((sId && s.id === sId) || (s.firstName && schedule.studentName && schedule.studentName.includes(s.firstName))));
+      if (student) {
+        if (student.meetLink && student.meetLink.startsWith('http')) return student.meetLink.trim();
+        if (student.googleMeetLink && student.googleMeetLink.startsWith('http')) return student.googleMeetLink.trim();
+        if (student.classroomLink && student.classroomLink.startsWith('http')) return student.classroomLink.trim();
+      }
+    } catch(e) {}
+
+    return 'https://meet.google.com/stm-prog-live';
+  }
+
+  // Build exact Portal Classroom Companion launch URL (join-class.html?id=...&role=tutor|student&url=...)
+  function buildPortalLaunchLink(schedule, role, participantsOverride, rawMeetOverride, forceAbsolute = false) {
+    const participants = participantsOverride || resolveScheduleParticipants(schedule);
+    const rawMeetUrl = rawMeetOverride || resolveMeetingLink(schedule, participants);
+    const resolvedRole = (role === 'tutor' || role === 'student')
+      ? role
+      : ((typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getSession === 'function' && DashboardEngine.getSession() && DashboardEngine.getSession().role === 'tutor') ? 'tutor' : 'student');
+
+    const scheduleId = (schedule && schedule.id) || ('ses-' + String(participants.studentName || 'class').toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+    const q = new URLSearchParams();
+    q.set('id', String(scheduleId));
+    q.set('role', resolvedRole);
+    if (participants.studentId) q.set('studentId', String(participants.studentId));
+    if (participants.studentName) q.set('student', String(participants.studentName));
+    if (participants.tutorName) q.set('tutor', String(participants.tutorName));
+    if (participants.tutorEmail) q.set('tutorEmail', String(participants.tutorEmail));
+    if (schedule && schedule.course) q.set('course', String(schedule.course));
+    if (schedule && schedule.date) q.set('date', String(schedule.date));
+    if (schedule && schedule.time) q.set('time', String(schedule.time));
+    q.set('url', rawMeetUrl);
+
+    if (forceAbsolute) {
+      const origin = (typeof window !== 'undefined' && window.location && window.location.origin && !window.location.origin.includes('file:'))
+        ? window.location.origin
+        : 'https://stemuluskidstech.com';
+      return `${origin}/join-class.html?${q.toString()}`;
+    }
+    return `join-class.html?${q.toString()}`;
+  }
+
   // Strictly check whether the currently logged-in user owns this schedule
   function isScheduleForCurrentUser(schedule) {
     if (!schedule || typeof DashboardEngine === 'undefined' || typeof DashboardEngine.getSession !== 'function') return false;
@@ -199,24 +255,56 @@
     return false;
   }
 
-  // Dispatch Automated Email Reminders to both Parent and Tutor (Gated behind explicit admin toggle)
+  // Dispatch Automated Strategic Email Reminders to both Parent and Tutor
   function dispatchReminderEmails(schedule, milestone) {
-    if (typeof window !== 'undefined' && window.STEMULUS_AUTO_REMINDER_EMAILS !== true) return;
-    if (typeof EmailService === 'undefined') return;
+    const db = (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getDB === 'function')
+      ? DashboardEngine.getDB()
+      : null;
+    const settings = (db && db.settings) || {};
+    if (settings.autoRemindersEnabled === false) {
+      console.log('[ClassReminders] Automated email reminders paused in settings.');
+      return;
+    }
+    if (typeof EmailService === 'undefined') {
+      console.warn('[ClassReminders] EmailService unavailable.');
+      return;
+    }
 
     const participants = resolveScheduleParticipants(schedule);
+    const meetingLink = resolveMeetingLink(schedule, participants);
+    const portalTutorUrl = buildPortalLaunchLink(schedule, 'tutor', participants, meetingLink, true);
+    const portalStudentUrl = buildPortalLaunchLink(schedule, 'student', participants, meetingLink, true);
+
+    // Enriched schedule carrying canonical meeting link + portal launch URLs
+    const enrichedSchedule = Object.assign({}, schedule, {
+      studentId: participants.studentId || schedule.studentId || '',
+      tutorEmail: participants.tutorEmail || schedule.tutorEmail || '',
+      rawMeetLink: meetingLink,
+      portalTutorUrl: portalTutorUrl,
+      portalStudentUrl: portalStudentUrl,
+      link: meetingLink,
+      meetLink: meetingLink,
+      zoomLink: meetingLink
+    });
 
     // 1. Send to Parent
     if (participants.parentEmail && typeof EmailService.sendReminderEmail === 'function') {
       EmailService.sendReminderEmail({
         student: {
+          id: participants.studentId,
           name: participants.studentName,
           parentEmail: participants.parentEmail,
           parentName: participants.parentName || 'Parent'
         },
-        schedule: schedule,
+        schedule: enrichedSchedule,
         type: milestone
-      }).catch(e => console.warn('[ClassReminders] Parent email dispatch notice:', e.message));
+      }).then(function(res) {
+        if (res && res.success) {
+          console.log(`[ClassReminders] Sent ${milestone} reminder email to parent (${participants.parentEmail}) with portal link: ${portalStudentUrl}`);
+        }
+      }).catch(function(e) {
+        console.warn('[ClassReminders] Parent email dispatch notice:', e.message);
+      });
     }
 
     // 2. Send to Tutor
@@ -227,12 +315,19 @@
           name: participants.tutorName || 'Mentor'
         },
         student: {
+          id: participants.studentId,
           name: participants.studentName,
           parentEmail: participants.parentEmail
         },
-        schedule: schedule,
+        schedule: enrichedSchedule,
         type: milestone
-      }).catch(e => console.warn('[ClassReminders] Tutor email dispatch notice:', e.message));
+      }).then(function(res) {
+        if (res && res.success) {
+          console.log(`[ClassReminders] Sent ${milestone} reminder email to tutor (${participants.tutorEmail}) with portal link: ${portalTutorUrl}`);
+        }
+      }).catch(function(e) {
+        console.warn('[ClassReminders] Tutor email dispatch notice:', e.message);
+      });
     }
   }
 
@@ -241,6 +336,9 @@
     if (typeof DashboardEngine === 'undefined' || typeof DashboardEngine.addNotification !== 'function') return;
 
     const participants = resolveScheduleParticipants(schedule);
+    const meetingLink = resolveMeetingLink(schedule, participants);
+    const portalTutorLink = buildPortalLaunchLink(schedule, 'tutor', participants, meetingLink, false);
+    const portalStudentLink = buildPortalLaunchLink(schedule, 'student', participants, meetingLink, false);
     const label = milestone === '24h' ? '24 Hours' : (milestone === '10m' ? '10 Minutes' : '1 Hour');
     const isUrgent = milestone === '10m';
     const titleStr = isUrgent ? `Class in 10 Minutes: ${participants.studentName}` : `Class in ${label}: ${participants.studentName}`;
@@ -250,7 +348,7 @@
 
     // 1. Notification for Tutor (only to canonical assigned tutorEmail)
     if (participants.tutorEmail) {
-      const tutorMsg = `Your 1-on-1 session for ${schedule.course} is scheduled for ${schedule.date} at ${schedule.time} (WAT). Link: ${schedule.link || 'Google Meet'}`;
+      const tutorMsg = `Your 1-on-1 session for ${schedule.course} is scheduled for ${schedule.date} at ${schedule.time} (WAT). Click to launch via Portal Companion (${meetingLink}).`;
       const alreadyExists = existingNotifs.some(n =>
         n && String(n.userEmail || '').toLowerCase().trim() === participants.tutorEmail &&
         n.title === titleStr && n.message === tutorMsg
@@ -262,6 +360,7 @@
           studentName: participants.studentName,
           title: titleStr,
           message: tutorMsg,
+          actionUrl: portalTutorLink,
           timestamp: new Date().toISOString(),
           read: false
         });
@@ -270,7 +369,7 @@
 
     // 2. Notification for Parent (only to canonical assigned parentEmail)
     if (participants.parentEmail) {
-      const parentMsg = `${participants.studentName}'s coding session with ${participants.tutorName || 'Mentor'} is at ${schedule.time} on ${schedule.date}. Link: ${schedule.link || 'Google Meet'}`;
+      const parentMsg = `${participants.studentName}'s coding session with ${participants.tutorName || 'Mentor'} is at ${schedule.time} on ${schedule.date}. Click to launch classroom (${meetingLink}).`;
       const alreadyExists = existingNotifs.some(n =>
         n && String(n.userEmail || '').toLowerCase().trim() === participants.parentEmail &&
         n.title === titleStr && n.message === parentMsg
@@ -282,6 +381,7 @@
           studentName: participants.studentName,
           title: titleStr,
           message: parentMsg,
+          actionUrl: portalStudentLink,
           timestamp: new Date().toISOString(),
           read: false
         });
@@ -335,6 +435,7 @@
     const course = schedule.course || 'Coding Session';
     const time = schedule.time || 'Upcoming';
     const date = schedule.date || 'Tomorrow';
+    const meetingLink = buildPortalLaunchLink(schedule);
 
     const div = document.createElement('div');
     div.id = bannerId;
@@ -379,7 +480,7 @@
             Scheduled for <strong>${date} at ${time}</strong> with <strong>${tutorName}</strong>.
           </p>
           <div style="display:flex; gap:8px; align-items:center;">
-            <a href="${schedule.link || 'https://meet.google.com'}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#0F172A; color:#FFFFFF; text-decoration:none; font-size:12px; font-weight:700; padding:6px 14px; border-radius:8px; transition:background 0.15s ease;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#0F172A'">
+            <a href="${meetingLink}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#0F172A; color:#FFFFFF; text-decoration:none; font-size:12px; font-weight:700; padding:6px 14px; border-radius:8px; transition:background 0.15s ease;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#0F172A'">
               <span>Meeting Link</span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
@@ -409,6 +510,7 @@
     const course = schedule.course || 'Coding Session';
     const time = schedule.time || 'Upcoming';
     const date = schedule.date || 'Today';
+    const meetingLink = buildPortalLaunchLink(schedule);
 
     const div = document.createElement('div');
     div.id = bannerId;
@@ -451,8 +553,8 @@
             Session starts at <strong>${time}</strong> with <strong>${tutorName}</strong>.
           </p>
           <div style="display:flex; gap:8px; align-items:center;">
-            <a href="${schedule.link || 'https://meet.google.com'}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#0F172A; color:#FFFFFF; text-decoration:none; font-size:12px; font-weight:700; padding:6px 14px; border-radius:8px; transition:background 0.15s ease;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#0F172A'">
-              <span>Join Google Meet</span>
+            <a href="${meetingLink}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#0F172A; color:#FFFFFF; text-decoration:none; font-size:12px; font-weight:700; padding:6px 14px; border-radius:8px; transition:background 0.15s ease;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#0F172A'">
+              <span>Join Live Classroom</span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
           </div>
@@ -481,7 +583,7 @@
     const studentName = schedule.studentName || schedule.student || 'Your Student';
     const tutorName = schedule.mentor || schedule.tutorName || 'Your Mentor';
     const course = schedule.course || 'Coding Session';
-    const link = schedule.link || 'https://meet.google.com';
+    const link = buildPortalLaunchLink(schedule);
     const time = schedule.time || '10 minutes';
 
     const card = document.createElement('div');
@@ -679,6 +781,8 @@
     stop,
     evaluate: evaluateSchedules,
     simulate,
-    playChime: playReminderChime
+    playChime: playReminderChime,
+    resolveMeetingLink,
+    buildPortalLaunchLink
   };
 });

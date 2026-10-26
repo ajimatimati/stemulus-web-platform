@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track 1: Web Engineering | STEMulus Kids Tech Academy</title>
+  <link rel="icon" type="image/png" href="../assets/3d/stemulus-logo.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <style>
+    :root {
+      --brand-orange: #F4600C;
+      --brand-orange-deep: #C2410C;
+      --brand-orange-shadow: #9A3412;
+      --brand-indigo: #4F46E5;
+      --brand-indigo-deep: #3730A3;
+      --bg-page: #F1F5F9;
+      --bg-subtle: #F8FAFC;
+      --surface-white: #FFFFFF;
+      --text-main: #1A2332;
+      --text-muted: #475569;
+      --text-light: #64748B;
+      --border-neutral: #E2E8F0;
+      --border-subtle: #EDF2F7;
+      --shadow-shell: 0 20px 45px -10px rgba(15, 23, 42, 0.08);
+      --shadow-card: 0 4px 16px rgba(15, 23, 42, 0.04);
+      --radius-card: 20px;
+      --radius-badge: 8px;
+      --radius-tag: 10px;
+      --radius-pill: 10px;
+      --radius-btn: 14px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    header.site-header {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 18px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03), inset 0 1px 0 #FFFFFF;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-badge);
+      color: var(--text-muted);
+      font-family: 'Nunito', sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: inset 0 1px 0.5px #FFFFFF, 0 2px 4px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+    }
+    .back-btn:hover {
+      color: var(--brand-indigo);
+      border-color: #CBD5E1;
+      transform: translateX(-2px);
+    }
+    .back-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 10px;
+      filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.1));
+    }
+    .brand-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .brand-sub {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .header-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .stat-badge {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      padding: 6px 14px;
+      border-radius: var(--radius-badge);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-badge strong {
+      color: var(--text-main);
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 36px 40px 80px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Hero Course Starting Banner */
+    .course-hero {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 60%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 2px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 36px 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 10px 30px -4px rgba(15, 23, 42, 0.05);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .course-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    .hero-content {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-badge-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .course-tag {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .ages-tag {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: #F8FAFC;
+      border: 1px solid var(--border-neutral);
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .course-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .course-tagline {
+      font-size: 17px;
+      color: var(--brand-indigo);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+    .course-overview {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 24px;
+      max-width: 820px;
+      font-weight: 600;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-3d-primary {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: var(--radius-btn);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      background: linear-gradient(180deg, #FF7E36 0%, #F4600C 45%, #DF4E00 100%);
+      color: #ffffff !important;
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.65), inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 0 #9A3412, 0 8px 18px rgba(244, 96, 12, 0.28);
+      transition: all 0.12s ease;
+      overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    .btn-3d-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 6px 0 #9A3412, 0 12px 24px rgba(244, 96, 12, 0.32);
+    }
+    .btn-3d-primary svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      fill: none;
+    }
+    .btn-classroom-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 22px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-btn);
+      color: var(--text-main);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      box-shadow: inset 0 1.5px 0.5px #FFFFFF, 0 2px 0 #CBD5E1, 0 3px 6px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+    }
+    .btn-classroom-link:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+    }
+    
+    /* Live XP Tracker & Status Pills */
+    .hero-xp-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FEF3C7 60%, #FDE68A 100%);
+      border: 1px solid #F59E0B;
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-btn);
+      box-shadow: inset 0 1.5px 0.5px #FFFFFF, 0 2px 0 #D97706, 0 4px 10px rgba(245, 158, 11, 0.15);
+    }
+    .xp-trophy-img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.3));
+    }
+    .xp-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .xp-main-label {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #92400E;
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+    }
+    .xp-progress-bar-bg {
+      width: 140px;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(217, 119, 6, 0.3);
+    }
+    .xp-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #F59E0B, #D97706);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    .lesson-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: var(--radius-badge);
+      background: #F1F5F9;
+      color: #64748B;
+      border: 1px solid #CBD5E1;
+    }
+    .lesson-status-pill .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #94A3B8;
+    }
+    .lesson-status-pill.in-progress {
+      background: #FEF3C7;
+      color: #92400E;
+      border-color: #FCD34D;
+    }
+    .lesson-status-pill.in-progress .status-dot {
+      background: #F59E0B;
+    }
+    .lesson-status-pill.completed {
+      background: #ECFDF5;
+      color: #065F46;
+      border-color: #6EE7B7;
+    }
+    .lesson-status-pill.completed .status-dot {
+      background: #10B981;
+    }
+
+    .hero-3d-illus {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(15, 23, 42, 0.12));
+      flex-shrink: 0;
+    }
+
+    /* Mentoring & Pedagogical Blueprint */
+    .mentoring-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 70%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 28px 32px;
+      margin-bottom: 36px;
+      box-shadow: var(--shadow-card);
+    }
+    .mc-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .mc-head img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+    .mc-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .mc-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-weight: 600;
+      margin-bottom: 22px;
+    }
+    
+    .toolkit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .toolkit-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #EDF2F7 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 1px 0.5px #FFFFFF, 0 2px 4px rgba(15, 23, 42, 0.02);
+    }
+    .toolkit-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .toolkit-type-badge {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--brand-indigo);
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+      padding: 2px 8px;
+      border-radius: var(--radius-badge);
+    }
+    .toolkit-free-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #059669;
+    }
+    .toolkit-name {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .toolkit-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      font-weight: 600;
+      margin-bottom: 14px;
+      flex-grow: 1;
+    }
+    .toolkit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brand-indigo);
+      text-decoration: none;
+      align-self: flex-start;
+      padding: 4px 0;
+    }
+    .toolkit-btn:hover {
+      text-decoration: underline;
+    }
+    .toolkit-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+
+    /* Tier Sections & Lesson Cards */
+    .tier-section {
+      margin-bottom: 40px;
+    }
+    .tier-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      border-bottom: 2px solid var(--border-neutral);
+    }
+    .tier-badge-label {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+    }
+    .tier-lesson-count {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: #FFFFFF;
+      border: 1px solid var(--border-neutral);
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .tier-lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 22px;
+    }
+    .lesson-hub-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 60%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 4px 12px rgba(15, 23, 42, 0.03);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+    }
+    .lesson-hub-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 35%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    .lesson-hub-card:hover {
+      transform: translateY(-4px);
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 14px 30px -4px rgba(15, 23, 42, 0.08), 0 3px 0 #CBD5E1;
+      border-color: #CBD5E1;
+    }
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .lesson-num-badge {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #EDF2F7 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1px solid #FFFFFF;
+      padding: 4px 10px;
+      border-radius: var(--radius-badge);
+      color: var(--text-muted);
+    }
+    .xp-preview-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9A3412;
+      background: #FFF7ED;
+      border: 1px solid #FFEDD5;
+      padding: 3px 8px;
+      border-radius: var(--radius-badge);
+    }
+    .card-lesson-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .card-hook-text {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      font-weight: 600;
+      flex-grow: 1;
+    }
+    .card-concept-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .card-concept-row img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+    .quest-preview-box {
+      background: #FFFFFF;
+      border: 1px solid #EDF2F7;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .qp-title {
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .qp-item {
+      margin-bottom: 3px;
+    }
+    .qp-item:last-child {
+      margin-bottom: 0;
+    }
+    .btn-launch-lesson {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 18px;
+      border-radius: var(--radius-btn);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 13.5px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      background: linear-gradient(180deg, #FF7E36 0%, #F4600C 45%, #DF4E00 100%);
+      color: #ffffff !important;
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.65), inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2), 0 3px 0 #9A3412, 0 6px 14px rgba(244, 96, 12, 0.24);
+      transition: all 0.12s ease;
+      overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    .btn-launch-lesson:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 5px 0 #9A3412, 0 10px 20px rgba(244, 96, 12, 0.28);
+    }
+    .btn-launch-lesson svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+    
+    footer {
+      background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #FFFFFF 100%);
+      border-top: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 24px 40px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <a href="../index.html" class="back-btn">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>All Courses (Master Portal)</span>
+        </a>
+        <div class="brand-wrap">
+          <img src="../assets/3d/stemulus-logo.png" class="brand-logo" alt="STEMulus">
+          <div>
+            <div class="brand-title">STEMulus Kids Tech Academy</div>
+            <div class="brand-sub">Course Syllabus &amp; Interactive Learning Hub</div>
+          </div>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-badge">
+          <span>Target: <strong>Ages 9 - 17</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Curriculum: <strong>40 Lessons</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Tiers: <strong>2 Mastery Levels (Creators & Innovators)</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Pacing: <strong>45 Mins / Lesson</strong></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Hero Course Starting Banner -->
+    <div class="course-hero">
+      <div class="hero-content">
+        <div class="hero-badge-row">
+          <span class="course-tag">Course Starting Hub</span>
+          <span class="ages-tag">Ages 9 - 17</span>
+          <span class="ages-tag">40 Interactive Slide Decks</span>
+        </div>
+        <h1 class="course-title">Track 1: Web Engineering</h1>
+        <p class="course-tagline">Architect the Modern Web: Semantic Layouts, CSS Mastery & Interactive JavaScript</p>
+        <p class="course-overview">Websites are the digital storefronts, games, and operating systems of the modern world. In Track 1, students build authentic web engineering intuition: understanding how servers transmit packets, structuring bulletproof semantic HTML5 documents, mastering CSS Box Model, Flexbox, and Grid layouts, and breathing life into pages with vanilla JavaScript event listeners and DOM manipulation.</p>
+        <div class="hero-actions">
+          <a href="creators_ages_9_12/lesson_01_internet_blueprint.html" class="btn-3d-primary" target="_blank">
+            <span>Start Lesson 01: The Blueprint of the Internet</span>
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <div class="hero-xp-card" id="hero-xp-tracker">
+            <img src="../assets/3d/gold-trophy-3d.png" class="xp-trophy-img" alt="XP">
+            <div class="xp-text-group">
+              <span class="xp-main-label"><strong id="hub-xp-count">0</strong> / 14000 Course XP</span>
+              <div class="xp-progress-bar-bg">
+                <div class="xp-progress-fill" id="hub-xp-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img src="../assets/3d/code-brackets-3d.png" class="hero-3d-illus" alt="Track 1: Web Engineering">
+    </div>
+
+    <!-- Student Learning Journey & Software Sandbox Toolkit -->
+    <div class="mentoring-card">
+      <div class="mc-head">
+        <img src="../assets/3d/rocket-launch-3d.png" alt="Learning Journey">
+        <div class="mc-title">Your Learning Journey: Hands-On Mentoring &amp; Creative Sandboxes</div>
+      </div>
+      <p class="mc-body">Every session is a hands-on coding workshop with your dedicated mentor. You take the driver seat at the keyboard, building real apps, animations, and game worlds in zero-install browser sandboxes. Test your theories, conquer interactive checkpoints, and earn Bronze (+50 XP), Silver (+100 XP), and Gold (+200 XP) mastery badges as you advance!</p>
+      
+      <div style="font-family: 'Fredoka', 'Nunito', sans-serif; font-size: 16px; font-weight: 700; color: var(--brand-indigo); margin-bottom: 12px;">
+        100% Free Software &amp; Sandbox Setup for This Course:
+      </div>
+      <div class="toolkit-grid">
+        
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Browser Web Sandbox</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">CodePen</div>
+          <p class="toolkit-desc">Instant HTML, CSS, and JS editor with live preview.</p>
+          <a href="https://codepen.io/" class="toolkit-btn" target="_blank">
+            <span>Open CodePen</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Developer Cockpit</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Google Chrome DevTools</div>
+          <p class="toolkit-desc">Real-time DOM inspection, CSS box-model tuning, and console debugging.</p>
+          <a href="https://www.google.com/chrome/" class="toolkit-btn" target="_blank">
+            <span>Open Google Chrome DevTools</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Cloud Development Environment</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Replit</div>
+          <p class="toolkit-desc">Full-stack code editor hosting multi-page portfolio projects.</p>
+          <a href="https://replit.com/" class="toolkit-btn" target="_blank">
+            <span>Open Replit</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Syllabus & Lesson Decks By Developmental Tier -->
+    
+        <section class="tier-section">
+          <div class="tier-header-bar">
+            <div class="tier-badge-label">Creators (Ages 9–12)</div>
+            <div class="tier-lesson-count">20 Interactive Lessons</div>
+          </div>
+          <div class="tier-lessons-grid">
+            
+            <div class="lesson-hub-card" data-slug="lesson_01_internet_blueprint">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 01</span>
+                <div class="lesson-status-pill" id="status-lesson_01_internet_blueprint"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Blueprint of the Internet</h3>
+              <p class="card-hook-text">How servers and browsers talk to each other across the globe</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Client vs Server</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Inspect any webpage using right-click -&gt; 'Inspect' in Chrome.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Find the &lt;h1&gt; tag on a real website and change its text locally in DevTools.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Explain to your mentor the journey a packet takes from a server to your screen.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_01_internet_blueprint.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_02_first_html_tags">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 02</span>
+                <div class="lesson-status-pill" id="status-lesson_02_first_html_tags"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Headings &amp; Paragraphs</h3>
+              <p class="card-hook-text">Building your first superhero bio card with headings and text blocks</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/registration-stack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Heading Hierarchy (H1 to H6)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create a CodePen with an H1 character name and an H2 superpower title.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add 2 paragraphs describing your character's backstory and secret base.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Create a complete Hero vs Villain battle card with matching headings.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_02_first_html_tags.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_03_text_styling_tags">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 03</span>
+                <div class="lesson-status-pill" id="status-lesson_03_text_styling_tags"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Bold, Italic &amp; Emphasis Spells</h3>
+              <p class="card-hook-text">Making important words pop with strong, em, and mark tags</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/category-labels-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Inline Formatting Spells</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Add &lt;strong&gt; to highlight your superhero's signature attack.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Use &lt;em&gt; and &lt;mark&gt; to create an urgent warning banner.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build an ancient treasure map riddle with hidden clues styled in bold and italics.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_03_text_styling_tags.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_04_image_portals">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 04</span>
+                <div class="lesson-status-pill" id="status-lesson_04_image_portals"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Summoning Pictures (The IMG Tag)</h3>
+              <p class="card-hook-text">Bringing characters alive with images, src, and alt tags</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/category-labels-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> The Image Anatomy</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Embed a character avatar image using a clean direct URL.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add width and height attributes to keep your image proportioned.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a 3-image gallery showcasing your hero's gadget belt with descriptive alt tags.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_04_image_portals.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_05_hyperlinks_teleport">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 05</span>
+                <div class="lesson-status-pill" id="status-lesson_05_hyperlinks_teleport"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Portals to Other Dimensions (The Anchor Tag)</h3>
+              <p class="card-hook-text">Connecting web pages across the multiverse using links</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/signpost-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> The Magic Anchor (&lt;a&gt;)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create a link to your favorite game wiki that opens in a new tab.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Wrap an &lt;img&gt; inside an &lt;a&gt; tag so clicking the picture opens a portal.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a 'Teleport Hub' with 4 portal buttons to cool scientific websites.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_05_hyperlinks_teleport.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_06_unordered_lists">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 06</span>
+                <div class="lesson-status-pill" id="status-lesson_06_unordered_lists"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Backpack Inventory (Unordered Lists)</h3>
+              <p class="card-hook-text">Organizing gear and weapons with bullet points</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> The Bulleted List (&lt;ul&gt;)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create an unordered list of at least 4 survival gear items.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Nest a sub-list inside one item (e.g., Potions -&gt; Healing, Speed).</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a complete Game Character Sheet with skills, inventory, and weaknesses in bulleted lists.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_06_unordered_lists.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_07_ordered_lists">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 07</span>
+                <div class="lesson-status-pill" id="status-lesson_07_ordered_lists"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Top-10 Leaderboard (Ordered Lists)</h3>
+              <p class="card-hook-text">Ranking players and steps with numbered lists</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> The Numbered List (&lt;ol&gt;)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build a Top 3 High-Score leaderboard for your game.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Change your list into a step-by-step recipe for making pizza.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Combine an &lt;ol&gt; of top players with nested &lt;ul&gt; badges for each player.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_07_ordered_lists.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_08_tables_data_grid">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 08</span>
+                <div class="lesson-status-pill" id="status-lesson_08_tables_data_grid"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Data Matrix (HTML Tables)</h3>
+              <p class="card-hook-text">Creating structured grid tables for scores and stats</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/holo-database-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Table Anatomy</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build a 2x2 table displaying Player Name and High Score.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add a 3rd column for 'Player Level' with 3 data rows.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a complete RPG monster battle stats table (HP, Attack, Defense, Weakness).</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_08_tables_data_grid.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_09_buttons_links">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 09</span>
+                <div class="lesson-status-pill" id="status-lesson_09_buttons_links"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Magic Button (Interactive Elements)</h3>
+              <p class="card-hook-text">Creating tactile buttons ready for user clicks</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Buttons vs Links</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create 3 buttons: 'Start Game', 'Settings', and 'Quit'.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add an icon or emoji inside each button.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a game main menu screen with styled action buttons and status indicators.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_09_buttons_links.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_10_intro_css_colors">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 10</span>
+                <div class="lesson-status-pill" id="status-lesson_10_intro_css_colors"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Color Alchemist (CSS Styles)</h3>
+              <p class="card-hook-text">Dyeing your web page in vibrant neon hex codes</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/pencil-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> CSS Syntax &amp; Hex Colors</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Change the background of your page to a dark space theme in CSS.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Style headings in neon cyan (#00ffff) and paragraphs in silver (#e2e8f0).</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Create a dual-theme superhero card with contrasting light/dark color palettes.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_10_intro_css_colors.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_11_google_fonts">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 11</span>
+                <div class="lesson-status-pill" id="status-lesson_11_google_fonts"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Voice of Letters (Google Fonts)</h3>
+              <p class="card-hook-text">Giving your website personality with custom fonts</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/radar-chart-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Typography Secrets</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Import a retro gaming font from Google Fonts into your CSS.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Apply the font to all headings while keeping body text clean and readable.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build an 8-bit arcade game title screen with glowing pixel fonts.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_11_google_fonts.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_12_box_model_padding">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 12</span>
+                <div class="lesson-status-pill" id="status-lesson_12_box_model_padding"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Bubble Wrap Principle (Padding &amp; Borders)</h3>
+              <p class="card-hook-text">Giving buttons and cards breathing room with CSS padding</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/pencil-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Padding &amp; Borders</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Add 20px padding to your card so text doesn't touch the edges.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add a solid border and set `border-radius: 12px` for smooth corners.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a pill-shaped glowing button with 50px border-radius.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_12_box_model_padding.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_13_box_model_margins">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 13</span>
+                <div class="lesson-status-pill" id="status-lesson_13_box_model_margins"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Social Distancing for Elements (Margins)</h3>
+              <p class="card-hook-text">Pushing elements apart so they never bump into each other</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/lightbulb-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Margins &amp; Centering</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Add 20px margin between two cards so they don't touch.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Use `margin: 0 auto;` and `max-width: 500px;` to center your card on the screen.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a column of 3 neatly spaced announcement cards with drop shadows.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_13_box_model_margins.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_14_flexbox_basics">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 14</span>
+                <div class="lesson-status-pill" id="status-lesson_14_flexbox_basics"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Aligning the Multiverse (Flexbox Rows)</h3>
+              <p class="card-hook-text">Putting cards side-by-side without messy floats</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/project-canvas-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Flexbox Powers</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create a navigation bar with a logo and 3 links aligned side-by-side using Flexbox.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Use `justify-content: space-between;` to push the logo to the left and links to the right.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a game character selection screen with 3 cards neatly aligned in a row.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_14_flexbox_basics.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_15_flexbox_align">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 15</span>
+                <div class="lesson-status-pill" id="status-lesson_15_flexbox_align"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Centering &amp; Wrapping (Flexbox Cross Axis)</h3>
+              <p class="card-hook-text">Centering elements perfectly and wrapping on smaller screens</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/video-frame-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Align-Items &amp; Flex-Wrap</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Use `align-items: center;` to vertically center text next to an avatar image.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add `flex-wrap: wrap;` and `gap: 16px;` to a 6-item photo grid.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a responsive game inventory screen that rearranges itself smoothly on mobile screens.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_15_flexbox_align.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_16_intro_javascript">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 16</span>
+                <div class="lesson-status-pill" id="status-lesson_16_intro_javascript"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Brain of the Page (JavaScript Intro)</h3>
+              <p class="card-hook-text">Bringing dead HTML to life with programming logic</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> JavaScript Foundations</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create variables for player name and gold coins using `let`.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Trigger a personalized welcome `alert()` popup when the page loads.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build an RPG greeting machine that asks the player their name using `prompt()` and alerts their hero level.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_16_intro_javascript.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_17_dom_click_counter">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 17</span>
+                <div class="lesson-status-pill" id="status-lesson_17_dom_click_counter"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Click Machine (DOM Events)</h3>
+              <p class="card-hook-text">Building an interactive clicker game with button events</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> The DOM Connection</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build a button and a number display that counts up by 1 on every click.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add a 'Reset' button that sets the counter back to 0.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build an epic Cookie Clicker clone with an 'Upgrade' button that doubles points per click!</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_17_dom_click_counter.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_18_conditionals_gatekeeper">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 18</span>
+                <div class="lesson-status-pill" id="status-lesson_18_conditionals_gatekeeper"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Castle Gatekeeper (If/Else Decisions)</h3>
+              <p class="card-hook-text">Making game decisions with if, else, and secret passwords</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Branching Logic</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build a password checker: If input is 'STEMULUS', show 'Secret Door Unlocked!'.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Create a 3-tier ranking: Diamond (&gt;100), Gold (&gt;50), Rookie (&lt;=50).</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a Magic 8-Ball game that gives 4 random answers based on numbers.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_18_conditionals_gatekeeper.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_19_css_transitions_hover">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 19</span>
+                <div class="lesson-status-pill" id="status-lesson_19_css_transitions_hover"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Smooth Physics (CSS Hover &amp; Transitions)</h3>
+              <p class="card-hook-text">Making cards lift and buttons glow when the mouse glides over them</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/lightbulb-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Tactile Micro-interactions</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Add smooth hover scale and shadow effects to 3 game buttons.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Make a character card tilt and glow with a neon border on hover.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build an interactive loot box that shakes and glows when hovered, then opens on click.</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_19_css_transitions_hover.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_20_mini_arcade_capstone">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 20</span>
+                <div class="lesson-status-pill" id="status-lesson_20_mini_arcade_capstone"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The STEMulus Arcade (Capstone Launch)</h3>
+              <p class="card-hook-text">Assembling HTML, CSS, and JavaScript into a complete published web game</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/pencil-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Full-Stack Integration</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Assemble your game screen with styled HTML and CSS.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Connect all JavaScript click events, score tracking, and if/else win conditions.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Deploy your game publicly on CodePen/GitHub Pages and present a 3-minute live gameplay demo to your mentor!</div>
+              </div>
+              <a href="creators_ages_9_12/lesson_20_mini_arcade_capstone.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section class="tier-section">
+          <div class="tier-header-bar">
+            <div class="tier-badge-label">Innovators (Ages 13–17)</div>
+            <div class="tier-lesson-count">20 Interactive Lessons</div>
+          </div>
+          <div class="tier-lessons-grid">
+            
+            <div class="lesson-hub-card" data-slug="lesson_01_web_arch_devtools">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 01</span>
+                <div class="lesson-status-pill" id="status-lesson_01_web_arch_devtools"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Web Architecture &amp; Chrome DevTools</h3>
+              <p class="card-hook-text">Inspect network payloads and DOM trees like a professional engineer</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> The Client-Server HTTP Lifecycle</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Inspect the network tab of any live website and identify the initial HTML document payload.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Audit CSS computed box dimensions and alter text nodes live in the DevTools DOM tree.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Simulate 3G mobile throttling in the Network tab and record the page load performance impact.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_01_web_arch_devtools.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_02_semantic_html5">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 02</span>
+                <div class="lesson-status-pill" id="status-lesson_02_semantic_html5"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Semantic HTML5 Architecture</h3>
+              <p class="card-hook-text">Replacing div-soup with semantic elements for SEO and accessibility</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/category-labels-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Semantic Hierarchy</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build a developer portfolio skeleton using strictly semantic HTML tags with zero unsemantic divs.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add an accessible `&lt;aside&gt;` with related project links and a semantic `&lt;footer&gt;` with copyright.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Score 100 on Google Lighthouse Accessibility for your newly structured portfolio skeleton.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_02_semantic_html5.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_03_accessible_forms">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 03</span>
+                <div class="lesson-status-pill" id="status-lesson_03_accessible_forms"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Accessible Forms &amp; Validation</h3>
+              <p class="card-hook-text">Building secure user input forms with HTML5 validation and ARIA</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/category-labels-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Form Architecture</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build an accessible contact form with name, email, and message inputs.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add HTML5 client-side validation rules (`required`, `minlength`, regex `pattern`).</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add custom accessible error message containers linked via `aria-describedby`.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_03_accessible_forms.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_04_css_variables_tokens">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 04</span>
+                <div class="lesson-status-pill" id="status-lesson_04_css_variables_tokens"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Design Tokens &amp; CSS Variables</h3>
+              <p class="card-hook-text">Creating themeable, scalable design systems with CSS Custom Properties</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/pencil-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Design Tokens</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Define a `:root` palette with 4 colors, 2 spacing tokens, and 2 border radiuses.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Apply the tokens to style a responsive tech blog card component.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Create a `.dark-theme` class that swaps background and text tokens for instant Dark Mode.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_04_css_variables_tokens.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_05_flexbox_deep_dive">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 05</span>
+                <div class="lesson-status-pill" id="status-lesson_05_flexbox_deep_dive"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Flexbox Axes &amp; Space Distribution</h3>
+              <p class="card-hook-text">Mastering main and cross axes, flex-grow, shrink, and basis</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/project-canvas-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Advanced Flexbox Mechanics</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build a modern split layout with a fixed sidebar (240px) and a fluid main content feed.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Construct a responsive header with aligned branding, search bar, and user profile.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a flexible multi-card row where featured cards grow twice as wide (`flex: 2`).</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_05_flexbox_deep_dive.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_06_css_grid_2d">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 06</span>
+                <div class="lesson-status-pill" id="status-lesson_06_css_grid_2d"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">CSS Grid 2D Layouts</h3>
+              <p class="card-hook-text">Mastering 2D columns, rows, fractions, and minmax functions</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/project-canvas-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> 2D Grid Engine</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build a 3-column product catalog using CSS Grid.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Make the grid fluidly responsive using `auto-fit` and `minmax()`.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Span a featured 'Hero Article' card across 2 columns and 2 rows (`grid-column: span 2;`).</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_06_css_grid_2d.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_07_grid_areas_dashboards">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 07</span>
+                <div class="lesson-status-pill" id="status-lesson_07_grid_areas_dashboards"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Dashboard Architecture with Grid Areas</h3>
+              <p class="card-hook-text">Building SaaS analytics dashboards with grid-template-areas</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/radar-chart-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Grid Template Areas</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Map out a 4-area SaaS dashboard: Header, Sidebar, Metric Cards, and Activity Feed.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Style the metric cards with clean typography and trend indicator badges.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Redefine `grid-template-areas` inside a mobile breakpoint so the layout collapses into a single column.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_07_grid_areas_dashboards.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_08_responsive_media_queries">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 08</span>
+                <div class="lesson-status-pill" id="status-lesson_08_responsive_media_queries"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Mobile-First Responsive Engineering</h3>
+              <p class="card-hook-text">Engineering fluid breakpoints and fluid typography with clamp()</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/radar-chart-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Mobile-First Principles</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Write a mobile-first stylesheet for a tech product landing page.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add tablet (768px) and desktop (1024px) media queries to adapt navigation and grids.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Implement fluid typography using `font-size: clamp(1.5rem, 4vw, 3rem);` on hero headlines.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_08_responsive_media_queries.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_09_transitions_keyframes">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 09</span>
+                <div class="lesson-status-pill" id="status-lesson_09_transitions_keyframes"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Micro-interactions &amp; Keyframe Physics</h3>
+              <p class="card-hook-text">Creating spring physics, cubic-bezier curves, and keyframe loops</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/project-canvas-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> CSS Motion Design</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build a floating CTA button with smooth spring cubic-bezier transitions.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Create a continuous rotating loading spinner using `@keyframes`.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build an interactive skeleton placeholder card with a shimmering gradient wave animation.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_09_transitions_keyframes.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_10_modern_js_es6">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 10</span>
+                <div class="lesson-status-pill" id="status-lesson_10_modern_js_es6"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Modern JavaScript (ES6+ Foundations)</h3>
+              <p class="card-hook-text">Mastering lexical scope, arrow functions, and template literals</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/party-hat-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> ES6+ Evolution</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Refactor 5 legacy `function` declarations into modern arrow functions.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Build a dynamic HTML template generator using multi-line template literals.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a battle damage calculator taking defense modifiers and returning formatted strings.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_10_modern_js_es6.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_11_destructuring_spread">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 11</span>
+                <div class="lesson-status-pill" id="status-lesson_11_destructuring_spread"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Destructuring &amp; Spread Operator</h3>
+              <p class="card-hook-text">Unpacking data structures cleanly and manipulating immutable arrays</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/holo-database-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Destructuring &amp; Rest/Spread</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Unpack a user object containing nested properties using object destructuring.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Clone and add 2 new items to an inventory array immutably using the spread operator.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Write a function that accepts an options configuration object with default destructuring fallbacks.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_11_destructuring_spread.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_12_dom_event_delegation">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 12</span>
+                <div class="lesson-status-pill" id="status-lesson_12_dom_event_delegation"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">DOM Event Delegation &amp; Mutation</h3>
+              <p class="card-hook-text">Managing high-performance event listeners on dynamic user interfaces</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Event Delegation Engine</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build an interactive Todo list where tasks can be added dynamically via a form.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Implement event delegation on the parent list to handle delete and complete buttons.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add an edit task feature allowing inline title modification.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_12_dom_event_delegation.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_13_array_methods_map_filter">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 13</span>
+                <div class="lesson-status-pill" id="status-lesson_13_array_methods_map_filter"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Functional Array Methods (Map &amp; Filter)</h3>
+              <p class="card-hook-text">Transforming and filtering data streams with pure functions</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/calendar-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Functional Data Pipelines</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Use `.filter()` to filter a list of 10 products by category and stock availability.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Use `.map()` to generate dynamic HTML cards from an array of student data objects.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Chain `.filter()` and `.map()` together in a single pipeline to render only top-rated products.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_13_array_methods_map_filter.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_14_array_reduce_cart">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 14</span>
+                <div class="lesson-status-pill" id="status-lesson_14_array_reduce_cart"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Accumulator (Array.reduce)</h3>
+              <p class="card-hook-text">Computing totals, grouping data, and mastering the most powerful array method</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> The Reduce Engine</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Use `.reduce()` to compute the total price and item count of a shopping cart.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Group an array of gamers by their guild name into an object using `.reduce()`.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a full e-commerce checkout receipt calculating subtotal, tax (8%), shipping, and grand total.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_14_array_reduce_cart.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_15_async_js_promises">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 15</span>
+                <div class="lesson-status-pill" id="status-lesson_15_async_js_promises"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Asynchronous JavaScript &amp; Promises</h3>
+              <p class="card-hook-text">Understanding the event loop, callback queues, and Promise states</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Async Mechanics</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Create a Promise that simulates a 2-second game server connection delay.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Handle both `.then()` success and `.catch()` error states.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a sequential timer challenge logging '3...', '2...', '1...', 'Liftoff!' using Promise delays.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_15_async_js_promises.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_16_fetch_api_json">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 16</span>
+                <div class="lesson-status-pill" id="status-lesson_16_fetch_api_json"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Consuming REST APIs with Async/Await</h3>
+              <p class="card-hook-text">Fetching live real-world internet data from public JSON APIs</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/whatsapp-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> REST API Consumption</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Fetch live data from a public API (PokéAPI, OpenWeather, or NASA APOD).</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Render the API data (title, description, and image) into DOM elements.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a live search bar that queries the API dynamically and handles 'Not Found' error states.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_16_fetch_api_json.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_17_localstorage_persistence">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 17</span>
+                <div class="lesson-status-pill" id="status-lesson_17_localstorage_persistence"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Client-Side Storage (LocalStorage)</h3>
+              <p class="card-hook-text">Preserving game saves, dark mode themes, and task data across page reloads</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Persistent Web Storage</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Save a user's theme preference ('dark' or 'light') in `localStorage`.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Write initialization logic that checks `localStorage` on page load and applies the saved theme.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a full offline Task Tracker where added tasks persist across browser restarts.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_17_localstorage_persistence.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_18_git_github_flow">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 18</span>
+                <div class="lesson-status-pill" id="status-lesson_18_git_github_flow"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Version Control &amp; Git Collaboration</h3>
+              <p class="card-hook-text">Managing code history, branching, and pull requests on GitHub</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/signpost-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Git Version Control</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Initialize a local Git repository and create 3 semantic commits.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Create a feature branch, make a styling change, and merge it back into main.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Simulate a merge conflict between two branches and resolve it cleanly in VS Code.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_18_git_github_flow.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_19_react_components_props">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 19</span>
+                <div class="lesson-status-pill" id="status-lesson_19_react_components_props"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Introduction to React &amp; Props</h3>
+              <p class="card-hook-text">Component-driven architecture with JSX and modern Vite build tooling</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/registration-stack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> React Foundations</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Initialize a React app using Vite (`npm create vite@latest`).</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Create a reusable `&lt;Button /&gt;` component accepting `label` and `variant` props.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a `&lt;ProductGrid /&gt;` rendering 4 `&lt;ProductCard /&gt;` components from an array of mock data.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_19_react_components_props.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_20_react_state_usestate">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 20</span>
+                <div class="lesson-status-pill" id="status-lesson_20_react_state_usestate"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">React State &amp; Lifecycle Hooks</h3>
+              <p class="card-hook-text">Building dynamic reactive web apps with useState and useEffect</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Reactive State Engine</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build an interactive counter with increment, decrement, and reset buttons using `useState`.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Build a live filterable search list using a controlled input field.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a full Weather Dashboard fetching live API data inside `useEffect` and handling loading states.</div>
+              </div>
+              <a href="innovators_ages_13_17/lesson_20_react_state_usestate.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+
+  </main>
+
+  <footer>
+    STEMulus Kids Tech Academy &bull; Track 1: Web Engineering Starting Hub &bull; 1-on-1 Mentoring Curriculum &bull; 100% Offline Resilience
+  </footer>
+
+  <script>
+    (function() {
+      const lessons = document.querySelectorAll('.lesson-hub-card');
+      let totalCourseXp = 0;
+      let completedLessons = 0;
+      const maxCourseXp = lessons.length * 350;
+
+      lessons.forEach(card => {
+        const slug = card.getAttribute('data-slug');
+        if (!slug) return;
+        try {
+          const raw = localStorage.getItem('stemulus_quest_' + slug);
+          if (raw) {
+            const state = JSON.parse(raw);
+            let lessonXp = 0;
+            if (state.Bronze) lessonXp += 50;
+            if (state.Silver) lessonXp += 100;
+            if (state.Gold) lessonXp += 200;
+            
+            if (lessonXp > 0) {
+              totalCourseXp += lessonXp;
+              const statusEl = document.getElementById('status-' + slug);
+              if (statusEl) {
+                if (lessonXp >= 350) {
+                  statusEl.className = 'lesson-status-pill completed';
+                  statusEl.innerHTML = '<span class="status-dot"></span><span>Gold Mastered (+350 XP)</span>';
+                  completedLessons++;
+                } else {
+                  statusEl.className = 'lesson-status-pill in-progress';
+                  statusEl.innerHTML = '<span class="status-dot"></span><span>In Progress (+' + lessonXp + ' XP)</span>';
+                }
+              }
+            }
+          }
+        } catch(e) {}
+      });
+
+      const xpCountEl = document.getElementById('hub-xp-count');
+      const xpFillEl = document.getElementById('hub-xp-fill');
+      if (xpCountEl) xpCountEl.innerText = totalCourseXp;
+      if (xpFillEl && maxCourseXp > 0) {
+        const pct = Math.min(100, Math.round((totalCourseXp / maxCourseXp) * 100));
+        xpFillEl.style.width = pct + '%';
+      }
+    })();
+  </script>
+</body>
+</html>

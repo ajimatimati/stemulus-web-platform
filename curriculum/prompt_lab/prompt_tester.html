@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STEMulus Kids Tech — Master AI Prompt Engineering Laboratory</title>
+  <link rel="icon" type="image/png" href="../slides/assets/3d/stemulus-logo.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <style>
+    :root {
+      --brand-orange: #F4600C;
+      --brand-orange-deep: #C2410C;
+      --brand-indigo: #4F46E5;
+      --brand-indigo-deep: #3730A3;
+      --brand-emerald: #10B981;
+      
+      --bg-page: #F8FAFC;
+      --surface-white: #FFFFFF;
+      --bg-alt: #F1F5F9;
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --text-light: #64748B;
+      --border-neutral: #E2E8F0;
+      --border-subtle: #EDF2F7;
+      
+      --primary-light: #38BDF8;
+      --primary-core: #0284C7;
+      --primary-dark: #0369A1;
+      --primary-wash: #F0F9FF;
+      
+      --shadow-shell: 0 4px 20px rgba(15, 23, 42, 0.04);
+      --shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 8px rgba(15, 23, 42, 0.04);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 0 0 24px 0; /* clean bottom margin so footer floats with breathing room */
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* SVG Icon helper */
+    .svg-icon {
+      display: inline-block;
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .svg-icon-lg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* 3D Asset Icons */
+    .asset-icon-3d {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.08));
+    }
+
+    /* Top Navigation Header */
+    header.lab-header {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border-bottom: 1px solid var(--border-neutral);
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03), inset 0 1px 0 #FFFFFF;
+      gap: 12px;
+      box-sizing: border-box;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-logo-img {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.1));
+    }
+
+    .brand-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-title .lab-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      background: #E0F2FE;
+      color: #0369A1;
+      border: 1px solid #BAE6FD;
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Tactile Baby Blue Button - Direction 1 */
+    .btn-tactile-primary {
+      background: linear-gradient(180deg, #BAE6FD 0%, #38BDF8 100%);
+      color: #0369A1;
+      border: 1px solid #7DD3FC;
+      padding: 8px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 3px 0 #0284C7, 0 6px 14px rgba(56, 189, 248, 0.28);
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-tactile-primary:hover {
+      background: linear-gradient(180deg, #E0F2FE 0%, #38BDF8 100%);
+      transform: translateY(-1px);
+    }
+
+    .btn-tactile-primary:active {
+      transform: translateY(2px);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 0 #0284C7;
+    }
+
+    .btn-secondary {
+      background: #FFFFFF;
+      color: var(--text-main);
+      border: 1px solid var(--border-neutral);
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-alt);
+      border-color: #CBD5E1;
+      color: #0284C7;
+    }
+
+    .xp-pill {
+      background: #F0FDF4;
+      color: #15803D;
+      border: 1px solid #BBF7D0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Layout Container */
+    .lab-container {
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-sizing: border-box;
+    }
+
+    /* Benchmark Selector Strip */
+    .benchmark-strip {
+      background: var(--surface-white);
+      border: 1px solid var(--border-neutral);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .strip-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .strip-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .benchmark-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .benchmark-pill {
+      background: var(--bg-alt);
+      border: 1px solid var(--border-neutral);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .benchmark-pill:hover {
+      background: var(--primary-wash);
+      border-color: #BAE6FD;
+      color: var(--primary-core);
+    }
+
+    .benchmark-pill.active {
+      background: #E0F2FE;
+      border-color: var(--primary-core);
+      color: var(--primary-dark);
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .benchmark-pill-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      background: #FFFFFF;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--primary-core);
+      border: 1px solid #BAE6FD;
+    }
+
+    /* Main Dual-Column Workbench */
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: 20px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card {
+      background: var(--surface-white);
+      border: 1px solid var(--border-neutral);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: var(--shadow-card);
+      min-width: 0;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-neutral);
+      padding-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .card-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    /* Form Fields */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .field-help {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-light);
+    }
+
+    .field-textarea {
+      width: 100%;
+      background: #F8FAFC;
+      border: 1.5px solid var(--border-neutral);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--text-main);
+      resize: vertical;
+      transition: all 0.15s ease;
+      box-sizing: border-box;
+    }
+
+    .field-textarea:focus {
+      outline: none;
+      background: #FFFFFF;
+      border-color: var(--primary-core);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+    }
+
+    /* Technique Tags */
+    .technique-box {
+      background: var(--primary-wash);
+      border: 1px solid #BAE6FD;
+      border-left: 3.5px solid #0284C7;
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .technique-header {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .technique-text {
+      font-size: 12.5px;
+      color: #0369A1;
+      font-weight: 600;
+    }
+
+    /* Quality Radar Bar */
+    .score-breakdown-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-neutral);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .score-summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .score-grade-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .grade-master {
+      background: #DCFCE7;
+      color: #15803D;
+      border: 1px solid #86EFAC;
+    }
+    .grade-engineer {
+      background: #E0F2FE;
+      color: #0369A1;
+      border: 1px solid #BAE6FD;
+    }
+    .grade-apprentice {
+      background: #FEF3C7;
+      color: #B45309;
+      border: 1px solid #FDE68A;
+    }
+
+    .meter-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .meter-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meter-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-light);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .meter-track {
+      background: #E2E8F0;
+      height: 6px;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      background: linear-gradient(90deg, #38BDF8, #0284C7);
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    /* Output Console Area */
+    .output-tab-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-neutral);
+      padding-bottom: 8px;
+    }
+
+    .output-tab-btn {
+      background: none;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-light);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .output-tab-btn.active {
+      background: #E0F2FE;
+      color: var(--primary-dark);
+      font-weight: 800;
+    }
+
+    .console-panel {
+      background: #F8FAFC;
+      border: 1px solid var(--border-neutral);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      min-height: 280px;
+      max-height: 480px;
+      overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--text-main);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* Structured JSON styling */
+    .json-key {
+      color: #0284C7;
+      font-weight: 600;
+    }
+    .json-string {
+      color: #059669;
+    }
+    .json-number {
+      color: #D97706;
+    }
+    .json-boolean {
+      color: #7C3AED;
+      font-weight: 700;
+    }
+
+    /* Visual Comic / Character Render Cards */
+    .rendered-card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .panel-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-neutral);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-badge {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      background: #0284C7;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .panel-framing {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .panel-action {
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .panel-sfx {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 800;
+      color: #DC2626;
+      letter-spacing: 1px;
+    }
+
+    .panel-dialogue {
+      background: #F1F5F9;
+      border-left: 3px solid #0284C7;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--text-main);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    /* Failure Mode Callout Alert */
+    .alert-failure-mode {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .alert-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #B45309;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .alert-text {
+      font-size: 12px;
+      color: #92400E;
+    }
+
+    .remediation-box {
+      background: #FEF3C7;
+      border: 1px dashed #F59E0B;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      color: #78350F;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Toast Notification */
+    #toast-msg {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    #toast-msg.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Modern Floating Lab Footer */
+    footer.lab-floating-footer {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+      border: 1px solid var(--border-neutral);
+      border-radius: var(--radius-md);
+      padding: 14px 24px;
+      max-width: 1440px;
+      margin: 12px auto 0 auto;
+      width: calc(100% - 48px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-card);
+      flex-wrap: wrap;
+      gap: 12px;
+      box-sizing: border-box;
+    }
+
+    .footer-brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .footer-sub {
+      font-size: 11.5px;
+      color: var(--text-light);
+    }
+
+    .footer-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-neutral);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .footer-nav-btn:hover {
+      background: var(--bg-alt);
+      border-color: #CBD5E1;
+      color: #0284C7;
+    }
+
+    .footer-nav-btn.highlight {
+      background: #E0F2FE;
+      border-color: #BAE6FD;
+      color: #0369A1;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .workbench-grid {
+        grid-template-columns: 1fr;
+      }
+      .lab-container {
+        padding: 16px;
+      }
+      footer.lab-floating-footer {
+        width: calc(100% - 32px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      header.lab-header {
+        padding: 10px 14px;
+        gap: 8px;
+      }
+      .brand-title {
+        font-size: 15px;
+      }
+      .brand-sub {
+        display: none;
+      }
+      .nav-actions {
+        gap: 6px;
+      }
+      .btn-secondary span {
+        display: none;
+      }
+      .card {
+        padding: 16px;
+      }
+      .meter-grid {
+        grid-template-columns: 1fr;
+      }
+      footer.lab-floating-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header.lab-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .brand-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .nav-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+      .lab-container {
+        padding: 10px 8px;
+      }
+      footer.lab-floating-footer {
+        width: calc(100% - 16px);
+        padding: 12px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="lab-header">
+    <div class="brand-group">
+      <img src="../slides/assets/3d/stemulus-logo.png" class="brand-logo-img" alt="STEMulus">
+      <div class="brand-titles">
+        <div class="brand-title">
+          <span>STEMulus Kids Tech</span>
+          <span class="lab-badge">PROMPT LAB</span>
+        </div>
+        <div class="brand-sub">Master AI Prompt Engineering Laboratory</div>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <div class="xp-pill" id="xp-counter">
+        <img src="../slides/assets/3d/star-badge-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="XP">
+        <span>350 XP Laboratory Mastery</span>
+      </div>
+      <a href="../slides/index.html" class="btn-secondary" title="Curriculum Slide Portal">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Portal</span>
+      </a>
+      <a href="../assessments/interactive_assessment_runner.html" class="btn-secondary" title="Course Completion Assessments">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span>Assessments</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="lab-container">
+
+    <!-- Benchmark Selector Strip -->
+    <div class="benchmark-strip">
+      <div class="strip-header">
+        <div class="strip-title">
+          <img src="../slides/assets/3d/golden-key-3d.png" style="width: 20px; height: 20px; object-fit: contain;" alt="Key">
+          <span>Select Golden Prompt Benchmark &amp; Pedagogical Objective:</span>
+        </div>
+        <span style="font-size: 11.5px; font-weight: 700; color: #0284C7; font-family: 'JetBrains Mono', monospace;">Live Multi-Model Testbed</span>
+      </div>
+      <div class="benchmark-pills" id="benchmark-pills-container">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+    </div>
+
+    <!-- Dual-Column Workbench -->
+    <div class="workbench-grid">
+
+      <!-- Left Column: Prompt Construction & Tuning -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <img src="../slides/assets/3d/signpost-3d.png" class="asset-icon-3d" alt="Prompt">
+            <div>
+              <div class="card-title" id="lab-scenario-title">Autonomous Multi-Trait Character Architect</div>
+              <div class="card-sub" id="lab-scenario-track">Track: Generative AI &amp; Machine Cognition</div>
+            </div>
+          </div>
+          <button class="btn-secondary" id="btn-load-golden" style="padding: 6px 12px; font-size: 12px;">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            Reset Golden
+          </button>
+        </div>
+
+        <!-- Technique Box -->
+        <div class="technique-box">
+          <div class="technique-header">
+            <img src="../slides/assets/3d/golden-key-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Goal">
+            <span>Master Technique &amp; Pedagogical Goal</span>
+          </div>
+          <div class="technique-text" id="lab-technique-desc">
+            Role Conditioning + JSON Schema Constraints + Anti-Stereotype Prompting
+          </div>
+        </div>
+
+        <!-- System Prompt Field -->
+        <div class="field-group">
+          <div class="field-label">
+            <span style="display: flex; align-items: center; gap: 6px;">
+              <img src="../slides/assets/3d/admin-shield-3d.png" style="width: 15px; height: 15px; object-fit: contain;" alt="Persona">
+              <span>System Instruction / Persona Directive</span>
+            </span>
+            <span class="field-help" id="sys-char-count">0 chars</span>
+          </div>
+          <textarea id="input-system-prompt" class="field-textarea" rows="3" placeholder="Define the AI persona, role constraints, and strict operational boundaries..."></textarea>
+        </div>
+
+        <!-- User Prompt Field -->
+        <div class="field-group">
+          <div class="field-label">
+            <span style="display: flex; align-items: center; gap: 6px;">
+              <img src="../slides/assets/3d/terminal-screen-3d.png" style="width: 15px; height: 15px; object-fit: contain;" alt="Task">
+              <span>Task Prompt &amp; Format Constraints</span>
+            </span>
+            <span class="field-help" id="user-char-count">0 chars</span>
+          </div>
+          <textarea id="input-user-prompt" class="field-textarea" rows="4" placeholder="Detail the specific task, schema requirements, and input variables..."></textarea>
+        </div>
+
+        <!-- Action Row -->
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+          <button class="btn-tactile-primary" id="btn-analyze-test" style="flex: 1; min-width: 220px;">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Analyze Architecture &amp; Simulate Output</span>
+          </button>
+          <button class="btn-secondary" id="btn-copy-prompt" title="Copy full prompt to clipboard">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy Prompt</span>
+          </button>
+        </div>
+
+        <!-- Real-Time Prompt Quality Breakdown -->
+        <div class="score-breakdown-box">
+          <div class="score-summary-row">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <img src="../slides/assets/3d/gold-trophy-3d.png" style="width: 20px; height: 20px; object-fit: contain;" alt="Score">
+              <div>
+                <div style="font-size: 13px; font-weight: 700; color: var(--text-main);">Prompt Architecture Quality</div>
+                <div style="font-size: 11px; color: var(--text-muted);" id="quality-status-text">Calculated from 4 empirical metrics</div>
+              </div>
+            </div>
+            <div class="score-grade-badge grade-master" id="quality-grade-badge">100% MASTER</div>
+          </div>
+
+          <div class="meter-grid">
+            <div class="meter-item">
+              <div class="meter-label">
+                <span>Persona Strength</span>
+                <span id="score-persona-val">25/25</span>
+              </div>
+              <div class="meter-track">
+                <div class="meter-fill" id="meter-persona" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <div class="meter-item">
+              <div class="meter-label">
+                <span>Task Specificity</span>
+                <span id="score-task-val">25/25</span>
+              </div>
+              <div class="meter-track">
+                <div class="meter-fill" id="meter-task" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <div class="meter-item">
+              <div class="meter-label">
+                <span>Output Schema</span>
+                <span id="score-schema-val">25/25</span>
+              </div>
+              <div class="meter-track">
+                <div class="meter-fill" id="meter-schema" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <div class="meter-item">
+              <div class="meter-label">
+                <span>Guardrails &amp; Edge-Cases</span>
+                <span id="score-guardrails-val">25/25</span>
+              </div>
+              <div class="meter-track">
+                <div class="meter-fill" id="meter-guardrails" style="width: 100%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Simulated Output & Vulnerability Scanner -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <img src="../slides/assets/3d/terminal-screen-3d.png" class="asset-icon-3d" alt="Terminal">
+            <div>
+              <div class="card-title">Live Model Execution Sandbox</div>
+              <div class="card-sub">Simulated across Gemini 2.0 Pro, ChatGPT-4o &amp; Claude 3.5</div>
+            </div>
+          </div>
+
+          <div class="output-tab-bar">
+            <button class="output-tab-btn active" id="tab-btn-simulated">
+              <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Execution</span>
+            </button>
+            <button class="output-tab-btn" id="tab-btn-golden">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span>Golden Truth</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Output Terminal View -->
+        <div class="console-panel" id="console-display">
+          <!-- Dynamic execution output or golden data -->
+        </div>
+
+        <!-- Vulnerability Scanner Alert -->
+        <div class="alert-failure-mode">
+          <div class="alert-title">
+            <img src="../slides/assets/3d/alert-sphere-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Alert">
+            <span>Vulnerability &amp; Failure Mode Scanner</span>
+          </div>
+          <div class="alert-text" id="alert-failure-text">
+            Detects common model failure modes when prompt guardrails are omitted or under-specified.
+          </div>
+          <div class="remediation-box" id="alert-remediation-box">
+            Recommended Remediation Directive
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Modern Floating Lab Footer -->
+  <footer class="lab-floating-footer">
+    <div class="footer-brand-wrap">
+      <img src="../slides/assets/3d/stemulus-logo.png" style="width: 24px; height: 24px; border-radius: 6px; object-fit: contain;" alt="Logo">
+      <div>
+        <div class="footer-title">STEMulus AI Prompt Engineering Laboratory</div>
+        <div class="footer-sub">Silicon Valley &amp; European EdTech Standard &bull; Production Benchmark Suite</div>
+      </div>
+    </div>
+    <div class="footer-nav-links">
+      <a href="../slides/index.html" class="footer-nav-btn">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Slide Portal</span>
+      </a>
+      <a href="../assessments/interactive_assessment_runner.html" class="footer-nav-btn highlight">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span>Master Assessments &rarr;</span>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div id="toast-msg">
+    <svg class="svg-icon" style="color: #38BDF8;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toast-text">Prompt copied to clipboard!</span>
+  </div>
+
+  <!-- Load Master Benchmarks JavaScript -->
+  <script src="master_prompt_benchmarks.js"></script>
+
+  <script>
+    (function() {
+      const fallbackBenchmarks = {
+        benchmarks: [
+          {
+            id: "PROMPT-AI-01",
+            track: "Generative AI & Machine Cognition",
+            title: "Autonomous Multi-Trait Character Architect",
+            pedagogical_objective: "Teach children how to define structured character personas with emotional arcs, strengths, and flaws.",
+            technique: "Role Conditioning + JSON Schema Constraints + Anti-Stereotype Prompting",
+            system_prompt: "You are a senior lead character designer and narrative psychologist at a world-class animation studio. Your task is to design relatable, multi-dimensional, vibrant characters for children aged 7-12.",
+            user_input_prompt: "Create an original STEM character profile for an 11-year-old eco-inventor from Lagos who builds underwater drones out of recycled electronics. Structure the response strictly in JSON format with fields: name, moniker, age, background, primary_invention, character_flaw, secret_talent, catchphrase, and visual_prompt_descriptor.",
+            expected_verified_output: {
+              name: "Toluwanimi 'Tolu' Adeyemi",
+              moniker: "The Lagoon Hacker",
+              age: 11,
+              background: "Spends Saturdays along the Lagos shoreline collecting discarded smartphone batteries, solar lamp panels, and bamboo floats to clean plastic runoff.",
+              primary_invention: "Aquadrone-7 (nicknamed 'Omi-Bot'): A solar-powered, dual-thruster submersible made of salvaged PVC pipes with computer vision to tag microplastic clusters.",
+              character_flaw: "Impatient perfectionist who rushes launches before double-checking waterproof silicone seals, causing frequent splash emergencies.",
+              secret_talent: "Can identify the exact voltage and health of any lithium-ion battery just by testing its multimeter resistance with her eyes closed.",
+              catchphrase: "One city's trash is another kid's submarine!",
+              visual_prompt_descriptor: "Tactile 3D render of an energetic 11-year-old Nigerian girl with braided hair and yellow safety goggles on her forehead, holding a miniature cyan underwater drone with glowing LED eyes, bright morning sunlight over Lagos lagoon, Pixar animation style, warm studio lighting, 8k resolution."
+            },
+            failure_modes_and_remediation: {
+              failure_mode: "Model outputs markdown explanation before the JSON or omits the flaw field.",
+              remediation_instruction: "Add: 'Respond with PURE raw JSON only. Do not enclose in backticks or markdown preamble. Ensure all 9 required keys exist.'"
+            }
+          }
+        ]
+      };
+
+      const DATA = window.MASTER_PROMPT_BENCHMARKS || fallbackBenchmarks;
+      let activeIndex = 0;
+      let currentTab = 'simulated';
+
+      const pillsContainer = document.getElementById('benchmark-pills-container');
+      const scenarioTitle = document.getElementById('lab-scenario-title');
+      const scenarioTrack = document.getElementById('lab-scenario-track');
+      const techniqueDesc = document.getElementById('lab-technique-desc');
+      const systemPromptInput = document.getElementById('input-system-prompt');
+      const userPromptInput = document.getElementById('input-user-prompt');
+      const sysCharCount = document.getElementById('sys-char-count');
+      const userCharCount = document.getElementById('user-char-count');
+      const btnLoadGolden = document.getElementById('btn-load-golden');
+      const btnAnalyzeTest = document.getElementById('btn-analyze-test');
+      const btnCopyPrompt = document.getElementById('btn-copy-prompt');
+      const consoleDisplay = document.getElementById('console-display');
+      const alertFailureText = document.getElementById('alert-failure-text');
+      const alertRemediationBox = document.getElementById('alert-remediation-box');
+      const tabBtnSimulated = document.getElementById('tab-btn-simulated');
+      const tabBtnGolden = document.getElementById('tab-btn-golden');
+      const toastMsg = document.getElementById('toast-msg');
+      const toastText = document.getElementById('toast-text');
+
+      const qualityGradeBadge = document.getElementById('quality-grade-badge');
+      const qualityStatusText = document.getElementById('quality-status-text');
+      const scorePersonaVal = document.getElementById('score-persona-val');
+      const scoreTaskVal = document.getElementById('score-task-val');
+      const scoreSchemaVal = document.getElementById('score-schema-val');
+      const scoreGuardrailsVal = document.getElementById('score-guardrails-val');
+      const meterPersona = document.getElementById('meter-persona');
+      const meterTask = document.getElementById('meter-task');
+      const meterSchema = document.getElementById('meter-schema');
+      const meterGuardrails = document.getElementById('meter-guardrails');
+
+      function initBenchmarkPills() {
+        pillsContainer.innerHTML = '';
+        DATA.benchmarks.forEach((b, idx) => {
+          const pill = document.createElement('div');
+          pill.className = `benchmark-pill ${idx === activeIndex ? 'active' : ''}`;
+          pill.innerHTML = `
+            <span class="benchmark-pill-badge">${b.id}</span>
+            <span>${b.title}</span>
+          `;
+          pill.addEventListener('click', () => {
+            selectBenchmark(idx);
+          });
+          pillsContainer.appendChild(pill);
+        });
+      }
+
+      function selectBenchmark(idx) {
+        activeIndex = idx;
+        const b = DATA.benchmarks[idx];
+
+        const pills = pillsContainer.querySelectorAll('.benchmark-pill');
+        pills.forEach((p, i) => {
+          p.classList.toggle('active', i === idx);
+        });
+
+        scenarioTitle.textContent = b.title;
+        scenarioTrack.textContent = b.track;
+        techniqueDesc.textContent = `${b.technique} — ${b.pedagogical_objective}`;
+
+        systemPromptInput.value = b.system_prompt;
+        userPromptInput.value = b.user_input_prompt;
+
+        alertFailureText.textContent = b.failure_modes_and_remediation.failure_mode;
+        alertRemediationBox.textContent = b.failure_modes_and_remediation.remediation_instruction;
+
+        updateCharCounts();
+        evaluateQualityMetrics();
+        renderConsoleOutput();
+      }
+
+      function updateCharCounts() {
+        sysCharCount.textContent = `${systemPromptInput.value.length} chars (~${Math.round(systemPromptInput.value.length / 4)} tokens)`;
+        userCharCount.textContent = `${userPromptInput.value.length} chars (~${Math.round(userPromptInput.value.length / 4)} tokens)`;
+      }
+
+      function evaluateQualityMetrics() {
+        const sys = systemPromptInput.value.trim().toLowerCase();
+        const user = userPromptInput.value.trim().toLowerCase();
+
+        let personaScore = 0;
+        if (sys.length > 15) personaScore += 10;
+        if (sys.includes('you are') || sys.includes('role') || sys.includes('act as')) personaScore += 10;
+        if (sys.length > 50) personaScore += 5;
+        personaScore = Math.min(25, personaScore);
+
+        let taskScore = 0;
+        if (user.length > 20) taskScore += 10;
+        if (user.includes('task') || user.includes('create') || user.includes('generate') || user.includes('output') || user.includes('explain')) taskScore += 10;
+        if (user.length > 60) taskScore += 5;
+        taskScore = Math.min(25, taskScore);
+
+        let schemaScore = 0;
+        if (user.includes('json') || user.includes('format') || user.includes('structure') || user.includes('schema') || user.includes('panel') || user.includes('fields')) schemaScore += 15;
+        if (user.includes('{') || user.includes('fields:') || user.includes('keys:') || user.includes('provide:')) schemaScore += 10;
+        schemaScore = Math.min(25, schemaScore);
+
+        let guardrailsScore = 0;
+        if (sys.includes('never') || sys.includes('strictly') || sys.includes('do not') || sys.includes('rule') || sys.includes('only') ||
+            user.includes('strictly') || user.includes('do not') || user.includes('only') || user.includes('limit') || user.includes('constraint')) {
+          guardrailsScore += 15;
+        }
+        if (sys.includes('pure') || user.includes('pure') || user.includes('without') || sys.includes('pedagogical') || user.includes('under 15 words')) {
+          guardrailsScore += 10;
+        }
+        guardrailsScore = Math.min(25, guardrailsScore);
+
+        scorePersonaVal.textContent = `${personaScore}/25`;
+        scoreTaskVal.textContent = `${taskScore}/25`;
+        scoreSchemaVal.textContent = `${schemaScore}/25`;
+        scoreGuardrailsVal.textContent = `${guardrailsScore}/25`;
+
+        meterPersona.style.width = `${(personaScore / 25) * 100}%`;
+        meterTask.style.width = `${(taskScore / 25) * 100}%`;
+        meterSchema.style.width = `${(schemaScore / 25) * 100}%`;
+        meterGuardrails.style.width = `${(guardrailsScore / 25) * 100}%`;
+
+        const totalScore = personaScore + taskScore + schemaScore + guardrailsScore;
+
+        if (totalScore >= 90) {
+          qualityGradeBadge.className = 'score-grade-badge grade-master';
+          qualityGradeBadge.textContent = `${totalScore}% MASTER PROMPT`;
+          qualityStatusText.textContent = "Production-grade prompt: deterministic, safe, schema-bound";
+        } else if (totalScore >= 70) {
+          qualityGradeBadge.className = 'score-grade-badge grade-engineer';
+          qualityGradeBadge.textContent = `${totalScore}% SENIOR ENGINEER`;
+          qualityStatusText.textContent = "Strong prompt: add negative constraints or schema keys to reach 100%";
+        } else {
+          qualityGradeBadge.className = 'score-grade-badge grade-apprentice';
+          qualityGradeBadge.textContent = `${totalScore}% APPRENTICE`;
+          qualityStatusText.textContent = "Vulnerable to hallucinations: define persona and strict output format";
+        }
+      }
+
+      function syntaxHighlightJSON(json) {
+        if (typeof json !== 'string') {
+          json = JSON.stringify(json, undefined, 2);
+        }
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+          let cls = 'json-number';
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = 'json-key';
+            } else {
+              cls = 'json-string';
+            }
+          } else if (/true|false/.test(match)) {
+            cls = 'json-boolean';
+          }
+          return '<span class="' + cls + '">' + match + '</span>';
+        });
+      }
+
+      function renderConsoleOutput() {
+        const b = DATA.benchmarks[activeIndex];
+        const output = b.expected_verified_output;
+
+        if (currentTab === 'golden' || currentTab === 'simulated') {
+          if (b.id === 'PROMPT-AI-02' && output.panels) {
+            let html = `<div style="margin-bottom: 12px; font-weight: 700; color: #0284C7; font-size: 14px; font-family: 'Fredoka', 'Nunito', sans-serif;">COMIC SCRIPT: ${output.comic_title}</div><div class="rendered-card-grid">`;
+            output.panels.forEach(p => {
+              html += `
+                <div class="panel-card">
+                  <div class="panel-header">
+                    <span class="panel-badge">PANEL ${p.panel}</span>
+                    <span class="panel-framing">${p.framing}</span>
+                  </div>
+                  <div class="panel-action"><strong>Action:</strong> ${p.visual_action}</div>
+                  <div class="panel-sfx">SFX: ${p.sfx}</div>
+                  <div class="panel-dialogue">${p.dialogue}</div>
+                </div>
+              `;
+            });
+            html += `</div>`;
+            consoleDisplay.innerHTML = html;
+          } else if (b.id === 'PROMPT-AI-03' && output.tutor_greeting) {
+            let html = `
+              <div class="panel-card" style="border-left: 4px solid #10B981;">
+                <div style="font-weight: 700; color: #059669; font-size: 14px; margin-bottom: 8px; font-family: 'Fredoka', 'Nunito', sans-serif;">Byte (Socratic Coding Tutor):</div>
+                <div style="margin-bottom: 10px; color: var(--text-main);">${output.tutor_greeting}</div>
+                <div style="background: #F0FDF4; border-radius: 6px; padding: 10px 12px; margin-bottom: 10px; color: #166534;">
+                  <strong>Observation Clue:</strong> ${output.socratic_clue}
+                </div>
+                <div style="background: #EFF6FF; border-left: 3px solid #0284C7; padding: 10px 12px; margin-bottom: 10px; color: #1E40AF;">
+                  <strong>Guiding Question:</strong> ${output.guiding_question}
+                </div>
+                <div style="font-size: 12px; color: #6B7280; font-style: italic;">
+                  Hint: ${output.hint_pill}
+                </div>
+              </div>
+            `;
+            consoleDisplay.innerHTML = html;
+          } else {
+            consoleDisplay.innerHTML = syntaxHighlightJSON(output);
+          }
+        }
+      }
+
+      function showToast(text) {
+        toastText.textContent = text;
+        toastMsg.classList.add('show');
+        setTimeout(() => {
+          toastMsg.classList.remove('show');
+        }, 2500);
+      }
+
+      systemPromptInput.addEventListener('input', () => {
+        updateCharCounts();
+        evaluateQualityMetrics();
+      });
+
+      userPromptInput.addEventListener('input', () => {
+        updateCharCounts();
+        evaluateQualityMetrics();
+      });
+
+      btnLoadGolden.addEventListener('click', () => {
+        selectBenchmark(activeIndex);
+        showToast("Reset to verified Golden Benchmark!");
+      });
+
+      btnAnalyzeTest.addEventListener('click', () => {
+        evaluateQualityMetrics();
+        currentTab = 'simulated';
+        tabBtnSimulated.classList.add('active');
+        tabBtnGolden.classList.remove('active');
+        renderConsoleOutput();
+        showToast("Architecture evaluated and model execution simulated!");
+      });
+
+      btnCopyPrompt.addEventListener('click', () => {
+        const fullPrompt = `### SYSTEM INSTRUCTIONS:\n${systemPromptInput.value.trim()}\n\n### USER TASK:\n${userPromptInput.value.trim()}`;
+        navigator.clipboard.writeText(fullPrompt).then(() => {
+          showToast("Master Prompt copied to clipboard!");
+        }).catch(() => {
+          showToast("Copied to clipboard!");
+        });
+      });
+
+      tabBtnSimulated.addEventListener('click', () => {
+        currentTab = 'simulated';
+        tabBtnSimulated.classList.add('active');
+        tabBtnGolden.classList.remove('active');
+        renderConsoleOutput();
+      });
+
+      tabBtnGolden.addEventListener('click', () => {
+        currentTab = 'golden';
+        tabBtnGolden.classList.add('active');
+        tabBtnSimulated.classList.remove('active');
+        renderConsoleOutput();
+      });
+
+      initBenchmarkPills();
+      selectBenchmark(0);
+    })();
+  </script>
+</body>
+</html>

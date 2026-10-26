@@ -120,22 +120,16 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid JSON' }) };
   }
 
-  const { channel, title, message, priority = 'high', tags = '', click = '' } = payload;
-
-  if (!channel || !TOPIC_MAP[channel]) {
-    return {
-      statusCode: 400,
-      headers: CORS,
-      body: JSON.stringify({ error: `Unknown channel "${channel}". Must be one of: ${Object.keys(TOPIC_MAP).join(', ')}` })
-    };
-  }
+  const rawChannel = payload.channel || (payload.topic ? 'admin' : 'admin');
+  const channel = TOPIC_MAP[rawChannel] ? rawChannel : 'admin';
+  const { title, message, priority = 'high', tags = '', click = '' } = payload;
 
   if (!message) {
     return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'message is required' }) };
   }
 
   const topicKey = TOPIC_MAP[channel];
-  const primaryTopic = process.env[topicKey] || TOPIC_FALLBACKS[topicKey];
+  const primaryTopic = payload.topic || process.env[topicKey] || TOPIC_FALLBACKS[topicKey];
   const adminTopic = process.env.NTFY_TOPIC_ADMIN || TOPIC_FALLBACKS.NTFY_TOPIC_ADMIN;
   const token = process.env.NTFY_TOKEN;
 
@@ -143,6 +137,8 @@ exports.handler = async (event) => {
     console.warn(`[notify] ${topicKey} not configured: skipping`);
     return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true, skipped: true, reason: 'topic not configured' }) };
   }
+
+  const normalizedTags = Array.isArray(tags) ? tags.join(',') : String(tags || '');
 
   const ntfyHeaders = {
     'Content-Type': 'text/plain',
@@ -155,31 +151,33 @@ exports.handler = async (event) => {
   if (title) {
     ntfyHeaders['Title'] = sanitizeHeader(title);
   }
-  if (tags) {
-    ntfyHeaders['Tags'] = sanitizeHeader(tags);
+  if (normalizedTags) {
+    ntfyHeaders['Tags'] = sanitizeHeader(normalizedTags);
   }
   if (click) {
     ntfyHeaders['Click'] = click.trim();
   }
 
-  // 1. Dispatch to primary channel topic
-  const primaryResult = await dispatchToNtfy(primaryTopic, ntfyHeaders, message);
-
-  // 2. Dual-broadcast high-priority lead channels ('enroll' and 'contact') to main admin topic
-  // ensuring admin receives alerts regardless of which topic they subscribed to.
-  if ((channel === 'enroll' || channel === 'contact') && adminTopic && adminTopic !== primaryTopic) {
-    dispatchToNtfy(adminTopic, ntfyHeaders, message).catch(e => {
-      console.warn(`[notify] Admin dual-broadcast error:`, e.message);
-    });
+  // 1. Dispatch to primary channel topic and dual-broadcast to admin escalation channel
+  // Using Promise.allSettled so serverless container doesn't terminate before dispatches complete.
+  const dispatches = [dispatchToNtfy(primaryTopic, ntfyHeaders, message)];
+  if ((channel === 'enroll' || channel === 'contact' || channel === 'tutor' || channel === 'admin') && adminTopic && adminTopic !== primaryTopic) {
+    dispatches.push(dispatchToNtfy(adminTopic, ntfyHeaders, message));
   }
 
-  if (!primaryResult.ok) {
+  const results = await Promise.allSettled(dispatches);
+  const anySuccess = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
+
+  if (!anySuccess) {
+    const firstErr = results.find(r => r.status === 'fulfilled' && r.value && !r.value.ok)?.value?.error ||
+                     results.find(r => r.status === 'rejected')?.reason?.message ||
+                     'Failed to dispatch to ntfy.sh';
     return {
       statusCode: 502,
       headers: CORS,
-      body: JSON.stringify({ ok: false, error: primaryResult.error || 'Failed to dispatch to ntfy.sh' })
+      body: JSON.stringify({ ok: false, error: firstErr })
     };
   }
 
-  return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true }) };
+  return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true, deliveredTopics: dispatches.length }) };
 };

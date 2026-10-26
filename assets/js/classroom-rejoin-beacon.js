@@ -48,6 +48,141 @@ const ClassroomRejoinBeacon = (function() {
     }
   }
 
+  
+  function isPromptForCurrentUser(promptData) {
+    if (!promptData) return false;
+    if (typeof DashboardEngine === 'undefined' || typeof DashboardEngine.getSession !== 'function') return true;
+    const session = DashboardEngine.getSession();
+    if (!session || !session.role || !session.email) return true; // If no session established, do not block
+
+    const role = String(session.role).toLowerCase().trim();
+    const sessionEmail = String(session.email).toLowerCase().trim();
+    const sessionName = String(session.name || '').toLowerCase().trim();
+    const sessionFirst = sessionName.split(' ')[0] || '';
+
+    if (role === 'tutor') {
+      const pTutorEmail = (promptData.tutorEmail || '').toLowerCase().trim();
+      const pTutorName = (promptData.tutorName || '').toLowerCase().trim();
+      if (pTutorEmail && (pTutorEmail === sessionEmail)) return true;
+      if (sessionFirst && pTutorName.includes(sessionFirst)) return true;
+      if (typeof DashboardEngine.getTutorStudents === 'function') {
+        const myStudents = DashboardEngine.getTutorStudents(sessionEmail) || [];
+        const stId = promptData.studentId;
+        const stName = (promptData.studentName || '').toLowerCase().trim();
+        return myStudents.some(s => (stId && s.id === stId) || (((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim() === stName));
+      }
+      return false;
+    }
+
+    if (role === 'parent') {
+      const pEmail = (promptData.parentEmail || '').toLowerCase().trim();
+      if (pEmail && pEmail === sessionEmail) return true;
+      if (typeof DashboardEngine.getParentStudents === 'function') {
+        const myKids = DashboardEngine.getParentStudents(sessionEmail) || [];
+        const stId = promptData.studentId;
+        const stName = (promptData.studentName || '').toLowerCase().trim();
+        return myKids.some(c => (stId && c.id === stId) || (((c.firstName || '') + ' ' + (c.lastName || '')).toLowerCase().trim() === stName));
+      }
+      return false;
+    }
+
+    if (role === 'admin') {
+      return true;
+    }
+
+    return false;
+  }
+
+  
+  function isPromptForCurrentUser(promptData) {
+    if (!promptData) return false;
+    if (typeof DashboardEngine === 'undefined' || typeof DashboardEngine.getSession !== 'function') return true;
+    const session = DashboardEngine.getSession();
+    if (!session || !session.role || !session.email) return true; // If no session established, do not block
+
+    const role = String(session.role).toLowerCase().trim();
+    const sessionEmail = String(session.email).toLowerCase().trim();
+    const sessionName = String(session.name || '').toLowerCase().trim();
+    const sessionFirst = sessionName.split(' ')[0] || '';
+
+    if (role === 'tutor') {
+      const pTutorEmail = (promptData.tutorEmail || '').toLowerCase().trim();
+      const pTutorName = (promptData.tutorName || '').toLowerCase().trim();
+      if (pTutorEmail && (pTutorEmail === sessionEmail)) return true;
+      if (sessionFirst && pTutorName.includes(sessionFirst)) return true;
+      if (typeof DashboardEngine.getTutorStudents === 'function') {
+        const myStudents = DashboardEngine.getTutorStudents(sessionEmail) || [];
+        const stId = promptData.studentId;
+        const stName = (promptData.studentName || '').toLowerCase().trim();
+        return myStudents.some(s => (stId && s.id === stId) || (((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim() === stName));
+      }
+      return false;
+    }
+
+    if (role === 'parent') {
+      const pEmail = (promptData.parentEmail || '').toLowerCase().trim();
+      if (pEmail && pEmail === sessionEmail) return true;
+      if (typeof DashboardEngine.getParentStudents === 'function') {
+        const myKids = DashboardEngine.getParentStudents(sessionEmail) || [];
+        const stId = promptData.studentId;
+        const stName = (promptData.studentName || '').toLowerCase().trim();
+        return myKids.some(c => (stId && c.id === stId) || (((c.firstName || '') + ' ' + (c.lastName || '')).toLowerCase().trim() === stName));
+      }
+      return false;
+    }
+
+    if (role === 'admin') {
+      return true;
+    }
+
+    return false;
+  }
+
+  
+  function isPromptForCurrentUser(promptData) {
+    if (!promptData) return false;
+    if (typeof DashboardEngine === 'undefined' || typeof DashboardEngine.getSession !== 'function') return true;
+    const session = DashboardEngine.getSession();
+    if (!session || !session.role || !session.email) return true; // If no session established, do not block
+
+    const role = String(session.role).toLowerCase().trim();
+    const sessionEmail = String(session.email).toLowerCase().trim();
+    const sessionName = String(session.name || '').toLowerCase().trim();
+    const sessionFirst = sessionName.split(' ')[0] || '';
+
+    if (role === 'tutor') {
+      const pTutorEmail = (promptData.tutorEmail || '').toLowerCase().trim();
+      const pTutorName = (promptData.tutorName || '').toLowerCase().trim();
+      if (pTutorEmail && (pTutorEmail === sessionEmail)) return true;
+      if (sessionFirst && pTutorName.includes(sessionFirst)) return true;
+      if (typeof DashboardEngine.getTutorStudents === 'function') {
+        const myStudents = DashboardEngine.getTutorStudents(sessionEmail) || [];
+        const stId = promptData.studentId;
+        const stName = (promptData.studentName || '').toLowerCase().trim();
+        return myStudents.some(s => (stId && s.id === stId) || (((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim() === stName));
+      }
+      return false;
+    }
+
+    if (role === 'parent') {
+      const pEmail = (promptData.parentEmail || '').toLowerCase().trim();
+      if (pEmail && pEmail === sessionEmail) return true;
+      if (typeof DashboardEngine.getParentStudents === 'function') {
+        const myKids = DashboardEngine.getParentStudents(sessionEmail) || [];
+        const stId = promptData.studentId;
+        const stName = (promptData.studentName || '').toLowerCase().trim();
+        return myKids.some(c => (stId && c.id === stId) || (((c.firstName || '') + ' ' + (c.lastName || '')).toLowerCase().trim() === stName));
+      }
+      return false;
+    }
+
+    if (role === 'admin') {
+      return true;
+    }
+
+    return false;
+  }
+
   function checkActiveRejoinPrompts() {
     try {
       const prompts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
@@ -68,7 +203,11 @@ const ClassroomRejoinBeacon = (function() {
 
       if (activeKey) {
         const promptData = prompts[activeKey];
-        mountRejoinBanner(promptData, activeKey);
+        if (isPromptForCurrentUser(promptData)) {
+          mountRejoinBanner(promptData, activeKey);
+        } else {
+          dismissRejoinBanner();
+        }
       } else {
         dismissRejoinBanner();
       }

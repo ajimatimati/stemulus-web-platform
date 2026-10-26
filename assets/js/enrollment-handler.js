@@ -238,6 +238,16 @@ const EnrollmentHandler = (function() {
                 enrollmentId: generateEnrollmentId()
             };
 
+            // Ensure student_birthday and children_summary are explicitly set in formData for Netlify Forms
+            if (enrollmentData.studentBirthday) {
+                formData.set('student_birthday', enrollmentData.studentBirthday);
+            }
+            if (enrollmentData.children && enrollmentData.children.length > 0) {
+                formData.set('children_summary', enrollmentData.children.map(function(c) {
+                    return `${c.firstName} ${c.lastName} (Age ${c.age}, DOB: ${c.birthday || 'N/A'}, Program: ${c.program})`;
+                }).join(' | '));
+            }
+
             // Save enrollment data immediately so it's never lost even if
             // notifications or the success screen throw an error.
             saveEnrollmentLocally(enrollmentData);
@@ -306,6 +316,7 @@ const EnrollmentHandler = (function() {
                     studentFirstName:  data.studentFirstName,
                     studentLastName:   data.studentLastName,
                     studentAge:        data.studentAge,
+                    studentBirthday:   data.studentBirthday || '',
                     studentEmail:      data.studentEmail || '',
                     parentEmail:       data.parentEmail || data.email,
                     program:           data.program,
@@ -347,10 +358,10 @@ const EnrollmentHandler = (function() {
         let childrenSummary = '';
         if (data.children && data.children.length > 0) {
             childrenSummary = data.children.map((child, i) => 
-                `${i + 1}. ${child.firstName} ${child.lastName} (${child.age}yrs) - ${child.program}`
+                `${i + 1}. ${child.firstName} ${child.lastName} (${child.age}yrs${child.birthday ? `, DOB: ${child.birthday}` : ''}) - ${child.program}`
             ).join('\n');
         } else {
-            childrenSummary = `1. ${data.studentFirstName} ${data.studentLastName} (${data.studentAge}yrs) - ${data.program}`;
+            childrenSummary = `1. ${data.studentFirstName} ${data.studentLastName} (${data.studentAge}yrs${data.studentBirthday ? `, DOB: ${data.studentBirthday}` : ''}) - ${data.program}`;
         }
         
         const message = `
@@ -579,6 +590,36 @@ Time: ${new Date().toLocaleTimeString()}
                 DashboardEngine.addEnrollment(enrData);
                 console.log('[Enrollment] Synced with DashboardEngine');
             }
+
+            // Direct cloud sync to Firestore 'leads' collection (public write-only intake)
+            const docId = String(data.enrollmentId || ('enr-' + Date.now())).replace(/[^a-zA-Z0-9_-]/g, '-');
+            fetch(`https://firestore.googleapis.com/v1/projects/stemulus-lms/databases/(default)/documents/leads?documentId=${encodeURIComponent(docId)}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    fields: {
+                        id:               { stringValue: docId },
+                        studentFirstName: { stringValue: String(data.studentFirstName || '') },
+                        studentLastName:  { stringValue: String(data.studentLastName || '') },
+                        studentAge:       { stringValue: String(data.studentAge || '') },
+                        studentBirthday:  { stringValue: String(data.studentBirthday || '') },
+                        childrenJson:     { stringValue: JSON.stringify(data.children || []) },
+                        studentGender:    { stringValue: String(data.studentGender || '') },
+                        experience:       { stringValue: String(data.experience || 'Beginner') },
+                        program:          { stringValue: String(data.program || '') },
+                        parentName:       { stringValue: String(data.parentName || '') },
+                        email:            { stringValue: String(data.email || '').toLowerCase().trim() },
+                        parentEmail:      { stringValue: String(data.parentEmail || data.email || '').toLowerCase().trim() },
+                        phone:            { stringValue: String(data.phone || '') },
+                        country:          { stringValue: String(data.country || 'Global') },
+                        leadSource:       { stringValue: String(data.referral || data.utmSource || 'direct') },
+                        isFreeTrial:      { booleanValue: false },
+                        status:           { stringValue: 'pending' },
+                        source:           { stringValue: 'public_enrollment' },
+                        timestamp:        { stringValue: String(data.timestamp || new Date().toISOString()) }
+                    }
+                })
+            }).catch(() => {});
         } catch (e) {
             console.warn('[Enrollment] Could not save locally:', e);
         }

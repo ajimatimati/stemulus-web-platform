@@ -529,7 +529,16 @@
  </a>
  </li>
  <li>
- <a href="#" data-section="email-queue" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
+ 
+<li>
+  <a href="#" data-section="monthly-reports" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
+    <i data-lucide="file-check" class="w-5 h-5"></i>
+    <span>Monthly Reports</span>
+    <span id="nav-reports-badge" class="ml-auto bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-md hidden">0</span>
+  </a>
+</li>
+
+<a href="#" data-section="email-queue" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
   <i data-lucide="mail-check" class="w-5 h-5"></i>
   <span>Email Queue</span>
   <span id="nav-queue-badge" class="ml-auto bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-md hidden">0</span>
@@ -556,6 +565,20 @@
  </a>
  </li>
  <li>
+ <a href="#" data-section="notices" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
+  <i data-lucide="megaphone" class="w-5 h-5"></i>
+  <span>Faculty Notices</span>
+  <span id="nav-notices-badge" class="ml-auto hidden bg-purple-500 text-white text-xs font-bold px-2 py-0.5 rounded-md">0</span>
+ </a>
+ </li>
+ <li>
+ <a href="#" data-section="payroll" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
+  <i data-lucide="wallet" class="w-5 h-5"></i>
+  <span>Tutor Payroll</span>
+  <span id="nav-payroll-badge" class="ml-auto hidden bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded-md">0</span>
+ </a>
+ </li>
+ <li>
  <a href="#" data-section="chat" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="messages-square" class="w-5 h-5"></i>
  <span>Faculty Messenger</span>
@@ -567,6 +590,12 @@
  <i data-lucide="message-square" class="w-5 h-5"></i>
  <span>WhatsApp Bot</span>
  <span class="ml-auto bg-blue-500/20 text-blue-400 text-xs font-bold px-2 py-0.5 rounded-xl">Active</span>
+ </a>
+ </li>
+ <li>
+ <a href="curriculum/slides/index.html?role=admin" class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.85);">
+  <i data-lucide="presentation" class="w-5 h-5 text-orange-400"></i>
+  <span>Curriculum (215 Decks)</span>
  </a>
  </li>
  <li>
@@ -599,11 +628,11 @@
   <header class="sticky top-0 z-40 bg-gray-50/80 backdrop-blur-md border-b border-admin-border px-3 sm:px-6 lg:px-8 py-2.5">
     <div class="flex items-center justify-between gap-2">
       <div class="flex items-center gap-2 sm:gap-3 min-w-0">
-        <button id="admin-menu-btn" class="lg:hidden p-1.5 text-gray-600 hover:text-slate-800 focus:outline-none shrink-0" aria-label="Toggle menu">
-          <i data-lucide="menu" class="w-6 h-6"></i>
+        <button id="admin-menu-btn" class="lg:hidden w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors focus:outline-none shrink-0" aria-label="Toggle menu">
+          <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
         <div class="min-w-0">
-          <h1 id="page-title" class="text-base sm:text-lg font-nunito font-bold text-slate-800 truncate">Dashboard</h1>
+          <h1 id="page-title" class="text-base sm:text-lg font-nunito font-bold text-slate-800 truncate max-w-[125px] sm:max-w-[220px] md:max-w-none">Dashboard</h1>
           <p class="hidden sm:block text-[11px] sm:text-xs text-slate-500 truncate">Welcome back! Here's what's happening today.</p>
         </div>
       </div>
@@ -1216,12 +1245,16 @@
         <h2 class="text-2xl font-nunito font-bold text-slate-800">Tutors Directory & Faculty Operations</h2>
         <p class="text-slate-500">Manage instructors, assign coders, monitor availability, and track engagement.</p>
       </div>
-      <div class="flex items-center gap-3">
-        <button type="button" onclick="AdminEngine.openTutorReassignModal()" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm">
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <button type="button" id="btn-batch-provision-tutors" onclick="AdminEngine.provisionFacultyTutorsBatch()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-3.5 py-2 rounded-xl transition-colors flex items-center gap-2 text-xs sm:text-sm shadow-sm cursor-pointer" title="Autonomous 1-click live Firebase Auth sync for Moses, Kafayat, and Tola">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span>Sync Faculty Auth</span>
+        </button>
+        <button type="button" onclick="AdminEngine.openTutorReassignModal()" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold px-3.5 py-2 rounded-xl transition-colors flex items-center gap-2 text-xs sm:text-sm shadow-sm">
           <i data-lucide="arrow-left-right" class="w-4 h-4 text-orange-600"></i>
           <span>Reassign Students</span>
         </button>
-        <button onclick="AdminEngine.openTutorModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm shadow-sm" style="background-color: #059669 !important;">
+        <button onclick="AdminEngine.openTutorModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3.5 py-2 rounded-xl transition-colors flex items-center gap-2 text-xs sm:text-sm shadow-sm" style="background-color: #059669 !important;">
           <i data-lucide="user-plus" class="w-4 h-4"></i>
           <span>+ Onboard New Tutor</span>
         </button>
@@ -1350,6 +1383,37 @@
     <div id="live-radar-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
       <div class="p-4 bg-white/5 border border-white/10 rounded-xl text-center text-xs text-slate-400 col-span-full">
         Scanning real-time presence heartbeats for scheduled classes...
+      </div>
+    </div>
+  <!-- Strategic Class Reminders & Direct Meeting Link Dispatcher -->
+  <div id="class-reminders-hub" class="admin-card rounded-2xl p-5 mb-6 border border-indigo-100 bg-gradient-to-br from-indigo-50/60 via-white to-blue-50/40 shadow-sm">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-200">
+          <i data-lucide="bell-ring" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h3 class="text-sm font-extrabold text-slate-800">Strategic Class Reminders</h3>
+            <span id="reminder-status-badge" class="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              Autonomous 24h &bull; 1h &bull; 10m Active
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Automated alerts with direct Google Meet links dispatched strategically before every scheduled 1-on-1 session.
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="AdminEngine.triggerRemindersScan()" id="btn-scan-reminders" class="text-xs font-bold text-indigo-700 bg-white hover:bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-xl transition-all shadow-xs flex items-center gap-1.5">
+          <i data-lucide="scan-line" class="w-3.5 h-3.5 text-indigo-600"></i>
+          <span>Check Reminders Now</span>
+        </button>
+        <button type="button" onclick="AdminEngine.openTestReminderModal()" id="btn-test-reminder" class="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3.5 py-1.5 rounded-xl transition-all shadow-sm flex items-center gap-1.5">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+          <span>Send Test Reminder</span>
+        </button>
       </div>
     </div>
   </div>
@@ -2157,11 +2221,132 @@
  </section>
 
  <!-- ===== SETTINGS SECTION ===== -->
- <section id="section-settings" class="admin-section animate-fadeIn">
+ 
+  <!-- ===== MONTHLY PROGRESS REPORTS REVIEW SECTION ===== -->
+  <section id="section-monthly-reports" class="admin-section space-y-6 animate-fadeIn">
+    <div class="flex items-center justify-between flex-wrap gap-4">
+      <div>
+        <h2 class="text-xl font-bold text-gray-800">Student Monthly Progress Reports</h2>
+        <p class="text-sm text-gray-500 mt-1">Review tutor-submitted evaluations, enforce Director voice standards, approve reports, and dispatch follow-up invoices.</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-bold text-slate-500 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl">
+          Standard: Minimalist Luxury Oval Office Preset
+        </span>
+      </div>
+    </div>
+
+    <!-- PENDING REVIEWS COCKPIT -->
+    <div class="admin-card rounded-2xl p-6 bg-white border border-slate-200 shadow-sm">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+        <h3 class="text-sm font-extrabold uppercase tracking-wider text-slate-800 flex items-center gap-2">
+          <i data-lucide="clock" class="w-4 h-4 text-orange-500"></i>
+          Reports Awaiting Director Approval
+        </h3>
+        <span id="admin-pending-reports-count" class="text-xs font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-800">0 Pending</span>
+      </div>
+      <div id="admin-pending-reports-list" class="space-y-3">
+        <!-- Rendered by AdminEngine -->
+      </div>
+    </div>
+
+    <!-- APPROVED ARCHIVE -->
+    <div class="admin-card rounded-2xl p-6 bg-white border border-slate-200 shadow-sm">
+      <h3 class="text-sm font-extrabold uppercase tracking-wider text-slate-800 mb-4 flex items-center gap-2">
+        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+        Approved &amp; Dispatched Reports
+      </h3>
+      <div id="admin-approved-reports-list" class="space-y-2">
+        <!-- Rendered by AdminEngine -->
+      </div>
+    </div>
+  </section>
+
+<section id="section-settings" class="admin-section animate-fadeIn">
   <div class="flex items-center justify-between mb-6">
     <div>
       <h2 class="text-2xl font-nunito font-bold text-slate-800">Settings</h2>
       <p class="text-slate-500 mt-1">Manage your profile, change your password, and set notification preferences.</p>
+    </div>
+  </div>
+
+  
+  <!-- 🛡️ STEMULUS DATA RETENTION SHIELD & SNAPSHOT VAULT -->
+  <div class="admin-card rounded-2xl p-6 mb-6 border border-emerald-100 bg-linear-to-br from-white to-emerald-50/20">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold shrink-0">
+          <i data-lucide="shield-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-nunito font-extrabold text-slate-800 flex items-center gap-2">
+            <span>Database Retention & Snapshot Vault</span>
+            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">100% Protected</span>
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">Automated write-ahead integrity guard, rolling hourly snapshot vault, and 1-click restore.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="exportDatabaseBackup()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-1.5" style="background-color: #047857 !important;">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Backup JSON
+        </button>
+        <label class="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-bold text-xs rounded-xl transition-colors cursor-pointer flex items-center gap-1.5">
+          <i data-lucide="upload" class="w-3.5 h-3.5 text-slate-500"></i> Restore JSON
+          <input type="file" accept=".json" onchange="importDatabaseBackupFile(this)" class="hidden">
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex items-center justify-between mb-2">
+        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Internal Snapshot History (Last 10 Rolling States)</h4>
+        <button type="button" onclick="renderSnapshotVaultList()" class="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1">
+          <i data-lucide="refresh-cw" class="w-3 h-3"></i> Refresh
+        </button>
+      </div>
+      <div id="snapshot-vault-list" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+        <!-- Rendered via renderSnapshotVaultList() -->
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- 🛡️ STEMULUS DATA RETENTION SHIELD & SNAPSHOT VAULT -->
+  <div class="admin-card rounded-2xl p-6 mb-6 border border-emerald-100 bg-linear-to-br from-white to-emerald-50/20">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold shrink-0">
+          <i data-lucide="shield-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-nunito font-extrabold text-slate-800 flex items-center gap-2">
+            <span>Database Retention & Snapshot Vault</span>
+            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">100% Protected</span>
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">Automated write-ahead integrity guard, rolling hourly snapshot vault, and 1-click restore.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="exportDatabaseBackup()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-1.5" style="background-color: #047857 !important;">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Backup JSON
+        </button>
+        <label class="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-bold text-xs rounded-xl transition-colors cursor-pointer flex items-center gap-1.5">
+          <i data-lucide="upload" class="w-3.5 h-3.5 text-slate-500"></i> Restore JSON
+          <input type="file" accept=".json" onchange="importDatabaseBackupFile(this)" class="hidden">
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex items-center justify-between mb-2">
+        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Internal Snapshot History (Last 10 Rolling States)</h4>
+        <button type="button" onclick="renderSnapshotVaultList()" class="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1">
+          <i data-lucide="refresh-cw" class="w-3 h-3"></i> Refresh
+        </button>
+      </div>
+      <div id="snapshot-vault-list" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+        <!-- Rendered via renderSnapshotVaultList() -->
+      </div>
     </div>
   </div>
 
@@ -2259,23 +2444,106 @@
     </div>
   </div>
 
-  <!-- Notification Preferences -->
+  <!-- Notification Preferences & NTFY Push Alert Hub -->
   <div class="admin-card rounded-2xl p-6 mb-6">
-    <h3 class="text-lg font-nunito font-bold text-slate-800 mb-4">Notification Preferences</h3>
-    <div class="space-y-3 max-w-md">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 border-b border-gray-100 pb-4">
+      <div>
+        <h3 class="text-lg font-nunito font-bold text-slate-800 flex items-center gap-2">
+          <i data-lucide="bell-ring" class="w-5 h-5 text-orange-500"></i>
+          <span>Notification &amp; Push Alert Hub</span>
+        </h3>
+        <p class="text-xs text-slate-500 mt-0.5">Manage automated lead dispatch and direct phone push notifications.</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          NTFY Serverless Active
+        </span>
+      </div>
+    </div>
+
+    <!-- Toggles -->
+    <div class="space-y-3 max-w-md mb-6">
       <label class="flex items-center gap-3 cursor-pointer">
         <input type="checkbox" id="notif-email" checked class="w-4 h-4 rounded accent-orange-500">
-        <span class="text-sm font-medium text-gray-700">Email notifications for new enrollments</span>
+        <span class="text-xs sm:text-sm font-medium text-gray-700">Email notifications for new enrollments</span>
       </label>
       <label class="flex items-center gap-3 cursor-pointer">
         <input type="checkbox" id="notif-push" checked class="w-4 h-4 rounded accent-orange-500">
-        <span class="text-sm font-medium text-gray-700">Push notifications (NTFY) for bookings + enrollments</span>
+        <span class="text-xs sm:text-sm font-medium text-gray-700">Push notifications (NTFY) for bookings + enrollments</span>
       </label>
       <label class="flex items-center gap-3 cursor-pointer">
         <input type="checkbox" id="notif-reports" checked class="w-4 h-4 rounded accent-orange-500">
-        <span class="text-sm font-medium text-gray-700">Weekly report generation reminder (Sundays)</span>
+        <span class="text-xs sm:text-sm font-medium text-gray-700">Weekly report generation reminder (Sundays)</span>
       </label>
-      <button id="save-notif-prefs-btn" class="mt-2 bg-gray-700 hover:bg-gray-800 text-white font-bold px-6 py-2.5 rounded-lg transition-colors">Save Preferences</button>
+      <button id="save-notif-prefs-btn" class="mt-2 bg-gray-700 hover:bg-gray-800 text-white font-bold px-5 py-2 rounded-lg text-xs transition-colors">Save Preferences</button>
+    </div>
+
+    <!-- NTFY Subscriptions & Live Diagnostic Center -->
+    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+        <h4 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
+          <i data-lucide="radio" class="w-4 h-4 text-orange-600"></i>
+          <span>Subscribed NTFY Push Channels (Dual-Broadcast)</span>
+        </h4>
+        <span class="text-[11px] text-slate-500">Server cache TTL: 12 Hours</span>
+      </div>
+      <p class="text-[11px] sm:text-xs text-slate-600 mb-4 leading-relaxed">
+        Because ntfy.sh is an ephemeral public queue, topics without incoming messages for 12 hours clear from the server cache. To guarantee immediate delivery on your mobile device, ensure you have subscribed to both topics below in your phone’s NTFY app or browser:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <!-- Topic 1 -->
+        <div class="bg-white border border-slate-200 rounded-lg p-3 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-orange-600">Primary Leads &amp; Bookings</span>
+              <span class="text-[10px] bg-orange-100 text-orange-700 font-mono px-1.5 py-0.5 rounded">High Priority</span>
+            </div>
+            <p class="text-xs font-mono font-bold text-slate-800 break-all select-all">stm-enr-lx7k9w2mq8vp4tz</p>
+            <p class="text-[11px] text-slate-500 mt-1">Free trial bookings, class registrations, and lead submissions.</p>
+          </div>
+          <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <a href="https://ntfy.sh/stm-enr-lx7k9w2mq8vp4tz" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-orange-600 hover:text-orange-700 flex items-center gap-1">
+              <span>Open on Phone / Web</span>
+              <i data-lucide="external-link" class="w-3 h-3"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Topic 2 -->
+        <div class="bg-white border border-slate-200 rounded-lg p-3 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-blue-600">Admin Sentinel &amp; Alerts</span>
+              <span class="text-[10px] bg-blue-100 text-blue-700 font-mono px-1.5 py-0.5 rounded">Dual Broadcast</span>
+            </div>
+            <p class="text-xs font-mono font-bold text-slate-800 break-all select-all">stemulus-admin-alerts</p>
+            <p class="text-[11px] text-slate-500 mt-1">Parallel fail-safe topic for all bookings, escalations, and system pings.</p>
+          </div>
+          <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <a href="https://ntfy.sh/stemulus-admin-alerts" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">
+              <span>Open on Phone / Web</span>
+              <i data-lucide="external-link" class="w-3 h-3"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button: Send Test Push Alert -->
+      <div class="pt-2 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <button type="button" id="btn-test-ntfy" onclick="AdminEngine.sendTestNtfy()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            <span>Send Test Push Alert</span>
+          </button>
+        </div>
+        <div class="text-[11px] text-slate-500 flex items-center gap-1">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+          <span>Dispatches instantly through Netlify serverless &amp; direct ntfy.sh fallback</span>
+        </div>
+      </div>
+      <div id="ntfy-test-status"></div>
     </div>
   </div>
 
@@ -2367,6 +2635,153 @@
       <p class="font-medium">No monthly reports submitted yet.</p>
       <p class="text-sm mt-1">Reports submitted by tutors will appear here.</p>
     </div>
+  </div>
+ </section>
+
+ <!-- ===== FACULTY NOTICES & BROADCASTS SECTION ===== -->
+ <section id="section-notices" class="admin-section animate-fadeIn" style="display:none;">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+   <div>
+    <h2 class="text-2xl font-nunito font-bold text-slate-800">Faculty Notices &amp; Bulletins</h2>
+    <p class="text-sm text-slate-500">Broadcast official policies, schedule reminders, and operational alerts across faculty portals.</p>
+   </div>
+   <div class="flex items-center gap-3">
+    <button type="button" onclick="openNoticeModal()" class="admin-btn-primary flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm shadow-md cursor-pointer">
+     <i data-lucide="plus-circle" class="w-4 h-4"></i> Post Official Notice
+    </button>
+   </div>
+  </div>
+
+  <!-- Filter & Search Bar -->
+  <div class="admin-card rounded-2xl p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
+   <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
+    <button type="button" class="notice-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-white transition-all" data-priority="all" onclick="filterNotices('all')">
+     All Notices (<span id="notices-count-all">0</span>)
+    </button>
+    <button type="button" class="notice-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-priority="urgent" onclick="filterNotices('urgent')">
+     Urgent (<span id="notices-count-urgent">0</span>)
+    </button>
+    <button type="button" class="notice-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-priority="important" onclick="filterNotices('important')">
+     Important (<span id="notices-count-important">0</span>)
+    </button>
+    <button type="button" class="notice-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all" data-priority="normal" onclick="filterNotices('normal')">
+     Policy &amp; Info (<span id="notices-count-normal">0</span>)
+    </button>
+   </div>
+   <div class="relative w-full md:w-64">
+    <input type="text" id="admin-notices-search" oninput="searchNotices(this.value)" placeholder="Search notices..." class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2 text-xs text-slate-800 placeholder-gray-400 focus:outline-none focus:border-indigo-500">
+   </div>
+  </div>
+
+  <!-- Notices Grid/List -->
+  <div id="admin-notices-list" class="space-y-4">
+   <div class="admin-card rounded-2xl p-12 text-center text-slate-500 font-medium">
+    <p>Loading notices...</p>
+   </div>
+  </div>
+ </section>
+
+ <!-- ===== TUTOR PAYROLL & REMITTANCE LEDGER SECTION ===== -->
+ <section id="section-payroll" class="admin-section animate-fadeIn" style="display:none;">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+   <div>
+    <h2 class="text-2xl font-nunito font-bold text-slate-800">Tutor Payroll &amp; Bank Remittance Hub</h2>
+    <p class="text-sm text-slate-500">Calculate verified monthly teaching hours, verify payout amounts, and export 1-click bank remittance schedules.</p>
+   </div>
+   <div class="flex items-center gap-3 flex-wrap">
+    <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-1.5 shadow-sm">
+     <i data-lucide="calendar" class="w-4 h-4 text-slate-500"></i>
+     <input type="month" id="payroll-month-select" onchange="loadPayroll(this.value)" class="text-xs font-bold text-slate-800 bg-transparent outline-none cursor-pointer">
+    </div>
+    <button type="button" onclick="exportBankRemittanceCSV()" class="admin-btn-primary flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs shadow-md cursor-pointer" style="background:#059669;">
+     <i data-lucide="download" class="w-4 h-4"></i> Bank Remittance CSV
+    </button>
+    <button type="button" onclick="exportPayrollAuditCSV()" class="px-4 py-2.5 rounded-xl font-bold text-xs bg-white border border-gray-200 text-slate-700 hover:bg-slate-50 shadow-sm flex items-center gap-2 cursor-pointer">
+     <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Detailed Audit CSV
+    </button>
+    <button type="button" id="btn-mark-disbursed" onclick="markCurrentMonthDisbursed()" class="px-4 py-2.5 rounded-xl font-bold text-xs bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 shadow-sm flex items-center gap-2 cursor-pointer">
+     <i data-lucide="check-circle" class="w-4 h-4"></i> Mark Month Disbursed
+    </button>
+   </div>
+  </div>
+
+  <!-- Payroll KPI Overview -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+   <div class="admin-card rounded-2xl p-5 border border-slate-200/80 bg-white">
+    <div class="flex items-center justify-between">
+     <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Active Payable Tutors</p>
+     <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm">
+      <i data-lucide="users" class="w-4 h-4"></i>
+     </div>
+    </div>
+    <h3 class="text-2xl font-nunito font-extrabold text-slate-800 mt-2" id="pr-kpi-tutors">0</h3>
+    <p class="text-xs text-slate-400 mt-1">Faculty with approved sessions</p>
+   </div>
+
+   <div class="admin-card rounded-2xl p-5 border border-slate-200/80 bg-white">
+    <div class="flex items-center justify-between">
+     <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Teaching Hours</p>
+     <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm">
+      <i data-lucide="clock" class="w-4 h-4"></i>
+     </div>
+    </div>
+    <h3 class="text-2xl font-nunito font-extrabold text-slate-800 mt-2"><span id="pr-kpi-hours">0</span> hrs</h3>
+    <p class="text-xs text-slate-400 mt-1">Verified attendance logs</p>
+   </div>
+
+   <div class="admin-card rounded-2xl p-5 border border-slate-200/80 bg-white">
+    <div class="flex items-center justify-between">
+     <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Remittance Due</p>
+     <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">
+      <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+     </div>
+    </div>
+    <h3 class="text-2xl font-nunito font-extrabold text-emerald-600 mt-2">$<span id="pr-kpi-gross">0.00</span></h3>
+    <p class="text-xs text-slate-400 mt-1" id="pr-kpi-ngn-equiv">≈ ₦0 NGN remittance</p>
+   </div>
+
+   <div class="admin-card rounded-2xl p-5 border border-slate-200/80 bg-white">
+    <div class="flex items-center justify-between">
+     <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Disbursement Status</p>
+     <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-sm">
+      <i data-lucide="shield-check" class="w-4 h-4"></i>
+     </div>
+    </div>
+    <div class="mt-2" id="pr-kpi-status-container">
+     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+      <span class="w-2 h-2 rounded-full bg-amber-500"></span> Pending Payout
+     </span>
+    </div>
+    <p class="text-xs text-slate-400 mt-1" id="pr-kpi-status-sub">Ready for banking batch</p>
+   </div>
+  </div>
+
+  <!-- Payroll Ledger Table -->
+  <div class="admin-card rounded-2xl p-6 overflow-hidden">
+   <div class="flex items-center justify-between mb-4">
+    <h3 class="font-nunito font-bold text-slate-800 text-base">Faculty Payment Breakdown</h3>
+    <span class="text-xs text-slate-500">Verified bank routing details from tutor onboarding records</span>
+   </div>
+   <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse" id="admin-payroll-table">
+     <thead>
+      <tr class="border-b border-gray-150 text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">
+       <th class="py-3 px-4">Tutor</th>
+       <th class="py-3 px-4">Bank Routing Details</th>
+       <th class="py-3 px-4 text-center">Hourly Rate</th>
+       <th class="py-3 px-4 text-center">Approved Hours</th>
+       <th class="py-3 px-4 text-right">Gross Payout</th>
+       <th class="py-3 px-4 text-center">Status</th>
+       <th class="py-3 px-4 text-right">Actions</th>
+      </tr>
+     </thead>
+     <tbody id="payroll-table-body" class="divide-y divide-gray-100 text-xs">
+      <tr>
+       <td colspan="7" class="py-8 text-center text-slate-400">Loading payroll ledger...</td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
   </div>
  </section>
 
@@ -2546,7 +2961,13 @@
        <h3 class="text-base font-nunito font-bold text-gray-700">Website Enrollment Submissions</h3>
        <p class="text-xs text-slate-500 mt-0.5">Students who filled in the online enroll form. Approve to create student record and parent account.</p>
      </div>
-     <button onclick="if(typeof loadNetlifyEnrollments==='function')loadNetlifyEnrollments()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 px-3 py-1.5 border border-indigo-200 rounded-lg transition-colors">Refresh</button>
+     <div class="flex items-center gap-2">
+        <button onclick="if(typeof exportEnrollmentsSpreadsheet==='function')exportEnrollmentsSpreadsheet()" class="text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 border border-emerald-300 rounded-lg transition-colors inline-flex items-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Export Spreadsheet (CSV)
+        </button>
+        <button onclick="if(typeof loadNetlifyEnrollments==='function')loadNetlifyEnrollments()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 px-3 py-1.5 border border-indigo-200 rounded-lg transition-colors">Refresh</button>
+      </div>
    </div>
    <div id="netlify-enrollments-list" class="space-y-3">
      <p class="text-slate-500 font-medium text-sm text-center py-4">Click Refresh to load pending online enrollments.</p>
@@ -2600,7 +3021,7 @@
  placeholder="Tutor's full name">
  </div>
 
- <div class="grid grid-cols-2 gap-4">
+ <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Email *</label>
  <input type="email" id="tutor-email" required
@@ -2612,6 +3033,11 @@
  <input type="tel" id="tutor-phone"
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
  placeholder="+234...">
+ </div>
+ <div>
+ <label class="block text-sm font-medium text-gray-500 mb-2">Date of Birth *</label>
+ <input type="date" id="tutor-birthday" required
+ class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors">
  </div>
  </div>
 
@@ -2661,11 +3087,17 @@
                 <h3 id="td-name" class="text-xl font-nunito font-bold text-slate-800">Tutor Legal Name</h3>
                 <span id="td-status-badge" class="text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>
                 <span id="td-mode-badge" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-blue-50 text-blue-700 border border-blue-200">Online Only</span>
+                <span id="td-perf-tier" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-purple-50 text-purple-700 border border-purple-200">Tier 1: Exemplary</span>
               </div>
               <p id="td-email" class="text-xs text-slate-500 font-medium mt-0.5">tutor@stemuluskidstech.com</p>
-              <p id="td-phone" class="text-xs text-slate-400 mt-0.5 flex items-center gap-1 font-mono">
-                <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400"></i> +234...
-              </p>
+              <div class="flex flex-wrap items-center gap-3 mt-0.5">
+                <p id="td-phone" class="text-xs text-slate-400 flex items-center gap-1 font-mono">
+                  <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400"></i> +234...
+                </p>
+                <p id="td-birthday" class="text-xs text-orange-600 font-semibold flex items-center gap-1">
+                  <i data-lucide="cake" class="w-3.5 h-3.5 text-orange-500"></i> Birthday: Not specified
+                </p>
+              </div>
             </div>
           </div>
           <button type="button" onclick="AdminEngine.closeTutorDossierModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition-colors">
@@ -2688,16 +3120,16 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
               <div class="bg-white/80 p-3 rounded-xl border border-amber-100">
                 <p class="text-slate-400 uppercase font-bold text-[10px]">Bank Name</p>
-                <p id="td-bank-name" class="font-bold text-slate-800 text-sm mt-0.5">—</p>
+                <p id="td-bank-name" class="font-bold text-slate-800 text-sm mt-0.5">Not specified</p>
               </div>
               <div class="bg-white/80 p-3 rounded-xl border border-amber-100">
                 <p class="text-slate-400 uppercase font-bold text-[10px]">Account Name</p>
-                <p id="td-account-name" class="font-bold text-slate-800 text-sm mt-0.5">—</p>
+                <p id="td-account-name" class="font-bold text-slate-800 text-sm mt-0.5">Not specified</p>
               </div>
               <div class="bg-white/80 p-3 rounded-xl border border-amber-100 relative group">
                 <p class="text-slate-400 uppercase font-bold text-[10px]">10-Digit NUBAN</p>
                 <div class="flex items-center justify-between mt-0.5">
-                  <p id="td-account-number" class="font-mono font-extrabold text-slate-800 text-sm tracking-wider">—</p>
+                  <p id="td-account-number" class="font-mono font-extrabold text-slate-800 text-sm tracking-wider">Not specified</p>
                   <button type="button" onclick="AdminEngine.copyTutorBankInfo()" class="text-xs text-amber-700 hover:text-amber-900 font-bold bg-amber-100 hover:bg-amber-200 px-2 py-0.5 rounded transition-colors flex items-center gap-1" title="Copy Account Number">
                     <i data-lucide="copy" class="w-3 h-3"></i> Copy
                   </button>
@@ -2712,14 +3144,14 @@
               <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2 flex items-center gap-1.5">
                 <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-500"></i> Residential Location
               </h4>
-              <p id="td-location" class="text-xs text-slate-700 font-medium leading-relaxed">—</p>
+              <p id="td-location" class="text-xs text-slate-700 font-medium leading-relaxed">Not specified</p>
             </div>
             <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50/50">
               <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2 flex items-center gap-1.5">
                 <i data-lucide="heart-handshake" class="w-3.5 h-3.5 text-rose-500"></i> Next of Kin / Emergency Contact
               </h4>
-              <p id="td-nok-name" class="text-xs font-bold text-slate-800">—</p>
-              <p id="td-nok-contact" class="text-xs text-slate-600 font-mono mt-0.5">—</p>
+              <p id="td-nok-name" class="text-xs font-bold text-slate-800">Not specified</p>
+              <p id="td-nok-contact" class="text-xs text-slate-600 font-mono mt-0.5">Not specified</p>
             </div>
           </div>
 
@@ -2728,7 +3160,7 @@
             <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2 flex items-center gap-1.5">
               <i data-lucide="cpu" class="w-3.5 h-3.5 text-purple-500"></i> Workstation, Speed & Power Inverter Audit
             </h4>
-            <p id="td-workstation" class="text-xs text-slate-700 leading-relaxed font-medium">—</p>
+            <p id="td-workstation" class="text-xs text-slate-700 leading-relaxed font-medium">Not specified</p>
             <div class="mt-2.5 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[11px] text-slate-500">
               <span id="td-slots" class="font-medium"><i data-lucide="calendar" class="w-3 h-3 inline mr-1 text-slate-400"></i> Preferred: Weekdays / Weekends</span>
               <span id="td-signature" class="font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">✓ Digitally Signed</span>
@@ -2760,12 +3192,15 @@
 
         <!-- Footer Actions -->
         <div class="flex items-center justify-between pt-4 border-t border-slate-100 mt-2">
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
             <button type="button" onclick="AdminEngine.editTutorFromDossier()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs transition-colors flex items-center gap-1.5">
               <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit Profile Fields
             </button>
             <button type="button" id="td-msg-btn" onclick="" class="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl font-bold text-xs transition-colors flex items-center gap-1.5">
               <i data-lucide="mail" class="w-3.5 h-3.5"></i> Send Notice
+            </button>
+            <button type="button" id="td-delete-btn" onclick="AdminEngine.deleteTutorFromDossier()" class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl font-bold text-xs transition-colors flex items-center gap-1.5 border border-red-200" title="Permanently Delete Tutor from Database">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5 text-red-500"></i> Delete Tutor
             </button>
           </div>
           <button type="button" onclick="AdminEngine.closeTutorDossierModal()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-bold text-xs transition-colors shadow">
@@ -2847,15 +3282,15 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
       <div>
+        <label class="block text-xs font-bold text-gray-500 mb-1">Date of Birth *</label>
+        <input type="date" id="new-child-birthday" required onchange="(function(el){if(!el.value)return;var d=new Date(el.value),n=new Date(),a=n.getFullYear()-d.getFullYear();if(n.getMonth()<d.getMonth()||(n.getMonth()===d.getMonth()&&n.getDate()<d.getDate()))a--;var ageEl=document.getElementById('new-child-age');if(ageEl&&a>=4&&a<=18)ageEl.value=a;})(this)"
+          class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-3 text-sm text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
+      </div>
+      <div>
         <label class="block text-xs font-bold text-gray-500 mb-1">Age *</label>
         <input type="number" id="new-child-age" required min="4" max="18" value="10"
           class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-3 text-sm text-gray-800 focus:outline-none focus:border-admin-accent transition-colors"
           placeholder="e.g. 10">
-      </div>
-      <div>
-        <label class="block text-xs font-bold text-gray-500 mb-1">Birthday (Optional)</label>
-        <input type="date" id="new-child-birthday"
-          class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-3 text-sm text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
       </div>
     </div>
 
@@ -2935,6 +3370,11 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
+              <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Date of Birth *</label>
+              <input type="date" id="ac-birthday" required onchange="(function(el){if(!el.value)return;var d=new Date(el.value),n=new Date(),a=n.getFullYear()-d.getFullYear();if(n.getMonth()<d.getMonth()||(n.getMonth()===d.getMonth()&&n.getDate()<d.getDate()))a--;var ageEl=document.getElementById('ac-age');if(ageEl&&a>=4&&a<=18)ageEl.value=a;})(this)"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
               <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Age *</label>
               <input type="number" id="ac-age" required min="4" max="18" value="10"
                 class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
@@ -2946,11 +3386,6 @@
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Birthday</label>
-              <input type="date" id="ac-birthday"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-800 focus:outline-none focus:border-blue-500">
             </div>
           </div>
 
@@ -3170,15 +3605,15 @@
   placeholder="Full name">
   </div>
   <div>
+  <label class="block text-sm font-medium text-gray-500 mb-2">Date of Birth *</label>
+  <input type="date" id="student-birthday" required onchange="(function(el){if(!el.value)return;var d=new Date(el.value),n=new Date(),a=n.getFullYear()-d.getFullYear();if(n.getMonth()<d.getMonth()||(n.getMonth()===d.getMonth()&&n.getDate()<d.getDate()))a--;var ageEl=document.getElementById('student-age');if(ageEl&&a>=5&&a<=18)ageEl.value=a;})(this)"
+  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors">
+  </div>
+  <div>
   <label class="block text-sm font-medium text-gray-500 mb-2">Age *</label>
   <input type="number" id="student-age" required min="5" max="18"
   class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
   placeholder="e.g.12">
-  </div>
-  <div>
-  <label class="block text-sm font-medium text-gray-500 mb-2">Date of Birth (Optional)</label>
-  <input type="date" id="student-birthday"
-  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors">
   </div>
   </div>
  
@@ -3258,10 +3693,11 @@
  </div>
  <div class="mt-4">
  <label class="block text-sm font-medium text-gray-500 mb-2">Assigned Tutor *</label>
- <select id="student-tutor" required
+ <select id="student-tutor" required onchange="AdminEngine.validateStudentTutorAvailability()"
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 focus:outline-none focus:border-admin-accent transition-colors">
  <option value="">-- Select Tutor --</option>
  </select>
+ <div id="student-tutor-availability-badge" class="mt-2 min-h-[20px]"></div>
  </div>
  </div>
  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -3365,10 +3801,11 @@
  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
  <div>
  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Mentor / Tutor *</label>
- <select id="schedule-mentor" required
+ <select id="schedule-mentor" required onchange="AdminEngine.validateScheduleAvailability()"
  class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
  <option value="">-- Select Mentor --</option>
  </select>
+ <div id="schedule-mentor-availability-badge" class="mt-2 min-h-[20px]"></div>
  </div>
 
  <div>
@@ -3384,12 +3821,12 @@
  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
  <div>
  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Date *</label>
- <input type="date" id="schedule-date"
+ <input type="date" id="schedule-date" onchange="AdminEngine.validateScheduleAvailability()"
  class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
  </div>
  <div>
  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Time *</label>
- <input type="time" id="schedule-time"
+ <input type="time" id="schedule-time" onchange="AdminEngine.validateScheduleAvailability()"
  class="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-indigo-500 transition-colors">
  </div>
  <div>
@@ -3654,6 +4091,66 @@
  </div>
  </div>
 
+ <!-- Add/Edit Notice Modal -->
+ <div id="notice-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+  <div class="modal-overlay absolute inset-0 bg-black/75" onclick="closeNoticeModal()"></div>
+  <div class="relative w-full max-w-lg z-10">
+   <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl relative animate-scaleUp">
+    <div class="flex items-center justify-between mb-5">
+     <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+       <i data-lucide="megaphone" class="w-5 h-5"></i>
+      </div>
+      <div>
+       <h3 class="text-lg font-nunito font-bold text-slate-800" id="notice-modal-title">Post Official Notice</h3>
+       <p class="text-xs text-slate-500">Publish faculty policies or urgent operational bulletins</p>
+      </div>
+     </div>
+     <button type="button" onclick="closeNoticeModal()" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer">
+      <i data-lucide="x" class="w-4 h-4"></i>
+     </button>
+    </div>
+
+    <form id="notice-form" onsubmit="saveNotice(event)" class="space-y-4">
+     <input type="hidden" id="notice-edit-id" value="">
+     <div>
+      <label class="block text-xs font-bold text-slate-700 mb-1">Notice Title <span class="text-red-500">*</span></label>
+      <input type="text" id="notice-title" required placeholder="e.g. Mandatory 24h Attendance Submission Policy" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 font-medium focus:outline-none focus:border-indigo-500">
+     </div>
+
+     <div class="grid grid-cols-2 gap-4">
+      <div>
+       <label class="block text-xs font-bold text-slate-700 mb-1">Priority Level <span class="text-red-500">*</span></label>
+       <select id="notice-priority" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 font-semibold focus:outline-none focus:border-indigo-500">
+        <option value="urgent">🔴 Urgent / Action Required</option>
+        <option value="important">🟡 Important / Policy</option>
+        <option value="normal" selected>🔵 Normal / Info</option>
+       </select>
+      </div>
+      <div>
+       <label class="block text-xs font-bold text-slate-700 mb-1">Target Audience <span class="text-red-500">*</span></label>
+       <select id="notice-audience" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 font-semibold focus:outline-none focus:border-indigo-500">
+        <option value="all">Everyone (Tutors &amp; Students)</option>
+        <option value="tutor" selected>Tutors Only</option>
+        <option value="student">Students &amp; Parents Only</option>
+       </select>
+      </div>
+     </div>
+
+     <div>
+      <label class="block text-xs font-bold text-slate-700 mb-1">Notice Content <span class="text-red-500">*</span></label>
+      <textarea id="notice-content" required rows="5" placeholder="Write full directive or operational announcement details here..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:outline-none focus:border-indigo-500"></textarea>
+     </div>
+
+     <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+      <button type="button" onclick="closeNoticeModal()" class="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer">Cancel</button>
+      <button type="submit" id="btn-save-notice" class="admin-btn-primary px-5 py-2.5 rounded-xl text-xs font-bold shadow-md cursor-pointer">Publish Notice</button>
+     </div>
+    </form>
+   </div>
+  </div>
+ </div>
+
  <!-- ===== ADMIN MONTHLY REPORT REVIEW & EDIT MODAL ===== -->
  <div id="admin-report-review-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
    <div class="modal-overlay absolute inset-0 bg-black/75 backdrop-blur-sm" onclick="AdminEngine.closeModal('admin-report-review-modal')"></div>
@@ -3865,8 +4362,8 @@
            </div>
          </div>
          <div>
-           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Date of Birth <span class="text-slate-500 font-normal lowercase">(optional - for birthday celebrations)</span></label>
-           <input type="date" id="qo-child-birthday" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Date of Birth * <span class="text-slate-500 font-normal lowercase">(auto-calculates age &amp; birthday celebrations)</span></label>
+           <input type="date" id="qo-child-birthday" required onchange="(function(el){if(!el.value)return;var d=new Date(el.value),n=new Date(),a=n.getFullYear()-d.getFullYear();if(n.getMonth()<d.getMonth()||(n.getMonth()===d.getMonth()&&n.getDate()<d.getDate()))a--;var ageEl=document.getElementById('qo-child-age');if(ageEl&&a>=4&&a<=18)ageEl.value=a;})(this)" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
          </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
@@ -3893,12 +4390,15 @@
           </div>
          <div>
            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Assign Lead Tutor</label>
-           <select id="qo-tutor-select" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-orange-500">
+           <select id="qo-tutor-select" onchange="AdminEngine.validateQuickOnboardAvailability()" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-orange-500">
              <option value="Sarah Jane">Sarah Jane (Senior Instructor)</option>
            </select>
+           <div id="qo-tutor-availability-badge" class="mt-2 min-h-[20px]"></div>
          </div>
-         <button type="submit" id="qo-student-submit-btn" style="background: linear-gradient(135deg, #f4600c 0%, #ea580c 100%) !important; color: #ffffff !important; border: none !important; box-shadow: 0 4px 14px rgba(244,96,12,0.45), 0 2px 0 #c24100 !important; cursor: pointer;" class="w-full font-bold py-3.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2 hover:brightness-105 active:translate-y-0.5">
-           <i data-lucide="user-check" class="w-4 h-4 text-white"></i> Complete 1-Click Onboard &amp; Generate Credentials
+         <button type="submit" id="qo-student-submit-btn" style="background: linear-gradient(135deg, #f4600c 0%, #ea580c 100%) !important; color: #ffffff !important; border: none !important; box-shadow: 0 4px 14px rgba(244,96,12,0.45), 0 2px 0 #c24100 !important; cursor: pointer;" class="w-full font-bold py-3.5 px-3 rounded-xl transition-all text-xs flex items-center justify-center gap-2 hover:brightness-105 active:translate-y-0.5 text-center">
+           <i data-lucide="user-check" class="w-4 h-4 text-white shrink-0"></i>
+           <span class="hidden sm:inline">Complete 1-Click Onboard &amp; Generate Credentials</span>
+           <span class="sm:hidden">1-Click Onboard &amp; Create Account</span>
          </button>
        </form>
 
@@ -3908,16 +4408,24 @@
            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tutor Full Name</label>
            <input type="text" id="qo-tutor-name" required placeholder="e.g. David Okon" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
          </div>
-         <div>
-           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tutor Email</label>
-           <input type="email" id="qo-tutor-email" required placeholder="tutor@stemuluskidstech.com" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+           <div>
+             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tutor Email *</label>
+             <input type="email" id="qo-tutor-email" required placeholder="tutor@stemuluskidstech.com" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+           </div>
+           <div>
+             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Date of Birth *</label>
+             <input type="date" id="qo-tutor-birthday" required class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+           </div>
          </div>
          <div>
            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Specialization Tracks</label>
            <input type="text" id="qo-tutor-tracks" placeholder="e.g. Python, Scratch, Robotics" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
          </div>
-         <button type="submit" id="qo-tutor-submit-btn" style="background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important; color: #ffffff !important; border: none !important; box-shadow: 0 4px 14px rgba(79,70,229,0.45), 0 2px 0 #3730a3 !important; cursor: pointer;" class="w-full font-bold py-3.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2 hover:brightness-105 active:translate-y-0.5">
-           <i data-lucide="shield-check" class="w-4 h-4 text-white"></i> Create Tutor Account &amp; Generate Access
+         <button type="submit" id="qo-tutor-submit-btn" style="background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important; color: #ffffff !important; border: none !important; box-shadow: 0 4px 14px rgba(79,70,229,0.45), 0 2px 0 #3730a3 !important; cursor: pointer;" class="w-full font-bold py-3.5 px-3 rounded-xl transition-all text-xs flex items-center justify-center gap-2 hover:brightness-105 active:translate-y-0.5 text-center">
+           <i data-lucide="shield-check" class="w-4 h-4 text-white shrink-0"></i>
+           <span class="hidden sm:inline">Create Tutor Account &amp; Generate Access</span>
+           <span class="sm:hidden">Create Account &amp; Generate Access</span>
          </button>
        </form>
 
@@ -3942,10 +4450,11 @@
  <!-- Toast Notification Container -->
  <div id="toast-container" class="fixed top-5 right-5 sm:top-6 sm:right-6 z-[999999] pointer-events-none space-y-3 max-w-md w-[calc(100vw-2.5rem)] sm:w-auto"></div>
 
-  <!-- Firebase SDK (Compat) - for Firestore certificate cloud sync -->
+  <!-- Firebase SDK (Compat) - Firestore & Multi-App Auth Worker -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="assets/js/firebase-config.min.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="assets/js/firebase-config.min.js"></script>
   <script src="assets/js/stemulus-firestore.min.js" defer></script>
  
  <!-- QRCode Generator Library -->
@@ -3959,6 +4468,7 @@
  
  <!-- Tuition & Monthly Billing Automation Engine -->
  <script src="assets/js/billing-engine.min.js" defer></script>
+<script src="assets/js/monthly-report-engine.min.js" defer></script>
 
  <!-- Class Escalation & Live Radar Engine -->
  <script src="assets/js/class-escalation-engine.min.js" defer></script>
@@ -3983,6 +4493,7 @@
  <script src="assets/js/session-content-analysis-engine.min.js" defer></script>
  <script src="assets/js/reschedule-concierge-engine.min.js" defer></script>
   <script src="assets/js/admin-engine.min.js?v=20261017d" defer></script>
+  <script src="assets/js/admin-smart-detector.min.js?v=20261026" defer></script>
  
  <!-- Operations & Birthday Engines Auto-Mount -->
  <script>
@@ -4533,6 +5044,290 @@ window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger
     </div>
   </div>
 </div>
+
+
+  <!-- MODAL: EDIT QUEUED EMAIL -->
+  <div id="modal-edit-queued-email" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center font-bold">
+            <i data-lucide="edit-3" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-nunito font-extrabold text-slate-800">Edit Queued Email</h3>
+            <span id="eqe-type-badge" class="inline-block text-[10px] font-black uppercase px-2 py-0.5 rounded bg-orange-100 text-orange-700">WELCOME</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeEditQueuedEmailModal()" class="text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <input type="hidden" id="eqe-id">
+
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Recipient Name</label>
+            <input type="text" id="eqe-name" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-orange-500 transition-colors">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Recipient Email Address *</label>
+            <input type="email" id="eqe-to" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-orange-500 transition-colors">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Subject Line *</label>
+          <input type="text" id="eqe-subject" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 font-bold focus:outline-none focus:border-orange-500 transition-colors">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Message Content / HTML *</label>
+          <textarea id="eqe-body" rows="8" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-mono focus:outline-none focus:border-orange-500 transition-colors resize-y leading-relaxed"></textarea>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-slate-100">
+        <button type="button" onclick="closeEditQueuedEmailModal()" class="w-full sm:w-auto px-4 py-2.5 text-slate-500 hover:text-slate-800 font-bold text-xs transition-colors">
+          Cancel
+        </button>
+        <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+          <button type="button" onclick="saveQueuedEmailEdit(false)" class="flex-1 sm:flex-none px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold text-xs rounded-xl transition-colors">
+            Save Changes
+          </button>
+          <button type="button" onclick="saveQueuedEmailEdit(true)" class="flex-1 sm:flex-none px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5" style="background-color: #047857 !important;">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i> Save & Send Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: VIEW SENT EMAIL READER -->
+  <div id="modal-view-sent-email" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-3xl w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+            <i data-lucide="mail" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-nunito font-extrabold text-slate-800">Dispatched Email Record</h3>
+            <span id="vse-type" class="inline-block text-[10px] font-black uppercase px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">SENT</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeViewSentEmailModal()" class="text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 text-xs">
+        <div class="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
+          <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Recipient:</span>
+          <span id="vse-recipient" class="font-bold text-slate-800 truncate"></span>
+        </div>
+        <div class="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
+          <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Dispatched At:</span>
+          <span id="vse-date" class="font-semibold text-slate-700"></span>
+        </div>
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Subject:</span>
+          <span id="vse-subject" class="font-extrabold text-slate-900 text-sm"></span>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-2xl p-5 bg-white min-h-[220px]">
+        <div id="vse-body" class="text-slate-700 text-sm leading-relaxed overflow-x-auto"></div>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+        <button type="button" onclick="closeViewSentEmailModal()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-colors cursor-pointer">
+          Close Reader
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL: ADMIN REVIEW MONTHLY REPORT -->
+  <div id="modal-admin-review-report" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-3xl w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center font-bold">
+            <i data-lucide="file-search" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-nunito font-extrabold text-slate-800">Director Report Inspection</h3>
+            <span id="amr-badge" class="inline-block text-[10px] font-black uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-800">REVIEW PENDING</span>
+          </div>
+        </div>
+        <button type="button" onclick="AdminEngine.closeReviewModal()" class="text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <input type="hidden" id="amr-id">
+
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs space-y-2">
+        <div class="flex justify-between border-b border-slate-200/60 pb-2">
+          <span class="text-slate-500 font-bold uppercase">Student:</span>
+          <span id="amr-student" class="font-extrabold text-slate-900 text-sm"></span>
+        </div>
+        <div class="flex justify-between border-b border-slate-200/60 pb-2">
+          <span class="text-slate-500 font-bold uppercase">Tutor:</span>
+          <span id="amr-tutor" class="font-bold text-slate-800"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500 font-bold uppercase">Period:</span>
+          <span id="amr-month" class="font-bold text-slate-800"></span>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Where the Student Shined</h4>
+          <div id="amr-strengths" class="p-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 leading-relaxed"></div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Breakthrough "Woohoo" Moments</h4>
+          <div id="amr-woohoo" class="p-3 bg-amber-50/50 border border-amber-200 rounded-xl text-xs text-slate-800 leading-relaxed"></div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Project Portfolio Showcase</h4>
+          <div id="amr-projects" class="p-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-800"></div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Focus Areas &amp; Growth Roadmap</h4>
+          <div id="amr-growth" class="p-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 leading-relaxed"></div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-slate-100">
+        <button type="button" onclick="AdminEngine.promptRejectReport()" class="w-full sm:w-auto px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Request Redo / Reject
+        </button>
+        <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+          <button type="button" onclick="AdminEngine.previewReportPDF()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-bold text-xs rounded-xl transition-colors cursor-pointer flex items-center gap-1.5">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i> Preview PDF
+          </button>
+          <button type="button" onclick="AdminEngine.approveAndSendReport()" class="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer" style="background-color: #047857 !important;">
+            <i data-lucide="check" class="w-4 h-4"></i> Approve &amp; Send to Parent
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL: EDIT QUEUED EMAIL -->
+  <div id="modal-edit-queued-email" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center font-bold">
+            <i data-lucide="edit-3" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-nunito font-extrabold text-slate-800">Edit Queued Email</h3>
+            <span id="eqe-type-badge" class="inline-block text-[10px] font-black uppercase px-2 py-0.5 rounded bg-orange-100 text-orange-700">WELCOME</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeEditQueuedEmailModal()" class="text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <input type="hidden" id="eqe-id">
+
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Recipient Name</label>
+            <input type="text" id="eqe-name" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-orange-500 transition-colors">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Recipient Email Address *</label>
+            <input type="email" id="eqe-to" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-orange-500 transition-colors">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Subject Line *</label>
+          <input type="text" id="eqe-subject" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 font-bold focus:outline-none focus:border-orange-500 transition-colors">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Message Content / HTML *</label>
+          <textarea id="eqe-body" rows="8" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-mono focus:outline-none focus:border-orange-500 transition-colors resize-y leading-relaxed"></textarea>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-slate-100">
+        <button type="button" onclick="closeEditQueuedEmailModal()" class="w-full sm:w-auto px-4 py-2.5 text-slate-500 hover:text-slate-800 font-bold text-xs transition-colors">
+          Cancel
+        </button>
+        <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+          <button type="button" onclick="saveQueuedEmailEdit(false)" class="flex-1 sm:flex-none px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold text-xs rounded-xl transition-colors">
+            Save Changes
+          </button>
+          <button type="button" onclick="saveQueuedEmailEdit(true)" class="flex-1 sm:flex-none px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5" style="background-color: #047857 !important;">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i> Save & Send Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: VIEW SENT EMAIL READER -->
+  <div id="modal-view-sent-email" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-3xl w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+            <i data-lucide="mail" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-nunito font-extrabold text-slate-800">Dispatched Email Record</h3>
+            <span id="vse-type" class="inline-block text-[10px] font-black uppercase px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">SENT</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeViewSentEmailModal()" class="text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 text-xs">
+        <div class="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
+          <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Recipient:</span>
+          <span id="vse-recipient" class="font-bold text-slate-800 truncate"></span>
+        </div>
+        <div class="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
+          <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Dispatched At:</span>
+          <span id="vse-date" class="font-semibold text-slate-700"></span>
+        </div>
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Subject:</span>
+          <span id="vse-subject" class="font-extrabold text-slate-900 text-sm"></span>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-2xl p-5 bg-white min-h-[220px]">
+        <div id="vse-body" class="text-slate-700 text-sm leading-relaxed overflow-x-auto"></div>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+        <button type="button" onclick="closeViewSentEmailModal()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-colors cursor-pointer">
+          Close Reader
+        </button>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

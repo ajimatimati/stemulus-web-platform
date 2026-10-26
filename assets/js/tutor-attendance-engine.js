@@ -697,8 +697,62 @@ const TutorAttendanceEngine = (function() {
         return `${diffDays}d ago`;
     }
 
+    async function polishTutorCommentWithAI() {
+        const commentArea = document.getElementById('tutor_comment');
+        const polishBtn = document.getElementById('btn-ai-polish-comment');
+        const polishText = document.getElementById('btn-ai-polish-text');
+        if (!commentArea) return;
+
+        const currentVal = commentArea.value.trim();
+        if (!currentVal) {
+            if (typeof showToast === 'function') {
+                showToast('Please type brief tutor notes first, then click Polish with AI.', 'info');
+            } else {
+                alert('Please type brief tutor notes first, then click Polish with AI.');
+            }
+            commentArea.focus();
+            return;
+        }
+
+        const studentSelect = document.getElementById('student_id');
+        const studentName = studentSelect && studentSelect.selectedOptions && studentSelect.selectedOptions[0] ? studentSelect.selectedOptions[0].textContent.split('(')[0].trim() : 'Student';
+        const courseInput = document.getElementById('topic') ? document.getElementById('topic').value : 'Coding Course';
+
+        if (polishBtn) polishBtn.disabled = true;
+        if (polishText) polishText.textContent = 'Polishing with AI...';
+
+        try {
+            let polished = '';
+            if (typeof GeminiService !== 'undefined' && typeof GeminiService.polishTutorComment === 'function') {
+                polished = await GeminiService.polishTutorComment(currentVal, studentName, courseInput);
+            } else {
+                polished = currentVal.charAt(0).toUpperCase() + currentVal.slice(1);
+                if (!/[.!?]$/.test(polished)) polished += '.';
+            }
+
+            if (polished) {
+                commentArea.value = polished;
+                if (typeof showToast === 'function') {
+                    showToast('Feedback note polished! Feel free to review or add extra details.', 'success');
+                }
+            }
+        } catch (e) {
+            console.error('[TutorAttendanceEngine] AI Polish error:', e);
+            if (typeof showToast === 'function') {
+                showToast('Could not reach AI polisher. Keeping current text.', 'warning');
+            }
+        } finally {
+            if (polishBtn) polishBtn.disabled = false;
+            if (polishText) polishText.textContent = 'Polish with AI';
+            if (window.lucide) lucide.createIcons();
+        }
+    }
+
+    window.polishTutorCommentWithAI = polishTutorCommentWithAI;
+
     return {
-        init
+        init,
+        polishTutorCommentWithAI
     };
 })();
 

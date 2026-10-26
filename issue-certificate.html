@@ -13,9 +13,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Nunito:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Great+Vibes&family=Alex+Brush&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/tailwind-output.css">
   <link rel="stylesheet" href="dist/combined.css">
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="assets/vendor/lucide.min.js"></script>
   <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="assets/js/stemulus-security.min.js"></script>
+  <script>
+  (function(){
+    try {
+      var s = (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession)
+        ? StemulusSecurity.getSecureSession()
+        : null;
+      var ttl = 8 * 60 * 60 * 1000;
+      if (!s || s.role !== 'admin' || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
+        window.location.replace('admin-login.html?redirect=issue-certificate.html');
+      }
+    } catch(e) {
+      window.location.replace('admin-login.html?redirect=issue-certificate.html');
+    }
+  })();
+  </script>
   <link rel="icon" type="image/png" href="favicon.png">
 
   <style>

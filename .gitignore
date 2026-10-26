@@ -79,3 +79,12 @@ tests/*.png
 recordings/
 data/session_audits/
 tests/autorecord_audit/
+
+# Gemini AI Assistant metadata
+.gemini/
+
+screenshots/
+data/gsc_deep_audit/
+data/gsc_inspection/
+
+curriculum/slides/*.png

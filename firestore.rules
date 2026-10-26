@@ -108,6 +108,11 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // 10. Real-Time Classroom Presence & Active Monitoring Telemetry:
+    match /live_presence/{presenceId} {
+      allow read, write: if isAuthenticated();
+    }
+
     // Default catch-all: Deny all unhandled operations
     match /{document=**} {
       allow read, write: if false;

@@ -149,6 +149,7 @@ const ParentEngine = (function() {
             renderUpcomingClasses();
             renderBillingVault();
             renderNotifications();
+            renderNoticesBannerAndBadge();
             renderProjectShowcase();
             injectModals();
         } finally {
@@ -560,10 +561,14 @@ const ParentEngine = (function() {
                         `;
                     })()}
 
-                    <div class="pt-1">
+                    <div class="pt-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <a href="parent-progress.html?studentId=${s.id}" class="btn-3d btn-3d-secondary w-full border border-indigo-100 flex items-center justify-center gap-2 text-indigo-700 font-bold hover:bg-indigo-50 transition-colors">
                             <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i>
                             <span>Track Learning Progress &rarr;</span>
+                        </a>
+                        <a href="curriculum/slides/index.html?role=student&track=${encodeURIComponent((function(p){var c=(p||'').toLowerCase();if(c.includes('scratch')||c.includes('fundamental'))return 'course_fundamentals';if(c.includes('web')||c.includes('html')||c.includes('full-stack'))return 'track_1_web_engineering';if(c.includes('ai')||c.includes('machine'))return 'track_2_ai_automation';if(c.includes('art')||c.includes('game')||c.includes('design'))return 'track_3_product_design';if(c.includes('python')||c.includes('data'))return 'track_4_python_data';if(c.includes('cyber'))return 'track_5_cybersecurity';if(c.includes('robot')||c.includes('arduino'))return 'track_6_robotics';return 'all';})(s.program))}&studentId=${encodeURIComponent(s.id)}" class="btn-3d orange w-full flex items-center justify-center gap-2 font-bold transition-colors no-underline">
+                            <i data-lucide="presentation" class="w-4 h-4"></i>
+                            <span>Lesson Slides &amp; Quests &rarr;</span>
                         </a>
                     </div>
 
@@ -598,6 +603,14 @@ const ParentEngine = (function() {
                 return s && studentIds.includes(s.studentId) && s.status !== 'cancelled' && s.attendanceStatus !== 'cancelled';
             });
         }
+        // Deduplicate by studentId + date + time so parents never see duplicate session cards
+        const seenParentSlots = new Set();
+        schedules = schedules.filter(function(s) {
+            const key = `${s.studentId || s.studentName}|${s.date || ''}|${s.time || ''}`;
+            if (seenParentSlots.has(key)) return false;
+            seenParentSlots.add(key);
+            return true;
+        });
         schedules.sort(function(a, b) {
             return ((a.date || '') + ' ' + (a.time || '')).localeCompare((b.date || '') + ' ' + (b.time || ''));
         });
@@ -1808,6 +1821,106 @@ const ParentEngine = (function() {
         if (modal) modal.classList.add('hidden');
     }
 
+    // ===== ACADEMY NOTICES & BROADCASTS FOR PARENTS =====
+    function renderNoticesBannerAndBadge() {
+        if (!currentParent || typeof DashboardEngine === 'undefined' || !DashboardEngine.getNotices) return;
+        const parentEmail = (currentParent.email || '').toLowerCase().trim();
+        const notices = DashboardEngine.getNotices('parent');
+        const unreadCount = DashboardEngine.getUnreadNoticesCount ? DashboardEngine.getUnreadNoticesCount(parentEmail, 'parent') : 0;
+
+        const navDot = document.getElementById('parent-nav-unread-dot');
+        if (navDot) {
+            navDot.classList.toggle('hidden', unreadCount === 0);
+        }
+
+        const sidebarBadge = document.getElementById('parent-unread-notices-badge');
+        if (sidebarBadge) {
+            if (unreadCount > 0) {
+                sidebarBadge.textContent = unreadCount;
+                sidebarBadge.classList.remove('hidden');
+            } else {
+                sidebarBadge.classList.add('hidden');
+            }
+        }
+
+        const banner = document.getElementById('parent-notices-banner');
+        if (banner) {
+            const latestUnread = notices.find(n => !n.readBy || !n.readBy.some(r => r.userEmail && r.userEmail.toLowerCase().trim() === parentEmail));
+            if (latestUnread) {
+                banner.style.display = 'flex';
+                const badgeEl = document.getElementById('parent-notice-badge');
+                if (badgeEl) badgeEl.textContent = (latestUnread.priority || 'general').toUpperCase();
+                const titleEl = document.getElementById('parent-notice-title');
+                if (titleEl) titleEl.textContent = latestUnread.title;
+                const summaryEl = document.getElementById('parent-notice-summary');
+                if (summaryEl) summaryEl.textContent = latestUnread.content;
+            } else {
+                banner.style.display = 'none';
+            }
+        }
+    }
+
+    function openNoticesModal() {
+        const modal = document.getElementById('parent-notices-modal');
+        if (!modal) return;
+        const container = document.getElementById('parent-notices-container');
+        if (!container) return;
+
+        const parentEmail = (currentParent && currentParent.email ? currentParent.email : '').toLowerCase().trim();
+        const notices = typeof DashboardEngine !== 'undefined' && DashboardEngine.getNotices ? DashboardEngine.getNotices('parent') : [];
+
+        if (notices.length === 0) {
+            container.innerHTML = '<div class="text-center py-8 text-slate-500 text-sm">No official academy notices posted at this time.</div>';
+        } else {
+            container.innerHTML = notices.map(n => {
+                const isRead = n.readBy && n.readBy.some(r => r.userEmail && r.userEmail.toLowerCase().trim() === parentEmail);
+                const priorityColors = {
+                    urgent: 'bg-red-100 text-red-800 border-red-200',
+                    important: 'bg-amber-100 text-amber-800 border-amber-200',
+                    general: 'bg-blue-100 text-blue-800 border-blue-200',
+                    policy: 'bg-purple-100 text-purple-800 border-purple-200'
+                };
+                const colorCls = priorityColors[n.priority] || priorityColors.general;
+                const dateStr = n.createdAt ? new Date(n.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent';
+
+                return `
+                    <div class="p-4 rounded-2xl border ${isRead ? 'border-slate-200 bg-slate-50/70' : 'border-orange-200 bg-orange-50/30 ring-1 ring-orange-200/50'} transition-all">
+                        <div class="flex items-start justify-between gap-3 mb-2">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase border ${colorCls}">${n.priority || 'general'}</span>
+                                <h4 class="font-bold text-sm text-slate-900">${n.title}</h4>
+                            </div>
+                            <span class="text-[11px] text-slate-500 shrink-0 font-medium">${dateStr}</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-3">${n.content}</p>
+                        <div class="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+                            <span class="italic font-medium">By ${n.author || 'Academic Operations'}</span>
+                            ${isRead 
+                                ? `<span class="text-emerald-700 font-bold flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i> Acknowledged</span>`
+                                : `<button type="button" onclick="ParentEngine.markNoticeAsRead('${n.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-orange-600 text-white hover:bg-orange-700 transition-colors shadow-xs cursor-pointer flex items-center gap-1"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Mark as Read</button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        if (window.lucide) lucide.createIcons();
+        modal.classList.remove('hidden');
+    }
+
+    function closeNoticesModal() {
+        const modal = document.getElementById('parent-notices-modal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function markNoticeAsRead(noticeId) {
+        if (!currentParent || !currentParent.email || typeof DashboardEngine === 'undefined') return;
+        DashboardEngine.markNoticeRead(noticeId, currentParent.email);
+        renderNoticesBannerAndBadge();
+        openNoticesModal();
+    }
+
     return {
         init,
         renderDashboard,
@@ -1831,12 +1944,18 @@ const ParentEngine = (function() {
         closeInternationalPaymentGuide,
         filterChildCards,
         copyBankDetail,
-        renderBillingVault
+        renderBillingVault,
+        renderNoticesBannerAndBadge,
+        openNoticesModal,
+        closeNoticesModal,
+        markNoticeAsRead
     };
 })();
 
 if (typeof window !== 'undefined') {
     window.ParentEngine = ParentEngine;
+    window.openParentNoticesModal = ParentEngine.openNoticesModal;
+    window.closeParentNoticesModal = ParentEngine.closeNoticesModal;
 }
 
 document.addEventListener('DOMContentLoaded', ParentEngine.init);

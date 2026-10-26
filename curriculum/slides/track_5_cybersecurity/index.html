@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track 5: Cyber Defenders | STEMulus Kids Tech Academy</title>
+  <link rel="icon" type="image/png" href="../assets/3d/stemulus-logo.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <style>
+    :root {
+      --brand-orange: #F4600C;
+      --brand-orange-deep: #C2410C;
+      --brand-orange-shadow: #9A3412;
+      --brand-indigo: #4F46E5;
+      --brand-indigo-deep: #3730A3;
+      --bg-page: #F1F5F9;
+      --bg-subtle: #F8FAFC;
+      --surface-white: #FFFFFF;
+      --text-main: #1A2332;
+      --text-muted: #475569;
+      --text-light: #64748B;
+      --border-neutral: #E2E8F0;
+      --border-subtle: #EDF2F7;
+      --shadow-shell: 0 20px 45px -10px rgba(15, 23, 42, 0.08);
+      --shadow-card: 0 4px 16px rgba(15, 23, 42, 0.04);
+      --radius-card: 20px;
+      --radius-badge: 8px;
+      --radius-tag: 10px;
+      --radius-pill: 10px;
+      --radius-btn: 14px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    header.site-header {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 18px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03), inset 0 1px 0 #FFFFFF;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-badge);
+      color: var(--text-muted);
+      font-family: 'Nunito', sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: inset 0 1px 0.5px #FFFFFF, 0 2px 4px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+    }
+    .back-btn:hover {
+      color: var(--brand-indigo);
+      border-color: #CBD5E1;
+      transform: translateX(-2px);
+    }
+    .back-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 10px;
+      filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.1));
+    }
+    .brand-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .brand-sub {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .header-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .stat-badge {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      padding: 6px 14px;
+      border-radius: var(--radius-badge);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-badge strong {
+      color: var(--text-main);
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 36px 40px 80px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Hero Course Starting Banner */
+    .course-hero {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 60%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 2px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 36px 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 10px 30px -4px rgba(15, 23, 42, 0.05);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .course-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    .hero-content {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-badge-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .course-tag {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .ages-tag {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: #F8FAFC;
+      border: 1px solid var(--border-neutral);
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .course-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .course-tagline {
+      font-size: 17px;
+      color: var(--brand-indigo);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+    .course-overview {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 24px;
+      max-width: 820px;
+      font-weight: 600;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-3d-primary {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: var(--radius-btn);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      background: linear-gradient(180deg, #FF7E36 0%, #F4600C 45%, #DF4E00 100%);
+      color: #ffffff !important;
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.65), inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 0 #9A3412, 0 8px 18px rgba(244, 96, 12, 0.28);
+      transition: all 0.12s ease;
+      overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    .btn-3d-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 6px 0 #9A3412, 0 12px 24px rgba(244, 96, 12, 0.32);
+    }
+    .btn-3d-primary svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      fill: none;
+    }
+    .btn-classroom-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 22px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-btn);
+      color: var(--text-main);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      box-shadow: inset 0 1.5px 0.5px #FFFFFF, 0 2px 0 #CBD5E1, 0 3px 6px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+    }
+    .btn-classroom-link:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+    }
+    
+    /* Live XP Tracker & Status Pills */
+    .hero-xp-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FEF3C7 60%, #FDE68A 100%);
+      border: 1px solid #F59E0B;
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-btn);
+      box-shadow: inset 0 1.5px 0.5px #FFFFFF, 0 2px 0 #D97706, 0 4px 10px rgba(245, 158, 11, 0.15);
+    }
+    .xp-trophy-img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.3));
+    }
+    .xp-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .xp-main-label {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #92400E;
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+    }
+    .xp-progress-bar-bg {
+      width: 140px;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(217, 119, 6, 0.3);
+    }
+    .xp-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #F59E0B, #D97706);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    .lesson-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: var(--radius-badge);
+      background: #F1F5F9;
+      color: #64748B;
+      border: 1px solid #CBD5E1;
+    }
+    .lesson-status-pill .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #94A3B8;
+    }
+    .lesson-status-pill.in-progress {
+      background: #FEF3C7;
+      color: #92400E;
+      border-color: #FCD34D;
+    }
+    .lesson-status-pill.in-progress .status-dot {
+      background: #F59E0B;
+    }
+    .lesson-status-pill.completed {
+      background: #ECFDF5;
+      color: #065F46;
+      border-color: #6EE7B7;
+    }
+    .lesson-status-pill.completed .status-dot {
+      background: #10B981;
+    }
+
+    .hero-3d-illus {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(15, 23, 42, 0.12));
+      flex-shrink: 0;
+    }
+
+    /* Mentoring & Pedagogical Blueprint */
+    .mentoring-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 70%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 28px 32px;
+      margin-bottom: 36px;
+      box-shadow: var(--shadow-card);
+    }
+    .mc-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .mc-head img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+    .mc-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .mc-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-weight: 600;
+      margin-bottom: 22px;
+    }
+    
+    .toolkit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .toolkit-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #EDF2F7 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 1px 0.5px #FFFFFF, 0 2px 4px rgba(15, 23, 42, 0.02);
+    }
+    .toolkit-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .toolkit-type-badge {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--brand-indigo);
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+      padding: 2px 8px;
+      border-radius: var(--radius-badge);
+    }
+    .toolkit-free-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #059669;
+    }
+    .toolkit-name {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .toolkit-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      font-weight: 600;
+      margin-bottom: 14px;
+      flex-grow: 1;
+    }
+    .toolkit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brand-indigo);
+      text-decoration: none;
+      align-self: flex-start;
+      padding: 4px 0;
+    }
+    .toolkit-btn:hover {
+      text-decoration: underline;
+    }
+    .toolkit-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+
+    /* Tier Sections & Lesson Cards */
+    .tier-section {
+      margin-bottom: 40px;
+    }
+    .tier-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      border-bottom: 2px solid var(--border-neutral);
+    }
+    .tier-badge-label {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+    }
+    .tier-lesson-count {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: #FFFFFF;
+      border: 1px solid var(--border-neutral);
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .tier-lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 22px;
+    }
+    .lesson-hub-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 60%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 4px 12px rgba(15, 23, 42, 0.03);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+    }
+    .lesson-hub-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 35%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    .lesson-hub-card:hover {
+      transform: translateY(-4px);
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 14px 30px -4px rgba(15, 23, 42, 0.08), 0 3px 0 #CBD5E1;
+      border-color: #CBD5E1;
+    }
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .lesson-num-badge {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #EDF2F7 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1px solid #FFFFFF;
+      padding: 4px 10px;
+      border-radius: var(--radius-badge);
+      color: var(--text-muted);
+    }
+    .xp-preview-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9A3412;
+      background: #FFF7ED;
+      border: 1px solid #FFEDD5;
+      padding: 3px 8px;
+      border-radius: var(--radius-badge);
+    }
+    .card-lesson-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .card-hook-text {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      font-weight: 600;
+      flex-grow: 1;
+    }
+    .card-concept-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .card-concept-row img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+    .quest-preview-box {
+      background: #FFFFFF;
+      border: 1px solid #EDF2F7;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .qp-title {
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .qp-item {
+      margin-bottom: 3px;
+    }
+    .qp-item:last-child {
+      margin-bottom: 0;
+    }
+    .btn-launch-lesson {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 18px;
+      border-radius: var(--radius-btn);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 13.5px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      background: linear-gradient(180deg, #FF7E36 0%, #F4600C 45%, #DF4E00 100%);
+      color: #ffffff !important;
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.65), inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2), 0 3px 0 #9A3412, 0 6px 14px rgba(244, 96, 12, 0.24);
+      transition: all 0.12s ease;
+      overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    .btn-launch-lesson:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 5px 0 #9A3412, 0 10px 20px rgba(244, 96, 12, 0.28);
+    }
+    .btn-launch-lesson svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+    
+    footer {
+      background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #FFFFFF 100%);
+      border-top: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 24px 40px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <a href="../index.html" class="back-btn">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>All Courses (Master Portal)</span>
+        </a>
+        <div class="brand-wrap">
+          <img src="../assets/3d/stemulus-logo.png" class="brand-logo" alt="STEMulus">
+          <div>
+            <div class="brand-title">STEMulus Kids Tech Academy</div>
+            <div class="brand-sub">Course Syllabus &amp; Interactive Learning Hub</div>
+          </div>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-badge">
+          <span>Target: <strong>Ages 10 - 17</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Curriculum: <strong>16 Lessons</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Tiers: <strong>Senior Innovators</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Pacing: <strong>45 Mins / Lesson</strong></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Hero Course Starting Banner -->
+    <div class="course-hero">
+      <div class="hero-content">
+        <div class="hero-badge-row">
+          <span class="course-tag">Course Starting Hub</span>
+          <span class="ages-tag">Ages 10 - 17</span>
+          <span class="ages-tag">16 Interactive Slide Decks</span>
+        </div>
+        <h1 class="course-title">Track 5: Cyber Defenders</h1>
+        <p class="course-tagline">Defend the Digital Frontier: Cryptography, Packet Inspection & Ethical Defense</p>
+        <p class="course-overview">In an interconnected world, cybersecurity is the shield protecting human freedom and data privacy. Track 5 explores the principles of ethical defense: Caesar and Vigenère ciphers, public-key RSA cryptography, packet sniffing with Wireshark, password hashing, SQL injection defenses, and cyber hygiene.</p>
+        <div class="hero-actions">
+          <a href="innovators_ages_10_17/lesson_01_ethical_hacker_code.html" class="btn-3d-primary" target="_blank">
+            <span>Start Lesson 01: The White-Hat Mindset &amp; CIA Triad</span>
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <div class="hero-xp-card" id="hero-xp-tracker">
+            <img src="../assets/3d/gold-trophy-3d.png" class="xp-trophy-img" alt="XP">
+            <div class="xp-text-group">
+              <span class="xp-main-label"><strong id="hub-xp-count">0</strong> / 5600 Course XP</span>
+              <div class="xp-progress-bar-bg">
+                <div class="xp-progress-fill" id="hub-xp-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img src="../assets/3d/admin-shield-3d.png" class="hero-3d-illus" alt="Track 5: Cyber Defenders">
+    </div>
+
+    <!-- Student Learning Journey & Software Sandbox Toolkit -->
+    <div class="mentoring-card">
+      <div class="mc-head">
+        <img src="../assets/3d/rocket-launch-3d.png" alt="Learning Journey">
+        <div class="mc-title">Your Learning Journey: Hands-On Mentoring &amp; Creative Sandboxes</div>
+      </div>
+      <p class="mc-body">Every session is a hands-on coding workshop with your dedicated mentor. You take the driver seat at the keyboard, building real apps, animations, and game worlds in zero-install browser sandboxes. Test your theories, conquer interactive checkpoints, and earn Bronze (+50 XP), Silver (+100 XP), and Gold (+200 XP) mastery badges as you advance!</p>
+      
+      <div style="font-family: 'Fredoka', 'Nunito', sans-serif; font-size: 16px; font-weight: 700; color: var(--brand-indigo); margin-bottom: 12px;">
+        100% Free Software &amp; Sandbox Setup for This Course:
+      </div>
+      <div class="toolkit-grid">
+        
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Swiss Army Knife for Cyber</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">CyberChef</div>
+          <p class="toolkit-desc">Browser-based cipher encoder, decoder, and data converter by GCHQ.</p>
+          <a href="https://gchq.github.io/CyberChef/" class="toolkit-btn" target="_blank">
+            <span>Open CyberChef</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Packet Inspection Analyzer</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Wireshark</div>
+          <p class="toolkit-desc">Industry network protocol analyzer displaying live packets traversing the network.</p>
+          <a href="https://www.wireshark.org/" class="toolkit-btn" target="_blank">
+            <span>Open Wireshark</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Wargame Puzzles</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">OverTheWire CTF</div>
+          <p class="toolkit-desc">Gamified security puzzles teaching Linux terminal navigation and privilege defense.</p>
+          <a href="https://overthewire.org/" class="toolkit-btn" target="_blank">
+            <span>Open OverTheWire CTF</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Syllabus & Lesson Decks By Developmental Tier -->
+    
+        <section class="tier-section">
+          <div class="tier-header-bar">
+            <div class="tier-badge-label">Innovators (Ages 10–17)</div>
+            <div class="tier-lesson-count">16 Interactive Lessons</div>
+          </div>
+          <div class="tier-lessons-grid">
+            
+            <div class="lesson-hub-card" data-slug="lesson_01_ethical_hacker_code">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 01</span>
+                <div class="lesson-status-pill" id="status-lesson_01_ethical_hacker_code"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The White-Hat Mindset &amp; CIA Triad</h3>
+              <p class="card-hook-text">Taking the ethical hacker oath and mastering Confidentiality, Integrity, and Availability</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/admin-shield-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> The CIA Security Triad</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Classify 5 real-world cyber incidents under which pillar of the CIA Triad was breached.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Draft a formal 'Rules of Engagement &amp; Ethical Hacking Code of Honor' document.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Design a threat model for a school grading portal identifying vulnerabilities for all 3 pillars.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_01_ethical_hacker_code.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_02_digital_footprints_osint">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 02</span>
+                <div class="lesson-status-pill" id="status-lesson_02_digital_footprints_osint"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Digital Footprints &amp; OSINT Reconnaissance</h3>
+              <p class="card-hook-text">Extracting EXIF metadata and uncovering Open Source Intelligence clues</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/signpost-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> OSINT Reconnaissance</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Inspect EXIF metadata of sample photos using an online EXIF viewer.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Demonstrate how a username search across public tools reveals multiple connected social accounts.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Solve a geolocation challenge: Determine the exact location of a landmark using background clues and Google Earth.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_02_digital_footprints_osint.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_03_phishing_social_defense">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 03</span>
+                <div class="lesson-status-pill" id="status-lesson_03_phishing_social_defense"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Social Engineering &amp; Phishing Defense</h3>
+              <p class="card-hook-text">Dissecting psychological manipulation, spear phishing, and spoofed domains</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Social Engineering Tactics</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Dissect a sample phishing email and identify 4 distinct red flags.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Analyze a spoofed URL and explain how character substitutions (homoglyph attacks) trick users.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Create an educational 'Phishing Defense Guide' for your school or family members.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_03_phishing_social_defense.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_04_tcpip_ports_protocols">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 04</span>
+                <div class="lesson-status-pill" id="status-lesson_04_tcpip_ports_protocols"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Networking Secrets (Packets, Ports &amp; Protocols)</h3>
+              <p class="card-hook-text">Tracing how packets hop across underwater fiber cables and hit destination ports</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/lightbulb-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> The TCP/IP Suite</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Use `ping` in the terminal to measure network latency to servers in 3 different countries.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Trace the route of packets using `traceroute` (`tracert` on Windows) and count international hops.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Match 8 core protocols (HTTP, HTTPS, SSH, FTP, DNS, DHCP, SMTP, TCP) to their standard port numbers.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_04_tcpip_ports_protocols.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_05_packet_sniffing_wireshark">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 05</span>
+                <div class="lesson-status-pill" id="status-lesson_05_packet_sniffing_wireshark"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Packet Sniffing &amp; Traffic Analysis (Wireshark)</h3>
+              <p class="card-hook-text">Inspecting .pcap packet streams and exposing plaintext credentials</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/alphabet-blocks-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Packet Analysis Engine</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Open a sample `.pcap` capture file in CloudShark or Wireshark.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Apply filters to isolate DNS requests and identify websites visited in the capture.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Locate and extract plaintext login credentials sent over an unencrypted HTTP POST request.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_05_packet_sniffing_wireshark.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_06_ssl_tls_encryption">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 06</span>
+                <div class="lesson-status-pill" id="status-lesson_06_ssl_tls_encryption"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Secret Handshake (SSL/TLS Encryption)</h3>
+              <p class="card-hook-text">Understanding asymmetric key exchange, symmetric session keys, and digital certificates</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/radar-chart-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> SSL/TLS Handshake</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Inspect the SSL/TLS digital certificate of any major website in your browser.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Verify the issuing Certificate Authority, expiration date, and SHA-256 fingerprint.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Diagram the 4-step TLS handshake showing how public and private keys negotiate session keys.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_06_ssl_tls_encryption.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_07_linux_terminal_fortress">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 07</span>
+                <div class="lesson-status-pill" id="status-lesson_07_linux_terminal_fortress"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Linux Fortress (Terminal Navigation)</h3>
+              <p class="card-hook-text">Commanding Linux filesystems, directories, pipes, and text manipulation</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/terminal-screen-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Linux Command Line</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Log into an educational Linux terminal sandbox (Webminal or OverTheWire Bandit).</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Navigate directories, create files, and inspect hidden dotfiles with `ls -la`.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Use `grep` to filter a simulated 10,000-line server log file for failed login attempts.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_07_linux_terminal_fortress.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_08_linux_permissions_chmod">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 08</span>
+                <div class="lesson-status-pill" id="status-lesson_08_linux_permissions_chmod"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Fortifying File Permissions (chmod &amp; chown)</h3>
+              <p class="card-hook-text">Mastering read/write/execute bits, octal notation (755, 600), and root privileges</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/registration-stack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Linux Permissions Architecture</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Inspect file permission strings (`-rwxr-xr-x`) in a Linux sandbox.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Convert octal permission numbers (755, 644, 600, 777) into their corresponding `rwx` strings.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Use `chmod` to lock down a simulated SSH private key file so only the owner can access it.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_08_linux_permissions_chmod.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_09_cryptographic_hashes_sha">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 09</span>
+                <div class="lesson-status-pill" id="status-lesson_09_cryptographic_hashes_sha"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">One-Way Mathematical Blenders (SHA-256)</h3>
+              <p class="card-hook-text">Understanding cryptographic hashing, collision resistance, and the avalanche effect</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/radar-chart-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Cryptographic Hashing</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Hash your name and a sentence using SHA-256 in Python or CyberChef.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Demonstrate the Avalanche Effect: Change 1 single character and compare the two hashes.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Verify the integrity of a downloaded file by comparing its calculated SHA-256 checksum.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_09_cryptographic_hashes_sha.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_10_passwords_salts_cracking">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 10</span>
+                <div class="lesson-status-pill" id="status-lesson_10_passwords_salts_cracking"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Defeating Rainbow Tables (Salting Passwords)</h3>
+              <p class="card-hook-text">How hackers crack weak hashes with dictionary attacks, and how cryptographic salts stop them</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Password Security &amp; Salts</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Demonstrate how an unsalted MD5 hash of a common password gets instantly cracked via lookup.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Write a Python script that appends a random 16-character salt to passwords before computing SHA-256.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Calculate how long it takes an attacker to brute force an 8-character password vs a 16-character passphrase.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_10_passwords_salts_cracking.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_11_owasp_sql_injection">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 11</span>
+                <div class="lesson-status-pill" id="status-lesson_11_owasp_sql_injection"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Web Security &amp; Query Defense (SQL Injection)</h3>
+              <p class="card-hook-text">Understanding unsanitized inputs, payload manipulation, and parameterized query defenses</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/holo-database-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> SQL Injection (SQLi)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Demonstrate a SQL injection bypass on an educational security lab (Juice Shop / PortSwigger).</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Explain line-by-line why `' OR 1=1 --` tricks the database query into returning True.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Write a secure backend query in Python or Node.js using parameterized placeholders (`?`).</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_11_owasp_sql_injection.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_12_owasp_xss_sanitization">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 12</span>
+                <div class="lesson-status-pill" id="status-lesson_12_owasp_xss_sanitization"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Browser Hijacking (Cross-Site Scripting XSS)</h3>
+              <p class="card-hook-text">Exploring Stored vs Reflected XSS, cookie theft, and HTML entity encoding</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Cross-Site Scripting (XSS)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Trigger an alert payload (`&lt;script&gt;alert('XSS')&lt;/script&gt;`) inside a safe educational training lab.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Inspect how browser cookies (`document.cookie`) can be accessed by unsanitized scripts.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Write an HTML sanitization function that converts dangerous characters (`&lt;`, `&gt;`, `&quot;`, `&amp;`) into safe HTML entities.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_12_owasp_xss_sanitization.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_13_malware_taxonomy_sandboxes">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 13</span>
+                <div class="lesson-status-pill" id="status-lesson_13_malware_taxonomy_sandboxes"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Malware Taxonomy &amp; Behavioral Sandboxing</h3>
+              <p class="card-hook-text">Analyzing viruses, trojans, ransomware, and inspecting behavioral anomalies on VirusTotal</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/lightbulb-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Malware Categories</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Inspect a suspicious file hash report on VirusTotal and interpret the detection score.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Analyze behavioral reports: Identify registry keys modified and external C2 IP addresses contacted.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Draft an Incident Response Plan for a school whose library computers get infected with ransomware.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_13_malware_taxonomy_sandboxes.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_14_firewalls_network_defense">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 14</span>
+                <div class="lesson-status-pill" id="status-lesson_14_firewalls_network_defense"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Castle Walls (Firewalls &amp; Network Defense)</h3>
+              <p class="card-hook-text">Configuring stateful firewall rules, port filtering, and intrusion prevention systems</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/backpack-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Network Defenses</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Configure 3 firewall rules in a virtual lab or Linux UFW: Allow web (80/443), allow SSH (22), block all else.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Simulate a port scan using Nmap in a sandbox and verify that closed ports are properly filtered.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Differentiate between an Intrusion Detection System (IDS) and an Intrusion Prevention System (IPS).</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_14_firewalls_network_defense.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_15_capture_the_flag_gauntlet">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 15</span>
+                <div class="lesson-status-pill" id="status-lesson_15_capture_the_flag_gauntlet"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Capture The Flag (CTF Gauntlet)</h3>
+              <p class="card-hook-text">Solving timed forensic, cryptographic, and network security puzzles</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/radar-chart-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> CTF Competitions</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Log into an educational CTF platform (PicoCTF or CyberStart Game).</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Solve 2 Linux terminal navigation challenges to locate hidden flags.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Solve a Cryptography challenge decoding a multi-layered Caesar and Base64 cipher.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_15_capture_the_flag_gauntlet.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_16_security_audit_capstone">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 16</span>
+                <div class="lesson-status-pill" id="status-lesson_16_security_audit_capstone"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Executive Security Audit &amp; Graduation</h3>
+              <p class="card-hook-text">Conducting a comprehensive vulnerability assessment and delivering a technical defense</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/lightbulb-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Vulnerability Assessment</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Audit a mock enterprise network architecture diagram and identify 3 critical security risks.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Assign CVSS severity ratings (Low, Medium, High, Critical) and propose exact technical fixes for each.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Deliver a professional 5-minute security briefing presentation and defend remediation priorities to your mentor.</div>
+              </div>
+              <a href="innovators_ages_10_17/lesson_16_security_audit_capstone.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+
+  </main>
+
+  <footer>
+    STEMulus Kids Tech Academy &bull; Track 5: Cyber Defenders Starting Hub &bull; 1-on-1 Mentoring Curriculum &bull; 100% Offline Resilience
+  </footer>
+
+  <script>
+    (function() {
+      const lessons = document.querySelectorAll('.lesson-hub-card');
+      let totalCourseXp = 0;
+      let completedLessons = 0;
+      const maxCourseXp = lessons.length * 350;
+
+      lessons.forEach(card => {
+        const slug = card.getAttribute('data-slug');
+        if (!slug) return;
+        try {
+          const raw = localStorage.getItem('stemulus_quest_' + slug);
+          if (raw) {
+            const state = JSON.parse(raw);
+            let lessonXp = 0;
+            if (state.Bronze) lessonXp += 50;
+            if (state.Silver) lessonXp += 100;
+            if (state.Gold) lessonXp += 200;
+            
+            if (lessonXp > 0) {
+              totalCourseXp += lessonXp;
+              const statusEl = document.getElementById('status-' + slug);
+              if (statusEl) {
+                if (lessonXp >= 350) {
+                  statusEl.className = 'lesson-status-pill completed';
+                  statusEl.innerHTML = '<span class="status-dot"></span><span>Gold Mastered (+350 XP)</span>';
+                  completedLessons++;
+                } else {
+                  statusEl.className = 'lesson-status-pill in-progress';
+                  statusEl.innerHTML = '<span class="status-dot"></span><span>In Progress (+' + lessonXp + ' XP)</span>';
+                }
+              }
+            }
+          }
+        } catch(e) {}
+      });
+
+      const xpCountEl = document.getElementById('hub-xp-count');
+      const xpFillEl = document.getElementById('hub-xp-fill');
+      if (xpCountEl) xpCountEl.innerText = totalCourseXp;
+      if (xpFillEl && maxCourseXp > 0) {
+        const pct = Math.min(100, Math.round((totalCourseXp / maxCourseXp) * 100));
+        xpFillEl.style.width = pct + '%';
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -2193,6 +2193,30 @@
     if (window.lucide) lucide.createIcons();
   };
 
+  /* ── Birthday → Age auto-sync (keeps age & birthday consistent) ── */
+  (function wireBirthdayAge() {
+    const bdayEl = document.getElementById('student_birthday');
+    const ageEl  = document.getElementById('student_age');
+    if (!bdayEl || !ageEl) return;
+    const today = new Date();
+    bdayEl.max = today.toISOString().split('T')[0];
+    const minD = new Date(today.getFullYear() - 19, today.getMonth(), today.getDate());
+    bdayEl.min = minD.toISOString().split('T')[0];
+    bdayEl.addEventListener('change', function () {
+      if (!bdayEl.value) return;
+      const d = new Date(bdayEl.value + 'T12:00:00');
+      if (isNaN(d.getTime())) return;
+      let a = today.getFullYear() - d.getFullYear();
+      if (today.getMonth() < d.getMonth() || (today.getMonth() === d.getMonth() && today.getDate() < d.getDate())) a--;
+      const clamped = Math.max(5, Math.min(17, a));
+      ageEl.value = String(clamped);
+      ageEl.dispatchEvent(new Event('change', { bubbles: true }));
+      if (a < 5 || a > 17) {
+        if (typeof showToast === 'function') showToast('Our programs are for ages 5–17. Age set to ' + clamped + '.', 'info');
+      }
+    });
+  })();
+
   /* ── Validation ── */
   function validateStep(stepNum) {
     if (stepNum === 1) {
@@ -2525,6 +2549,7 @@
 </a>
 
 <script src="assets/js/quick-booking.min.js" defer></script>
+<script src="assets/js/lead-genius-engine.min.js" defer></script>
 <script src="assets/js/stemulus-icons.js" defer></script>
 <script src="assets/js/scroll-choreography.js" defer></script>
 <script src="assets/js/stemulus-interactive.js" defer></script>

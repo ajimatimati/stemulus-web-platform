@@ -1,0 +1,164 @@
+# STEMulus Kids Technologies — Unabridged Academic Syllabus & Operations Reference
+
+> Complete technical, pedagogical, and operational reference for STEMulus Kids Technologies (STEMulus Innovations LTD).
+
+Published: October 2026  
+Website: https://stemuluskidstech.com  
+Portal: https://portal.stemuluskidstech.com  
+Contact: admin@stemuluskidstech.com · WhatsApp: +234 705 246 6716  
+
+---
+
+## 1. Institutional Overview & Pedagogical Thesis
+
+STEMulus Kids Technologies is a global 1-on-1 computer science and creative engineering academy for children and adolescents aged 5 to 17. The academy operates across the US, UK, Canada, Australia, Nigeria, Ghana, Kenya, South Africa, Ireland, and the UAE.
+
+### Core Pedagogical Principles:
+1. **Zero-Fluff, Build-First Learning:** Every 55-minute session is centered on tangible project construction. Theory is introduced organically in service of the build rather than via passive lectures.
+2. **100% 1-on-1 Dedicated Mentorship:** No grouped broadcast calls or self-paced video isolation. Each student is matched with an industry engineer or trained educator who adapts pacing to the student's cognitive style.
+3. **Dual Milestone Certification:** Students receive graded competency credentials upon completing foundation (12 weeks), intermediate (24 weeks), and advanced capstone (36 weeks) thresholds.
+4. **Gamified Quest Mechanics:** Lessons are presented as "Missions" and "Quests" with tangible badges, levels, and progress tracking visible to parents in real time.
+
+---
+
+## 2. Comprehensive 215-Lesson Curriculum Architecture
+
+The STEMulus curriculum comprises 215 structured lesson slide decks, interactive prompt laboratories, and browser-based assessment runners.
+
+### Track 1: Game Creators & Visual Logic (36 Lessons · Ages 5–9)
+- **Module 1 (Lessons 1–12): Foundations of Computational Logic**
+  - Algorithms, sequential order, coordinate planes (X/Y).
+  - Sprite creation, vector costumes, and basic motion commands.
+  - Event triggers: Green Flag, mouse click, keyboard control.
+  - Loops: Forever loops vs. repeat counts.
+  - Conditional logic: `if-then` decisions and sensory detection (touching colors, edges, mouse pointer).
+- **Module 2 (Lessons 13–24): Interactive Mechanics & Physics**
+  - Collision detection, bounce angles, velocity variables.
+  - Score counters, health meters, timer countdowns.
+  - Broadcast messaging: Inter-sprite communication and game state transitions (Start -> Play -> Game Over -> Victory).
+  - Sounds, music loops, and custom sound effects.
+  - Multi-level game designs (Platformers, Maze Escapes).
+- **Module 3 (Lessons 25–36): Advanced Game Engineering & Capstone**
+  - Sprite cloning for enemy waves, projectiles, and particle effects.
+  - Custom Scratch blocks (`Functions` with input arguments).
+  - Gravity simulation and jumping physics in platformers.
+  - Capstone project: Full arcade game creation, debugging, peer testing, and public deployment.
+
+### Track 2: Python Power & Data Science (48 Lessons · Ages 9–17)
+- **Module 1 (Lessons 1–12): Syntax & Algorithmic Geometry (Turtle Graphics)**
+  - Python interpreter, syntax, variables, data types (strings, integers, floats, booleans).
+  - Procedural drawing with Turtle: angles, polygons, spirals, and color palettes.
+  - `for` loops with `range()`, nested loops, and modular functions.
+  - User input handling with `input()` and type casting (`int()`, `float()`).
+- **Module 2 (Lessons 13–24): Control Flow & Complex Data Structures**
+  - Logical operators (`and`, `or`, `not`), `if-elif-else` branching.
+  - Python Lists: indexing, slicing, appending, inserting, and list comprehensions.
+  - Dictionaries and Key-Value mapping.
+  - `while` loops, infinite game loops, `break`, and `continue`.
+  - String manipulation, parsing, and text-based adventure games.
+- **Module 3 (Lessons 25–36): Object-Oriented Programming (OOP) & Pygame**
+  - Classes, Objects, `__init__` constructor, methods, and attributes.
+  - Inheritance, encapsulation, and code modularity.
+  - Pygame architecture: Game window, surface rendering, event polling, FPS clock.
+  - Sprite classes, rect collision detection, keyboard/mouse event listeners.
+  - Classic Arcade Builds: Snake, Pong, Space Invaders.
+- **Module 4 (Lessons 37–48): Data Science & Algorithms**
+  - File I/O: Reading and writing CSV/JSON files.
+  - Introduction to data structures: Stacks, queues, and search algorithms (Linear vs. Binary).
+  - Basic data visualization with Matplotlib and data manipulation.
+  - Capstone: Student-built data visualizer or multi-state graphical application.
+
+### Track 3: Web Wizards & Full-Stack Apps (40 Lessons · Ages 10–17)
+- **Module 1 (Lessons 1–10): Semantic Markup & Modern CSS**
+  - HTML5 structural elements: `header`, `nav`, `main`, `section`, `article`, `aside`, `footer`.
+  - Forms, inputs, tables, media embedding (audio/video).
+  - CSS styling: Box model, borders, margins, padding, typography, color schemes.
+  - CSS Flexbox: direction, justify-content, align-items, flex-wrap.
+  - CSS Grid: template columns, grid gaps, auto-fit responsive layouts.
+- **Module 2 (Lessons 11–20): Responsive Design & Interactive JavaScript**
+  - Media queries, mobile-first design, viewport units.
+  - JavaScript fundamentals: `let`, `const`, data types, arrow functions, DOM querying (`querySelector`).
+  - Event listeners: `click`, `input`, `submit`, `keydown`.
+  - Modifying DOM elements, classes (`classList.toggle`), inline styles dynamically.
+  - Building interactive widgets: Dark mode toggle, modal dialogues, accordion FAQ, interactive tab bars.
+- **Module 3 (Lessons 21–30): Asynchronous JavaScript & REST APIs**
+  - Arrays and Objects manipulation in JS (`map`, `filter`, `forEach`).
+  - Asynchronous programming: Promises and `async/await`.
+  - Fetch API: Querying public REST APIs (Weather, NASA, Trivia, Dog CEO).
+  - JSON parsing and dynamic DOM rendering.
+  - Client-side data persistence with `localStorage`.
+- **Module 4 (Lessons 31–40): Full-Stack Architecture & Web App Capstone**
+  - Form validation and error handling.
+  - Introduction to backend API concepts, endpoints, and serverless functions.
+  - Git & GitHub basics, deploying to Netlify and Vercel.
+  - Capstone: Full interactive single-page application (SPA) deployed to the live web.
+
+### Track 4: Robotics & IoT Virtual Lab (32 Lessons · Ages 9–17)
+- **Module 1 (Lessons 1–10): Circuit Theory & Microcontroller Architecture**
+  - Electricity fundamentals: Voltage, Current, Resistance, Ohm's Law (`V=I*R`).
+  - Breadboards, LEDs, series vs. parallel circuits.
+  - Arduino Uno microcontroller: digital pins, ground, power rails.
+  - Arduino C++ programming: `setup()` and `loop()` lifecycle.
+  - Digital output: Blinking LEDs, SOS signals, binary counters.
+- **Module 2 (Lessons 11–20): Sensors, Analog Inputs & Actuators**
+  - Analog inputs: Potentiometers, photoresistors (LDR), temperature sensors (TMP36).
+  - Pulse-Width Modulation (PWM) and analog output: LED fading and motor speed regulation.
+  - Actuators: Servo motors (0-180 degree positioning), DC motors with H-bridge controllers.
+  - Sound generation: Piezo buzzers, tone frequencies, melody composition.
+- **Module 3 (Lessons 21–32): Complex IoT Systems & Virtual Prototyping**
+  - Ultrasonic distance sensors (`HC-SR04`) and distance calculation.
+  - Liquid Crystal Displays (LCD 16x2) via I2C communication.
+  - Automated Systems: Smart Street Light, Digital Thermometer, Ultrasonic Reverse Parking Sensor.
+  - Capstone: Fully simulated multi-sensor smart home security or weather monitoring system in Tinkercad.
+
+### Track 5: Creative Coding & Digital Arts (24 Lessons · Ages 7–14)
+- **Module 1 (Lessons 1–8): Generative Graphics with p5.js**
+  - Coordinate grid, shapes (rect, circle, triangle, bezier), color spaces (RGB, HSB).
+  - The draw loop vs. setup loop.
+  - Mouse-reactive drawing canvases and digital paintbrush tools.
+  - Randomness vs. Perlin noise in computational art.
+- **Module 2 (Lessons 9–16): Mathematical Patterns & Particle Systems**
+  - Trigonometry in coding: `sin()` and `cos()` wave oscillations.
+  - Object-oriented particle systems: Position, velocity, acceleration, gravity.
+  - Generative recursive trees and fractals.
+  - Cellular automata and Game of Life patterns.
+- **Module 3 (Lessons 17–24): Interactive Sound & Audiovisual Installations**
+  - Audio input/output with p5.sound library.
+  - Frequency analysis and audio visualizers.
+  - Interactive optical illusions and generative wallpaper generators.
+  - Capstone: Audiovisual generative art exhibition.
+
+### Track 6: AI Explorers & Machine Learning (35 Lessons · Ages 10–17)
+- **Module 1 (Lessons 1–10): What is Intelligence? Machine Learning Fundamentals**
+  - AI vs. Machine Learning vs. Traditional Code.
+  - Supervised learning: Training datasets, labels, feature extraction.
+  - Google Teachable Machine: Image classifiers, audio classification, pose recognition.
+  - Model confidence scores, overfitting, underfitting, and threshold tuning.
+- **Module 2 (Lessons 11–20): Computer Vision & Gesture Recognition**
+  - How computers see: Pixels, RGB channels, bounding boxes, convolution.
+  - Tracking human movement via webcam and pose landmarks.
+  - Integrating trained ML models into JavaScript web apps.
+  - Project builds: Gesture-controlled Pong, Rock-Paper-Scissors AI champion.
+- **Module 3 (Lessons 21–35): Large Language Models, Prompt Engineering & Ethics**
+  - Natural Language Processing (NLP) intuition: Tokens, embeddings, attention.
+  - Prompt Engineering Lab: Zero-shot, few-shot, system role prompts, and prompt injection defense.
+  - AI Ethics: Algorithmic bias, deepfakes, copyright, intellectual property, and responsible usage.
+  - Capstone: Custom AI web assistant or autonomous conversational bot.
+
+---
+
+## 3. Operations, Safeguarding & Compliance
+
+- **COPPA & Child Safety:** No student personal data, full names, or locations are ever published without explicit parental consent. Webcam sessions are strictly private 1-on-1 and recorded exclusively for safety audit and parent review.
+- **Mentor Selection Protocol:** Mentors undergo identity verification, background screening, technical interviews, and a live 15-minute pedagogical demonstration. Acceptance rate is strictly limited to the top 5% of candidates.
+- **Universal Date of Birth (DOB) Standard:** All enrollment and booking workflows require student and tutor birth dates to ensure developmentally appropriate mentor matching and strict safeguarding compliance.
+
+---
+
+## 4. Enrollment & Booking Endpoints
+
+- **Free 45-Min Discovery Session:** https://stemuluskidstech.com/book-class.html
+- **Full Enrollment:** https://stemuluskidstech.com/enroll.html
+- **Tutor Careers:** https://stemuluskidstech.com/join-as-tutor.html
+- **Support & Admissions WhatsApp:** https://wa.me/2347052466716
+- **Support & Admissions Email:** admin@stemuluskidstech.com

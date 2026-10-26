@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="portal-view">
 <head>
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="assets/vendor/lucide.min.js"></script>
   <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
   <link rel="stylesheet" href="assets/css/tailwind-output.css">
   <link rel="stylesheet" href="dist/combined.css">
@@ -21,6 +21,23 @@
   <link rel="stylesheet" href="assets/css/portal-animations.css">
   <link rel="stylesheet" href="assets/css/tutor-styles.css">
   <link rel="icon" type="image/png" href="favicon.png">
+
+  <script src="assets/js/stemulus-security.min.js"></script>
+  <script>
+  (function(){
+    try {
+      var s = (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession)
+        ? StemulusSecurity.getSecureSession()
+        : null;
+      var ttl = 8 * 60 * 60 * 1000;
+      if (!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
+        window.location.replace('tutor-login.html');
+      }
+    } catch(e) {
+      window.location.replace('tutor-login.html');
+    }
+  })();
+  </script>
 
   <script>if(window.tailwind){tailwind.config={theme:{extend:{}}}}</script>
   <style>
@@ -103,10 +120,10 @@
         : null;
       var ttl = 8 * 60 * 60 * 1000;
       if (!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
-        window.location.replace('parent-login.html?role=tutor');
+        window.location.replace('tutor-login.html');
       }
     } catch(e) {
-      window.location.replace('parent-login.html?role=tutor');
+      window.location.replace('tutor-login.html');
     }
   })();
   </script>
@@ -177,7 +194,7 @@
           <p class="text-xs truncate" style="color:rgba(255,255,255,0.75);">Instructor</p>
         </div>
       </div>
-      <button id="logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=tutor';" class="w-full flex items-center justify-center gap-2 transition-colors text-sm py-2" style="color:rgba(255,255,255,0.85);border:none;background:rgba(255,255,255,0.05);border-radius:12px;cursor:pointer;">
+      <button id="logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='tutor-login.html';" class="w-full flex items-center justify-center gap-2 transition-colors text-sm py-2" style="color:rgba(255,255,255,0.85);border:none;background:rgba(255,255,255,0.05);border-radius:12px;cursor:pointer;">
         <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
       </button>
     </div>
@@ -185,23 +202,23 @@
 
   <!-- Main Content View -->
   <main class="lg:ml-64 p-4 md:p-8 relative z-10">
-    <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-      <div class="flex items-center gap-3">
-        <button id="menu-btn" class="lg:hidden p-2 text-gray-600 hover:text-slate-800 focus:outline-none" aria-label="Toggle menu">
-          <i data-lucide="menu" class="w-6 h-6"></i>
+    <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
+      <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+        <button id="menu-btn" class="lg:hidden w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-white border border-slate-200 text-gray-600 hover:text-slate-800 focus:outline-none shrink-0" aria-label="Toggle menu">
+          <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
-        <div>
-          <h1 class="text-3xl font-bold font-nunito text-gray-800">Attendance History</h1>
-          <p class="text-gray-500">View and manage your submitted class attendance reports.</p>
+        <div class="min-w-0">
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-bold font-nunito text-gray-800 truncate">Attendance History</h1>
+          <p class="text-xs sm:text-sm text-gray-500 truncate">View and manage your submitted class attendance reports.</p>
         </div>
       </div>
-      <a href="tutor-attendance-create.html" class="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#4B49AC] to-[#7978E9] text-white font-semibold rounded-2xl hover:opacity-90 hover:shadow-lg hover:-translate-y-0.5 transition-all self-start sm:self-auto">
-        <i data-lucide="plus" class="w-5 h-5"></i> Submit Attendance
+      <a href="tutor-attendance-create.html" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-[#4B49AC] to-[#7978E9] text-white font-bold text-xs sm:text-sm rounded-xl hover:opacity-90 hover:shadow-lg transition-all w-full sm:w-auto min-h-[44px]">
+        <i data-lucide="plus" class="w-4 h-4"></i> Submit Attendance
       </a>
     </header>
 
     <!-- Hero Band -->
-    <div class="hero-band mb-8 rounded-2xl" style="background: linear-gradient(135deg, #26A69A, #66BB6A);">
+    <div class="hero-band mb-6 sm:mb-8 rounded-2xl" style="background: linear-gradient(135deg, #26A69A, #66BB6A);">
       <img src="images/portal/standalone/clock-3d.png" alt="" class="float-accent float-accent--sm float-accent--blur animate-drift" style="position:absolute; top:12%; left:8%;" loading="lazy">
       <img src="images/portal/standalone/hourglass-3d.png" alt="" class="float-accent float-accent--sm float-accent--soft animate-orbit motion-delay-3" style="position:absolute; bottom:18%; left:22%;" loading="lazy">
       <div class="accent-sphere--teal accent-sphere animate-drift-reverse motion-delay-2" style="top:25%; right:35%;"></div>
@@ -240,11 +257,11 @@
     <div class="history-card-luxury overflow-hidden">
       <!-- Tabs -->
       <div class="flex border-b border-gray-200" id="attendance-tabs">
-        <button id="tab-my-students" class="flex-1 py-4 text-center font-semibold text-blue-600 border-b-2 border-blue-600 bg-blue-50/30 transition-all focus:outline-none flex items-center justify-center gap-2">
-          <i data-lucide="users" class="w-5 h-5"></i> My Students
+        <button id="tab-my-students" class="flex-1 py-3 sm:py-4 px-2 text-center font-bold text-xs sm:text-sm text-blue-600 border-b-2 border-blue-600 bg-blue-50/30 transition-all focus:outline-none flex items-center justify-center gap-1.5 sm:gap-2 min-h-[44px]">
+          <i data-lucide="users" class="w-4 h-4 sm:w-5 sm:h-5"></i> <span>My Students</span>
         </button>
-        <button id="tab-stand-in" class="flex-1 py-4 text-center font-semibold text-gray-500 hover:text-gray-700 transition-all focus:outline-none flex items-center justify-center gap-2">
-          <i data-lucide="user-plus" class="w-5 h-5"></i> Stand-in Lessons
+        <button id="tab-stand-in" class="flex-1 py-3 sm:py-4 px-2 text-center font-bold text-xs sm:text-sm text-gray-500 hover:text-gray-700 transition-all focus:outline-none flex items-center justify-center gap-1.5 sm:gap-2 min-h-[44px]">
+          <i data-lucide="user-plus" class="w-4 h-4 sm:w-5 sm:h-5"></i> <span>Stand-in Lessons</span>
         </button>
       </div>
 

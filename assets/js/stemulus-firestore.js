@@ -305,7 +305,51 @@
                             localDb[cfg.dbKey] = localDb[cfg.dbKey] || [];
                             const idProp = cfg.idField || 'id';
                             const itemTargetId = docData[idProp] || docId;
-                            const idx = localDb[cfg.dbKey].findIndex(item => item && (item[idProp] === itemTargetId || item.id === itemTargetId));
+
+                            // Respect permanent deletion tombstones for students and tutors
+                            if (cfg.dbKey === 'students') {
+                                const delStudents = Array.isArray(localDb.deletedStudentIds) ? localDb.deletedStudentIds : [];
+                                if (docData.isDeleted === true || delStudents.includes(itemTargetId)) {
+                                    localDb.students = localDb.students.filter(s => s && s.id !== itemTargetId);
+                                    hasChanges = true;
+                                    return;
+                                }
+                            }
+                            if (cfg.dbKey === 'tutors') {
+                                const delTutIds = (localDb.deletedTutorIds || []).map(x => String(x).toLowerCase().trim());
+                                const delTutEmails = (localDb.deletedTutorEmails || []).map(x => String(x).toLowerCase().trim());
+                                const tIdLow = String(itemTargetId || '').toLowerCase().trim();
+                                const tEmLow = String(docData.email || '').toLowerCase().trim();
+                                if (docData.isDeleted === true || (tIdLow && delTutIds.includes(tIdLow)) || (tEmLow && delTutEmails.includes(tEmLow))) {
+                                    localDb.tutors = localDb.tutors.filter(t => t && String(t.id || '').toLowerCase().trim() !== tIdLow && String(t.email || '').toLowerCase().trim() !== tEmLow);
+                                    hasChanges = true;
+                                    return;
+                                }
+                            }
+                            if (cfg.dbKey === 'schedules') {
+                                if (itemTargetId === 'sch-2001' || itemTargetId === 'sch-2002' || (docData.date && (docData.date.startsWith('2026-05') || docData.date.startsWith('2026-06')))) {
+                                    return;
+                                }
+                            }
+
+                            const idx = localDb[cfg.dbKey].findIndex(item => {
+                                if (!item) return false;
+                                if (item[idProp] === itemTargetId || item.id === itemTargetId) return true;
+                                // Semantic deduplication by entity type
+                                if ((cfg.dbKey === 'tutors' || cfg.dbKey === 'parents') && docData.email && item.email) {
+                                    return String(item.email).toLowerCase().trim() === String(docData.email).toLowerCase().trim();
+                                }
+                                if (cfg.dbKey === 'students' && docData.firstName && docData.parentEmail && item.firstName && item.parentEmail) {
+                                    const sameFirst = String(item.firstName).toLowerCase().trim() === String(docData.firstName).toLowerCase().trim();
+                                    const sameLast = String(item.lastName || '').toLowerCase().trim() === String(docData.lastName || '').toLowerCase().trim();
+                                    const sameParent = String(item.parentEmail).toLowerCase().trim() === String(docData.parentEmail).toLowerCase().trim();
+                                    return sameFirst && sameLast && sameParent;
+                                }
+                                if (cfg.dbKey === 'schedules' && docData.studentId && docData.date && docData.time) {
+                                    return item.studentId === docData.studentId && item.date === docData.date && item.time === docData.time;
+                                }
+                                return false;
+                            });
 
                             if (change.type === 'removed') {
                                 if (idx !== -1) {
@@ -325,7 +369,8 @@
                             // Object map (e.g. users)
                             localDb[cfg.dbKey] = localDb[cfg.dbKey] || {};
                             const userEmail = (docData.email || docId).toLowerCase().trim();
-                            if (change.type === 'removed') {
+                            const delTutEmails = (localDb.deletedTutorEmails || []).map(x => String(x).toLowerCase().trim());
+                            if (change.type === 'removed' || delTutEmails.includes(userEmail)) {
                                 if (localDb[cfg.dbKey][userEmail]) {
                                     delete localDb[cfg.dbKey][userEmail];
                                     hasChanges = true;
@@ -366,6 +411,51 @@
                 }
             }, err => console.warn('[STEMulus Cloud] Billing settings listener notice:', err.message || err));
             activeListeners.push(unsubBilling);
+        } catch(e) {}
+
+        // Live Class Presence listener (cross-device active classroom monitoring)
+        try {
+            const unsubPresence = fsDb.collection('live_presence').onSnapshot(snapshot => {
+                let presenceStore = {};
+                try {
+                    presenceStore = JSON.parse(localStorage.getItem('stemulus_live_presence') || '{}');
+                } catch(e) { presenceStore = {}; }
+
+                let changed = false;
+                snapshot.docChanges().forEach(change => {
+                    const doc = change.doc;
+                    const docId = doc.id;
+                    const docData = doc.data();
+                    if (change.type === 'removed') {
+                        if (presenceStore[docId]) {
+                            delete presenceStore[docId];
+                            changed = true;
+                        }
+                    } else if (docData) {
+                        const existing = presenceStore[docId];
+                        const incomingTs = Number(docData.lastHeartbeat) || 0;
+                        const existingTs = existing ? (Number(existing.lastHeartbeat) || 0) : 0;
+                        if (!existing || incomingTs >= existingTs) {
+                            presenceStore[docId] = Object.assign({}, existing || {}, docData);
+                            if (docData.scheduleId && docData.scheduleId !== docId) {
+                                presenceStore[docData.scheduleId] = Object.assign({}, presenceStore[docData.scheduleId] || {}, docData);
+                            }
+                            changed = true;
+                        }
+                    }
+                });
+
+                if (changed) {
+                    try {
+                        localStorage.setItem('stemulus_live_presence', JSON.stringify(presenceStore));
+                        if (typeof window !== 'undefined' && window.dispatchEvent) {
+                            window.dispatchEvent(new CustomEvent('stemulus_presence_updated', { detail: presenceStore }));
+                        }
+                    } catch(e) {}
+                    triggerUpdate();
+                }
+            }, err => console.warn('[STEMulus Cloud] Live presence listener notice:', err.message || err));
+            activeListeners.push(unsubPresence);
         } catch(e) {}
     }
 

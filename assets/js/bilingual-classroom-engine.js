@@ -296,9 +296,9 @@ const BilingualClassroomEngine = (function() {
           </div>
 
           <!-- Category Filter Pills -->
-          <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-3 scrollbar-none">
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-3 scrollbar-none w-full max-w-full touch-pan-x" style="-webkit-overflow-scrolling: touch;">
             ${categories.map(c => `
-              <button data-cat="${c}" onclick="BilingualClassroomEngine.filterCategory('${c}')" class="category-filter-pill min-h-[38px] px-3.5 py-2 rounded-full text-xs ${c === 'all' ? 'font-black bg-orange-600 text-white shadow-xs' : 'font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'} transition-all active:scale-95 whitespace-nowrap">
+              <button data-cat="${c}" onclick="BilingualClassroomEngine.filterCategory('${c}')" class="category-filter-pill min-h-[38px] px-3.5 py-2 rounded-full text-xs shrink-0 ${c === 'all' ? 'font-black bg-orange-600 text-white shadow-xs' : 'font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'} transition-all active:scale-95 whitespace-nowrap">
                 ${c === 'all' ? 'All Blocks' : c}
               </button>
             `).join('')}

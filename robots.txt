@@ -31,48 +31,43 @@ Disallow: /zoho-domain-verification.html
 Disallow: /zohoverify.html
 Disallow: /blog-template.html
 
-# AI Search & Generative Engine Crawlers (ChatGPT, Perplexity, Gemini, Claude, Copilot)
+# AI Search & Generative Engine Crawlers (ChatGPT, Perplexity, Gemini, Claude, Copilot, Apple Intelligence)
 User-agent: GPTBot
 Allow: /
 Disallow: /admin-*
 Disallow: /parent-*
 Disallow: /tutor-*
-Disallow: /issue-certificate.html
-Disallow: /referral-dashboard.html
+
+User-agent: ChatGPT-User
+Allow: /
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /admin-*
 Disallow: /parent-*
 Disallow: /tutor-*
-Disallow: /issue-certificate.html
-Disallow: /referral-dashboard.html
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /admin-*
 Disallow: /parent-*
 Disallow: /tutor-*
-Disallow: /issue-certificate.html
-Disallow: /referral-dashboard.html
 
 User-agent: Google-Extended
 Allow: /
-Disallow: /admin-*
-Disallow: /parent-*
-Disallow: /tutor-*
-Disallow: /issue-certificate.html
-Disallow: /referral-dashboard.html
 
 User-agent: Applebot-Extended
 Allow: /
 Disallow: /admin-*
 Disallow: /parent-*
 Disallow: /tutor-*
-Disallow: /issue-certificate.html
-Disallow: /referral-dashboard.html
 
-# Sitemap
+User-agent: CCBot
+Allow: /
+
+# Canonical Sitemaps & Generative Engine Optimization (GEO)
 Sitemap: https://stemuluskidstech.com/sitemap.xml
+llms.txt: https://stemuluskidstech.com/llms.txt
+llms-full.txt: https://stemuluskidstech.com/llms-full.txt
 
 Crawl-delay: 1

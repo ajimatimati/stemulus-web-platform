@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STEMulus Digital Academy Pass™ | 215+ Interactive Coding Lessons for Kids</title>
+  <meta name="description" content="Unlock unlimited self-paced access to 215+ interactive coding lessons, hands-on software labs, prompt engineering, and Ivy-grade verifiable certificates for kids ages 5–17.">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="canonical" href="https://stemuluskidstech.com/academy.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="STEMulus Digital Academy Pass™ | The Silicon Valley Tech Edge for Kids">
+  <meta property="og:description" content="215+ interactive self-paced coding lessons, AI prompt engineering, and verifiable graduation certificates. Try the first 3 lessons free!">
+  <meta property="og:url" content="https://stemuluskidstech.com/academy.html">
+  <meta property="og:image" content="https://stemuluskidstech.com/assets/images/og-image.jpg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Vendor & Icons -->
+  <script src="assets/vendor/lucide.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  
+  <!-- CSS Framework & Styles -->
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="dist/combined.css">
+  <link rel="stylesheet" href="assets/css/stemulus-luxury.css">
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/portal-animations.css">
+
+  <style>
+    body {
+      background-color: #F8FAFC;
+      font-family: 'Nunito', sans-serif;
+      color: #0F172A;
+      overflow-x: hidden;
+      margin: 0;
+    }
+    .font-fredoka { font-family: 'Fredoka One', cursive; }
+    .font-mono-code { font-family: 'JetBrains Mono', monospace; }
+
+    .glow-orange {
+      box-shadow: 0 10px 30px -5px rgba(244, 96, 12, 0.35);
+    }
+    .badge-pill-soft {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .price-card {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .price-card:hover {
+      transform: translateY(-4px);
+    }
+  </style>
+</head>
+<body class="selection:bg-orange-500 selection:text-white">
+
+  <!-- Top Announcement Ribbon -->
+  <div class="bg-slate-900 text-white text-xs py-2 px-4 text-center font-bold flex items-center justify-center gap-2">
+    <span class="bg-orange-600 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-black">Freemium Launch</span>
+    <span>Start with 3 Free Lessons in Every Track — Zero Credit Card Required!</span>
+    <a href="#tracks" class="underline text-orange-400 hover:text-orange-300 ml-1">Explore Tracks &rarr;</a>
+  </div>
+
+  <!-- Main Navbar -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5 text-decoration-none">
+        <img src="favicon.png" alt="STEMulus Logo" class="w-8 h-8 object-contain">
+        <div>
+          <span class="text-base font-black tracking-tight text-slate-900 block leading-tight">STEMulus</span>
+          <span class="text-[10px] font-extrabold text-orange-600 tracking-wider uppercase block">Digital Academy</span>
+        </div>
+      </a>
+
+      <!-- Currency Switcher & Actions -->
+      <div class="flex items-center gap-3">
+        <!-- Dual Currency Toggle -->
+        <div class="inline-flex bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+          <button id="btn-curr-usd" onclick="setAcademyCurrency('USD')" class="px-2.5 py-1 rounded-lg transition-all text-slate-600 hover:text-slate-900">
+            🇺🇸 USD ($)
+          </button>
+          <button id="btn-curr-ngn" onclick="setAcademyCurrency('NGN')" class="px-2.5 py-1 rounded-lg transition-all text-slate-600 hover:text-slate-900">
+            🇳🇬 NGN (₦)
+          </button>
+        </div>
+
+        <a href="#pricing" class="hidden sm:inline-flex items-center justify-center bg-orange-600 hover:bg-orange-500 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-sm transition-all">
+          Get Digital Pass
+        </a>
+        <a href="parent-login.html" class="inline-flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-3.5 py-2.5 rounded-xl transition-all">
+          Log In
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-12 pb-16 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-white via-slate-50 to-orange-50/20">
+    <!-- Ambient Blur Spheres -->
+    <div class="absolute top-10 right-10 w-80 h-80 bg-orange-300/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-10 left-10 w-96 h-96 bg-blue-300/15 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-5xl mx-auto text-center relative z-10">
+      <div class="badge-pill-soft bg-orange-100 text-orange-700 border border-orange-200/80 mb-4 animate-fadeIn">
+        <span class="w-2 h-2 rounded-full bg-orange-600 animate-pulse"></span>
+        <span>The $20M Silicon Valley &amp; International EdTech Curriculum</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.12] mb-5">
+        Give Your Child The <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-amber-600 to-orange-500">Tech Superpower</span> That Sells Itself.
+      </h1>
+
+      <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+        <strong>215+ interactive self-paced coding lessons</strong>, live code workbenches, AI prompt engineering, and Ivy-grade verifiable certificates for young coders ages 5–17.
+      </p>
+
+      <!-- CTA Button Row -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10">
+        <a href="#pricing" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-black text-base shadow-lg shadow-orange-600/30 glow-orange flex items-center justify-center gap-2 transition-all">
+          <span>🚀 Unlock All 215 Lessons Now</span>
+        </a>
+        <a href="#tracks" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-white hover:bg-slate-50 text-slate-800 font-extrabold text-sm border border-slate-200/90 shadow-sm flex items-center justify-center gap-2 transition-all">
+          <span>🎮 Try 3 Free Lessons First</span>
+        </a>
+      </div>
+
+      <!-- Trust KPIs -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto pt-4 border-t border-slate-200/70 text-left">
+        <div class="p-3 bg-white/80 rounded-2xl border border-slate-200/60 shadow-xs">
+          <span class="text-xl sm:text-2xl font-black text-slate-900 block font-fredoka">215+</span>
+          <span class="text-[11px] font-bold text-slate-500">Interactive Slide Decks</span>
+        </div>
+        <div class="p-3 bg-white/80 rounded-2xl border border-slate-200/60 shadow-xs">
+          <span class="text-xl sm:text-2xl font-black text-orange-600 block font-fredoka">6 Tracks</span>
+          <span class="text-[11px] font-bold text-slate-500">Scratch to AI &amp; Python</span>
+        </div>
+        <div class="p-3 bg-white/80 rounded-2xl border border-slate-200/60 shadow-xs">
+          <span class="text-xl sm:text-2xl font-black text-slate-900 block font-fredoka">100%</span>
+          <span class="text-[11px] font-bold text-slate-500">In-Browser Code Running</span>
+        </div>
+        <div class="p-3 bg-white/80 rounded-2xl border border-slate-200/60 shadow-xs">
+          <span class="text-xl sm:text-2xl font-black text-emerald-600 block font-fredoka">Verified</span>
+          <span class="text-[11px] font-bold text-slate-500">QR Graduation Credential</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Live Code Preview Widget (Time to Aha! < 60s) -->
+  <section class="max-w-4xl mx-auto px-4 -mt-4 mb-20 relative z-20">
+    <div class="bg-slate-900 text-white rounded-[2rem] p-5 sm:p-7 shadow-2xl border border-slate-800">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-red-500"></span>
+          <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+          <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+          <span class="text-xs font-mono text-slate-400 ml-2">live_interactive_lab.py</span>
+        </div>
+        <span class="text-[11px] bg-orange-500/20 text-orange-400 font-mono font-bold px-2.5 py-1 rounded-full border border-orange-500/30">
+          Try It Yourself &bull; Live Runner
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Code Editor Pane -->
+        <div class="bg-slate-950 p-4 rounded-xl font-mono text-xs text-slate-300 leading-relaxed border border-slate-800">
+          <div class="text-slate-500 mb-2"># Lesson 1: Build your Cyber Pet Algorithm</div>
+          <div><span class="text-purple-400">pet_name</span> = <span class="text-emerald-400">"Mulu"</span></div>
+          <div><span class="text-purple-400">energy</span> = <span class="text-amber-400">100</span></div>
+          <div class="mt-2"><span class="text-blue-400">def</span> <span class="text-yellow-400">train_robot</span>(hours):</div>
+          <div class="ml-4 text-slate-400">xp = hours * <span class="text-amber-400">25</span></div>
+          <div class="ml-4 text-slate-400"><span class="text-blue-400">return</span> <span class="text-emerald-400">f"{pet_name} leveled up! +{xp} XP!"</span></div>
+          <div class="mt-2 text-orange-400 font-bold">result = train_robot(4)</div>
+          <div><span class="text-blue-400">print</span>(result)</div>
+        </div>
+
+        <!-- Output Pane -->
+        <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="text-[10px] uppercase font-bold tracking-wider text-slate-500 mb-2 font-mono">Terminal Output</div>
+            <div id="demo-terminal-output" class="font-mono text-xs text-emerald-400 leading-relaxed">
+              &gt; Running Python 3.12 sandbox...<br>
+              &gt; Mulu leveled up! +100 XP! 🚀<br>
+              &gt; Status: Ready for Lesson 2 challenge!
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+            <span class="text-[11px] text-slate-400">Zero install. Runs in any browser.</span>
+            <button onclick="runDemoSnippet()" class="px-3.5 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold transition-all shadow-xs">
+              ▶ Run Code
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The 6 World-Class Pathways Section -->
+  <section id="tracks" class="max-w-6xl mx-auto px-4 sm:px-6 mb-24">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <h2 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight mb-3">
+        6 Complete Mastery Tracks. Ages 5 to 17.
+      </h2>
+      <p class="text-sm text-slate-600">
+        Every track includes structured interactive slides, capstone challenges, and verifiable graduation certificates.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Track 1: Scratch -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-2xl">🐱</span>
+            <span class="text-[11px] font-extrabold uppercase px-2.5 py-1 bg-amber-50 text-amber-700 rounded-full border border-amber-200">Ages 5–9</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">Scratch Game Creators</h3>
+          <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+            Visual block logic, sprite coordinate geometry, interactive animations, sound effects, and arcade game mechanics.
+          </p>
+          <div class="text-xs font-bold text-slate-500 mb-4">24 Structured Modules &bull; 4 Capstones</div>
+        </div>
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <a href="scratch/curriculum/slides/scratch/lesson_1.html" class="text-xs font-extrabold text-orange-600 hover:text-orange-500 inline-flex items-center gap-1">
+            Try Lesson 1 Free &rarr;
+          </a>
+          <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md">Free Tier</span>
+        </div>
+      </div>
+
+      <!-- Track 2: Python -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-2xl">🐍</span>
+            <span class="text-[11px] font-extrabold uppercase px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-200">Ages 10–17</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">Python Software Foundations</h3>
+          <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+            Real code syntax, variables, conditional branches, loops, data structures, algorithms, and practical CLI projects.
+          </p>
+          <div class="text-xs font-bold text-slate-500 mb-4">24 Structured Modules &bull; 6 Capstones</div>
+        </div>
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <a href="scratch/curriculum/slides/python/lesson_1.html" class="text-xs font-extrabold text-orange-600 hover:text-orange-500 inline-flex items-center gap-1">
+            Try Lesson 1 Free &rarr;
+          </a>
+          <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md">Free Tier</span>
+        </div>
+      </div>
+
+      <!-- Track 3: Web Wizards -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-2xl">🌐</span>
+            <span class="text-[11px] font-extrabold uppercase px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">Ages 10–17</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">Web Wizards &amp; UI Engineering</h3>
+          <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+            Modern semantic HTML5, CSS Flexbox &amp; Grid visual styling, JavaScript DOM interactivity, and cloud publishing.
+          </p>
+          <div class="text-xs font-bold text-slate-500 mb-4">24 Structured Modules &bull; 4 Live Sites</div>
+        </div>
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <a href="scratch/curriculum/slides/web/lesson_1.html" class="text-xs font-extrabold text-orange-600 hover:text-orange-500 inline-flex items-center gap-1">
+            Try Lesson 1 Free &rarr;
+          </a>
+          <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md">Free Tier</span>
+        </div>
+      </div>
+
+      <!-- Track 4: Robotics -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-2xl">🤖</span>
+            <span class="text-[11px] font-extrabold uppercase px-2.5 py-1 bg-purple-50 text-purple-700 rounded-full border border-purple-200">Ages 8–16</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">Junior Robotics &amp; Hardware</h3>
+          <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+            Physical computing principles, microcontrollers, sensor logic, motors, circuits, and real autonomous rovers.
+          </p>
+          <div class="text-xs font-bold text-slate-500 mb-4">24 Structured Modules &bull; Hardware Blueprints</div>
+        </div>
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <a href="scratch/curriculum/slides/robotics/lesson_1.html" class="text-xs font-extrabold text-orange-600 hover:text-orange-500 inline-flex items-center gap-1">
+            Try Lesson 1 Free &rarr;
+          </a>
+          <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md">Free Tier</span>
+        </div>
+      </div>
+
+      <!-- Track 5: AI & Prompt Engineering -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-2xl">🧠</span>
+            <span class="text-[11px] font-extrabold uppercase px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200">Ages 9–17</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">AI Explorers &amp; Prompt Engineering</h3>
+          <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+            Generative AI foundations, system prompts, role prompting, multimodal synthesis, ethics, and prompt testing labs.
+          </p>
+          <div class="text-xs font-bold text-slate-500 mb-4">24 Structured Modules &bull; Master Prompt Lab</div>
+        </div>
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <a href="scratch/curriculum/prompt_lab/prompt_tester.html" class="text-xs font-extrabold text-orange-600 hover:text-orange-500 inline-flex items-center gap-1">
+            Launch Prompt Lab &rarr;
+          </a>
+          <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md">Free Tier</span>
+        </div>
+      </div>
+
+      <!-- Track 6: Computational Logic -->
+      <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-2xl">⌨️</span>
+            <span class="text-[11px] font-extrabold uppercase px-2.5 py-1 bg-rose-50 text-rose-700 rounded-full border border-rose-200">Ages 5–9</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">Pre-Coding Logic &amp; Literacy</h3>
+          <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+            Algorithmic sequencing, touch typing fluency, keyboard mastery, file systems, and problem-solving fundamentals.
+          </p>
+          <div class="text-xs font-bold text-slate-500 mb-4">24 Structured Modules &bull; Logic Quests</div>
+        </div>
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <a href="scratch/curriculum/slides/literacy/lesson_1.html" class="text-xs font-extrabold text-orange-600 hover:text-orange-500 inline-flex items-center gap-1">
+            Try Lesson 1 Free &rarr;
+          </a>
+          <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md">Free Tier</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Viral Bragging Engine Showcase -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 mb-24 bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-blue-500/10 rounded-[2.5rem] p-8 sm:p-12 border border-orange-200/60">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div>
+        <div class="badge-pill-soft bg-emerald-100 text-emerald-800 border border-emerald-200 mb-3">
+          <span>🏆 The Viral Bragging Engine</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight mb-4">
+          Verified Credentials Parents Are Proud to Share.
+        </h2>
+        <p class="text-sm text-slate-600 leading-relaxed mb-6">
+          Every time your child completes a course assessment, they earn a verified credential with a permanent QR authentication link. Share their achievement on <strong>WhatsApp, LinkedIn, and Facebook</strong> with one tap!
+        </p>
+        <div class="space-y-3 text-xs font-bold text-slate-700">
+          <div class="flex items-center gap-2">
+            <span class="text-emerald-600">✓</span>
+            <span>Permanent URL on portal.stemuluskidstech.com/verify</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-emerald-600">✓</span>
+            <span>Tamper-proof SVG QR Code for instant verification</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-emerald-600">✓</span>
+            <span>Pre-formatted 1-click WhatsApp bragging message</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Certificate Preview -->
+      <div class="bg-white rounded-3xl p-6 shadow-xl border border-slate-200/80 text-center relative overflow-hidden">
+        <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl mx-auto mb-3 flex items-center justify-center text-3xl">
+          🏅
+        </div>
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-1">Authenticated Credential</span>
+        <h4 class="text-base font-black text-slate-900 mb-1">STEMulus Certificate of Distinction</h4>
+        <p class="text-xs text-orange-600 font-bold mb-3">Awarded to Daniel M. &bull; Python Software Engineering</p>
+        <div class="inline-block p-2 bg-slate-50 border border-slate-200 rounded-xl mb-3">
+          <span class="text-xs font-mono font-bold text-slate-700">ID: ST-2026-CERT-9842</span>
+        </div>
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-center gap-2">
+          <span class="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs flex items-center gap-1">
+            <span>✓ Verified by Director Olalekan</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dual-Currency Pricing Cards -->
+  <section id="pricing" class="max-w-4xl mx-auto px-4 sm:px-6 mb-24">
+    <div class="text-center max-w-xl mx-auto mb-10">
+      <h2 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight mb-2">
+        Simple, Transparent Pricing.
+      </h2>
+      <p class="text-sm text-slate-600">
+        Choose flexible monthly access or save with an annual pass. Cancel anytime with a 14-day money-back guarantee.
+      </p>
+
+      <!-- Currency Switcher Radio -->
+      <div class="mt-6 inline-flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 text-xs font-bold">
+        <button id="tab-curr-usd" onclick="setAcademyCurrency('USD')" class="px-4 py-2 rounded-xl transition-all">
+          🌍 International ($ USD)
+        </button>
+        <button id="tab-curr-ngn" onclick="setAcademyCurrency('NGN')" class="px-4 py-2 rounded-xl transition-all">
+          🇳🇬 Nigeria (₦ NGN)
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+      <!-- Plan 1: Monthly -->
+      <div class="price-card bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500 block mb-1">Flexible Monthly</span>
+          <h3 class="text-2xl font-black text-slate-900 mb-4">Digital Pass Monthly</h3>
+          <div class="mb-6">
+            <span class="text-4xl font-black text-slate-900 font-mono" id="price-monthly-display">$14.99</span>
+            <span class="text-xs text-slate-500 font-bold">/ month</span>
+          </div>
+
+          <ul class="space-y-3 text-xs text-slate-600 mb-8">
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-black">✓</span> <span>Unlimited access to all 215 lessons</span></li>
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-black">✓</span> <span>All 6 interactive coding tracks</span></li>
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-black">✓</span> <span>Browser code workbenches &amp; prompt labs</span></li>
+            <li class="flex items-center gap-2"><span class="text-emerald-500 font-black">✓</span> <span>Official completion examinations</span></li>
+            <li class="flex items-center gap-2"><span class="text-slate-400">✕</span> <span class="text-slate-400">Technology Passport crystal medallions</span></li>
+          </ul>
+        </div>
+
+        <button onclick="checkoutDigitalPass('monthly')" class="w-full py-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-sm transition-all">
+          Get Monthly Pass
+        </button>
+      </div>
+
+      <!-- Plan 2: Annual (Best Value) -->
+      <div class="price-card bg-gradient-to-b from-white to-orange-50/40 rounded-3xl p-8 border-2 border-orange-500 shadow-xl shadow-orange-500/10 flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-4 right-4 bg-emerald-600 text-white font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
+          Best Value · Save 35%
+        </div>
+
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-orange-600 block mb-1">Complete All-Access</span>
+          <h3 class="text-2xl font-black text-slate-900 mb-4">Annual All-Access Pass</h3>
+          <div class="mb-6">
+            <span class="text-4xl font-black text-orange-600 font-mono" id="price-annual-display">$119.00</span>
+            <span class="text-xs text-slate-500 font-bold">/ year</span>
+            <span class="text-xs text-emerald-600 font-bold block mt-1" id="price-annual-subtext">(Equivalent to $9.92/month)</span>
+          </div>
+
+          <ul class="space-y-3 text-xs text-slate-700 mb-8 font-medium">
+            <li class="flex items-center gap-2"><span class="text-emerald-600 font-black">✓</span> <span><strong>Unlimited access</strong> to all 215 lessons</span></li>
+            <li class="flex items-center gap-2"><span class="text-emerald-600 font-black">✓</span> <span>All 6 interactive coding tracks</span></li>
+            <li class="flex items-center gap-2"><span class="text-emerald-600 font-black">✓</span> <span>Full <strong>48-Month Technology Passport™</strong> progression</span></li>
+            <li class="flex items-center gap-2"><span class="text-emerald-600 font-black">✓</span> <span>Priority grading on all capstone submissions</span></li>
+            <li class="flex items-center gap-2"><span class="text-emerald-600 font-black">✓</span> <span>Priority enrollment credit for 1-on-1 private tutoring</span></li>
+          </ul>
+        </div>
+
+        <button onclick="checkoutDigitalPass('annual')" class="w-full py-4 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-extrabold text-sm shadow-md shadow-orange-600/30 transition-all glow-orange">
+          🚀 Get Annual All-Access Pass
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- High-Ticket Upsell Gateway (1-on-1 Mentorship Bridge) -->
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 mb-24">
+    <div class="bg-slate-900 text-white rounded-3xl p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 border border-slate-800">
+      <div class="max-w-xl">
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-orange-400 bg-orange-500/20 px-3 py-1 rounded-full border border-orange-500/30 inline-block mb-3">
+          1-on-1 Private Mentorship
+        </span>
+        <h3 class="text-xl sm:text-2xl font-black text-white mb-2">Want a Private Mentor for Your Child?</h3>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          While the Digital Pass is 100% self-paced, you can upgrade anytime to private weekly 1-on-1 live mentoring with Coach Olalekan, Sarah, or senior faculty.
+        </p>
+      </div>
+      <a href="book-class.html" class="shrink-0 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-black text-xs transition-all shadow-md">
+        Book Free Trial Session &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-12 px-4 text-center text-xs text-slate-500">
+    <div class="max-w-4xl mx-auto space-y-4">
+      <div class="flex items-center justify-center gap-2">
+        <img src="favicon.png" alt="" class="w-6 h-6 object-contain">
+        <span class="font-black text-slate-800 text-sm">STEMulus Kids Tech Academy</span>
+      </div>
+      <p class="max-w-md mx-auto">
+        Empowering young minds with world-class computational logic, software engineering, and AI skills across Nigeria, the UK, US, Canada, and Australia.
+      </p>
+      <div class="flex justify-center gap-6 font-bold text-slate-600">
+        <a href="index.html" class="hover:text-orange-600">Home</a>
+        <a href="programs.html" class="hover:text-orange-600">Programs</a>
+        <a href="verify-certificate.html" class="hover:text-orange-600">Verify Credentials</a>
+        <a href="parent-login.html" class="hover:text-orange-600">Parent Portal</a>
+        <a href="contact.html" class="hover:text-orange-600">Contact Support</a>
+      </div>
+      <p class="text-[11px] text-slate-400 pt-4 border-t border-slate-100">
+        &copy; 2026 STEMulus Innovations LTD. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/payment-gateway-engine.js"></script>
+  <script src="assets/js/stemulus-pass-engine.js"></script>
+
+  <script>
+    let activeCurrency = 'USD';
+
+    function setAcademyCurrency(curr) {
+      activeCurrency = curr;
+      StemulusPassEngine.setCurrency(curr);
+
+      // Update toggles
+      const btnUsd = document.getElementById('btn-curr-usd');
+      const btnNgn = document.getElementById('btn-curr-ngn');
+      const tabUsd = document.getElementById('tab-curr-usd');
+      const tabNgn = document.getElementById('tab-curr-ngn');
+
+      const isUsd = (curr === 'USD');
+      [btnUsd, tabUsd].forEach(el => {
+        if (!el) return;
+        el.className = isUsd ? 'px-3 py-1.5 rounded-xl bg-white shadow-xs text-slate-900 font-extrabold' : 'px-3 py-1.5 rounded-xl text-slate-600 font-medium hover:text-slate-900';
+      });
+      [btnNgn, tabNgn].forEach(el => {
+        if (!el) return;
+        el.className = !isUsd ? 'px-3 py-1.5 rounded-xl bg-white shadow-xs text-slate-900 font-extrabold' : 'px-3 py-1.5 rounded-xl text-slate-600 font-medium hover:text-slate-900';
+      });
+
+      // Update price text displays
+      const monthlyEl = document.getElementById('price-monthly-display');
+      const annualEl = document.getElementById('price-annual-display');
+      const annualSub = document.getElementById('price-annual-subtext');
+
+      if (isUsd) {
+        if (monthlyEl) monthlyEl.innerText = '$14.99';
+        if (annualEl) annualEl.innerText = '$119.00';
+        if (annualSub) annualSub.innerText = '(Equivalent to $9.92/month)';
+      } else {
+        if (monthlyEl) monthlyEl.innerText = '₦7,500';
+        if (annualEl) annualEl.innerText = '₦59,000';
+        if (annualSub) annualSub.innerText = '(Equivalent to ₦4,916/month)';
+      }
+    }
+
+    function checkoutDigitalPass(tier) {
+      StemulusPassEngine.launchPassCheckout(tier, activeCurrency, function() {
+        alert('🎉 Congratulations! Your STEMulus Digital Academy Pass is now active. All 215 lessons are unlocked!');
+        window.location.href = 'index.html';
+      });
+    }
+
+    function runDemoSnippet() {
+      const out = document.getElementById('demo-terminal-output');
+      out.innerHTML = '<span class="text-amber-400">&gt; Compiling script...</span>';
+      setTimeout(() => {
+        out.innerHTML = `
+          &gt; Running Python 3.12 sandbox...<br>
+          &gt; <span class="text-white font-bold">Mulu leveled up! +100 XP! 🚀</span><br>
+          &gt; New Level: <span class="text-amber-400">Junior Python Architect (Level 2)</span><br>
+          &gt; Status: All checks passed!
+        `;
+      }, 500);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const detected = StemulusPassEngine.getCurrency();
+      setAcademyCurrency(detected);
+    });
+  </script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
- <script src="https://unpkg.com/lucide@latest" defer></script>
+ <script src="assets/vendor/lucide.min.js"></script>
  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
  <link rel="stylesheet" href="assets/css/tailwind-output.css">
   <link rel="stylesheet" href="dist/combined.css">
@@ -38,10 +38,26 @@
  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
  <!-- Supabase SDK -->
  <style>
- body { font-family: 'DM Sans', sans-serif; visibility: hidden; }
+ body { font-family: 'DM Sans', sans-serif; }
  .stat-card { transition: transform 0.2s, box-shadow 0.2s; }
  .stat-card:hover { transform: translateY(-4px); box-shadow:020px 40px rgba(0,0,0,0.1); }
  </style>
+ <script src="assets/js/stemulus-security.min.js"></script>
+ <script>
+ (function(){
+   try {
+     var s = (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession)
+       ? StemulusSecurity.getSecureSession()
+       : null;
+     var ttl = 8 * 60 * 60 * 1000;
+     if (!s || (s.role !== 'admin' && s.role !== 'tutor') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
+       window.location.replace('admin-login.html?redirect=referral-dashboard.html');
+     }
+   } catch(e) {
+     window.location.replace('admin-login.html?redirect=referral-dashboard.html');
+   }
+ })();
+ </script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
 
@@ -317,11 +333,10 @@ window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger
 
 <script src="assets/js/dashboard-engine.min.js" defer></script>
 <script>
-(function(){
-  var _rSession = (typeof DashboardEngine !== 'undefined') ? DashboardEngine.getSession() : null;
-  if (!_rSession || (_rSession.role !== 'admin' && _rSession.role !== 'tutor')) { window.location.href = 'parent-login.html'; }
-  document.body.style.visibility = 'visible';
-})();
+// DashboardEngine data listener
+window.addEventListener('DOMContentLoaded', function() {
+  if (window.lucide) lucide.createIcons();
+});
 </script>
 </body>
 </html>

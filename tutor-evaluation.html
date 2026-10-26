@@ -26,7 +26,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="assets/vendor/lucide.min.js"></script>
   <script defer>window.addEventListener('DOMContentLoaded', function() { if (window.lucide) lucide.createIcons(); });</script>
 
   <!-- Stylesheets -->
@@ -228,7 +228,31 @@
 
     /* ── EXPERIENCE CARDS ── */
     .exp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    @media (max-width: 500px) { .exp-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) {
+      .exp-grid { grid-template-columns: 1fr; gap: 8px; }
+      .exp-card {
+        padding: 0.55rem 0.85rem !important;
+        display: flex !important;
+        align-items: center !important;
+        text-align: left !important;
+        gap: 12px !important;
+        min-height: 48px !important;
+        max-height: 58px !important;
+      }
+      .exp-card .exp-icon {
+        margin-bottom: 0 !important;
+        flex-shrink: 0 !important;
+      }
+      .exp-text-wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+        flex: 1;
+      }
+      .exp-label { margin-bottom: 0 !important; line-height: 1.2 !important; }
+      .exp-sub { line-height: 1.2 !important; margin-top: 2px !important; }
+    }
     .exp-card {
       border: 2px solid var(--border); border-radius: 16px; padding: 1.25rem;
       text-align: center; cursor: pointer; transition: all 0.2s;
@@ -624,18 +648,24 @@
         <div class="exp-grid" id="exp-grid" role="group" aria-label="Overall experience">
           <div class="exp-card" data-value="excellent" tabindex="0" role="button" aria-pressed="false">
             <span class="exp-icon" data-icon-3d="star" data-icon-size="32"></span>
-            <p class="exp-label">Excellent</p>
-            <p class="exp-sub">Exceeded expectations</p>
+            <div class="exp-text-wrap">
+              <p class="exp-label">Excellent</p>
+              <p class="exp-sub">Exceeded expectations</p>
+            </div>
           </div>
           <div class="exp-card" data-value="good" tabindex="0" role="button" aria-pressed="false">
             <span class="exp-icon" data-icon-3d="check" data-icon-size="32"></span>
-            <p class="exp-label">Good</p>
-            <p class="exp-sub">Met expectations</p>
+            <div class="exp-text-wrap">
+              <p class="exp-label">Good</p>
+              <p class="exp-sub">Met expectations</p>
+            </div>
           </div>
           <div class="exp-card" data-value="needs-improvement" tabindex="0" role="button" aria-pressed="false">
             <span class="exp-icon" data-icon-3d="target" data-icon-size="32"></span>
-            <p class="exp-label">Needs Improvement</p>
-            <p class="exp-sub">Room to grow</p>
+            <div class="exp-text-wrap">
+              <p class="exp-label">Needs Improvement</p>
+              <p class="exp-sub">Room to grow</p>
+            </div>
           </div>
         </div>
         <input type="hidden" name="overallExperience" id="exp-val" value="">

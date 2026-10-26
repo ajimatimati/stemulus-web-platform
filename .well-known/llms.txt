@@ -1,0 +1,15 @@
+# STEMulus Kids Technologies - AI Information
+# Canonical LLMs.txt location: https://stemuluskidstech.com/llms.txt
+# Canonical Full Syllabus: https://stemuluskidstech.com/llms-full.txt
+
+# STEMulus Kids Technologies
+> Elite 1-on-1 live online coding academy and project-based STEM institute for children and teens aged 5 to 17. Operating globally across the United States, United Kingdom, Canada, Nigeria, Ghana, South Africa, Australia, and 14+ countries.
+
+- Website: https://stemuluskidstech.com
+- Student & Parent Portal: https://portal.stemuluskidstech.com
+- Free Discovery Class: https://stemuluskidstech.com/book-class.html
+- Admissions & Enrollment: https://stemuluskidstech.com/enroll.html
+- Admissions WhatsApp: +234 705 246 6716
+- Official Admissions Email: admin@stemuluskidstech.com
+- Full Documentation: https://stemuluskidstech.com/llms.txt
+- Comprehensive Syllabus (215 Lessons): https://stemuluskidstech.com/llms-full.txt

@@ -1,0 +1,101 @@
+# STEMulus Kids Technologies
+
+> Elite 1-on-1 live online coding academy and project-based STEM institute for children and teens aged 5 to 17. Operating globally across the United States, United Kingdom, Canada, Nigeria, Ghana, South Africa, Australia, and 14+ countries.
+
+STEMulus pairs students directly with screened senior mentors (top 5% acceptance rate) for individualized, project-based computer science education. Classes are 100% live, 1-on-1, and scheduled in the family's local time zone. Every lesson produces a real build, interactive application, or deployable program.
+
+- Website: https://stemuluskidstech.com
+- Student & Parent Portal: https://portal.stemuluskidstech.com
+- Free Discovery Class: https://stemuluskidstech.com/book-class.html
+- Admissions & Enrollment: https://stemuluskidstech.com/enroll.html
+- Admissions WhatsApp: +234 705 246 6716
+- Official Admissions Email: admin@stemuluskidstech.com
+
+---
+
+## Academy Quick Facts
+
+| Dimension | Specification |
+|:---|:---|
+| **Ages Served** | 5 – 17 years old |
+| **Class Format** | 100% Private Live 1-on-1 (No crowded group calls) |
+| **Lesson Duration** | 55 Minutes (Classes) · 45 Minutes (Free Discovery Session) |
+| **Curriculum Depth** | 215 Structured Interactive Decks & Quests |
+| **Tracks** | 6 Specialised Pathways (Scratch, Python, Web, Robotics, Creative, AI) |
+| **Pedagogical Model** | Build-First, Project-Driven, Gamified Mastery with Dual Certification |
+| **Safeguarding** | COPPA, GDPR-K & NDPR Compliant · 100% Background-Vetted Mentors |
+| **Free Session** | 45-Min Discovery Session with live interactive build & parent roadmap |
+| **Tuition** | Starting from $120 / £95 / ₦95,000 per month (flexible 1-on-1 schedules) |
+
+---
+
+## 6 Core Curriculum Tracks (215 Lessons)
+
+### 1. Game Creators & Visual Logic (Ages 5–9)
+- **Engine & Languages:** Scratch 3.0, MIT App Inventor, Block Logic.
+- **Decks / Modules:** 36 structured lesson slide decks.
+- **Outcomes:** Algorithmic thinking, loops, conditional branching, broadcast events, game physics, sprite animations, and interactive storytelling.
+- **Sample Projects:** Retro Maze Runner, Space Invaders Scratch Edition, Animated Interactive Storybook.
+- **Track Link:** [Game Creators Program](https://stemuluskidstech.com/scratch-creators.html)
+
+### 2. Python Power & Data Science (Ages 9–17)
+- **Engine & Languages:** Python 3, Turtle Graphics, Pygame, NumPy basics.
+- **Decks / Modules:** 48 structured lesson slide decks.
+- **Outcomes:** Variables, data structures (lists, dictionaries, tuples), functions, object-oriented programming (OOP), file I/O, game mechanics, and computational data analysis.
+- **Sample Projects:** Text Adventure RPG, Classic Snake, Cryptography Cipher, Weather Data Visualizer.
+- **Track Link:** [Python Power Program](https://stemuluskidstech.com/python-programming.html)
+
+### 3. Web Wizards & Full-Stack Apps (Ages 10–17)
+- **Engine & Languages:** HTML5, CSS3 Modern Flexbox/Grid, JavaScript (ES6+), REST APIs.
+- **Decks / Modules:** 40 structured lesson slide decks.
+- **Outcomes:** Semantic DOM structuring, responsive UI styling, asynchronous event handling, API data fetching, state management, and real-world website deployment.
+- **Sample Projects:** Interactive Portfolio, Live Weather Dashboard, Calculator App, Multiplayer Trivia Game.
+- **Track Link:** [Web Wizards Program](https://stemuluskidstech.com/web-wizards.html)
+
+### 4. Robotics & IoT Virtual Lab (Ages 9–17)
+- **Engine & Languages:** Arduino C++, Tinkercad Circuits, Micro:bit, Virtual Sensor Simulation.
+- **Decks / Modules:** 32 structured lesson slide decks.
+- **Outcomes:** Circuit design, digital/analog signals, pulse-width modulation (PWM), sensor integration (ultrasonic, temperature, light), actuators, and smart home automation principles.
+- **Sample Projects:** Smart Traffic Light Controller, Automated Intruder Alarm, Ultrasonic Radar Detector.
+- **Track Link:** [Robotics Lab Program](https://stemuluskidstech.com/arduino-robotics.html)
+
+### 5. Creative Coding & Digital Arts (Ages 7–14)
+- **Engine & Languages:** p5.js, Processing, HTML5 Canvas, Generative Algorithms.
+- **Decks / Modules:** 24 structured lesson slide decks.
+- **Outcomes:** Mathematical pattern generation, interactive physics, particle systems, procedural art, sound synthesis, and algorithmic canvas animations.
+- **Sample Projects:** Generative Fractal Forest, Audio-Reactive Visualizer, Interactive Fireworks Simulator.
+- **Track Link:** [Creative Coding Program](https://stemuluskidstech.com/creative-coding.html)
+
+### 6. AI Explorers & Machine Learning (Ages 10–17)
+- **Engine & Languages:** Teachable Machine, Computer Vision, Python NLP, LLM Prompt Engineering, AI Ethics.
+- **Decks / Modules:** 35 structured lesson slide decks.
+- **Outcomes:** Supervised learning workflows, training image/sound classifiers, computer vision recognition, neural network intuition, responsible AI ethics, and prompt testing.
+- **Sample Projects:** AI Gesture-Controlled Game, Voice Command Assistant, Custom Chatbot Assistant.
+- **Track Link:** [AI Explorers Program](https://stemuluskidstech.com/ai-machine-learning.html)
+
+---
+
+## Interactive Learning Tools & Portals
+
+- **Curriculum Slides Hub:** `curriculum/slides/index.html` — Interactive deck browser featuring 215 lesson slide decks with dual Student Quest mode and Tutor Attendance Cockpit.
+- **Interactive Assessment Runner:** `curriculum/assessments/interactive_assessment_runner.html` — Automated, gamified skill assessments and milestone evaluation.
+- **AI Prompt Lab:** `curriculum/prompt_lab/prompt_tester.html` — Real-time prompt testing and LLM sandboxing for AI Explorers students.
+- **Parent Radar:** `parent-dashboard.html` — Real-time tracking of student attendance, learning hours, project showcases, and dual milestone certificates.
+- **Mentor Cockpit:** `tutor-dashboard.html` — Lesson slides launcher, 1-click attendance logging, and student progress dossiers.
+
+---
+
+## Free Discovery Session Model
+
+STEMulus offers a 100% free, 45-minute 1-on-1 diagnostic lesson for prospective families:
+1. **10 Mins — Skill & Interest Diagnostic:** Senior mentor discovers student's creative interests, screen habits, and coding experience.
+2. **25 Mins — Live Interactive Coding Build:** Child writes real code or visual logic, sees it run immediately, and customizes a project.
+3. **10 Mins — Parent Curriculum Roadmap:** Mentor meets with parent to present a customized pathway, track fit, and milestone projections.
+
+Book directly at [STEMulus Discovery Booking](https://stemuluskidstech.com/book-class.html).
+
+---
+
+## Extended Documentation
+For the unabridged module-by-module breakdown and complete syllabus of all 215 lessons, see:
+- Full Syllabus: https://stemuluskidstech.com/llms-full.txt

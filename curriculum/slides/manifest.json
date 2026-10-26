@@ -1,0 +1,25 @@
+{
+  "name": "STEMulus Kids Tech — Learning Portal",
+  "short_name": "STEMulus",
+  "description": "World-Class Tech Academy & Interactive Coding Curriculum for Ages 5–17",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "landscape-primary",
+  "background_color": "#F1F5F9",
+  "theme_color": "#0284C7",
+  "categories": ["education", "kids", "technology"],
+  "icons": [
+    {
+      "src": "assets/3d/stemulus-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/3d/stemulus-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

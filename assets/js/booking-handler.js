@@ -85,15 +85,14 @@ const BookingHandler = (function() {
 
             // Send notifications in parallel
             const results = await Promise.allSettled([
-                sendAdminEmail(bookingData),
-                sendParentEmail(bookingData),
+                sendBookingEmails(bookingData),
                 sendNtfyNotification(bookingData),
                 submitToNetlify(form, formData)
             ]);
 
             // Log results
             results.forEach((result, index) => {
-                const services = ['Admin Email', 'Parent Email', 'NTFY Push', 'Netlify'];
+                const services = ['Email (Admin + Parent)', 'NTFY Push', 'Netlify'];
                 if (result.status === 'fulfilled') {
                     console.log(`[Booking] ${services[index]} succeeded`);
                 } else {
@@ -126,75 +125,35 @@ const BookingHandler = (function() {
     }
 
     /**
-     * Send email alert to admin via EmailJS
+     * Send booking alert to Admin (Zoho + Gmail) and confirmation receipt to Parent via send-email function
      */
-    async function sendAdminEmail(data) {
-        if (typeof EmailService === 'undefined') {
-            console.warn('[Booking] EmailService is not loaded. Admin email skipped.');
-            return;
-        }
-
-        const bodyText = `A new free trial class has been booked.
-
-Booking Details:
-- Booking ID: ${data.bookingId}
-- Student Name: ${data.studentFirstName} ${data.studentLastName}
-- Age: ${data.studentAge}
-- Gender: ${data.studentGender}
-- Coding Experience: ${data.experience}
-- Program: ${data.program}
-- Preferred Schedule: ${capitalize(data.preferredDay)} (${capitalize(data.preferredTime)})
-
-Parent Info:
-- Parent Name: ${data.parentName}
-- Email: ${data.email}
-- Phone: ${data.phone}
-- Referral Source: ${data.referral}
-- Time of Request: ${new Date(data.timestamp).toLocaleString('en-GB')}
-        `;
-
-        return EmailService.send({
-            to: CONFIG.ADMIN_EMAIL,
-            studentName: 'Admin',
-            subject: `[Free Class Booking] New Request - ${data.bookingId}`,
-            body: bodyText
+    async function sendBookingEmails(data) {
+        const resp = await fetch('/.netlify/functions/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: 'booking',
+                data: {
+                    bookingId: data.bookingId,
+                    studentFirstName: data.studentFirstName,
+                    studentLastName: data.studentLastName,
+                    studentAge: data.studentAge,
+                    studentGender: data.studentGender,
+                    experience: data.experience,
+                    program: data.program,
+                    parentName: data.parentName,
+                    email: data.email,
+                    phone: data.phone,
+                    referral: data.referral,
+                    preferredDay: capitalize(data.preferredDay),
+                    preferredTime: capitalize(data.preferredTime),
+                    timestamp: data.timestamp
+                }
+            })
         });
-    }
-
-    /**
-     * Send automatic confirmation email to parent via EmailJS
-     */
-    async function sendParentEmail(data) {
-        if (typeof EmailService === 'undefined') {
-            console.warn('[Booking] EmailService is not loaded. Parent email skipped.');
-            return;
-        }
-
-        const bodyText = `Hi ${data.parentName},
-
-Thank you for booking a free trial class with STEMulus! We have received your booking request for ${data.studentFirstName} ${data.studentLastName}.
-
-Here are the details we received:
-- Booking ID: ${data.bookingId}
-- Program: ${data.program}
-- Preferred Schedule: ${capitalize(data.preferredDay)} (${capitalize(data.preferredTime)})
-
-What happens next?
-We are currently reviewing your request. A member of our team will reach out to you within 24 hours at ${data.phone} or via email to confirm the exact Zoom link, date, and coordinate your first trial class.
-
-If you have any questions, you can reply directly to this email or chat with us on WhatsApp: https://wa.me/${CONFIG.ADMIN_WHATSAPP.replace('+', '')}?text=${encodeURIComponent('Hi! Following up on free class booking ID ' + data.bookingId)}.
-
-Warm regards,
-STEMulus Kids Tech Team
-        `;
-
-        return await EmailService.send({
-            to: data.email,
-            studentName: data.parentName,
-            subject: `Free Class Booking Confirmed - STEMulus Kids Tech`,
-            body: bodyText,
-            ccParent: 'admin@stemuluskidstech.com'
-        });
+        const json = await resp.json();
+        if (!json.ok) console.warn('[Booking] Email dispatch warning:', json);
+        return json;
     }
 
     /**
@@ -429,6 +388,35 @@ ID: ${data.bookingId}
                 DashboardEngine.addEnrollment(bData);
                 console.log('[Booking] Synced with DashboardEngine');
             }
+
+            // Direct cloud sync to Firestore 'leads' collection (public write-only intake)
+            const docId = String(data.bookingId || ('bk-' + Date.now())).replace(/[^a-zA-Z0-9_-]/g, '-');
+            fetch(`https://firestore.googleapis.com/v1/projects/stemulus-lms/databases/(default)/documents/leads?documentId=${encodeURIComponent(docId)}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    fields: {
+                        id:               { stringValue: docId },
+                        studentFirstName: { stringValue: String(data.studentFirstName || '') },
+                        studentLastName:  { stringValue: String(data.studentLastName || '') },
+                        studentAge:       { stringValue: String(data.studentAge || '') },
+                        studentGender:    { stringValue: String(data.studentGender || '') },
+                        experience:       { stringValue: String(data.experience || 'Beginner') },
+                        program:          { stringValue: String(data.program || 'Discovery Session (Free Trial)') },
+                        parentName:       { stringValue: String(data.parentName || '') },
+                        email:            { stringValue: String(data.email || '').toLowerCase().trim() },
+                        parentEmail:      { stringValue: String(data.email || '').toLowerCase().trim() },
+                        phone:            { stringValue: String(data.phone || '') },
+                        leadSource:       { stringValue: String(data.referral || 'direct') },
+                        preferredDay:     { stringValue: String(data.preferredDay || 'Flexible') },
+                        preferredTime:    { stringValue: String(data.preferredTime || 'Flexible') },
+                        isFreeTrial:      { booleanValue: true },
+                        status:           { stringValue: 'pending' },
+                        source:           { stringValue: 'public_booking' },
+                        timestamp:        { stringValue: String(data.timestamp || new Date().toISOString()) }
+                    }
+                })
+            }).catch(() => {});
         } catch (e) {
             console.warn('[Booking] Could not save locally:', e);
         }

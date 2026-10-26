@@ -10,8 +10,8 @@
   <link rel="stylesheet" href="assets/css/portal-animations.css">
   <link rel="stylesheet" href="assets/css/responsive-overhaul.css">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="assets/vendor/lucide.min.js"></script>
+  <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
   <style>
     body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; color: #0f172a; }
     .font-nunito { font-family: 'Nunito', sans-serif; }
@@ -29,10 +29,10 @@
         : null;
       var ttl = 8 * 60 * 60 * 1000;
       if (!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
-        window.location.replace('parent-login.html?role=tutor');
+        window.location.replace('tutor-login.html');
       }
     } catch(e) {
-      window.location.replace('parent-login.html?role=tutor');
+      window.location.replace('tutor-login.html');
     }
   })();
   </script>
@@ -81,30 +81,30 @@
           <p class="text-xs truncate text-slate-200">Instructor</p>
         </div>
       </div>
-      <button id="sidebar-logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=tutor';" class="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors" style="border:none;background:rgba(255,255,255,0.05);cursor:pointer;">
+      <button id="sidebar-logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='tutor-login.html';" class="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors" style="border:none;background:rgba(255,255,255,0.05);cursor:pointer;">
         <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
       </button>
     </div>
   </aside>
 
   <!-- Top Nav -->
-  <nav class="tutor-nav lg:ml-64 px-4 sm:px-8 py-3.5 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <button id="menu-btn" class="lg:hidden p-2 text-slate-600 hover:text-slate-900" aria-label="Toggle menu">
-        <i data-lucide="menu" class="w-6 h-6"></i>
+  <nav class="tutor-nav lg:ml-64 px-3 sm:px-8 py-3 flex items-center justify-between gap-2">
+    <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+      <button id="menu-btn" class="lg:hidden w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors shrink-0" aria-label="Toggle menu">
+        <i data-lucide="menu" class="w-5 h-5"></i>
       </button>
-      <div>
-        <span class="text-[11px] font-extrabold uppercase tracking-wider text-orange-600 block">Mentor Portal</span>
-        <h1 class="font-bold text-lg text-slate-800 leading-tight">My Assigned Students</h1>
+      <div class="min-w-0">
+        <span class="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-orange-600 block leading-tight">Mentor Portal</span>
+        <h1 class="font-bold text-base sm:text-lg text-slate-800 leading-tight truncate max-w-[140px] sm:max-w-xs md:max-w-none">My Assigned Students</h1>
       </div>
     </div>
-    <div class="flex items-center gap-3">
-      <a href="tutor-attendance-create.html" class="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow-sm transition-colors">
+    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      <a href="tutor-attendance-create.html" class="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow-sm transition-colors min-h-[40px]">
         <i data-lucide="plus-circle" class="w-4 h-4"></i>
-        <span>Log Session</span>
+        <span><span class="hidden sm:inline">Log Session</span><span class="sm:hidden">Log</span></span>
       </a>
-      <button onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=tutor';" class="p-2 text-slate-500 hover:text-slate-800" title="Sign Out">
-        <i data-lucide="log-out" class="w-5 h-5"></i>
+      <button onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='tutor-login.html';" class="w-10 h-10 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors shrink-0" title="Sign Out" aria-label="Sign Out">
+        <i data-lucide="log-out" class="w-4 h-4"></i>
       </button>
     </div>
   </nav>
@@ -179,7 +179,7 @@
         // Check authentication
         const session = DashboardEngine.getSession ? DashboardEngine.getSession() : JSON.parse(sessionStorage.getItem('stemulus_session') || localStorage.getItem('stemulus_session') || 'null');
         if (!session || (session.role !== 'tutor' && session.role !== 'admin')) {
-          window.location.href = 'parent-login.html?role=tutor';
+          window.location.href = 'tutor-login.html';
           return;
         }
         currentTutor = session;

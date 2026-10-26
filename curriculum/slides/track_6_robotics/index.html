@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track 6: Robotics, Physical Computing & Autonomous AI | STEMulus Kids Tech Academy</title>
+  <link rel="icon" type="image/png" href="../assets/3d/stemulus-logo.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <style>
+    :root {
+      --brand-orange: #F4600C;
+      --brand-orange-deep: #C2410C;
+      --brand-orange-shadow: #9A3412;
+      --brand-indigo: #4F46E5;
+      --brand-indigo-deep: #3730A3;
+      --bg-page: #F1F5F9;
+      --bg-subtle: #F8FAFC;
+      --surface-white: #FFFFFF;
+      --text-main: #1A2332;
+      --text-muted: #475569;
+      --text-light: #64748B;
+      --border-neutral: #E2E8F0;
+      --border-subtle: #EDF2F7;
+      --shadow-shell: 0 20px 45px -10px rgba(15, 23, 42, 0.08);
+      --shadow-card: 0 4px 16px rgba(15, 23, 42, 0.04);
+      --radius-card: 20px;
+      --radius-badge: 8px;
+      --radius-tag: 10px;
+      --radius-pill: 10px;
+      --radius-btn: 14px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    header.site-header {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 18px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03), inset 0 1px 0 #FFFFFF;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-badge);
+      color: var(--text-muted);
+      font-family: 'Nunito', sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: inset 0 1px 0.5px #FFFFFF, 0 2px 4px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+    }
+    .back-btn:hover {
+      color: var(--brand-indigo);
+      border-color: #CBD5E1;
+      transform: translateX(-2px);
+    }
+    .back-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 10px;
+      filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.1));
+    }
+    .brand-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .brand-sub {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .header-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .stat-badge {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      padding: 6px 14px;
+      border-radius: var(--radius-badge);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-badge strong {
+      color: var(--text-main);
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 36px 40px 80px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Hero Course Starting Banner */
+    .course-hero {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 60%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 2px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 36px 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 10px 30px -4px rgba(15, 23, 42, 0.05);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .course-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    .hero-content {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-badge-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .course-tag {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .ages-tag {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: #F8FAFC;
+      border: 1px solid var(--border-neutral);
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .course-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .course-tagline {
+      font-size: 17px;
+      color: var(--brand-indigo);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+    .course-overview {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 24px;
+      max-width: 820px;
+      font-weight: 600;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-3d-primary {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: var(--radius-btn);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      background: linear-gradient(180deg, #FF7E36 0%, #F4600C 45%, #DF4E00 100%);
+      color: #ffffff !important;
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.65), inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 0 #9A3412, 0 8px 18px rgba(244, 96, 12, 0.28);
+      transition: all 0.12s ease;
+      overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    .btn-3d-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 6px 0 #9A3412, 0 12px 24px rgba(244, 96, 12, 0.32);
+    }
+    .btn-3d-primary svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      fill: none;
+    }
+    .btn-classroom-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 22px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 60%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-btn);
+      color: var(--text-main);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      box-shadow: inset 0 1.5px 0.5px #FFFFFF, 0 2px 0 #CBD5E1, 0 3px 6px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+    }
+    .btn-classroom-link:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+    }
+    
+    /* Live XP Tracker & Status Pills */
+    .hero-xp-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FEF3C7 60%, #FDE68A 100%);
+      border: 1px solid #F59E0B;
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-btn);
+      box-shadow: inset 0 1.5px 0.5px #FFFFFF, 0 2px 0 #D97706, 0 4px 10px rgba(245, 158, 11, 0.15);
+    }
+    .xp-trophy-img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.3));
+    }
+    .xp-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .xp-main-label {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #92400E;
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+    }
+    .xp-progress-bar-bg {
+      width: 140px;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(217, 119, 6, 0.3);
+    }
+    .xp-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #F59E0B, #D97706);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    .lesson-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: var(--radius-badge);
+      background: #F1F5F9;
+      color: #64748B;
+      border: 1px solid #CBD5E1;
+    }
+    .lesson-status-pill .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #94A3B8;
+    }
+    .lesson-status-pill.in-progress {
+      background: #FEF3C7;
+      color: #92400E;
+      border-color: #FCD34D;
+    }
+    .lesson-status-pill.in-progress .status-dot {
+      background: #F59E0B;
+    }
+    .lesson-status-pill.completed {
+      background: #ECFDF5;
+      color: #065F46;
+      border-color: #6EE7B7;
+    }
+    .lesson-status-pill.completed .status-dot {
+      background: #10B981;
+    }
+
+    .hero-3d-illus {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(15, 23, 42, 0.12));
+      flex-shrink: 0;
+    }
+
+    /* Mentoring & Pedagogical Blueprint */
+    .mentoring-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 70%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 28px 32px;
+      margin-bottom: 36px;
+      box-shadow: var(--shadow-card);
+    }
+    .mc-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .mc-head img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+    .mc-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .mc-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-weight: 600;
+      margin-bottom: 22px;
+    }
+    
+    .toolkit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .toolkit-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #EDF2F7 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 1px 0.5px #FFFFFF, 0 2px 4px rgba(15, 23, 42, 0.02);
+    }
+    .toolkit-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .toolkit-type-badge {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--brand-indigo);
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+      padding: 2px 8px;
+      border-radius: var(--radius-badge);
+    }
+    .toolkit-free-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #059669;
+    }
+    .toolkit-name {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .toolkit-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      font-weight: 600;
+      margin-bottom: 14px;
+      flex-grow: 1;
+    }
+    .toolkit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brand-indigo);
+      text-decoration: none;
+      align-self: flex-start;
+      padding: 4px 0;
+    }
+    .toolkit-btn:hover {
+      text-decoration: underline;
+    }
+    .toolkit-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+
+    /* Tier Sections & Lesson Cards */
+    .tier-section {
+      margin-bottom: 40px;
+    }
+    .tier-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      border-bottom: 2px solid var(--border-neutral);
+    }
+    .tier-badge-label {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+    }
+    .tier-lesson-count {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: #FFFFFF;
+      border: 1px solid var(--border-neutral);
+      padding: 4px 12px;
+      border-radius: var(--radius-badge);
+    }
+    .tier-lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 22px;
+    }
+    .lesson-hub-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 60%, #F1F5F9 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-top: 1.5px solid #FFFFFF;
+      border-radius: var(--radius-card);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 4px 12px rgba(15, 23, 42, 0.03);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+    }
+    .lesson-hub-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 35%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.05) 100%);
+      pointer-events: none;
+    }
+    .lesson-hub-card:hover {
+      transform: translateY(-4px);
+      box-shadow: inset 0 2px 1px 0 #FFFFFF, 0 14px 30px -4px rgba(15, 23, 42, 0.08), 0 3px 0 #CBD5E1;
+      border-color: #CBD5E1;
+    }
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .lesson-num-badge {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #EDF2F7 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1px solid #FFFFFF;
+      padding: 4px 10px;
+      border-radius: var(--radius-badge);
+      color: var(--text-muted);
+    }
+    .xp-preview-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9A3412;
+      background: #FFF7ED;
+      border: 1px solid #FFEDD5;
+      padding: 3px 8px;
+      border-radius: var(--radius-badge);
+    }
+    .card-lesson-title {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .card-hook-text {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      font-weight: 600;
+      flex-grow: 1;
+    }
+    .card-concept-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border: 1px solid var(--border-neutral);
+      border-top: 1.5px solid #FFFFFF;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .card-concept-row img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+    .quest-preview-box {
+      background: #FFFFFF;
+      border: 1px solid #EDF2F7;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .qp-title {
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .qp-item {
+      margin-bottom: 3px;
+    }
+    .qp-item:last-child {
+      margin-bottom: 0;
+    }
+    .btn-launch-lesson {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 18px;
+      border-radius: var(--radius-btn);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 13.5px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      background: linear-gradient(180deg, #FF7E36 0%, #F4600C 45%, #DF4E00 100%);
+      color: #ffffff !important;
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.65), inset 0 -2px 3px 0 rgba(0, 0, 0, 0.2), 0 3px 0 #9A3412, 0 6px 14px rgba(244, 96, 12, 0.24);
+      transition: all 0.12s ease;
+      overflow: hidden;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    .btn-launch-lesson:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 5px 0 #9A3412, 0 10px 20px rgba(244, 96, 12, 0.28);
+    }
+    .btn-launch-lesson svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+    
+    footer {
+      background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #FFFFFF 100%);
+      border-top: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 24px 40px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <a href="../index.html" class="back-btn">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>All Courses (Master Portal)</span>
+        </a>
+        <div class="brand-wrap">
+          <img src="../assets/3d/stemulus-logo.png" class="brand-logo" alt="STEMulus">
+          <div>
+            <div class="brand-title">STEMulus Kids Tech Academy</div>
+            <div class="brand-sub">Course Syllabus &amp; Interactive Learning Hub</div>
+          </div>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-badge">
+          <span>Target: <strong>Ages 8 - 17</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Curriculum: <strong>32 Lessons</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Tiers: <strong>2 Mastery Levels (Young Roboticists & Autonomous AI Innovators)</strong></span>
+        </div>
+        <div class="stat-badge">
+          <span>Pacing: <strong>45 - 60 Mins / Lesson</strong></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Hero Course Starting Banner -->
+    <div class="course-hero">
+      <div class="hero-content">
+        <div class="hero-badge-row">
+          <span class="course-tag">Course Starting Hub</span>
+          <span class="ages-tag">Ages 8 - 17</span>
+          <span class="ages-tag">32 Interactive Slide Decks</span>
+        </div>
+        <h1 class="course-title">Track 6: Robotics, Physical Computing & Autonomous AI</h1>
+        <p class="course-tagline">From Circuits to Cognition: MicroPython, Sensor Fusion, PID Control, SLAM & Edge AI Rovers</p>
+        <p class="course-overview">Robots are where code leaps off the screen and moves the physical world. Track 6 takes learners from foundational digital electronics, PWM NeoPixels, servo linkages, and ultrasonic echolocation on the BBC micro:bit all the way to aerospace-grade autonomous systems on dual-core ESP32 microcontrollers: H-Bridge motor drivers, quadrature wheel odometry, closed-loop PID controllers, 6-DOF IMU sensor fusion, ROS 2 pub/sub architecture, Edge AI computer vision, 2D Occupancy Grid SLAM, A* path planning, and Swarm Robotics—100% playable in free browser simulators!</p>
+        <div class="hero-actions">
+          <a href="young_roboticists_ages_8_11/lesson_01_meet_the_micro_brain.html" class="btn-3d-primary" target="_blank">
+            <span>Start Lesson 01: Meet the Micro-Brain: Digital Signals and the micro:bit LED Display</span>
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <div class="hero-xp-card" id="hero-xp-tracker">
+            <img src="../assets/3d/gold-trophy-3d.png" class="xp-trophy-img" alt="XP">
+            <div class="xp-text-group">
+              <span class="xp-main-label"><strong id="hub-xp-count">0</strong> / 11200 Course XP</span>
+              <div class="xp-progress-bar-bg">
+                <div class="xp-progress-fill" id="hub-xp-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img src="../assets/3d/robot-3d.png" class="hero-3d-illus" alt="Track 6: Robotics, Physical Computing & Autonomous AI">
+    </div>
+
+    <!-- Student Learning Journey & Software Sandbox Toolkit -->
+    <div class="mentoring-card">
+      <div class="mc-head">
+        <img src="../assets/3d/rocket-launch-3d.png" alt="Learning Journey">
+        <div class="mc-title">Your Learning Journey: Hands-On Mentoring &amp; Creative Sandboxes</div>
+      </div>
+      <p class="mc-body">Every session is a hands-on coding workshop with your dedicated mentor. You take the driver seat at the keyboard, building real apps, animations, and game worlds in zero-install browser sandboxes. Test your theories, conquer interactive checkpoints, and earn Bronze (+50 XP), Silver (+100 XP), and Gold (+200 XP) mastery badges as you advance!</p>
+      
+      <div style="font-family: 'Fredoka', 'Nunito', sans-serif; font-size: 16px; font-weight: 700; color: var(--brand-indigo); margin-bottom: 12px;">
+        100% Free Software &amp; Sandbox Setup for This Course:
+      </div>
+      <div class="toolkit-grid">
+        
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Industrial Embedded Sandbox</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Wokwi ESP32 &amp; Robotics Simulator</div>
+          <p class="toolkit-desc">Cycle-accurate browser simulator for ESP32, MicroPython, ultrasonic sonar, I2C OLEDs, and IMU sensors.</p>
+          <a href="https://wokwi.com/micropython" class="toolkit-btn" target="_blank">
+            <span>Open Wokwi ESP32 &amp; Robotics Simulator</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Physical Computing Studio</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">BBC micro:bit Python Simulator</div>
+          <p class="toolkit-desc">Instant virtual micro:bit v2 with 5x5 LED matrix, accelerometer, radio telemetry, and Web Audio synth.</p>
+          <a href="https://python.microbit.org/" class="toolkit-btn" target="_blank">
+            <span>Open BBC micro:bit Python Simulator</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Breadboard &amp; Servo Lab</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Tinkercad 3D Circuits</div>
+          <p class="toolkit-desc">Interactive electronics workbench for wiring H-Bridges, continuous servos, and rangefinders.</p>
+          <a href="https://www.tinkercad.com/circuits" class="toolkit-btn" target="_blank">
+            <span>Open Tinkercad 3D Circuits</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+        <div class="toolkit-card">
+          <div class="toolkit-badge-row">
+            <span class="toolkit-type-badge">Edge AI Vision Trainer</span>
+            <span class="toolkit-free-badge">100% Free Tool</span>
+          </div>
+          <div class="toolkit-name">Google Teachable Machine</div>
+          <p class="toolkit-desc">Train real-time convolutional neural networks in the browser for robotic visual servoing.</p>
+          <a href="https://teachablemachine.withgoogle.com/" class="toolkit-btn" target="_blank">
+            <span>Open Google Teachable Machine</span>
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Syllabus & Lesson Decks By Developmental Tier -->
+    
+        <section class="tier-section">
+          <div class="tier-header-bar">
+            <div class="tier-badge-label">Young Roboticists (Ages 8-11)</div>
+            <div class="tier-lesson-count">16 Interactive Lessons</div>
+          </div>
+          <div class="tier-lessons-grid">
+            
+            <div class="lesson-hub-card" data-slug="lesson_01_meet_the_micro_brain">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 01</span>
+                <div class="lesson-status-pill" id="status-lesson_01_meet_the_micro_brain"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Meet the Micro-Brain: Digital Signals and the micro:bit LED Display</h3>
+              <p class="card-hook-text">Robots don't have human eyes or mouths, so how do they think and communicate? Today, you program your first micro-controller to blink signals and display custom pixel animations in code!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Micro-controllers, Digital High/Low, and Matrix Displays</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Program the 5x5 LED matrix to display a smiling robot face that blinks once every 2 seconds.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Create a 3-frame animation showing an arrow pointing Left, then Center, then Right as if looking around.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add custom pixel brightness values (0 to 9) to give your robot glowing cheeks or fading expressions.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_01_meet_the_micro_brain.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_02_pwm_and_neopixel_colors">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 02</span>
+                <div class="lesson-status-pill" id="status-lesson_02_pwm_and_neopixel_colors"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Pulse of Light: PWM Fading and RGB NeoPixel Rings</h3>
+              <p class="card-hook-text">How do police cars flash sirens, and how do robot eyes glow from dim sleep to bright alert? Today, we unlock Pulse Width Modulation (PWM) to blend millions of RGB colors!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Pulse Width Modulation, Duty Cycles, and Addressable RGB LEDs</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Simulate an 8-LED NeoPixel ring that pulses a calming cyan breathing aura smoothly.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Program a chasing spotlight animation where one LED spins in a circle around the ring.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build an alert system that flashes bright red emergency sirens when button A is pressed.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_02_pwm_and_neopixel_colors.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_03_buttons_pullups_debouncing">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 03</span>
+                <div class="lesson-status-pill" id="status-lesson_03_buttons_pullups_debouncing"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Sensory Perception: Pushbuttons, Pull-Up Resistors &amp; Debouncing</h3>
+              <p class="card-hook-text">When you press a video game button once, why doesn't your character jump 50 times in a split second? Today we explore the microscopic mechanical bounce of switches and how pull-up resistors prevent floating ghosts!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/clock-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Digital Inputs, Floating Pins, Pull-Up Resistors, and Contact Debounce</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Program an interactive tally counter that increments when Button A is pressed and displays the count.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add Button B to decrement the counter, never letting it drop below zero.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Code a secret combo: pressing A and B simultaneously triggers a celebratory animation and fanfare.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_03_buttons_pullups_debouncing.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_04_analog_sensors_and_light">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 04</span>
+                <div class="lesson-status-pill" id="status-lesson_04_analog_sensors_and_light"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">The Thermostat &amp; Light Sensor: Analog Inputs and Threshold Triggers</h3>
+              <p class="card-hook-text">A robot navigating a dark cave needs night vision, and an incubator bot needs to protect eggs from cold snaps. How does code read smooth, continuous real-world temperatures and light levels?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Analog-to-Digital Converters (ADC), Voltage Dividers, and Calibrated Thresholds</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Build an automatic nightlight that turns ON when light falls below 60 and OFF when bright.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add a temperature warning: if temperature() exceeds 30 degrees Celsius, sound an alert.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build an analog light meter that displays a dynamic bar graph representing light strength from 1 to 5 bars.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_04_analog_sensors_and_light.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_05_piezo_buzzers_and_frequencies">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 05</span>
+                <div class="lesson-status-pill" id="status-lesson_05_piezo_buzzers_and_frequencies"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Making Sound and Music: Piezo Buzzers &amp; Musical Square Waves</h3>
+              <p class="card-hook-text">R2-D2 never spoke English, yet everyone understood his chirps, boops, and warning sirens! Today, we program piezo buzzers to generate musical frequencies, alarms, and robot emotion chimes.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Piezoelectric Effect, Sound Frequencies (Hz), and Audio Feedback</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Program your robot to play a startup fanfare when powered on and a chirp when Button A is pressed.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Compose an 8-note melody (like Star Wars or Mario) using the music.play() note notation.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a proximity radar alarm: as an object gets closer, the buzzer beeps with faster tempo.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_05_piezo_buzzers_and_frequencies.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_06_servo_motors_and_angles">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 06</span>
+                <div class="lesson-status-pill" id="status-lesson_06_servo_motors_and_angles"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Mechanical Motion: 180-Degree Servos and Angular Positioning</h3>
+              <p class="card-hook-text">How do robotic arms grab tools in space, and how do animatronic dinosaurs turn their heads with pinpoint accuracy? Today, we graduate from code on a screen to moving physical machinery using Servo Motors!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Servo Motors, Internal Potentiometers, Gearboxes, and Angular Calibration</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Simulate a micro-servo moving between 0 degrees, 90 degrees, and 180 degrees on button clicks.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Build a mechanical windshield wiper that sweeps smoothly back and forth with speed control.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Construct a robotic vault door latch that unlocks to 90 degrees when a secret button is pressed.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_06_servo_motors_and_angles.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_07_continuous_rotation_propulsion">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 07</span>
+                <div class="lesson-status-pill" id="status-lesson_07_continuous_rotation_propulsion"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Continuous Rotation Servos and Wheeled Mobile Propulsion</h3>
+              <p class="card-hook-text">Now that we can command angles, how do we put our robot on wheels to cruise across floors? Today, we unlock continuous rotation servos and differential drive steering!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Continuous Rotation Modification, Differential Drive, and Skid Steering</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Program a rover to drive forward for 2 seconds, stop, and flash an arrow on the LED matrix.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Code a precise square patrol route: drive forward, spin 90 degrees right, repeated 4 times to return to start.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Implement motor calibration trims so both wheels drive in an exact straight line without drifting.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_07_continuous_rotation_propulsion.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_08_ultrasonic_echolocation">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 08</span>
+                <div class="lesson-status-pill" id="status-lesson_08_ultrasonic_echolocation"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Echolocation: Ultrasonic Distance Sensors (HC-SR04)</h3>
+              <p class="card-hook-text">Bats fly through pitch-black caves at 30 miles per hour without touching a single stalactite by screaming ultrasonic shouts and listening for the echo. Today, we equip our robot with bat echolocation!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Ultrasonic Waves, Speed of Sound, Pulse Timing, and Distance Math</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Simulate an ultrasonic sensor and print accurate centimeter measurements to the console.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Build an automatic collision warning: display a smiley face when distance &gt; 30cm, and a skull when &lt; 10cm.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add an auditory backup beeper that beeps faster the closer an obstacle gets.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_08_ultrasonic_echolocation.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_09_smart_bumper_obstacle_avoidance">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 09</span>
+                <div class="lesson-status-pill" id="status-lesson_09_smart_bumper_obstacle_avoidance"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Smart Bumper Bot: Autonomous Obstacle Avoidance Loop</h3>
+              <p class="card-hook-text">What separates an RC toy car from a true autonomous robot? An RC car needs a human with a remote, but an autonomous robot makes its own survival decisions! Today, we code the famous Sense-Think-Act loop.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Autonomous Decision Cycles (Sense-Think-Act) and Reactive Avoidance</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Simulate an autonomous rover that stops immediately whenever an obstacle gets within 15cm.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Implement the complete escape sequence: brake, reverse 0.5s, turn right 90 degrees, and resume forward drive.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add randomized turn angles and directions (left or right) so the robot never gets stuck in repetitive corner loops.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_09_smart_bumper_obstacle_avoidance.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_10_infrared_line_following">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 10</span>
+                <div class="lesson-status-pill" id="status-lesson_10_infrared_line_following"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Infrared Ground Tracking: 2-Channel Line Follower Robot</h3>
+              <p class="card-hook-text">Amazon fulfillment centers use thousands of autonomous orange robots carrying tons of packages without ever colliding. How do they follow highways on factory floors? Today, we build an Infrared Line Follower!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Infrared Phototransistors, Surface Reflectivity, and Proportional Correction</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Simulate a 2-sensor line follower that steers toward the line when one sensor triggers.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Navigate a curved race track loop continuously without flying off the curves.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Detect an intersection marker (both sensors black) and make a smart programmed 90-degree turn decision.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_10_infrared_line_following.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_11_accelerometer_tilt_pet">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 11</span>
+                <div class="lesson-status-pill" id="status-lesson_11_accelerometer_tilt_pet"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Biomimetic Pet: 3-Axis Accelerometers and Robot Emotion States</h3>
+              <p class="card-hook-text">Sony built the famous AIBO robotic puppy, which reacts happily when petted, gets dizzy when spun around, and gets startled when dropped. Today, we turn our microcontroller into a biomimetic cyber-pet with emotional states!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> 3-Axis Accelerometers, Gravity Vectors (X, Y, Z), and Finite Emotion States</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Simulate a cyber-pet that displays HAPPY when held upright and CONFUSED when shaken.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add a sleeping state when placed face down, with soft snoring sounds using music.pitch().</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Build a pet happiness level: petting Button A increases happiness, while shaking decreases it.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_11_accelerometer_tilt_pet.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_12_wireless_radio_telemetry">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 12</span>
+                <div class="lesson-status-pill" id="status-lesson_12_wireless_radio_telemetry"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Wireless Telemetry: 2.4GHz Radio Remote Control and Packet Messaging</h3>
+              <p class="card-hook-text">NASA flight controllers on Earth control the Curiosity Mars Rover across 140 million miles of empty space using wireless radio packets. Today, we build a wireless 2-way telemetry link between a handheld controller and a rover!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> RF Packets, Group Channels, Serialization, and Wireless Teleoperation</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Transmit a text message ('PING') from one virtual micro:bit and display 'PONG' on the second.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Build a tilt-controlled wireless gamepad sending directional drive commands in real time.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Implement two-way telemetry: the robot measures its light level and sends the reading back to the controller display.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_12_wireless_radio_telemetry.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_13_i2c_bus_and_oled_displays">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 13</span>
+                <div class="lesson-status-pill" id="status-lesson_13_i2c_bus_and_oled_displays"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">I2C Protocol &amp; OLED Dashboards: Multi-Device Digital Communication</h3>
+              <p class="card-hook-text">What if you need to connect 10 sensors and a visual screen to your robot, but your microcontroller only has 3 input pins left? Today, we unlock I2C: the multi-device digital party line!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> I2C Serial Bus (SDA / SCL), Device Addresses (Hex), and Graphic OLED Screens</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Run the I2C bus scanner and identify the hex address of a connected virtual sensor.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Render text on a 128x64 OLED screen showing your robot's name and live battery voltage.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Draw a dynamic real-time graph on the OLED display tracking sensor values over time.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_13_i2c_bus_and_oled_displays.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_14_robotic_gripper_pick_and_place">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 14</span>
+                <div class="lesson-status-pill" id="status-lesson_14_robotic_gripper_pick_and_place"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Kinematic Grippers: Mechanical Claws and Pick-and-Place Automation</h3>
+              <p class="card-hook-text">Factories in Japan assemble cars in minutes using robotic arms that grab engines with surgical precision without dropping or crushing them. Today, we design and code an automated robotic pick-and-place gripper claw!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Mechanical Linkages, Gripping Force, Servo Angle Limits, and Pick-and-Place Cycles</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Simulate a gripper claw opening on Button A and closing firmly on Button B.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Implement the complete 5-step automated pick-and-place sequence with status screen icons.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add an optical or distance sensor to automatically trigger the pick-and-place routine when cargo is detected.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_14_robotic_gripper_pick_and_place.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_15_environmental_weather_rover">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 15</span>
+                <div class="lesson-status-pill" id="status-lesson_15_environmental_weather_rover"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Environmental Weather Station Rover: Multi-Sensor Data Logging</h3>
+              <p class="card-hook-text">Before human astronauts set foot on Mars, robotic exploration rovers map toxic radiation, dust storms, temperature swings, and atmospheric pressure. Today, we turn our mobile rover into an autonomous planetary weather station!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Sensor Fusion, Environmental Telemetry, Data Logging, and Safe Cruise Limits</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Log temperature and light every 2 seconds and display a sampling indicator on the screen.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Broadcast structured CSV telemetry packets over wireless radio to a mission control receiver.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add an emergency protocol: if temperature drops below 5 degrees, halt motors, sound an alarm, and broadcast an emergency SOS.</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_15_environmental_weather_rover.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_16_grand_capstone_maze_rescue_bot">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 16</span>
+                <div class="lesson-status-pill" id="status-lesson_16_grand_capstone_maze_rescue_bot"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Grand Capstone: The Autonomous Maze Navigator &amp; Rescue Bot</h3>
+              <p class="card-hook-text">Disaster strikes an underground mining tunnel, and it is too dangerous for human rescuers. A fully autonomous rescue rover must enter the winding maze, avoid cave-ins, find the trapped survivors, flash a beacon, and sound the victory fanfare!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Integrated Autonomous Systems: Wall Following, State Machines &amp; Capstone Mastery</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Complete the integrated maze navigation loop, driving straight in corridors and turning at walls.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Detect the survivor target, execute a 1-second emergency halt, and deploy an audio-visual distress beacon.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Complete the entire maze run from start to finish without any human intervention and play the victory fanfare!</div>
+              </div>
+              <a href="young_roboticists_ages_8_11/lesson_16_grand_capstone_maze_rescue_bot.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section class="tier-section">
+          <div class="tier-header-bar">
+            <div class="tier-badge-label">Autonomous Robotics &amp; Edge AI (Ages 12-17)</div>
+            <div class="tier-lesson-count">16 Interactive Lessons</div>
+          </div>
+          <div class="tier-lessons-grid">
+            
+            <div class="lesson-hub-card" data-slug="lesson_17_esp32_dual_core_architecture">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 17</span>
+                <div class="lesson-status-pill" id="status-lesson_17_esp32_dual_core_architecture"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Microcontroller Architecture: ESP32 Dual-Core, GPIO Matrix &amp; MicroPython</h3>
+              <p class="card-hook-text">Why do Boston Dynamics Spot and DJI drones use high-frequency 32-bit processors instead of simple 8-bit boards? Today, we step up to the ESP32 Dual-Core 240MHz architecture with hardware interrupts and real-time multitasking!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> 32-Bit Xtensa Dual-Core CPUs, GPIO Multiplexing, and Hardware Interrupts (ISR)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Initialize an ESP32 GPIO output pin and blink the onboard status LED at 5Hz in Wokwi.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Attach a hardware interrupt (Pin.IRQ_FALLING) to a bumper switch that sets an emergency stop flag immediately.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Use a non-blocking hardware Timer() to blink a heartbeat LED every 500ms while the main loop processes sensor math.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_17_esp32_dual_core_architecture.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_18_hbridge_motor_drivers_l298n">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 18</span>
+                <div class="lesson-status-pill" id="status-lesson_18_hbridge_motor_drivers_l298n"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Power Electronics &amp; Motor Drivers: Dual H-Bridge (L298N / DRV8833)</h3>
+              <p class="card-hook-text">An ESP32 pin outputs a tiny 3.3 Volts at 40 milliamps—barely enough to light an LED. If you wire a heavy 12-Volt rover motor directly to the chip, it will instantly fry in a puff of smoke! How do tiny chips command giant motors?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> H-Bridge Switching Topologies, Flyback Diodes, Separate Power Rails &amp; Common Ground</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Control a DC motor's direction (Forward vs Reverse) using IN1 and IN2 logic states.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Apply a 1kHz PWM signal to the Enable (ENA) pin to ramp motor speed smoothly from 0% to 100%.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Compare Coasting (IN1=0, IN2=0) vs Active Electromagnetic Braking (IN1=1, IN2=1) in your motor driver function.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_18_hbridge_motor_drivers_l298n.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_19_rotary_encoders_wheel_odometry">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 19</span>
+                <div class="lesson-status-pill" id="status-lesson_19_rotary_encoders_wheel_odometry"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Rotary Encoders &amp; Wheel Odometry: Measuring Exact Distance and RPM</h3>
+              <p class="card-hook-text">If you command a rover to drive at 80% power for 3 seconds on carpet vs hardwood floor, it travels two completely different distances! How do autonomous robots measure exact millimeters traveled? Welcome to Quadrature Wheel Odometry!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Optical/Magnetic Encoders, Quadrature Phase A/B, Odometry Math &amp; RPM Calculation</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Write the odometry formula converting encoder ticks into millimeters traveled for a 65mm wheel.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Code a quadrature interrupt handler that increments tick_count when Channel A leads B, and decrements when B leads A.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Program a closed-loop move_exact_mm(500) function that drives forward and stops at exactly 500.0 millimeters.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_19_rotary_encoders_wheel_odometry.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_20_proportional_control_loops">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 20</span>
+                <div class="lesson-status-pill" id="status-lesson_20_proportional_control_loops"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Closed-Loop Control Systems: The Proportional (P) Controller</h3>
+              <p class="card-hook-text">In Level 1, our robot used crude bang-bang control: either full turn or zero turn, making it zig-zag wildly down the hallway. How do real self-driving cars steer smoothly like a human driver? Welcome to Proportional Control Theory!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Open-Loop vs. Closed-Loop Control, Setpoints, Error Signals &amp; Proportional Gain (Kp)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Code a P-controller that calculates error and proportional motor effort for an adaptive cruise control rover.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add output saturation clamping so the motor command never exceeds hardware bounds (-100 to +100).</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Experiment with Kp = 0.5 (sluggish) vs Kp = 25.0 (violent overshoot) and document the critical stability gain.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_20_proportional_control_loops.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_21_pid_control_line_tracking">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 21</span>
+                <div class="lesson-status-pill" id="status-lesson_21_pid_control_line_tracking"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Mastering PID Control: Proportional, Integral &amp; Derivative Engineering</h3>
+              <p class="card-hook-text">From SpaceX Falcon 9 rocket boosters landing on drone ships to surgical robots and high-speed race rovers, one mathematical equation rules the modern physical world: the PID Controller. Today, you master all three terms!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> PID Control Law: Proportional (Present), Integral (Past) &amp; Derivative (Future)</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Instantiate the PIDController class and log P, I, and D components across 5 time steps.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Demonstrate how adding Kd damping eliminates the overshoot caused by an aggressive Kp gain.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Implement Integral Anti-Windup clamping so a temporarily stalled wheel doesn't build up infinite integral energy.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_21_pid_control_line_tracking.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_22_imu_sensor_fusion_complementary_filter">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 22</span>
+                <div class="lesson-status-pill" id="status-lesson_22_imu_sensor_fusion_complementary_filter"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Inertial Measurement Units (IMU): Sensor Fusion &amp; Complementary Filters</h3>
+              <p class="card-hook-text">Accelerometers measure tilt using gravity, but motor vibrations make them super noisy! Gyroscopes measure rotation smoothly, but they slowly drift off course over time! How do Segways and humanoids combine two flawed sensors into one rock-solid truth?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> 6-DOF IMU (MPU-6050), Gyro Drift, Accelerometer Noise &amp; Complementary Sensor Fusion</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Compute pitch and roll angles in degrees from raw 3-axis accelerometer readings using math.atan2().</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Implement the Complementary Filter combining gyro integration with accelerometer tilt.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Use the fused IMU heading angle inside a P-controller to keep a rover driving on a dead-straight compass bearing even if bumped!</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_22_imu_sensor_fusion_complementary_filter.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_23_tof_laser_lidar_arrays">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 23</span>
+                <div class="lesson-status-pill" id="status-lesson_23_tof_laser_lidar_arrays"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Multi-Sensor Range Arrays: Time-of-Flight (ToF) Laser LiDAR &amp; Filtering</h3>
+              <p class="card-hook-text">Ultrasonic sound waves spread out in a wide 30-degree cone and bounce unpredictably off angled walls. How do modern robot vacuums and self-driving cars scan narrow doorways with millimeter precision? Enter Time-of-Flight (ToF) Laser LiDAR!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Photon Time-of-Flight (VL53L0X), Multi-Sensor Multiplexing &amp; Moving Average Filters</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Implement a 3-sample sliding window filter that cleans raw distance sensor readings.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Combine Left, Center, and Right range values to compute the safest open steering vector.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Write an XSHUT pin initialization sequence to assign unique I2C addresses (0x30, 0x31, 0x32) to three identical VL53L0X sensors on the same bus.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_23_tof_laser_lidar_arrays.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_24_finite_state_machines_autonomy">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 24</span>
+                <div class="lesson-status-pill" id="status-lesson_24_finite_state_machines_autonomy"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Autonomous Decision Architecture: Deterministic Finite State Machines (FSM)</h3>
+              <p class="card-hook-text">As robots gain more sensors and missions, giant nested if-else spaghetti code becomes impossible to debug and causes dangerous race conditions! How do NASA JPL engineers structure rover autonomy? Formal Finite State Machines!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> States, Transition Guards, Entry/Exit Actions &amp; Watchdog Safety Timers</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Trace and run the 5-state RoverFSM class through startup, obstacle avoidance, and low-battery docking.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Trigger the 5.0-second watchdog timeout in AVOID_OBSTACLE and verify transition to FAULT state.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add an Entry Action hook (on_enter_state) that logs telemetry and sets NeoPixel status colors automatically whenever a transition occurs.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_24_finite_state_machines_autonomy.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_25_mqtt_iot_robotics_telemetry">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 25</span>
+                <div class="lesson-status-pill" id="status-lesson_25_mqtt_iot_robotics_telemetry"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT</h3>
+              <p class="card-hook-text">How does an engineer in London monitor and command a fleet of warehouse robots operating in Tokyo in real time? Today, we connect our ESP32 robot to Wi-Fi and stream structured JSON telemetry over the MQTT publish-subscribe protocol!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> ESP32 Wi-Fi Station, JSON Serialization, MQTT Brokers &amp; Keep-Alive Heartbeats</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Serialize a rover status dictionary into a valid JSON string and publish it to a structured topic.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Write a command parser using json.loads() that extracts linear and angular velocity commands from a remote dashboard.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Implement the Last Will and Testament (LWT) and 500ms Heartbeat Watchdog for fail-safe wireless teleoperation.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_25_mqtt_iot_robotics_telemetry.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_26_ros_publisher_subscriber_nodes">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 26</span>
+                <div class="lesson-status-pill" id="status-lesson_26_ros_publisher_subscriber_nodes"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Robot Operating System (ROS 2) Architecture: Nodes, Topics &amp; Twist Messages</h3>
+              <p class="card-hook-text">Almost every professional autonomous car, NASA lunar rover, and industrial humanoid runs on ROS (Robot Operating System). Instead of one giant file, ROS splits the robot's brain into independent communicating Nodes! Today, we build a ROS-style Pub/Sub Computation Graph.</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> ROS 2 Computation Graph, Decoupled Nodes, Topics &amp; geometry_msgs/Twist</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Subscribe a motor driver callback to `/cmd_vel` and convert Twist messages into left and right wheel speeds.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Create a `/scan` subscriber node that listens to laser range data and automatically publishes a stop Twist if distance &lt; 0.3m.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Chain 3 nodes together (`/scan` -&gt; `safety_mux_node` -&gt; `/cmd_vel` -&gt; `motor_driver_node`) demonstrating a full ROS computation graph.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_26_ros_publisher_subscriber_nodes.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_27_computer_vision_visual_servoing">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 27</span>
+                <div class="lesson-status-pill" id="status-lesson_27_computer_vision_visual_servoing"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Computer Vision at the Edge: Color Blob Tracking &amp; Visual Servoing</h3>
+              <p class="card-hook-text">Distance sensors only tell a robot *that* something is in front of it—not *what* it is! How does a rescue drone lock onto an orange life-raft in a tossing ocean and steer directly toward it? Welcome to Computer Vision and Visual Servoing!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> HSV Color Space Thresholding, Bounding Box Centroids &amp; 2-Axis Visual Servoing</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Compute horizontal pixel error from a 320x240 camera frame and output proportional pan/turn commands.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Use bounding box area `(w * h)` to control forward approach speed, backing up if the object gets too close (area &gt; target).</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Add a 'Lost Target Search' behavior: if no bounding box is detected for 5 frames, slowly rotate in place until the target re-enters the camera frame.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_27_computer_vision_visual_servoing.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_28_edge_ai_vision_apriltags">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 28</span>
+                <div class="lesson-status-pill" id="status-lesson_28_edge_ai_vision_apriltags"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Edge AI Vision &amp; Fiducial Landmarks: TinyML Classification &amp; AprilTags</h3>
+              <p class="card-hook-text">Tracking a red ball works until someone walks by in a red jacket! How do Amazon warehouse robots, SpaceX docking capsules, and surgical bots identify exact targets with 99.9% certainty? TinyML Neural Networks and AprilTag Fiducial Markers!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Quantized TinyML Models (INT8), Confidence Scores &amp; 6-DOF AprilTag Pose Estimation</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Implement a TinyML confidence filter that rejects any neural network prediction below 85% certainty.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Require 3 consecutive frames of the same high-confidence detection before triggering a physical robot action (temporal persistence).</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Write an AprilTag docking controller that aligns both lateral offset and yaw angle to park a rover within 2cm of its charging pad.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_28_edge_ai_vision_apriltags.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_29_slam_occupancy_grid_mapping">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 29</span>
+                <div class="lesson-status-pill" id="status-lesson_29_slam_occupancy_grid_mapping"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Simultaneous Localization &amp; Mapping (SLAM): 2D Occupancy Grids</h3>
+              <p class="card-hook-text">Drop a robot into an unknown building with no GPS and no floorplan. How does it build a map of the rooms when it doesn't know where it is, while figuring out where it is using the map it is building? Welcome to the holy grail of robotics: SLAM!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> 2D Occupancy Grids, Ray Casting, Free vs. Occupied Cells &amp; Probabilistic Updates</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Initialize an 8x4 Occupancy Grid and cast laser rays to map free corridors and obstacle walls.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Add North, South, and West ray-casting directions so a 360-degree LiDAR scan maps all 4 walls around the rover.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Upgrade the grid to store integer probability scores (0 to 100) where hits add +25 and pass-through rays subtract -10.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_29_slam_occupancy_grid_mapping.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_30_astar_autonomous_path_planning">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 30</span>
+                <div class="lesson-status-pill" id="status-lesson_30_astar_autonomous_path_planning"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Autonomous Path Planning: Graph Search, Manhattan Heuristics &amp; A* (A-Star)</h3>
+              <p class="card-hook-text">Once your robot has mapped an arena full of walls and boulders, how does it compute the shortest, safest route from Start `(0,0)` to the Goal `(7,4)` in milliseconds? Today, you code the legendary A* (A-Star) Pathfinding Algorithm!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Grid Graphs, Cost-So-Far g(n), Heuristic Estimate h(n) &amp; A* Priority Search</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Run the A* pathfinder around a single wall barrier and print the sequence of `(x, y)` waypoints.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Design a 6x6 maze with multiple dead-ends and verify A* discovers the optimal shortest path.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Write an Obstacle Inflation preprocessor (`inflate_obstacles(grid)`) that marks cells adjacent to walls as unsafe buffer zones for wide rovers.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_30_astar_autonomous_path_planning.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_31_swarm_robotics_esp_now">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 31</span>
+                <div class="lesson-status-pill" id="status-lesson_31_swarm_robotics_esp_now"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Swarm Robotics &amp; Multi-Agent Fleet Coordination: Peer-to-Peer ESP-NOW</h3>
+              <p class="card-hook-text">A single ant has a tiny brain, yet a colony of ants builds bridges, carries giant leaves, and searches forests faster than any single creature! How do drone light shows and warehouse robot swarms coordinate without crashing into each other?</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Decentralized Swarm Rules (Boids), Peer-to-Peer ESP-NOW &amp; Task Auctioning</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Run the multi-robot task auction and verify the lowest-cost health-verified robot wins the target.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Write a Separation Repulsion vector function: if two swarm robots get within 30cm of each other, compute opposing velocity vectors to push them safely apart.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Simulate a 4-robot search-and-rescue swarm partitioning a 100x100m arena into 4 quadrants so zero area is searched twice.</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_31_swarm_robotics_esp_now.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+            <div class="lesson-hub-card" data-slug="lesson_32_grand_capstone_mars_surface_explorer">
+              <div class="card-top-row">
+                <span class="lesson-num-badge">Lesson 32</span>
+                <div class="lesson-status-pill" id="status-lesson_32_grand_capstone_mars_surface_explorer"><span class="status-dot"></span><span>Ready to Start</span></div>
+              </div>
+              <h3 class="card-lesson-title">Grand Capstone: The Autonomous Mars Surface Explorer Architecture</h3>
+              <p class="card-hook-text">Because Mars is up to 22 light-minutes away from Earth, NASA JPL cannot steer the Perseverance rover with a live joystick. Once you hit 'DEPLOY', your rover's onboard autonomy stack must plan paths, fuse IMU/odometry, avoid craters, classify geological samples with Edge AI, and transmit telemetry home!</p>
+              <div class="card-concept-row">
+                <img src="../assets/3d/robot-3d.png" alt="Concept Icon">
+                <span><strong>Concept:</strong> Full-Stack Autonomous Robotics Integration: Perception, Planning, Control &amp; Telemetry</span>
+              </div>
+              <div class="quest-preview-box">
+                <div class="qp-title">Mission Quests:</div>
+                <div class="qp-item"><strong>Bronze (+50 XP):</strong> Execute the full-stack Mars Rover mission simulation and verify all 4 state transitions in the JSON telemetry stream.</div>
+                <div class="qp-item"><strong>Silver (+100 XP):</strong> Integrate the PID controller from Lesson 21 and the A* waypoint list from Lesson 30 to drive the rover through a 3-waypoint planetary survey.</div>
+                <div class="qp-item"><strong>Gold (+200 XP):</strong> Engineer a complete end-to-end Capstone simulation with IMU tilt safety, median-filtered LiDAR, TinyML sample collection, and MQTT telemetry reporting!</div>
+              </div>
+              <a href="autonomous_robotics_ages_12_17/lesson_32_grand_capstone_mars_surface_explorer.html" class="btn-launch-lesson" target="_blank">
+                <span>Launch Interactive Slide Deck</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </section>
+
+  </main>
+
+  <footer>
+    STEMulus Kids Tech Academy &bull; Track 6: Robotics, Physical Computing & Autonomous AI Starting Hub &bull; 1-on-1 Mentoring Curriculum &bull; 100% Offline Resilience
+  </footer>
+
+  <script>
+    (function() {
+      const lessons = document.querySelectorAll('.lesson-hub-card');
+      let totalCourseXp = 0;
+      let completedLessons = 0;
+      const maxCourseXp = lessons.length * 350;
+
+      lessons.forEach(card => {
+        const slug = card.getAttribute('data-slug');
+        if (!slug) return;
+        try {
+          const raw = localStorage.getItem('stemulus_quest_' + slug);
+          if (raw) {
+            const state = JSON.parse(raw);
+            let lessonXp = 0;
+            if (state.Bronze) lessonXp += 50;
+            if (state.Silver) lessonXp += 100;
+            if (state.Gold) lessonXp += 200;
+            
+            if (lessonXp > 0) {
+              totalCourseXp += lessonXp;
+              const statusEl = document.getElementById('status-' + slug);
+              if (statusEl) {
+                if (lessonXp >= 350) {
+                  statusEl.className = 'lesson-status-pill completed';
+                  statusEl.innerHTML = '<span class="status-dot"></span><span>Gold Mastered (+350 XP)</span>';
+                  completedLessons++;
+                } else {
+                  statusEl.className = 'lesson-status-pill in-progress';
+                  statusEl.innerHTML = '<span class="status-dot"></span><span>In Progress (+' + lessonXp + ' XP)</span>';
+                }
+              }
+            }
+          }
+        } catch(e) {}
+      });
+
+      const xpCountEl = document.getElementById('hub-xp-count');
+      const xpFillEl = document.getElementById('hub-xp-fill');
+      if (xpCountEl) xpCountEl.innerText = totalCourseXp;
+      if (xpFillEl && maxCourseXp > 0) {
+        const pct = Math.min(100, Math.round((totalCourseXp / maxCourseXp) * 100));
+        xpFillEl.style.width = pct + '%';
+      }
+    })();
+  </script>
+</body>
+</html>

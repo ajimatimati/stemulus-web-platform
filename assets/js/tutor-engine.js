@@ -135,6 +135,8 @@ const TutorEngine = (function() {
         renderAssignedStudents();
         renderSchedule();
         renderNotifications();
+        renderLiveClassPresenceBanner();
+        renderMonthlyReportsList();
         injectReportModal();
         injectCoverageModal();
     }
@@ -249,6 +251,81 @@ const TutorEngine = (function() {
             return true;
         }
         return false;
+    }
+
+    // Filter items that need active attention STRICTLY FOR THIS TUTOR ONLY (Olalekan never sees Joshua Ogba's or others' sessions)
+    function renderLiveClassPresenceBanner() {
+        if (!currentTutor) return;
+        const bannerContainer = document.getElementById('tutor-live-class-monitor-banner');
+        if (!bannerContainer || typeof ClassEscalationEngine === 'undefined') return;
+
+        const tutorEmail = (currentTutor.email || '').toLowerCase().trim();
+        const tutorAltEmail = (currentTutor.altEmail || '').toLowerCase().trim();
+        const tutorName = (currentTutor.name || '').toLowerCase().trim();
+        const tutorFirst = tutorName ? tutorName.split(' ')[0] : '';
+
+        const radarItems = ClassEscalationEngine.buildEscalationRadar ? ClassEscalationEngine.buildEscalationRadar() : [];
+        const urgentItems = radarItems.filter(item => {
+            if (!item || !item.state) return false;
+            const code = item.state.code;
+            const isUrgent = (
+                code === 'CODER_WAITING_FOR_TUTOR' ||
+                code === 'TUTOR_WAITING_FOR_CODER' ||
+                code === 'STUDENT_ABSENT_ALERT' ||
+                code === 'TUTOR_DELAY_CRITICAL' ||
+                code === 'CRITICAL_ESCALATION' ||
+                code === 'IN_SESSION'
+            );
+            if (!isUrgent) return false;
+
+            const s = item.schedule || {};
+            const contacts = item.contacts || (ClassEscalationEngine.resolveSessionContacts ? ClassEscalationEngine.resolveSessionContacts(s) : {});
+            const sEmail = (contacts.tutorEmail || s.tutorEmail || '').toLowerCase().trim();
+            const sName = (contacts.tutorName || s.mentor || s.tutorName || '').toLowerCase().trim();
+
+            const isMyClass = (tutorEmail && sEmail === tutorEmail) ||
+                              (tutorAltEmail && sEmail === tutorAltEmail) ||
+                              (tutorName && sName === tutorName) ||
+                              (tutorFirst && sName.includes(tutorFirst));
+
+            let matchStudent = false;
+            if (!isMyClass && typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getTutorStudents === 'function') {
+                const myStudents = DashboardEngine.getTutorStudents(tutorEmail) || [];
+                const schedStudentId = s.studentId || contacts.studentId;
+                const schedStudentName = (contacts.studentName || s.studentName || '').toLowerCase().trim();
+                matchStudent = myStudents.some(st => (schedStudentId && st.id === schedStudentId) ||
+                    (((st.firstName || '') + ' ' + (st.lastName || '')).toLowerCase().trim() === schedStudentName));
+            }
+
+            return isMyClass || matchStudent;
+        });
+
+        if (!urgentItems.length) {
+            bannerContainer.style.display = 'none';
+            bannerContainer.innerHTML = '';
+            return;
+        }
+
+        const topItem = urgentItems[0];
+        const studentName = topItem.contacts.studentName || 'Student';
+        bannerContainer.style.display = 'block';
+        bannerContainer.innerHTML = `
+            <div class="bg-gradient-to-r from-orange-500/15 via-amber-500/10 to-yellow-500/15 border border-orange-300 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-orange-600 text-white flex items-center justify-center shrink-0 font-bold">
+                  <i data-lucide="radio" class="w-4 h-4 animate-pulse"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs font-extrabold text-orange-950">Active Class Presence: ${studentName}</h4>
+                  <p class="text-[11px] text-orange-800 line-clamp-1">${topItem.state.label || 'Live session monitoring active.'}</p>
+                </div>
+              </div>
+              <a href="${topItem.schedule.meetLink || '#'}" target="_blank" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-orange-600 text-white hover:bg-orange-700 transition-colors shrink-0 shadow-xs inline-flex items-center gap-1.5">
+                Join Classroom &rarr;
+              </a>
+            </div>
+        `;
+        if (window.lucide) lucide.createIcons();
     }
 
     function renderStats() {
@@ -965,8 +1042,189 @@ const TutorEngine = (function() {
         closeProfileModal();
     }
 
+
+    // ===== MONTHLY PROGRESS REPORTS WORKFLOW =====
+    function renderMonthlyReportsList() {
+        const container = document.getElementById('tutor-monthly-reports-list');
+        if (!container || typeof MonthlyReportEngine === 'undefined') return;
+        if (!currentTutor) return;
+
+        const allReports = MonthlyReportEngine.getReports();
+        const tutorEmail = (currentTutor.email || '').toLowerCase().trim();
+        const myReports = allReports.filter(r => (r.tutorEmail || '').toLowerCase().trim() === tutorEmail);
+
+        if (!myReports.length) {
+            container.innerHTML = '<p class="text-xs text-slate-400 py-4 text-center">No monthly progress reports filed yet. Click "New Monthly Report" above to draft an evaluation.</p>';
+            return;
+        }
+
+        container.innerHTML = myReports.map(r => {
+            let statusBadge = '';
+            let actionBtn = '';
+
+            if (r.status === 'pending_admin_approval') {
+                statusBadge = '<span class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-200">Pending Director Approval</span>';
+            } else if (r.status === 'rejected_needs_revision') {
+                statusBadge = '<span class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-200">Revision Requested</span>';
+                actionBtn = '<button type="button" onclick="TutorEngine.editMonthlyReport(\'' + r.id + '\')" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer shadow-xs">Edit &amp; Resubmit</button>';
+            } else if (r.status === 'approved') {
+                statusBadge = '<span class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">Approved &amp; Sent</span>';
+                actionBtn = '<button type="button" onclick="MonthlyReportEngine.openReportPDF(\'' + r.id + '\')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1"><i data-lucide="file-text" class="w-3.5 h-3.5 text-slate-600"></i> View PDF</button>';
+            }
+
+            return `
+                <div class="p-4 bg-slate-50/70 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1 flex-wrap">
+                            <h4 class="text-sm font-extrabold text-slate-900">${r.studentName}</h4>
+                            <span class="text-xs text-slate-400 font-semibold">&bull; ${r.month}</span>
+                            ${statusBadge}
+                        </div>
+                        <p class="text-xs text-slate-600 line-clamp-1">${r.shiningHighlights || 'Learning evaluation filed.'}</p>
+                        ${r.adminFeedback ? `<p class="text-xs text-rose-700 font-bold mt-1 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg">Director Feedback: "${r.adminFeedback}"</p>` : ''}
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        ${actionBtn}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function openMonthlyReportModal(reportId = null) {
+        const modal = document.getElementById('modal-tutor-monthly-report');
+        if (!modal) return;
+
+        // Populate student selector
+        const select = document.getElementById('tmr-student-id');
+        if (select && typeof DashboardEngine !== 'undefined') {
+            const myStudents = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(currentTutor.email) : [];
+            select.innerHTML = '<option value="">-- Choose Assigned Student --</option>' +
+                myStudents.map(s => `<option value="${s.id}" data-name="${s.firstName} ${s.lastName || ''}" data-course="${s.program || 'Coding'}" data-parent-name="${s.parentName || 'Parent'}" data-parent-email="${s.parentEmail || ''}">${s.firstName} ${s.lastName || ''} (${s.program || 'Coding'})</option>`).join('');
+        }
+
+        if (reportId && typeof MonthlyReportEngine !== 'undefined') {
+            const r = MonthlyReportEngine.getReports().find(rep => rep.id === reportId);
+            if (r) {
+                document.getElementById('tmr-id').value = r.id;
+                select.value = r.studentId;
+                document.getElementById('tmr-month').value = r.month || 'October 2026';
+                document.getElementById('tmr-proj1-title').value = (r.projectLinks[0] && r.projectLinks[0].title) || '';
+                document.getElementById('tmr-proj1-url').value = (r.projectLinks[0] && r.projectLinks[0].url) || '';
+                document.getElementById('tmr-proj2-title').value = (r.projectLinks[1] && r.projectLinks[1].title) || '';
+                document.getElementById('tmr-proj2-url').value = (r.projectLinks[1] && r.projectLinks[1].url) || '';
+                document.getElementById('tmr-woohoo-moments').value = (r.woohooMoments || []).map(m => m.moment).join('\n');
+                document.getElementById('tmr-strengths').value = r.shiningHighlights || '';
+                document.getElementById('tmr-growth').value = r.growthAreas || '';
+            }
+        } else {
+            document.getElementById('tmr-id').value = '';
+            document.getElementById('tmr-proj1-title').value = '';
+            document.getElementById('tmr-proj1-url').value = '';
+            document.getElementById('tmr-proj2-title').value = '';
+            document.getElementById('tmr-proj2-url').value = '';
+            document.getElementById('tmr-woohoo-moments').value = '';
+            document.getElementById('tmr-strengths').value = '';
+            document.getElementById('tmr-growth').value = '';
+        }
+
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function closeMonthlyReportModal() {
+        const modal = document.getElementById('modal-tutor-monthly-report');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+    }
+
+    function onReportStudentChange(studentId) {
+        if (!studentId) return;
+        triggerWoohooCrawler();
+    }
+
+    function triggerWoohooCrawler() {
+        const select = document.getElementById('tmr-student-id');
+        const studentId = select.value;
+        if (!studentId || typeof MonthlyReportEngine === 'undefined') return;
+
+        const moments = MonthlyReportEngine.crawlWoohooMoments(studentId, document.getElementById('tmr-month').value);
+        if (moments && moments.length) {
+            const formatted = moments.map((m, idx) => `${idx + 1}. [${m.date}] ${m.moment} (Remark: ${m.tutorRemark})`).join('\n\n');
+            document.getElementById('tmr-woohoo-moments').value = formatted;
+            if (typeof showToast === 'function') showToast('Crawled ' + moments.length + ' breakthrough moments from monthly session logs!', 'success');
+        } else {
+            document.getElementById('tmr-woohoo-moments').value = '1. Successfully completed structured curriculum hands-on exercises with growing independence.';
+        }
+    }
+
+    function saveMonthlyReportForm(e) {
+        e.preventDefault();
+        const select = document.getElementById('tmr-student-id');
+        const selectedOpt = select.options[select.selectedIndex];
+        if (!select.value) {
+            alert('Please select an enrolled student.');
+            return;
+        }
+
+        const p1Title = document.getElementById('tmr-proj1-title').value.trim();
+        const p1Url = document.getElementById('tmr-proj1-url').value.trim();
+        const p2Title = document.getElementById('tmr-proj2-title').value.trim();
+        const p2Url = document.getElementById('tmr-proj2-url').value.trim();
+
+        const projectLinks = [];
+        if (p1Title && p1Url) projectLinks.push({ title: p1Title, url: p1Url });
+        if (p2Title && p2Url) projectLinks.push({ title: p2Title, url: p2Url });
+
+        const woohooRaw = document.getElementById('tmr-woohoo-moments').value.trim();
+        const moments = woohooRaw ? woohooRaw.split('\n').filter(Boolean).map(m => ({
+            date: 'Monthly Session',
+            topic: 'Practical Application',
+            moment: m.replace(/^\d+\.\s*/, '').trim()
+        })) : [];
+
+        const reportData = {
+            id: document.getElementById('tmr-id').value || null,
+            studentId: select.value,
+            studentName: selectedOpt.getAttribute('data-name'),
+            course: selectedOpt.getAttribute('data-course'),
+            parentName: selectedOpt.getAttribute('data-parent-name'),
+            parentEmail: selectedOpt.getAttribute('data-parent-email'),
+            tutorId: currentTutor.id || 'tut-current',
+            tutorName: currentTutor.name || 'Tutor',
+            tutorEmail: currentTutor.email || '',
+            month: document.getElementById('tmr-month').value.trim(),
+            projectLinks: projectLinks,
+            shiningHighlights: document.getElementById('tmr-strengths').value.trim(),
+            growthAreas: document.getElementById('tmr-growth').value.trim(),
+            woohooMoments: moments
+        };
+
+        if (typeof MonthlyReportEngine !== 'undefined') {
+            MonthlyReportEngine.submitReport(reportData);
+            closeMonthlyReportModal();
+            renderMonthlyReportsList();
+            if (typeof showToast === 'function') {
+                showToast('Monthly report submitted to Director for review!', 'success');
+            }
+        }
+    }
+
     return {
         init,
+        renderLiveClassPresenceBanner,
+        renderMonthlyReportsList,
+        openMonthlyReportModal,
+        closeMonthlyReportModal,
+        editMonthlyReport: openMonthlyReportModal,
+        onReportStudentChange,
+        triggerWoohooCrawler,
+        saveMonthlyReportForm,
         renderDashboard,
         renderAssignedStudents,
         openReportModal,

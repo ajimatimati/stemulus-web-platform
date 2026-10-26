@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="portal-view">
 <head>
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="assets/vendor/lucide.min.js"></script>
   <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
   <link rel="stylesheet" href="assets/css/tailwind-output.css">
   <link rel="stylesheet" href="dist/combined.css">
@@ -33,10 +33,10 @@
         : null;
       var ttl = 8 * 60 * 60 * 1000;
       if (!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
-        window.location.replace('parent-login.html?role=tutor');
+        window.location.replace('tutor-login.html');
       }
     } catch(e) {
-      window.location.replace('parent-login.html?role=tutor');
+      window.location.replace('tutor-login.html');
     }
   })();
   </script>
@@ -473,7 +473,7 @@
           <p class="text-xs truncate" style="color:rgba(255,255,255,0.75);">Instructor</p>
         </div>
       </div>
-      <button id="logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='parent-login.html?role=tutor';" class="w-full flex items-center justify-center gap-2 transition-colors text-sm py-2" style="color:rgba(255,255,255,0.85);border:none;background:rgba(255,255,255,0.05);border-radius:12px;cursor:pointer;">
+      <button id="logout-btn" onclick="if(typeof DashboardEngine!=='undefined'&&DashboardEngine.logout){DashboardEngine.logout();}window.location.href='tutor-login.html';" class="w-full flex items-center justify-center gap-2 transition-colors text-sm py-2" style="color:rgba(255,255,255,0.85);border:none;background:rgba(255,255,255,0.05);border-radius:12px;cursor:pointer;">
         <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
       </button>
     </div>
@@ -737,10 +737,19 @@
 
             <!-- Tutor Comment -->
             <div class="mb-2">
-              <label class="form-label">Tutor Comment <span style="color:#f87171;">*</span></label>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="form-label mb-0" style="margin-bottom:0;">Tutor Comment <span style="color:#f87171;">*</span></label>
+                <button type="button" id="btn-ai-polish-comment" onclick="if(typeof polishTutorCommentWithAI==='function'){polishTutorCommentWithAI();}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold text-white transition-all shadow-sm cursor-pointer" style="background:linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                  <span id="btn-ai-polish-text">Polish with AI</span>
+                </button>
+              </div>
               <textarea id="tutor_comment" name="tutor_comment" class="form-input" rows="4" maxlength="1000"
                         placeholder="2-3 sentences on standout win or focus area for this student today"></textarea>
-              <p class="error-msg" id="err-comment">Please add a comment for this session.</p>
+              <div class="flex items-center justify-between mt-1">
+                <p class="error-msg" id="err-comment" style="margin-top:0;">Please add a comment for this session.</p>
+                <span class="text-[10px] text-slate-400 ml-auto flex items-center gap-1"><i data-lucide="shield-check" class="w-3 h-3 text-emerald-500"></i> AI strictly polishes clarity while preserving tutor facts</span>
+              </div>
             </div>
           </div>
 
@@ -792,15 +801,15 @@
           </div>
 
           <!-- Navigation Buttons -->
-          <div class="flex items-center justify-between mt-6 pt-4" style="border-top:1px solid #e2e8f0;">
-            <button type="button" id="btn-back" class="btn-secondary" style="display:none;" onclick="navigateSection(-1)">
+          <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 mt-6 pt-4" style="border-top:1px solid #e2e8f0;">
+            <button type="button" id="btn-back" class="btn-secondary w-full sm:w-auto justify-center min-h-[44px] text-xs sm:text-sm px-5 py-2.5" style="display:none;" onclick="navigateSection(-1)">
               <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
             </button>
-            <div style="flex:1;"></div>
-            <button type="button" id="btn-next" class="btn-primary" onclick="navigateSection(1)">
+            <div class="hidden sm:block" style="flex:1;"></div>
+            <button type="button" id="btn-next" class="btn-primary w-full sm:w-auto justify-center min-h-[44px] text-xs sm:text-sm px-6 py-2.5" onclick="navigateSection(1)">
               Next <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
-            <button type="button" id="btn-submit" class="btn-submit" style="display:none;" onclick="submitDailyLog()">
+            <button type="button" id="btn-submit" class="btn-submit w-full sm:w-auto justify-center min-h-[44px] text-xs sm:text-sm px-6 py-2.5" style="display:none;" onclick="submitDailyLog()">
               <i data-lucide="send" class="w-4 h-4"></i> Submit Session Log
             </button>
           </div>
@@ -836,6 +845,8 @@
   <script src="assets/js/firebase-config.min.js" defer></script>
   <script src="assets/js/stemulus-firestore.min.js" defer></script>
   <script src="assets/js/dashboard-engine.min.js" defer></script>
+  <script src="assets/js/gemini-config.min.js" defer></script>
+  <script src="assets/js/gemini-service.min.js" defer></script>
   <script src="assets/js/session-monitoring-engine.min.js" defer></script>
   <script src="assets/js/tutor-attendance-engine.min.js" defer></script>
 
@@ -874,10 +885,23 @@
   var totalSteps = 4;
   var starRating = 0;
 
-  // ─── Set today's date default ─────────────────────────────────────────
+  // ─── Set today's date default & Curriculum Deck Pre-fill ──────────────
   (function(){
     var d = document.getElementById('class_date');
     if(d){ var now=new Date(); d.value=now.toISOString().split('T')[0]; }
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var topicParam = params.get('topic');
+      var courseParam = params.get('course');
+      if (topicParam) {
+        var topicEl = document.getElementById('topic');
+        if (topicEl && !topicEl.value) topicEl.value = topicParam;
+      }
+      if (courseParam) {
+        var courseEl = document.getElementById('course_covered');
+        if (courseEl && !courseEl.value) courseEl.value = courseParam;
+      }
+    } catch (e) {}
   })();
 
   // ─── Attendance radio cards ───────────────────────────────────────────

@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 25: Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT | Track 6: Robotics, Physical Computing &amp; Autonomous AI</title>
+  <link rel="icon" type="image/png" href="../../assets/3d/stemulus-logo.png">
+  <link rel="stylesheet" href="../../assets/slide_engine.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="slide-header">
+    <div class="logo-badge">
+      <img src="../../assets/3d/stemulus-logo.png" class="logo-img" alt="STEMulus">
+      <span class="brand-text">STEMulus Kids Tech</span>
+    </div>
+    <div class="lesson-tag">
+      <img src="../../assets/3d/planet-3d.png" style="width: 18px; height: 18px; object-fit: contain;" alt="Track">
+      <span>Track 6: Robotics, Physical Computing &amp; Autonomous AI &bull; Autonomous Robotics &amp; Edge AI (Ages 12-17) &bull; Lesson 25</span>
+    </div>
+    <div class="slide-dots-ribbon" id="slide-dots-ribbon"></div>
+    <div class="header-controls">
+      <button class="ctrl-btn" onclick="printMissionBrief()" title="Print Student Brief (P)">
+        <svg class="ui-svg" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        <span>Print (P)</span>
+      </button>
+      <button class="ctrl-btn" id="sound-btn" onclick="toggleSound()">
+        <svg class="ui-svg" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+        <span>Sound: On</span>
+      </button>
+      <button class="ctrl-btn mission-btn" id="mission-btn" onclick="toggleLearningJourney()" title="My Mission & Learning Journey (M)">
+        <img src="../../assets/3d/gold-trophy-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Journey">
+        <span>My Journey (M)</span>
+      </button>
+      <button class="ctrl-btn glossary-btn" id="glossary-btn" onclick="toggleGlossary()" title="Canonical Concept Glossary (G)">
+        <img src="../../assets/3d/backpack-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Glossary">
+        <span>Glossary (G)</span>
+      </button>
+      <button class="ctrl-btn tutor-btn" id="tutor-btn" onclick="toggleTutorCockpit()" title="Mentor Guide (T or S)">
+        <img src="../../assets/3d/admin-shield-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Tutor">
+        <span>Tutor Cockpit (T)</span>
+      </button>
+      <button class="ctrl-btn" onclick="toggleFullscreen()" title="Fullscreen (F)">
+        <svg class="ui-svg" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+        <span>Fullscreen (F)</span>
+      </button>
+      <a href="../../index.html" class="ctrl-btn" style="text-decoration: none;" title="Curriculum Portal">
+        <svg class="ui-svg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Portal</span>
+      </a>
+    </div>
+    <div class="progress-container">
+      <div class="progress-bar"></div>
+    </div>
+  </header>
+
+  <!-- Slide Viewport -->
+  <main class="slide-viewport">
+
+    <!-- Slide 1: Mission Launch & Hook -->
+    <div class="slide active" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Mission Dilemma &amp;amp; Child Analogy&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Explain the core problem: Why do computers or humans need Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT? Relate this to an everyday child mental model: Think of this like crafting a master recipe, tuning an arcade engine, or building with LEGO bricks where each piece has an exact purpose. Today we are solving: How does an engineer in London monitor and command a fleet of warehouse robots operating in Tokyo in real time? Today, we connect our ESP32 robot to Wi-Fi and stream structured JSON telemetry over the MQTT publish-subscribe protocol! &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Tutor Conversational Script&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; &quot;Welcome back! Today we are unlocking Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT in our Track 6: Robotics, Physical Computing &amp; Autonomous AI track. Before we look at any code or blueprints, imagine this challenge: How does an engineer in London monitor and command a fleet of warehouse robots operating in Tokyo in real time? Today, we connect our ESP32 robot to Wi-Fi and stream structured JSON telemetry over the MQTT publish-subscribe protocol!. If you were the engineer designing this system, how would you solve it?&quot; Listen actively, validate their instinct, and transition to the mission card. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Predict-First Cognitive Check&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Prompt the learner: &quot;Look at the Predict Banner below: Before writing any code, how do you hypothesize computers solve this dilemma? Share your theory with me!&quot; This activates schema before presenting the formal rule. &lt;/div&gt; &lt;/div&gt;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span class="badge-tag">Lesson 25</span>
+        <span style="font-size: 13px; font-weight: 700; color: var(--text-light);">Autonomous Robotics &amp; Edge AI (Ages 12-17)</span>
+      </div>
+      <h1>Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT</h1>
+      <p class="subtitle">Track 6: Robotics, Physical Computing &amp; Autonomous AI</p>
+      
+      <div class="hero-3d-layout">
+        <div class="mission-card" style="flex: 1;">
+          <div class="mission-card-content">
+            <div class="mission-title">The Mission Hook</div>
+            <p class="mission-text">How does an engineer in London monitor and command a fleet of warehouse robots operating in Tokyo in real time? Today, we connect our ESP32 robot to Wi-Fi and stream structured JSON telemetry over the MQTT publish-subscribe protocol!</p>
+          </div>
+        </div>
+        <img src="../../assets/3d/rocket-launch-3d.png" class="hero-3d-object" alt="Mission Launch">
+      </div>
+
+      <div class="predict-banner">
+        <img src="../../assets/3d/lightbulb-3d.png" class="predict-banner-icon" alt="Predict">
+        <div class="predict-banner-text">
+          <strong>Predict &amp; Hypothesize:</strong> In physical computing and robotics for Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT: How does the microcontroller translate digital code for ESP32 Wi-Fi Station, JSON Serialization, MQTT Brokers &amp; Keep-Alive Heartbeats into precise physical action without jittering or stalling?
+        </div>
+      </div>
+      
+      
+        <div style="margin-top: 20px;">
+          <div style="font-family: 'Fredoka', 'Nunito', sans-serif; font-size: 17px; font-weight: 700; color: var(--brand-indigo); margin-bottom: 8px;">
+            Mission Toolkit: Required Course Software & Web Platforms
+          </div>
+          <div class="tool-setup-grid">
+            
+            <div class="tool-setup-card">
+              <div class="tool-badge-row">
+                <span class="tool-type-badge">IoT Robotics Sandbox</span>
+                <span style="font-size: 11px; font-weight: 700; color: var(--text-light);">Free Student Sandbox</span>
+              </div>
+              <div class="tool-name">
+                <img src="../../assets/3d/robot-3d.png" class="concept-icon-3d" alt="Wokwi Wi-Fi &amp; MQTT Cloud Lab">
+                <span>Wokwi Wi-Fi &amp; MQTT Cloud Lab</span>
+              </div>
+              <p class="tool-desc">Simulate ESP32 Wi-Fi networking and live MQTT broker publishing in the browser.</p>
+              <div class="tool-steps">
+                <strong>Setup Checklist:</strong><br>&bull; Open the ESP32 MicroPython simulator.<br>&bull; Run the TelemetryNode script to validate JSON serialization and watchdog safety.
+              </div>
+              <a href="https://wokwi.com/micropython" class="tool-launch-btn" target="_blank">
+                <span>Launch & Configure Wokwi Wi-Fi &amp; MQTT Cloud Lab</span>
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      
+      <div style="margin-top: auto; display: flex; gap: 16px; font-size: 13px; font-weight: 700; color: var(--text-light); padding-top: 16px;">
+        <span>Use Arrow Keys or Space to advance</span>
+        <span>&bull;</span>
+        <span>Press 'T' or 'S' for Tutor Cockpit</span>
+      </div>
+    </div>
+
+    <!-- Slide 2: Core Concept Breakdown -->
+    <div class="slide" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Deep Concept Explanation (Simple Language)&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Break down ESP32 Wi-Fi Station, JSON Serialization, MQTT Brokers &amp; Keep-Alive Heartbeats into simple, relatable building blocks:&lt;br&gt; &bull; &lt;strong&gt;MQTT Lightweight Messaging:&lt;/strong&gt; HTTP web requests have huge text headers and high latency. MQTT (Message Queuing Telemetry Transport) uses tiny 2-byte binary headers designed specifically for real-time robotics and IoT.&lt;br&gt;&bull; &lt;strong&gt;Structured JSON Telemetry:&lt;/strong&gt; Instead of fragile raw strings, robots package state into JSON objects: {&quot;rover_id&quot;: &quot;R1&quot;, &quot;state&quot;: &quot;PATROL&quot;, &quot;bat&quot;: 92, &quot;pose&quot;: [120, 45]}.&lt;br&gt;&bull; &lt;strong&gt;Dead-Man's Switch Heartbeat:&lt;/strong&gt; What if Wi-Fi drops while a remote pilot is holding down the 'Forward' button? A 500ms Heartbeat Watchdog automatically halts the motors if telemetry packets stop arriving!&lt;br&gt; Explain what the code snippet actually tells the computer: Each syntax token is a specific instruction—keywords define actions, values define parameters, and containers store data. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Interactive Sandbox Coaching Guide&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Guide the student to click the sandbox button right below the snippet. Have them interact with the controls (sliders, color presets, or code runner). Ask: &quot;When we adjust this parameter, how does the output react? Why does that change happen?&quot; This cements the direct cause-and-effect relationship. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Diagnostic Check&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Ask: &quot;If you had to explain ESP32 Wi-Fi Station, JSON Serialization, MQTT Brokers &amp; Keep-Alive Heartbeats to a younger friend who has never coded, what simple real-world comparison would you use?&quot; Listen for understanding rather than rote memorization. &lt;/div&gt; &lt;/div&gt;">
+      <h2>
+        <img src="../../assets/3d/lightbulb-3d.png" class="slide-title-3d" alt="Concept">
+        <span>The Big Idea: ESP32 Wi-Fi Station, JSON Serialization, MQTT Brokers &amp; Keep-Alive Heartbeats</span>
+      </h2>
+      <p style="font-size: 14.5px; color: var(--text-muted); font-weight: 600;">Explore the essential building blocks for this lesson:</p>
+      
+      
+        <div class="video-module">
+          <div class="video-header-row">
+            <div class="video-title">
+              <img src="../../assets/3d/video-camera-3d.png" style="width: 22px; height: 22px; object-fit: contain;" alt="Video">
+              <span>Concept Watch: What is MQTT and How IoT Robotics Telemetry Works</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="video-duration-pill">
+                <span>2:30 Micro-Video</span>
+              </span>
+              <a href="https://www.youtube.com/watch?v=EIxdz-2rhLs" class="video-launch-btn video-watch-btn" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>Watch on YouTube</span>
+              </a>
+            </div>
+          </div>
+          <div class="video-body-grid">
+            <div class="video-stage-card">
+              <div class="video-frame-container">
+                <iframe src="https://www.youtube.com/embed/EIxdz-2rhLs?enablejsapi=1&rel=0" title="What is MQTT and How IoT Robotics Telemetry Works" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+              </div>
+              <div class="video-local-hint">
+                <span>Video not loading? Open it directly:</span>
+                <a href="https://www.youtube.com/watch?v=EIxdz-2rhLs" target="_blank" rel="noopener noreferrer">
+                  <span>Watch on YouTube</span>
+                  <span style="font-size: 13px;">&nearr;</span>
+                </a>
+              </div>
+            </div>
+            <div class="video-takeaway-grid">
+              <div class="video-takeaway-box">
+                <div class="video-takeaway-title">
+                  <img src="../../assets/3d/golden-key-3d.png" style="width: 20px; height: 20px; object-fit: contain;" alt="Key">
+                  <span>What to Look For:</span>
+                </div>
+                <div style="font-size: 13.5px; color: var(--text-dark); line-height: 1.5;"><div style="margin-bottom: 6px;">&bull; MQTT decouples message publishers from subscribers via a central topic broker.</div><div style="margin-bottom: 6px;">&bull; JSON provides a human-readable, language-independent schema for sensor payloads.</div><div style="margin-bottom: 6px;">&bull; Heartbeat watchdogs and Last Will messages protect physical hardware during network drops.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      <div class="content-grid">
+        
+        <div class="card">
+          <div class="card-title">
+            <img src="../../assets/3d/robot-3d.png" class="concept-icon-3d" alt="MQTT Lightweight Messaging">
+            <span>MQTT Lightweight Messaging</span>
+          </div>
+          <p class="card-desc">HTTP web requests have huge text headers and high latency. MQTT (Message Queuing Telemetry Transport) uses tiny 2-byte binary headers designed specifically for real-time robotics and IoT.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <img src="../../assets/3d/backpack-3d.png" class="concept-icon-3d" alt="Structured JSON Telemetry">
+            <span>Structured JSON Telemetry</span>
+          </div>
+          <p class="card-desc">Instead of fragile raw strings, robots package state into JSON objects: {&quot;rover_id&quot;: &quot;R1&quot;, &quot;state&quot;: &quot;PATROL&quot;, &quot;bat&quot;: 92, &quot;pose&quot;: [120, 45]}.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <img src="../../assets/3d/signpost-3d.png" class="concept-icon-3d" alt="Dead-Man's Switch Heartbeat">
+            <span>Dead-Man's Switch Heartbeat</span>
+          </div>
+          <p class="card-desc">What if Wi-Fi drops while a remote pilot is holding down the 'Forward' button? A 500ms Heartbeat Watchdog automatically halts the motors if telemetry packets stop arriving!</p>
+        </div>
+      </div>
+      
+      
+    </div>
+
+    <!-- Slide 3: Co-Pilot Step-by-Step Build + Live Code Workbench -->
+    <div class="slide" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Paired Programming Protocol (Driver vs Navigator)&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Remind the student: &quot;You are the Driver at the keyboard today; I am your Navigator co-pilot.&quot; Guide them through the 3 steps:&lt;br&gt; &bull; &lt;strong&gt;Step 1:&lt;/strong&gt; Connect the virtual ESP32 to the Wokwi-GUEST Wi-Fi access point.&lt;br&gt; &bull; &lt;strong&gt;Step 2:&lt;/strong&gt; Serialize the rover's state, battery, and (x, y) pose dictionary using json.dumps().&lt;br&gt; &bull; &lt;strong&gt;Step 3:&lt;/strong&gt; Test the 500ms Dead-Man's Switch heartbeat check to verify motors halt on Wi-Fi packet loss. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Navigator Inquiry &amp;amp; Bug Protocol&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; If the student makes a syntax typo or error, resist taking over the keyboard! Instead, use Socratic inquiry: &quot;Hmm, look at line 2—what character or symbol looks different from our blueprint?&quot; Let the student experience the triumph of spotting and squashing their own bug. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Frustration Buster&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Remind the student: &quot;Professional software engineers spend up to 80% of their day debugging. Bugs are not failures; they are puzzle clues pointing us to the solution!&quot; &lt;/div&gt; &lt;/div&gt;">
+      <h2>
+        <img src="../../assets/3d/terminal-screen-3d.png" class="slide-title-3d" alt="Build">
+        <span>Guided Co-Pilot Activity</span>
+      </h2>
+      <p style="font-size: 14.5px; color: var(--text-muted); font-weight: 600;">Follow the three steps in order. Stuck? Ask your mentor for a hint, not the answer.</p>
+      
+      <div class="copilot-workbench-grid">
+        <div class="copilot-list">
+        <div class="copilot-item">
+          <div class="step-number">1</div>
+          <div style="flex: 1;">
+            <div class="step-title">Wire &amp; Inspect the Virtual Circuit</div>
+            <p class="step-desc">Connect the virtual ESP32 to the Wokwi-GUEST Wi-Fi access point.</p>
+            <div class="step-action-tag">
+              <svg class="ui-svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Action: Open the hardware simulator, check pin wiring, power rails, and common ground</span>
+            </div>
+          </div>
+        </div>
+        <div class="copilot-item">
+          <div class="step-number">2</div>
+          <div style="flex: 1;">
+            <div class="step-title">Flash the Microcontroller Code</div>
+            <p class="step-desc">Serialize the rover's state, battery, and (x, y) pose dictionary using json.dumps().</p>
+            <div class="step-action-tag">
+              <svg class="ui-svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Action: Type the MicroPython control logic, sensor thresholds, and safety limits</span>
+            </div>
+          </div>
+        </div>
+        <div class="copilot-item">
+          <div class="step-number">3</div>
+          <div style="flex: 1;">
+            <div class="step-title">Simulate, Measure &amp; Tune</div>
+            <p class="step-desc">Test the 500ms Dead-Man's Switch heartbeat check to verify motors halt on Wi-Fi packet loss.</p>
+            <div class="step-action-tag">
+              <svg class="ui-svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Action: Run the simulation, adjust virtual sensor sliders, and verify actuator output</span>
+            </div>
+          </div>
+        </div>
+        </div>
+        
+        <div class="code-container">
+          <div class="code-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <img src="../../assets/3d/terminal-screen-3d.png" style="width: 18px; height: 18px; object-fit: contain;" alt="Code">
+              <span>Python Snippet</span>
+            </div>
+            <div class="code-header-actions">
+              <button class="code-action-btn" onclick="copyCodeSnippet(this)">
+                <svg class="ui-svg" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copy Snippet</span>
+              </button>
+              <button class="code-action-btn verify-btn" onclick="verifyLessonSolution(this)" title="Verify Code Solution (V)">
+                <svg class="ui-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Verify (V)</span>
+              </button>
+              
+          <button class="code-action-btn" onclick="toggleSandbox(this)">
+            <svg class="ui-svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <span>Simulate Hardware & Telemetry</span>
+          </button>
+            </div>
+          </div>
+          <pre class="code-block"><code><span class="tok-kw">import</span> json <span class="tok-kw">import</span> time <span class="tok-comm"># Cloud Robotics JSON Telemetry Serializer &amp; Heartbeat Watchdog class TelemetryNode: def __init__(self, rover_id): self.rover_id = rover_id self.last_cmd_ms = 0 def publish_state(self, state, battery, x_mm, y_mm): payload = { &quot;id&quot;: self.rover_id, &quot;state&quot;: state, &quot;battery_pct&quot;: battery, &quot;pose_mm&quot;: [round(x_mm, 1), round(y_mm, 1)] } topic = f&quot;stemulus/fleet/{self.rover_id}/telemetry&quot; json_str = json.dumps(payload) print(f&quot;PUB [{topic}] -&gt; {json_str}&quot;) return json_str def check_heartbeat_safe(self, current_ms, timeout_ms=500): elapsed = current_ms - self.last_cmd_ms if elapsed &gt; timeout_ms: print(f&quot;SAFETY HALT: No command heartbeat for {elapsed}ms! Stopping motors.&quot;) return False return True node = TelemetryNode(&quot;rover_alpha&quot;) node.publish_state(&quot;PATROL&quot;, 94, 1250.5, 480.0) node.check_heartbeat_safe(current_ms=650)</span></code></pre>
+          
+          <div class="sandbox-engine-card logic-console-card">
+            <div class="sandbox-header">
+              <div class="sandbox-title-badge">
+                <span class="sandbox-live-dot"></span>
+                <span>Robotics Hardware &amp; Telemetry Console</span>
+              </div>
+              <span class="sandbox-hint">BBC micro:bit v2 / ESP32 Simulator</span>
+            </div>
+            <div class="sandbox-console-output">
+              <div class="console-line"><span class="console-prompt-sym">&gt;&gt;&gt;</span> <span>flash --target microbit_v2 main.py</span></div>
+              <div class="console-line console-output-text">[FSM Executive] State: NAVIGATE -> Corridor clear (25.0cm), cruising forward<br>[Target Detected] Distance < 8.0cm -> State Transition: NAVIGATE -> RESCUE<br>[Mission Victory] Deploying rescue beacon & playing victory fanfare!</div>
+              <div class="console-meta-row">
+                <span class="console-status-pill">
+                  <svg class="ui-svg" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Hardware Simulation Verified (Exit 0)</span>
+                </span>
+                <span>Bus: 3.3V Logic / Common GND</span>
+              </div>
+            </div>
+          </div>
+          <div class="solution-verification-feedback" id="solution-verification-feedback" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Checkpoint Challenge -->
+    <div class="slide" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Socratic Checkpoint Facilitation&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Read the challenge question aloud: &quot;Why is a Dead-Man's Switch (Heartbeat Timeout) mandatory on any Wi-Fi or Bluetooth remote-controlled robot?&quot;. Do not reveal the answer! Have the student eliminate 2 incorrect choices first and explain why those options cannot be true. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Why Option A is Correct&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; If a robot receives a 'DRIVE_FORWARD' packet and then loses Wi-Fi connection before receiving the 'STOP' packet, it would drive blindly into walls unless a heartbeat timeout halts the actuators. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;If the Student Chooses Incorrectly&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Click 'Try Another Choice' to reset the quiz. Ask: &quot;Let's re-read the dilemma—what clue in the question helps us decide between these options?&quot; Guide them gently to the correct insight. &lt;/div&gt; &lt;/div&gt;">
+      <h2>
+        <img src="../../assets/3d/golden-key-3d.png" class="slide-title-3d" alt="Checkpoint">
+        <span>Checkpoint Challenge</span>
+      </h2>
+      <p style="font-size: 14.5px; color: var(--text-muted); font-weight: 600;">Demonstrate your understanding before starting your solo quest:</p>
+      
+      <div class="quiz-box">
+        <div class="quiz-question">
+          <img src="../../assets/3d/admin-shield-3d.png" style="width: 26px; height: 26px; object-fit: contain;" alt="Question">
+          <span>Why is a Dead-Man's Switch (Heartbeat Timeout) mandatory on any Wi-Fi or Bluetooth remote-controlled robot?</span>
+        </div>
+        <div class="quiz-options">
+          
+          <button class="quiz-btn" data-correct="true" onclick="handleQuiz(this, true)">
+            <span style="font-weight: 800; color: #4F46E5; min-width: 20px;">A)</span>
+            <span>So the robot automatically stops its motors if wireless connection drops while driving</span>
+          </button>
+          <button class="quiz-btn" data-correct="false" onclick="handleQuiz(this, false)">
+            <span style="font-weight: 800; color: #4F46E5; min-width: 20px;">B)</span>
+            <span>To make the Wi-Fi signal travel twice as far</span>
+          </button>
+          <button class="quiz-btn" data-correct="false" onclick="handleQuiz(this, false)">
+            <span style="font-weight: 800; color: #4F46E5; min-width: 20px;">C)</span>
+            <span>To encrypt the JSON payload with a password</span>
+          </button>
+          <button class="quiz-btn" data-correct="false" onclick="handleQuiz(this, false)">
+            <span style="font-weight: 800; color: #4F46E5; min-width: 20px;">D)</span>
+            <span>To keep the LED screen bright</span>
+          </button>
+        </div>
+        <div class="quiz-explanation" style="display: none;">
+          <div>
+            <span class="quiz-status"></span>
+            <span class="quiz-explanation-text">If a robot receives a 'DRIVE_FORWARD' packet and then loses Wi-Fi connection before receiving the 'STOP' packet, it would drive blindly into walls unless a heartbeat timeout halts the actuators.</span>
+          </div>
+          <button class="quiz-retry-btn" onclick="resetQuiz(this)">
+            <svg class="ui-svg" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            <span>Try Another Choice</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: The Solo Quest -->
+    <div class="slide" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Solo Quest Scaffolding Protocol&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Explain the 3 quest tiers:&lt;br&gt; &bull; &lt;strong&gt;Bronze (+50 XP):&lt;/strong&gt; Serialize a rover status dictionary into a valid JSON string and publish it to a structured topic. &amp;mdash; Core confidence milestone.&lt;br&gt; &bull; &lt;strong&gt;Silver (+100 XP):&lt;/strong&gt; Write a command parser using json.loads() that extracts linear and angular velocity commands from a remote dashboard. &amp;mdash; Power-up creative expansion.&lt;br&gt; &bull; &lt;strong&gt;Gold (+200 XP):&lt;/strong&gt; Implement the Last Will and Testament (LWT) and 500ms Heartbeat Watchdog for fail-safe wireless teleoperation. &amp;mdash; Boss level mastery challenge! &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Tutor Cheering &amp;amp; Autonomy Coaching&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Give the student 5&amp;ndash;8 minutes of independent build time for Bronze. Keep microphone open for quick hints. Click the quest cards to toggle XP and trigger the celebration fanfare when all 3 are completed! &lt;/div&gt; &lt;/div&gt;">
+      <h2>
+        <img src="../../assets/3d/gold-trophy-3d.png" class="slide-title-3d" alt="Solo Quest">
+        <span>Your Solo Quest</span>
+      </h2>
+      <p style="font-size: 14.5px; color: var(--text-muted); font-weight: 600;">Choose your achievement level and take the wheel:</p>
+      
+      <div class="quest-total-header">
+        <span style="font-size: 13.5px; font-weight: 700; color: var(--text-muted);">Interactive Quest Checklist (Click to Claim):</span>
+        <div class="quest-xp-counter" id="lesson-xp-counter">
+          <img src="../../assets/3d/tally-counter-3d.png" class="xp-counter-icon" alt="XP">
+          <span id="xp-counter-val">0 / 350 XP</span>
+        </div>
+      </div>
+
+      <div class="quest-tier bronze" data-tier="bronze" data-xp="50" onclick="handleQuestToggle(this, 'bronze', 50)">
+        <div class="quest-badge-wrap">
+          <img src="../../assets/3d/star-badge-3d.png" class="tier-icon-3d" alt="Bronze">
+          <div class="quest-combined-badge bronze">
+            <span class="badge-tier">Bronze</span>
+            <span class="badge-sep">&bull;</span>
+            <span class="badge-xp">+50 XP</span>
+          </div>
+        </div>
+        <div class="quest-info">
+          <div class="quest-title">First Step</div>
+          <p class="quest-desc">Serialize a rover status dictionary into a valid JSON string and publish it to a structured topic.</p>
+        </div>
+        <div class="quest-checkbox-interactive">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+      
+      <div class="quest-tier silver" data-tier="silver" data-xp="100" onclick="handleQuestToggle(this, 'silver', 100)">
+        <div class="quest-badge-wrap">
+          <img src="../../assets/3d/medal-3d.png" class="tier-icon-3d" alt="Silver">
+          <div class="quest-combined-badge silver">
+            <span class="badge-tier">Silver</span>
+            <span class="badge-sep">&bull;</span>
+            <span class="badge-xp">+100 XP</span>
+          </div>
+        </div>
+        <div class="quest-info">
+          <div class="quest-title">Skill Practice</div>
+          <p class="quest-desc">Write a command parser using json.loads() that extracts linear and angular velocity commands from a remote dashboard.</p>
+        </div>
+        <div class="quest-checkbox-interactive">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+      
+      <div class="quest-tier gold" data-tier="gold" data-xp="200" onclick="handleQuestToggle(this, 'gold', 200)">
+        <div class="quest-badge-wrap">
+          <img src="../../assets/3d/gold-trophy-3d.png" class="tier-icon-3d" alt="Gold">
+          <div class="quest-combined-badge gold">
+            <span class="badge-tier">Gold</span>
+            <span class="badge-sep">&bull;</span>
+            <span class="badge-xp">+200 XP</span>
+          </div>
+        </div>
+        <div class="quest-info">
+          <div class="quest-title">Creative Challenge</div>
+          <p class="quest-desc">Implement the Last Will and Testament (LWT) and 500ms Heartbeat Watchdog for fail-safe wireless teleoperation.</p>
+        </div>
+        <div class="quest-checkbox-interactive">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Show & Tell + Home Mission -->
+    <div class="slide" data-notes="&lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;60-Second Student Show &amp;amp; Tell Protocol&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Have the student present their finished project: 1) &quot;What did you build today?&quot; 2) &quot;What was the toughest bug you squashed?&quot; 3) &quot;What feature are you proudest of?&quot; &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Take-Home Project Guidance (25 Mins)&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Walk through the take-home mission: &lt;strong&gt;Live Fleet Telemetry Dashboard Parser&lt;/strong&gt;.&lt;br&gt; &bull; &lt;strong&gt;Challenge:&lt;/strong&gt; Write a mission control script that receives JSON telemetry packets from 3 rovers, checks their battery levels, and dispatches a 'DOCK_NOW' command topic to any rover below 20%!&lt;br&gt; &bull; &lt;strong&gt;Submission:&lt;/strong&gt; Remind the student to submit their project link or screenshot to Google Classroom before the next session.&lt;br&gt; &bull; &lt;strong&gt;Next Session Check-In:&lt;/strong&gt; Open next lesson with a 3-minute celebration of their take-home build and award bonus XP! &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Parent Takeaway &amp;amp; Mission Brief&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Click 'Print (P)' in the header or on this slide to generate a 1-page PDF summary for the student's portfolio and parents. Celebrate their growth and bridge to the next lesson! &lt;/div&gt; &lt;/div&gt;">
+      <h2>
+        <img src="../../assets/3d/party-hat-3d.png" class="slide-title-3d" alt="Wrap Up">
+        <span>Lesson Summary & Practice</span>
+      </h2>
+      <p style="font-size: 14.5px; color: var(--text-muted); font-weight: 600;">Celebrate your progress and prepare for your next level:</p>
+      
+      <div class="content-grid" style="margin-top: 20px;">
+        <div class="card">
+          <div class="card-title">
+            <img src="../../assets/3d/clock-face-3d.png" class="slide-card-3d" alt="Show and Tell">
+            <span>60-Second Show and Tell</span>
+          </div>
+          <p class="card-desc">
+            Present your screen to your mentor and explain:
+            <br>&bull; What did you build today?
+            <br>&bull; Which challenge did you solve?
+          </p>
+        </div>
+        
+        <div class="card take-home-card">
+          <div class="card-title" style="justify-content: space-between; align-items: flex-start;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <img src="../../assets/3d/calendar-cube-3d.png" class="slide-card-3d" alt="Take-Home Project">
+              <span>Take-Home Project: Live Fleet Telemetry Dashboard Parser</span>
+            </div>
+            <span class="take-home-badge">
+              <svg class="ui-svg" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>25 Mins &bull; Independent Practice</span>
+            </span>
+          </div>
+          
+          <div class="take-home-challenge-box">
+            <strong>The Challenge:</strong> Write a mission control script that receives JSON telemetry packets from 3 rovers, checks their battery levels, and dispatches a 'DOCK_NOW' command topic to any rover below 20%!
+          </div>
+          
+          <div class="take-home-steps">
+            <div class="take-home-step-item">
+              <span class="step-badge">1</span>
+              <div><strong>Build:</strong> Parse incoming JSON strings with json.loads().</div>
+            </div>
+            <div class="take-home-step-item">
+              <span class="step-badge">2</span>
+              <div><strong>Self-Test:</strong> Publish targeted command messages to stemulus/fleet/{id}/cmd.</div>
+            </div>
+            <div class="take-home-step-item">
+              <span class="step-badge">3</span>
+              <div><strong>Turn In:</strong> Post your fleet manager script on Google Classroom.</div>
+            </div>
+          </div>
+          
+          <div class="take-home-footer-note">
+            <svg class="ui-svg" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <span>Mentor Review: Ready for 3-minute project showcase at the start of next session!</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="next-lesson-ribbon">
+        <div style="font-family: 'Fredoka', 'Nunito', sans-serif; font-size: 20px; font-weight: 700; color: var(--text-main);">
+          Lesson Completed!
+        </div>
+        <div class="next-lesson-row">
+          <a href="lesson_26_ros_publisher_subscriber_nodes.html" class="btn-next-lesson">
+            <span>Continue to Lesson 26: Robot Operating System</span>
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+          <button class="btn-3d neutral" style="padding: 10px 20px; font-size: 13.5px;" onclick="printMissionBrief()">
+            <svg class="ui-svg" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Print Summary (P)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Mentor Guide Cockpit (Dual HUD) -->
+  <aside class="tutor-cockpit-drawer" id="tutor-cockpit">
+    <div class="cockpit-header">
+      <div class="cockpit-title">
+        <img src="../../assets/3d/admin-shield-3d.png" class="cockpit-icon" alt="Shield">
+        <div>
+          <div class="cockpit-headline">Mentor Guide</div>
+          <div class="cockpit-subline">Lesson 25 &bull; Slide <span id="cockpit-slide-num">1</span> of 6</div>
+        </div>
+      </div>
+      <div class="cockpit-actions">
+        <button class="cockpit-btn" onclick="openPresenterPopout()" title="Open Presenter View (Dual-Screen)">
+          <svg class="ui-svg" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          <span>Presenter View</span>
+        </button>
+        <button class="cockpit-close-btn" onclick="toggleTutorCockpit()">&times;</button>
+      </div>
+    </div>
+
+    <!-- Cockpit Tabs -->
+    <div class="cockpit-tabs">
+      <button class="cockpit-tab active" data-tab="socratic" onclick="switchCockpitTab('socratic')">
+        <img src="../../assets/3d/speech-bubble-3d.png" class="tab-icon-3d" alt="Script">
+        <span>Socratic Script</span>
+      </button>
+      <button class="cockpit-tab" data-tab="bug-radar" onclick="switchCockpitTab('bug-radar')">
+        <img src="../../assets/3d/radar-chart-3d.png" class="tab-icon-3d" alt="Radar">
+        <span>Bug Radar</span>
+      </button>
+      <button class="cockpit-tab" data-tab="pacing" onclick="switchCockpitTab('pacing')">
+        <img src="../../assets/3d/clock-face-3d.png" class="tab-icon-3d" alt="Pacing">
+        <span>Pacing Clock</span>
+      </button>
+      <button class="cockpit-tab" data-tab="classroom" onclick="switchCockpitTab('classroom')">
+        <img src="../../assets/3d/calendar-cube-3d.png" class="tab-icon-3d" alt="Classroom">
+        <span>Classroom Copy</span>
+      </button>
+    </div>
+
+    <!-- Cockpit Body Panes -->
+    <div class="cockpit-body">
+      <!-- Pane 1: Socratic Playbook & Metaphor -->
+      <div class="cockpit-tab-pane active" id="pane-socratic">
+        <div class="cockpit-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/lightbulb-3d.png" style="width: 18px; height: 18px;" alt="Metaphor">
+            <span>Child Metaphor &amp; Mental Anchor</span>
+          </div>
+          <div class="cockpit-card-body" id="cockpit-metaphor">
+            The Master Builder's Workshop: Today we are forging 'Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT'. Think of this like crafting a new tool in Minecraft—we gather raw ingredients, test their strength, and forge an epic creation! • Diagnostic Check: Ask: 'Can you explain the main goal of Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT in your own words?' • Frustration Buster: Patience with bugs! Remind the student that professional coders spend 80% of their day debugging.
+          </div>
+        </div>
+
+        <div class="cockpit-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/speech-bubble-3d.png" style="width: 18px; height: 18px;" alt="Dialogue">
+            <span>Slide Socratic Inquiries (<span id="cockpit-slide-title-tag">Slide 1</span>)</span>
+          </div>
+          <div class="cockpit-card-body" id="cockpit-slide-notes">
+            &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Mission Dilemma &amp;amp; Child Analogy&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Explain the core problem: Why do computers or humans need Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT? Relate this to an everyday child mental model: Think of this like crafting a master recipe, tuning an arcade engine, or building with LEGO bricks where each piece has an exact purpose. Today we are solving: How does an engineer in London monitor and command a fleet of warehouse robots operating in Tokyo in real time? Today, we connect our ESP32 robot to Wi-Fi and stream structured JSON telemetry over the MQTT publish-subscribe protocol! &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Tutor Conversational Script&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; &quot;Welcome back! Today we are unlocking Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT in our Track 6: Robotics, Physical Computing &amp; Autonomous AI track. Before we look at any code or blueprints, imagine this challenge: How does an engineer in London monitor and command a fleet of warehouse robots operating in Tokyo in real time? Today, we connect our ESP32 robot to Wi-Fi and stream structured JSON telemetry over the MQTT publish-subscribe protocol!. If you were the engineer designing this system, how would you solve it?&quot; Listen actively, validate their instinct, and transition to the mission card. &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;notes-section&quot;&gt; &lt;div class=&quot;notes-section-head&quot;&gt;Predict-First Cognitive Check&lt;/div&gt; &lt;div class=&quot;notes-section-body&quot;&gt; Prompt the learner: &quot;Look at the Predict Banner below: Before writing any code, how do you hypothesize computers solve this dilemma? Share your theory with me!&quot; This activates schema before presenting the formal rule. &lt;/div&gt; &lt;/div&gt;
+          </div>
+        </div>
+
+        <div class="cockpit-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/clock-face-3d.png" style="width: 18px; height: 18px;" alt="Debrief">
+            <span>Tutor 60-Second Debrief Protocol</span>
+          </div>
+          <div class="cockpit-card-body">
+            Ask: 'Why is MQTT preferred over standard HTTP web pages for streaming 50Hz robot sensor data?'
+          </div>
+        </div>
+      </div>
+
+      <!-- Pane 2: Bug Radar -->
+      <div class="cockpit-tab-pane" id="pane-bug-radar">
+        <div class="cockpit-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/alert-sphere-3d.png" style="width: 18px; height: 18px;" alt="Alert">
+            <span>Common Traps for this Lesson</span>
+          </div>
+          <div class="cockpit-card-body" id="cockpit-bug-radar">
+            <div class="bug-radar-item">
+          <div class="bug-radar-head">
+            <img src="../../assets/3d/alert-sphere-3d.png" style="width: 15px; height: 15px; object-fit: contain;" alt="Trap">
+            <span>Missing Common Ground (GND)</span>
+          </div>
+          <p class="bug-radar-desc">When using a separate battery pack for motors or servos, always connect battery GND to microcontroller GND so PWM signals have a 0V reference.</p>
+        </div><div class="bug-radar-item">
+          <div class="bug-radar-head">
+            <img src="../../assets/3d/alert-sphere-3d.png" style="width: 15px; height: 15px; object-fit: contain;" alt="Trap">
+            <span>Powering Servos from 3.3V Logic Pin</span>
+          </div>
+          <p class="bug-radar-desc">Motors draw high stall current that causes CPU brownout resets. Power actuators from a dedicated supply rail.</p>
+        </div><div class="bug-radar-item">
+          <div class="bug-radar-head">
+            <img src="../../assets/3d/alert-sphere-3d.png" style="width: 15px; height: 15px; object-fit: contain;" alt="Trap">
+            <span>Floating Input Pins</span>
+          </div>
+          <p class="bug-radar-desc">Unconnected digital inputs pick up static noise. Enable internal Pin.PULL_UP or Pin.PULL_DOWN resistors.</p>
+        </div>
+          </div>
+        </div>
+
+        <div class="cockpit-card protocol-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/admin-shield-3d.png" style="width: 18px; height: 18px;" alt="Protocol">
+            <span>Rule of Two Questions (Zero Touch Typing)</span>
+          </div>
+          <div class="cockpit-card-body">
+            <p><strong>Never take over the student's mouse or keyboard.</strong> Ask two progressive questions:</p>
+            <ol style="margin: 8px 0 0 18px; padding: 0;">
+              <li><em>"Look at the line right above the cursor: how does it differ from our example?"</em></li>
+              <li><em>"If the computer reads left-to-right, what character did it encounter first?"</em></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pane 3: Pacing Clock -->
+      <div class="cockpit-tab-pane" id="pane-pacing">
+        <div class="pacing-timer-box">
+          <div class="pacing-clock-display" id="cockpit-timer-display">60:00</div>
+          <div class="pacing-timer-btns">
+            <button class="timer-btn" onclick="startTimer()">Start</button>
+            <button class="timer-btn" onclick="pauseTimer()">Pause</button>
+            <button class="timer-btn" onclick="resetTimer()">Reset</button>
+          </div>
+        </div>
+
+        <div class="pacing-milestones-list">
+          <div class="milestone-row" data-stage="1">
+            <span class="milestone-badge">00–05m</span>
+            <span class="milestone-text">Hook &amp; Dilemma Prediction</span>
+          </div>
+          <div class="milestone-row" data-stage="2">
+            <span class="milestone-badge">05–15m</span>
+            <span class="milestone-text">Big Idea &amp; Discovery Concept Cards</span>
+          </div>
+          <div class="milestone-row" data-stage="3">
+            <span class="milestone-badge">15–35m</span>
+            <span class="milestone-text">Co-Pilot Step-by-Step Build &amp; Live Sandbox</span>
+          </div>
+          <div class="milestone-row" data-stage="4">
+            <span class="milestone-badge">35–42m</span>
+            <span class="milestone-text">Checkpoint Challenge (Solo Diagnostic)</span>
+          </div>
+          <div class="milestone-row" data-stage="5">
+            <span class="milestone-badge">42–55m</span>
+            <span class="milestone-text">Solo Quest XP Hunt (Bronze, Silver, Gold)</span>
+          </div>
+          <div class="milestone-row" data-stage="6">
+            <span class="milestone-badge">55–60m</span>
+            <span class="milestone-text">60-Sec Show &amp; Tell + Take-Home Mission Briefing</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pane 4: Classroom Quick Copy -->
+      <div class="cockpit-tab-pane" id="pane-classroom">
+        <div class="cockpit-card">
+          <div class="cockpit-card-title">
+            <img src="../../assets/3d/calendar-cube-3d.png" style="width: 18px; height: 18px;" alt="Calendar">
+            <span>Google Classroom Post Formatter</span>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+            Copy the pre-formatted mission post with homework instructions, challenge rubrics, and turn-in guidelines:
+          </p>
+          <button class="btn-3d" style="width: 100%;" onclick="copyClassroomAssignment(this)">
+            <svg class="ui-svg" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Mission Post to Clipboard</span>
+          </button>
+        </div>
+        <pre class="classroom-copy-preview" id="classroom-copy-preview">[STEMulus Home Mission] Lesson 25: Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT
+Course: Track 6: Robotics, Physical Computing &amp; Autonomous AI (Autonomous Robotics &amp; Edge AI (Ages 12-17))
+Estimated Time: 25 Mins (Independent Practice)
+
+Mission Challenge:
+Write a mission control script that receives JSON telemetry packets from 3 rovers, checks their battery levels, and dispatches a 'DOCK_NOW' command topic to any rover below 20%!
+
+Action Steps:
+1. Build: Parse incoming JSON strings with json.loads().
+2. Self-Test: Publish targeted command messages to stemulus/fleet/{id}/cmd.
+3. Turn In: Post your fleet manager script on Google Classroom.
+
+Showcase: Bring your project to our next session for a 3-minute screen-share celebration!</pre>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Student Mission & Learning Records Drawer (Educational ADRs) -->
+  <aside class="learning-journey-drawer" id="learning-journey-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <img src="../../assets/3d/gold-trophy-3d.png" class="drawer-icon-3d" alt="Journey">
+        <div>
+          <div class="drawer-headline">Student Mission &amp; ADR Records</div>
+          <div class="drawer-subline">Track 6: Robotics, Physical Computing &amp; Autonomous AI &bull; Lesson 25</div>
+        </div>
+      </div>
+      <button class="drawer-close-btn" onclick="toggleLearningJourney()">&times;</button>
+    </div>
+    <div class="drawer-body">
+      
+    <div class="journey-mission-box">
+      <div class="journey-section-tag">Active Student Mission &bull; Autonomous Robotics &amp; Edge AI (Ages 12-17)</div>
+      <div class="journey-mission-title">Track 6: Robotics, Physical Computing &amp; Autonomous AI Mastery</div>
+      <p class="journey-mission-desc">Wire, program, and calibrate autonomous cyber-physical machines with sensor telemetry, PID motor control, and state machine safety locks.</p>
+    </div>
+    
+    <div class="zpd-meter-card">
+      <div class="zpd-metric">
+        <div class="zpd-val" id="zpd-lessons-count">0</div>
+        <div class="zpd-lbl">Milestones</div>
+      </div>
+      <div class="zpd-metric" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px 12px;">
+        <div class="zpd-val" id="zpd-total-xp">0 XP</div>
+        <div class="zpd-lbl">Storage Mastery</div>
+      </div>
+      <div class="zpd-metric" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px 12px;">
+        <div class="zpd-val" style="color: #10B981;">ZPD Prime</div>
+        <div class="zpd-lbl">Challenge Band</div>
+      </div>
+    </div>
+    
+    <div>
+      <div style="font-family: 'Fredoka', 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+        <span>Educational ADR Records (Learning Records):</span>
+        <span style="font-size: 11px; color: #64748B;">Auto-saved locally</span>
+      </div>
+      <div class="journey-records-list" id="journey-records-list">
+        <!-- Rendered dynamically by slide_engine.js from localStorage -->
+      </div>
+    </div>
+    
+    <button class="export-journey-btn" onclick="exportLearningJourney()">
+      <svg class="ui-svg" viewBox="0 0 24 24" style="stroke: #FFFFFF; width: 16px; height: 16px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      <span>Export Learning Record (Markdown / Google Classroom)</span>
+    </button>
+    
+    </div>
+  </aside>
+
+  <!-- Canonical Concept Glossary Drawer (Opinionated Vocabulary) -->
+  <aside class="glossary-drawer" id="glossary-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <img src="../../assets/3d/backpack-3d.png" class="drawer-icon-3d" alt="Glossary">
+        <div>
+          <div class="drawer-headline">Canonical Concept Glossary</div>
+          <div class="drawer-subline">Formal vocabulary for Track 6: Robotics, Physical Computing &amp; Autonomous AI</div>
+        </div>
+      </div>
+      <button class="drawer-close-btn" onclick="toggleGlossary()">&times;</button>
+    </div>
+    <div class="drawer-body">
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">
+        Mastering precise software vocabulary avoids conceptual ambiguity. Define what terms <em>ARE</em> and avoid loose slang:
+      </p>
+      
+        <div class="glossary-term-card">
+          <div class="glossary-term-name">
+            <img src="../../assets/3d/golden-key-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Term">
+            <span>MQTT Lightweight Messaging</span>
+          </div>
+          <div class="glossary-def-is"><strong>Definition:</strong> HTTP web requests have huge text headers and high latency. MQTT (Message Queuing Telemetry Transport) uses tiny 2-byte binary headers designed specifically for real-time robotics and IoT.</div>
+          <div class="glossary-avoid"><strong>Rule:</strong> Avoid: Imprecise jargon or loose synonyms without formal definitions</div>
+        </div>
+        <div class="glossary-term-card">
+          <div class="glossary-term-name">
+            <img src="../../assets/3d/golden-key-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Term">
+            <span>Structured JSON Telemetry</span>
+          </div>
+          <div class="glossary-def-is"><strong>Definition:</strong> Instead of fragile raw strings, robots package state into JSON objects: {&quot;rover_id&quot;: &quot;R1&quot;, &quot;state&quot;: &quot;PATROL&quot;, &quot;bat&quot;: 92, &quot;pose&quot;: [120, 45]}.</div>
+          <div class="glossary-avoid"><strong>Rule:</strong> Avoid: Imprecise jargon or loose synonyms without formal definitions</div>
+        </div>
+        <div class="glossary-term-card">
+          <div class="glossary-term-name">
+            <img src="../../assets/3d/golden-key-3d.png" style="width: 16px; height: 16px; object-fit: contain;" alt="Term">
+            <span>Dead-Man's Switch Heartbeat</span>
+          </div>
+          <div class="glossary-def-is"><strong>Definition:</strong> What if Wi-Fi drops while a remote pilot is holding down the 'Forward' button? A 500ms Heartbeat Watchdog automatically halts the motors if telemetry packets stop arriving!</div>
+          <div class="glossary-avoid"><strong>Rule:</strong> Avoid: Imprecise jargon or loose synonyms without formal definitions</div>
+        </div>
+    </div>
+  </aside>
+
+  <script>
+    window.STEMULUS_LESSON_META = {
+      lessonNum: 25,
+      lessonTitle: "Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT",
+      trackTitle: "Track 6: Robotics, Physical Computing &amp; Autonomous AI",
+      levelTitle: "Autonomous Robotics &amp; Edge AI (Ages 12-17)",
+      conceptTitle: "ESP32 Wi-Fi Station, JSON Serialization, MQTT Brokers &amp; Keep-Alive Heartbeats"
+    };
+  </script>
+
+  <!-- Embedded Tutor Cockpit JSON Dataset for Client-Side JS -->
+  <script type="application/json" id="tutor-cockpit-data">
+  {"lessonNum": 25, "lessonTitle": "Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT", "trackTitle": "Track 6: Robotics, Physical Computing &amp; Autonomous AI", "levelTitle": "Autonomous Robotics &amp; Edge AI (Ages 12-17)", "metaphor": "The Master Builder's Workshop: Today we are forging 'Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT'. Think of this like crafting a new tool in Minecraft—we gather raw ingredients, test their strength, and forge an epic creation! • Diagnostic Check: Ask: 'Can you explain the main goal of Cloud Robotics &amp; IoT Telemetry: Wi-Fi, JSON Payloads &amp; MQTT in your own words?' • Frustration Buster: Patience with bugs! Remind the student that professional coders spend 80% of their day debugging.", "debrief": "Ask: 'Why is MQTT preferred over standard HTTP web pages for streaming 50Hz robot sensor data?'", "notes": {"s1": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eMission Dilemma &amp; Child Analogy\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Explain the core problem: Why do computers or humans need Cloud Robotics & IoT Telemetry: Wi-Fi, JSON Payloads & MQTT? Relate this to an everyday child mental model: Think of this like crafting a master recipe, tuning an arcade engine, or building with LEGO bricks where each piece has an exact purpose. Today we are solving: How does an engineer in London monitor and command a fleet of warehouse robots operating in Tokyo in real time? Today, we connect our ESP32 robot to Wi-Fi and stream structured JSON telemetry over the MQTT publish-subscribe protocol! \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eTutor Conversational Script\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e \"Welcome back! Today we are unlocking Cloud Robotics & IoT Telemetry: Wi-Fi, JSON Payloads & MQTT in our Track 6: Robotics, Physical Computing & Autonomous AI track. Before we look at any code or blueprints, imagine this challenge: How does an engineer in London monitor and command a fleet of warehouse robots operating in Tokyo in real time? Today, we connect our ESP32 robot to Wi-Fi and stream structured JSON telemetry over the MQTT publish-subscribe protocol!. If you were the engineer designing this system, how would you solve it?\" Listen actively, validate their instinct, and transition to the mission card. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003ePredict-First Cognitive Check\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Prompt the learner: \"Look at the Predict Banner below: Before writing any code, how do you hypothesize computers solve this dilemma? Share your theory with me!\" This activates schema before presenting the formal rule. \u003c/div\u003e \u003c/div\u003e", "s2": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eDeep Concept Explanation (Simple Language)\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Break down ESP32 Wi-Fi Station, JSON Serialization, MQTT Brokers & Keep-Alive Heartbeats into simple, relatable building blocks:\u003cbr\u003e &bull; \u003cstrong\u003eMQTT Lightweight Messaging:\u003c/strong\u003e HTTP web requests have huge text headers and high latency. MQTT (Message Queuing Telemetry Transport) uses tiny 2-byte binary headers designed specifically for real-time robotics and IoT.\u003cbr\u003e&bull; \u003cstrong\u003eStructured JSON Telemetry:\u003c/strong\u003e Instead of fragile raw strings, robots package state into JSON objects: {\"rover_id\": \"R1\", \"state\": \"PATROL\", \"bat\": 92, \"pose\": [120, 45]}.\u003cbr\u003e&bull; \u003cstrong\u003eDead-Man's Switch Heartbeat:\u003c/strong\u003e What if Wi-Fi drops while a remote pilot is holding down the 'Forward' button? A 500ms Heartbeat Watchdog automatically halts the motors if telemetry packets stop arriving!\u003cbr\u003e Explain what the code snippet actually tells the computer: Each syntax token is a specific instruction—keywords define actions, values define parameters, and containers store data. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eInteractive Sandbox Coaching Guide\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Guide the student to click the sandbox button right below the snippet. Have them interact with the controls (sliders, color presets, or code runner). Ask: \"When we adjust this parameter, how does the output react? Why does that change happen?\" This cements the direct cause-and-effect relationship. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eDiagnostic Check\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Ask: \"If you had to explain ESP32 Wi-Fi Station, JSON Serialization, MQTT Brokers & Keep-Alive Heartbeats to a younger friend who has never coded, what simple real-world comparison would you use?\" Listen for understanding rather than rote memorization. \u003c/div\u003e \u003c/div\u003e", "s3": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003ePaired Programming Protocol (Driver vs Navigator)\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Remind the student: \"You are the Driver at the keyboard today; I am your Navigator co-pilot.\" Guide them through the 3 steps:\u003cbr\u003e &bull; \u003cstrong\u003eStep 1:\u003c/strong\u003e Connect the virtual ESP32 to the Wokwi-GUEST Wi-Fi access point.\u003cbr\u003e &bull; \u003cstrong\u003eStep 2:\u003c/strong\u003e Serialize the rover's state, battery, and (x, y) pose dictionary using json.dumps().\u003cbr\u003e &bull; \u003cstrong\u003eStep 3:\u003c/strong\u003e Test the 500ms Dead-Man's Switch heartbeat check to verify motors halt on Wi-Fi packet loss. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eNavigator Inquiry &amp; Bug Protocol\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e If the student makes a syntax typo or error, resist taking over the keyboard! Instead, use Socratic inquiry: \"Hmm, look at line 2—what character or symbol looks different from our blueprint?\" Let the student experience the triumph of spotting and squashing their own bug. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eFrustration Buster\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Remind the student: \"Professional software engineers spend up to 80% of their day debugging. Bugs are not failures; they are puzzle clues pointing us to the solution!\" \u003c/div\u003e \u003c/div\u003e", "s4": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eSocratic Checkpoint Facilitation\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Read the challenge question aloud: \"Why is a Dead-Man's Switch (Heartbeat Timeout) mandatory on any Wi-Fi or Bluetooth remote-controlled robot?\". Do not reveal the answer! Have the student eliminate 2 incorrect choices first and explain why those options cannot be true. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eWhy Option A is Correct\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e If a robot receives a 'DRIVE_FORWARD' packet and then loses Wi-Fi connection before receiving the 'STOP' packet, it would drive blindly into walls unless a heartbeat timeout halts the actuators. \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eIf the Student Chooses Incorrectly\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Click 'Try Another Choice' to reset the quiz. Ask: \"Let's re-read the dilemma—what clue in the question helps us decide between these options?\" Guide them gently to the correct insight. \u003c/div\u003e \u003c/div\u003e", "s5": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eSolo Quest Scaffolding Protocol\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Explain the 3 quest tiers:\u003cbr\u003e &bull; \u003cstrong\u003eBronze (+50 XP):\u003c/strong\u003e Serialize a rover status dictionary into a valid JSON string and publish it to a structured topic. &mdash; Core confidence milestone.\u003cbr\u003e &bull; \u003cstrong\u003eSilver (+100 XP):\u003c/strong\u003e Write a command parser using json.loads() that extracts linear and angular velocity commands from a remote dashboard. &mdash; Power-up creative expansion.\u003cbr\u003e &bull; \u003cstrong\u003eGold (+200 XP):\u003c/strong\u003e Implement the Last Will and Testament (LWT) and 500ms Heartbeat Watchdog for fail-safe wireless teleoperation. &mdash; Boss level mastery challenge! \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eTutor Cheering &amp; Autonomy Coaching\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Give the student 5&ndash;8 minutes of independent build time for Bronze. Keep microphone open for quick hints. Click the quest cards to toggle XP and trigger the celebration fanfare when all 3 are completed! \u003c/div\u003e \u003c/div\u003e", "s6": "\u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003e60-Second Student Show &amp; Tell Protocol\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Have the student present their finished project: 1) \"What did you build today?\" 2) \"What was the toughest bug you squashed?\" 3) \"What feature are you proudest of?\" \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eTake-Home Project Guidance (25 Mins)\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Walk through the take-home mission: \u003cstrong\u003eLive Fleet Telemetry Dashboard Parser\u003c/strong\u003e.\u003cbr\u003e &bull; \u003cstrong\u003eChallenge:\u003c/strong\u003e Write a mission control script that receives JSON telemetry packets from 3 rovers, checks their battery levels, and dispatches a 'DOCK_NOW' command topic to any rover below 20%!\u003cbr\u003e &bull; \u003cstrong\u003eSubmission:\u003c/strong\u003e Remind the student to submit their project link or screenshot to Google Classroom before the next session.\u003cbr\u003e &bull; \u003cstrong\u003eNext Session Check-In:\u003c/strong\u003e Open next lesson with a 3-minute celebration of their take-home build and award bonus XP! \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"notes-section\"\u003e \u003cdiv class=\"notes-section-head\"\u003eParent Takeaway &amp; Mission Brief\u003c/div\u003e \u003cdiv class=\"notes-section-body\"\u003e Click 'Print (P)' in the header or on this slide to generate a 1-page PDF summary for the student's portfolio and parents. Celebrate their growth and bridge to the next lesson! \u003c/div\u003e \u003c/div\u003e"}, "bugRadar": [{"trap": "Missing Common Ground (GND)", "hint": "When using a separate battery pack for motors or servos, always connect battery GND to microcontroller GND so PWM signals have a 0V reference."}, {"trap": "Powering Servos from 3.3V Logic Pin", "hint": "Motors draw high stall current that causes CPU brownout resets. Power actuators from a dedicated supply rail."}, {"trap": "Floating Input Pins", "hint": "Unconnected digital inputs pick up static noise. Enable internal Pin.PULL_UP or Pin.PULL_DOWN resistors."}], "classroomPost": "[STEMulus Home Mission] Lesson 25: Cloud Robotics & IoT Telemetry: Wi-Fi, JSON Payloads & MQTT Course: Track 6: Robotics, Physical Computing & Autonomous AI (Autonomous Robotics & Edge AI (Ages 12-17)) Estimated Time: 25 Mins (Independent Practice) Mission Challenge: Write a mission control script that receives JSON telemetry packets from 3 rovers, checks their battery levels, and dispatches a 'DOCK_NOW' command topic to any rover below 20%! Action Steps: 1. Build: Parse incoming JSON strings with json.loads(). 2. Self-Test: Publish targeted command messages to stemulus/fleet/{id}/cmd. 3. Turn In: Post your fleet manager script on Google Classroom. Showcase: Bring your project to our next session for a 3-minute screen-share celebration!"}
+  </script>
+
+  <!-- Footer -->
+  <footer class="slide-footer">
+    <div class="slide-counter" id="slide-counter">Slide 1 of 6</div>
+    <div class="nav-buttons">
+      <button class="btn-3d neutral" id="prev-btn" disabled>Previous</button>
+      <button class="btn-3d" id="next-btn">Next Slide</button>
+    </div>
+  </footer>
+
+  <script src="../../assets/slide_engine.js"></script>
+</body>
+</html>

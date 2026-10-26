@@ -1,0 +1,2184 @@
+{
+  "version": "3.0.0",
+  "institution": "STEMulus Kids Tech",
+  "source_bootcamp": "TS Academy & Generative AI Studio",
+  "summary": {
+    "total_tracks": 7,
+    "total_granular_lessons": 183,
+    "interactive_slide_decks": 183,
+    "solo_quests": 549,
+    "master_portal_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/index.html",
+    "course_toolkits": "14 Course Tiers with Live Links",
+    "concept_videos": "Embedded Micro-Videos with Fail-Safe YouTube Links and Offline Takeaways",
+    "tutor_blueprints": "100% Granular Coverage"
+  },
+  "age_tiers": {
+    "explorers": {
+      "ages": "5-8",
+      "focus": "Visual logic, tactile metaphors, directional arrows, loops, storytelling, magic prompts"
+    },
+    "creators": {
+      "ages": "9-12",
+      "focus": "Hands-on projects, visual-to-code bridge, Figma UI, conditionals, variables, asset pipelines"
+    },
+    "innovators": {
+      "ages": "13-18",
+      "focus": "Syntax coding (JS/Python), system architecture, AI agents, ethical hacking, StateGraphs, full-stack games"
+    }
+  },
+  "tracks": [
+    {
+      "track_id": "course_fundamentals",
+      "level_id": "early_explorers_ages_5_7",
+      "track_title": "Fundamental Concepts of Coding",
+      "level_title": "Track 1: Early Explorers (Ages 5–7)",
+      "lesson_count": 7,
+      "markdown_guide": "course_fundamentals/early_explorers_ages_5_7.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_robot_dance_algorithms",
+          "title": "The Robot Dance (Sequences & Algorithms)",
+          "concept": "Algorithms & Sequences",
+          "slide_path": "slides/course_fundamentals/early_explorers_ages_5_7/lesson_01_robot_dance_algorithms.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/early_explorers_ages_5_7/lesson_01_robot_dance_algorithms.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_magic_echo_loops",
+          "title": "The Magic Echo (Loops & Repetition)",
+          "concept": "Loops (Repetition)",
+          "slide_path": "slides/course_fundamentals/early_explorers_ages_5_7/lesson_02_magic_echo_loops.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/early_explorers_ages_5_7/lesson_02_magic_echo_loops.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_traffic_light_conditionals",
+          "title": "The Traffic Light (If / Else Decisions)",
+          "concept": "Conditionals (If / Else)",
+          "slide_path": "slides/course_fundamentals/early_explorers_ages_5_7/lesson_03_traffic_light_conditionals.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/early_explorers_ages_5_7/lesson_03_traffic_light_conditionals.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_magic_doorbell_events",
+          "title": "The Magic Doorbell (Events & Triggers)",
+          "concept": "Events & Triggers",
+          "slide_path": "slides/course_fundamentals/early_explorers_ages_5_7/lesson_04_magic_doorbell_events.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/early_explorers_ages_5_7/lesson_04_magic_doorbell_events.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_treasure_backpack_variables",
+          "title": "The Treasure Backpack (Variables & Data)",
+          "concept": "Variables & Data",
+          "slide_path": "slides/course_fundamentals/early_explorers_ages_5_7/lesson_05_treasure_backpack_variables.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/early_explorers_ages_5_7/lesson_05_treasure_backpack_variables.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_smoothie_button_functions",
+          "title": "The Smoothie Button (Functions & Procedures)",
+          "concept": "Functions / Procedures",
+          "slide_path": "slides/course_fundamentals/early_explorers_ages_5_7/lesson_06_smoothie_button_functions.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/early_explorers_ages_5_7/lesson_06_smoothie_button_functions.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_bug_detective_debugging",
+          "title": "The Bug Detective (Playful Debugging)",
+          "concept": "Debugging",
+          "slide_path": "slides/course_fundamentals/early_explorers_ages_5_7/lesson_07_bug_detective_debugging.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/early_explorers_ages_5_7/lesson_07_bug_detective_debugging.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "course_fundamentals",
+      "level_id": "junior_innovators_ages_8_12",
+      "track_title": "Fundamental Concepts of Coding",
+      "level_title": "Track 2: Junior Innovators (Ages 8–12)",
+      "lesson_count": 7,
+      "markdown_guide": "course_fundamentals/junior_innovators_ages_8_12.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_fork_in_the_road_branching",
+          "title": "The Fork in the Road (If / Else Logic)",
+          "concept": "Conditionals (If / Else)",
+          "slide_path": "slides/course_fundamentals/junior_innovators_ages_8_12/lesson_01_fork_in_the_road_branching.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/junior_innovators_ages_8_12/lesson_01_fork_in_the_road_branching.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_scoreboard_vault_variables_events",
+          "title": "The Scoreboard Vault (Variables & Events)",
+          "concept": "Variables & Events",
+          "slide_path": "slides/course_fundamentals/junior_innovators_ages_8_12/lesson_02_scoreboard_vault_variables_events.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/junior_innovators_ages_8_12/lesson_02_scoreboard_vault_variables_events.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_loop_master_counters",
+          "title": "The Loop Master (For & While Loops with Counters)",
+          "concept": "Loops (Iteration)",
+          "slide_path": "slides/course_fundamentals/junior_innovators_ages_8_12/lesson_03_loop_master_counters.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/junior_innovators_ages_8_12/lesson_03_loop_master_counters.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_swiss_army_functions_parameters",
+          "title": "The Swiss Army Knife (Functions with Parameters)",
+          "concept": "Functions / Parameters",
+          "slide_path": "slides/course_fundamentals/junior_innovators_ages_8_12/lesson_04_swiss_army_functions_parameters.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/junior_innovators_ages_8_12/lesson_04_swiss_army_functions_parameters.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_decision_matrix_booleans",
+          "title": "The Decision Matrix (Nested Conditionals & Boolean Logic)",
+          "concept": "Conditionals & Booleans",
+          "slide_path": "slides/course_fundamentals/junior_innovators_ages_8_12/lesson_05_decision_matrix_booleans.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/junior_innovators_ages_8_12/lesson_05_decision_matrix_booleans.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_glitch_hunter_debugging",
+          "title": "The Glitch Hunter (Systematic Debugging Strategies)",
+          "concept": "Debugging",
+          "slide_path": "slides/course_fundamentals/junior_innovators_ages_8_12/lesson_06_glitch_hunter_debugging.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/junior_innovators_ages_8_12/lesson_06_glitch_hunter_debugging.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_arcade_builder_capstone",
+          "title": "The Arcade Studio (Capstone Integration)",
+          "concept": "Full-Stack Integration",
+          "slide_path": "slides/course_fundamentals/junior_innovators_ages_8_12/lesson_07_arcade_builder_capstone.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/junior_innovators_ages_8_12/lesson_07_arcade_builder_capstone.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "course_fundamentals",
+      "level_id": "senior_engineers_ages_13_18",
+      "track_title": "Fundamental Concepts of Coding",
+      "level_title": "Track 3: Senior Engineers (Ages 13–18)",
+      "lesson_count": 7,
+      "markdown_guide": "course_fundamentals/senior_engineers_ages_13_18.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_dont_repeat_yourself_functions",
+          "title": "Don't Repeat Yourself (Functions, Scope & Recursion)",
+          "concept": "Functions & Scope",
+          "slide_path": "slides/course_fundamentals/senior_engineers_ages_13_18/lesson_01_dont_repeat_yourself_functions.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/senior_engineers_ages_13_18/lesson_01_dont_repeat_yourself_functions.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_thinking_like_a_machine_arrays",
+          "title": "Thinking Like a Machine (Arrays & Indexing)",
+          "concept": "Arrays & Indexing",
+          "slide_path": "slides/course_fundamentals/senior_engineers_ages_13_18/lesson_02_thinking_like_a_machine_arrays.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/senior_engineers_ages_13_18/lesson_02_thinking_like_a_machine_arrays.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_algorithmic_efficiency_search",
+          "title": "Algorithmic Efficiency (Linear vs Binary Search & Big-O)",
+          "concept": "Algorithmic Efficiency & Big-O",
+          "slide_path": "slides/course_fundamentals/senior_engineers_ages_13_18/lesson_03_algorithmic_efficiency_search.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/senior_engineers_ages_13_18/lesson_03_algorithmic_efficiency_search.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_state_machines_control_flow",
+          "title": "State Machines & Control Flow (Complex Architecture)",
+          "concept": "Control Flow & State Machines",
+          "slide_path": "slides/course_fundamentals/senior_engineers_ages_13_18/lesson_04_state_machines_control_flow.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/senior_engineers_ages_13_18/lesson_04_state_machines_control_flow.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_structured_data_objects_json",
+          "title": "Structured Data (Objects, Dictionaries & JSON)",
+          "concept": "Objects & Key-Value Stores",
+          "slide_path": "slides/course_fundamentals/senior_engineers_ages_13_18/lesson_05_structured_data_objects_json.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/senior_engineers_ages_13_18/lesson_05_structured_data_objects_json.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_defensive_coding_testing",
+          "title": "Defensive Coding & Unit Testing (Reliable Systems)",
+          "concept": "Defensive Coding & Testing",
+          "slide_path": "slides/course_fundamentals/senior_engineers_ages_13_18/lesson_06_defensive_coding_testing.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/senior_engineers_ages_13_18/lesson_06_defensive_coding_testing.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_senior_systems_capstone",
+          "title": "The Systems Engineer Capstone (Algorithmic Engine)",
+          "concept": "Full-Stack Systems Architecture",
+          "slide_path": "slides/course_fundamentals/senior_engineers_ages_13_18/lesson_07_senior_systems_capstone.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_fundamentals/senior_engineers_ages_13_18/lesson_07_senior_systems_capstone.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "course_ai_studio",
+      "level_id": "early_explorers_ages_5_7",
+      "track_title": "Course 3: Generative AI Studio: Prompt, Loop & Graph Engineering",
+      "level_title": "Track 1: Early Explorers (Ages 5–7)",
+      "lesson_count": 8,
+      "markdown_guide": "course_ai_studio/early_explorers_ages_5_7.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_magic_wand_prompt",
+          "title": "The Magic Wand Prompt (Words into Pictures)",
+          "concept": "Prompt Engineering: The Magic Spell Formula",
+          "slide_path": "slides/course_ai_studio/early_explorers_ages_5_7/lesson_01_magic_wand_prompt.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/early_explorers_ages_5_7/lesson_01_magic_wand_prompt.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_magic_mirror_loop",
+          "title": "The Magic Mirror Loop (Try-Again Refinement)",
+          "concept": "Loop Engineering: Look, Spot & Tweak",
+          "slide_path": "slides/course_ai_studio/early_explorers_ages_5_7/lesson_02_magic_mirror_loop.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/early_explorers_ages_5_7/lesson_02_magic_mirror_loop.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_singing_cloud_machine",
+          "title": "The Singing Cloud Machine (Rhymes into Music)",
+          "concept": "Prompt Engineering: Mood, Style & Song Prompts",
+          "slide_path": "slides/course_ai_studio/early_explorers_ages_5_7/lesson_03_singing_cloud_machine.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/early_explorers_ages_5_7/lesson_03_singing_cloud_machine.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_waking_up_the_drawing",
+          "title": "Waking Up the Drawing (Bringing Art to Life)",
+          "concept": "Loop Engineering: Motion Prompts & Keyframes",
+          "slide_path": "slides/course_ai_studio/early_explorers_ages_5_7/lesson_04_waking_up_the_drawing.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/early_explorers_ages_5_7/lesson_04_waking_up_the_drawing.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_story_train_graph",
+          "title": "The Story Train Map (Beginning, Middle & End)",
+          "concept": "Graph Engineering: The 3-Station Story Graph",
+          "slide_path": "slides/course_ai_studio/early_explorers_ages_5_7/lesson_05_story_train_graph.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/early_explorers_ages_5_7/lesson_05_story_train_graph.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_sound_effect_magic_box",
+          "title": "The Sound Effect Magic Box (Foley & Creature Voices)",
+          "concept": "Prompt Engineering: Describing Sounds & Textures",
+          "slide_path": "slides/course_ai_studio/early_explorers_ages_5_7/lesson_06_sound_effect_magic_box.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/early_explorers_ages_5_7/lesson_06_sound_effect_magic_box.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_movie_magic_cutscene",
+          "title": "The Movie Magic Cutscene (Putting It All Together)",
+          "concept": "Graph Engineering: The Multi-Media Assembly Graph",
+          "slide_path": "slides/course_ai_studio/early_explorers_ages_5_7/lesson_07_movie_magic_cutscene.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/early_explorers_ages_5_7/lesson_07_movie_magic_cutscene.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 8,
+          "slug": "lesson_08_magic_story_game_capstone",
+          "title": "The Magic Story Game Capstone (Playable Scratch Arcade)",
+          "concept": "Full Systems Integration: Playable Generative Game",
+          "slide_path": "slides/course_ai_studio/early_explorers_ages_5_7/lesson_08_magic_story_game_capstone.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/early_explorers_ages_5_7/lesson_08_magic_story_game_capstone.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "course_ai_studio",
+      "level_id": "junior_innovators_ages_8_12",
+      "track_title": "Course 3: Generative AI Studio: Prompt, Loop & Graph Engineering",
+      "level_title": "Track 2: Junior Innovators (Ages 8–12)",
+      "lesson_count": 8,
+      "markdown_guide": "course_ai_studio/junior_innovators_ages_8_12.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_architect_prompt_framework",
+          "title": "The Architect Prompt Framework (The C-R-E-A-T-E System)",
+          "concept": "Prompt Engineering: The C-R-E-A-T-E Framework",
+          "slide_path": "slides/course_ai_studio/junior_innovators_ages_8_12/lesson_01_architect_prompt_framework.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/junior_innovators_ages_8_12/lesson_01_architect_prompt_framework.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_critic_creator_refinement_loop",
+          "title": "The Critic-Creator Refinement Loop (Consistent Character Seeds)",
+          "concept": "Loop Engineering: Seed Locking & Critic Loops",
+          "slide_path": "slides/course_ai_studio/junior_innovators_ages_8_12/lesson_02_critic_creator_refinement_loop.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/junior_innovators_ages_8_12/lesson_02_critic_creator_refinement_loop.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_branching_lore_graphs",
+          "title": "Interactive Branching Lore Graphs (CYOA Decision Trees)",
+          "concept": "Graph Engineering: State Nodes & Choice Edges",
+          "slide_path": "slides/course_ai_studio/junior_innovators_ages_8_12/lesson_03_branching_lore_graphs.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/junior_innovators_ages_8_12/lesson_03_branching_lore_graphs.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_soundtrack_scoring_adaptive_stems",
+          "title": "Soundtrack Scoring & Adaptive Stems (Exploration vs Boss Battle)",
+          "concept": "Prompt Engineering: Dynamic Audio Prompting",
+          "slide_path": "slides/course_ai_studio/junior_innovators_ages_8_12/lesson_04_soundtrack_scoring_adaptive_stems.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/junior_innovators_ages_8_12/lesson_04_soundtrack_scoring_adaptive_stems.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_sprite_sheets_keyframe_animations",
+          "title": "Sprite Sheets & Keyframe Animations (2D Pixel Art Motion Vectors)",
+          "concept": "Loop Engineering: Frame Interpolation & Sprite Strips",
+          "slide_path": "slides/course_ai_studio/junior_innovators_ages_8_12/lesson_05_sprite_sheets_keyframe_animations.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/junior_innovators_ages_8_12/lesson_05_sprite_sheets_keyframe_animations.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_cinematic_game_trailer_pipeline",
+          "title": "The Cinematic Game Trailer Pipeline (The 5-Station DAG)",
+          "concept": "Graph Engineering: The Directed Acyclic Video Pipeline",
+          "slide_path": "slides/course_ai_studio/junior_innovators_ages_8_12/lesson_06_cinematic_game_trailer_pipeline.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/junior_innovators_ages_8_12/lesson_06_cinematic_game_trailer_pipeline.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_generative_npc_dialogue_trees",
+          "title": "Generative NPC Dialogue Trees (In-Character Memory Conditioning)",
+          "concept": "Prompt Engineering: Persona Conditioning & Guardrails",
+          "slide_path": "slides/course_ai_studio/junior_innovators_ages_8_12/lesson_07_generative_npc_dialogue_trees.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/junior_innovators_ages_8_12/lesson_07_generative_npc_dialogue_trees.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 8,
+          "slug": "lesson_08_playable_ai_arcade_capstone",
+          "title": "The Playable AI Arcade Capstone (Full Indie Release)",
+          "concept": "Full Systems Integration: End-to-End Indie Game Release",
+          "slide_path": "slides/course_ai_studio/junior_innovators_ages_8_12/lesson_08_playable_ai_arcade_capstone.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/junior_innovators_ages_8_12/lesson_08_playable_ai_arcade_capstone.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "course_ai_studio",
+      "level_id": "senior_engineers_ages_13_18",
+      "track_title": "Course 3: Generative AI Studio: Prompt, Loop & Graph Engineering",
+      "level_title": "Track 3: Senior Engineers (Ages 13–18)",
+      "lesson_count": 8,
+      "markdown_guide": "course_ai_studio/senior_engineers_ages_13_18.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_deterministic_prompt_json_schema",
+          "title": "Deterministic Prompt Engineering & JSON Schema (Game GDDs)",
+          "concept": "Prompt Engineering: Structured JSON Schemas & Sampling",
+          "slide_path": "slides/course_ai_studio/senior_engineers_ages_13_18/lesson_01_deterministic_prompt_json_schema.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/senior_engineers_ages_13_18/lesson_01_deterministic_prompt_json_schema.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_self_reflexion_evaluation_loops",
+          "title": "Self-Reflexion & Evaluation Loops (LLM-as-a-Judge)",
+          "concept": "Loop Engineering: Self-Correction & LLM-as-a-Judge",
+          "slide_path": "slides/course_ai_studio/senior_engineers_ages_13_18/lesson_02_self_reflexion_evaluation_loops.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/senior_engineers_ages_13_18/lesson_02_self_reflexion_evaluation_loops.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_stategraphs_branching_quest_architecture",
+          "title": "StateGraphs & Branching Quest Architecture (Finite State Machines)",
+          "concept": "Graph Engineering: StateGraphs & Transition Predicates",
+          "slide_path": "slides/course_ai_studio/senior_engineers_ages_13_18/lesson_03_stategraphs_branching_quest_architecture.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/senior_engineers_ages_13_18/lesson_03_stategraphs_branching_quest_architecture.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_procedural_audio_adaptive_stems",
+          "title": "Procedural Audio & Adaptive Stem Generation (Dynamic Game Sound)",
+          "concept": "Prompt Engineering: Audio Arrangement Tags & Stems",
+          "slide_path": "slides/course_ai_studio/senior_engineers_ages_13_18/lesson_04_procedural_audio_adaptive_stems.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/senior_engineers_ages_13_18/lesson_04_procedural_audio_adaptive_stems.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_character_animation_lora_pipelines",
+          "title": "Consistent Character Animation Pipelines (LoRA & Image-to-Video)",
+          "concept": "Loop Engineering: Latent Anchors & Motion Vectors",
+          "slide_path": "slides/course_ai_studio/senior_engineers_ages_13_18/lesson_05_character_animation_lora_pipelines.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/senior_engineers_ages_13_18/lesson_05_character_animation_lora_pipelines.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_production_video_pipeline_dag",
+          "title": "The Production Video Pipeline (DAG) (Multi-Stage Cutscene)",
+          "concept": "Graph Engineering: Automated Multi-Stage Production DAG",
+          "slide_path": "slides/course_ai_studio/senior_engineers_ages_13_18/lesson_06_production_video_pipeline_dag.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/senior_engineers_ages_13_18/lesson_06_production_video_pipeline_dag.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_dynamic_npc_brain_engine",
+          "title": "LLM-Powered Dynamic NPC Engine (Persistent State & Action Dispatch)",
+          "concept": "Prompt & Loop Engineering: ReAct Loops & Action Calling",
+          "slide_path": "slides/course_ai_studio/senior_engineers_ages_13_18/lesson_07_dynamic_npc_brain_engine.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/senior_engineers_ages_13_18/lesson_07_dynamic_npc_brain_engine.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 8,
+          "slug": "lesson_08_generative_web_game_capstone",
+          "title": "The Generative Web Game Capstone (Full-Stack HTML5/Phaser Release)",
+          "concept": "Full Systems Architecture: Production Web Game Release",
+          "slide_path": "slides/course_ai_studio/senior_engineers_ages_13_18/lesson_08_generative_web_game_capstone.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/course_ai_studio/senior_engineers_ages_13_18/lesson_08_generative_web_game_capstone.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "track_1_web_engineering",
+      "level_id": "creators_ages_9_12",
+      "track_title": "Track 1: Web & Interactive App Engineering",
+      "level_title": "Creators (Ages 9–12)",
+      "lesson_count": 20,
+      "markdown_guide": "track_1_web_engineering/creators_ages_9_12.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_internet_blueprint",
+          "title": "The Blueprint of the Internet",
+          "concept": "Client vs Server",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_01_internet_blueprint.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_01_internet_blueprint.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_first_html_tags",
+          "title": "Headings & Paragraphs",
+          "concept": "Heading Hierarchy (H1 to H6)",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_02_first_html_tags.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_02_first_html_tags.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_text_styling_tags",
+          "title": "Bold, Italic & Emphasis Spells",
+          "concept": "Inline Formatting Spells",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_03_text_styling_tags.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_03_text_styling_tags.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_image_portals",
+          "title": "Summoning Pictures (The IMG Tag)",
+          "concept": "The Image Anatomy",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_04_image_portals.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_04_image_portals.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_hyperlinks_teleport",
+          "title": "Portals to Other Dimensions (The Anchor Tag)",
+          "concept": "The Magic Anchor (<a>)",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_05_hyperlinks_teleport.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_05_hyperlinks_teleport.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_unordered_lists",
+          "title": "The Backpack Inventory (Unordered Lists)",
+          "concept": "The Bulleted List (<ul>)",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_06_unordered_lists.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_06_unordered_lists.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_ordered_lists",
+          "title": "Top-10 Leaderboard (Ordered Lists)",
+          "concept": "The Numbered List (<ol>)",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_07_ordered_lists.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_07_ordered_lists.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 8,
+          "slug": "lesson_08_tables_data_grid",
+          "title": "The Data Matrix (HTML Tables)",
+          "concept": "Table Anatomy",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_08_tables_data_grid.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_08_tables_data_grid.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 9,
+          "slug": "lesson_09_buttons_links",
+          "title": "The Magic Button (Interactive Elements)",
+          "concept": "Buttons vs Links",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_09_buttons_links.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_09_buttons_links.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 10,
+          "slug": "lesson_10_intro_css_colors",
+          "title": "The Color Alchemist (CSS Styles)",
+          "concept": "CSS Syntax & Hex Colors",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_10_intro_css_colors.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_10_intro_css_colors.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 11,
+          "slug": "lesson_11_google_fonts",
+          "title": "The Voice of Letters (Google Fonts)",
+          "concept": "Typography Secrets",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_11_google_fonts.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_11_google_fonts.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 12,
+          "slug": "lesson_12_box_model_padding",
+          "title": "The Bubble Wrap Principle (Padding & Borders)",
+          "concept": "Padding & Borders",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_12_box_model_padding.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_12_box_model_padding.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 13,
+          "slug": "lesson_13_box_model_margins",
+          "title": "Social Distancing for Elements (Margins)",
+          "concept": "Margins & Centering",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_13_box_model_margins.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_13_box_model_margins.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 14,
+          "slug": "lesson_14_flexbox_basics",
+          "title": "Aligning the Multiverse (Flexbox Rows)",
+          "concept": "Flexbox Powers",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_14_flexbox_basics.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_14_flexbox_basics.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 15,
+          "slug": "lesson_15_flexbox_align",
+          "title": "Centering & Wrapping (Flexbox Cross Axis)",
+          "concept": "Align-Items & Flex-Wrap",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_15_flexbox_align.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_15_flexbox_align.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 16,
+          "slug": "lesson_16_intro_javascript",
+          "title": "The Brain of the Page (JavaScript Intro)",
+          "concept": "JavaScript Foundations",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_16_intro_javascript.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_16_intro_javascript.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 17,
+          "slug": "lesson_17_dom_click_counter",
+          "title": "The Click Machine (DOM Events)",
+          "concept": "The DOM Connection",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_17_dom_click_counter.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_17_dom_click_counter.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 18,
+          "slug": "lesson_18_conditionals_gatekeeper",
+          "title": "The Castle Gatekeeper (If/Else Decisions)",
+          "concept": "Branching Logic",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_18_conditionals_gatekeeper.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_18_conditionals_gatekeeper.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 19,
+          "slug": "lesson_19_css_transitions_hover",
+          "title": "Smooth Physics (CSS Hover & Transitions)",
+          "concept": "Tactile Micro-interactions",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_19_css_transitions_hover.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_19_css_transitions_hover.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 20,
+          "slug": "lesson_20_mini_arcade_capstone",
+          "title": "The STEMulus Arcade (Capstone Launch)",
+          "concept": "Full-Stack Integration",
+          "slide_path": "slides/track_1_web_engineering/creators_ages_9_12/lesson_20_mini_arcade_capstone.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/creators_ages_9_12/lesson_20_mini_arcade_capstone.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "track_1_web_engineering",
+      "level_id": "innovators_ages_13_17",
+      "track_title": "Track 1: Web & Interactive App Engineering",
+      "level_title": "Innovators (Ages 13–17)",
+      "lesson_count": 20,
+      "markdown_guide": "track_1_web_engineering/innovators_ages_13_17.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_web_arch_devtools",
+          "title": "Web Architecture & Chrome DevTools",
+          "concept": "The Client-Server HTTP Lifecycle",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_01_web_arch_devtools.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_01_web_arch_devtools.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_semantic_html5",
+          "title": "Semantic HTML5 Architecture",
+          "concept": "Semantic Hierarchy",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_02_semantic_html5.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_02_semantic_html5.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_accessible_forms",
+          "title": "Accessible Forms & Validation",
+          "concept": "Form Architecture",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_03_accessible_forms.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_03_accessible_forms.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_css_variables_tokens",
+          "title": "Design Tokens & CSS Variables",
+          "concept": "Design Tokens",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_04_css_variables_tokens.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_04_css_variables_tokens.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_flexbox_deep_dive",
+          "title": "Flexbox Axes & Space Distribution",
+          "concept": "Advanced Flexbox Mechanics",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_05_flexbox_deep_dive.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_05_flexbox_deep_dive.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_css_grid_2d",
+          "title": "CSS Grid 2D Layouts",
+          "concept": "2D Grid Engine",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_06_css_grid_2d.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_06_css_grid_2d.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_grid_areas_dashboards",
+          "title": "Dashboard Architecture with Grid Areas",
+          "concept": "Grid Template Areas",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_07_grid_areas_dashboards.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_07_grid_areas_dashboards.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 8,
+          "slug": "lesson_08_responsive_media_queries",
+          "title": "Mobile-First Responsive Engineering",
+          "concept": "Mobile-First Principles",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_08_responsive_media_queries.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_08_responsive_media_queries.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 9,
+          "slug": "lesson_09_transitions_keyframes",
+          "title": "Micro-interactions & Keyframe Physics",
+          "concept": "CSS Motion Design",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_09_transitions_keyframes.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_09_transitions_keyframes.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 10,
+          "slug": "lesson_10_modern_js_es6",
+          "title": "Modern JavaScript (ES6+ Foundations)",
+          "concept": "ES6+ Evolution",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_10_modern_js_es6.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_10_modern_js_es6.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 11,
+          "slug": "lesson_11_destructuring_spread",
+          "title": "Destructuring & Spread Operator",
+          "concept": "Destructuring & Rest/Spread",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_11_destructuring_spread.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_11_destructuring_spread.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 12,
+          "slug": "lesson_12_dom_event_delegation",
+          "title": "DOM Event Delegation & Mutation",
+          "concept": "Event Delegation Engine",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_12_dom_event_delegation.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_12_dom_event_delegation.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 13,
+          "slug": "lesson_13_array_methods_map_filter",
+          "title": "Functional Array Methods (Map & Filter)",
+          "concept": "Functional Data Pipelines",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_13_array_methods_map_filter.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_13_array_methods_map_filter.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 14,
+          "slug": "lesson_14_array_reduce_cart",
+          "title": "The Accumulator (Array.reduce)",
+          "concept": "The Reduce Engine",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_14_array_reduce_cart.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_14_array_reduce_cart.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 15,
+          "slug": "lesson_15_async_js_promises",
+          "title": "Asynchronous JavaScript & Promises",
+          "concept": "Async Mechanics",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_15_async_js_promises.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_15_async_js_promises.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 16,
+          "slug": "lesson_16_fetch_api_json",
+          "title": "Consuming REST APIs with Async/Await",
+          "concept": "REST API Consumption",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_16_fetch_api_json.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_16_fetch_api_json.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 17,
+          "slug": "lesson_17_localstorage_persistence",
+          "title": "Client-Side Storage (LocalStorage)",
+          "concept": "Persistent Web Storage",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_17_localstorage_persistence.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_17_localstorage_persistence.html",
+          "has_tool_setup": true,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 18,
+          "slug": "lesson_18_git_github_flow",
+          "title": "Version Control & Git Collaboration",
+          "concept": "Git Version Control",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_18_git_github_flow.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_18_git_github_flow.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 19,
+          "slug": "lesson_19_react_components_props",
+          "title": "Introduction to React & Props",
+          "concept": "React Foundations",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_19_react_components_props.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_19_react_components_props.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 20,
+          "slug": "lesson_20_react_state_usestate",
+          "title": "React State & Lifecycle Hooks",
+          "concept": "Reactive State Engine",
+          "slide_path": "slides/track_1_web_engineering/innovators_ages_13_17/lesson_20_react_state_usestate.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_1_web_engineering/innovators_ages_13_17/lesson_20_react_state_usestate.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "track_2_ai_automation",
+      "level_id": "creators_ages_9_12",
+      "track_title": "Track 2: AI Explorers & Smart Automations",
+      "level_title": "Creators (Ages 9–12)",
+      "lesson_count": 16,
+      "markdown_guide": "track_2_ai_automation/creators_ages_9_12.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_what_is_ai",
+          "title": "What is Artificial Intelligence?",
+          "concept": "Rules vs Machine Learning",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_01_what_is_ai.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_01_what_is_ai.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_teachable_machine",
+          "title": "Training Your First Vision Model",
+          "concept": "Computer Vision Training",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_02_teachable_machine.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_02_teachable_machine.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_prompt_magic_spells",
+          "title": "The Secret Language of Prompts",
+          "concept": "The 4-Part Prompt Formula",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_03_prompt_magic_spells.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_03_prompt_magic_spells.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_ai_creative_writing",
+          "title": "Interactive Storytelling Co-Pilots",
+          "concept": "Branching Narratives",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_04_ai_creative_writing.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_04_ai_creative_writing.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_generative_art",
+          "title": "Visual Worlds (AI Image Prompting)",
+          "concept": "Anatomy of an Image Prompt",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_05_generative_art.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_05_generative_art.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_automation_assembly_line",
+          "title": "The Robot Assembly Line",
+          "concept": "The Automation Formula",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_06_automation_assembly_line.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_06_automation_assembly_line.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_zapier_first_bot",
+          "title": "Building Your First Zap (Zapier)",
+          "concept": "Zapier Mechanics",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_07_zapier_first_bot.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_07_zapier_first_bot.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 8,
+          "slug": "lesson_08_daily_inspiration_bot",
+          "title": "The Daily Inspiration Engine",
+          "concept": "AI Inside Automations",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_08_daily_inspiration_bot.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_08_daily_inspiration_bot.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 9,
+          "slug": "lesson_09_airtable_lego_database",
+          "title": "The Digital Toybox (Airtable Bases)",
+          "concept": "Airtable Foundations",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_09_airtable_lego_database.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_09_airtable_lego_database.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 10,
+          "slug": "lesson_10_forms_to_database",
+          "title": "Auto-Filing (Forms to Databases)",
+          "concept": "Data Intake Pipelines",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_10_forms_to_database.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_10_forms_to_database.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 11,
+          "slug": "lesson_11_intro_chatbots",
+          "title": "The Robot Brain (Chatbot Trees)",
+          "concept": "Chatbot Anatomy",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_11_intro_chatbots.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_11_intro_chatbots.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 12,
+          "slug": "lesson_12_custom_gpts",
+          "title": "Building Specialized Custom GPTs",
+          "concept": "Custom GPT Architecture",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_12_custom_gpts.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_12_custom_gpts.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 13,
+          "slug": "lesson_13_knowledge_vault",
+          "title": "The Knowledge Vault (Fact Grounding)",
+          "concept": "Knowledge Base Grounding",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_13_knowledge_vault.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_13_knowledge_vault.html",
+          "has_tool_setup": true,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 14,
+          "slug": "lesson_14_voice_ai_speech",
+          "title": "Voice AI & Audio Agents",
+          "concept": "Voice AI Technology",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_14_voice_ai_speech.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_14_voice_ai_speech.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 15,
+          "slug": "lesson_15_capstone_ai_assistant_build",
+          "title": "The Master AI Assistant (Capstone Build)",
+          "concept": "Full AI System Integration",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_15_capstone_ai_assistant_build.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_15_capstone_ai_assistant_build.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 16,
+          "slug": "lesson_16_ai_showcase_expo",
+          "title": "AI Showcase & Demo Day",
+          "concept": "The Technical Showcase",
+          "slide_path": "slides/track_2_ai_automation/creators_ages_9_12/lesson_16_ai_showcase_expo.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/creators_ages_9_12/lesson_16_ai_showcase_expo.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "track_2_ai_automation",
+      "level_id": "innovators_ages_13_17",
+      "track_title": "Track 2: AI Explorers & Smart Automations",
+      "level_title": "Innovators (Ages 13–17)",
+      "lesson_count": 16,
+      "markdown_guide": "track_2_ai_automation/innovators_ages_13_17.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_llm_transformer_tokens",
+          "title": "Transformer Architecture & Tokens",
+          "concept": "Transformer Foundations",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_01_llm_transformer_tokens.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_01_llm_transformer_tokens.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_advanced_cot_prompting",
+          "title": "Chain-of-Thought & ReAct Prompting",
+          "concept": "Cognitive Prompt Frameworks",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_02_advanced_cot_prompting.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_02_advanced_cot_prompting.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_make_visual_scenarios",
+          "title": "Complex Workflows with Make.com",
+          "concept": "Make Scenario Architecture",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_03_make_visual_scenarios.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_03_make_visual_scenarios.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_n8n_node_architecture",
+          "title": "Self-Hosted Automation with n8n",
+          "concept": "The n8n Engine",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_04_n8n_node_architecture.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_04_n8n_node_architecture.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_relational_schema_airtable",
+          "title": "Relational Database Design in Airtable",
+          "concept": "Relational Schemas",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_05_relational_schema_airtable.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_05_relational_schema_airtable.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_webhooks_realtime_data",
+          "title": "Real-Time Webhook Architecture",
+          "concept": "Webhook Mechanics",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_06_webhooks_realtime_data.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_06_webhooks_realtime_data.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_llm_structured_extraction",
+          "title": "Structured Entity Extraction with LLMs",
+          "concept": "Structured Outputs",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_07_llm_structured_extraction.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_07_llm_structured_extraction.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 8,
+          "slug": "lesson_08_ai_sentiment_routing",
+          "title": "Automated Sentiment Analysis & Triage",
+          "concept": "Sentiment & Classification",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_08_ai_sentiment_routing.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_08_ai_sentiment_routing.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 9,
+          "slug": "lesson_09_autonomous_agent_loops",
+          "title": "Autonomous AI Agents (ReAct Architecture)",
+          "concept": "The Agent Loop",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_09_autonomous_agent_loops.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_09_autonomous_agent_loops.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 10,
+          "slug": "lesson_10_tool_calling_functions",
+          "title": "Function Calling & Custom API Tools",
+          "concept": "Function Calling",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_10_tool_calling_functions.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_10_tool_calling_functions.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 11,
+          "slug": "lesson_11_vector_embeddings_rag",
+          "title": "Retrieval-Augmented Generation (RAG)",
+          "concept": "RAG Architecture",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_11_vector_embeddings_rag.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_11_vector_embeddings_rag.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 12,
+          "slug": "lesson_12_multi_agent_collaboration",
+          "title": "Multi-Agent Architectures",
+          "concept": "Agent Swarms",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_12_multi_agent_collaboration.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_12_multi_agent_collaboration.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 13,
+          "slug": "lesson_13_vibe_coding_cursor_v0",
+          "title": "Vibe Coding with Cursor & v0",
+          "concept": "Modern AI Development",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_13_vibe_coding_cursor_v0.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_13_vibe_coding_cursor_v0.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 14,
+          "slug": "lesson_14_ai_security_guardrails",
+          "title": "AI Security & Prompt Injection Defense",
+          "concept": "Defensive AI Security",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_14_ai_security_guardrails.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_14_ai_security_guardrails.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 15,
+          "slug": "lesson_15_production_ai_pipeline",
+          "title": "Production AI Architecture (Capstone Build)",
+          "concept": "Enterprise Architecture",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_15_production_ai_pipeline.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_15_production_ai_pipeline.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 16,
+          "slug": "lesson_16_enterprise_defense_demo",
+          "title": "Executive AI Defense & Graduation",
+          "concept": "The Executive Showcase",
+          "slide_path": "slides/track_2_ai_automation/innovators_ages_13_17/lesson_16_enterprise_defense_demo.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_2_ai_automation/innovators_ages_13_17/lesson_16_enterprise_defense_demo.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "track_3_product_design",
+      "level_id": "explorers_creators_ages_8_12",
+      "track_title": "Track 3: Digital Product & Game UI/UX Design",
+      "level_title": "Explorers & Creators (Ages 8–12)",
+      "lesson_count": 16,
+      "markdown_guide": "track_3_product_design/explorers_creators_ages_8_12.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_what_is_ux",
+          "title": "The 5 Stages of Design Thinking",
+          "concept": "The Design Thinking Cycle",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_01_what_is_ux.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_01_what_is_ux.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_figma_canvas",
+          "title": "The Designer's Studio (Figma Canvas)",
+          "concept": "Figma Essentials",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_02_figma_canvas.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_02_figma_canvas.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_color_magic",
+          "title": "The 60-30-10 Color Formula",
+          "concept": "Color Harmony",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_03_color_magic.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_03_color_magic.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_font_personalities",
+          "title": "The Voice of Letters (Typography)",
+          "concept": "Typographic Hierarchy",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_04_font_personalities.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_04_font_personalities.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_user_journeys",
+          "title": "Paper to Pixels (User Flows & Sitemaps)",
+          "concept": "Navigation Architecture",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_05_user_journeys.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_05_user_journeys.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_grayscale_wireframes",
+          "title": "The Skeleton Blueprint (Grayscale Wireframes)",
+          "concept": "Low-Fidelity Wireframes",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_06_grayscale_wireframes.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_06_grayscale_wireframes.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_visual_assets",
+          "title": "Icons & Avatars (Visual Polish)",
+          "concept": "Iconography Rules",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_07_visual_assets.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_07_visual_assets.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 8,
+          "slug": "lesson_08_high_fi_polishing",
+          "title": "Pouring the Magic Potion (High-Fidelity UI)",
+          "concept": "High-Fi Transformation",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_08_high_fi_polishing.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_08_high_fi_polishing.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 9,
+          "slug": "lesson_09_figma_components",
+          "title": "The Cookie Cutter Factory (Components)",
+          "concept": "Figma Components",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_09_figma_components.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_09_figma_components.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 10,
+          "slug": "lesson_10_component_variants",
+          "title": "Button Superpowers (Component Variants)",
+          "concept": "Component Sets & Variants",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_10_component_variants.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_10_component_variants.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 11,
+          "slug": "lesson_11_interactive_prototypes",
+          "title": "Wiring the Multiverse (Interactive Prototypes)",
+          "concept": "Prototype Connections",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_11_interactive_prototypes.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_11_interactive_prototypes.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 12,
+          "slug": "lesson_12_smart_animate_magic",
+          "title": "Spring Physics (Smart Animate)",
+          "concept": "Smart Animate Mechanics",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_12_smart_animate_magic.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_12_smart_animate_magic.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 13,
+          "slug": "lesson_13_usability_testing",
+          "title": "The Secret Test (Usability Testing)",
+          "concept": "Usability Testing Rules",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_13_usability_testing.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_13_usability_testing.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 14,
+          "slug": "lesson_14_design_feedback_iteration",
+          "title": "Iterating & Refining the Interface",
+          "concept": "Design Iteration",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_14_design_feedback_iteration.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_14_design_feedback_iteration.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 15,
+          "slug": "lesson_15_capstone_dream_app",
+          "title": "The Dream App (Capstone Assembly)",
+          "concept": "Capstone Architecture",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_15_capstone_dream_app.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_15_capstone_dream_app.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 16,
+          "slug": "lesson_16_design_gala_pitch",
+          "title": "STEMulus Design Gala (Pitch Day)",
+          "concept": "The Product Pitch",
+          "slide_path": "slides/track_3_product_design/explorers_creators_ages_8_12/lesson_16_design_gala_pitch.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/explorers_creators_ages_8_12/lesson_16_design_gala_pitch.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "track_3_product_design",
+      "level_id": "innovators_ages_13_17",
+      "track_title": "Track 3: Digital Product & Game UI/UX Design",
+      "level_title": "Innovators (Ages 13–17)",
+      "lesson_count": 16,
+      "markdown_guide": "track_3_product_design/innovators_ages_13_17.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_empirical_user_research",
+          "title": "Empirical User Research & JTBD",
+          "concept": "User Research Frameworks",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_01_empirical_user_research.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_01_empirical_user_research.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_personas_journey_maps",
+          "title": "Evidence-Based Personas & Journey Mapping",
+          "concept": "Journey Mapping Architecture",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_02_personas_journey_maps.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_02_personas_journey_maps.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_complex_sitemaps_ia",
+          "title": "Information Architecture & Task Flows",
+          "concept": "Information Architecture (IA)",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_03_complex_sitemaps_ia.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_03_complex_sitemaps_ia.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_nielsen_heuristics",
+          "title": "Jakob Nielsen's 10 Usability Heuristics",
+          "concept": "Usability Heuristics",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_04_nielsen_heuristics.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_04_nielsen_heuristics.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_eight_pt_spatial_grids",
+          "title": "The 8pt Spatial Grid System",
+          "concept": "Spatial Grid Mechanics",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_05_eight_pt_spatial_grids.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_05_eight_pt_spatial_grids.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_design_tokens_semantic",
+          "title": "Semantic Design Tokens (Figma Variables)",
+          "concept": "Design Token Architecture",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_06_design_tokens_semantic.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_06_design_tokens_semantic.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_wcag_accessible_contrast",
+          "title": "WCAG 2.1 Accessible Contrast Compliance",
+          "concept": "Accessibility Standards",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_07_wcag_accessible_contrast.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_07_wcag_accessible_contrast.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 8,
+          "slug": "lesson_08_auto_layout_fundamentals",
+          "title": "Figma Auto-Layout Fundamentals",
+          "concept": "Auto-Layout Mechanics",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_08_auto_layout_fundamentals.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_08_auto_layout_fundamentals.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 9,
+          "slug": "lesson_09_nested_auto_layout",
+          "title": "Nested Auto-Layout & Responsive Cards",
+          "concept": "Nested Containers",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_09_nested_auto_layout.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_09_nested_auto_layout.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 10,
+          "slug": "lesson_10_scalable_design_systems",
+          "title": "Scalable Component Systems & Properties",
+          "concept": "Component Properties",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_10_scalable_design_systems.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_10_scalable_design_systems.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 11,
+          "slug": "lesson_11_smart_animate_physics",
+          "title": "Spring Physics & Gestural Prototyping",
+          "concept": "Motion & Gestures",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_11_smart_animate_physics.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_11_smart_animate_physics.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 12,
+          "slug": "lesson_12_quantitative_usability",
+          "title": "Quantitative Usability Metrics & SUS",
+          "concept": "Quantitative UX Metrics",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_12_quantitative_usability.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_12_quantitative_usability.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 13,
+          "slug": "lesson_13_developer_handoff_mode",
+          "title": "Developer Handoff & Redline Specs",
+          "concept": "Dev Mode & Handoff",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_13_developer_handoff_mode.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_13_developer_handoff_mode.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 14,
+          "slug": "lesson_14_design_system_documentation",
+          "title": "Design System Documentation (Spec Sheets)",
+          "concept": "System Documentation",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_14_design_system_documentation.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_14_design_system_documentation.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 15,
+          "slug": "lesson_15_capstone_product_architecture",
+          "title": "Full-Stack Product Architecture (Capstone)",
+          "concept": "Capstone Architecture",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_15_capstone_product_architecture.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_15_capstone_product_architecture.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 16,
+          "slug": "lesson_16_executive_portfolio_defense",
+          "title": "Executive Portfolio Defense & Graduation",
+          "concept": "The Executive Defense",
+          "slide_path": "slides/track_3_product_design/innovators_ages_13_17/lesson_16_executive_portfolio_defense.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_3_product_design/innovators_ages_13_17/lesson_16_executive_portfolio_defense.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "track_4_python_data",
+      "level_id": "innovators_ages_11_17",
+      "track_title": "Track 4: Python & Data Detectives",
+      "level_title": "Innovators (Ages 11–17)",
+      "lesson_count": 18,
+      "markdown_guide": "track_4_python_data/innovators_ages_11_17.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_data_literacy_spreadsheets",
+          "title": "The Detective's Lens (Data Literacy)",
+          "concept": "Structured Data Foundations",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_01_data_literacy_spreadsheets.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_01_data_literacy_spreadsheets.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_descriptive_stats_excel",
+          "title": "Descriptive Statistics & Summary Metrics",
+          "concept": "Summary Statistics",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_02_descriptive_stats_excel.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_02_descriptive_stats_excel.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_python_colab_basics",
+          "title": "Python for Sleuths (Colab Environment)",
+          "concept": "Python Foundations",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_03_python_colab_basics.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_03_python_colab_basics.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_python_collections",
+          "title": "Mastering Python Lists & Slicing",
+          "concept": "Python Lists",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_04_python_collections.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_04_python_collections.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_python_dictionaries",
+          "title": "Key-Value Stores (Python Dictionaries)",
+          "concept": "Python Dictionaries",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_05_python_dictionaries.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_05_python_dictionaries.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_algorithmic_filtering",
+          "title": "Algorithmic Logic & Loops in Python",
+          "concept": "Control Flow & Loops",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_06_algorithmic_filtering.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_06_algorithmic_filtering.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_intro_pandas_dataframes",
+          "title": "The Data Superhero (Introduction to Pandas)",
+          "concept": "The Pandas Engine",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_07_intro_pandas_dataframes.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_07_intro_pandas_dataframes.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 8,
+          "slug": "lesson_08_pandas_boolean_indexing",
+          "title": "Querying DataFrames (Boolean Indexing)",
+          "concept": "Boolean Indexing",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_08_pandas_boolean_indexing.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_08_pandas_boolean_indexing.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 9,
+          "slug": "lesson_09_cleaning_dirty_data",
+          "title": "Cleaning Dirty Data (Missing Values & Duplicates)",
+          "concept": "Data Hygiene",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_09_cleaning_dirty_data.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_09_cleaning_dirty_data.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 10,
+          "slug": "lesson_10_data_transformation",
+          "title": "Data Transformation & Type Casting",
+          "concept": "Feature Engineering",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_10_data_transformation.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_10_data_transformation.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 11,
+          "slug": "lesson_11_matplotlib_bar_line",
+          "title": "Visual Storytelling (Matplotlib Bar & Line)",
+          "concept": "Matplotlib Fundamentals",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_11_matplotlib_bar_line.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_11_matplotlib_bar_line.html",
+          "has_tool_setup": true,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 12,
+          "slug": "lesson_12_seaborn_scatter_heatmaps",
+          "title": "Advanced Visualizations (Seaborn Heatmaps)",
+          "concept": "Seaborn Analytics",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_12_seaborn_scatter_heatmaps.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_12_seaborn_scatter_heatmaps.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 13,
+          "slug": "lesson_13_sql_query_foundations",
+          "title": "The Database Whisperer (SQL Foundations)",
+          "concept": "SQL Query Engine",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_13_sql_query_foundations.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_13_sql_query_foundations.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 14,
+          "slug": "lesson_14_sql_aggregations_joins",
+          "title": "Database Grouping & Joins (SQL Deep Dive)",
+          "concept": "Relational SQL Operations",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_14_sql_aggregations_joins.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_14_sql_aggregations_joins.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 15,
+          "slug": "lesson_15_correlation_vs_causation",
+          "title": "Correlation vs. Causation (Critical Thinking)",
+          "concept": "Analytical Skepticism",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_15_correlation_vs_causation.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_15_correlation_vs_causation.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 16,
+          "slug": "lesson_16_machine_learning_concepts",
+          "title": "The Magic Crystal Ball (Introduction to ML)",
+          "concept": "Machine Learning Foundations",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_16_machine_learning_concepts.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_16_machine_learning_concepts.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 17,
+          "slug": "lesson_17_scikit_decision_trees",
+          "title": "Decision Trees & Model Accuracy",
+          "concept": "Decision Tree Classification",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_17_scikit_decision_trees.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_17_scikit_decision_trees.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 18,
+          "slug": "lesson_18_streamlit_capstone_dashboard",
+          "title": "Live Dashboards with Streamlit & Expo",
+          "concept": "Streamlit Web Apps",
+          "slide_path": "slides/track_4_python_data/innovators_ages_11_17/lesson_18_streamlit_capstone_dashboard.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_4_python_data/innovators_ages_11_17/lesson_18_streamlit_capstone_dashboard.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        }
+      ]
+    },
+    {
+      "track_id": "track_5_cybersecurity",
+      "level_id": "innovators_ages_10_17",
+      "track_title": "Track 5: Cyber Defenders & Ethical Hacking",
+      "level_title": "Innovators (Ages 10–17)",
+      "lesson_count": 16,
+      "markdown_guide": "track_5_cybersecurity/innovators_ages_10_17.md",
+      "lessons": [
+        {
+          "num": 1,
+          "slug": "lesson_01_ethical_hacker_code",
+          "title": "The White-Hat Mindset & CIA Triad",
+          "concept": "The CIA Security Triad",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_01_ethical_hacker_code.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_01_ethical_hacker_code.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 2,
+          "slug": "lesson_02_digital_footprints_osint",
+          "title": "Digital Footprints & OSINT Reconnaissance",
+          "concept": "OSINT Reconnaissance",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_02_digital_footprints_osint.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_02_digital_footprints_osint.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 3,
+          "slug": "lesson_03_phishing_social_defense",
+          "title": "Social Engineering & Phishing Defense",
+          "concept": "Social Engineering Tactics",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_03_phishing_social_defense.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_03_phishing_social_defense.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 4,
+          "slug": "lesson_04_tcpip_ports_protocols",
+          "title": "Networking Secrets (Packets, Ports & Protocols)",
+          "concept": "The TCP/IP Suite",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_04_tcpip_ports_protocols.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_04_tcpip_ports_protocols.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 5,
+          "slug": "lesson_05_packet_sniffing_wireshark",
+          "title": "Packet Sniffing & Traffic Analysis (Wireshark)",
+          "concept": "Packet Analysis Engine",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_05_packet_sniffing_wireshark.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_05_packet_sniffing_wireshark.html",
+          "has_tool_setup": true,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 6,
+          "slug": "lesson_06_ssl_tls_encryption",
+          "title": "The Secret Handshake (SSL/TLS Encryption)",
+          "concept": "SSL/TLS Handshake",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_06_ssl_tls_encryption.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_06_ssl_tls_encryption.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 7,
+          "slug": "lesson_07_linux_terminal_fortress",
+          "title": "The Linux Fortress (Terminal Navigation)",
+          "concept": "Linux Command Line",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_07_linux_terminal_fortress.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_07_linux_terminal_fortress.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 8,
+          "slug": "lesson_08_linux_permissions_chmod",
+          "title": "Fortifying File Permissions (chmod & chown)",
+          "concept": "Linux Permissions Architecture",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_08_linux_permissions_chmod.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_08_linux_permissions_chmod.html",
+          "has_tool_setup": false,
+          "has_concept_video": true,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 9,
+          "slug": "lesson_09_cryptographic_hashes_sha",
+          "title": "One-Way Mathematical Blenders (SHA-256)",
+          "concept": "Cryptographic Hashing",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_09_cryptographic_hashes_sha.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_09_cryptographic_hashes_sha.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 10,
+          "slug": "lesson_10_passwords_salts_cracking",
+          "title": "Defeating Rainbow Tables (Salting Passwords)",
+          "concept": "Password Security & Salts",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_10_passwords_salts_cracking.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_10_passwords_salts_cracking.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 11,
+          "slug": "lesson_11_owasp_sql_injection",
+          "title": "The Web Infiltration (SQL Injection)",
+          "concept": "SQL Injection (SQLi)",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_11_owasp_sql_injection.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_11_owasp_sql_injection.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 12,
+          "slug": "lesson_12_owasp_xss_sanitization",
+          "title": "Browser Hijacking (Cross-Site Scripting XSS)",
+          "concept": "Cross-Site Scripting (XSS)",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_12_owasp_xss_sanitization.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_12_owasp_xss_sanitization.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 13,
+          "slug": "lesson_13_malware_taxonomy_sandboxes",
+          "title": "Malware Taxonomy & Behavioral Sandboxing",
+          "concept": "Malware Categories",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_13_malware_taxonomy_sandboxes.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_13_malware_taxonomy_sandboxes.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 14,
+          "slug": "lesson_14_firewalls_network_defense",
+          "title": "Castle Walls (Firewalls & Network Defense)",
+          "concept": "Network Defenses",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_14_firewalls_network_defense.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_14_firewalls_network_defense.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 15,
+          "slug": "lesson_15_capture_the_flag_gauntlet",
+          "title": "Capture The Flag (CTF Gauntlet)",
+          "concept": "CTF Competitions",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_15_capture_the_flag_gauntlet.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_15_capture_the_flag_gauntlet.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        },
+        {
+          "num": 16,
+          "slug": "lesson_16_security_audit_capstone",
+          "title": "Executive Security Audit & Graduation",
+          "concept": "Vulnerability Assessment",
+          "slide_path": "slides/track_5_cybersecurity/innovators_ages_10_17/lesson_16_security_audit_capstone.html",
+          "slide_uri": "file:///C:\\Users\\USER\\.gemini\\antigravity\\scratch\\curriculum\\slides/track_5_cybersecurity/innovators_ages_10_17/lesson_16_security_audit_capstone.html",
+          "has_tool_setup": false,
+          "has_concept_video": false,
+          "tutor_blueprint_available": true
+        }
+      ]
+    }
+  ]
+}

@@ -507,7 +507,8 @@ function bindEvents() {
                 queued++;
             });
             this.textContent = 'Generate This Week\'s Reports'; this.disabled = false;
-            if (queued>0) { showToast(queued+' weekly report(s) added to Email Queue for review','success'); loadEmailQueue(); }
+            if (queued>0) { showToast(queued+' weekly report(s) added to Email Queue for review','success'); loadEmailQueue();
+    loadAdminMonthlyReports(); }
             else showToast('No sessions found this week to report on','info');
         });
     }
@@ -606,16 +607,21 @@ function loadNetlifyEnrollments() {
     container.innerHTML = pending.map(function(enr, idx) {
         var children = enr.children || [];
         var childList = children.length ?
-            children.map(function(c){ return (c.firstName||'') + ' ' + (c.lastName||'') + ' (' + (c.program||'?') + ')'; }).join(', ') :
-            (enr.studentFirstName||'') + ' ' + (enr.studentLastName||'') + ' (' + (enr.program||'?') + ')';
+            children.map(function(c){ 
+                var dob = c.birthday ? ' <span class="inline-flex items-center text-[11px] font-semibold px-2 py-0.5 bg-amber-50 text-amber-800 rounded border border-amber-200">🎂 DOB: ' + c.birthday + '</span>' : '';
+                return (c.firstName||'') + ' ' + (c.lastName||'') + ' (' + (c.program||'?') + ', Age ' + (c.age||'?') + ')' + dob; 
+            }).join(', ') :
+            (enr.studentFirstName||'') + ' ' + (enr.studentLastName||'') + ' (' + (enr.program||'?') + ', Age ' + (enr.studentAge||'?') + ')' + (enr.studentBirthday ? ' <span class="inline-flex items-center text-[11px] font-semibold px-2 py-0.5 bg-amber-50 text-amber-800 rounded border border-amber-200">🎂 DOB: ' + enr.studentBirthday + '</span>' : '');
         var submitted = enr.timestamp ? new Date(enr.timestamp).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '?';
-        return '<div class="border border-gray-200 rounded-xl p-4 flex items-start justify-between gap-4 bg-white">' +
+        return '<div class="border border-gray-200 rounded-xl p-4 flex items-start justify-between gap-4 bg-white hover:border-indigo-200 transition-colors">' +
             '<div class="flex-1 min-w-0">' +
                 '<p class="font-semibold text-gray-800 text-sm">' + (enr.parentName||'Parent') + ' &bull; ' + (enr.email||'') + ' &bull; ' + (enr.phone||'') + '</p>' +
-                '<p class="text-sm text-gray-500 mt-0.5">Child/Children: ' + childList + '</p>' +
-                '<p class="text-xs text-gray-400 mt-0.5">Submitted: ' + submitted + '</p>' +
+                '<p class="text-sm text-gray-600 mt-1 leading-relaxed">Child/Children: ' + childList + '</p>' +
+                '<p class="text-xs text-gray-400 mt-1">Submitted: ' + submitted + ' &bull; Ref: ' + (enr.id||enr.enrollmentId||'N/A') + '</p>' +
             '</div>' +
-            '<button onclick="importNetlifyEnrollment(' + idx + ')" class="text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-lg transition-colors shrink-0">Approve &amp; Add</button>' +
+            '<div class="flex items-center gap-2 shrink-0">' +
+                '<button onclick="importNetlifyEnrollment(' + idx + ')" class="text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-lg transition-colors">Approve &amp; Add</button>' +
+            '</div>' +
         '</div>';
     }).join('');
 }
@@ -626,14 +632,38 @@ window.importNetlifyEnrollment = function(idx) {
     if (!enr) return;
     var children = enr.children || [];
     if (!children.length && enr.studentFirstName) {
-        children = [{ firstName: enr.studentFirstName, lastName: enr.studentLastName, age: enr.studentAge, gender: enr.studentGender, experience: enr.experience, program: enr.program }];
+        children = [{ 
+            firstName: enr.studentFirstName, 
+            lastName: enr.studentLastName, 
+            age: enr.studentAge, 
+            birthday: enr.studentBirthday || '', 
+            gender: enr.studentGender, 
+            experience: enr.experience, 
+            program: enr.program 
+        }];
     }
     // Generate random password — never hardcode defaults
     var chars2 = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@';
     var importTempPwd = Array.from(crypto.getRandomValues(new Uint8Array(10))).map(function(b){return chars2[b%chars2.length];}).join('');
     var added = 0;
     children.forEach(function(child) {
-        var studentData = { firstName: child.firstName, lastName: child.lastName, age: child.age, gender: child.gender, experience: child.experience, program: child.program, parentName: enr.parentName, parentEmail: enr.email, parentPhone: enr.phone, tutorName: '', classroomLink: '', status: 'active', remindersPaused: false };
+        var studentData = { 
+            firstName: child.firstName, 
+            lastName: child.lastName, 
+            age: child.age, 
+            birthday: (child.birthday && typeof child.birthday === 'string' && child.birthday.trim().length >= 10) ? child.birthday.trim() : (enr.studentBirthday || ''),
+            hasExplicitBirthday: !!(child.birthday || enr.studentBirthday),
+            gender: child.gender, 
+            experience: child.experience, 
+            program: child.program, 
+            parentName: enr.parentName, 
+            parentEmail: enr.email, 
+            parentPhone: enr.phone, 
+            tutorName: '', 
+            classroomLink: '', 
+            status: 'active', 
+            remindersPaused: false 
+        };
         if (DashboardEngine.addStudent) DashboardEngine.addStudent(studentData);
         if (DashboardEngine.getDB && enr.email) {
             var db2 = DashboardEngine.getDB();
@@ -657,10 +687,81 @@ window.importNetlifyEnrollment = function(idx) {
     }
     pending.splice(idx, 1);
     localStorage.setItem('stemulus_pending_enrollments', JSON.stringify(pending));
-    if (typeof showToast === 'function') showToast(added + ' student(s) added. Welcome email queued — check Email Queue.', 'success');
+    if (typeof showToast === 'function') showToast(added + ' student(s) added with birthday saved. Welcome email queued in Email Queue.', 'success');
     loadNetlifyEnrollments();
     if (typeof loadDashboardData === 'function') loadDashboardData();
 };
+
+function exportEnrollmentsSpreadsheet() {
+    var pending = JSON.parse(localStorage.getItem('stemulus_pending_enrollments') || '[]');
+    var history = JSON.parse(localStorage.getItem('stemulus_enrollments') || '[]');
+    var dbEnrollments = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? (DashboardEngine.getDB().enrollments || []) : [];
+    
+    // Combine all unique enrollments
+    var allMap = new Map();
+    [...history, ...dbEnrollments, ...pending].forEach(function(e) {
+        if (!e) return;
+        var key = e.enrollmentId || e.id || ((e.parentEmail || e.email || '') + '_' + (e.studentFirstName || ''));
+        if (!allMap.has(key)) allMap.set(key, e);
+    });
+
+    var rows = [
+        ['Enrollment ID', 'Date Submitted', 'Student Name', 'Birthday (DOB)', 'Age', 'Gender', 'Program', 'Experience Level', 'Parent Name', 'Parent Email', 'Phone / WhatsApp', 'Country', 'Timezone', 'Media Consent', 'Referral / Source', 'Status']
+    ];
+
+    allMap.forEach(function(e) {
+        var children = e.children && e.children.length ? e.children : [{
+            firstName: e.studentFirstName,
+            lastName: e.studentLastName,
+            age: e.studentAge,
+            birthday: e.studentBirthday,
+            gender: e.studentGender,
+            program: e.program,
+            experience: e.experience
+        }];
+
+        children.forEach(function(c) {
+            rows.push([
+                e.enrollmentId || e.id || 'N/A',
+                e.timestamp ? new Date(e.timestamp).toISOString().split('T')[0] : '',
+                (c.firstName || e.studentFirstName || '') + ' ' + (c.lastName || e.studentLastName || ''),
+                c.birthday || e.studentBirthday || 'Not specified',
+                c.age || e.studentAge || '',
+                c.gender || e.studentGender || '',
+                c.program || e.program || '',
+                c.experience || e.experience || 'Beginner',
+                e.parentName || '',
+                e.parentEmail || e.email || '',
+                e.phone || '',
+                e.country || 'Global',
+                e.timeZone || '',
+                e.mediaConsent === false ? 'Declined' : 'Granted',
+                e.referral || e.leadSource || e.source || 'Website',
+                e.status || 'pending'
+            ]);
+        });
+    });
+
+    var csvContent = '\uFEFF' + rows.map(function(r) {
+        return r.map(function(field) {
+            var str = String(field == null ? '' : field);
+            if (str.includes(',') || str.includes('"') || str.indexOf('\n') !== -1 || str.indexOf('\r') !== -1) {
+                return '"' + str.replace(/"/g, '""') + '"';
+            }
+            return str;
+        }).join(',');
+    }).join('\r\n');
+
+    var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    var link = document.createElement('a');
+    var url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'stemulus_enrollments_spreadsheet_' + new Date().toISOString().split('T')[0] + '.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    if (typeof showToast === 'function') showToast('Enrollment spreadsheet exported successfully (' + (rows.length - 1) + ' records).', 'success');
+}
 
 function showToast(msg, type = 'info', duration = 5000) {
     let container = document.getElementById('toast-container');
@@ -1433,6 +1534,7 @@ function loadDashboardData() {
     populateNotificationRecipients();
     loadTutorMonthlyReports();
     if (document.getElementById('email-queue-list')) loadEmailQueue();
+    if (typeof AdminSmartDetector !== 'undefined' && AdminSmartDetector.init) AdminSmartDetector.init();
     if (document.getElementById('password-resets-list')) loadPasswordResets();
     loadWeekSummary();
     loadTodaysClasses();
@@ -1617,26 +1719,39 @@ function loadEmailQueue() {
       'student-enrolled': 'Student Enrolled',
       'certificate-delivery': 'Certificate', 
       'credentials-reset': 'Password Reset', 
-      custom: 'Custom Message' 
+      custom: 'Custom Message',
+      billing: 'Tuition Renewal',
+      birthday: 'Birthday Greeting',
+      schedule: 'Schedule Notice',
+      timezone: 'Timezone Advisory'
     };
     queueList.innerHTML = queue.map(function(item) {
       var typeLabel = typeLabels[item.type] || item.type;
-      var typeColor = (item.type === 'welcome' || item.type === 'tutor-welcome' || item.type === 'tutor_welcome' || item.type === 'student-enrolled') ? 'bg-blue-100 text-blue-700' : item.type === 'certificate-delivery' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700';
-      return '<div class="bg-white border border-gray-200 rounded-xl p-4 flex items-start justify-between gap-4 shadow-sm">' +
-        '<div class="pt-0.5 shrink-0"><input type="checkbox" class="queue-item-checkbox w-4 h-4 rounded text-orange-600 focus:ring-orange-500 border-slate-300 cursor-pointer" value="' + item.id + '" onchange="AdminEngine.updateQueueSelectionCount()"></div>' +
-        '<div class="flex-1 min-w-0">' +
-          '<div class="flex items-center gap-2 mb-1">' +
-            '<span class="inline-block text-xs font-bold px-2 py-0.5 rounded ' + typeColor + '">' + typeLabel + '</span>' +
-            '<span class="text-xs text-gray-400">' + new Date(item.createdAt).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) + '</span>' +
+      var typeColor = (item.type === 'welcome' || item.type === 'tutor-welcome' || item.type === 'tutor_welcome' || item.type === 'student-enrolled') ? 'bg-blue-100 text-blue-700' : 
+                      item.type === 'certificate-delivery' ? 'bg-green-100 text-green-700' : 
+                      item.type === 'billing' ? 'bg-amber-100 text-amber-800' : 
+                      item.type === 'birthday' ? 'bg-pink-100 text-pink-700' : 
+                      item.type === 'schedule' ? 'bg-purple-100 text-purple-700' : 
+                      item.type === 'timezone' ? 'bg-cyan-100 text-cyan-800' : 
+                      'bg-orange-100 text-orange-700';
+      return '<div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm hover:border-orange-300 transition-all">' +
+        '<div class="flex items-start gap-3 flex-1 min-w-0">' +
+          '<div class="pt-1 shrink-0"><input type="checkbox" class="queue-item-checkbox w-4 h-4 rounded text-orange-600 focus:ring-orange-500 border-slate-300 cursor-pointer" value="' + item.id + '" onchange="AdminEngine.updateQueueSelectionCount()"></div>' +
+          '<div class="flex-1 min-w-0">' +
+            '<div class="flex items-center gap-2 mb-1.5 flex-wrap">' +
+              '<span class="inline-block text-xs font-bold px-2.5 py-0.5 rounded-full ' + typeColor + '">' + typeLabel + '</span>' +
+              '<span class="text-xs text-slate-400 font-medium">' + new Date(item.createdAt).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) + '</span>' +
+            '</div>' +
+            '<p class="font-bold text-slate-900 text-sm truncate">To: ' + (item.recipientName || item.to) + ' &lt;' + item.to + '&gt;</p>' +
+            '<p class="text-sm text-slate-600 mt-0.5 truncate font-medium">Subject: ' + (item.editedSubject || item.subject) + '</p>' +
+            '<p class="text-xs text-slate-400 mt-1">Triggered by: ' + (item.triggeredBy || 'manual') + '</p>' +
           '</div>' +
-          '<p class="font-semibold text-gray-800 text-sm truncate">To: ' + (item.recipientName || item.to) + ' &lt;' + item.to + '&gt;</p>' +
-          '<p class="text-sm text-gray-500 mt-0.5 truncate">Subject: ' + (item.editedSubject || item.subject) + '</p>' +
-          '<p class="text-xs text-gray-400 mt-0.5">Triggered by: ' + (item.triggeredBy || 'manual') + '</p>' +
         '</div>' +
-        '<div class="flex items-center gap-2 shrink-0">' +
-          '<button onclick="previewQueuedEmail(\'' + item.id + '\')" class="text-xs font-semibold text-blue-700 hover:text-blue-900 px-3 py-1.5 border border-blue-200 rounded-lg transition-colors">Preview</button>' +
-          '<button onclick="sendQueuedEmail(\'' + item.id + '\')" class="text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 px-3 py-1.5 rounded-lg transition-colors" style="background-color: #047857 !important;">Send Now</button>' +
-          '<button onclick="cancelQueuedEmail(\'' + item.id + '\')" class="text-xs font-semibold text-red-700 hover:text-red-900 px-3 py-1.5 border border-red-200 rounded-lg transition-colors">Cancel</button>' +
+        '<div class="flex items-center gap-2 shrink-0 flex-wrap sm:flex-nowrap pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">' +
+          '<button type="button" onclick="editQueuedEmail(\'' + item.id + '\')" class="text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"><svg class="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>Edit</button>' +
+          '<button type="button" onclick="previewQueuedEmail(\'' + item.id + '\')" class="text-xs font-semibold text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 border border-blue-200 rounded-xl transition-colors cursor-pointer">Preview</button>' +
+          '<button type="button" onclick="sendQueuedEmail(\'' + item.id + '\')" class="text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 px-3.5 py-1.5 rounded-xl transition-all shadow-sm flex items-center gap-1.5 cursor-pointer" style="background-color: #047857 !important;"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>Send</button>' +
+          '<button type="button" onclick="cancelQueuedEmail(\'' + item.id + '\')" class="text-xs font-semibold text-red-700 hover:text-red-900 px-3 py-1.5 border border-red-200 rounded-xl transition-colors cursor-pointer">Cancel</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -1646,12 +1761,20 @@ function loadEmailQueue() {
     if (!history.length) {
       historyList.innerHTML = '<p class="text-slate-600 text-sm">No emails sent yet.</p>';
     } else {
-      historyList.innerHTML = history.slice(-20).reverse().map(function(item) {
-        var statusClass = item.status === 'sent' ? 'text-emerald-800 font-bold' : 'text-slate-600';
-        return '<div class="flex items-center gap-3 py-2 border-b border-gray-100 last:border-0">' +
-          '<span class="text-xs font-bold ' + statusClass + ' w-16 shrink-0">' + item.status.toUpperCase() + '</span>' +
-          '<span class="text-sm text-gray-700 flex-1 truncate">' + (item.recipientName||item.to) + ' — ' + (item.editedSubject||item.subject) + '</span>' +
-          '<span class="text-xs text-slate-500 shrink-0">' + (item.sentAt ? new Date(item.sentAt).toLocaleDateString('en-GB') : '') + '</span>' +
+      historyList.innerHTML = history.slice(-40).reverse().map(function(item) {
+        var statusClass = item.status === 'sent' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-slate-100 text-slate-700 border-slate-200';
+        return '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 border border-slate-100 rounded-xl hover:bg-slate-50/80 transition-all bg-white shadow-xs">' +
+          '<div class="flex items-center gap-3 min-w-0 flex-1">' +
+            '<span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-md border ' + statusClass + ' shrink-0">' + (item.status || 'SENT') + '</span>' +
+            '<div class="min-w-0 flex-1">' +
+              '<p class="text-sm font-bold text-slate-800 truncate">' + (item.recipientName || item.to) + ' &lt;' + item.to + '&gt;</p>' +
+              '<p class="text-xs text-slate-500 truncate mt-0.5">' + (item.editedSubject || item.subject) + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="flex items-center gap-3 shrink-0 self-end sm:self-center">' +
+            '<span class="text-xs text-slate-400 font-medium">' + (item.sentAt ? new Date(item.sentAt).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '') + '</span>' +
+            '<button type="button" onclick="viewSentEmail(\'' + item.id + '\')" class="text-xs font-bold text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"><svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>Read Email</button>' +
+          '</div>' +
         '</div>';
       }).join('');
     }
@@ -1697,6 +1820,187 @@ window.sendQueuedEmail = async function(id) {
   } catch(err) {
     if (btn) { btn.textContent = 'Send Now'; btn.disabled = false; }
     if (typeof showToast === 'function') showToast('Failed to send email: ' + err.message, 'error');
+  }
+};
+
+
+// ==================== EDIT QUEUED EMAIL & VIEW SENT EMAIL ====================
+
+window.editQueuedEmail = function(id) {
+  var db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
+  if (!db) return;
+  var item = (db.emailQueue || []).find(function(e) { return e.id === id; });
+  if (!item) return;
+
+  var modal = document.getElementById('modal-edit-queued-email');
+  if (!modal) return;
+
+  document.getElementById('eqe-id').value = item.id;
+  document.getElementById('eqe-name').value = item.recipientName || '';
+  document.getElementById('eqe-to').value = item.to || '';
+  document.getElementById('eqe-subject').value = item.editedSubject || item.subject || '';
+  document.getElementById('eqe-body').value = item.editedBody || item.htmlPreview || '';
+  document.getElementById('eqe-type-badge').textContent = (item.type || 'email').toUpperCase();
+
+  modal.classList.remove('hidden');
+  modal.style.display = 'flex';
+};
+
+window.closeEditQueuedEmailModal = function() {
+  var modal = document.getElementById('modal-edit-queued-email');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.style.display = 'none';
+  }
+};
+
+window.saveQueuedEmailEdit = async function(andSend) {
+  var id = document.getElementById('eqe-id').value;
+  var name = document.getElementById('eqe-name').value.trim();
+  var to = document.getElementById('eqe-to').value.trim();
+  var subject = document.getElementById('eqe-subject').value.trim();
+  var body = document.getElementById('eqe-body').value.trim();
+
+  if (!to || !subject || !body) {
+    if (typeof showToast === 'function') showToast('Please complete all required fields.', 'warning');
+    return;
+  }
+
+  var db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
+  if (!db) return;
+  var item = (db.emailQueue || []).find(function(e) { return e.id === id; });
+  if (!item) return;
+
+  item.recipientName = name;
+  item.to = to;
+  item.editedSubject = subject;
+  item.subject = subject;
+  item.editedBody = body;
+  item.htmlPreview = body;
+  if (item.data) {
+    item.data.recipientName = name;
+    item.data.to = to;
+    item.data.subject = subject;
+    item.data.body = body;
+  }
+
+  DashboardEngine.saveDB(db);
+  closeEditQueuedEmailModal();
+
+  if (andSend) {
+    if (typeof showToast === 'function') showToast('Email saved. Dispatching now...', 'info');
+    await window.sendQueuedEmail(id);
+  } else {
+    if (typeof showToast === 'function') showToast('Queued email updated successfully.', 'success');
+    loadEmailQueue();
+  }
+};
+
+window.viewSentEmail = function(id) {
+  var db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
+  if (!db) return;
+  var history = db.emailHistory || [];
+  var item = history.find(function(e) { return e.id === id; });
+  if (!item) return;
+
+  var modal = document.getElementById('modal-view-sent-email');
+  if (!modal) return;
+
+  document.getElementById('vse-recipient').textContent = (item.recipientName ? (item.recipientName + ' <' + item.to + '>') : item.to);
+  document.getElementById('vse-subject').textContent = item.editedSubject || item.subject || 'No Subject';
+  document.getElementById('vse-date').textContent = item.sentAt ? new Date(item.sentAt).toLocaleString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'Unknown';
+  document.getElementById('vse-type').textContent = (item.type || 'DISPATCHED').toUpperCase();
+
+  var bodyContainer = document.getElementById('vse-body');
+  var rawContent = item.editedBody || item.htmlPreview || (item.data && item.data.body) || 'No message content stored.';
+  
+  // Render cleanly in reader container
+  if (rawContent.includes('<') && rawContent.includes('>')) {
+    bodyContainer.innerHTML = rawContent;
+  } else {
+    bodyContainer.innerHTML = '<pre style="white-space:pre-wrap;font-family:inherit;font-size:13px;color:#334155;line-height:1.6;">' + rawContent.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</pre>';
+  }
+
+  modal.classList.remove('hidden');
+  modal.style.display = 'flex';
+};
+
+window.closeViewSentEmailModal = function() {
+  var modal = document.getElementById('modal-view-sent-email');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.style.display = 'none';
+  }
+};
+
+// ==================== DATABASE BACKUP & SNAPSHOT COCKPIT ====================
+
+window.exportDatabaseBackup = function() {
+  if (typeof DashboardEngine === 'undefined' || !DashboardEngine.exportDatabaseJSON) return;
+  const json = DashboardEngine.exportDatabaseJSON();
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const dateStr = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = 'stemulus_database_vault_' + dateStr + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  if (typeof showToast === 'function') showToast('Verified database backup downloaded.', 'success');
+};
+
+window.importDatabaseBackupFile = function(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const jsonStr = e.target.result;
+    if (typeof DashboardEngine !== 'undefined' && DashboardEngine.importDatabaseJSON) {
+      const res = DashboardEngine.importDatabaseJSON(jsonStr);
+      if (res.success) {
+        if (typeof showToast === 'function') showToast(res.message, 'success');
+        setTimeout(() => window.location.reload(), 1200);
+      } else {
+        if (typeof showToast === 'function') showToast('Restore failed: ' + res.error, 'error');
+      }
+    }
+  };
+  reader.readAsText(file);
+};
+
+window.renderSnapshotVaultList = function() {
+  const container = document.getElementById('snapshot-vault-list');
+  if (!container || typeof DashboardEngine === 'undefined' || !DashboardEngine.listSnapshots) return;
+  const snaps = DashboardEngine.listSnapshots();
+  if (!snaps.length) {
+    container.innerHTML = '<p class="text-xs text-slate-400 py-3 text-center">No rolling snapshots recorded yet.</p>';
+    return;
+  }
+  container.innerHTML = snaps.map(s => `
+    <div class="flex items-center justify-between gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+      <div>
+        <p class="text-xs font-bold text-slate-800">${s.formatted}</p>
+        <p class="text-[11px] text-slate-500">${s.students} Students &bull; ${s.attendance} Attendance Records</p>
+      </div>
+      <button type="button" onclick="rollbackToSnapshot(\'${s.timestamp}\')" class="px-2.5 py-1 text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors cursor-pointer">
+        Rollback
+      </button>
+    </div>
+  `).join('');
+};
+
+window.rollbackToSnapshot = function(timestamp) {
+  if (!confirm('Are you sure you want to rollback the database to this snapshot point? Current state will be backed up before applying.')) return;
+  if (typeof DashboardEngine !== 'undefined' && DashboardEngine.restoreSnapshot) {
+    const success = DashboardEngine.restoreSnapshot(timestamp);
+    if (success) {
+      if (typeof showToast === 'function') showToast('Database successfully restored to snapshot point.', 'success');
+      setTimeout(() => window.location.reload(), 1200);
+    } else {
+      if (typeof showToast === 'function') showToast('Failed to restore snapshot point.', 'error');
+    }
   }
 };
 
@@ -7223,8 +7527,156 @@ async function submitManualBotDispatch() {
     }
 }
 
+
+// ==================== MONTHLY PROGRESS REPORTS COCKPIT ====================
+
+function loadAdminMonthlyReports() {
+  var pendingList = document.getElementById('admin-pending-reports-list');
+  var approvedList = document.getElementById('admin-approved-reports-list');
+  var pendingBadge = document.getElementById('admin-pending-reports-count');
+  var navBadge = document.getElementById('nav-reports-badge');
+  if (!pendingList || typeof MonthlyReportEngine === 'undefined') return;
+
+  var reports = MonthlyReportEngine.getReports();
+  var pending = reports.filter(function(r) { return r.status === 'pending_admin_approval'; });
+  var approved = reports.filter(function(r) { return r.status === 'approved' || r.status === 'sent_to_parent'; });
+
+  if (pendingBadge) pendingBadge.textContent = pending.length + ' Pending';
+  if (navBadge) {
+    navBadge.textContent = pending.length;
+    navBadge.classList.toggle('hidden', pending.length === 0);
+  }
+
+  if (!pending.length) {
+    pendingList.innerHTML = '<p class="text-xs text-slate-400 py-4 text-center">No reports awaiting Director approval.</p>';
+  } else {
+    pendingList.innerHTML = pending.map(function(r) {
+      return '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-slate-50 border border-slate-200 rounded-2xl hover:border-orange-300 transition-all">' +
+        '<div>' +
+          '<div class="flex items-center gap-2 mb-1 flex-wrap">' +
+            '<span class="text-sm font-extrabold text-slate-900">' + r.studentName + '</span>' +
+            '<span class="text-xs text-slate-500 font-semibold">&bull; ' + r.course + '</span>' +
+            '<span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-800">' + r.month + '</span>' +
+          '</div>' +
+          '<p class="text-xs text-slate-500">Tutor: <strong class="text-slate-700">' + r.tutorName + '</strong> &bull; Submitted: ' + new Date(r.submittedAt).toLocaleDateString('en-GB') + '</p>' +
+        '</div>' +
+        '<div class="flex items-center gap-2 shrink-0">' +
+          '<button type="button" onclick="AdminEngine.openReviewModal(\'' + r.id + '\')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">' +
+            '<i data-lucide="eye" class="w-3.5 h-3.5"></i> Inspect Report' +
+          '</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  if (approvedList) {
+    if (!approved.length) {
+      approvedList.innerHTML = '<p class="text-xs text-slate-400 py-3 text-center">No approved reports archived yet.</p>';
+    } else {
+      approvedList.innerHTML = approved.map(function(r) {
+        return '<div class="flex items-center justify-between gap-3 p-3 bg-white border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors">' +
+          '<div>' +
+            '<p class="text-xs font-bold text-slate-900">' + r.studentName + ' &bull; ' + r.month + '</p>' +
+            '<p class="text-[11px] text-slate-500">Tutor: ' + r.tutorName + ' &bull; Approved: ' + (r.approvedAt ? new Date(r.approvedAt).toLocaleDateString('en-GB') : 'Yes') + '</p>' +
+          '</div>' +
+          '<button type="button" onclick="MonthlyReportEngine.openReportPDF(\'' + r.id + '\')" class="px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg transition-colors flex items-center gap-1 cursor-pointer">' +
+            '<i data-lucide="printer" class="w-3.5 h-3.5"></i> View PDF' +
+          '</button>' +
+        '</div>';
+      }).join('');
+    }
+  }
+
+  if (window.lucide) lucide.createIcons();
+}
+
+function openReviewModal(reportId) {
+  var modal = document.getElementById('modal-admin-review-report');
+  if (!modal || typeof MonthlyReportEngine === 'undefined') return;
+
+  var r = MonthlyReportEngine.getReports().find(function(rep) { return rep.id === reportId; });
+  if (!r) return;
+
+  document.getElementById('amr-id').value = r.id;
+  document.getElementById('amr-student').textContent = r.studentName + ' (' + r.course + ')';
+  document.getElementById('amr-tutor').textContent = r.tutorName + ' (' + r.tutorEmail + ')';
+  document.getElementById('amr-month').textContent = r.month;
+
+  document.getElementById('amr-strengths').textContent = r.shiningHighlights || 'None specified.';
+  document.getElementById('amr-growth').textContent = r.growthAreas || 'None specified.';
+
+  var woohooContainer = document.getElementById('amr-woohoo');
+  if (r.woohooMoments && r.woohooMoments.length) {
+    woohooContainer.innerHTML = r.woohooMoments.map(function(m) {
+      return '<div class="mb-1.5 last:mb-0"><strong>&bull; ' + (m.topic || 'Moment') + ':</strong> ' + (m.moment || '') + '</div>';
+    }).join('');
+  } else {
+    woohooContainer.textContent = 'None logged.';
+  }
+
+  var projContainer = document.getElementById('amr-projects');
+  if (r.projectLinks && r.projectLinks.length) {
+    projContainer.innerHTML = r.projectLinks.map(function(p) {
+      return '<div><strong>' + p.title + ':</strong> <a href="' + p.url + '" target="_blank" class="text-blue-600 underline font-mono">' + p.url + '</a></div>';
+    }).join('');
+  } else {
+    projContainer.textContent = 'No project links included.';
+  }
+
+  modal.classList.remove('hidden');
+  modal.style.display = 'flex';
+  if (window.lucide) lucide.createIcons();
+}
+
+function closeReviewModal() {
+  var modal = document.getElementById('modal-admin-review-report');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.style.display = 'none';
+  }
+}
+
+function promptRejectReport() {
+  var id = document.getElementById('amr-id').value;
+  var feedback = prompt('Enter revision comments for the tutor explaining what needs adjustment:');
+  if (!feedback) return;
+
+  if (typeof MonthlyReportEngine !== 'undefined') {
+    MonthlyReportEngine.rejectReport(id, feedback);
+    closeReviewModal();
+    loadAdminMonthlyReports();
+    if (typeof showToast === 'function') showToast('Report sent back to tutor for revision with comments.', 'info');
+  }
+}
+
+function previewReportPDF() {
+  var id = document.getElementById('amr-id').value;
+  if (typeof MonthlyReportEngine !== 'undefined') {
+    MonthlyReportEngine.openReportPDF(id);
+  }
+}
+
+function approveAndSendReport() {
+  var id = document.getElementById('amr-id').value;
+  if (typeof MonthlyReportEngine !== 'undefined') {
+    MonthlyReportEngine.approveReport(id);
+    closeReviewModal();
+    loadAdminMonthlyReports();
+    if (typeof loadEmailQueue === 'function') loadEmailQueue();
+    if (typeof showToast === 'function') {
+      showToast('Report officially approved! Progress report sent to parent, and follow-up invoice queued.', 'success');
+    }
+  }
+}
+
 return {
     init,
+    loadAdminMonthlyReports,
+    openReviewModal,
+    closeReviewModal,
+    promptRejectReport,
+    previewReportPDF,
+    approveAndSendReport,
     navigateToSection,
     showSection: navigateToSection,
     reloadData: loadDashboardData,
@@ -7343,6 +7795,7 @@ return {
     filterSchedules,
     onParentSelectChange,
     loadNetlifyEnrollments,
+    exportEnrollmentsSpreadsheet,
     loadSchedules,
 
     // Live Radar & Class Escalation
@@ -7434,6 +7887,7 @@ if (typeof window !== 'undefined') {
     window.filterSchedules = AdminEngine.filterSchedules;
     window.onParentSelectChange = AdminEngine.onParentSelectChange;
     window.loadNetlifyEnrollments = AdminEngine.loadNetlifyEnrollments;
+    window.exportEnrollmentsSpreadsheet = AdminEngine.exportEnrollmentsSpreadsheet;
     window.loadSchedules = AdminEngine.loadSchedules;
     window.approveScheduleAdjust = AdminEngine.approveScheduleAdjust;
     window.declineScheduleAdjust = AdminEngine.declineScheduleAdjust;
@@ -7469,6 +7923,14 @@ if (typeof window !== 'undefined') {
     window.closeManualBotDispatchModal = AdminEngine.closeManualBotDispatchModal;
     window.submitManualBotDispatch = AdminEngine.submitManualBotDispatch;
 }
+
+
+    window.loadAdminMonthlyReports = AdminEngine.loadAdminMonthlyReports;
+    window.openReviewModal = AdminEngine.openReviewModal;
+    window.closeReviewModal = AdminEngine.closeReviewModal;
+    window.promptRejectReport = AdminEngine.promptRejectReport;
+    window.previewReportPDF = AdminEngine.previewReportPDF;
+    window.approveAndSendReport = AdminEngine.approveAndSendReport;
 
 document.addEventListener('DOMContentLoaded', AdminEngine.init);
 // On cloud sync: only reload data, don't re-run full auth check

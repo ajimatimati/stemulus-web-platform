@@ -1468,11 +1468,11 @@
         
         <!-- Interactive Currency Switcher -->
         <div class="mt-8 inline-flex flex-wrap items-center justify-center gap-1.5 p-1.5 rounded-xl bg-slate-100 border border-slate-200" id="currency-switcher-nav" role="tablist">
-          <button type="button" data-currency="NGN" class="curr-btn px-4 py-2 rounded-lg text-xs font-bold transition-all bg-slate-900 text-white shadow-sm" role="tab" aria-selected="true">
-            🇳🇬 ₦ NGN
+          <button type="button" data-currency="GBP" class="curr-btn px-4 py-2 rounded-lg text-xs font-bold transition-all bg-slate-900 text-white shadow-sm" role="tab" aria-selected="true">
+            🇬🇧 £ GBP (International)
           </button>
-          <button type="button" data-currency="GBP" class="curr-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 hover:bg-white/60" role="tab" aria-selected="false">
-            🇬🇧 £ GBP
+          <button type="button" data-currency="NGN" class="curr-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 hover:bg-white/60" role="tab" aria-selected="false">
+            🇳🇬 ₦ NGN (Domestic)
           </button>
           <button type="button" data-currency="USD" class="curr-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900 hover:bg-white/60" role="tab" aria-selected="false">
             🇺🇸 $ USD
@@ -1487,6 +1487,12 @@
             🇪🇺 € EUR
           </button>
         </div>
+
+        <div class="mt-4 p-3 bg-slate-50 border border-slate-200/80 rounded-xl text-center max-w-2xl mx-auto">
+          <p class="text-xs text-slate-600 font-medium">
+            <span class="font-bold text-slate-900">Global Admissions:</span> Anchored at £80/mo parallel with dedicated timezone accommodation and 1-on-1 private mentoring. (Select 🇳🇬 NGN for domestic subsidized tuition).
+          </p>
+        </div>
       </div>
 
       <div class="grid md:grid-cols-3 gap-6 lg:gap-8 mb-20">
@@ -1499,7 +1505,7 @@
             <p class="text-slate-500 text-xs leading-relaxed mb-4">Scratch 3.0, Creative Coding, logic algorithms, and junior computational thinking.</p>
             
             <div class="flex items-baseline gap-2 mb-2">
-              <span class="text-4xl font-black text-slate-900 font-nunito" id="price-tier-1">₦50,000</span>
+              <span class="text-4xl font-black text-slate-900 font-nunito" id="price-tier-1">£45</span>
               <span class="text-xs text-slate-500 font-semibold" id="period-tier-1">/month</span>
             </div>
             <p class="text-[11px] font-bold text-orange-600 uppercase tracking-wider mb-6" id="pace-tier-1">
@@ -1532,11 +1538,11 @@
               <p class="text-slate-500 text-xs leading-relaxed mb-4">Text-based Python, HTML/CSS/JS web development, and Cambridge Checkpoint CS.</p>
               
               <div class="flex items-baseline gap-2 mb-2">
-                <span class="text-4xl font-black text-slate-900 font-nunito" id="price-tier-2">₦75,000</span>
+                <span class="text-4xl font-black text-slate-900 font-nunito" id="price-tier-2">£80</span>
                 <span class="text-xs text-slate-500 font-semibold" id="period-tier-2">/month</span>
               </div>
               <p class="text-[11px] font-bold text-orange-600 uppercase tracking-wider mb-6" id="pace-tier-2">
-                4 × 60-min sessions · 1×/wk (8×/mo available)
+                8 × 60-min sessions · 2×/week (Standard Pace)
               </p>
 
               <ul class="space-y-2.5 text-xs text-slate-600 mb-8">
@@ -1562,11 +1568,11 @@
             <p class="text-slate-400 text-xs leading-relaxed mb-4">Hardware kinematics, Arduino, Aerodynamics simulators, and college admissions portfolio prep.</p>
             
             <div class="flex items-baseline gap-2 mb-2">
-              <span class="text-4xl font-black text-white font-nunito" id="price-tier-3">₦120,000</span>
+              <span class="text-4xl font-black text-white font-nunito" id="price-tier-3">£155</span>
               <span class="text-xs text-slate-400 font-semibold" id="period-tier-3">/month</span>
             </div>
             <p class="text-[11px] font-bold text-orange-400 uppercase tracking-wider mb-6" id="pace-tier-3">
-              8 × 60-min sessions · 2×/week intensive
+              8 × 60-min sessions · 2×/week (Robotics &amp; Aero Lab)
             </p>
 
             <ul class="space-y-2.5 text-xs text-slate-300 mb-8">
@@ -1590,9 +1596,9 @@
       (function(){
         var rates = {
           NGN: {
-            t1Price: '₦50,000', t1Period: '/month', t1Pace: '4 × 60-min sessions · 1×/week',
-            t2Price: '₦75,000', t2Period: '/month', t2Pace: '4 × 60-min sessions · 1×/wk (8×/mo available)',
-            t3Price: '₦120,000', t3Period: '/month', t3Pace: '8 × 60-min sessions · 2×/week intensive',
+            t1Price: '₦48,000', t1Period: '/month', t1Pace: '4 × 60-min sessions · 1×/week (Foundations)',
+            t2Price: '₦75,000', t2Period: '/month', t2Pace: '8 × 60-min sessions · 2×/week (Intermediate Package)',
+            t3Price: '₦120,000', t3Period: '/month', t3Pace: '8 × 60-min sessions · 2×/week intensive (Advanced)',
             t3Title: 'Pre-University Fellowship',
             t3Desc: 'Hardware kinematics, Arduino, Aerodynamics simulators, and college admissions portfolio prep.'
           },
@@ -2349,6 +2355,7 @@ window.addEventListener('load', function() {
 </a>
 
 <script src="assets/js/quick-booking.min.js" defer></script>
+<script src="assets/js/lead-genius-engine.min.js" defer></script>
 <script src="assets/js/organization-schema.min.js" defer></script>
 <script src="assets/js/course-schema.min.js" defer></script>
 

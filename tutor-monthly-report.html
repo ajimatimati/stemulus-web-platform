@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&family=DM+Sans:wght@400;500;600&family=Fredoka+One&display=swap" rel="stylesheet">
 
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="assets/vendor/lucide.min.js"></script>
   <script defer>window.addEventListener('DOMContentLoaded',function(){if(window.lucide)lucide.createIcons();});</script>
 
   <!-- Tailwind CSS -->
@@ -40,10 +40,10 @@
         : null;
       var ttl = 8 * 60 * 60 * 1000;
       if (!s || (s.role !== 'tutor' && s.role !== 'admin') || !s.issuedAt || (Date.now() - s.issuedAt >= ttl)) {
-        window.location.replace('parent-login.html?role=tutor');
+        window.location.replace('tutor-login.html');
       }
     } catch(e) {
-      window.location.replace('parent-login.html?role=tutor');
+      window.location.replace('tutor-login.html');
     }
   })();
   </script>
@@ -291,8 +291,8 @@
           </div>
           <div>
             <label class="field-label">Total Teaching Hours</label>
-            <input type="number" class="field-input" id="report-total-hours" placeholder="e.g. 36" min="0" step="0.5" required>
-            <p class="field-hint">Sum of all session durations in hours (e.g. 24 sessions x 1.5 hrs = 36)</p>
+            <input type="number" class="field-input" id="report-total-hours" placeholder="e.g. 24" min="0" step="0.5" required>
+            <p class="field-hint">Sum of all session durations in hours (standard session = 1 hr / 60 mins)</p>
           </div>
         </div>
       </div>
@@ -462,7 +462,7 @@
         <p class="section-desc text-center">
           Review your entries above. Once submitted, this report will be sent to the admin team for review. You can edit it until the end of the month.
         </p>
-        <button type="submit" class="btn-3d orange px-8 py-4 text-base mt-4">
+        <button type="submit" class="btn-3d orange w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 text-sm sm:text-base font-bold mt-4 justify-center inline-flex items-center gap-2">
           <i data-lucide="send" class="w-5 h-5"></i> Submit Monthly Report
         </button>
         <p class="text-xs text-slate-600 mt-3">Your report is saved on this device and sent to the admin team immediately upon submission.</p>
@@ -542,7 +542,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Auth check
   var _session = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getSession) ? DashboardEngine.getSession() : null;
-  if (!_session || (_session.role !== 'tutor' && _session.role !== 'admin')) { window.location.href = 'parent-login.html?role=tutor'; return; }
+  if (!_session || (_session.role !== 'tutor' && _session.role !== 'admin')) { window.location.href = 'tutor-login.html'; return; }
 
   // Populate tutor info
   var nameEl = document.getElementById('tutor-name');
@@ -597,11 +597,26 @@ document.addEventListener('DOMContentLoaded', function() {
       dbStats = DashboardEngine.calculateTutorMonthlyStats(_session.email || tutorFullName, monthVal);
     }
 
-    // Prioritize sum of filled student cards, otherwise fallback to database verified logs
+    // Prioritize sum of filled student cards, otherwise fallback to database verified logs (1.0 hr per 60-min session)
     var finalSessions = hasFilledEntries ? formSumSessions : (dbStats.totalSessions || 0);
-    var finalHours = Math.round(finalSessions * 1.5 * 10) / 10;
-    var payoutRate = 25.00;
+    var finalHours = hasFilledEntries
+      ? Math.round(formSumSessions * 1.0 * 10) / 10
+      : (dbStats.totalHours || Math.round(finalSessions * 1.0 * 10) / 10);
+    var tutorObj = null;
+    if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) {
+      var allTutors = DashboardEngine.getDB().tutors || [];
+      tutorObj = allTutors.find(function(t) {
+        return (t.email && t.email.toLowerCase().trim() === (_session.email || '').toLowerCase().trim()) ||
+               (t.name && t.name.toLowerCase().trim() === (tutorFullName || '').toLowerCase().trim());
+      });
+    }
+    var payoutRate = (tutorObj && tutorObj.hourlyRate) ? parseFloat(tutorObj.hourlyRate) : 35.00;
     var totalPayout = (finalHours * payoutRate).toFixed(2);
+    var bankName = (tutorObj && tutorObj.bankName) ? tutorObj.bankName : '';
+    var accountNumber = (tutorObj && tutorObj.accountNumber) ? tutorObj.accountNumber : '';
+    var perf = (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateTutorPerformance)
+      ? DashboardEngine.calculateTutorPerformance(_session.email || tutorFullName)
+      : null;
 
     if (sessInput) sessInput.value = finalSessions;
     if (hoursInput) hoursInput.value = finalHours;
@@ -622,6 +637,7 @@ document.addEventListener('DOMContentLoaded', function() {
             '<span class="font-extrabold text-sm text-indigo-900 font-nunito">Verified Compensation & Attendance Audit</span>' +
           '</div>' +
           '<div class="flex flex-wrap items-center gap-2">' +
+            (perf ? '<span class="text-[11px] font-black text-purple-700 bg-purple-100 px-3 py-1 rounded-xl border border-purple-200 shadow-xs">' + perf.tierName + ' (' + perf.onTimeRateFormatted + ')</span>' : '') +
             '<span class="text-[11px] font-black text-indigo-700 bg-white px-3 py-1 rounded-xl border border-indigo-200 shadow-sm">' +
               'Rate: $' + payoutRate.toFixed(2) + '/hr' +
             '</span>' +
@@ -648,9 +664,15 @@ document.addEventListener('DOMContentLoaded', function() {
             '<strong class="text-slate-800 text-sm font-black">' + (monthVal || 'Current') + '</strong>' +
           '</div>' +
         '</div>' +
+        (bankName && accountNumber ? 
+          '<div class="flex items-center gap-2 p-2 rounded-xl bg-white/90 border border-indigo-100 text-[11px] text-slate-700 mt-1">' +
+            '<i data-lucide="building" class="w-3.5 h-3.5 text-indigo-600"></i>' +
+            '<span>Verified Remittance Routing: <strong class="text-slate-900">' + bankName + '</strong> (NUBAN: <strong class="text-slate-900 font-mono">' + accountNumber + '</strong>)</span>' +
+          '</div>' : '') +
         '<p class="text-[11px] text-slate-500 italic mt-1 text-center sm:text-left">' +
-          'Note: Tutor payment is officially audited, calculated, and disbursed by Admin Administration based on the number of approved logged sessions taught this month.' +
+          'Note: Tutor payment is officially audited, calculated, and disbursed by Admin Administration based on verified session attendance logs.' +
         '</p>';
+      if (window.lucide) lucide.createIcons();
     }
   }
 
@@ -667,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', function() {
       if (typeof DashboardEngine !== 'undefined') DashboardEngine.logout();
-      window.location.href = 'parent-login.html?role=tutor';
+      window.location.href = 'tutor-login.html';
     });
   }
 

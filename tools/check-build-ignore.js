@@ -101,6 +101,7 @@ function run() {
       file === 'package.json' ||
       file === 'netlify.toml' ||
       file === 'src/tailwind-input.css' ||
+      file.startsWith('netlify/functions/') ||
       file.startsWith('tools/') ||
       (file.startsWith('assets/js/') && !isPortalSpecificJs(file))
     );
@@ -110,6 +111,8 @@ function run() {
   const isPortalFile = (file) => {
     return (
       file === '404.html' ||
+      file === 'join-class.html' ||
+      file === 'firestore.rules' ||
       file === 'tools/check-build-ignore.js' ||
       isPortalSpecificJs(file) ||
       file.includes('dashboard') ||

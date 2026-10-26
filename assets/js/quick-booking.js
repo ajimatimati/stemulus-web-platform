@@ -466,13 +466,18 @@ const QuickBooking = (function() {
                         
                         <div class="qb-form-grid">
                             <div class="qb-field-group">
-                                <label class="qb-label" for="qb-parent-name">Parent Full Name</label>
+                                <label class="qb-label" for="qb-parent-name">Parent Full Name *</label>
                                 <input class="qb-input" type="text" id="qb-parent-name" name="parent_name" placeholder="e.g. Sarah Jenkins" required>
                             </div>
                             
                             <div class="qb-field-group">
-                                <label class="qb-label" for="qb-student-name">Child's Name &amp; Age</label>
-                                <input class="qb-input" type="text" id="qb-student-name" name="student_name" placeholder="e.g. Liam, age 9" required>
+                                <label class="qb-label" for="qb-student-name">Child's Full Name *</label>
+                                <input class="qb-input" type="text" id="qb-student-name" name="student_name" placeholder="e.g. Liam Jenkins" required>
+                            </div>
+
+                            <div class="qb-field-group">
+                                <label class="qb-label" for="qb-student-birthday">Child's Date of Birth *</label>
+                                <input class="qb-input" type="date" id="qb-student-birthday" name="student_birthday" required max="2021-12-31" min="2008-01-01">
                             </div>
                             
                             <div class="qb-field-group">
@@ -627,13 +632,18 @@ const QuickBooking = (function() {
                 
                 <div class="qb-form-grid">
                     <div class="qb-field-group">
-                        <label class="qb-label" for="qb-parent-name">Parent Full Name</label>
+                        <label class="qb-label" for="qb-parent-name">Parent Full Name *</label>
                         <input class="qb-input" type="text" id="qb-parent-name" name="parent_name" placeholder="e.g. Sarah Jenkins" required>
                     </div>
                     
                     <div class="qb-field-group">
-                        <label class="qb-label" for="qb-student-name">Child's Name &amp; Age</label>
-                        <input class="qb-input" type="text" id="qb-student-name" name="student_name" placeholder="e.g. Liam, age 9" required>
+                        <label class="qb-label" for="qb-student-name">Child's Full Name *</label>
+                        <input class="qb-input" type="text" id="qb-student-name" name="student_name" placeholder="e.g. Liam Jenkins" required>
+                    </div>
+
+                    <div class="qb-field-group">
+                        <label class="qb-label" for="qb-student-birthday">Child's Date of Birth *</label>
+                        <input class="qb-input" type="date" id="qb-student-birthday" name="student_birthday" required max="2021-12-31" min="2008-01-01">
                     </div>
                     
                     <div class="qb-field-group">
@@ -727,7 +737,16 @@ const QuickBooking = (function() {
         const utmCampaign = formData.get('utm_campaign') || attr.utmCampaign || '';
         const referrer = formData.get('referrer') || attr.referrer || 'direct';
         const timeZone = formData.get('time_zone') || attr.timeZone || '';
-        const ageGroup = formData.get('age_group') || attr.ageGroup || '';
+        const studentBirthday = formData.get('student_birthday') || '';
+        let calculatedAge = '';
+        if (studentBirthday) {
+            const dob = new Date(studentBirthday);
+            if (!isNaN(dob.getTime())) {
+                const diffMs = Date.now() - dob.getTime();
+                calculatedAge = Math.floor(diffMs / (365.25 * 24 * 60 * 60 * 1000));
+            }
+        }
+        const ageGroup = formData.get('age_group') || (calculatedAge ? String(calculatedAge) : attr.ageGroup) || '';
 
         // Guarantee hidden attributes exist in formData for Netlify forms
         formData.set('country', country);
@@ -738,11 +757,14 @@ const QuickBooking = (function() {
         formData.set('referrer', referrer);
         formData.set('time_zone', timeZone);
         formData.set('age_group', ageGroup);
+        if (studentBirthday) formData.set('student_birthday', studentBirthday);
 
         const bookingData = {
             bookingId: bookingId,
             parentName: formData.get('parent_name'),
             studentName: formData.get('student_name'),
+            studentBirthday: studentBirthday,
+            studentAge: calculatedAge ? String(calculatedAge) : ageGroup,
             email: formData.get('email'),
             phone: formData.get('phone'),
             contactPref: formData.get('contact_pref'),
@@ -814,17 +836,19 @@ const QuickBooking = (function() {
             body: JSON.stringify({
                 type: 'booking',
                 data: {
-                    bookingId:   data.bookingId,
-                    parentName:  data.parentName,
-                    studentName: data.studentName,
-                    email:       data.email,
-                    phone:       data.phone,
-                    contactPref: data.contactPref,
-                    country:     data.country,
-                    location:    data.location || data.country,
-                    leadSource:  data.leadSource || data.utmSource,
-                    ageGroup:    data.ageGroup,
-                    utmSource:   data.utmSource
+                    bookingId:       data.bookingId,
+                    parentName:      data.parentName,
+                    studentName:     data.studentName,
+                    studentBirthday: data.studentBirthday,
+                    studentAge:      data.studentAge,
+                    email:           data.email,
+                    phone:           data.phone,
+                    contactPref:     data.contactPref,
+                    country:         data.country,
+                    location:        data.location || data.country,
+                    leadSource:      data.leadSource || data.utmSource,
+                    ageGroup:        data.ageGroup,
+                    utmSource:       data.utmSource
                 }
             })
         });
@@ -844,12 +868,14 @@ const QuickBooking = (function() {
         const title = `Discovery Session: ${data.studentName} [${data.country || 'Global'}]`;
         const message = `
 Parent Name: ${data.parentName}
+Student: ${data.studentName}
+DOB: ${data.studentBirthday || 'N/A'} (Age: ${data.studentAge || 'N/A'})
 Email: ${data.email}
 Phone: ${data.phone}
 Country / Location: ${data.country || 'Global'}
 Lead Source: ${data.leadSource || data.utmSource || 'direct'}
-Age Group: ${data.ageGroup || 'N/A'}
-Contact Pref: ${data.contactPref}
+Time: ${new Date().toLocaleString()}
+Contact Pref: ${data.contactPref || 'WhatsApp'}
 Booking ID: ${data.bookingId}
         `.trim();
 
@@ -1064,7 +1090,8 @@ Booking ID: ${data.bookingId}
                     country: data.country || 'Global',
                     studentFirstName: data.studentName.split(',')[0].trim(),
                     studentLastName: 'Inquiry',
-                    studentAge: data.studentName.includes('age') ? data.studentName.split('age')[1].trim() : (data.ageGroup || ''),
+                    studentAge: data.studentAge || (data.studentName.includes('age') ? data.studentName.split('age')[1].trim() : (data.ageGroup || '')),
+                    studentBirthday: data.studentBirthday || '',
                     program: 'Discovery Session (Free 45-Min Trial)',
                     timestamp: data.timestamp,
                     isFreeTrial: true,
@@ -1080,6 +1107,8 @@ Booking ID: ${data.bookingId}
                 DashboardEngine.addEnrollment({
                     studentFirstName: data.studentName.split(',')[0].trim(),
                     studentLastName: 'Inquiry',
+                    studentBirthday: data.studentBirthday || '',
+                    studentAge: data.studentAge || data.ageGroup || '',
                     parentName: data.parentName,
                     email: data.email,
                     phone: data.phone,
@@ -1088,6 +1117,37 @@ Booking ID: ${data.bookingId}
                     isFreeTrial: true
                 });
             }
+
+            // Direct cloud sync to Firestore 'leads' collection (public write-only intake)
+            const docId = String(data.bookingId || ('qb-' + Date.now())).replace(/[^a-zA-Z0-9_-]/g, '-');
+            const parsedFirst = data.studentName ? data.studentName.split(',')[0].trim() : 'Student';
+            const parsedAge = data.studentAge || ((data.studentName && data.studentName.includes('age')) ? data.studentName.split('age')[1].trim() : (data.ageGroup || ''));
+            fetch(`https://firestore.googleapis.com/v1/projects/stemulus-lms/databases/(default)/documents/leads?documentId=${encodeURIComponent(docId)}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    fields: {
+                        id:               { stringValue: docId },
+                        studentFirstName: { stringValue: String(parsedFirst) },
+                        studentLastName:  { stringValue: 'Inquiry' },
+                        studentAge:       { stringValue: String(parsedAge) },
+                        studentBirthday:  { stringValue: String(data.studentBirthday || '') },
+                        program:          { stringValue: 'Discovery Session (Free 45-Min Trial)' },
+                        parentName:       { stringValue: String(data.parentName || '') },
+                        email:            { stringValue: String(data.email || '').toLowerCase().trim() },
+                        parentEmail:      { stringValue: String(data.email || '').toLowerCase().trim() },
+                        phone:            { stringValue: String(data.phone || '') },
+                        country:          { stringValue: String(data.country || 'Global') },
+                        leadSource:       { stringValue: String(data.leadSource || data.utmSource || 'direct') },
+                        preferredDay:     { stringValue: 'Discovery Session Inquiry' },
+                        preferredTime:    { stringValue: String(data.contactPref || 'WhatsApp') },
+                        isFreeTrial:      { booleanValue: true },
+                        status:           { stringValue: 'pending' },
+                        source:           { stringValue: 'public_quick_booking' },
+                        timestamp:        { stringValue: String(data.timestamp || new Date().toISOString()) }
+                    }
+                })
+            }).catch(() => {});
         } catch (e) {
             console.warn('[QuickBooking] Localstorage sync skipped:', e);
         }
@@ -1124,13 +1184,18 @@ Booking ID: ${data.bookingId}
                             
                             <div class="qb-form-grid">
                                 <div class="qb-field-group">
-                                    <label class="qb-label" for="qb-parent-name">Your Full Name</label>
+                                    <label class="qb-label" for="qb-parent-name">Your Full Name *</label>
                                     <input class="qb-input" type="text" id="qb-parent-name" name="parent_name" placeholder="e.g. Juliette Karapetyan" required>
                                 </div>
                                 
                                 <div class="qb-field-group">
-                                    <label class="qb-label" for="qb-student-name">Child's Name & Age</label>
-                                    <input class="qb-input" type="text" id="qb-student-name" name="student_name" placeholder="e.g. Amara, age 8" required>
+                                    <label class="qb-label" for="qb-student-name">Child's Full Name *</label>
+                                    <input class="qb-input" type="text" id="qb-student-name" name="student_name" placeholder="e.g. Amara Karapetyan" required>
+                                </div>
+
+                                <div class="qb-field-group">
+                                    <label class="qb-label" for="qb-student-birthday">Child's Date of Birth *</label>
+                                    <input class="qb-input" type="date" id="qb-student-birthday" name="student_birthday" required max="2021-12-31" min="2008-01-01">
                                 </div>
                                 
                                 <div class="qb-field-group">

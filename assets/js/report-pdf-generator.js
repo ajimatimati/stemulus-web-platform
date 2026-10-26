@@ -57,7 +57,7 @@
                 tutorName: raw.tutorName || 'STEMulus Faculty Lead',
                 sessionsAttended: raw.sessionsAttended !== undefined ? raw.sessionsAttended : (raw.totalSessions || 4),
                 totalSessions: raw.totalSessions || 4,
-                totalHours: raw.totalHours || (raw.totalSessions ? (raw.totalSessions * 1.5) : 6),
+                totalHours: raw.totalHours || (raw.totalSessions ? (raw.totalSessions * 1.0) : 4),
                 grade: grade,
                 gradeDesc: gradeDesc,
                 engagementText: engagementText,

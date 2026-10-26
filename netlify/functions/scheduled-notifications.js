@@ -30,7 +30,7 @@ const ADMIN_EMAIL    = process.env.ADMIN_EMAIL    || 'admin@stemuluskidstech.com
 const ADMIN_WA       = process.env.ADMIN_WHATSAPP || '2347052466716';
 const RESEND_KEY     = process.env.RESEND_API_KEY;
 const NTFY_TOKEN     = process.env.NTFY_TOKEN;
-const FB_PROJECT     = process.env.FIREBASE_PROJECT_ID || 'stemulus-kidstech';
+const FB_PROJECT     = process.env.FIREBASE_PROJECT_ID || 'stemulus-lms';
 const FB_API_KEY     = process.env.FIREBASE_API_KEY;
 const FROM_ADDRESS   = 'STEMulus Kids Tech <hello@portal.stemuluskidstech.com>';
 
@@ -60,8 +60,9 @@ function unpackFirestoreField(v) {
 // ─── Firestore REST helper ────────────────────────────────────────────────────
 
 async function firestoreQuery(collection) {
-  if (!FB_PROJECT || !FB_API_KEY) return [];
-  const url = `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents/${collection}?key=${FB_API_KEY}&pageSize=300`;
+  if (!FB_PROJECT) return [];
+  const keyParam = FB_API_KEY ? `&key=${FB_API_KEY}` : '';
+  const url = `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/(default)/documents/${collection}?pageSize=300${keyParam}`;
   try {
     const resp = await fetch(url);
     if (!resp.ok) return [];
@@ -82,16 +83,21 @@ async function firestoreQuery(collection) {
 
 async function ntfyPush(topic, title, message, { priority = 'high', tags = '', click = '' } = {}) {
   if (!topic) return;
+  const cleanTitle = String(title || '').replace(/[^\x20-\x7E]/g, ' ').trim();
   const headers = {
     'Content-Type': 'text/plain',
-    'Title': title,
+    'Title': cleanTitle,
     'Priority': priority,
   };
-  if (NTFY_TOKEN) headers['Authorization'] = `Bearer ${NTFY_TOKEN}`;
+  if (NTFY_TOKEN && NTFY_TOKEN.trim()) headers['Authorization'] = `Bearer ${NTFY_TOKEN.trim()}`;
   if (tags)  headers['Tags']  = tags;
   if (click) headers['Click'] = click;
   try {
-    await fetch(`https://ntfy.sh/${topic}`, { method: 'POST', headers, body: message });
+    let resp = await fetch(`https://ntfy.sh/${topic}`, { method: 'POST', headers, body: message });
+    if ((resp.status === 401 || resp.status === 403) && headers['Authorization']) {
+      delete headers['Authorization'];
+      await fetch(`https://ntfy.sh/${topic}`, { method: 'POST', headers, body: message });
+    }
   } catch (e) {
     console.error('[scheduled-notifications] ntfy push failed:', e.message);
   }
@@ -514,31 +520,9 @@ async function sendMonthlyBillingReminders(students, schedules, adminTopic) {
         );
       }
 
-      // 2. Notify Parent via Email (if email configured)
-      if (parentEmail && RESEND_KEY) {
-        const emailHtml = `
-          <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:20px;border:1px solid #e2e8f0;border-radius:12px;">
-            <h2 style="color:#0F172A;margin-top:0;">STEMulus Tuition Renewal Notice</h2>
-            <p>Dear <strong>${parentName}</strong>,</p>
-            <p>This is a friendly reminder that <strong>${childName}</strong>'s 1-month learning cycle is due for renewal on <strong>${nextDue}</strong>.</p>
-            <div style="background:#F8FAFC;padding:16px;border-radius:8px;margin:16px 0;border:1px solid #E2E8F0;">
-              <p style="margin:4px 0;"><strong>Student:</strong> ${childName}</p>
-              <p style="margin:4px 0;"><strong>Program:</strong> ${s.program || 'Coding Track'}</p>
-              <p style="margin:4px 0;"><strong>Due Date:</strong> ${nextDue}</p>
-              <p style="margin:4px 0;"><strong>Tuition Fee:</strong> ${amount}</p>
-            </div>
-            <div style="background:#EFF6FF;padding:16px;border-radius:8px;margin:16px 0;border:1px solid #BFDBFE;">
-              <h4 style="margin:0 0 8px 0;color:#1E40AF;">Official STEMulus Bank Accounts</h4>
-              <p style="margin:4px 0;"><strong>Bank:</strong> Wema Nigeria</p>
-              <p style="margin:4px 0;"><strong>Account Name:</strong> STEMulus innovation Limited</p>
-              <p style="margin:4px 0;"><strong>Account Number (NGN):</strong> 0128062292</p>
-              <p style="margin:4px 0;"><strong>USD DOM Account:</strong> 0622219817 (Wema Bank)</p>
-            </div>
-            <p style="font-size:13px;color:#64748B;">Please share proof of payment via WhatsApp (+2347052466716) once transfer is made.</p>
-          </div>
-        `;
-        await sendEmail(parentEmail, `Tuition Renewal Notice: ${childName}'s Monthly Learning Cycle Due ${nextDue}`, emailHtml);
-      }
+      // Zero-Autonomous Policy: Never email parents directly from background cron.
+      // Admin is alerted via NTFY above; invoice drafts are staged in Admin Email Queue for review.
+      console.log(`[scheduled-notifications] Tuition renewal flagged to Admin for ${childName}. Autonomous parent email disabled per executive policy.`);
     }
   }
 }

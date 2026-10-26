@@ -70,22 +70,71 @@ const EmailService = (function () {
     });
   }
 
+  function buildPortalLaunchUrl(params) {
+    const baseOrigin = (typeof window !== 'undefined' && window.location && window.location.origin && !window.location.origin.includes('file:'))
+      ? window.location.origin
+      : 'https://stemuluskidstech.com';
+    const rawUrl = params.rawMeetUrl || 'https://meet.google.com/stm-prog-live';
+    const q = new URLSearchParams();
+    q.set('id', String(params.scheduleId || 'ses-live'));
+    q.set('role', params.role === 'tutor' ? 'tutor' : 'student');
+    if (params.studentId) q.set('studentId', String(params.studentId));
+    if (params.studentName) q.set('student', String(params.studentName));
+    if (params.tutorName) q.set('tutor', String(params.tutorName));
+    if (params.tutorEmail) q.set('tutorEmail', String(params.tutorEmail));
+    if (params.courseName) q.set('course', String(params.courseName));
+    if (params.rawDate) q.set('date', String(params.rawDate));
+    if (params.classTime) q.set('time', String(params.classTime));
+    q.set('url', rawUrl);
+    return `${baseOrigin}/join-class.html?${q.toString()}`;
+  }
+
   /**
    * Class reminder email.
    * options: { student, schedule, type ('24h'|'1h'|'10m') }
    */
   async function sendReminderEmail(options) {
     const { student, schedule, type } = options;
+    const studentName = (student && (student.name || ((student.firstName || '') + ' ' + (student.lastName || '')).trim())) || (schedule && schedule.studentName) || 'Student';
+    const tutorName = (schedule && (schedule.mentor || schedule.tutorName)) || 'Your Instructor';
+    const tutorEmail = (schedule && schedule.tutorEmail) || '';
+    const courseName = getCourseLabel((schedule && schedule.course) || (student && student.course));
+    const rawDate = (schedule && schedule.date) || new Date().toISOString().split('T')[0];
+    const classTime = (schedule && schedule.time) || '';
+    const scheduleId = (schedule && schedule.id) || ('ses-' + studentName.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+    const studentId = (schedule && schedule.studentId) || (student && student.id) || '';
+    const rawMeetUrl = (schedule && (schedule.rawMeetLink || schedule.meetLink || schedule.googleMeetLink || schedule.link)) || 'https://meet.google.com/stm-prog-live';
+    const portalLaunchUrl = (schedule && schedule.portalStudentUrl) || buildPortalLaunchUrl({
+      scheduleId,
+      role: 'student',
+      studentId,
+      studentName,
+      tutorName,
+      tutorEmail,
+      courseName,
+      rawDate,
+      classTime,
+      rawMeetUrl
+    });
+
     return _post('reminder', {
+      scheduleId,
+      studentId,
+      rawDate,
       parentEmail: (student && (student.parentEmail || student.email)) || (schedule && schedule.parentEmail),
       parentName: (student && (student.parentName || student.name)) || (schedule && schedule.parentName) || 'Parent',
-      studentName: (student && (student.name || (student.firstName + ' ' + student.lastName))) || (schedule && schedule.studentName),
-      courseName: getCourseLabel((schedule && schedule.course) || (student && student.course)),
-      classDate: formatDate((schedule && schedule.date) || new Date()),
-      classTime: (schedule && schedule.time) || '',
+      studentName,
+      tutorEmail,
+      courseName,
+      classDate: formatDate(rawDate),
+      classTime,
       duration: (schedule && schedule.duration) || 60,
-      zoomLink: (schedule && schedule.link) || '',
-      mentorName: (schedule && schedule.mentor) || 'Your Instructor',
+      portalLaunchUrl,
+      rawMeetLink: rawMeetUrl,
+      link: portalLaunchUrl,
+      meetLink: rawMeetUrl,
+      zoomLink: rawMeetUrl,
+      mentorName: tutorName,
       reminderType: type,
     });
   }
@@ -96,19 +145,45 @@ const EmailService = (function () {
    */
   async function sendTutorReminderEmail(options) {
     const { tutor, student, schedule, type } = options;
-    const tutorEmail = (tutor && (tutor.email || tutor.tutorEmail)) || (schedule && schedule.tutorEmail);
-    const tutorName = (tutor && (tutor.name || tutor.tutorName)) || (schedule && schedule.mentor) || 'Mentor';
-    const studentName = (student && (student.name || (student.firstName + ' ' + student.lastName))) || (schedule && schedule.studentName);
+    const tutorEmail = (tutor && (tutor.email || tutor.tutorEmail)) || (schedule && schedule.tutorEmail) || '';
+    const tutorName = (tutor && (tutor.name || tutor.tutorName)) || (schedule && (schedule.mentor || schedule.tutorName)) || 'Mentor';
+    const studentName = (student && (student.name || ((student.firstName || '') + ' ' + (student.lastName || '')).trim())) || (schedule && schedule.studentName) || 'Student';
+    const courseName = getCourseLabel((schedule && schedule.course) || (student && student.course));
+    const rawDate = (schedule && schedule.date) || new Date().toISOString().split('T')[0];
+    const classTime = (schedule && schedule.time) || '';
+    const scheduleId = (schedule && schedule.id) || ('ses-' + studentName.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+    const studentId = (schedule && schedule.studentId) || (student && student.id) || '';
+    const rawMeetUrl = (schedule && (schedule.rawMeetLink || schedule.meetLink || schedule.googleMeetLink || schedule.link)) || 'https://meet.google.com/stm-prog-live';
+    const portalLaunchUrl = (schedule && schedule.portalTutorUrl) || buildPortalLaunchUrl({
+      scheduleId,
+      role: 'tutor',
+      studentId,
+      studentName,
+      tutorName,
+      tutorEmail,
+      courseName,
+      rawDate,
+      classTime,
+      rawMeetUrl
+    });
+
     return _post('tutor-reminder', {
+      scheduleId,
+      studentId,
+      rawDate,
       tutorEmail,
       tutorName,
       studentName,
       parentEmail: (student && student.parentEmail) || (schedule && schedule.parentEmail) || '',
-      courseName: getCourseLabel((schedule && schedule.course) || (student && student.course)),
-      classDate: formatDate((schedule && schedule.date) || new Date()),
-      classTime: (schedule && schedule.time) || '',
+      courseName,
+      classDate: formatDate(rawDate),
+      classTime,
       duration: (schedule && schedule.duration) || 60,
-      zoomLink: (schedule && schedule.link) || '',
+      portalLaunchUrl,
+      rawMeetLink: rawMeetUrl,
+      link: portalLaunchUrl,
+      meetLink: rawMeetUrl,
+      zoomLink: rawMeetUrl,
       reminderType: type,
     });
   }

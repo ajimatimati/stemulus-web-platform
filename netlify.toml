@@ -59,11 +59,28 @@
   to = "/"
   status = 301
 
-# Tutor login alias redirect
+# Dedicated Portal Login Gateways
 [[redirects]]
-  from = "/tutor-login.html"
-  to = "/parent-login.html?role=tutor"
-  status = 301
+  from = "https://portal.stemuluskidstech.com/tutor-login"
+  to = "/tutor-login.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/parent-login"
+  to = "/parent-login.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/tutor-login"
+  to = "/tutor-login.html"
+  status = 200
+
+[[redirects]]
+  from = "/parent-login"
+  to = "/parent-login.html"
+  status = 200
 
 # WebMCP API endpoint redirect
 [[redirects]]
@@ -142,9 +159,35 @@
   status = 200
 
 [[redirects]]
+  from = "https://portal.stemuluskidstech.com/verify"
+  to = "/verify-certificate.html"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/academy"
+  to = "/academy.html"
+  status = 200
+
+[[redirects]]
   from = "https://portal.stemuluskidstech.com/logout"
   to = "/parent-login.html"
   status = 302
+
+# ── Clean Rewrites for Digital Academy & Verification ────────────────────────
+[[redirects]]
+  from = "/verify"
+  to = "/verify-certificate.html"
+  status = 200
+
+[[redirects]]
+  from = "/academy"
+  to = "/academy.html"
+  status = 200
+
+[[redirects]]
+  from = "/pass"
+  to = "/academy.html"
+  status = 200
 
 [[redirects]]
   from = "https://stemulus-portal-web.netlify.app/"
@@ -155,6 +198,18 @@
 [[redirects]]
   from = "https://stemulus-portal-web.netlify.app/login"
   to = "/parent-login.html"
+  status = 200
+  force = true
+
+# ── Generative Engine Optimization & Curriculum Portals ─────────────────────
+[[redirects]]
+  from = "/.well-known/llms.txt"
+  to = "/llms.txt"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/curriculum/*"
+  to = "/curriculum/:splat"
   status = 200
   force = true
 
@@ -243,9 +298,9 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
-    # CSP: allows self + known CDNs used by the site (GSAP, Lucide, Three.js, Firebase, EmailJS, QRCode, GA4, Clarity)
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://www.gstatic.com https://cdn.emailjs.com https://www.googletagmanager.com https://gsap.com https://www.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.emailjs.com https://ntfy.sh https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://api.emailjs.com"
+    Permissions-Policy = "camera=(self), microphone=(self), geolocation=(), payment=()"
+    # CSP: allows self + known CDNs used by the site (GSAP, Lucide, Three.js, Tailwind, Firebase, EmailJS, QRCode, GA4, Clarity)
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://www.gstatic.com https://cdn.tailwindcss.com https://cdn.emailjs.com https://www.googletagmanager.com https://gsap.com https://www.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.emailjs.com https://ntfy.sh https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://api.emailjs.com"
 
 # Cache static assets aggressively
 [[headers]]
@@ -290,7 +345,7 @@
   [headers.values]
     Cache-Control = "public, max-age=3600, must-revalidate"
 
-# Dashboard pages - never cache (always serve fresh)
+# Dashboard & Portal pages - never cache (always serve fresh)
 [[headers]]
   for = "/admin-dashboard.html"
   [headers.values]
@@ -338,5 +393,15 @@
 
 [[headers]]
   for = "/parent-login.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/tutor-login.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/join-class.html"
   [headers.values]
     Cache-Control = "no-store"

@@ -115,20 +115,27 @@ const OperationsManagerEngine = (function() {
 
   /**
    * Operations Manager: Faculty Workload Balancer.
-   * Calculates teaching hours per tutor, flags overload (>20h) and underutilization (<5h).
+   * Calculates weekly teaching hours per tutor from canonical 1-week recurring schedules,
+   * flags overload (>20h/wk) and underutilization (<2h/wk).
    */
   function getFacultyWorkloadReport() {
     if (typeof DashboardEngine === 'undefined') return [];
     const db = DashboardEngine.getDB();
-    const schedules = db.schedules || [];
-    const users = db.users || {};
+    const canonicalWeekly = (typeof DashboardEngine.getCanonicalWeeklySchedules === 'function')
+      ? DashboardEngine.getCanonicalWeeklySchedules()
+      : (db.schedules || []);
+    const tutorsList = (typeof DashboardEngine.getTutors === 'function')
+      ? DashboardEngine.getTutors()
+      : Object.values(db.users || {}).filter(u => u && u.role === 'tutor');
 
     const tutorStats = {};
 
-    // Initialize tutors
-    Object.values(users).forEach(u => {
-      if (u.role === 'tutor') {
-        tutorStats[u.email] = {
+    // Initialize tutors (deduplicated by lowercase email)
+    tutorsList.forEach(u => {
+      if (!u || !u.email) return;
+      const emailKey = u.email.toLowerCase().trim();
+      if (!tutorStats[emailKey]) {
+        tutorStats[emailKey] = {
           id: u.id,
           name: u.name,
           email: u.email,
@@ -141,14 +148,35 @@ const OperationsManagerEngine = (function() {
       }
     });
 
-    // Aggregate sessions
-    schedules.forEach(s => {
-      const email = s.tutorEmail || (s.mentor && Object.keys(tutorStats).find(k => tutorStats[k].name === s.mentor));
-      if (email && tutorStats[email]) {
-        tutorStats[email].assignedSessionsCount++;
+    // Aggregate strictly over unique 1-week recurring slots (studentId + dayOfWeek + time)
+    const seenWeeklySlot = new Set();
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    canonicalWeekly.forEach(s => {
+      if (!s || s.status === 'cancelled' || s.attendanceStatus === 'cancelled') return;
+      let dayName = s.dayOfWeek;
+      if (!dayName && s.date) {
+        const d = new Date(s.date + 'T12:00:00');
+        if (!isNaN(d.getTime())) dayName = dayNames[d.getDay()];
+      }
+      const slotKey = `${(s.studentId || s.studentName || '').toLowerCase()}|${(dayName || '').toLowerCase()}|${s.time || ''}`;
+      if (seenWeeklySlot.has(slotKey)) return;
+      seenWeeklySlot.add(slotKey);
+
+      const sEmail = (s.tutorEmail || '').toLowerCase().trim();
+      const sMentor = (s.mentor || s.tutorName || '').toLowerCase().trim();
+      const matchedKey = (sEmail && tutorStats[sEmail])
+        ? sEmail
+        : Object.keys(tutorStats).find(k => {
+            const tName = (tutorStats[k].name || '').toLowerCase().trim();
+            return tName === sMentor || (sMentor.length > 3 && tName.includes(sMentor));
+          });
+
+      if (matchedKey && tutorStats[matchedKey]) {
+        tutorStats[matchedKey].assignedSessionsCount++;
         const durationH = (parseInt(s.duration, 10) || 60) / 60;
-        tutorStats[email].totalAssignedHours += durationH;
-        if (s.studentName) tutorStats[email].activeStudents.add(s.studentName);
+        tutorStats[matchedKey].totalAssignedHours = Math.round((tutorStats[matchedKey].totalAssignedHours + durationH) * 10) / 10;
+        if (s.studentName) tutorStats[matchedKey].activeStudents.add(s.studentName);
       }
     });
 
@@ -158,7 +186,7 @@ const OperationsManagerEngine = (function() {
       if (t.totalAssignedHours > 20) {
         t.status = 'Overloaded (>20h)';
         t.badgeClass = 'bg-rose-500/20 text-rose-300 border-rose-500/40';
-      } else if (t.totalAssignedHours < 5) {
+      } else if (t.totalAssignedHours < 2) {
         t.status = 'Available / Low';
         t.badgeClass = 'bg-amber-500/20 text-amber-300 border-amber-500/40';
       } else {
@@ -199,18 +227,28 @@ const OperationsManagerEngine = (function() {
 
   /**
    * Admin Assistant: Automated Double-Booking & Schedule Conflict Detector.
-   * Scans all schedules for tutor or student overlaps.
+   * Scans all schedules for tutor or student overlaps (ignoring duplicate records of the exact same session).
    */
   function auditScheduleConflicts() {
     if (typeof DashboardEngine === 'undefined') return [];
     const db = DashboardEngine.getDB();
-    const schedules = db.schedules || [];
+    const rawSchedules = db.schedules || [];
     const conflicts = [];
+
+    // Deduplicate identical schedule records first
+    const seenExactSlot = new Set();
+    const schedules = [];
+    rawSchedules.forEach(s => {
+      if (!s || !s.date || !s.time) return;
+      const key = `${(s.studentId || s.studentName || '').toLowerCase()}|${s.date}|${s.time}`;
+      if (seenExactSlot.has(key)) return;
+      seenExactSlot.add(key);
+      schedules.push(s);
+    });
 
     // Group schedules by date
     const byDate = {};
     schedules.forEach(s => {
-      if (!s.date || !s.time) return;
       byDate[s.date] = byDate[s.date] || [];
       byDate[s.date].push(s);
     });
@@ -223,10 +261,10 @@ const OperationsManagerEngine = (function() {
 
           // Check time overlap
           if (s1.time === s2.time) {
-            // Tutor overlap
+            // Tutor overlap across two different students
             const tutor1 = s1.mentor || s1.tutorName;
             const tutor2 = s2.mentor || s2.tutorName;
-            if (tutor1 && tutor2 && tutor1 === tutor2) {
+            if (tutor1 && tutor2 && tutor1 === tutor2 && s1.studentName !== s2.studentName) {
               conflicts.push({
                 type: 'Tutor Double-Booked',
                 severity: 'CRITICAL',
@@ -238,8 +276,8 @@ const OperationsManagerEngine = (function() {
               });
             }
 
-            // Student overlap
-            if (s1.studentName && s2.studentName && s1.studentName === s2.studentName) {
+            // Student overlap across two different courses/tutors
+            if (s1.studentName && s2.studentName && s1.studentName === s2.studentName && (s1.id !== s2.id)) {
               conflicts.push({
                 type: 'Student Double-Booked',
                 severity: 'CRITICAL',

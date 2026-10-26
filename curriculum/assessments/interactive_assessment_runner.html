@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STEMulus Kids Tech — Master Course Completion Assessment Engine</title>
+  <link rel="icon" type="image/png" href="../slides/assets/3d/stemulus-logo.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <script src="master_course_assessments.js"></script>
+  <style>
+    :root {
+      --brand-orange: #F4600C;
+      --brand-orange-deep: #C2410C;
+      --brand-indigo: #4F46E5;
+      --brand-indigo-deep: #3730A3;
+      --brand-emerald: #10B981;
+      
+      --bg-canvas: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --border-subtle: #E2E8F0;
+      --border-strong: #CBD5E1;
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --text-soft: #94A3B8;
+      
+      /* Tactile Baby Blue */
+      --btn-bg: linear-gradient(180deg, #BAE6FD 0%, #38BDF8 100%);
+      --btn-text: #0369A1;
+      --btn-border: #7DD3FC;
+      --btn-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 3px 0 #0284C7, 0 6px 14px rgba(56, 189, 248, 0.28);
+      --btn-hover-bg: linear-gradient(180deg, #E0F2FE 0%, #38BDF8 100%);
+      
+      --accent-success: #10B981;
+      --accent-error: #EF4444;
+      --accent-warning: #F59E0B;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
+      --font-title: 'Fredoka', 'Nunito', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0 28px 0; /* clean bottom margin so footer floats with breathing room */
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation Header */
+    header.runner-top-nav {
+      width: 100%;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 70%, #F1F5F9 100%);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03), inset 0 1px 0 #FFFFFF;
+      gap: 12px;
+      box-sizing: border-box;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo-img {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.1));
+    }
+
+    .brand-title {
+      font-family: var(--font-title);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      background: #E0F2FE;
+      color: #0369A1;
+      border: 1px solid #BAE6FD;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-soft);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      background: #FFFFFF;
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      transition: all 0.15s ease;
+    }
+
+    .nav-btn:hover {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+      color: #0284C7;
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 24px 20px 0 20px;
+      box-sizing: border-box;
+      flex: 1;
+    }
+
+    .header-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .badge-pill {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: #E0F2FE;
+      color: #0369A1;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .header-title {
+      font-family: var(--font-title);
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .header-desc {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .selector-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .course-btn {
+      padding: 9px 16px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 700;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+
+    .course-btn:hover {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+      color: #0284C7;
+    }
+
+    .course-btn.active {
+      background: linear-gradient(180deg, #BAE6FD 0%, #38BDF8 100%);
+      color: #0369A1;
+      border-color: #7DD3FC;
+      font-weight: 800;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 2px 0 #0284C7, 0 4px 10px rgba(56, 189, 248, 0.25);
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .progress-bar-wrap {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38BDF8 0%, #0284C7 100%);
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .q-number {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #0284C7;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .q-scenario {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-left: 4px solid #0284C7;
+      padding: 14px 18px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .q-text {
+      font-family: var(--font-title);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.4;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .option-btn {
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      text-align: left;
+      border: 1.5px solid var(--border-subtle);
+      background: #FFFFFF;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: #38BDF8;
+      background: #F0F9FF;
+      transform: translateY(-1px);
+    }
+
+    .option-btn.correct {
+      background: #F0FDF4;
+      border-color: #86EFAC;
+      color: #166534;
+      font-weight: 700;
+    }
+
+    .option-btn.incorrect {
+      background: #FEF2F2;
+      border-color: #FCA5A5;
+      color: #991B1B;
+    }
+
+    .feedback-box {
+      display: none;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .feedback-box.show {
+      display: block;
+    }
+
+    .feedback-box.correct {
+      background: #DCFCE7;
+      border: 1px solid #86EFAC;
+      color: #166534;
+    }
+
+    .feedback-box.incorrect {
+      background: #FEE2E2;
+      border: 1px solid #FCA5A5;
+      color: #991B1B;
+    }
+
+    /* Tactile Next Button */
+    .tactile-btn {
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border: 1px solid var(--btn-border);
+      padding: 10px 22px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--btn-shadow);
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .tactile-btn:hover {
+      background: var(--btn-hover-bg);
+      transform: translateY(-1px);
+    }
+
+    .tactile-btn:active {
+      transform: translateY(2px);
+    }
+
+    /* Capstone Tab Styles */
+    .capstone-brief {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .rubric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .rubric-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      background: #FAFAFA;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .rubric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--text-main);
+    }
+
+    .rubric-pts {
+      font-family: var(--font-mono);
+      background: #E0F2FE;
+      color: #0369A1;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .rubric-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Certificate Modal Card */
+    .certificate-card {
+      display: none;
+      border: 3px double #38BDF8;
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      text-align: center;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F0F9FF 100%);
+      box-shadow: 0 10px 30px rgba(2, 132, 199, 0.12);
+      position: relative;
+    }
+
+    .certificate-card.show {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cert-seal {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #0284C7;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 20px;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.3);
+    }
+
+    /* Floating Assessment Footer */
+    footer.runner-footer {
+      width: 100%;
+      max-width: 960px;
+      margin: 14px auto 0 auto;
+      padding: 14px 24px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+      flex-wrap: wrap;
+      gap: 12px;
+      box-sizing: border-box;
+    }
+
+    .runner-footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .runner-footer-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    @media (max-width: 768px) {
+      header.runner-top-nav {
+        padding: 10px 16px;
+      }
+      .brand-sub {
+        display: none;
+      }
+      .brand-title {
+        font-size: 15px;
+      }
+      .brand-badge {
+        font-size: 9px;
+        padding: 2px 5px;
+      }
+      .container {
+        padding: 14px 14px 0 14px;
+      }
+      .header-card, .card {
+        padding: 20px 16px;
+      }
+      .header-title {
+        font-size: 21px;
+      }
+      .q-text {
+        font-size: 16px;
+      }
+      .course-btn {
+        padding: 7px 12px;
+        font-size: 12px;
+      }
+      footer.runner-footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 14px 16px;
+        gap: 12px;
+      }
+      .runner-footer-brand {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 6px;
+      }
+      .runner-footer-links {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header.runner-top-nav {
+        padding: 8px 12px;
+      }
+      .brand-logo-img {
+        width: 30px;
+        height: 30px;
+      }
+      .brand-title {
+        font-size: 14px;
+      }
+      .brand-badge {
+        display: none;
+      }
+      .nav-btn {
+        padding: 6px 10px;
+        font-size: 11.5px;
+      }
+      .nav-btn span {
+        display: none;
+      }
+      .option-btn {
+        padding: 12px 14px;
+        font-size: 13.5px;
+      }
+      .tactile-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+  <script src="../slides/assets/qr_generator.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="runner-top-nav">
+    <div class="brand-group">
+      <img src="../slides/assets/3d/stemulus-logo.png" class="brand-logo-img" alt="STEMulus">
+      <div>
+        <div class="brand-title">
+          <span>STEMulus Kids Tech</span>
+          <span class="brand-badge">ASSESSMENT SUITE</span>
+        </div>
+        <div class="brand-sub">Master Course Completion Assessment Engine</div>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <a href="../slides/index.html" class="nav-btn" title="Curriculum Slide Portal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Portal</span>
+      </a>
+      <a href="../prompt_lab/prompt_tester.html" class="nav-btn" title="Master Prompt Laboratory">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>Prompt Lab</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header-card">
+      <div class="badge-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>STEMulus Assessment &amp; Certification</span>
+      </div>
+      <h1 class="header-title">Course Assessments &amp; Practical Projects</h1>
+      <p class="header-desc">
+        Review your understanding through real-world scenarios from everyday life, nature, and practical software engineering. Complete the project deliverables below to receive your authenticated certificate.
+      </p>
+
+      <div class="selector-bar" id="course-selector">
+        <!-- Rendered via JS -->
+      </div>
+    </header>
+
+    <!-- Quiz Engine Card -->
+    <main class="card" id="quiz-container">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span class="q-number" id="q-counter">
+          <img src="../slides/assets/3d/golden-key-3d.png" style="width: 18px; height: 18px; object-fit: contain;" alt="Q">
+          <span>Question 1 of 4</span>
+        </span>
+        <span id="score-counter" style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: #0284C7;">Score: 0 pts</span>
+      </div>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+
+      <div class="q-scenario" id="q-scenario">
+        Loading scenario...
+      </div>
+
+      <h2 class="q-text" id="q-text">
+        Loading question...
+      </h2>
+
+      <div class="options-grid" id="options-grid">
+        <!-- Options rendered dynamically -->
+      </div>
+
+      <div class="feedback-box" id="feedback-box">
+        <!-- Explanation rendered dynamically -->
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px;">
+        <button class="tactile-btn" id="next-btn" style="display: none;" onclick="nextQuestion()">
+          <span>Next Question</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </main>
+
+    <!-- Capstone Rubric & Brief Card -->
+    <section class="card" id="capstone-container">
+      <div class="badge-pill" style="background: #F1F5F9; color: #475569;">
+        <img src="../slides/assets/3d/rocket-launch-3d.png" style="width: 18px; height: 18px; object-fit: contain;" alt="Rocket">
+        <span>Project Guide &amp; Evaluation Rubric</span>
+      </div>
+      <h2 style="font-family: var(--font-title); font-size: 22px; font-weight: 800;" id="capstone-title">Loading Capstone...</h2>
+      <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;" id="capstone-brief">...</p>
+
+      <h3 style="font-family: var(--font-title); font-size: 16px; font-weight: 700; margin-top: 10px;">Required Project Deliverables</h3>
+      <ul id="capstone-deliverables" style="padding-left: 20px; font-size: 14px; color: var(--text-muted); line-height: 1.8;">
+      </ul>
+
+      <h3 style="font-family: var(--font-title); font-size: 16px; font-weight: 700; margin-top: 10px;">Evaluation Rubric (100 Points Total)</h3>
+      <div class="rubric-grid" id="rubric-grid">
+      </div>
+    </section>
+
+    <!-- Certificate Card -->
+    <section class="certificate-card" id="certificate-card">
+      <div class="cert-seal">
+        <img src="../slides/assets/3d/gold-trophy-3d.png" style="width: 44px; height: 44px; object-fit: contain;" alt="Trophy">
+      </div>
+      <div class="badge-pill" id="cert-grade-badge" style="background: #E0F2FE; color: #0369A1;">Verified Achievement Certificate</div>
+      <h2 style="font-family: var(--font-title); font-size: 28px; font-weight: 800; color: #0F172A;">Certificate of Completion</h2>
+      <p style="font-size: 15px; color: #475569; max-width: 600px;">
+        This certifies that the student has successfully completed the curriculum track, demonstrated practical problem-solving in the situational assessment, and fulfilled the capstone project specifications for:
+      </p>
+      <h3 style="font-family: var(--font-title); font-size: 22px; font-weight: 800; color: #0284C7;" id="cert-course-name">Generative AI Engineering</h3>
+      <p style="font-size: 13px; font-family: var(--font-mono); color: #64748B; margin-top: 8px;" id="cert-verification-meta">
+        Verification ID: ST-2026-CERT-9842 | Issued by STEMulus Kids Tech Academy
+      </p>
+      <div id="cert-qr-wrap" style="margin-top: 10px; padding: 10px; background: #FFFFFF; border-radius: 12px; border: 1.5px solid #BAE6FD; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08); display: inline-flex;"></div>
+      <div style="font-size: 11.5px; font-weight: 700; color: #0284C7; letter-spacing: 0.5px; text-transform: uppercase;">Scan to Authenticate Credential</div>
+      
+      <!-- Verified Completion Banner -->
+      <div id="completion-status-banner" style="margin-top: 14px; padding: 10px 18px; background: #DCFCE7; border: 1px solid #86EFAC; border-radius: 12px; color: #166534; font-size: 13.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Course Completion Marked &amp; Recorded to Your Official Transcript!</span>
+      </div>
+
+      <!-- Viral Parent Bragging & Social Share Engine -->
+      <div style="margin-top: 18px; padding: 16px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 16px; width: 100%; max-width: 620px;">
+        <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #475569; display: block; margin-bottom: 10px;">
+          Share This Milestone &bull; 1-Tap Bragging Link
+        </span>
+        <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+          <a id="btn-share-whatsapp" href="#" target="_blank" class="tactile-btn" style="background: linear-gradient(180deg, #22C55E 0%, #16A34A 100%); color: #ffffff; border-color: #15803D; font-size: 13px; padding: 8px 16px; text-decoration: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+            <span>Share on WhatsApp</span>
+          </a>
+          <a id="btn-share-linkedin" href="#" target="_blank" class="tactile-btn" style="background: linear-gradient(180deg, #0A66C2 0%, #084E96 100%); color: #ffffff; border-color: #073B72; font-size: 13px; padding: 8px 16px; text-decoration: none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <span>Share on LinkedIn</span>
+          </a>
+          <button id="btn-copy-cert" type="button" onclick="copyCertLink()" class="tactile-btn" style="background: #FFFFFF; color: #334155; border-color: #CBD5E1; font-size: 13px; padding: 8px 16px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span id="btn-copy-cert-text">Copy Link</span>
+          </button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 16px;">
+        <button class="tactile-btn" onclick="window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <span>Print Certificate</span>
+        </button>
+        <a href="https://stemuluskidstech.com/academy" target="_blank" class="tactile-btn" style="background: linear-gradient(180deg, #F4600C 0%, #EA580C 100%); color: #ffffff; border-color: #C2410C; text-decoration: none;">
+          <span>Explore All 215 Lessons &rarr;</span>
+        </a>
+        <a href="../slides/index.html" class="tactile-btn" style="background: linear-gradient(180deg, #F1F5F9 0%, #E2E8F0 100%); color: #334155; border-color: #CBD5E1; box-shadow: 0 1px 0 rgba(255,255,255,0.7) inset, 0 3px 0 #94A3B8, 0 6px 14px rgba(15,23,42,0.08); text-decoration: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span>Return to Slide Portal</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Floating Assessment Footer -->
+    <footer class="runner-footer">
+      <div class="runner-footer-brand">
+        <img src="../slides/assets/3d/stemulus-logo.png" style="width: 24px; height: 24px; border-radius: 6px; object-fit: contain;" alt="Logo">
+        <div style="font-family: var(--font-title); font-size: 13.5px; font-weight: 700; color: var(--text-main);">
+          STEMulus Course Assessment Suite &bull; Silicon Valley &amp; European EdTech Standard
+        </div>
+      </div>
+      <div class="runner-footer-links">
+        <a href="../slides/index.html" class="nav-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span>Slide Portal</span>
+        </a>
+        <a href="../prompt_lab/prompt_tester.html" class="nav-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>Prompt Lab</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    let assessmentData = null;
+    let currentCourseIndex = 0;
+    let currentQuestionIndex = 0;
+    let totalScore = 0;
+    let answered = false;
+
+    function getRequestedCourseIndex() {
+      if (!assessmentData || !assessmentData.courses) return 0;
+      const params = new URLSearchParams(window.location.search);
+      const target = (params.get('course') || params.get('course_id') || params.get('track') || params.get('id') || '').trim().toLowerCase();
+      const idxParam = params.get('index') || params.get('courseIndex');
+      
+      if (idxParam !== null && !isNaN(parseInt(idxParam, 10))) {
+        const i = parseInt(idxParam, 10);
+        if (i >= 0 && i < assessmentData.courses.length) return i;
+      }
+      
+      if (target) {
+        // 1. Exact match on course_id
+        let match = assessmentData.courses.findIndex(c => c.course_id.toLowerCase() === target);
+        if (match !== -1) return match;
+        
+        // 2. Exact match on track_id
+        match = assessmentData.courses.findIndex(c => c.track_id && c.track_id.toLowerCase() === target);
+        if (match !== -1) return match;
+        
+        // 3. Keyword / Substring match (e.g. "python", "web", "robotics", "cyber", "ai")
+        match = assessmentData.courses.findIndex(c => 
+          c.course_id.toLowerCase().includes(target) ||
+          target.includes(c.course_id.toLowerCase()) ||
+          (c.track_id && (c.track_id.toLowerCase().includes(target) || target.includes(c.track_id.toLowerCase()))) ||
+          c.course_title.toLowerCase().includes(target)
+        );
+        if (match !== -1) return match;
+
+        // 4. Robust semantic keyword fallbacks
+        if (target.includes('python')) return assessmentData.courses.findIndex(c => c.course_id.includes('PYTHON'));
+        if (target.includes('web')) return assessmentData.courses.findIndex(c => c.course_id.includes('WEB'));
+        if (target.includes('robot')) return assessmentData.courses.findIndex(c => c.course_id.includes('ROBOTICS'));
+        if (target.includes('cyber') || target.includes('defense') || target.includes('security') || target.includes('safety')) return assessmentData.courses.findIndex(c => c.course_id.includes('SAFETY') || c.course_id.includes('DEFENSE'));
+        if (target.includes('design') || target.includes('ui') || target.includes('figma')) return assessmentData.courses.findIndex(c => c.course_id.includes('UIUX'));
+        if (target.includes('ai') || target.includes('prompt')) return assessmentData.courses.findIndex(c => c.course_id.includes('AI'));
+        if (target.includes('scratch')) return assessmentData.courses.findIndex(c => c.course_id.includes('SCRATCH'));
+        if (target.includes('fundamental') || target.includes('cs') || target.includes('intro')) return assessmentData.courses.findIndex(c => c.course_id.includes('INTRO-CS') || c.course_id.includes('CS-PRINCIPLES'));
+      }
+      return 0;
+    }
+
+    async function init() {
+      if (window.MASTER_ASSESSMENT_DATA) {
+        assessmentData = window.MASTER_ASSESSMENT_DATA;
+      } else {
+        try {
+          const resp = await fetch('master_course_assessments.json');
+          assessmentData = await resp.json();
+        } catch (err) {
+          console.error("Failed to load assessments:", err);
+          return;
+        }
+      }
+      const initialIdx = getRequestedCourseIndex();
+      renderCourseSelectors(initialIdx);
+      loadCourse(initialIdx);
+    }
+
+    function getCompletedRecords() {
+      try {
+        return JSON.parse(localStorage.getItem('stemulus_course_completions') || '{}');
+      } catch(e) {
+        return {};
+      }
+    }
+
+    function renderCourseSelectors(activeIdx = 0) {
+      const container = document.getElementById('course-selector');
+      container.innerHTML = '';
+      const completions = getCompletedRecords();
+
+      assessmentData.courses.forEach((course, idx) => {
+        const btn = document.createElement('button');
+        const isCompleted = !!completions[course.course_id];
+        btn.className = `course-btn ${idx === activeIdx ? 'active' : ''}`;
+        
+        const shortTitle = course.course_title.split('&')[0].trim();
+        btn.innerHTML = isCompleted ? `<span>✓ ${shortTitle}</span>` : `<span>${shortTitle}</span>`;
+        if (isCompleted && idx !== activeIdx) {
+          btn.style.borderColor = '#86EFAC';
+          btn.style.color = '#15803D';
+        }
+
+        btn.onclick = () => {
+          document.querySelectorAll('.course-btn').forEach(b => {
+            b.classList.remove('active');
+            b.style.borderColor = '';
+            b.style.color = '';
+          });
+          btn.classList.add('active');
+          loadCourse(idx);
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function loadCourse(index) {
+      currentCourseIndex = index;
+      currentQuestionIndex = 0;
+      totalScore = 0;
+      answered = false;
+      
+      const course = assessmentData.courses[currentCourseIndex];
+      const completions = getCompletedRecords();
+      const pastRecord = completions[course.course_id];
+
+      document.getElementById('certificate-card').classList.remove('show');
+      renderQuestion();
+      renderCapstone();
+
+      // If already previously completed, display their certificate record
+      if (pastRecord) {
+        displayCertificate(pastRecord, course, false);
+      }
+    }
+
+    function renderQuestion() {
+      answered = false;
+      const course = assessmentData.courses[currentCourseIndex];
+      const q = course.situational_exam[currentQuestionIndex];
+      const totalQ = course.situational_exam.length;
+
+      document.getElementById('q-counter').innerHTML = `
+        <img src="../slides/assets/3d/golden-key-3d.png" style="width: 18px; height: 18px; object-fit: contain;" alt="Q">
+        <span>Question ${currentQuestionIndex + 1} of ${totalQ}</span>
+      `;
+      document.getElementById('score-counter').innerText = `Score: ${totalScore} pts`;
+      document.getElementById('progress-fill').style.width = `${((currentQuestionIndex) / totalQ) * 100}%`;
+
+      document.getElementById('q-scenario').innerText = q.scenario;
+      document.getElementById('q-text').innerText = q.question;
+
+      const grid = document.getElementById('options-grid');
+      grid.innerHTML = '';
+      document.getElementById('feedback-box').className = 'feedback-box';
+      document.getElementById('next-btn').style.display = 'none';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span style="font-weight: 700; color: #0284C7; width: 24px;">${String.fromCharCode(65 + idx)}</span> <span>${opt}</span>`;
+        btn.onclick = () => selectOption(idx, q);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedIndex, question) {
+      if (answered) return;
+      answered = true;
+      const buttons = document.querySelectorAll('.option-btn');
+      const isCorrect = selectedIndex === question.correct_index;
+
+      buttons[selectedIndex].classList.add(isCorrect ? 'correct' : 'incorrect');
+      buttons[question.correct_index].classList.add('correct');
+      buttons.forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        totalScore += 25;
+        document.getElementById('score-counter').innerText = `Score: ${totalScore} pts`;
+      }
+
+      const fb = document.getElementById('feedback-box');
+      fb.className = `feedback-box show ${isCorrect ? 'correct' : 'incorrect'}`;
+      fb.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${question.explanation}`;
+
+      document.getElementById('next-btn').style.display = 'inline-flex';
+    }
+
+    function displayCertificate(record, course, shouldScroll = true) {
+      document.getElementById('cert-course-name').innerText = course.course_title;
+      document.getElementById('cert-grade-badge').innerText = `${record.grade} (${record.percentage}% Score)`;
+      document.getElementById('cert-verification-meta').innerText = 
+        `Verification ID: ${record.cert_id} | Issued: ${record.completed_at} | STEMulus Kids Tech Academy`;
+      
+      const certCard = document.getElementById('certificate-card');
+      certCard.classList.add('show');
+      
+      const certUrl = `https://portal.stemuluskidstech.com/verify?id=${record.cert_id}&course=${encodeURIComponent(course.course_title)}`;
+      window._currentCertUrl = certUrl;
+
+      const qrWrap = document.getElementById('cert-qr-wrap');
+      if (qrWrap && window.STEMULUS_QR) {
+        qrWrap.innerHTML = window.STEMULUS_QR.createSvg(certUrl, 110, 2, '#0284C7');
+      }
+
+      // Configure Viral 1-Click WhatsApp & LinkedIn Bragging Links
+      const waBtn = document.getElementById('btn-share-whatsapp');
+      if (waBtn) {
+        const bragText = `So proud of my child for earning the ${record.grade} in ${course.course_title} at STEMulus Kids Tech Academy! 🚀 Check out their verified credential here: ${certUrl} — Test your child's coding skills too: https://stemuluskidstech.com/academy`;
+        waBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(bragText)}`;
+      }
+      const liBtn = document.getElementById('btn-share-linkedin');
+      if (liBtn) {
+        liBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(certUrl)}`;
+      }
+
+      if (shouldScroll) {
+        certCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function copyCertLink() {
+      const url = window._currentCertUrl || window.location.href;
+      const textSpan = document.getElementById('btn-copy-cert-text');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+          if (textSpan) {
+            textSpan.innerText = 'Copied Link!';
+            setTimeout(() => { textSpan.innerText = 'Copy Link'; }, 2000);
+          }
+        }).catch(() => {
+          prompt('Copy credential link:', url);
+        });
+      } else {
+        prompt('Copy credential link:', url);
+      }
+    }
+
+    function nextQuestion() {
+      const course = assessmentData.courses[currentCourseIndex];
+      const maxPts = course.situational_exam.length * 25;
+
+      if (currentQuestionIndex < course.situational_exam.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+      } else {
+        document.getElementById('progress-fill').style.width = '100%';
+        document.getElementById('q-counter').innerText = 'Examination Complete!';
+        
+        const percentage = Math.round((totalScore / maxPts) * 100);
+        let grade = 'In-Progress Apprentice';
+        if (percentage >= 90) grade = 'Master Builder Distinction';
+        else if (percentage >= 75) grade = 'Proficient Engineer';
+        else if (percentage >= 60) grade = 'Junior Practitioner';
+
+        document.getElementById('options-grid').innerHTML = `
+          <div style="padding: 24px; text-align: center; background: #F8FAFC; border-radius: 12px; border: 1px solid #E2E8F0;">
+            <h3 style="font-family: var(--font-title); font-size: 20px; font-weight: 800; color: #0284C7;">Exam Score: ${totalScore} / ${maxPts} pts (${percentage}%)</h3>
+            <p style="font-size: 14px; color: #64748B; margin-top: 6px;">
+              ${totalScore >= 75 
+                ? 'Congratulations! You have demonstrated core theoretical mastery. Your official course completion is recorded below!' 
+                : 'Good effort! Review the explanations above, inspect your capstone project, and retest anytime to achieve distinction.'}
+            </p>
+          </div>
+        `;
+        document.getElementById('feedback-box').className = 'feedback-box';
+        document.getElementById('next-btn').style.display = 'none';
+
+        if (percentage >= 75) {
+          const certId = `ST-2026-CERT-${Math.floor(1000 + Math.random() * 9000)}`;
+          const completedAt = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+          
+          const record = {
+            course_id: course.course_id,
+            course_title: course.course_title,
+            score: totalScore,
+            max_score: maxPts,
+            percentage: percentage,
+            grade: grade,
+            cert_id: certId,
+            completed_at: completedAt
+          };
+
+          // Save completion record to localStorage
+          let records = getCompletedRecords();
+          records[course.course_id] = record;
+          try {
+            localStorage.setItem('stemulus_course_completions', JSON.stringify(records));
+          } catch(e) {}
+
+          // Refresh selector buttons to reflect completion checkmark
+          renderCourseSelectors(currentCourseIndex);
+
+          // Display Certificate
+          displayCertificate(record, course, true);
+        }
+      }
+    }
+
+    function renderCapstone() {
+      const course = assessmentData.courses[currentCourseIndex];
+      const cap = course.capstone_project;
+
+      document.getElementById('capstone-title').innerText = cap.title;
+      document.getElementById('capstone-brief').innerText = cap.brief;
+
+      const delList = document.getElementById('capstone-deliverables');
+      delList.innerHTML = '';
+      cap.deliverables.forEach(d => {
+        const li = document.createElement('li');
+        li.innerText = d;
+        delList.appendChild(li);
+      });
+
+      const rGrid = document.getElementById('rubric-grid');
+      rGrid.innerHTML = '';
+      for (const [key, val] of Object.entries(cap.rubric)) {
+        const card = document.createElement('div');
+        card.className = 'rubric-card';
+        card.innerHTML = `
+          <div class="rubric-header">
+            <span>${key.replace(/_/g, ' ').toUpperCase()}</span>
+            <span class="rubric-pts">${val.weight} PTS</span>
+          </div>
+          <p class="rubric-desc">${val.criteria}</p>
+        `;
+        rGrid.appendChild(card);
+      }
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>
