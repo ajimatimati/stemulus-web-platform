@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>STEMulus Quest™ | Institutional Youth Learning Management System</title>
+  <meta name="description" content="Embark on STEMulus Quest: an institutional learning journey of 215 interactive coding missions, real-time competency radars, and verified certifications for young software architects.">
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Typography & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="assets/css/tailwind-output.css">
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/stemulus-luxury.css">
+  <link rel="stylesheet" href="assets/css/lms-quest-theme.css">
+
+  <!-- Third-party Vendors -->
+  <script src="assets/vendor/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Pass & Passport Engines -->
+  <script src="assets/js/stemulus-pass-engine.js"></script>
+  <script src="assets/js/badge-passport-engine.js"></script>
+  <script src="assets/data/curriculum-catalog.js"></script>
+  <script src="assets/js/lms-quest-engine.js" defer></script>
+</head>
+<body class="lms-body">
+
+  <!-- ── Top LMS Navigation Bar ─────────────────────────────────────────────── -->
+  <header class="lms-nav">
+    <div class="lms-nav-inner">
+      <!-- Left: Brand Lockup & Curriculum Track Switcher -->
+      <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+        <a href="index.html" class="lms-brand-lockup">
+          <img src="images/logo.png" alt="STEMulus Logo" style="height: 36px; width: auto; object-fit: contain;">
+          <div>
+            <div class="lms-brand-title">
+              STEMulus Quest<span style="color: var(--zenith-brand-orange);">™</span>
+            </div>
+            <div class="lms-brand-sub">Academy LMS</div>
+          </div>
+        </a>
+
+        <!-- Track Selector Dropdown -->
+        <div style="position: relative; display: flex; align-items: center;">
+          <select id="track-select-dropdown" 
+                  class="lms-track-select"
+                  aria-label="Select Curriculum Track"
+                  onchange="LmsQuestEngine.switchTrack(this.value)">
+            <option value="course_fundamentals">Track: Fundamental Concepts of Coding (21 Lessons)</option>
+            <option value="course_ai_studio">Track: Generative AI Studio (24 Lessons)</option>
+            <option value="track_1_web_engineering">Track 1: Web & Interactive App Engineering (40 Lessons)</option>
+            <option value="track_2_ai_automation">Track 2: AI Explorers & Smart Automations (32 Lessons)</option>
+            <option value="track_3_product_design">Track 3: Digital Product & UI/UX Design (32 Lessons)</option>
+            <option value="track_4_python_data">Track 4: Python & Data Detectives (18 Lessons)</option>
+            <option value="track_5_cybersecurity">Track 5: Cyber Defenders & Ethical Hacking (16 Lessons)</option>
+            <option value="track_6_robotics">Track 6: Robotics & Autonomous AI (32 Lessons)</option>
+          </select>
+          <div style="position: absolute; right: 10px; pointer-events: none; color: #64748B;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Gamification HUD Capsules -->
+      <div class="hud-capsule-group">
+        <!-- Level Tier -->
+        <div class="hud-capsule" id="hud-level-tag" title="Learner rank">
+          <span class="hud-dot blue"></span>
+          <span>Lvl 1 · Apprentice Coder</span>
+        </div>
+
+        <!-- Daily Streak -->
+        <div class="hud-capsule" id="hud-streak-counter" title="Active consecutive mission streak">
+          <span class="hud-dot orange"></span>
+          <span>3d Streak</span>
+        </div>
+
+        <!-- Total XP -->
+        <div class="hud-capsule hud-mono-val" id="hud-xp-counter" title="Total Experience Points">
+          450 XP
+        </div>
+
+        <!-- Pass Status Badge -->
+        <a href="academy.html" id="hud-pass-badge" class="hud-capsule" style="text-decoration: none;">
+          <span class="hud-dot emerald"></span>
+          <span>Digital Pass Active</span>
+        </a>
+
+        <!-- User Profile Pill -->
+        <a href="parent-dashboard.html" style="display: flex; align-items: center; gap: 8px; text-decoration: none; padding: 3px 10px; background: #FFFFFF; border: 1px solid var(--zenith-border-subtle); border-radius: 999px; box-shadow: var(--zenith-shadow-xs);">
+          <img src="images/portal/standalone/boy-avatar-3d.png" style="width: 22px; height: 22px; border-radius: 50%; object-fit: cover;" alt="Avatar">
+          <span id="hud-student-name" style="font-size: 12px; font-weight: 700; color: var(--zenith-text-hero);">Daniel M.</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main LMS Workspace Grid ────────────────────────────────────────────── -->
+  <main class="lms-container">
+
+    <!-- ── Left / Center Column: Quest Trail & Matrix View ──────────────────── -->
+    <section style="display: flex; flex-direction: column; gap: 1.5rem; min-width: 0;">
+
+      <!-- Track Header & View Mode Switcher -->
+      <div class="lms-track-banner">
+        <div class="track-banner-top">
+          <div>
+            <div class="track-meta-badge">
+              <span id="active-track-badge">21 Interactive Missions</span>
+              <span>•</span>
+              <span>Junior Foundations</span>
+            </div>
+            <h1 id="active-track-title" class="track-title-hero">
+              Fundamental Concepts of Coding
+            </h1>
+            <p id="active-track-subtitle" class="track-subtitle-text">
+              Early Explorers & Junior Innovators
+            </p>
+          </div>
+
+          <!-- View Switcher Toggle -->
+          <div class="lms-view-toggle">
+            <button id="btn-view-trail" 
+                    class="lms-toggle-btn active" 
+                    onclick="LmsQuestEngine.setViewMode('trail')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+              Quest Trail
+            </button>
+            <button id="btn-view-matrix" 
+                    class="lms-toggle-btn" 
+                    onclick="LmsQuestEngine.setViewMode('matrix')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              Syllabus Matrix
+            </button>
+          </div>
+        </div>
+
+        <!-- Curriculum Track Progress Bar -->
+        <div>
+          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; font-weight: 700; color: var(--zenith-text-muted); margin-bottom: 6px;">
+            <span>Curriculum Progress</span>
+            <span id="track-progress-percent" style="font-family: var(--zenith-font-mono); font-weight: 800; color: var(--zenith-text-hero);">2 / 21 Missions (10%)</span>
+          </div>
+          <div class="lms-progress-bar-shell">
+            <div id="track-progress-fill" class="lms-progress-bar-fill" style="width: 10%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- View 1: Living S-Curve Quest Trail Viewport -->
+      <div id="quest-trail-container">
+        <!-- Rendered dynamically by LmsQuestEngine.renderQuestTrail() -->
+      </div>
+
+      <!-- View 2: Linear Syllabus Matrix Grid (Initially Hidden) -->
+      <div id="quest-matrix-container" style="display: none;">
+        <!-- Rendered dynamically by LmsQuestEngine.renderMatrixGrid() -->
+      </div>
+
+    </section>
+
+    <!-- ── Right Column: Diagnostic Radar, Mentor & Passport ────────────────── -->
+    <aside class="lms-sidebar-column">
+
+      <!-- 1. Institutional Skill Readiness Diagnostic Matrix -->
+      <div class="zenith-card">
+        <div class="zenith-card-header">
+          <h2 class="zenith-card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--zenith-brand-indigo)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
+            Skill Readiness Matrix
+          </h2>
+          <span id="radar-average-score" style="font-family: var(--zenith-font-mono); font-size: 11px; font-weight: 800; color: #15803D; background: #DCFCE7; padding: 2px 8px; border-radius: 999px;">
+            72% Mastery
+          </span>
+        </div>
+        <p style="font-size: 11.5px; color: var(--zenith-text-secondary); margin: 0 0 10px 0; line-height: 1.45;">
+          Quantifies problem-solving mastery across 5 core software engineering dimensions.
+        </p>
+
+        <!-- Canvas Radar Chart Container -->
+        <div style="position: relative; width: 100%; max-width: 270px; margin: 0 auto; aspect-ratio: 1 / 1;">
+          <canvas id="readiness-radar-chart" width="270" height="270"></canvas>
+        </div>
+
+        <!-- Metric Details Pill Bar -->
+        <div class="radar-metric-grid">
+          <div class="radar-metric-box">
+            <span class="radar-metric-label">Algorithmic Logic</span>
+            <span class="radar-metric-value" style="color: #0284C7;">72%</span>
+          </div>
+          <div class="radar-metric-box">
+            <span class="radar-metric-label">Loops & Flow</span>
+            <span class="radar-metric-value" style="color: #10B981;">80%</span>
+          </div>
+          <div class="radar-metric-box">
+            <span class="radar-metric-label">Variable State</span>
+            <span class="radar-metric-value" style="color: #F59E0B;">65%</span>
+          </div>
+          <div class="radar-metric-box">
+            <span class="radar-metric-label">Syntax Precision</span>
+            <span class="radar-metric-value" style="color: #8B5CF6;">62%</span>
+          </div>
+        </div>
+
+        <a href="curriculum/assessments/interactive_assessment_runner.html" 
+           class="btn-zenith" 
+           style="width: 100%; font-size: 12px; padding: 8px 12px;">
+          Launch Comprehensive Honors Assessment →
+        </a>
+      </div>
+
+      <!-- 2. Assigned Live Mentor Bridge Card -->
+      <div class="zenith-card">
+        <div class="zenith-card-header">
+          <h2 class="zenith-card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--zenith-brand-orange)" stroke-width="2.5"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+            Mentor Class Bridge
+          </h2>
+          <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: #15803D;">
+            <span class="hud-dot emerald"></span> Confirmed
+          </span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <img src="images/portal/standalone/girl-avatar-3d.png" style="width: 40px; height: 40px; border-radius: 12px; background: #FFF7ED; border: 1px solid #FED7AA; object-fit: contain;" alt="Coach">
+          <div>
+            <div style="font-size: 13.5px; font-weight: 800; color: var(--zenith-text-hero);">Coach Olalekan Israel</div>
+            <div style="font-size: 11.5px; font-weight: 600; color: var(--zenith-text-muted);">Lead Robotics & AI Mentor</div>
+          </div>
+        </div>
+
+        <div style="background: var(--zenith-surface-subtle); border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; border: 1px solid var(--zenith-border-hairline);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px;">
+            <span style="font-size: 10.5px; font-weight: 700; color: var(--zenith-text-muted);">Upcoming Session</span>
+            <span style="font-family: var(--zenith-font-mono); font-size: 11px; font-weight: 800; color: var(--zenith-brand-orange);">In 1d 18h</span>
+          </div>
+          <div style="font-size: 12.5px; font-weight: 800; color: var(--zenith-text-hero);">Thursday, 4:00 PM (WAT)</div>
+          <div style="font-size: 11px; color: var(--zenith-text-secondary); margin-top: 2px;">Topic: Milestone Boss Capstone Defense</div>
+        </div>
+
+        <a href="join-class.html" class="btn-zenith primary" style="width: 100%; font-size: 12.5px; padding: 9px 12px;">
+          Enter Classroom Companion →
+        </a>
+      </div>
+
+      <!-- 3. Technology Passport (Light Evolution Eras I–VIII) -->
+      <div class="zenith-card">
+        <div class="zenith-card-header">
+          <h2 class="zenith-card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            Technology Passport™
+          </h2>
+          <span style="font-family: var(--zenith-font-mono); font-size: 10.5px; font-weight: 700; color: var(--zenith-text-muted);">
+            Chapter 1
+          </span>
+        </div>
+        <p style="font-size: 11.5px; color: var(--zenith-text-secondary); margin: 0 0 10px 0; line-height: 1.4;">
+          The Light Evolution™: 48-month progression through historical engineering eras.
+        </p>
+
+        <div id="passport-shelf-container">
+          <!-- Rendered dynamically by LmsQuestEngine.renderPassportShelf() -->
+        </div>
+
+        <div style="margin-top: 12px; text-align: center;">
+          <a href="verify-certificate.html" style="font-size: 11.5px; font-weight: 700; color: #0284C7; text-decoration: none;">
+            View Authenticated Honors Certificates ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- 4. Digital Academy Pass Benefit Card -->
+      <div class="zenith-card" style="background: linear-gradient(180deg, #FFFFFF 0%, #FFF7ED 100%); border-color: rgba(244, 96, 12, 0.2);">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+          <img src="images/portal/standalone/key-3d.png" style="width: 24px; height: 24px; object-fit: contain;" alt="Pass">
+          <h3 style="font-size: 13.5px; font-weight: 800; color: #9A3412; margin: 0;">STEMulus Digital Pass</h3>
+        </div>
+        <p style="font-size: 11.5px; color: #78350F; margin: 0 0 10px 0; line-height: 1.45;">
+          Unrestricted access to all 215 lessons, 6 engineering tracks, interactive sandboxes, and verified QR certificate defense.
+        </p>
+        <a href="academy.html" class="btn-zenith" style="width: 100%; font-size: 12px; background: #FFFFFF; color: #EA580C; border-color: #FED7AA;">
+          Manage Subscription & Billing →
+        </a>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- ── Floating Mulu AI Tutor Help Button ─────────────────────────────────── -->
+  <button onclick="window.location.href='portal.html'"
+          style="position: fixed; bottom: 24px; left: 24px; background: #FFFFFF; border: 1px solid var(--zenith-border-strong); border-radius: 999px; padding: 6px 14px 6px 8px; display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08); cursor: pointer; z-index: 40; transition: transform 0.2s;"
+          title="Open Mulu AI Coding Companion">
+    <div style="width: 30px; height: 30px; border-radius: 50%; background: #F0F9FF; display: flex; align-items: center; justify-content: center;">
+      <img src="images/portal/standalone/robot-3d.png" style="width: 20px; height: 20px; object-fit: contain;" alt="Mulu AI">
+    </div>
+    <div style="text-align: left;">
+      <div style="font-size: 11.5px; font-weight: 800; color: #0F172A;">Ask Mulu AI</div>
+      <div style="font-size: 9.5px; font-weight: 700; color: #0284C7; font-family: var(--zenith-font-mono);">Instant Code Helper</div>
+    </div>
+  </button>
+
+</body>
+</html>

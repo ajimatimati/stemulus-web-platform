@@ -356,10 +356,12 @@ const StemulusPassEngine = (function() {
 
   return {
     hasActivePass,
+    isPassActive: hasActivePass,
     isLessonFree,
     activatePass,
     launchPassCheckout,
     showUpgradeModal,
+    promptUpgradeModal: showUpgradeModal,
     closeUpgradeModal,
     selectPlan,
     setCurrency,

@@ -87,4 +87,5 @@ screenshots/
 data/gsc_deep_audit/
 data/gsc_inspection/
 
-curriculum/slides/*.png
+curriculum/slides/**/*.png
+curriculum/slides/assets/3d/

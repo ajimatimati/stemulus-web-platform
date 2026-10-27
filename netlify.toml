@@ -185,6 +185,31 @@
   status = 200
 
 [[redirects]]
+  from = "https://portal.stemuluskidstech.com/hub"
+  to = "/learner-hub.html"
+  status = 200
+
+[[redirects]]
+  from = "https://portal.stemuluskidstech.com/quest"
+  to = "/learner-hub.html"
+  status = 200
+
+[[redirects]]
+  from = "/hub"
+  to = "/learner-hub.html"
+  status = 200
+
+[[redirects]]
+  from = "/quest"
+  to = "/learner-hub.html"
+  status = 200
+
+[[redirects]]
+  from = "/lms"
+  to = "/learner-hub.html"
+  status = 200
+
+[[redirects]]
   from = "/pass"
   to = "/academy.html"
   status = 200

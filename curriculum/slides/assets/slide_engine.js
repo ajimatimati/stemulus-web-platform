@@ -1618,6 +1618,21 @@
   }
 
   function handleFinalSlideReached() {
+    // Notify parent LMS if loaded inside iframe / Mindtickle Quest modal
+    try {
+      if (window.parent && window.parent !== window) {
+        const courseTrack = getTrackCourseId();
+        const lessonMatch = pagePath.match(/lesson[_-]?0*(\d+)/i);
+        const lessonNum = lessonMatch ? parseInt(lessonMatch[1], 10) : 1;
+        window.parent.postMessage({
+          type: 'STEMULUS_LESSON_COMPLETED',
+          track: courseTrack,
+          lessonNumber: lessonNum,
+          timestamp: Date.now()
+        }, '*');
+      }
+    } catch(e) {}
+
     const nextBtnElem = document.querySelector('.btn-next-lesson');
     if (!nextBtnElem) return;
     const href = nextBtnElem.getAttribute('href') || '';

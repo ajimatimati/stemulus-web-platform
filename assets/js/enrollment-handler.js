@@ -462,9 +462,21 @@ Time: ${new Date().toLocaleTimeString()}
   <p style="font-family:'Inter',sans-serif;color:#6b6b8a;margin:0 0 1.5rem;line-height:1.6;max-width:400px;margin-left:auto;margin-right:auto;">
     Thank you! We'll review your application and contact you within 24 hours to schedule your <strong>FREE trial class</strong>.
   </p>
-  <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:#6b6b8a;margin:0 0 2rem;">
+  <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:#6b6b8a;margin:0 0 1.5rem;">
     A confirmation email has been sent to your inbox.
   </p>
+  <div style="background: linear-gradient(135deg, #eff6ff 0%, #ecfdf5 100%); border: 2px dashed #2563eb; border-radius: 16px; padding: 1.5rem; margin: 1.5rem auto 2rem; max-width: 420px; text-align: center;">
+    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎁</div>
+    <h4 style="font-family:'Fredoka',sans-serif;font-size: 1.2rem; font-weight: 700; color: #1e3a8a; margin: 0 0 0.5rem;">Gift 1 Free Class Pass to a Fellow Parent</h4>
+    <p style="font-family:'Inter',sans-serif;font-size: 0.85rem; color: #475569; margin: 0 0 1rem; line-height: 1.5;">
+      Learning to code is more exciting with friends! Share a 100% Free 45-Minute 1-on-1 Class Pass with fellow parents in your school or estate WhatsApp group.
+    </p>
+    <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('Hi! I just enrolled my child for live 1-on-1 coding classes with STEMulus Kids Tech (they teach kids aged 5-17 how to build real games and apps with personal mentors). You can claim a free 45-min diagnostic session for your child here: https://stemuluskidstech.com/book-class.html')}"
+       target="_blank"
+       style="background: #25D366; color: #ffffff; padding: 0.85rem 1.5rem; border-radius: 12px; font-weight: 800; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);">
+      Share Free Pass on WhatsApp
+    </a>
+  </div>
 </div>`;
         formContainer.innerHTML = successHTML;
 
