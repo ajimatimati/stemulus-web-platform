@@ -16,8 +16,8 @@ const { handler: sendEmailHandler } = require('./send-email');
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@stemuluskidstech.com';
 const RESEND_KEY = process.env.RESEND_API_KEY;
 const NTFY_TOKEN = process.env.NTFY_TOKEN;
-const FB_PROJECT = process.env.FIREBASE_PROJECT_ID || 'stemulus-lms';
-const FB_API_KEY = process.env.FIREBASE_API_KEY;
+const FB_PROJECT = process.env.FIREBASE_PROJECT_ID || 'stemulus-kidstech';
+const FB_API_KEY = process.env.FIREBASE_API_KEY || 'AIzaSyBwiBfq11WfgQTPIqvPzxhv3Evz5gN4IUk';
 
 // Query Firestore schedules
 async function getFirestoreSchedules() {

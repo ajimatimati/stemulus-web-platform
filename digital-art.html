@@ -176,8 +176,6 @@
 </head>
 <body class="antialiased">
 <a href="#main-content" class="skip-nav">Skip to main content</a>
-<div id="cursor-ring" aria-hidden="true"></div>
-<div id="cursor-dot"  aria-hidden="true"></div>
 <nav class="nav-editorial" role="navigation" aria-label="Main Navigation" id="main-nav">
  <a href="index.html" class="nav-logo-editorial">
       <img src="favicon.png" alt="STEMulus" width="36" height="36">
@@ -745,7 +743,6 @@ Sprite ready for game engine integration</div>
   <div class="footer-bg-text">STEMulus</div>
 </footer>
 <script>
-(function(){var ring=document.getElementById('cursor-ring'),dot=document.getElementById('cursor-dot');if(!ring||!dot)return;var mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();document.querySelectorAll('a,button').forEach(function(el){el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-link');});el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-link');});});})();
 window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.editorial-heading,.prog-card,.feature-item,.stat-num').forEach(function(el,i){gsap.from(el,{y:50,opacity:0,duration:0.9,ease:'power3.out',delay:(i% 4)*.1,scrollTrigger:{trigger:el,start:'top 88%'}});});});
 </script>
 

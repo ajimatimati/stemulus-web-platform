@@ -22,34 +22,9 @@
     boot();
   }
 
-  /* ── 1. Magnetic Custom Cursor Tracker ── */
+  /* ── 1. Magnetic Custom Cursor Tracker (Deactivated) ── */
   function initCustomCursor() {
-    const ring = document.getElementById('cursor-ring');
-    const dot = document.getElementById('cursor-dot');
-    if (!ring || !dot) return;
-
-    let mouseX = 0, mouseY = 0;
-    let ringX = 0, ringY = 0;
-
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-    }, { passive: true });
-
-    function renderCursor() {
-      ringX += (mouseX - ringX) * 0.15;
-      ringY += (mouseY - ringY) * 0.15;
-      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
-      requestAnimationFrame(renderCursor);
-    }
-    renderCursor();
-
-    const hoverables = document.querySelectorAll('a, button, .interactive-card, .btn-3d, input, select');
-    hoverables.forEach((el) => {
-      el.addEventListener('mouseenter', () => ring.classList.add('active'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('active'));
-    });
+    return;
   }
 
   /* ── 2. GSAP ScrollTrigger Story Reveals ── */

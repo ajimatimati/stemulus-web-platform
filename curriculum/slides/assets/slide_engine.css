@@ -4114,7 +4114,34 @@ body.presenter-mode .tutor-cockpit-drawer {
   }
 }
 
+/* ==========================================================================
+   ZENITH LUXURY MOTION & LINEAR MICRO-BORDERS ENHANCEMENT
+   ========================================================================== */
+@keyframes zenithSlideEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
+.slide.active {
+  animation: zenithSlideEntrance 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
+.card, .mission-card, .copilot-item, .quiz-option, .slide-dots-ribbon {
+  border: 1px solid rgba(226, 232, 240, 0.85) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 1px 3px rgba(15, 23, 42, 0.03), 0 8px 24px -6px rgba(15, 23, 42, 0.05) !important;
+}
 
+.card:hover, .mission-card:hover {
+  box-shadow: inset 0 1.5px 0.5px #FFFFFF, 0 14px 32px -4px rgba(15, 23, 42, 0.08), 0 2px 0 #CBD5E1 !important;
+  border-color: #CBD5E1 !important;
+}
 
+img[data-has-fallback="true"] {
+  filter: drop-shadow(0 2px 8px rgba(244, 96, 12, 0.2));
+}

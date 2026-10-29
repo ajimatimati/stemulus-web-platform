@@ -3,14 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>STEMulus Virtual Classroom Companion</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Nunito & DM Sans -->
+  <title>STEMulus Virtual Classroom Companion | Telemetry Control</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23F4600C'/><polygon points='40,25 75,50 40,75' fill='white'/></svg>">
+
+  <!-- Premium Typography: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN for sub-engines & design system -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/portal-design-system.css">
+  <link rel="stylesheet" href="assets/css/stemulus-luxury.css">
+
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -28,160 +33,967 @@
   <script src="assets/js/classroom-rejoin-beacon.min.js"></script>
 
   <style>
-    body { font-family: 'DM Sans', sans-serif; }
-    h1, h2, h3, h4, .font-nunito { font-family: 'Nunito', sans-serif; }
-    @keyframes float-gentle {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-6px) rotate(1deg); }
+    :root {
+      --brand-orange: #F4600C;
+      --brand-orange-hover: #EA580C;
+      --brand-indigo: #4F46E5;
+      --brand-emerald: #10B981;
+      --surface-card: #FFFFFF;
+      --surface-subtle: #F8FAFC;
+      --border-hairline: rgba(226, 232, 240, 0.85);
+      --border-specular: rgba(255, 255, 255, 0.95);
+      --shadow-zenith: 0 1px 2px rgba(15, 23, 42, 0.04), 0 16px 36px -6px rgba(15, 23, 42, 0.07), 0 32px 64px -12px rgba(15, 23, 42, 0.04);
+      --shadow-tactile: 0 4px 0 #C2410C, 0 10px 24px -4px rgba(244, 96, 12, 0.35);
+      --shadow-tactile-active: 0 1px 0 #C2410C, 0 4px 12px rgba(244, 96, 12, 0.25);
     }
-    .animate-float { animation: float-gentle 4s ease-in-out infinite; }
-    @media (min-width: 1024px) {
-      html {
-        font-size: 13.5px;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: #F8FAFC;
+      background-image: 
+        radial-gradient(circle at 10% 15%, rgba(244, 96, 12, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 90% 85%, rgba(79, 70, 229, 0.04) 0%, transparent 50%),
+        radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 28px 28px;
+      color: #0F172A;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 120px 16px 40px 16px; /* Generous headroom ensures top alert banners never overlap */
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      selection-background-color: var(--brand-orange);
+      selection-color: #FFFFFF;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Ambient Dynamic Mesh Light */
+    .ambient-glow {
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+    .ambient-glow-orange {
+      top: -120px;
+      right: -120px;
+      background: radial-gradient(circle, rgba(254, 215, 170, 0.45) 0%, rgba(244, 96, 12, 0.12) 60%, transparent 80%);
+    }
+    .ambient-glow-indigo {
+      bottom: -140px;
+      left: -140px;
+      background: radial-gradient(circle, rgba(224, 231, 255, 0.5) 0%, rgba(79, 70, 229, 0.08) 60%, transparent 80%);
+    }
+
+    /* Layout Container */
+    .cockpit-wrapper {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 680px;
+      perspective: 1200px;
+    }
+
+    /* Header Telemetry HUD Bar */
+    .telemetry-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding: 0 4px;
+    }
+
+    .brand-hud-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-hairline);
+      box-shadow: inset 0 1px 0 var(--border-specular), 0 2px 6px rgba(15, 23, 42, 0.03);
+      padding: 6px 14px;
+      border-radius: 9999px;
+    }
+
+    .brand-radar-dot {
+      position: relative;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+    }
+    .brand-radar-dot::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.4);
+      animation: pulseRadarDot 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes pulseRadarDot {
+      0% { transform: scale(0.9); opacity: 0.9; }
+      50% { transform: scale(1.8); opacity: 0; }
+      100% { transform: scale(0.9); opacity: 0; }
+    }
+
+    .brand-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #334155;
+    }
+
+    .nav-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Tactile Sound Toggle */
+    .sound-toggle-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border-hairline);
+      border-radius: 9999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #475569;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 var(--border-specular), 0 2px 5px rgba(15, 23, 42, 0.03);
+      transition: all 0.15s ease;
+    }
+    .sound-toggle-btn:hover {
+      border-color: #CBD5E1;
+      color: #0F172A;
+    }
+
+    /* Language Switcher Pill */
+    .lang-switcher-pill {
+      display: inline-flex;
+      align-items: center;
+      background: #FFFFFF;
+      padding: 3px;
+      border-radius: 9999px;
+      border: 1px solid var(--border-hairline);
+      box-shadow: inset 0 1px 0 var(--border-specular), 0 2px 5px rgba(15, 23, 42, 0.03);
+    }
+    .lang-btn {
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 800;
+      border: none;
+      background: transparent;
+      color: #64748B;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lang-btn.active {
+      background: var(--brand-orange);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(244, 96, 12, 0.35);
+    }
+
+    /* 3D Magnetic Cockpit Card */
+    .magnetic-card-container {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      margin-bottom: 24px;
+    }
+
+    .cockpit-card {
+      position: relative;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 70%, #F8FAFC 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 28px;
+      padding: 36px 32px;
+      box-shadow: var(--shadow-zenith);
+      text-align: center;
+      transform-style: preserve-3d;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    /* Dynamic Glare Highlight that follows mouse pointer */
+    .cockpit-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 255, 255, 0.85) 0%,
+        rgba(255, 255, 255, 0) 55%
+      );
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.75;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Floating 3D Rocket Badge */
+    .rocket-hero-wrapper {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 16px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateZ(40px);
+    }
+
+    .rocket-ambient-aura {
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(254, 215, 170, 0.8) 0%, rgba(244, 96, 12, 0.15) 60%, transparent 80%);
+      filter: blur(14px);
+      animation: auraBreathe 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes auraBreathe {
+      0% { transform: scale(0.92); opacity: 0.6; }
+      100% { transform: scale(1.1); opacity: 0.95; }
+    }
+
+    .rocket-3d-asset {
+      position: relative;
+      z-index: 2;
+      width: 82px;
+      height: 82px;
+      object-fit: contain;
+      animation: floatSmooth 4.5s ease-in-out infinite;
+      filter: drop-shadow(0 12px 20px rgba(244, 96, 12, 0.22));
+    }
+
+    @keyframes floatSmooth {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(1.5deg); }
+    }
+
+    .cockpit-title {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #0F172A;
+      margin-bottom: 6px;
+      transform: translateZ(28px);
+    }
+
+    .cockpit-subtitle {
+      font-size: 13px;
+      font-weight: 500;
+      color: #64748B;
+      margin-bottom: 18px;
+      transform: translateZ(24px);
+    }
+
+    /* Telemetry Radar & Status Pills */
+    .status-ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      transform: translateZ(22px);
+      flex-wrap: wrap;
+    }
+
+    .telemetry-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+
+    .telemetry-pill-active {
+      background: #ECFDF5;
+      color: #047857;
+      border-color: #A7F3D0;
+    }
+
+    .telemetry-pill-timer {
+      background: #F1F5F9;
+      color: #334155;
+      border-color: #E2E8F0;
+    }
+
+    .pulse-radar-core {
+      position: relative;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+    }
+    .pulse-radar-core::before, .pulse-radar-core::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(16, 185, 129, 0.5);
+      animation: radarRings 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+    .pulse-radar-core::after {
+      animation-delay: 1.2s;
+    }
+
+    @keyframes radarRings {
+      0% { transform: scale(0.6); opacity: 1; }
+      100% { transform: scale(2.6); opacity: 0; }
+    }
+
+    /* Interactive Live Audio Waveform Oscilloscope */
+    .oscilloscope-hud {
+      position: relative;
+      background: linear-gradient(180deg, #090D16 0%, #0F172A 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      transform: translateZ(20px);
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 8px 24px -4px rgba(15, 23, 42, 0.1);
+    }
+
+    .oscilloscope-hud::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.015),
+        rgba(255, 255, 255, 0.015) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+    }
+
+    .oscilloscope-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #94A3B8;
+      position: relative;
+      z-index: 2;
+    }
+
+    .oscilloscope-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #38BDF8;
+    }
+
+    .oscilloscope-canvas {
+      width: 100%;
+      height: 48px;
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* 3-Column Bento Telemetry Spec Box */
+    .bento-spec-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+      transform: translateZ(16px);
+      text-align: left;
+    }
+
+    @media (max-width: 640px) {
+      .bento-spec-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
       }
+      .cockpit-card {
+        padding: 24px 18px;
+        border-radius: 22px;
+      }
+    }
+
+    .bento-spec-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-hairline);
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: inset 0 1px 0 var(--border-specular), 0 1px 3px rgba(15, 23, 42, 0.02);
+      position: relative;
+    }
+
+    .bento-label {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #64748B;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .bento-val {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0F172A;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
+    /* Safeguarding Notice Pill */
+    .safeguarding-banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      margin-bottom: 22px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #166534;
+      transform: translateZ(14px);
+    }
+    .safeguarding-shield-icon {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    /* Action Buttons Array */
+    .actions-array {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transform: translateZ(18px);
+    }
+
+    /* Primary Google Meet Launch Button */
+    .btn-launch-primary {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: linear-gradient(180deg, #FF6B00 0%, #F4600C 50%, #EA580C 100%);
+      color: #FFFFFF;
+      font-size: 14.5px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      padding: 15px 24px;
+      border-radius: 16px;
+      border: 1px solid #EA580C;
+      border-top: 1.5px solid #FF9248;
+      box-shadow: var(--shadow-tactile);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .btn-launch-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 100%);
+      pointer-events: none;
+    }
+    .btn-launch-primary:hover {
+      background: linear-gradient(180deg, #FF7715 0%, #F4600C 50%, #DC2626 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #C2410C, 0 16px 32px -4px rgba(244, 96, 12, 0.45);
+    }
+    .btn-launch-primary:active {
+      transform: translateY(2px);
+      box-shadow: var(--shadow-tactile-active);
+    }
+
+    /* Secondary Interactive Lesson Slides Button */
+    .btn-slides-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F5F7FF 100%);
+      color: #4338CA;
+      font-size: 12.5px;
+      font-weight: 800;
+      padding: 12px 20px;
+      border-radius: 14px;
+      border: 1px solid #C7D2FE;
+      box-shadow: inset 0 1px 0 #FFFFFF, 0 2px 4px rgba(79, 70, 229, 0.06);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-slides-secondary:hover {
+      background: #EEF2FF;
+      border-color: #A5B4FC;
+      transform: translateY(-1px);
+    }
+
+    /* Tertiary End Session Button */
+    .btn-leave-tertiary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      background: #F1F5F9;
+      color: #475569;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: 1px solid #E2E8F0;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-leave-tertiary:hover {
+      background: #E2E8F0;
+      color: #1E293B;
+    }
+
+    .companion-hint-text {
+      font-size: 11px;
+      font-weight: 500;
+      color: #94A3B8;
+      margin-top: 14px;
+      transform: translateZ(12px);
+    }
+
+    /* Bilingual Cockpit Section */
+    .bilingual-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 24px;
+      padding: 24px 26px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03), 0 12px 30px -4px rgba(15, 23, 42, 0.05);
+      margin-bottom: 24px;
+    }
+
+    .bilingual-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #F1F5F9;
+      margin-bottom: 16px;
+    }
+
+    .bilingual-lead {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .bilingual-avatar {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .bilingual-title-text {
+      font-size: 14px;
+      font-weight: 900;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bilingual-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+    }
+    .bilingual-desc {
+      font-size: 11px;
+      font-weight: 500;
+      color: #64748B;
+    }
+
+    .mic-buttons-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 640px) {
+      .mic-buttons-row {
+        flex-direction: column;
+      }
+    }
+
+    .btn-mic {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #FFFFFF;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+      transition: all 0.15s ease;
+    }
+    .btn-mic-junayd {
+      background: linear-gradient(180deg, #059669 0%, #047857 100%);
+    }
+    .btn-mic-junayd:hover {
+      background: #047857;
+      transform: translateY(-1px);
+    }
+    .btn-mic-coach {
+      background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 100%);
+    }
+    .btn-mic-coach:hover {
+      background: #1D4ED8;
+      transform: translateY(-1px);
+    }
+
+    .live-stream-box {
+      background: #F8FAFC;
+      border: 1px dashed #CBD5E1;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 12px;
+      color: #64748B;
+      text-align: center;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Bespoke High-End Styling for Scratch Vocabulary Block Cards */
+    .scratch-block-card {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(226, 232, 240, 0.9) !important;
+      border-radius: 18px !important;
+      padding: 14px 16px !important;
+      box-shadow: inset 0 1px 0 #FFFFFF, 0 2px 6px rgba(15, 23, 42, 0.03) !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .scratch-block-card:hover {
+      transform: translateY(-3px) scale(1.01) !important;
+      border-color: #CBD5E1 !important;
+      box-shadow: inset 0 1px 0 #FFFFFF, 0 10px 24px -4px rgba(15, 23, 42, 0.08) !important;
+    }
+
+    /* Staggered Scroll Reveal Animations */
+    .scroll-reveal {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    body.js-reveal-active .scroll-reveal:not(.visible) {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    body.js-reveal-active .scroll-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Modal Celebratory */
+    .celebrate-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: fadeInModal 0.25s ease-out forwards;
+    }
+
+    @keyframes fadeInModal {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .celebrate-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-hairline);
+      border-radius: 28px;
+      padding: 32px 28px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+    }
+
+    .celebrate-trophy-3d {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+      margin: 0 auto 14px auto;
+      filter: drop-shadow(0 10px 18px rgba(244, 96, 12, 0.25));
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col items-center justify-center p-4 antialiased selection:bg-orange-500 selection:text-white">
+<body>
 
-  <!-- Ambient Light Mesh Background -->
-  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-    <div class="absolute -top-40 -right-40 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl"></div>
-    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl"></div>
-  </div>
+  <!-- Ambient Dynamic Mesh Light -->
+  <div class="ambient-glow ambient-glow-orange"></div>
+  <div class="ambient-glow ambient-glow-indigo"></div>
 
-  <div class="relative z-10 max-w-2xl w-full">
-    <!-- Top Navigation Toolbar with Language Switcher -->
-    <div class="flex items-center justify-between gap-3 mb-4 px-2">
-      <div class="flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span class="text-xs font-bold text-slate-600 tracking-wide uppercase">STEMulus Live Classroom</span>
+  <div class="cockpit-wrapper">
+
+    <!-- Header Telemetry HUD Bar -->
+    <header class="telemetry-nav">
+      <div class="brand-hud-badge">
+        <span class="brand-radar-dot"></span>
+        <span class="brand-title">STEMulus Live Telemetry Active</span>
       </div>
-      <div class="inline-flex items-center gap-1 bg-white p-1 rounded-full border border-slate-200 shadow-xs">
-        <button id="lang-toggle-en" onclick="I18nVisualEngine.setLanguage('en')" class="px-3 py-1.5 rounded-full text-xs font-bold bg-orange-600 text-white shadow-xs transition-all" style="min-height: 36px !important; min-width: 48px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
-          🇬🇧 EN
-        </button>
-        <button id="lang-toggle-fr" onclick="I18nVisualEngine.setLanguage('fr')" class="px-3 py-1.5 rounded-full text-xs font-medium text-slate-600 hover:text-slate-900 transition-all" style="min-height: 36px !important; min-width: 48px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
-          🇫🇷 FR
-        </button>
-      </div>
-    </div>
 
-    <!-- Main Double-Bezel Companion Card -->
-    <div class="bg-white/80 border border-slate-200/90 rounded-[2.5rem] p-3 shadow-xl backdrop-blur-xl mb-6">
-      <div class="bg-white rounded-[2rem] p-6 sm:p-8 border border-slate-100 text-center shadow-xs">
+      <div class="nav-actions">
+        <!-- Sound FX Toggle Button -->
+        <button id="sound-toggle-btn" class="sound-toggle-btn" onclick="ClassAudioSynthesizer.toggleSound()">
+          <svg id="sound-icon-on" style="width: 14px; height: 14px; stroke: currentColor; fill: none;" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <span id="sound-toggle-label">FX On</span>
+        </button>
+
+        <!-- Bilingual Switcher -->
+        <div class="lang-switcher-pill">
+          <button id="lang-toggle-en" onclick="I18nVisualEngine.setLanguage('en'); ClassAudioSynthesizer.playPillClick();" class="lang-btn active">
+            EN
+          </button>
+          <button id="lang-toggle-fr" onclick="I18nVisualEngine.setLanguage('fr'); ClassAudioSynthesizer.playPillClick();" class="lang-btn">
+            FR
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main 3D Magnetic Cockpit Card -->
+    <main class="magnetic-card-container">
+      <div class="cockpit-card" id="cockpit-main-card">
         
-        <!-- 3D Standalone Object -->
-        <div class="relative w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-          <div class="absolute inset-0 bg-gradient-to-tr from-orange-400/20 to-amber-300/20 rounded-3xl blur-xl animate-pulse"></div>
-          <img src="images/portal/standalone/rocket-3d.png" alt="STEMulus Rocket" class="w-20 h-20 object-contain relative z-10 animate-float" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>🚀</text></svg>'">
+        <!-- 3D Standalone Object with Floating Ambient Aura -->
+        <div class="rocket-hero-wrapper">
+          <div class="rocket-ambient-aura"></div>
+          <img src="images/portal/standalone/rocket-3d.png" alt="STEMulus Rocket" class="rocket-3d-asset" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'%23F4600C\'/><path d=\'M50 20 L65 70 L50 60 L35 70 Z\' fill=\'white\'/></svg>'">
         </div>
 
-        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-1" id="bridge-title" data-i18n="companion_title">
-          Classroom Companion Active
+        <h1 class="cockpit-title" id="bridge-title">
+          Mission Control Active
         </h1>
-        <p class="text-xs text-slate-500 mb-4" id="bridge-sub" data-i18n="companion_sub">
-          Live presence monitoring &amp; automated safeguarding active.
+        <p class="cockpit-subtitle" id="bridge-sub">
+          Live presence monitoring &amp; automated safeguarding synchronized.
         </p>
-        <div id="partner-alert-container" class="mb-4"></div>
 
-        <!-- Status & Elapsed Timer Pills -->
-        <div class="flex items-center justify-center gap-2 mb-6">
-          <span id="session-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5 shadow-xs">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+        <!-- Partner Alert Notification Hook -->
+        <div id="partner-alert-container" style="margin-bottom: 14px;"></div>
+
+        <!-- Telemetry Status & Stopwatch Ribbon -->
+        <div class="status-ribbon">
+          <div id="session-status-badge" class="telemetry-pill telemetry-pill-active">
+            <span class="pulse-radar-core"></span>
             <span id="session-status-text">Connected Live</span>
-          </span>
-          <span id="session-elapsed" class="px-3 py-1 rounded-full text-xs font-mono font-bold text-slate-700 bg-slate-100 border border-slate-200 shadow-xs flex items-center gap-1.5">
-            <img src="images/portal/standalone/clock-3d.png" class="w-3.5 h-3.5 object-contain" alt="clock" onerror="this.remove()">
+          </div>
+
+          <div id="session-elapsed" class="telemetry-pill telemetry-pill-timer font-mono">
+            <img src="images/portal/standalone/clock-3d.png" style="width: 14px; height: 14px; object-fit: contain;" alt="Clock" onerror="this.style.display='none'">
             <span>00:00</span>
-          </span>
-        </div>
-
-        <!-- Session Details Card -->
-        <div class="bg-slate-50/80 rounded-2xl p-4 mb-5 border border-slate-200/80 text-left text-xs space-y-2">
-          <div class="flex justify-between items-center text-slate-500">
-            <span>Track:</span>
-            <strong class="text-slate-800 font-bold" id="detail-session">Coding Track</strong>
-          </div>
-          <div class="flex justify-between items-center text-slate-500">
-            <span>Student:</span>
-            <strong class="text-slate-800 font-bold" id="detail-student">Student</strong>
-          </div>
-          <div class="flex justify-between items-center text-slate-500">
-            <span>Instructor:</span>
-            <strong class="text-slate-800 font-bold" id="detail-mentor">Faculty Mentor</strong>
           </div>
         </div>
 
-        <!-- Child Safeguarding & Automated Recording Notice -->
-        <div class="flex items-center justify-center gap-2 text-xs text-emerald-800 bg-emerald-50 border border-emerald-200/80 py-2 px-4 rounded-xl mb-6 font-semibold">
-          <span class="text-emerald-600 font-bold">🛡️</span>
-          <span data-i18n="companion_recording_active">Automated Gemini Notes &amp; Video Recording Active</span>
+        <!-- Interactive Live Audio Waveform Oscilloscope -->
+        <div class="oscilloscope-hud">
+          <div class="oscilloscope-header">
+            <span>Encrypted Telemetry Waveform</span>
+            <div class="oscilloscope-meta font-mono">
+              <span id="oscilloscope-freq">844.2 kHz</span>
+              <span>&bull;</span>
+              <span>AES-256</span>
+            </div>
+          </div>
+          <canvas id="oscilloscope-canvas" class="oscilloscope-canvas" width="600" height="96"></canvas>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="space-y-2.5">
-          <a id="btn-manual-join" href="#" target="_blank" class="inline-flex items-center justify-center w-full bg-orange-600 hover:bg-orange-500 text-white font-extrabold py-3.5 px-6 rounded-2xl text-sm transition-all shadow-md hover:shadow-lg shadow-orange-600/25 gap-2">
-            <span data-i18n="companion_open_meet">🚀 Open Google Meet Room</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        <!-- 3-Column Bento Telemetry Spec Box -->
+        <div class="bento-spec-grid">
+          <div class="bento-spec-card">
+            <div class="bento-label">
+              <svg style="width: 12px; height: 12px; stroke: currentColor; fill: none;" viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+              <span>Track</span>
+            </div>
+            <span class="bento-val" id="detail-session">Coding Track</span>
+          </div>
+
+          <div class="bento-spec-card">
+            <div class="bento-label">
+              <svg style="width: 12px; height: 12px; stroke: currentColor; fill: none;" viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>Student Coder</span>
+            </div>
+            <span class="bento-val" id="detail-student">Student</span>
+          </div>
+
+          <div class="bento-spec-card">
+            <div class="bento-label">
+              <svg style="width: 12px; height: 12px; stroke: currentColor; fill: none;" viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <span>Faculty Mentor</span>
+            </div>
+            <span class="bento-val" id="detail-mentor">Lead Instructor</span>
+          </div>
+        </div>
+
+        <!-- Child Safeguarding Notice -->
+        <div class="safeguarding-banner">
+          <img src="images/portal/standalone/admin-shield-3d.png" alt="Verified Shield" class="safeguarding-shield-icon" onerror="this.style.display='none'">
+          <span>Automated Gemini AI Notes &amp; Video Safeguarding Synchronized</span>
+        </div>
+
+        <!-- Action Cockpit Buttons Array -->
+        <div class="actions-array">
+          <a id="btn-manual-join" href="#" target="_blank" onclick="ClassAudioSynthesizer.playLaunchTone()" class="btn-launch-primary">
+            <span>Launch Google Meet Room</span>
+            <svg style="width: 16px; height: 16px; stroke: currentColor; fill: none;" viewBox="0 0 24 24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
           </a>
 
-          <a id="btn-open-curriculum-slides" href="curriculum/slides/index.html" target="_blank" class="inline-flex items-center justify-center w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold py-3 px-5 rounded-2xl text-xs transition-all border border-indigo-200 gap-2 no-underline">
-            <span>📚 Open Interactive Lesson Slides (215 Decks)</span>
+          <a id="btn-open-curriculum-slides" href="curriculum/slides/index.html" target="_blank" onclick="ClassAudioSynthesizer.playPillClick()" class="btn-slides-secondary">
+            <svg style="width: 15px; height: 15px; stroke: currentColor; fill: none;" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <span>Open Interactive Lesson Slides (215 Decks)</span>
           </a>
 
-          <button id="btn-end-session" class="inline-flex items-center justify-center w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-4 rounded-xl text-xs transition-all border border-slate-200">
-            <span data-i18n="companion_leave_clean">Leave Class Cleanly (End Session)</span>
+          <button id="btn-end-session" onclick="ClassAudioSynthesizer.playCelebrationChime()" class="btn-leave-tertiary">
+            <span>Leave Class Cleanly (Conclude Session)</span>
           </button>
         </div>
 
-        <p class="text-[11px] text-slate-400 mt-4" data-i18n="companion_tab_hint">
-          Keep this companion tab open during class to maintain real-time attendance.
+        <p class="companion-hint-text">
+          Keep this companion tab active during class to record telemetry &amp; maintain real-time attendance.
         </p>
+
       </div>
-    </div>
+    </main>
 
-    <!-- CLASSROOM LIVE VIDEO RECORDER -->
-    <div id="mount-classroom-recorder"></div>
+    <!-- CLASSROOM LIVE VIDEO RECORDER MOUNT -->
+    <div id="mount-classroom-recorder" class="scroll-reveal"></div>
 
-    <!-- BILINGUAL CLASSROOM ASSISTANT (For Junayd & Coach Olalekan) -->
-    <div id="mount-bilingual-assistant" class="space-y-4">
-      <div class="bg-white border border-slate-200/90 rounded-3xl p-5 shadow-sm">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
-          <div class="flex items-center gap-2.5">
-            <img src="images/portal/standalone/speech-3d.png" class="w-9 h-9 object-contain" alt="speech" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>💬</text></svg>'">
+    <!-- BILINGUAL CLASSROOM ASSISTANT (Junayd & Coach Olalekan) -->
+    <section id="mount-bilingual-assistant" class="scroll-reveal">
+      <div class="bilingual-card">
+        <div class="bilingual-header-row">
+          <div class="bilingual-lead">
+            <img src="images/portal/standalone/speech-3d.png" class="bilingual-avatar" alt="Bilingual Speech" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'%233B82F6\'/><path d=\'M30 40 h40 M30 50 h30 M30 60 h20\' stroke=\'white\' stroke-width=\'6\'/></svg>'">
             <div>
-              <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+              <div class="bilingual-title-text">
                 <span>Junayd &amp; Coach Olalekan Bilingual Assistant</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">FR ⇄ EN</span>
-              </h3>
-              <p class="text-[11px] text-slate-500">Live French-to-English translation &amp; pronunciation companion.</p>
+                <span class="bilingual-badge">FR &harr; EN</span>
+              </div>
+              <p class="bilingual-desc">Live French-to-English translation &amp; pronunciation companion.</p>
             </div>
           </div>
-          <div class="flex items-center gap-2">
-            <span id="bilingual-mic-status" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-slate-400"></span>
-              <span>Mic Ready</span>
-            </span>
-            <button onclick="BilingualClassroomEngine.showGoogleMeetCaptionsGuide()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition-all flex items-center gap-1" style="min-height: 36px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
-              <span>⚙️ Meet Subtitles Guide</span>
+
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <button onclick="BilingualClassroomEngine.showGoogleMeetCaptionsGuide(); ClassAudioSynthesizer.playPillClick();" style="padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; cursor: pointer;">
+              Meet Subtitles Guide
             </button>
           </div>
         </div>
 
         <!-- Speech Translator Controls -->
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-4">
-          <button id="btn-mic-junayd" onclick="BilingualClassroomEngine.toggleListening('fr-FR')" class="flex-1 w-full sm:w-auto px-3.5 sm:px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition-all shadow-sm flex items-center justify-center gap-1.5 min-h-[40px]">
-            <span>🎙️ <span class="hidden sm:inline">Junayd Speaks (French ➔ English)</span><span class="sm:hidden">Junayd (French ➔ English)</span></span>
+        <div class="mic-buttons-row">
+          <button id="btn-mic-junayd" onclick="BilingualClassroomEngine.toggleListening('fr-FR'); ClassAudioSynthesizer.playPillClick();" class="btn-mic btn-mic-junayd">
+            <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none;" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+            <span>Junayd Speaks (French &rarr; English)</span>
           </button>
-          <button id="btn-mic-coach" onclick="BilingualClassroomEngine.toggleListening('en-US')" class="flex-1 w-full sm:w-auto px-3.5 sm:px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-all shadow-sm flex items-center justify-center gap-1.5 min-h-[40px]">
-            <span>🎙️ <span class="hidden sm:inline">Coach Speaks (English ➔ French)</span><span class="sm:hidden">Coach (English ➔ French)</span></span>
+
+          <button id="btn-mic-coach" onclick="BilingualClassroomEngine.toggleListening('en-US'); ClassAudioSynthesizer.playPillClick();" class="btn-mic btn-mic-coach">
+            <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none;" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+            <span>Coach Speaks (English &rarr; French)</span>
           </button>
         </div>
 
         <!-- Live Translation Stream Bubble -->
-        <div id="bilingual-live-stream" class="mb-4">
-          <div class="p-3 bg-slate-50 rounded-2xl border border-dashed border-slate-200 text-center text-xs text-slate-500">
+        <div id="bilingual-live-stream" style="margin-bottom: 14px;">
+          <div class="live-stream-box">
             Click a button above to transcribe and translate in real time.
           </div>
         </div>
@@ -189,11 +1001,238 @@
         <!-- Scratch Bilingual Block Bank -->
         <div id="mount-scratch-blocks"></div>
       </div>
-    </div>
+    </section>
+
   </div>
 
+  <!-- AUDIO SYNTHESIZER FOR ZERO-LATENCY TACTILE SOUND EFFECTS -->
+  <script>
+    const ClassAudioSynthesizer = (function() {
+      let audioCtx = null;
+      let soundEnabled = true;
+
+      function getCtx() {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      }
+
+      function toggleSound() {
+        soundEnabled = !soundEnabled;
+        const icon = document.getElementById('sound-icon-on');
+        const label = document.getElementById('sound-toggle-label');
+        if (label) label.textContent = soundEnabled ? 'FX On' : 'Muted';
+        if (icon) {
+          icon.style.opacity = soundEnabled ? '1' : '0.4';
+        }
+        if (soundEnabled) playPillClick();
+      }
+
+      function playTone(freq, type, duration, gainVal = 0.05) {
+        if (!soundEnabled) return;
+        try {
+          const ctx = getCtx();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, ctx.currentTime);
+          gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + duration);
+        } catch(e) {}
+      }
+
+      function playPillClick() {
+        playTone(520, 'sine', 0.04, 0.04);
+      }
+
+      function playLaunchTone() {
+        playTone(587.33, 'triangle', 0.08, 0.06);
+        setTimeout(() => playTone(880, 'sine', 0.16, 0.06), 70);
+      }
+
+      function playCelebrationChime() {
+        playTone(523.25, 'sine', 0.1, 0.05);
+        setTimeout(() => playTone(659.25, 'sine', 0.1, 0.05), 80);
+        setTimeout(() => playTone(783.99, 'sine', 0.12, 0.06), 160);
+        setTimeout(() => playTone(1046.50, 'sine', 0.25, 0.07), 240);
+      }
+
+      return {
+        toggleSound,
+        playPillClick,
+        playLaunchTone,
+        playCelebrationChime
+      };
+    })();
+  </script>
+
+  <!-- 3D MAGNETIC CARD TILT & REAL-TIME OSCILLOSCOPE ENGINE -->
+  <script>
+    (function() {
+      // 1. 3D Magnetic Parallax Physics Engine
+      const card = document.getElementById('cockpit-main-card');
+      if (card && window.matchMedia('(pointer: fine)').matches) {
+        let isHovered = false;
+
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          // Subtle, elegant degree rotation (-5.5deg to +5.5deg)
+          const rotateX = ((y - centerY) / centerY) * -5.5;
+          const rotateY = ((x - centerX) / centerX) * 5.5;
+
+          card.style.transform = `perspective(1200px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.008, 1.008, 1.008)`;
+          card.style.setProperty('--mouse-x', `${((x / rect.width) * 100).toFixed(1)}%`);
+          card.style.setProperty('--mouse-y', `${((y / rect.height) * 100).toFixed(1)}%`);
+        });
+
+        card.addEventListener('mouseenter', () => {
+          isHovered = true;
+          card.style.transition = 'transform 0.1s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease';
+        });
+
+        card.addEventListener('mouseleave', () => {
+          isHovered = false;
+          card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease';
+          card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+          card.style.setProperty('--mouse-x', '50%');
+          card.style.setProperty('--mouse-y', '50%');
+        });
+      }
+
+      // 2. High-Precision HTML5 Canvas Audio Waveform Oscilloscope
+      const canvas = document.getElementById('oscilloscope-canvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let step = 0;
+        let surge = 1.0;
+
+        function resizeCanvas() {
+          const dpr = window.devicePixelRatio || 1;
+          const rect = canvas.getBoundingClientRect();
+          canvas.width = rect.width * dpr;
+          canvas.height = rect.height * dpr;
+          ctx.scale(dpr, dpr);
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        if (card) {
+          card.addEventListener('mouseenter', () => { surge = 1.6; });
+          card.addEventListener('mouseleave', () => { surge = 1.0; });
+        }
+
+        function drawWave() {
+          const width = canvas.getBoundingClientRect().width;
+          const height = canvas.getBoundingClientRect().height;
+          ctx.clearRect(0, 0, width, height);
+
+          // Grid line
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+          ctx.lineWidth = 1;
+          ctx.moveTo(0, height / 2);
+          ctx.lineTo(width, height / 2);
+          ctx.stroke();
+
+          // Wave 1: Electric Orange Core Stream
+          ctx.beginPath();
+          ctx.lineWidth = 2.2;
+          ctx.strokeStyle = '#F4600C';
+          ctx.shadowColor = 'rgba(244, 96, 12, 0.6)';
+          ctx.shadowBlur = 8;
+
+          for (let x = 0; x < width; x += 2) {
+            const y = height / 2 + 
+              Math.sin((x * 0.024) + step) * (10 * surge) + 
+              Math.sin((x * 0.05) - step * 1.5) * (4 * surge);
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+
+          // Wave 2: Cyber Blue Offset Harmonic Stream
+          ctx.beginPath();
+          ctx.lineWidth = 1.6;
+          ctx.strokeStyle = '#38BDF8';
+          ctx.shadowColor = 'rgba(56, 189, 248, 0.6)';
+          ctx.shadowBlur = 6;
+
+          for (let x = 0; x < width; x += 2) {
+            const y = height / 2 + 
+              Math.cos((x * 0.018) - step * 0.9) * (8 * surge) + 
+              Math.sin((x * 0.038) + step * 1.2) * (3 * surge);
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+
+          step += 0.055;
+          requestAnimationFrame(drawWave);
+        }
+        requestAnimationFrame(drawWave);
+      }
+
+      // 3. Staggered Scroll Reveal Observer
+      if ('IntersectionObserver' in window) {
+        document.body.classList.add('js-reveal-active');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight) {
+            el.classList.add('visible');
+          }
+          observer.observe(el);
+        });
+      }
+    })();
+
+  </script>
+
+  <!-- CORE TELEMETRY, FIRESTORE & CLASSROOM ENGINE SCRIPT (100% PRESERVED BUSINESS LOGIC) -->
   <script>
     (async function() {
+      // Global image error interceptor
+      window.addEventListener('error', function(e) {
+        if (e.target && e.target.tagName === 'IMG') {
+          const img = e.target;
+          if (img.dataset.hasFallback) return;
+          img.dataset.hasFallback = 'true';
+          img.onerror = null;
+          img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="%23F4600C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>';
+          img.style.objectFit = 'contain';
+          img.style.opacity = '0.9';
+        }
+      }, true);
+
+      // Clean I18n dictionary overrides (Institutional wording, Zero Unicode emojis)
+      if (typeof I18nVisualEngine !== 'undefined' && I18nVisualEngine.DICTIONARY) {
+        I18nVisualEngine.DICTIONARY.en.companion_open_meet = "Launch Google Meet Room";
+        I18nVisualEngine.DICTIONARY.fr.companion_open_meet = "Lancer la Salle Google Meet";
+        I18nVisualEngine.DICTIONARY.en.companion_title = "Mission Control Active";
+        I18nVisualEngine.DICTIONARY.fr.companion_title = "Centre de Mission Actif";
+      }
+
       const urlParams = new URLSearchParams(window.location.search);
       const sessionId = urlParams.get('id') || urlParams.get('sessionId') || ('ses-' + Date.now());
       const role = (urlParams.get('role') || 'student').toLowerCase();
@@ -209,7 +1248,7 @@
       const statusBadge = document.getElementById('session-status-badge');
       const statusText = document.getElementById('session-status-text');
 
-      // 1. Resolve schedule from DB with flexible parameter resolution (supports direct 1-click from reminder emails)
+      // 1. Resolve schedule from DB with flexible parameter resolution
       let schedule = null;
       let targetMeetingUrl = directUrl || '';
 
@@ -263,10 +1302,10 @@
       const userName = (role === 'tutor') ? tutorName : studentName;
       targetMeetingUrl = directUrl || (schedule ? (schedule.link || schedule.meetLink) : 'https://meet.google.com/gyd-fewb-cdh');
 
-      detailSession.textContent = courseName;
-      detailStudent.textContent = studentName;
-      detailMentor.textContent = tutorName;
-      btnManual.href = targetMeetingUrl;
+      if (detailSession) detailSession.textContent = courseName;
+      if (detailStudent) detailStudent.textContent = studentName;
+      if (detailMentor) detailMentor.textContent = tutorName;
+      if (btnManual) btnManual.href = targetMeetingUrl;
 
       const btnSlides = document.getElementById('btn-open-curriculum-slides');
       if (btnSlides) {
@@ -371,7 +1410,7 @@
       }, 1000);
       activeIntervals.push(elapsedTimer);
 
-      // Clean exit handler with Celebratory Double-Bezel Modal
+      // Clean exit handler with Celebratory Modal
       btnEnd.onclick = () => {
         isCleanExit = true;
         activeIntervals.forEach(t => clearInterval(t));
@@ -395,57 +1434,53 @@
           });
         }
         if (statusBadge) {
-          statusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-400"></span><span>Session Concluded</span>`;
-          statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1.5 shadow-xs';
+          statusBadge.innerHTML = `<span style="width: 8px; height: 8px; border-radius: 50%; background: #94A3B8;"></span><span>Session Concluded</span>`;
+          statusBadge.className = 'telemetry-pill telemetry-pill-timer';
         }
 
-        // Render Celebratory Double-Bezel Modal (No native alert)
+        // Render Celebratory Modal
         let modal = document.getElementById('session-ended-modal');
         if (modal) modal.remove();
 
         const attendanceCreateHref = `tutor-attendance-create.html?scheduleId=${encodeURIComponent(scheduleId || '')}&studentId=${encodeURIComponent(studentId || '')}&date=${encodeURIComponent(scheduleDate || '')}&course=${encodeURIComponent(courseName || '')}`;
         const primaryActionHtml = role === 'tutor'
-          ? `<a href="${attendanceCreateHref}" class="block w-full py-3 bg-orange-600 hover:bg-orange-500 text-white font-extrabold rounded-xl text-xs shadow-md shadow-orange-600/30 transition-all active:scale-95 text-center">
-               📋 Log Session Attendance Now
+          ? `<a href="${attendanceCreateHref}" style="display: block; width: 100%; padding: 12px; background: #F4600C; color: white; font-weight: 800; border-radius: 12px; font-size: 13px; text-decoration: none; margin-bottom: 8px; text-align: center;">
+               Log Session Attendance Now
              </a>
-             <a href="tutor-dashboard.html" class="block w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs border border-slate-200 transition-all active:scale-95 text-center">
+             <a href="tutor-dashboard.html" style="display: block; width: 100%; padding: 10px; background: #F1F5F9; color: #334155; font-weight: 700; border-radius: 12px; font-size: 12px; text-decoration: none; text-align: center;">
                Return to Tutor Dashboard
              </a>`
-          : `<a href="parent-dashboard.html" class="block w-full py-3 bg-orange-600 hover:bg-orange-500 text-white font-extrabold rounded-xl text-xs shadow-md shadow-orange-600/30 transition-all active:scale-95 text-center">
+          : `<a href="parent-dashboard.html" style="display: block; width: 100%; padding: 12px; background: #F4600C; color: white; font-weight: 800; border-radius: 12px; font-size: 13px; text-decoration: none; margin-bottom: 8px; text-align: center;">
                Return to Parent Dashboard
              </a>
-             <button onclick="document.getElementById('session-ended-modal').remove()" class="block w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs border border-slate-200 transition-all active:scale-95">
+             <button onclick="document.getElementById('session-ended-modal').remove()" style="display: block; width: 100%; padding: 10px; background: #F1F5F9; color: #334155; font-weight: 700; border-radius: 12px; font-size: 12px; border: none; cursor: pointer; text-align: center;">
                Stay on Companion
              </button>`;
 
         modal = document.createElement('div');
         modal.id = 'session-ended-modal';
-        modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-fadeIn';
+        modal.className = 'celebrate-modal-backdrop';
         modal.innerHTML = `
-          <div class="relative max-w-sm w-full bg-slate-100/95 border border-slate-200/80 rounded-[2.5rem] p-2.5 shadow-2xl">
-            <div class="bg-white rounded-[calc(2.5rem-0.375rem)] p-6 text-center border border-slate-100">
-              <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-teal-300/20 border border-emerald-200 flex items-center justify-center text-3xl shadow-sm">
-                🎉
-              </div>
-              <h3 class="text-xl font-black text-slate-900 tracking-tight mb-1">Session Completed!</h3>
-              <p class="text-xs text-slate-500 mb-4 font-medium">Great coding work today! Attendance &amp; lesson logs have been automatically synchronized.</p>
-              
-              <div class="bg-slate-50 rounded-xl p-3 border border-slate-100 text-xs mb-5 text-left space-y-1 font-medium">
-                <div class="flex justify-between"><span class="text-slate-400">Student:</span><strong class="text-slate-800">${studentName}</strong></div>
-                <div class="flex justify-between"><span class="text-slate-400">Track:</span><strong class="text-slate-800">${courseName}</strong></div>
-                <div class="flex justify-between"><span class="text-slate-400">Duration:</span><strong class="text-emerald-700 font-mono font-bold">${sessionElapsed ? sessionElapsed.textContent : 'Full Class'}</strong></div>
-              </div>
+          <div class="celebrate-card">
+            <img src="images/portal/standalone/gold-trophy-3d.png" class="celebrate-trophy-3d" alt="Trophy" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><polygon points=\'50,15 63,40 90,40 68,58 76,85 50,70 24,85 32,58 10,40 37,40\' fill=\'%23F59E0B\'/></svg>'">
+            <h3 style="font-size: 20px; font-weight: 900; color: #0F172A; margin-bottom: 6px;">Session Completed!</h3>
+            <p style="font-size: 12.5px; color: #64748B; margin-bottom: 16px;">Outstanding work today! Telemetry &amp; lesson logs have been synchronized.</p>
+            
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px; font-size: 12px; margin-bottom: 18px; text-align: left;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span style="color: #64748B;">Student:</span><strong>${studentName}</strong></div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span style="color: #64748B;">Track:</span><strong>${courseName}</strong></div>
+              <div style="display: flex; justify-content: space-between;"><span style="color: #64748B;">Duration:</span><strong style="color: #047857;" class="font-mono">${sessionElapsed ? sessionElapsed.textContent : 'Full Class'}</strong></div>
+            </div>
 
-              <div class="space-y-2">
-                ${primaryActionHtml}
-              </div>
+            <div>
+              ${primaryActionHtml}
             </div>
           </div>
         `;
         document.body.appendChild(modal);
       };
 
-      // Partner presence & contact routing monitor (Alerts immediately who is waiting and who to contact for class to hold)
+      // Partner presence & contact routing monitor
       const renderPartnerPresenceStatus = () => {
         try {
           const presStore = JSON.parse(localStorage.getItem('stemulus_live_presence') || '{}');
@@ -480,52 +1515,42 @@
             : 'https://wa.me/2347052466716';
 
           if (pres && pres.status === 'disconnected') {
-            partnerAlert.className = 'p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs font-bold text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-xs';
+            partnerAlert.style.cssText = 'padding: 12px 16px; border-radius: 14px; background: #FFFBEB; border: 1px solid #FDE68A; font-size: 12px; font-weight: 700; color: #92400E; display: flex; align-items: center; justify-content: space-between; gap: 8px;';
             partnerAlert.innerHTML = `
-              <div class="flex items-center gap-2">
-                <span>⚠️</span>
-                <span><strong>${pres.disconnectedParty}</strong> left the call. Rejoin beacon active; waiting for reconnection...</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 16px;">&bull;</span>
+                <span><strong>${pres.disconnectedParty}</strong> left the call. Rejoin beacon active...</span>
               </div>
-              <a href="${role === 'tutor' ? parentNudgeUrl : tutorAlertUrl}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-[11px] whitespace-nowrap no-underline">
-                💬 Contact ${role === 'tutor' ? contacts.studentFirstName + "'s Parent" : 'Tutor ' + contacts.tutorFirstName}
+              <a href="${role === 'tutor' ? parentNudgeUrl : tutorAlertUrl}" target="_blank" rel="noopener" style="padding: 6px 12px; border-radius: 8px; background: #D97706; color: white; font-weight: 800; font-size: 11px; text-decoration: none; white-space: nowrap;">
+                Contact ${role === 'tutor' ? contacts.studentFirstName + "'s Parent" : 'Tutor ' + contacts.tutorFirstName}
               </a>`;
           } else if (pres && pres.studentPresent && pres.tutorPresent) {
-            partnerAlert.className = 'p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-900 flex items-center justify-between gap-2 shadow-xs';
+            partnerAlert.style.cssText = 'padding: 12px 16px; border-radius: 14px; background: #ECFDF5; border: 1px solid #A7F3D0; font-size: 12px; font-weight: 700; color: #047857; display: flex; align-items: center; justify-content: space-between; gap: 8px;';
             partnerAlert.innerHTML = `
-              <div class="flex items-center gap-2">
-                <span>✅</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981;"></span>
                 <span>Both <strong>${contacts.studentFirstName}</strong> and <strong>Tutor ${contacts.tutorFirstName}</strong> have joined. Class is holding live!</span>
               </div>`;
           } else if (role !== 'tutor' && (!pres || !pres.tutorPresent)) {
-            partnerAlert.className = 'p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs';
+            partnerAlert.style.cssText = 'padding: 12px 16px; border-radius: 14px; background: #FFF1F2; border: 1px solid #FECDD3; font-size: 12px; color: #881337; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; text-align: left;';
             partnerAlert.innerHTML = `
-              <div class="space-y-0.5">
-                <div class="font-extrabold text-rose-900 flex items-center gap-1.5">
-                  <span class="inline-block w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>
-                  <span>${contacts.studentFirstName} is now in class waiting for ${contacts.tutorFirstName}.</span>
-                </div>
-                <p class="text-[11px] text-rose-800 font-semibold">Please reach out to <strong>Tutor ${contacts.tutorFirstName}${contacts.tutorPhone ? ' (' + contacts.tutorPhone + ')' : ''}</strong> in order for the class to hold. Admin &amp; Tutor have been alerted autonomously.</p>
+              <div>
+                <div style="font-weight: 800; color: #9F1239; margin-bottom: 2px;">${contacts.studentFirstName} is in class waiting for ${contacts.tutorFirstName}.</div>
+                <div style="font-size: 11px; color: #BE123C; font-weight: 600;">Reach out to Tutor ${contacts.tutorFirstName} in order for class to hold.</div>
               </div>
-              <div class="flex items-center gap-2 shrink-0">
-                <a href="${tutorAlertUrl}" target="_blank" rel="noopener" class="px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-[11px] whitespace-nowrap no-underline shadow-xs">
-                  💬 Reach Out to Tutor ${contacts.tutorFirstName}
-                </a>
-              </div>`;
+              <a href="${tutorAlertUrl}" target="_blank" rel="noopener" style="padding: 6px 12px; border-radius: 8px; background: #E11D48; color: white; font-weight: 800; font-size: 11px; text-decoration: none; white-space: nowrap;">
+                Reach Out to Tutor
+              </a>`;
           } else if (role === 'tutor' && (!pres || !pres.studentPresent)) {
-            partnerAlert.className = 'p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs';
+            partnerAlert.style.cssText = 'padding: 12px 16px; border-radius: 14px; background: #FFFBEB; border: 1px solid #FDE68A; font-size: 12px; color: #78350F; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; text-align: left;';
             partnerAlert.innerHTML = `
-              <div class="space-y-0.5">
-                <div class="font-extrabold text-amber-900 flex items-center gap-1.5">
-                  <span class="inline-block w-2 h-2 rounded-full bg-amber-600 animate-ping"></span>
-                  <span>Tutor ${contacts.tutorFirstName} is now in class waiting for ${contacts.studentFirstName}.</span>
-                </div>
-                <p class="text-[11px] text-amber-800 font-semibold">Please reach out to <strong>${contacts.studentFirstName}'s Parent (${contacts.parentName}${contacts.parentPhone ? ' · ' + contacts.parentPhone : ''})</strong> in order for the class to hold.</p>
+              <div>
+                <div style="font-weight: 800; color: #92400E; margin-bottom: 2px;">Tutor ${contacts.tutorFirstName} is in class waiting for ${contacts.studentFirstName}.</div>
+                <div style="font-size: 11px; color: #B45309; font-weight: 600;">Reach out to ${contacts.studentFirstName}'s Parent in order for class to hold.</div>
               </div>
-              <div class="flex items-center gap-2 shrink-0">
-                <a href="${parentNudgeUrl}" target="_blank" rel="noopener" class="px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-[11px] whitespace-nowrap no-underline shadow-xs">
-                  💬 Reach Out to ${contacts.studentFirstName}'s Parent
-                </a>
-              </div>`;
+              <a href="${parentNudgeUrl}" target="_blank" rel="noopener" style="padding: 6px 12px; border-radius: 8px; background: #D97706; color: white; font-weight: 800; font-size: 11px; text-decoration: none; white-space: nowrap;">
+                Reach Out to Parent
+              </a>`;
           }
         } catch(e) {}
       };

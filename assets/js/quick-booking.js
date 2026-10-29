@@ -1122,7 +1122,7 @@ Booking ID: ${data.bookingId}
             const docId = String(data.bookingId || ('qb-' + Date.now())).replace(/[^a-zA-Z0-9_-]/g, '-');
             const parsedFirst = data.studentName ? data.studentName.split(',')[0].trim() : 'Student';
             const parsedAge = data.studentAge || ((data.studentName && data.studentName.includes('age')) ? data.studentName.split('age')[1].trim() : (data.ageGroup || ''));
-            fetch(`https://firestore.googleapis.com/v1/projects/stemulus-lms/databases/(default)/documents/leads?documentId=${encodeURIComponent(docId)}`, {
+            fetch(`https://firestore.googleapis.com/v1/projects/stemulus-kidstech/databases/(default)/documents/leads?documentId=${encodeURIComponent(docId)}&key=AIzaSyBwiBfq11WfgQTPIqvPzxhv3Evz5gN4IUk`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

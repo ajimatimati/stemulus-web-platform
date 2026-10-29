@@ -1717,6 +1717,19 @@
     });
   }
 
+  // Global Image Error Interceptor and Graceful Asset Fallback
+  window.addEventListener('error', function(e) {
+    if (e.target && e.target.tagName === 'IMG') {
+      const img = e.target;
+      if (img.dataset.hasFallback) return;
+      img.dataset.hasFallback = 'true';
+      img.onerror = null;
+      img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="%23F4600C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>';
+      img.style.objectFit = 'contain';
+      img.style.opacity = '0.9';
+    }
+  }, true);
+
   // Initialize
   initDots();
   loadSavedQuests();
@@ -1741,3 +1754,4 @@
     }
   } catch (e) {}
 })();
+

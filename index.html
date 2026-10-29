@@ -271,46 +271,18 @@
   </article>
 
 
-  <!-- HIGH-END POLISHED BRAND PRELOADER (Aesthetic 750ms Reveal) -->
+  <!-- CINEMATIC BRAND LOADER
+   Pure CSS curtain  |  lifts after 2.2s -->
   <div id="site-loader" aria-hidden="true">
-    <div class="stem-loader-inner">
-      <div class="stem-loader-icon-glow">
-        <img src="favicon.png" alt="STEMulus" width="54" height="54" class="stem-loader-cube" fetchpriority="high">
+    <div id="loader-inner">
+      <p id="loader-sub">Global Coding Academy</p>
+      <h1 id="loader-wordmark">STEMulus</h1>
+      <div id="loader-progress">
+        <div id="loader-bar"></div>
       </div>
-      <div class="stem-loader-wordmark">
-        <span class="stem-part">STEM</span><span class="ulus-part">ulus</span>
-      </div>
-      <div class="stem-loader-track">
-        <div class="stem-loader-bar"></div>
-      </div>
-      <p class="stem-loader-tag">Global 1-on-1 Coding Academy &middot; Ages 5&ndash;17</p>
+      <p id="loader-tagline">Ages 5 - 17 &nbsp;&middot;&nbsp;1-on-1 &nbsp;&middot;&nbsp; Est.2025</p>
     </div>
   </div>
-  <script>
-    (function() {
-      var loader = document.getElementById('site-loader');
-      if (!loader) return;
-      var dismissed = false;
-      function dismiss() {
-        if (dismissed) return;
-        dismissed = true;
-        loader.classList.add('is-loaded');
-        setTimeout(function() {
-          if (loader.parentNode) loader.parentNode.removeChild(loader);
-        }, 500);
-      }
-      if (document.readyState === 'complete') {
-        setTimeout(dismiss, 600);
-      } else {
-        window.addEventListener('load', function() { setTimeout(dismiss, 600); });
-        setTimeout(dismiss, 850);
-      }
-    })();
-  </script>
-
-  <!-- Custom Cursor -->
-  <div id="cursor-ring" aria-hidden="true"></div>
-  <div id="cursor-dot" aria-hidden="true"></div>
 
   <!-- Navigation -->
   <nav class="nav-editorial" role="navigation" aria-label="Main Navigation" id="main-nav">
@@ -320,11 +292,7 @@
     </a>
     <div style="display:flex; align-items:center; gap:2rem;">
       <a href="programs.html">Programs</a>
-      <a href="academy.html" style="color: #EA580C; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;">
-        <span>Digital Academy</span>
-        <span style="background: rgba(244,96,12,0.12); color: #EA580C; font-size: 10px; padding: 2px 6px; border-radius: 6px; font-weight: 800;">PASS</span>
-      </a>
-      <a href="learner-hub.html" style="color: #0284C7; font-weight: 800;">Quest LMS</a>
+      <a href="academy.html">Digital Academy</a>
       <a href="for-parents.html">Why Parents Choose Us</a>
       <a href="child-safety.html">Safety</a>
       <a href="blog.html">Blog</a>
@@ -348,41 +316,6 @@
     <video id="blink-video" src="robot_blink.mp4" poster="assets/images/poster-robot-blink.webp" muted playsinline preload="metadata"
       style="opacity:0;pointer-events:none;will-change:opacity;"></video>
     <div id="video-overlay"></div>
-    <!-- Engineering Anatomy HUD: Illuminates when robot separates during scrub -->
-    <div id="robot-hud-overlay" class="absolute inset-0 pointer-events-none opacity-0 transition-all duration-300 z-10 flex items-center justify-center p-6">
-      <div class="relative w-full max-w-5xl h-full max-h-[640px]">
-        <!-- Blueprint Status -->
-        <div class="absolute top-24 left-6 bg-slate-950/85 border border-orange-500/40 rounded-2xl p-4 backdrop-blur-xl shadow-2xl text-left">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-2 h-2 rounded-full bg-orange-400 animate-ping"></span>
-            <span class="text-[10px] font-mono font-bold text-orange-400 uppercase tracking-widest">Hardware Architecture</span>
-          </div>
-          <p class="text-sm font-bold text-white">Autonomous Robotics Rig</p>
-          <span class="text-[10px] font-mono text-slate-400">Spec: C++ Kinematics &amp; Microcontroller Engine</span>
-        </div>
-
-        <!-- Callout 1: Optical / AI Vision -->
-        <div class="absolute top-32 right-8 bg-slate-950/85 border border-blue-500/40 rounded-2xl p-3.5 backdrop-blur-xl shadow-2xl text-left hidden sm:block">
-          <span class="text-[9px] font-mono font-bold text-blue-400 uppercase tracking-wider block mb-0.5">Subsystem 01</span>
-          <p class="text-xs font-bold text-white">Computer Vision &amp; Neural Inference</p>
-          <span class="text-[9px] text-slate-400">Real-time object segmentation</span>
-        </div>
-
-        <!-- Callout 2: Microcontroller Core -->
-        <div class="absolute bottom-36 left-8 bg-slate-950/85 border border-emerald-500/40 rounded-2xl p-3.5 backdrop-blur-xl shadow-2xl text-left hidden sm:block">
-          <span class="text-[9px] font-mono font-bold text-emerald-400 uppercase tracking-wider block mb-0.5">Subsystem 02</span>
-          <p class="text-xs font-bold text-white">STM32 / ESP32 Dual-Core Logic</p>
-          <span class="text-[9px] text-slate-400">I2C / SPI Sensor Protocol Bus</span>
-        </div>
-
-        <!-- Callout 3: Servos & Actuators -->
-        <div class="absolute bottom-24 right-12 bg-slate-950/85 border border-pink-500/40 rounded-2xl p-3.5 backdrop-blur-xl shadow-2xl text-left hidden sm:block">
-          <span class="text-[9px] font-mono font-bold text-pink-400 uppercase tracking-wider block mb-0.5">Subsystem 03</span>
-          <p class="text-xs font-bold text-white">High-Torque Kinematic Servos</p>
-          <span class="text-[9px] text-slate-400">Closed-loop PID position control</span>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- PAGE CONTENT  |  scrolls over the fixed video -->
@@ -2542,31 +2475,6 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('scroll', updateVisibility, {passive: true});
     window.addEventListener('resize', updateVisibility);
   })();
-</script>
-
-<!-- CONVERSION FUNNEL: Exit-Intent Popup -->
-<div id="exit-intent-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99998;align-items:center;justify-content:center;" onclick="if(event.target===this)dismissExitIntent()">
-  <div style="background:#fff;border-radius:20px;padding:2.5rem;max-width:420px;width:90%;text-align:center;position:relative;box-shadow:0 30px 80px rgba(0,0,0,0.3);">
-    <button onclick="dismissExitIntent()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.25rem;color:#94a3b8;cursor:pointer;">×</button>
-    <div style="margin-bottom:0.75rem; display:flex; justify-content:center;"><span data-icon-3d="target" data-icon-size="52"></span></div>
-    <h3 style="font-family:Fredoka,sans-serif;font-size:1.5rem;font-weight:700;color:#1e293b;margin:0 0 0.5rem;">Before you go...</h3>
-    <p style="color:#64748b;font-size:0.9rem;margin:0 0 1.25rem;line-height:1.6;">Your child's first coding class is <strong>100% free</strong>. No credit card. No commitment. Just 45 minutes that could spark a lifelong skill.</p>
-    <p style="color:#94a3b8;font-size:0.75rem;margin:0 0 1.5rem;">Trusted by families in Nigeria, UK, US, Canada & Australia.</p>
-    <a href="#" onclick="event.preventDefault();dismissExitIntent();if(typeof QuickBooking!=='undefined'){QuickBooking.open();}" style="display:inline-block;background:#f4600c;color:#fff;font-weight:800;padding:0.9rem 2rem;border-radius:10px;text-decoration:none;font-size:0.95rem;width:100%;box-sizing:border-box;">Book Free Trial Now →</a>
-    <button onclick="dismissExitIntent()" style="margin-top:0.75rem;background:none;border:none;color:#94a3b8;font-size:0.8rem;cursor:pointer;text-decoration:underline;">No thanks, I'll skip the free class</button>
-  </div>
-</div>
-<script>
-function dismissExitIntent() { document.getElementById('exit-intent-overlay').style.display='none'; sessionStorage.setItem('exit_intent_shown','1'); }
-(function(){
-  if(sessionStorage.getItem('exit_intent_shown')) return;
-  var fired = false;
-  document.addEventListener('mouseleave', function(e){
-    if(e.clientY>10||fired||window.innerWidth<=768) return;
-    fired = true;
-    setTimeout(function(){ document.getElementById('exit-intent-overlay').style.display='flex'; }, 500);
-  });
-})();
 </script>
 
 <!-- Netlify static honeypot form - must exist in HTML at build time for JS-injected form POSTs to be captured -->

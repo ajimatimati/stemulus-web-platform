@@ -21,7 +21,7 @@
 
 const ADMIN_EMAIL = 'admin@stemuluskidstech.com';
 const ADMIN_ALERT_RECIPIENTS = ['admin@stemuluskidstech.com', 'stemuluskidstech@gmail.com'];
-const FROM_ADDRESS = process.env.RESEND_FROM_EMAIL || 'STEMulus Kids Tech <hello@portal.stemuluskidstech.com>';
+const FROM_ADDRESS = process.env.RESEND_FROM_EMAIL || 'STEMulus Kids Tech <hello@stemuluskidstech.com>';
 const SITE_URL = 'https://stemuluskidstech.com';
 const WHATSAPP_NUMBER = '2347052466716';
 
@@ -1269,7 +1269,9 @@ async function persistLeadToFirestore(type, data) {
       _lastUpdated:     { stringValue: new Date().toISOString() }
     };
 
-    await fetch(`https://firestore.googleapis.com/v1/projects/stemulus-lms/databases/(default)/documents/leads?documentId=${encodeURIComponent(docId)}`, {
+    const fbProject = process.env.FIREBASE_PROJECT_ID || 'stemulus-kidstech';
+    const fbKey = process.env.FIREBASE_API_KEY || 'AIzaSyBwiBfq11WfgQTPIqvPzxhv3Evz5gN4IUk';
+    await fetch(`https://firestore.googleapis.com/v1/projects/${fbProject}/databases/(default)/documents/leads?documentId=${encodeURIComponent(docId)}&key=${fbKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fields })

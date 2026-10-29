@@ -605,7 +605,7 @@ Time: ${new Date().toLocaleTimeString()}
 
             // Direct cloud sync to Firestore 'leads' collection (public write-only intake)
             const docId = String(data.enrollmentId || ('enr-' + Date.now())).replace(/[^a-zA-Z0-9_-]/g, '-');
-            fetch(`https://firestore.googleapis.com/v1/projects/stemulus-lms/databases/(default)/documents/leads?documentId=${encodeURIComponent(docId)}`, {
+            fetch(`https://firestore.googleapis.com/v1/projects/stemulus-kidstech/databases/(default)/documents/leads?documentId=${encodeURIComponent(docId)}&key=AIzaSyBwiBfq11WfgQTPIqvPzxhv3Evz5gN4IUk`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

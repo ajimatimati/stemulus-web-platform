@@ -278,21 +278,6 @@
         duration: 0.3
       }, 0.05);
 
-      // Animate engineering anatomy HUD during robot disassembly
-      const hudEl = document.getElementById('robot-hud-overlay');
-      if (hudEl) {
-        tlFade.fromTo(hudEl, 
-          { opacity: 0, y: 15 },
-          { opacity: 1, y: 0, ease: 'power2.out', duration: 0.25 },
-          0.08
-        );
-        tlFade.to(hudEl, {
-          opacity: 0,
-          y: -15,
-          ease: 'power2.in',
-          duration: 0.2
-        }, 0.38);
-      }
 
       // Start the alive blink loop: desktop only
       initBlinkEngine();
