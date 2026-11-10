@@ -508,6 +508,55 @@
       position: relative;
       z-index: 3;
     }
+
+    /* ── OFFICIAL LOGO SECURITY WATERMARK ── */
+    .cert-watermark-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      user-select: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .cert-watermark-img {
+      max-width: 320px;
+      max-height: 320px;
+      width: 40%;
+      height: auto;
+      object-fit: contain;
+      transform: translateY(14px);
+      transition: opacity 0.3s ease;
+    }
+    .explorers-watermark {
+      opacity: 0.046;
+      filter: grayscale(100%) brightness(1.06);
+      mix-blend-mode: multiply;
+    }
+    .vanguard-watermark {
+      opacity: 0.04;
+      filter: grayscale(100%) contrast(1.12);
+      mix-blend-mode: multiply;
+    }
+
+    @media print {
+      body { background: #fff !important; }
+      nav, footer, .no-print, .search-container, .hero-section { display: none !important; }
+      .cert-watermark-wrap {
+        display: flex !important;
+        visibility: visible !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .explorers-watermark {
+        opacity: 0.052 !important;
+      }
+      .vanguard-watermark {
+        opacity: 0.048 !important;
+      }
+    }
     .explorers-head-crest {
       display: flex;
       flex-direction: column;
@@ -1022,6 +1071,11 @@
                 </g>
               </svg>
 
+              <!-- Faint Official Logo Security Watermark -->
+              <div class="cert-watermark-wrap" aria-hidden="true">
+                <img src="logo.png" alt="" class="cert-watermark-img explorers-watermark">
+              </div>
+
               <div class="explorers-card-inner">
                 <!-- Header: Arched Text & Laurel Crest -->
                 <div class="explorers-head-crest">
@@ -1052,7 +1106,7 @@
                 <div class="explorers-student-name" id="vc-exp-name">Student Name</div>
 
                 <p class="explorers-narrative">
-                  has completed all the requirements at <strong>STEMulus Kids Tech</strong> in <strong id="vc-exp-program">Program Title</strong> with the distinction grade of <strong id="vc-exp-grade" style="color:#d97706;">Distinction</strong> and is awarded this Certificate of Achievement. Great job! We're so proud of your hard work—keep learning, growing, and shining bright!
+                  has completed all the requirements at <strong>STEMulus Kids Tech</strong> in <strong id="vc-exp-program">Program Title</strong> with the distinction grade of <strong id="vc-exp-grade" style="color:#d97706;">Distinction</strong> and is awarded this Certificate of Achievement. Great job! We're so proud of your hard work: keep learning, growing, and shining bright!
                 </p>
 
                 <!-- Footer: Graduation Cap, Signatures, Golden Rosette & QR -->
@@ -1177,6 +1231,11 @@
                 </g>
               </svg>
 
+              <!-- Faint Official Logo Security Watermark -->
+              <div class="cert-watermark-wrap" aria-hidden="true">
+                <img src="logo.png" alt="" class="cert-watermark-img vanguard-watermark">
+              </div>
+
               <div class="vanguard-inner">
                 <!-- Top Row: Open Bracket Header + STEMulus Logo -->
                 <div class="vanguard-header-row">
@@ -1201,7 +1260,7 @@
                 <div class="vanguard-center-wrap">
                   <div class="vanguard-student-name" id="vc-van-name">Student Name</div>
                   <div>
-                    <span class="vanguard-date-pill" id="vc-van-date-pill">COMPLETED — SEPTEMBER 22, 2026</span>
+                    <span class="vanguard-date-pill" id="vc-van-date-pill">COMPLETED: SEPTEMBER 22, 2026</span>
                   </div>
                   <p class="vanguard-narrative">
                     A verified credential certifying that the candidate has demonstrated proficiency in <strong id="vc-van-program">Program Title</strong> with the distinction grade of <strong id="vc-van-grade" style="color:var(--orange);">Distinction</strong>, fulfilling all rigorous algorithmic benchmarks, code reviews, and capstone production projects under STEMulus Kids Tech.
@@ -1365,8 +1424,8 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
   <!-- ===== App Scripts ===== -->
-  <script src="assets/js/firebase-config.min.js" defer></script>
-  <script src="assets/js/dashboard-engine.min.js" defer></script>
+  <script src="assets/js/firebase-config.min.js"></script>
+  <script src="assets/js/dashboard-engine.min.js"></script>
 
   <!-- ===== Page Script ===== -->
   <script>

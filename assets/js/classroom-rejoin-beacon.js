@@ -93,96 +93,6 @@ const ClassroomRejoinBeacon = (function() {
     return false;
   }
 
-  
-  function isPromptForCurrentUser(promptData) {
-    if (!promptData) return false;
-    if (typeof DashboardEngine === 'undefined' || typeof DashboardEngine.getSession !== 'function') return true;
-    const session = DashboardEngine.getSession();
-    if (!session || !session.role || !session.email) return true; // If no session established, do not block
-
-    const role = String(session.role).toLowerCase().trim();
-    const sessionEmail = String(session.email).toLowerCase().trim();
-    const sessionName = String(session.name || '').toLowerCase().trim();
-    const sessionFirst = sessionName.split(' ')[0] || '';
-
-    if (role === 'tutor') {
-      const pTutorEmail = (promptData.tutorEmail || '').toLowerCase().trim();
-      const pTutorName = (promptData.tutorName || '').toLowerCase().trim();
-      if (pTutorEmail && (pTutorEmail === sessionEmail)) return true;
-      if (sessionFirst && pTutorName.includes(sessionFirst)) return true;
-      if (typeof DashboardEngine.getTutorStudents === 'function') {
-        const myStudents = DashboardEngine.getTutorStudents(sessionEmail) || [];
-        const stId = promptData.studentId;
-        const stName = (promptData.studentName || '').toLowerCase().trim();
-        return myStudents.some(s => (stId && s.id === stId) || (((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim() === stName));
-      }
-      return false;
-    }
-
-    if (role === 'parent') {
-      const pEmail = (promptData.parentEmail || '').toLowerCase().trim();
-      if (pEmail && pEmail === sessionEmail) return true;
-      if (typeof DashboardEngine.getParentStudents === 'function') {
-        const myKids = DashboardEngine.getParentStudents(sessionEmail) || [];
-        const stId = promptData.studentId;
-        const stName = (promptData.studentName || '').toLowerCase().trim();
-        return myKids.some(c => (stId && c.id === stId) || (((c.firstName || '') + ' ' + (c.lastName || '')).toLowerCase().trim() === stName));
-      }
-      return false;
-    }
-
-    if (role === 'admin') {
-      return true;
-    }
-
-    return false;
-  }
-
-  
-  function isPromptForCurrentUser(promptData) {
-    if (!promptData) return false;
-    if (typeof DashboardEngine === 'undefined' || typeof DashboardEngine.getSession !== 'function') return true;
-    const session = DashboardEngine.getSession();
-    if (!session || !session.role || !session.email) return true; // If no session established, do not block
-
-    const role = String(session.role).toLowerCase().trim();
-    const sessionEmail = String(session.email).toLowerCase().trim();
-    const sessionName = String(session.name || '').toLowerCase().trim();
-    const sessionFirst = sessionName.split(' ')[0] || '';
-
-    if (role === 'tutor') {
-      const pTutorEmail = (promptData.tutorEmail || '').toLowerCase().trim();
-      const pTutorName = (promptData.tutorName || '').toLowerCase().trim();
-      if (pTutorEmail && (pTutorEmail === sessionEmail)) return true;
-      if (sessionFirst && pTutorName.includes(sessionFirst)) return true;
-      if (typeof DashboardEngine.getTutorStudents === 'function') {
-        const myStudents = DashboardEngine.getTutorStudents(sessionEmail) || [];
-        const stId = promptData.studentId;
-        const stName = (promptData.studentName || '').toLowerCase().trim();
-        return myStudents.some(s => (stId && s.id === stId) || (((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim() === stName));
-      }
-      return false;
-    }
-
-    if (role === 'parent') {
-      const pEmail = (promptData.parentEmail || '').toLowerCase().trim();
-      if (pEmail && pEmail === sessionEmail) return true;
-      if (typeof DashboardEngine.getParentStudents === 'function') {
-        const myKids = DashboardEngine.getParentStudents(sessionEmail) || [];
-        const stId = promptData.studentId;
-        const stName = (promptData.studentName || '').toLowerCase().trim();
-        return myKids.some(c => (stId && c.id === stId) || (((c.firstName || '') + ' ' + (c.lastName || '')).toLowerCase().trim() === stName));
-      }
-      return false;
-    }
-
-    if (role === 'admin') {
-      return true;
-    }
-
-    return false;
-  }
-
   function checkActiveRejoinPrompts() {
     try {
       const prompts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
@@ -218,16 +128,16 @@ const ClassroomRejoinBeacon = (function() {
 
   function renderBeaconHTML(data, key = 'active_session') {
     const elapsedMins = Math.max(1, Math.round((Date.now() - new Date(data.disconnectedAt || Date.now()).getTime()) / 60000));
-    const joinHref = data.joinUrl || `join-class.html?id=${encodeURIComponent(data.scheduleId || data.sessionId || key)}`;
+    const joinHref = (data.joinUrl && !data.joinUrl.includes('join-class.html')) ? data.joinUrl : (data.meetingUrl || data.meetLink || 'https://meet.google.com/stm-prog-live');
 
     return `
-      <div class="bg-white rounded-[1.6rem] p-4 sm:p-5 border border-slate-100 shadow-sm text-slate-900">
+      <div class="bg-white rounded-[1.4rem] p-4 sm:p-5 border-2 border-slate-200 border-b-4 border-b-slate-300 shadow-sm text-slate-900">
         <!-- Header -->
         <div class="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
           <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-rose-500 animate-ping"></span>
             <span class="text-xs font-black uppercase tracking-wider text-rose-600 flex items-center gap-1">
-              <span>🚨</span> Live Class Disconnected
+              Live Class Disconnected
             </span>
           </div>
           <div class="flex items-center gap-1.5">
@@ -242,8 +152,8 @@ const ClassroomRejoinBeacon = (function() {
 
         <!-- Content -->
         <div class="flex items-start gap-3 mb-4">
-          <div class="w-10 h-10 rounded-2xl bg-orange-50 border border-orange-200 flex-shrink-0 flex items-center justify-center text-xl shadow-xs">
-            🚀
+          <div class="w-10 h-10 rounded-2xl bg-orange-50 border-2 border-orange-200 border-b-3 border-b-orange-300 flex-shrink-0 flex items-center justify-center text-orange-600 font-extrabold shadow-xs">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2" stroke-width="2.2"/></svg>
           </div>
           <div class="min-w-0">
             <h4 class="font-bold text-sm text-slate-900 truncate">
@@ -257,10 +167,10 @@ const ClassroomRejoinBeacon = (function() {
 
         <!-- Action Buttons -->
         <div class="flex items-center gap-2">
-          <a href="${joinHref}" class="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs shadow-md shadow-orange-500/20 transition-all text-center flex items-center justify-center gap-2 no-underline">
-            <span>🚀 Rejoin Class Now</span>
+          <a href="${joinHref}" target="_blank" rel="noopener noreferrer" onclick="if(window.launchMeetingSession){event.preventDefault();window.launchMeetingSession({scheduleId:'${data.scheduleId || data.sessionId || key}',studentName:'${(data.studentName || '').replace(/'/g, '')}',tutorName:'${(data.tutorName || '').replace(/'/g, '')}',courseName:'${(data.courseName || '').replace(/'/g, '')}',meetingUrl:'${joinHref}'});}" class="flex-1 py-2.5 px-4 rounded-xl bg-orange-600 hover:bg-orange-500 border-2 border-orange-600 border-b-4 border-b-orange-800 text-white font-extrabold text-xs transition-all text-center flex items-center justify-center gap-2 no-underline">
+            <span>Rejoin Class Now &rarr;</span>
           </a>
-          <button type="button" onclick="ClassroomRejoinBeacon.dismissPrompt('${key}')" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors">
+          <button type="button" onclick="ClassroomRejoinBeacon.dismissPrompt('${key}')" class="py-2.5 px-3 rounded-xl bg-slate-50 border-2 border-slate-200 border-b-3 border-b-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs transition-colors">
             Later
           </button>
         </div>
@@ -294,9 +204,9 @@ const ClassroomRejoinBeacon = (function() {
       document.body.appendChild(banner);
     }
 
-    const joinHref = data.joinUrl || `join-class.html?sessionId=${encodeURIComponent(data.sessionId || key)}&scheduleId=${encodeURIComponent(data.scheduleId || key)}`;
+    const joinHref = (data.joinUrl && !data.joinUrl.includes('join-class.html')) ? data.joinUrl : (data.meetingUrl || data.meetLink || 'https://meet.google.com/stm-prog-live');
 
-    banner.className = 'fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[9999] max-w-sm sm:max-w-md w-[calc(100%-2.5rem)] sm:w-full bg-slate-900/90 border-2 border-orange-500 rounded-[2rem] p-2 shadow-2xl backdrop-blur-xl animate-bounce-once transition-all';
+    banner.className = 'fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[9999] max-w-sm sm:max-w-md w-[calc(100%-2.5rem)] sm:w-full bg-white border-2 border-orange-200 border-b-4 border-b-orange-300 rounded-[1.8rem] p-1.5 shadow-xl animate-bounce-once transition-all';
     banner.innerHTML = renderBeaconHTML(data, key);
 
     // Trigger local desktop notification on laptop
@@ -309,7 +219,11 @@ const ClassroomRejoinBeacon = (function() {
         });
         notif.onclick = () => {
           window.focus();
-          window.location.href = joinHref;
+          if (typeof window.launchMeetingSession === 'function') {
+            window.launchMeetingSession({ scheduleId: data.scheduleId || data.sessionId || key, studentName: data.studentName, tutorName: data.tutorName, courseName: data.courseName, meetingUrl: joinHref });
+          } else {
+            window.open(joinHref, '_blank', 'noopener,noreferrer');
+          }
         };
       } catch (e) {}
     }
@@ -341,7 +255,7 @@ const ClassroomRejoinBeacon = (function() {
       disconnectedAt: new Date().toISOString(),
       tutorName,
       studentName,
-      joinUrl: 'join-class.html?id=sch_103&role=student'
+      joinUrl: 'https://meet.google.com/stm-prog-live'
     };
     try {
       const prompts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
@@ -352,8 +266,17 @@ const ClassroomRejoinBeacon = (function() {
     return testData;
   }
 
+  function destroy() {
+    if (checkInterval) {
+      clearInterval(checkInterval);
+      checkInterval = null;
+    }
+    dismissRejoinBanner();
+  }
+
   return {
     init,
+    destroy,
     checkActiveRejoinPrompts,
     mountRejoinBanner,
     renderBeaconHTML,
@@ -372,6 +295,11 @@ if (typeof window !== 'undefined') {
   } else {
     ClassroomRejoinBeacon.init();
   }
+  window.addEventListener('pagehide', () => {
+    if (window.ClassroomRejoinBeacon && typeof window.ClassroomRejoinBeacon.destroy === 'function') {
+      window.ClassroomRejoinBeacon.destroy();
+    }
+  });
 }
 
 if (typeof module !== 'undefined' && module.exports) {

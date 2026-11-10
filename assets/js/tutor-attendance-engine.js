@@ -295,7 +295,11 @@ const TutorAttendanceEngine = (function() {
                                 <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${formattedTime}</span>
                                 <span class="flex items-center gap-1"><i data-lucide="hourglass" class="w-3.5 h-3.5"></i> ${r.duration} mins</span>
                             </div>
-                            <p class="text-xs text-slate-400 mt-2 italic border-l-2 border-gray-200 pl-2">"${r.topic || 'Class Session'}" · ${Array.isArray(r.coursesCovered) ? r.coursesCovered.join(', ') : (r.coursesCovered || r.course || 'STEM Program')}</p>
+                            <p class="text-xs text-slate-500 mt-2 italic bg-slate-50 border border-slate-200/80 rounded-lg px-2.5 py-1">"${r.topic || 'Class Session'}" · ${Array.isArray(r.coursesCovered) ? r.coursesCovered.join(', ') : (r.coursesCovered || r.course || 'STEM Program')}</p>
+                            ${(Array.isArray(r.completedProjectLinks) && r.completedProjectLinks.length > 0) ? `
+                            <div class="flex flex-wrap gap-1.5 mt-2">
+                                ${r.completedProjectLinks.map(lnk => `<a href="${lnk}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-md hover:bg-indigo-100"><i data-lucide="external-link" class="w-3 h-3"></i> Project Link</a>`).join('')}
+                            </div>` : ''}
                         </div>
                     </div>
                     <div class="flex flex-col items-end gap-2 shrink-0 self-end md:self-auto">
@@ -409,9 +413,13 @@ const TutorAttendanceEngine = (function() {
         }
 
         studentsList.forEach(s => {
+            const fullName = `${s.firstName || ''} ${s.lastName || ''}`.trim() || 'Student';
             const opt = document.createElement('option');
             opt.value = s.id;
-            opt.textContent = `${s.firstName} ${s.lastName} (${s.program || 'Coding'})`;
+            opt.textContent = `${fullName} (${s.program || 'Coding'})`;
+            opt.setAttribute('data-name', fullName);
+            opt.setAttribute('data-program', s.program || 'Coding');
+            opt.setAttribute('data-course', s.program || 'Coding');
             selectEl.appendChild(opt);
         });
     }
@@ -434,6 +442,8 @@ const TutorAttendanceEngine = (function() {
         const duration = parseInt(document.getElementById('duration_minutes').value);
         const topic = document.getElementById('topic').value;
         const notes = document.getElementById('notes').value;
+        const rawProjectLinks = (document.getElementById('completed_project_links') && document.getElementById('completed_project_links').value) ? document.getElementById('completed_project_links').value.trim() : '';
+        const completedProjectLinks = rawProjectLinks ? rawProjectLinks.split(/[\n,;]+/).map(s => s.trim()).filter(Boolean) : [];
 
         // Get selected courses checkboxes
         const courseCheckboxes = document.querySelectorAll('input[name="courses_covered[]"]:checked');
@@ -458,6 +468,9 @@ const TutorAttendanceEngine = (function() {
             duration,
             topic,
             notes,
+            completedProjectLinks,
+            completed_project_links: completedProjectLinks.join(', '),
+            projectLink: completedProjectLinks[0] || '',
             coursesCovered,
             tutorName: currentTutor.name,
             tutorEmail: currentTutor.email,

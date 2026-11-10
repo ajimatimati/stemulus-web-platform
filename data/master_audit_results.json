@@ -1,15 +1,15 @@
 {
   "inventory": {
-    "totalHtml": 57,
+    "totalHtml": 74,
     "publicRoutes": [
       {
         "file": "404.html"
       },
       {
-        "file": "academy.html"
+        "file": "admin-login.html"
       },
       {
-        "file": "admin-login.html"
+        "file": "after-school-coding-club-online.html"
       },
       {
         "file": "ai-machine-learning.html"
@@ -48,13 +48,52 @@
         "file": "child-safety.html"
       },
       {
+        "file": "coding-classes-for-kids-abuja.html"
+      },
+      {
+        "file": "coding-classes-for-kids-atlanta.html"
+      },
+      {
         "file": "coding-classes-for-kids-australia.html"
+      },
+      {
+        "file": "coding-classes-for-kids-birmingham.html"
+      },
+      {
+        "file": "coding-classes-for-kids-calgary.html"
       },
       {
         "file": "coding-classes-for-kids-canada.html"
       },
       {
+        "file": "coding-classes-for-kids-dallas.html"
+      },
+      {
+        "file": "coding-classes-for-kids-dubai.html"
+      },
+      {
+        "file": "coding-classes-for-kids-houston.html"
+      },
+      {
+        "file": "coding-classes-for-kids-ikeja-lagos.html"
+      },
+      {
+        "file": "coding-classes-for-kids-lekki-lagos.html"
+      },
+      {
+        "file": "coding-classes-for-kids-london.html"
+      },
+      {
+        "file": "coding-classes-for-kids-manchester.html"
+      },
+      {
         "file": "coding-classes-for-kids-nigeria.html"
+      },
+      {
+        "file": "coding-classes-for-kids-port-harcourt.html"
+      },
+      {
+        "file": "coding-classes-for-kids-toronto.html"
       },
       {
         "file": "coding-classes-for-kids-uk.html"
@@ -93,6 +132,9 @@
         "file": "fullstack-web-dev.html"
       },
       {
+        "file": "holiday-coding-camp-online-kids.html"
+      },
+      {
         "file": "index.html"
       },
       {
@@ -117,7 +159,16 @@
         "file": "programs.html"
       },
       {
+        "file": "python-coding-classes-for-teens.html"
+      },
+      {
         "file": "python-programming.html"
+      },
+      {
+        "file": "robotics-and-electronics-classes-for-kids.html"
+      },
+      {
+        "file": "scratch-coding-classes-for-kids.html"
       },
       {
         "file": "scratch-creators.html"
@@ -187,6 +238,7 @@
     "functions": [
       "auto-reminders.js",
       "class-reminders.js",
+      "join-session.js",
       "mcp.js",
       "notify.js",
       "record-session.js",
@@ -215,28 +267,7 @@
     "ndpaCompliance": true
   },
   "copy": {
-    "emDashViolations": [
-      {
-        "file": "admin-dashboard.html",
-        "line": 3126,
-        "snippet": "<p id=\"td-account-number\" class=\"font-mono font-extrabold text-slate-800 text-sm"
-      },
-      {
-        "file": "admin-dashboard.html",
-        "line": 3157,
-        "snippet": "<p id=\"td-workstation\" class=\"text-xs text-slate-700 leading-relaxed font-medium"
-      },
-      {
-        "file": "assets/js/monthly-report-engine.js",
-        "line": 17,
-        "snippet": "// Absolute Constraint: NO EM-DASHES (— or --)"
-      },
-      {
-        "file": "assets/js/monthly-report-engine.js",
-        "line": 18,
-        "snippet": "let cleaned = text.replace(/—/g, ', ').replace(/--/g, ', ');"
-      }
-    ],
+    "emDashViolations": [],
     "placeholderViolations": [],
     "pricingMatches": [
       "programs.html accurately reflects realigned rates (₦48k / ₦75k / ₦120k and £80 parallel)."

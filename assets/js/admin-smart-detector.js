@@ -45,6 +45,8 @@
     scanStats: { payment: 0, birthday: 0, schedule: 0, timezone: 0 },
 
     init: function () {
+      if (this._initialized) return;
+      this._initialized = true;
       console.log('[AdminSmartDetector] Initializing Smart Operational Radar...');
       this.renderControlsBadge();
       // Run an initial scan 1.5 seconds after load to ensure DB is fully mounted

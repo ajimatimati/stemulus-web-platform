@@ -11,6 +11,7 @@ const { handler: sendEmailHandler } = require('./send-email');
 const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
 const ONE_HOUR_MS = 60 * 60 * 1000;
 const TEN_MINUTES_MS = 10 * 60 * 1000;
+const FIVE_MINUTES_MS = 5 * 60 * 1000;
 
 function resolveMeetingLink(schedule) {
   if (!schedule) return 'https://meet.google.com/stm-prog-live';
@@ -80,11 +81,21 @@ exports.handler = async function (event) {
         schedule.reminded1h = true;
         schedule.reminded1h_at = new Date().toISOString();
       }
-      // 3. 10-Minute Urgent Milestone
-      else if (diff > 0 && diff <= TEN_MINUTES_MS && !schedule.reminded10m) {
+      // 3. 10-Minute Milestone (between 5 minutes and 10 minutes before session)
+      else if (diff > FIVE_MINUTES_MS && diff <= TEN_MINUTES_MS && !schedule.reminded10m) {
         milestone = '10m';
         schedule.reminded10m = true;
         schedule.reminded10m_at = new Date().toISOString();
+      }
+      // 4. 5-Minute Urgent Join-Now Milestone (between 0 and 5 minutes before session)
+      else if (diff > 0 && diff <= FIVE_MINUTES_MS && !schedule.reminded5m) {
+        milestone = '5m';
+        schedule.reminded5m = true;
+        schedule.reminded5m_at = new Date().toISOString();
+        if (!schedule.reminded10m) {
+          schedule.reminded10m = true;
+          schedule.reminded10m_at = new Date().toISOString();
+        }
       }
 
       if (milestone) {

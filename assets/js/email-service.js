@@ -71,27 +71,28 @@ const EmailService = (function () {
   }
 
   function buildPortalLaunchUrl(params) {
-    const baseOrigin = (typeof window !== 'undefined' && window.location && window.location.origin && !window.location.origin.includes('file:'))
-      ? window.location.origin
-      : 'https://stemuluskidstech.com';
-    const rawUrl = params.rawMeetUrl || 'https://meet.google.com/stm-prog-live';
-    const q = new URLSearchParams();
-    q.set('id', String(params.scheduleId || 'ses-live'));
-    q.set('role', params.role === 'tutor' ? 'tutor' : 'student');
-    if (params.studentId) q.set('studentId', String(params.studentId));
-    if (params.studentName) q.set('student', String(params.studentName));
-    if (params.tutorName) q.set('tutor', String(params.tutorName));
-    if (params.tutorEmail) q.set('tutorEmail', String(params.tutorEmail));
-    if (params.courseName) q.set('course', String(params.courseName));
-    if (params.rawDate) q.set('date', String(params.rawDate));
-    if (params.classTime) q.set('time', String(params.classTime));
-    q.set('url', rawUrl);
-    return `${baseOrigin}/join-class.html?${q.toString()}`;
+    return (params && params.rawMeetUrl) || 'https://meet.google.com/stm-prog-live';
+  }
+
+  function buildOneClickJoinUrl(params) {
+    const p = params || {};
+    const rawMeetUrl = p.rawMeetUrl || 'https://meet.google.com/stm-prog-live';
+    const qs = [
+      'meet=' + encodeURIComponent(rawMeetUrl),
+      'sid=' + encodeURIComponent(p.scheduleId || ''),
+      'role=' + encodeURIComponent(p.role || 'tutor'),
+      'tutor=' + encodeURIComponent(p.tutorName || 'Mentor'),
+      'student=' + encodeURIComponent(p.studentName || 'Student'),
+      'course=' + encodeURIComponent(p.courseName || 'Coding Session'),
+      'date=' + encodeURIComponent(p.rawDate || ''),
+      'time=' + encodeURIComponent(p.classTime || '')
+    ].join('&');
+    return 'https://stemuluskidstech.com/.netlify/functions/join-session?' + qs;
   }
 
   /**
    * Class reminder email.
-   * options: { student, schedule, type ('24h'|'1h'|'10m') }
+   * options: { student, schedule, type ('24h'|'1h'|'10m'|'5m') }
    */
   async function sendReminderEmail(options) {
     const { student, schedule, type } = options;
@@ -105,6 +106,18 @@ const EmailService = (function () {
     const studentId = (schedule && schedule.studentId) || (student && student.id) || '';
     const rawMeetUrl = (schedule && (schedule.rawMeetLink || schedule.meetLink || schedule.googleMeetLink || schedule.link)) || 'https://meet.google.com/stm-prog-live';
     const portalLaunchUrl = (schedule && schedule.portalStudentUrl) || buildPortalLaunchUrl({
+      scheduleId,
+      role: 'student',
+      studentId,
+      studentName,
+      tutorName,
+      tutorEmail,
+      courseName,
+      rawDate,
+      classTime,
+      rawMeetUrl
+    });
+    const oneClickJoinUrl = (schedule && schedule.oneClickStudentUrl) || buildOneClickJoinUrl({
       scheduleId,
       role: 'student',
       studentId,
@@ -130,6 +143,7 @@ const EmailService = (function () {
       classTime,
       duration: (schedule && schedule.duration) || 60,
       portalLaunchUrl,
+      oneClickJoinUrl,
       rawMeetLink: rawMeetUrl,
       link: portalLaunchUrl,
       meetLink: rawMeetUrl,
@@ -140,8 +154,8 @@ const EmailService = (function () {
   }
 
   /**
-   * Tutor class reminder email (24h, 1h, 10m).
-   * options: { tutor, student, schedule, type ('24h'|'1h'|'10m') }
+   * Tutor class reminder email (24h, 1h, 10m, 5m).
+   * options: { tutor, student, schedule, type ('24h'|'1h'|'10m'|'5m') }
    */
   async function sendTutorReminderEmail(options) {
     const { tutor, student, schedule, type } = options;
@@ -155,6 +169,18 @@ const EmailService = (function () {
     const studentId = (schedule && schedule.studentId) || (student && student.id) || '';
     const rawMeetUrl = (schedule && (schedule.rawMeetLink || schedule.meetLink || schedule.googleMeetLink || schedule.link)) || 'https://meet.google.com/stm-prog-live';
     const portalLaunchUrl = (schedule && schedule.portalTutorUrl) || buildPortalLaunchUrl({
+      scheduleId,
+      role: 'tutor',
+      studentId,
+      studentName,
+      tutorName,
+      tutorEmail,
+      courseName,
+      rawDate,
+      classTime,
+      rawMeetUrl
+    });
+    const oneClickJoinUrl = (schedule && schedule.oneClickTutorUrl) || buildOneClickJoinUrl({
       scheduleId,
       role: 'tutor',
       studentId,
@@ -180,6 +206,7 @@ const EmailService = (function () {
       classTime,
       duration: (schedule && schedule.duration) || 60,
       portalLaunchUrl,
+      oneClickJoinUrl,
       rawMeetLink: rawMeetUrl,
       link: portalLaunchUrl,
       meetLink: rawMeetUrl,

@@ -349,18 +349,96 @@ const BillingEngine = (function() {
     return newSettings;
   }
 
+  function shouldUseModularTuition() {
+    return typeof window !== 'undefined' &&
+           window.STEMulus &&
+           window.STEMulus.Tuition &&
+           window.STEMULUS_USE_LEGACY !== true;
+  }
+
   return {
-    calculateBillingInfo,
-    resolveFirstClassDate,
-    recordPayment,
-    generateWhatsAppReminderUrl,
-    generateEmailReminderPayload,
-    getBillingRoster,
-    getDueStudents,
-    getSettings,
-    updateSettings,
-    addMonths,
-    DEFAULT_SETTINGS
+    calculateBillingInfo: function(student, attendanceRecords, schedules, settings) {
+      if (shouldUseModularTuition()) {
+        return window.STEMulus.Tuition.calculateBillingInfo(student, attendanceRecords, schedules, settings);
+      }
+      return calculateBillingInfo(student, attendanceRecords, schedules);
+    },
+    resolveFirstClassDate: function(student, attendanceRecords, schedules) {
+      if (shouldUseModularTuition()) {
+        return window.STEMulus.Tuition.resolveFirstClassDate(student, attendanceRecords, schedules);
+      }
+      return resolveFirstClassDate(student, attendanceRecords, schedules);
+    },
+    recordPayment: function(studentId, paymentData) {
+      if (shouldUseModularTuition() && typeof DashboardEngine !== 'undefined') {
+        return window.STEMulus.Tuition.recordPayment(
+          studentId,
+          paymentData,
+          DashboardEngine.getDB ? DashboardEngine.getDB() : null,
+          (window.STEMulus && window.STEMulus.Storage) || DashboardEngine
+        );
+      }
+      return recordPayment(studentId, paymentData);
+    },
+    generateWhatsAppReminderUrl: function(student, billingInfo, customSettings) {
+      if (shouldUseModularTuition()) {
+        return window.STEMulus.Tuition.generateWhatsAppReminderUrl(student, billingInfo, customSettings);
+      }
+      return generateWhatsAppReminderUrl(student, billingInfo, customSettings);
+    },
+    generateEmailReminderPayload: function(student, billingInfo, customSettings) {
+      if (shouldUseModularTuition()) {
+        return window.STEMulus.Tuition.generateEmailReminderPayload(student, billingInfo, customSettings);
+      }
+      return generateEmailReminderPayload(student, billingInfo, customSettings);
+    },
+    getBillingRoster: function(students, attendanceRecords, schedules) {
+      if (shouldUseModularTuition()) {
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
+        if (db && (!students || students === db.students)) {
+          return window.STEMulus.Tuition.getBillingRoster(db, attendanceRecords, schedules);
+        }
+      }
+      return getBillingRoster(students, attendanceRecords, schedules);
+    },
+    getDueStudents: function() {
+      if (shouldUseModularTuition()) {
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
+        if (db) {
+          return window.STEMulus.Tuition.getDueStudents(db);
+        }
+      }
+      return getDueStudents();
+    },
+    getSettings: function() {
+      if (shouldUseModularTuition()) {
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
+        if (db) {
+          return window.STEMulus.Tuition.getSettings(db);
+        }
+      }
+      return getSettings();
+    },
+    updateSettings: function(newSettings) {
+      if (shouldUseModularTuition()) {
+        const db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
+        if (db) {
+          return window.STEMulus.Tuition.updateSettings(
+            newSettings,
+            db,
+            (window.STEMulus && window.STEMulus.Storage) || DashboardEngine
+          );
+        }
+      }
+      return updateSettings(newSettings);
+    },
+    addMonths: function(dateStr, monthsToAdd, preferredAnchorDay) {
+      if (shouldUseModularTuition()) {
+        return window.STEMulus.Tuition.addMonths(dateStr, monthsToAdd, preferredAnchorDay);
+      }
+      return addMonths(dateStr, monthsToAdd, preferredAnchorDay);
+    },
+    DEFAULT_SETTINGS: DEFAULT_SETTINGS
   };
 })();
 

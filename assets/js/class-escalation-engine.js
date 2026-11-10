@@ -44,12 +44,61 @@ const ClassEscalationEngine = (function() {
   function saveLivePresenceStore(store, changedKey = null) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
-      if (changedKey && store[changedKey] && typeof StemulusFirestore !== 'undefined' && typeof StemulusFirestore.syncDoc === 'function') {
-        StemulusFirestore.syncDoc('live_presence', String(changedKey), store[changedKey]).catch(() => {});
+      if (changedKey && store[changedKey]) {
+        if (typeof StemulusFirestore !== 'undefined' && typeof StemulusFirestore.syncDoc === 'function') {
+          StemulusFirestore.syncDoc('live_presence', String(changedKey), store[changedKey]).catch(() => {});
+        } else if (typeof firebase !== 'undefined' && typeof firebase.firestore === 'function') {
+          const safeId = String(changedKey).replace(/[^a-zA-Z0-9_-]/g, '_');
+          firebase.firestore().collection('live_presence').doc(safeId).set(store[changedKey], { merge: true }).catch(() => {});
+        }
       }
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('stemulus_presence_updated', { detail: { key: changedKey, store } }));
       }
+    } catch (e) {}
+  }
+
+  function syncRemotePresenceFromFirestore() {
+    try {
+      if (typeof firebase === 'undefined' || typeof firebase.firestore !== 'function') return;
+      const todayStr = new Date().toISOString().slice(0, 10);
+      firebase.firestore().collection('live_presence')
+        .where('classDate', '==', todayStr)
+        .get()
+        .then(snapshot => {
+          if (!snapshot || snapshot.empty) return;
+          const store = getLivePresenceStore();
+          let updated = false;
+          snapshot.forEach(doc => {
+            const data = doc.data() || {};
+            const key = data.scheduleId || doc.id;
+            if (!key) return;
+            const local = store[key] || {};
+            if (data.tutorPresent && !local.tutorPresent) {
+              local.tutorPresent = true;
+              local.tutorJoinedAt = data.tutorJoinedAt || new Date().toISOString();
+              local.tutorName = data.tutorName || local.tutorName;
+              local.lastHeartbeat = Date.now();
+              updated = true;
+            }
+            if (data.studentPresent && !local.studentPresent) {
+              local.studentPresent = true;
+              local.studentJoinedAt = data.studentJoinedAt || new Date().toISOString();
+              local.studentName = data.studentName || local.studentName;
+              local.lastHeartbeat = Date.now();
+              updated = true;
+            }
+            if (updated) {
+              local.scheduleId = key;
+              local.status = local.status || 'active';
+              store[key] = local;
+            }
+          });
+          if (updated) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+          }
+        })
+        .catch(() => {});
     } catch (e) {}
   }
 
@@ -130,8 +179,82 @@ const ClassEscalationEngine = (function() {
       parentEmail,
       courseName,
       meetingUrl,
+      date: matchedSchedule.date || scheduleOrPresence.date || new Date().toISOString().slice(0, 10),
       time: matchedSchedule.time || 'Scheduled Time'
     };
+  }
+
+  /**
+   * Queues a Late-Join / Waiting Notification Email draft into the Admin Email Queue (db.emailQueue)
+   * from admin@stemuluskidstech.com so the Admin can review and manually dispatch with 1 click.
+   * Deduplicated per scheduleId + lateRole so a session never queues duplicate drafts.
+   */
+  function queueLateJoinNotificationEmail(opts = {}) {
+    if (typeof DashboardEngine === 'undefined' || typeof DashboardEngine.addToEmailQueue !== 'function') return null;
+
+    const lateRole = String(opts.lateRole || 'tutor').toLowerCase().trim();
+    const contacts = opts.contacts || resolveSessionContacts(opts);
+    const scheduleId = String(opts.scheduleId || contacts.scheduleId || 'live-session');
+    const lateMinutes = Math.max(1, parseInt(opts.lateMinutes, 10) || 5);
+    const dedupeKey = `late_join_${scheduleId}_${lateRole}`;
+
+    try {
+      const db = (typeof DashboardEngine.getDB === 'function') ? DashboardEngine.getDB() : {};
+      const existingQueue = Array.isArray(db.emailQueue) ? db.emailQueue : [];
+      const alreadyQueued = existingQueue.some(item => item && (
+        item.dedupeKey === dedupeKey ||
+        (item.data && item.data.dedupeKey === dedupeKey)
+      ));
+      if (alreadyQueued) return null;
+    } catch (e) {}
+
+    const recipientEmail = lateRole === 'tutor' ? contacts.tutorEmail : contacts.parentEmail;
+    if (!recipientEmail || !recipientEmail.includes('@')) return null;
+
+    const recipientName = lateRole === 'tutor' ? contacts.tutorName : contacts.parentName;
+    const meetUrl = contacts.meetingUrl || 'https://meet.google.com/stm-prog-live';
+    const sessionTime = contacts.time || 'Scheduled Time';
+    const joinedLate = !!opts.joinedLate;
+
+    const subject = lateRole === 'tutor'
+      ? `Session Punctuality Notice: ${contacts.studentName} (${contacts.courseName})`
+      : `Live Classroom Update: ${contacts.studentFirstName}'s ${contacts.courseName} Session`;
+
+    const bodyText = lateRole === 'tutor'
+      ? (joinedLate
+          ? `Dear ${contacts.tutorName},\n\nOur automated Google Meet session monitor recorded that you joined ${contacts.studentName}'s ${contacts.courseName} session (${sessionTime} WAT) approximately ${lateMinutes} minutes past the scheduled start time.\n\nAt STEMulus Kids Tech, mentors are expected to launch the Google Meet room 5 minutes prior to class start so every coder receives their full 60-minute learning experience. Please ensure the full session duration is completed today (${meetUrl}).\n\nWarm regards,\nAcademic Operations Directorate\nSTEMulus Kids Technologies Ltd.\nadmin@stemuluskidstech.com`
+          : `Dear ${contacts.tutorName},\n\n${contacts.studentName} is currently waiting in the live Google Meet classroom for their ${contacts.courseName} session scheduled at ${sessionTime} WAT (+${lateMinutes} mins).\n\nPlease join the classroom immediately using your dedicated session link so the class can hold: ${meetUrl}\n\nWarm regards,\nAcademic Operations Directorate\nSTEMulus Kids Technologies Ltd.\nadmin@stemuluskidstech.com`)
+      : (joinedLate
+          ? `Dear ${contacts.parentName},\n\nWe noticed that ${contacts.studentFirstName} joined today's ${contacts.courseName} session with Mentor ${contacts.tutorName} (${sessionTime} WAT) approximately ${lateMinutes} minutes after the scheduled start time.\n\nYour child is now connected in the live Google Meet classroom (${meetUrl}). Encouraging ${contacts.studentFirstName} to join 2 to 5 minutes before the hour helps ensure they enjoy their full 60-minute 1-on-1 coding session.\n\nWarm regards,\nAcademic Operations Directorate\nSTEMulus Kids Technologies Ltd.\nadmin@stemuluskidstech.com`
+          : `Dear ${contacts.parentName},\n\nMentor ${contacts.tutorName} is currently in the STEMulus Google Meet classroom waiting for ${contacts.studentFirstName} for today's ${contacts.courseName} session (${sessionTime} WAT).\n\nPlease use this direct link for ${contacts.studentFirstName} to join the live session now: ${meetUrl}\n\nIf you need any assistance connecting, simply reply to this email or message us on WhatsApp.\n\nWarm regards,\nAcademic Operations Directorate\nSTEMulus Kids Technologies Ltd.\nadmin@stemuluskidstech.com`);
+
+    return DashboardEngine.addToEmailQueue({
+      type: 'custom',
+      from: 'admin@stemuluskidstech.com',
+      senderEmail: 'admin@stemuluskidstech.com',
+      to: recipientEmail,
+      recipientName: recipientName,
+      subject: subject,
+      htmlPreview: bodyText,
+      dedupeKey: dedupeKey,
+      data: {
+        to: recipientEmail,
+        recipientName: recipientName,
+        subject: subject,
+        body: bodyText,
+        html: bodyText.replace(/\n/g, '<br>'),
+        from: 'admin@stemuluskidstech.com',
+        senderEmail: 'admin@stemuluskidstech.com',
+        scheduleId: scheduleId,
+        studentName: contacts.studentName,
+        tutorName: contacts.tutorName,
+        courseName: contacts.courseName,
+        lateRole: lateRole,
+        lateMinutes: lateMinutes,
+        dedupeKey: dedupeKey
+      },
+      triggeredBy: 'autonomous_meet_late_monitor'
+    });
   }
 
   function getIncidents() {
@@ -159,14 +282,41 @@ const ClassEscalationEngine = (function() {
     }
   }
 
+  // Resilient Web Audio user gesture unlocker to prevent browser autoplay warnings
+  if (typeof window !== 'undefined') {
+    const unlockAudio = () => {
+      try {
+        if (!audioCtx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) audioCtx = new AC();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(() => {});
+        }
+      } catch (_) {}
+      window.removeEventListener('pointerdown', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+    };
+    window.addEventListener('pointerdown', unlockAudio, { passive: true, once: true });
+    window.addEventListener('keydown', unlockAudio, { passive: true, once: true });
+  }
+
   // Web Audio Alarm Synthesizer
   function playAudioSiren(type = 'urgent') {
     if (isMuted || typeof window === 'undefined') return;
     try {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       if (!AudioContext) return;
-      if (!audioCtx) audioCtx = new AudioContext();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
+      if (!audioCtx) {
+        try {
+          audioCtx = new AudioContext();
+        } catch (_) {
+          return;
+        }
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
 
       const now = audioCtx.currentTime;
 
@@ -241,7 +391,7 @@ const ClassEscalationEngine = (function() {
     // 2. Dispatch to unified ntfy.sh channel (Direct + Serverless Relay)
     const asciiTitle = (title || 'STEMulus Class Monitor').replace(/[^\x20-\x7E]/g, '').trim() || 'STEMulus Class Monitor';
     const asciiTags = (tags || 'warning').replace(/[^\x20-\x7E]/g, '').trim();
-    const targetClick = actionUrl || 'https://portal.stemuluskidstech.com/admin-dashboard.html';
+    const targetClick = actionUrl || 'https://stemuluskidstech.com/admin-dashboard.html';
 
     try {
       fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
@@ -307,10 +457,27 @@ const ClassEscalationEngine = (function() {
   }
 
   /**
-   * Mount floating sticky emergency banner on Admin & Tutor Dashboards.
+   * Mount floating emergency banner on Admin Dashboard ONLY with a clean white ceramic design.
    */
   function mountAdminLiveEscalationBanner(incident) {
     if (typeof document === 'undefined' || !document.body) return;
+
+    const currentSession = (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getSession === 'function')
+      ? DashboardEngine.getSession()
+      : null;
+    const isAdminPage = typeof window !== 'undefined' && window.location && (
+      window.location.pathname.includes('admin-dashboard.html') ||
+      window.location.href.includes('admin-dashboard.html')
+    );
+    const isAdminRole = currentSession && currentSession.role === 'admin';
+
+    // Strictly restrict waiting/escalation banners to Admin only (never show on Tutor, Parent, or Join-Class views)
+    if (!isAdminPage && !isAdminRole) {
+      const existing = document.getElementById('stemulus-urgent-escalation-banner');
+      if (existing) existing.remove();
+      return;
+    }
+
     let banner = document.getElementById('stemulus-urgent-escalation-banner');
     if (!banner) {
       banner = document.createElement('div');
@@ -319,31 +486,33 @@ const ClassEscalationEngine = (function() {
     }
 
     const isReconnect = (incident.tags || '').includes('check') || (incident.priority === '3');
-    const borderClass = isReconnect ? 'border-emerald-500 from-emerald-950/95 to-slate-900/95' : 'border-rose-500 from-rose-950/95 to-red-950/95';
-    banner.className = `fixed top-4 left-1/2 -translate-x-1/2 z-[9999] w-[95%] max-w-2xl bg-gradient-to-r ${borderClass} border-2 text-white rounded-2xl shadow-2xl p-4 backdrop-blur-xl transition-all flex items-start gap-4`;
-    banner.style.cssText = isReconnect
-      ? 'position:fixed !important; top:16px !important; left:50% !important; transform:translateX(-50%) !important; z-index:99999 !important; width:95% !important; max-width:672px !important; background:linear-gradient(135deg, #022c22 0%, #0f172a 100%) !important; background-color:#022c22 !important; border:2px solid #10b981 !important; color:#ffffff !important; border-radius:18px !important; padding:16px 20px !important; box-shadow:0 20px 45px rgba(2,44,34,0.65) !important; display:flex !important; align-items:flex-start !important; gap:14px !important;'
-      : 'position:fixed !important; top:16px !important; left:50% !important; transform:translateX(-50%) !important; z-index:99999 !important; width:95% !important; max-width:672px !important; background:linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%) !important; background-color:#450a0a !important; border:2px solid #f43f5e !important; color:#ffffff !important; border-radius:18px !important; padding:16px 20px !important; box-shadow:0 20px 45px rgba(127,29,29,0.65) !important; display:flex !important; align-items:flex-start !important; gap:14px !important;';
 
-    const icon = isReconnect ? '✅' : '🚨';
+    // Clean, 3D minimalist playful pure white card design
+    banner.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-[99999] w-[95%] max-w-2xl bg-white border-2 border-slate-200 border-b-4 border-b-slate-300 text-slate-900 rounded-3xl shadow-xl p-4 transition-all flex items-start gap-3.5';
+    banner.style.cssText = 'position:fixed !important; top:16px !important; left:50% !important; transform:translateX(-50%) !important; z-index:99999 !important; width:95% !important; max-width:672px !important; background:#FFFFFF !important; background-color:#FFFFFF !important; border:2px solid #E2E8F0 !important; border-bottom:4px solid #CBD5E1 !important; color:#0F172A !important; border-radius:22px !important; padding:16px 20px !important; box-shadow:0 20px 40px -10px rgba(15, 23, 42, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.05) !important; display:flex !important; align-items:flex-start !important; gap:14px !important; font-family:"Plus Jakarta Sans", system-ui, sans-serif !important;';
+
+    const iconBadge = isReconnect
+      ? '<div style="width:36px; height:36px; border-radius:12px; background:#ECFDF5; border:1px solid #A7F3D0; color:#059669; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:16px; font-weight:800;">✓</div>'
+      : '<div style="width:36px; height:36px; border-radius:12px; background:#FEF2F2; border:1px solid #FECDD3; color:#DC2626; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:16px; font-weight:800;">⚠️</div>';
+
     const primaryActionUrl = (incident.actionUrl && incident.actionUrl.startsWith('https://wa.me/'))
       ? incident.actionUrl
       : `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(`[STEMulus Class Monitor] ${incident.title}: ${incident.message}`)}`;
-    const primaryBtnLabel = incident.contactActionLabel || '💬 Reach Out on WhatsApp';
+    const primaryBtnLabel = incident.contactActionLabel || 'Reach Out on WhatsApp';
 
     banner.innerHTML = `
-      <div class="text-3xl flex-shrink-0 animate-pulse" style="font-size:26px; line-height:1;">${icon}</div>
+      ${iconBadge}
       <div class="flex-grow min-w-0" style="flex:1; min-width:0;">
-        <div class="flex items-center justify-between gap-2 mb-1" style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px;">
-          <h4 class="font-black text-sm uppercase tracking-wider" style="font-weight:900; font-size:13px; text-transform:uppercase; letter-spacing:0.06em; color:${isReconnect ? '#6ee7b7' : '#fda4af'}; margin:0;">${incident.title}</h4>
-          <span class="text-[10px] text-slate-400 font-mono" style="font-size:11px; color:#cbd5e1;">${new Date().toLocaleTimeString()}</span>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px;">
+          <h4 style="font-weight:800; font-size:13.5px; color:#0F172A; margin:0; letter-spacing:-0.01em;">${incident.title}</h4>
+          <span style="font-size:11px; font-weight:600; color:#94A3B8; font-family:'JetBrains Mono', monospace;">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
         </div>
-        <p class="text-xs text-slate-100 font-medium leading-relaxed mb-3" style="font-size:12.5px; color:#f8fafc; font-weight:600; line-height:1.45; margin:0 0 10px 0;">${incident.message}</p>
-        <div class="flex flex-wrap items-center gap-2" style="display:flex; flex-wrap:wrap; align-items:center; gap:8px;">
-          <a href="${primaryActionUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg transition-all shadow-md" style="background:#10b981; color:#052e16; font-weight:800; font-size:12px; padding:7px 14px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+        <p style="font-size:12.5px; color:#475569; font-weight:500; line-height:1.5; margin:0 0 12px 0;">${incident.message}</p>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px;">
+          <a href="${primaryActionUrl}" target="_blank" rel="noopener noreferrer" style="background:#10B981; color:#FFFFFF; font-weight:700; font-size:12px; padding:7px 16px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(16, 185, 129, 0.25); transition:background 0.15s ease;">
             <span>${primaryBtnLabel}</span>
           </a>
-          <button id="btn-dismiss-escalation-banner" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs rounded-lg transition-all" style="background:rgba(15,23,42,0.75); color:#e2e8f0; border:1px solid rgba(255,255,255,0.2); font-weight:700; font-size:12px; padding:7px 12px; border-radius:10px; cursor:pointer;">
+          <button id="btn-dismiss-escalation-banner" style="background:#F1F5F9; color:#475569; border:1px solid #E2E8F0; font-weight:700; font-size:12px; padding:7px 14px; border-radius:10px; cursor:pointer; transition:all 0.15s ease;">
             Dismiss
           </button>
         </div>
@@ -485,7 +654,7 @@ const ClassEscalationEngine = (function() {
       };
     }
 
-    // 3. Neither party has joined yet — evaluate against scheduled clock
+    // 3. Neither party has joined yet - evaluate against scheduled clock
     if (diffMinutes < 0) {
       return {
         status: 'UPCOMING',
@@ -550,7 +719,7 @@ const ClassEscalationEngine = (function() {
         contacts
       };
     }
-    if (diffMinutes >= 5) {
+    if (diffMinutes >= 3) {
       return {
         status: 'TUTOR_ABSENT_ALERT',
         code: 'TUTOR_ABSENT_ALERT',
@@ -583,9 +752,9 @@ const ClassEscalationEngine = (function() {
   }
 
   /**
-   * Heartbeat tracker called by join-class.html companion tab.
-   * Immediately evaluates partner presence and dispatches autonomous alerts
-   * informing Admin and Tutor of who needs to be contacted for the class to hold.
+   * Heartbeat tracker called on 1-click Join Class or background heartbeat.
+   * Immediately notifies Admin via ntfy when either party joins, and evaluates
+   * partner presence / T+3m to T+5m non-join or late-join states.
    */
   function recordHeartbeat(sessionId, scheduleId, role, name, extra = {}) {
     const store = getLivePresenceStore();
@@ -621,18 +790,104 @@ const ClassEscalationEngine = (function() {
     entry.tutorPhone = contacts.tutorPhone || entry.tutorPhone;
     entry.parentName = contacts.parentName || entry.parentName;
     entry.parentPhone = contacts.parentPhone || entry.parentPhone;
+    entry.parentEmail = contacts.parentEmail || entry.parentEmail;
     entry.courseName = contacts.courseName || entry.courseName;
     entry.meetingUrl = contacts.meetingUrl || entry.meetingUrl;
+    entry.date = contacts.date || entry.date;
+    entry.time = contacts.time || entry.time;
+    entry.classDate = entry.date;
 
     store[primaryKey] = entry;
     if (sessionId && sessionId !== primaryKey) store[sessionId] = entry;
     saveLivePresenceStore(store, primaryKey);
 
-    // Autonomous Real-Time Join & Waiting Escalation
-    if (entry.studentPresent && !entry.tutorPresent && !entry.alertedCoderWaiting) {
+    const waitMins = entry.studentJoinedAt
+      ? Math.max(0, Math.floor((Date.now() - new Date(entry.studentJoinedAt).getTime()) / 60000))
+      : 0;
+    const tutorWaitMins = entry.tutorJoinedAt
+      ? Math.max(0, Math.floor((Date.now() - new Date(entry.tutorJoinedAt).getTime()) / 60000))
+      : 0;
+    const isTestMode = !!(extra && extra.isTest) || (typeof window !== 'undefined' && window.location && window.location.search && window.location.search.includes('test=1'));
+
+    // 1. Immediate ntfy push notification to Admin when Tutor or Student joins
+    if (!isTestMode && isTutor && !entry.alertedTutorJoined) {
+      entry.alertedTutorJoined = true;
+      store[primaryKey] = entry;
+      saveLivePresenceStore(store, primaryKey);
+
+      dispatchUrgentAlert({
+        title: `✅ Tutor Joined: ${contacts.tutorFirstName} -> ${contacts.studentFirstName}`,
+        message: `Coach ${contacts.tutorName} has joined the Google Meet classroom for ${contacts.studentName} (${contacts.courseName}).`,
+        priority: '3',
+        tags: 'white_check_mark,video_camera',
+        actionUrl: contacts.meetingUrl || 'https://stemuluskidstech.com/admin-dashboard.html',
+        contactActionLabel: '✅ Tutor in Classroom'
+      });
+    } else if (!isTestMode && !isTutor && !entry.alertedStudentJoined) {
+      entry.alertedStudentJoined = true;
+      store[primaryKey] = entry;
+      saveLivePresenceStore(store, primaryKey);
+
+      dispatchUrgentAlert({
+        title: `✅ Coder Joined: ${contacts.studentFirstName} -> ${contacts.courseName}`,
+        message: `${contacts.studentName} has joined the Google Meet classroom for ${contacts.courseName} with Coach ${contacts.tutorName}.`,
+        priority: '3',
+        tags: 'white_check_mark,student',
+        actionUrl: contacts.meetingUrl || 'https://stemuluskidstech.com/admin-dashboard.html',
+        contactActionLabel: '✅ Coder in Classroom'
+      });
+    }
+
+    // 2. Check if the joining party arrived >= 3 minutes (T+3m to T+5m+) after the scheduled start time
+    if (!isTestMode && contacts.time && contacts.time !== 'Scheduled Time') {
+      const schedDate = (contacts.date || new Date().toISOString().slice(0, 10)).slice(0, 10);
+      const { hh, mm } = parseTimeComponents(contacts.time);
+      const scheduledStart = new Date(`${schedDate}T${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}:00`);
+      const joinTimestamp = isTutor ? (entry.tutorJoinedAt ? new Date(entry.tutorJoinedAt) : new Date()) : (entry.studentJoinedAt ? new Date(entry.studentJoinedAt) : new Date());
+      const lateJoinMins = !isNaN(scheduledStart.getTime())
+        ? Math.floor((joinTimestamp.getTime() - scheduledStart.getTime()) / 60000)
+        : 0;
+
+      if (lateJoinMins >= 3 && lateJoinMins <= 120) {
+        if (isTutor && !entry.queuedTutorLateEmail) {
+          entry.queuedTutorLateEmail = true;
+          store[primaryKey] = entry;
+          saveLivePresenceStore(store, primaryKey);
+          queueLateJoinNotificationEmail({
+            scheduleId: primaryKey,
+            lateRole: 'tutor',
+            lateMinutes: lateJoinMins,
+            contacts,
+            joinedLate: true
+          });
+        } else if (!isTutor && !entry.queuedStudentLateEmail) {
+          entry.queuedStudentLateEmail = true;
+          store[primaryKey] = entry;
+          saveLivePresenceStore(store, primaryKey);
+          queueLateJoinNotificationEmail({
+            scheduleId: primaryKey,
+            lateRole: 'parent',
+            lateMinutes: lateJoinMins,
+            contacts,
+            joinedLate: true
+          });
+        }
+      }
+    }
+
+    // 3. Evaluate partner non-join / waiting (>= 3 mins) or both in room
+    if (!isTestMode && entry.studentPresent && !entry.tutorPresent && !entry.alertedCoderWaiting && waitMins >= 3) {
       entry.alertedCoderWaiting = true;
       store[primaryKey] = entry;
       saveLivePresenceStore(store, primaryKey);
+
+      queueLateJoinNotificationEmail({
+        scheduleId: primaryKey,
+        lateRole: 'tutor',
+        lateMinutes: waitMins,
+        contacts,
+        joinedLate: false
+      });
 
       const alertTitle = `🚨 Coder Waiting: ${contacts.studentFirstName} waiting for ${contacts.tutorFirstName}`;
       const alertMsg = `${contacts.studentFirstName} is now in class waiting for ${contacts.tutorFirstName}. Please reach out to Tutor ${contacts.tutorFirstName} (${contacts.tutorPhone}) in order for the class to hold.`;
@@ -649,17 +904,6 @@ const ClassEscalationEngine = (function() {
       });
 
       if (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.addNotification === 'function') {
-        if (contacts.tutorEmail) {
-          DashboardEngine.addNotification({
-            userEmail: contacts.tutorEmail,
-            role: 'tutor',
-            title: alertTitle,
-            message: `${contacts.studentName} is now in the classroom waiting for you! Click to launch your live class immediately.`,
-            actionUrl: `join-class.html?id=${encodeURIComponent(primaryKey)}&role=tutor&url=${encodeURIComponent(contacts.meetingUrl)}`,
-            timestamp: nowIso,
-            read: false
-          });
-        }
         DashboardEngine.addNotification({
           userEmail: 'admin@stemuluskidstech.com',
           role: 'admin',
@@ -670,10 +914,18 @@ const ClassEscalationEngine = (function() {
           read: false
         });
       }
-    } else if (entry.tutorPresent && !entry.studentPresent && !entry.alertedTutorWaiting) {
+    } else if (!isTestMode && entry.tutorPresent && !entry.studentPresent && !entry.alertedTutorWaiting && tutorWaitMins >= 3) {
       entry.alertedTutorWaiting = true;
       store[primaryKey] = entry;
       saveLivePresenceStore(store, primaryKey);
+
+      queueLateJoinNotificationEmail({
+        scheduleId: primaryKey,
+        lateRole: 'parent',
+        lateMinutes: tutorWaitMins,
+        contacts,
+        joinedLate: false
+      });
 
       const alertTitle = `⏳ Tutor Waiting: ${contacts.tutorFirstName} waiting for ${contacts.studentFirstName}`;
       const alertMsg = `Tutor ${contacts.tutorFirstName} is now in class waiting for ${contacts.studentFirstName}. Please reach out to ${contacts.parentName} (${contacts.parentPhone}) in order for the class to hold.`;
@@ -713,7 +965,7 @@ const ClassEscalationEngine = (function() {
         message: alertMsg,
         priority: '3',
         tags: 'white_check_mark,rocket',
-        actionUrl: 'https://portal.stemuluskidstech.com/admin-dashboard.html',
+        actionUrl: 'https://stemuluskidstech.com/admin-dashboard.html',
         contactActionLabel: '✅ Session Active in Classroom'
       });
     }
@@ -761,7 +1013,7 @@ const ClassEscalationEngine = (function() {
         disconnectedAt: entry.disconnectedAt,
         tutorName: entry.tutorName || (role === 'tutor' ? entry.disconnectedParty : 'Coach'),
         studentName: entry.studentName || (role === 'student' ? entry.disconnectedParty : 'Student'),
-        joinUrl: `join-class.html?sessionId=${encodeURIComponent(sessionId || key)}&scheduleId=${encodeURIComponent(scheduleId || key)}`
+        joinUrl: entry.meetingUrl || entry.meetLink || 'https://meet.google.com/stm-prog-live'
       };
       localStorage.setItem('stemulus_active_rejoin_prompts', JSON.stringify(prompts));
     } catch (e) {}
@@ -924,6 +1176,7 @@ const ClassEscalationEngine = (function() {
    */
   function runWatchdog() {
     if (typeof DashboardEngine === 'undefined') return;
+    syncRemotePresenceFromFirestore();
     const db = DashboardEngine.getDB();
     const schedules = db.schedules || [];
     const presenceStore = getLivePresenceStore();
@@ -972,6 +1225,13 @@ const ClassEscalationEngine = (function() {
       if (state.actionRequired && !alertedIncidents.has(sessionKey)) {
         if (state.status === 'CODER_WAITING_FOR_TUTOR') {
           alertedIncidents.add(sessionKey);
+          queueLateJoinNotificationEmail({
+            scheduleId: s.id,
+            lateRole: 'tutor',
+            lateMinutes: state.diffMinutes || 3,
+            contacts,
+            joinedLate: false
+          });
           if (!pres || !pres.alertedCoderWaiting) {
             dispatchUrgentAlert({
               title: `🚨 Coder Waiting: ${contacts.studentFirstName} waiting for ${contacts.tutorFirstName}`,
@@ -985,6 +1245,13 @@ const ClassEscalationEngine = (function() {
           }
         } else if (state.status === 'TUTOR_WAITING_FOR_CODER' || state.status === 'STUDENT_ABSENT_ALERT') {
           alertedIncidents.add(sessionKey);
+          queueLateJoinNotificationEmail({
+            scheduleId: s.id,
+            lateRole: 'parent',
+            lateMinutes: state.diffMinutes || 3,
+            contacts,
+            joinedLate: false
+          });
           if (!pres || !pres.alertedTutorWaiting) {
             dispatchUrgentAlert({
               title: `⏳ Tutor Waiting: ${contacts.tutorFirstName} waiting for ${contacts.studentFirstName}`,
@@ -998,6 +1265,13 @@ const ClassEscalationEngine = (function() {
           }
         } else if (state.status === 'TUTOR_ABSENT_ALERT') {
           alertedIncidents.add(sessionKey);
+          queueLateJoinNotificationEmail({
+            scheduleId: s.id,
+            lateRole: 'tutor',
+            lateMinutes: state.diffMinutes || 5,
+            contacts,
+            joinedLate: false
+          });
           dispatchUrgentAlert({
             title: `🚨 LATE JOIN: Tutor ${contacts.tutorFirstName} Not in Room (+${state.diffMinutes}m)`,
             message: `Tutor ${contacts.tutorName} has not joined session "${contacts.courseName}" with ${contacts.studentName} scheduled for ${s.time}. Please reach out to Tutor ${contacts.tutorFirstName} (${contacts.tutorPhone})!`,
@@ -1009,6 +1283,13 @@ const ClassEscalationEngine = (function() {
           });
         } else if (state.status === 'CRITICAL_INCIDENT') {
           alertedIncidents.add(sessionKey);
+          queueLateJoinNotificationEmail({
+            scheduleId: s.id,
+            lateRole: 'tutor',
+            lateMinutes: state.diffMinutes || 10,
+            contacts,
+            joinedLate: false
+          });
           issueMakeupToken(s, 'Tutor Unavailability (>10m late)');
           dispatchUrgentAlert({
             title: `🚨 CRITICAL INCIDENT: Tutor ${contacts.tutorFirstName} Absent (+${state.diffMinutes}m)`,
@@ -1116,9 +1397,9 @@ const ClassEscalationEngine = (function() {
     const contacts = resolveSessionContacts(schedule || {});
     const rawPhone = (contacts.parentPhone || ADMIN_WHATSAPP).replace(/[^0-9]/g, '');
     const targetPhone = rawPhone.startsWith('0') ? '234' + rawPhone.slice(1) : (rawPhone || ADMIN_WHATSAPP);
-    const joinUrl = `https://portal.stemuluskidstech.com/join-class.html?id=${encodeURIComponent(contacts.scheduleId)}&role=student&url=${encodeURIComponent(contacts.meetingUrl)}`;
+    const joinUrl = contacts.meetingUrl || 'https://meet.google.com/stm-prog-live';
 
-    const text = `👋 Hello ${contacts.parentName}! Tutor ${contacts.tutorFirstName} is now in the STEMulus virtual classroom waiting for ${contacts.studentFirstName}. Please click here for ${contacts.studentFirstName} to join class now: ${joinUrl} (Direct Meet: ${contacts.meetingUrl})`;
+    const text = `👋 Hello ${contacts.parentName}! Tutor ${contacts.tutorFirstName} is now in the STEMulus virtual classroom waiting for ${contacts.studentFirstName}. Please click here for ${contacts.studentFirstName} to join class now: ${joinUrl}`;
     return `https://wa.me/${targetPhone}?text=${encodeURIComponent(text)}`;
   }
 
@@ -1126,9 +1407,9 @@ const ClassEscalationEngine = (function() {
     const contacts = resolveSessionContacts(schedule || {});
     const rawPhone = (contacts.tutorPhone || ADMIN_WHATSAPP).replace(/[^0-9]/g, '');
     const targetPhone = rawPhone.startsWith('0') ? '234' + rawPhone.slice(1) : (rawPhone || ADMIN_WHATSAPP);
-    const joinUrl = `https://portal.stemuluskidstech.com/join-class.html?id=${encodeURIComponent(contacts.scheduleId)}&role=tutor&url=${encodeURIComponent(contacts.meetingUrl)}`;
+    const joinUrl = contacts.meetingUrl || 'https://meet.google.com/stm-prog-live';
 
-    const text = `🚨 URGENT: ${contacts.studentFirstName} (${contacts.studentName}) is now in class waiting for you (${contacts.tutorFirstName})! Please join the classroom immediately so the class can hold: ${joinUrl} (Direct Meet: ${contacts.meetingUrl})`;
+    const text = `🚨 URGENT: ${contacts.studentFirstName} (${contacts.studentName}) is now in class waiting for you (${contacts.tutorFirstName})! Please join the classroom immediately so the class can hold: ${joinUrl}`;
     return `https://wa.me/${targetPhone}?text=${encodeURIComponent(text)}`;
   }
 
@@ -1168,6 +1449,7 @@ const ClassEscalationEngine = (function() {
   return {
     evaluateSessionState,
     resolveSessionContacts,
+    queueLateJoinNotificationEmail,
     getLivePresenceStore,
     getLiveRadarHUD,
     recordHeartbeat,

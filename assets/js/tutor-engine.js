@@ -137,8 +137,10 @@ const TutorEngine = (function() {
         renderNotifications();
         renderLiveClassPresenceBanner();
         renderMonthlyReportsList();
+        renderEscalationsList();
         injectReportModal();
         injectCoverageModal();
+        injectEscalationModal();
     }
 
     function renderAssignedStudents() {
@@ -197,9 +199,9 @@ const TutorEngine = (function() {
             ` : '';
 
             return `
-                <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/70 transition-colors border-b border-gray-100 last:border-0">
+                <div class="p-4 sm:p-5 mb-3 bg-white border-2 border-slate-200 border-b-4 border-b-slate-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-indigo-200 hover:border-b-indigo-300 transition-all shadow-xs last:mb-0">
                     <div class="flex items-center gap-3.5">
-                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center font-extrabold text-sm shrink-0 shadow-sm">
+                        <div class="w-11 h-11 rounded-2xl bg-indigo-50 border-2 border-indigo-200 border-b-4 border-b-indigo-300 text-indigo-700 flex items-center justify-center font-extrabold text-sm shrink-0">
                             ${initials}
                         </div>
                         <div>
@@ -218,10 +220,10 @@ const TutorEngine = (function() {
                     </div>
                     <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
                         <a href="tutor-attendance-create.html?studentId=${s.id}&course=${encodeURIComponent(track)}"
-                           class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3.5 py-2 min-h-[38px] rounded-xl transition-all shadow-md inline-flex items-center justify-center gap-1.5 no-underline">
+                           class="bg-blue-600 hover:bg-blue-700 border-b-4 border-blue-800 text-white text-xs font-extrabold px-3.5 py-2 min-h-[38px] rounded-xl transition-all shadow-xs inline-flex items-center justify-center gap-1.5 no-underline">
                             <i data-lucide="clipboard-check" style="width:14px;height:14px;"></i> + Log Attendance
                         </a>
-                        <a href="tutor-students.html" style="width:38px;min-width:38px;height:38px;min-height:38px;flex-shrink:0;" class="w-10 h-10 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors shrink-0" title="View Student Profile" aria-label="View Student Profile">
+                        <a href="tutor-students.html" style="width:38px;min-width:38px;height:38px;min-height:38px;flex-shrink:0;" class="w-10 h-10 min-w-[38px] min-h-[38px] flex items-center justify-center rounded-xl bg-slate-50 border-2 border-slate-200 border-b-4 border-b-slate-300 text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-all shrink-0" title="View Student Profile" aria-label="View Student Profile">
                             <i data-lucide="chevron-right" style="width:18px;height:18px;"></i>
                         </a>
                     </div>
@@ -247,85 +249,19 @@ const TutorEngine = (function() {
         if (e && e.includes('@') && e !== tutorEmailLower && e !== tutorAltEmailLower) return false;
 
         if (myStudentIds && item.studentId && myStudentIds.has(item.studentId)) return true;
-        if (tutorNameLower.length > 2 && m.length > 2 && (m === tutorNameLower || m.includes(tutorNameLower) || tutorNameLower.includes(m))) {
+        if (!e && tutorNameLower.length > 2 && m.length > 2 && m === tutorNameLower) {
             return true;
         }
         return false;
     }
 
-    // Filter items that need active attention STRICTLY FOR THIS TUTOR ONLY (Olalekan never sees Joshua Ogba's or others' sessions)
+    // Admin-only waiting alerts ("coder is waiting in class" / "tutor is waiting in class") must NEVER be shown on the Tutor portal - STRICTLY FOR THIS TUTOR ONLY
     function renderLiveClassPresenceBanner() {
-        if (!currentTutor) return;
         const bannerContainer = document.getElementById('tutor-live-class-monitor-banner');
-        if (!bannerContainer || typeof ClassEscalationEngine === 'undefined') return;
-
-        const tutorEmail = (currentTutor.email || '').toLowerCase().trim();
-        const tutorAltEmail = (currentTutor.altEmail || '').toLowerCase().trim();
-        const tutorName = (currentTutor.name || '').toLowerCase().trim();
-        const tutorFirst = tutorName ? tutorName.split(' ')[0] : '';
-
-        const radarItems = ClassEscalationEngine.buildEscalationRadar ? ClassEscalationEngine.buildEscalationRadar() : [];
-        const urgentItems = radarItems.filter(item => {
-            if (!item || !item.state) return false;
-            const code = item.state.code;
-            const isUrgent = (
-                code === 'CODER_WAITING_FOR_TUTOR' ||
-                code === 'TUTOR_WAITING_FOR_CODER' ||
-                code === 'STUDENT_ABSENT_ALERT' ||
-                code === 'TUTOR_DELAY_CRITICAL' ||
-                code === 'CRITICAL_ESCALATION' ||
-                code === 'IN_SESSION'
-            );
-            if (!isUrgent) return false;
-
-            const s = item.schedule || {};
-            const contacts = item.contacts || (ClassEscalationEngine.resolveSessionContacts ? ClassEscalationEngine.resolveSessionContacts(s) : {});
-            const sEmail = (contacts.tutorEmail || s.tutorEmail || '').toLowerCase().trim();
-            const sName = (contacts.tutorName || s.mentor || s.tutorName || '').toLowerCase().trim();
-
-            const isMyClass = (tutorEmail && sEmail === tutorEmail) ||
-                              (tutorAltEmail && sEmail === tutorAltEmail) ||
-                              (tutorName && sName === tutorName) ||
-                              (tutorFirst && sName.includes(tutorFirst));
-
-            let matchStudent = false;
-            if (!isMyClass && typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getTutorStudents === 'function') {
-                const myStudents = DashboardEngine.getTutorStudents(tutorEmail) || [];
-                const schedStudentId = s.studentId || contacts.studentId;
-                const schedStudentName = (contacts.studentName || s.studentName || '').toLowerCase().trim();
-                matchStudent = myStudents.some(st => (schedStudentId && st.id === schedStudentId) ||
-                    (((st.firstName || '') + ' ' + (st.lastName || '')).toLowerCase().trim() === schedStudentName));
-            }
-
-            return isMyClass || matchStudent;
-        });
-
-        if (!urgentItems.length) {
+        if (bannerContainer) {
             bannerContainer.style.display = 'none';
             bannerContainer.innerHTML = '';
-            return;
         }
-
-        const topItem = urgentItems[0];
-        const studentName = topItem.contacts.studentName || 'Student';
-        bannerContainer.style.display = 'block';
-        bannerContainer.innerHTML = `
-            <div class="bg-gradient-to-r from-orange-500/15 via-amber-500/10 to-yellow-500/15 border border-orange-300 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
-              <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-orange-600 text-white flex items-center justify-center shrink-0 font-bold">
-                  <i data-lucide="radio" class="w-4 h-4 animate-pulse"></i>
-                </div>
-                <div>
-                  <h4 class="text-xs font-extrabold text-orange-950">Active Class Presence: ${studentName}</h4>
-                  <p class="text-[11px] text-orange-800 line-clamp-1">${topItem.state.label || 'Live session monitoring active.'}</p>
-                </div>
-              </div>
-              <a href="${topItem.schedule.meetLink || '#'}" target="_blank" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-orange-600 text-white hover:bg-orange-700 transition-colors shrink-0 shadow-xs inline-flex items-center gap-1.5">
-                Join Classroom &rarr;
-              </a>
-            </div>
-        `;
-        if (window.lucide) lucide.createIcons();
     }
 
     function renderStats() {
@@ -450,36 +386,37 @@ const TutorEngine = (function() {
 
             const actionBtn = (!hasAttendedLog)
                 ? `<a href="tutor-attendance-create.html?scheduleId=${s.id}&studentId=${s.studentId || ''}&date=${s.date || ''}&course=${encodeURIComponent(s.course || '')}"
-                        class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3.5 py-2 min-h-[38px] rounded-xl transition-all shadow-md inline-flex items-center justify-center gap-1.5 no-underline">
+                        class="bg-blue-600 hover:bg-blue-700 border-b-4 border-blue-800 text-white text-xs font-extrabold px-3.5 py-2 min-h-[38px] rounded-xl transition-all shadow-xs inline-flex items-center justify-center gap-1.5 no-underline">
                         <i data-lucide="clipboard-check" style="width:14px;height:14px;"></i> Log Class & Attendance
                    </a>`
-                : `<span class="text-xs text-emerald-700 font-bold bg-emerald-50 px-3 py-2 min-h-[38px] inline-flex items-center rounded-xl border border-emerald-200">Logged</span>`;
+                : `<span class="text-xs text-emerald-700 font-bold bg-emerald-50 px-3 py-2 min-h-[38px] inline-flex items-center rounded-xl border-2 border-emerald-200 border-b-4 border-b-emerald-300">Logged</span>`;
 
             return `
-                <div class="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                <div class="p-5 mb-3 bg-white border-2 border-slate-200 border-b-4 border-b-slate-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-blue-200 hover:border-b-blue-300 transition-all shadow-xs last:mb-0">
                     <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                        <div class="w-11 h-11 rounded-2xl bg-blue-50 border-2 border-blue-200 border-b-4 border-b-blue-300 flex items-center justify-center shrink-0">
                             <i data-lucide="video" class="w-5 h-5 text-blue-600"></i>
                         </div>
                         <div>
-                            <p class="text-sm font-bold text-gray-800">${s.course} session for <strong class="text-indigo-600">${s.studentName}</strong></p>
-                            <div class="flex flex-wrap gap-x-3 text-xs text-gray-500 mt-1">
-                                <span>${dateFormatted}</span>
+                            <p class="text-sm font-extrabold text-slate-900 font-nunito">${s.course} session for <strong class="text-indigo-600">${s.studentName}</strong></p>
+                            <div class="flex flex-wrap gap-x-3 text-xs text-slate-500 mt-1 items-center">
+                                <span class="font-bold text-slate-700">${dateFormatted}</span>
                                 <span>•</span>
-                                <span>${s.time} (${s.duration || 60} mins)</span>
+                                <span class="font-semibold">${s.time} (${s.duration || 60} mins)</span>
                                 <span>•</span>
                                 ${attendanceBadge}
                             </div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto flex-wrap">
-                        <a href="join-class.html?id=${encodeURIComponent(s.id)}&role=tutor&url=${encodeURIComponent(s.link || 'https://meet.google.com')}" target="_blank" rel="noopener noreferrer" 
-                            class="bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-semibold text-xs px-3.5 py-2 min-h-[38px] rounded-xl transition-colors inline-flex items-center gap-1.5 shadow-sm" title="Launch Google Meet session (Auto-records for safeguarding)">
-                            <i data-lucide="video" class="w-3.5 h-3.5 text-emerald-600"></i> Google Meet
+                        <a href="${s.link || 'https://meet.google.com'}" target="_blank" rel="noopener noreferrer" 
+                            onclick="TutorEngine.launchMeeting(event, '${s.link || 'https://meet.google.com'}', '${s.id}', '${(s.studentName || '').replace(/'/g, "\\'")}', '${(s.course || '').replace(/'/g, "\\'")}')"
+                            class="bg-emerald-600 hover:bg-emerald-700 border-b-4 border-emerald-800 text-white font-extrabold text-xs px-4 py-2 min-h-[38px] rounded-xl transition-all inline-flex items-center gap-1.5 shadow-xs cursor-pointer no-underline" title="1-Click Direct Join to Google Meet">
+                            <i data-lucide="video" class="w-3.5 h-3.5 text-white"></i> Join Class
                         </a>
                         ${(!hasAttendedLog && !isDone) ? `
                         <button type="button" onclick="TutorEngine.openCoverageModal('${s.id}')"
-                            class="bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 font-semibold text-xs px-3 py-2 min-h-[38px] rounded-xl transition-colors inline-flex items-center gap-1.5 shadow-sm cursor-pointer" title="Request Peer Coverage / Report Sick Leave for this class">
+                            class="bg-purple-50 hover:bg-purple-100 border-2 border-purple-200 border-b-4 border-b-purple-300 text-purple-700 font-extrabold text-xs px-3 py-2 min-h-[38px] rounded-xl transition-all inline-flex items-center gap-1.5 shadow-xs cursor-pointer" title="Request Peer Coverage / Report Sick Leave for this class">
                             <i data-lucide="users" class="w-3.5 h-3.5 text-purple-600"></i> Coverage
                         </button>
                         ` : ''}
@@ -611,7 +548,14 @@ const TutorEngine = (function() {
         const container = document.getElementById('tutor-notifications-container');
         if (!container) return;
 
-        const notifs = DashboardEngine.getNotifications(currentTutor.email);
+        const rawNotifs = DashboardEngine.getNotifications(currentTutor.email) || [];
+        const notifs = rawNotifs.filter(n => {
+            if (!n) return false;
+            const blob = ((n.title || '') + ' ' + (n.message || '')).toLowerCase();
+            if (/\b(payment|payout|payroll|remittance|compensation|salary|earnings|hourly rate|invoice|tuition|billing|realignment|overdue fee)\b/i.test(blob)) return false;
+            if (/\b(waiting in class|coder waiting|tutor waiting|child is waiting|student is waiting|waiting for tutor|waiting for coder)\b/i.test(blob)) return false;
+            return true;
+        });
         if (notifs.length === 0) {
             container.innerHTML = `<p class="text-sm text-slate-400 text-center py-4">No notifications yet.</p>`;
             return;
@@ -823,7 +767,7 @@ const TutorEngine = (function() {
 
                     <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Session to Cover</p>
-                        <p class="font-bold text-slate-900 text-sm"><span id="cov-student-name"></span> — <span id="cov-course" class="text-indigo-600"></span></p>
+                        <p class="font-bold text-slate-900 text-sm"><span id="cov-student-name"></span> &bull; <span id="cov-course" class="text-indigo-600"></span></p>
                         <p id="cov-date-time" class="text-xs text-slate-500 mt-0.5"></p>
                     </div>
 
@@ -1062,12 +1006,12 @@ const TutorEngine = (function() {
             let statusBadge = '';
             let actionBtn = '';
 
-            if (r.status === 'pending_admin_approval') {
+            if (r.status === 'pending_admin_approval' || r.status === 'pending_review' || r.status === 'pending') {
                 statusBadge = '<span class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-200">Pending Director Approval</span>';
-            } else if (r.status === 'rejected_needs_revision') {
+            } else if (r.status === 'rejected_needs_revision' || r.status === 'rejected') {
                 statusBadge = '<span class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-200">Revision Requested</span>';
                 actionBtn = '<button type="button" onclick="TutorEngine.editMonthlyReport(\'' + r.id + '\')" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer shadow-xs">Edit &amp; Resubmit</button>';
-            } else if (r.status === 'approved') {
+            } else if (r.status === 'approved' || r.status === 'sent_to_parent' || r.status === 'sent') {
                 statusBadge = '<span class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">Approved &amp; Sent</span>';
                 actionBtn = '<button type="button" onclick="MonthlyReportEngine.openReportPDF(\'' + r.id + '\')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1"><i data-lucide="file-text" class="w-3.5 h-3.5 text-slate-600"></i> View PDF</button>';
             }
@@ -1081,7 +1025,7 @@ const TutorEngine = (function() {
                             ${statusBadge}
                         </div>
                         <p class="text-xs text-slate-600 line-clamp-1">${r.shiningHighlights || 'Learning evaluation filed.'}</p>
-                        ${r.adminFeedback ? `<p class="text-xs text-rose-700 font-bold mt-1 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg">Director Feedback: "${r.adminFeedback}"</p>` : ''}
+                        ${(r.adminFeedback || r.rejectionReason) ? `<p class="text-xs text-rose-700 font-bold mt-1 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg">Director Feedback: "${r.adminFeedback || r.rejectionReason}"</p>` : ''}
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
                         ${actionBtn}
@@ -1091,6 +1035,72 @@ const TutorEngine = (function() {
         }).join('');
 
         if (window.lucide) lucide.createIcons();
+    }
+
+    function clearExtraMonthlyReportProjectRows() {
+        const container = document.getElementById('tmr-extra-projects-container');
+        if (container) container.innerHTML = '';
+        const badge = document.getElementById('tmr-prefilled-projects-badge');
+        if (badge) {
+            badge.classList.add('hidden');
+            badge.textContent = '';
+        }
+    }
+
+    function addMonthlyReportProjectRow(title = '', url = '') {
+        const container = document.getElementById('tmr-extra-projects-container');
+        if (!container) return;
+        const rowIdx = container.querySelectorAll('.tmr-extra-project-row').length + 3;
+        const row = document.createElement('div');
+        row.className = 'tmr-extra-project-row grid grid-cols-1 sm:grid-cols-12 gap-2 items-center';
+        const safeTitle = String(title || '').replace(/"/g, '&quot;');
+        const safeUrl = String(url || '').replace(/"/g, '&quot;');
+        row.innerHTML = `
+            <input type="text" placeholder="Project ${rowIdx} Title" value="${safeTitle}" class="tmr-extra-proj-title sm:col-span-5 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800">
+            <input type="url" placeholder="Project ${rowIdx} URL (Scratch / Web / GitHub)" value="${safeUrl}" class="tmr-extra-proj-url sm:col-span-6 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-mono">
+            <button type="button" onclick="this.closest('.tmr-extra-project-row').remove()" class="sm:col-span-1 px-2 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 rounded-xl text-xs font-bold flex items-center justify-center cursor-pointer" title="Remove Project Row">✕</button>
+        `;
+        container.appendChild(row);
+    }
+
+    function prefillMonthlyReportProjects(studentId, existingLinks) {
+        clearExtraMonthlyReportProjectRows();
+        const t1 = document.getElementById('tmr-proj1-title');
+        const u1 = document.getElementById('tmr-proj1-url');
+        const t2 = document.getElementById('tmr-proj2-title');
+        const u2 = document.getElementById('tmr-proj2-url');
+        if (t1) t1.value = '';
+        if (u1) u1.value = '';
+        if (t2) t2.value = '';
+        if (u2) u2.value = '';
+
+        let linksToUse = Array.isArray(existingLinks) && existingLinks.length > 0 ? existingLinks.slice() : [];
+        if (linksToUse.length === 0 && studentId && typeof MonthlyReportEngine !== 'undefined' && typeof MonthlyReportEngine.getSubmittedProjectsForStudent === 'function') {
+            const select = document.getElementById('tmr-student-id');
+            let studentName = '';
+            if (select && select.selectedIndex >= 0 && select.options[select.selectedIndex]) {
+                studentName = select.options[select.selectedIndex].getAttribute('data-name') || '';
+            }
+            linksToUse = MonthlyReportEngine.getSubmittedProjectsForStudent(studentId, studentName) || [];
+        }
+
+        if (linksToUse[0]) {
+            if (t1) t1.value = linksToUse[0].title || '';
+            if (u1) u1.value = linksToUse[0].url || '';
+        }
+        if (linksToUse[1]) {
+            if (t2) t2.value = linksToUse[1].title || '';
+            if (u2) u2.value = linksToUse[1].url || '';
+        }
+        for (let i = 2; i < linksToUse.length; i++) {
+            addMonthlyReportProjectRow(linksToUse[i].title || '', linksToUse[i].url || '');
+        }
+
+        const badge = document.getElementById('tmr-prefilled-projects-badge');
+        if (badge && linksToUse.length > 0) {
+            badge.textContent = `${linksToUse.length} Submitted Project${linksToUse.length > 1 ? 's' : ''} Auto-Filled`;
+            badge.classList.remove('hidden');
+        }
     }
 
     function openMonthlyReportModal(reportId = null) {
@@ -1108,19 +1118,25 @@ const TutorEngine = (function() {
         if (reportId && typeof MonthlyReportEngine !== 'undefined') {
             const r = MonthlyReportEngine.getReports().find(rep => rep.id === reportId);
             if (r) {
+                if (['approved', 'sent_to_parent', 'published'].includes(r.status)) {
+                    if (typeof showToast === 'function') {
+                        showToast('This monthly report is approved and finalized. Editing is locked.', 'warning');
+                    } else {
+                        alert('This monthly report is approved and finalized. Editing is locked.');
+                    }
+                    return;
+                }
                 document.getElementById('tmr-id').value = r.id;
                 select.value = r.studentId;
                 document.getElementById('tmr-month').value = r.month || 'October 2026';
-                document.getElementById('tmr-proj1-title').value = (r.projectLinks[0] && r.projectLinks[0].title) || '';
-                document.getElementById('tmr-proj1-url').value = (r.projectLinks[0] && r.projectLinks[0].url) || '';
-                document.getElementById('tmr-proj2-title').value = (r.projectLinks[1] && r.projectLinks[1].title) || '';
-                document.getElementById('tmr-proj2-url').value = (r.projectLinks[1] && r.projectLinks[1].url) || '';
+                prefillMonthlyReportProjects(r.studentId, r.projectLinks || []);
                 document.getElementById('tmr-woohoo-moments').value = (r.woohooMoments || []).map(m => m.moment).join('\n');
                 document.getElementById('tmr-strengths').value = r.shiningHighlights || '';
                 document.getElementById('tmr-growth').value = r.growthAreas || '';
             }
         } else {
             document.getElementById('tmr-id').value = '';
+            clearExtraMonthlyReportProjectRows();
             document.getElementById('tmr-proj1-title').value = '';
             document.getElementById('tmr-proj1-url').value = '';
             document.getElementById('tmr-proj2-title').value = '';
@@ -1144,7 +1160,11 @@ const TutorEngine = (function() {
     }
 
     function onReportStudentChange(studentId) {
-        if (!studentId) return;
+        if (!studentId) {
+            clearExtraMonthlyReportProjectRows();
+            return;
+        }
+        prefillMonthlyReportProjects(studentId);
         triggerWoohooCrawler();
     }
 
@@ -1181,6 +1201,17 @@ const TutorEngine = (function() {
         if (p1Title && p1Url) projectLinks.push({ title: p1Title, url: p1Url });
         if (p2Title && p2Url) projectLinks.push({ title: p2Title, url: p2Url });
 
+        const extraRows = document.querySelectorAll('#tmr-extra-projects-container .tmr-extra-project-row');
+        extraRows.forEach(row => {
+            const tEl = row.querySelector('.tmr-extra-proj-title');
+            const uEl = row.querySelector('.tmr-extra-proj-url');
+            const tVal = tEl ? tEl.value.trim() : '';
+            const uVal = uEl ? uEl.value.trim() : '';
+            if (tVal && uVal) {
+                projectLinks.push({ title: tVal, url: uVal });
+            }
+        });
+
         const woohooRaw = document.getElementById('tmr-woohoo-moments').value.trim();
         const moments = woohooRaw ? woohooRaw.split('\n').filter(Boolean).map(m => ({
             date: 'Monthly Session',
@@ -1206,7 +1237,15 @@ const TutorEngine = (function() {
         };
 
         if (typeof MonthlyReportEngine !== 'undefined') {
-            MonthlyReportEngine.submitReport(reportData);
+            const subRes = MonthlyReportEngine.submitReport(reportData);
+            if (subRes && subRes.success === false) {
+                if (typeof showToast === 'function') {
+                    showToast(subRes.message || 'Could not submit monthly report.', 'error');
+                } else {
+                    alert(subRes.message || 'Could not submit monthly report.');
+                }
+                return;
+            }
             closeMonthlyReportModal();
             renderMonthlyReportsList();
             if (typeof showToast === 'function') {
@@ -1215,7 +1254,223 @@ const TutorEngine = (function() {
         }
     }
 
+    
+    function launchMeeting(e, url, scheduleId, studentName, courseName) {
+        if (e && typeof e.preventDefault === 'function') e.preventDefault();
+        const targetUrl = url || 'https://meet.google.com';
+        if (typeof STEMulus !== 'undefined' && STEMulus.Classroom && typeof STEMulus.Classroom.launchMeetingSession === 'function') {
+            STEMulus.Classroom.launchMeetingSession({
+                scheduleId: scheduleId || '',
+                role: 'tutor',
+                meetingUrl: targetUrl,
+                studentName: studentName || 'Coder',
+                courseName: courseName || 'STEMulus Class'
+            });
+        } else if (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.launchMeetingSession === 'function') {
+            DashboardEngine.launchMeetingSession({
+                scheduleId: scheduleId || '',
+                role: 'tutor',
+                meetingUrl: targetUrl,
+                studentName: studentName || 'Coder',
+                courseName: courseName || 'STEMulus Class'
+            });
+        }
+    }
+
+    function injectEscalationModal() {
+        if (document.getElementById('tutor-escalation-modal')) return;
+        const modal = document.createElement('div');
+        modal.id = 'tutor-escalation-modal';
+        modal.style.display = 'none';
+        modal.className = 'fixed inset-0 z-[9999] items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm';
+        modal.innerHTML = `
+            <div class="bg-white rounded-3xl p-6 max-w-lg w-full border border-slate-200 shadow-2xl space-y-4 animate-fadeIn">
+                <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                    <div>
+                        <h3 class="text-base font-extrabold text-slate-900">Escalate Issue to Admin</h3>
+                        <p class="text-xs text-slate-500">Direct operational escalation to Academic Operations &amp; Director</p>
+                    </div>
+                    <button type="button" onclick="TutorEngine.closeEscalationModal()" class="w-9 h-9 flex items-center justify-center rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer" aria-label="Close modal">&times;</button>
+                </div>
+                <form id="tutor-escalation-form" class="space-y-3.5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Escalation Category *</label>
+                            <select id="esc-category" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-semibold">
+                                <option value="student_behavior">Student Behavior</option>
+                                <option value="technical_issue">Technical Issue</option>
+                                <option value="scheduling_conflict">Scheduling Conflict</option>
+                                <option value="parent_dispute">Parent Dispute</option>
+                                <option value="payment_query">Payment / Payout Query</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Severity Level *</label>
+                            <select id="esc-severity" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-semibold">
+                                <option value="medium">Medium (Standard SLA)</option>
+                                <option value="high">High (Urgent Attention)</option>
+                                <option value="critical">Critical (Immediate Intervention)</option>
+                                <option value="low">Low (Advisory Note)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Related Student (Optional)</label>
+                        <select id="esc-student-id" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800">
+                            <option value="">-- General / Non-Student Specific --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Issue Summary *</label>
+                        <input type="text" id="esc-summary" required maxlength="200" placeholder="Brief summary of the issue..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Detailed Notes &amp; Context *</label>
+                        <textarea id="esc-details" required rows="3" maxlength="5000" placeholder="Provide full context, timestamps, and any action already taken..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Evidence / Attachment Link (Optional)</label>
+                        <input type="text" id="esc-attachment" placeholder="https://drive.google.com/... or screenshot reference" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800">
+                    </div>
+                    <button type="submit" id="esc-submit-btn" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl transition-all shadow-md text-xs cursor-pointer">
+                        Submit Escalation to Admin
+                    </button>
+                </form>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        const form = document.getElementById('tutor-escalation-form');
+        if (form) form.addEventListener('submit', submitEscalationForm);
+    }
+
+    function openEscalationModal(defaultCategory) {
+        injectEscalationModal();
+        const modal = document.getElementById('tutor-escalation-modal');
+        if (!modal) return;
+        const select = document.getElementById('esc-student-id');
+        if (select && typeof DashboardEngine !== 'undefined' && currentTutor) {
+            const myStudents = DashboardEngine.getTutorStudents ? DashboardEngine.getTutorStudents(currentTutor.email) : [];
+            select.innerHTML = '<option value="">-- General / Non-Student Specific --</option>' +
+                myStudents.map(s => `<option value="${s.id}" data-name="${s.firstName} ${s.lastName || ''}">${s.firstName} ${s.lastName || ''} (${s.program || 'Coding'})</option>`).join('');
+        }
+        if (defaultCategory && document.getElementById('esc-category')) {
+            document.getElementById('esc-category').value = defaultCategory;
+        }
+        modal.style.display = 'flex';
+    }
+
+    function closeEscalationModal() {
+        const modal = document.getElementById('tutor-escalation-modal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function submitEscalationForm(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        const cat = (document.getElementById('esc-category') || {}).value || 'technical_issue';
+        const sev = (document.getElementById('esc-severity') || {}).value || 'medium';
+        const stuSel = document.getElementById('esc-student-id');
+        const stuId = stuSel ? stuSel.value : '';
+        const stuName = (stuSel && stuSel.selectedIndex > 0) ? (stuSel.options[stuSel.selectedIndex].getAttribute('data-name') || 'Student') : 'General / Faculty';
+        const summary = ((document.getElementById('esc-summary') || {}).value || '').trim();
+        const details = ((document.getElementById('esc-details') || {}).value || '').trim();
+        const attachmentUrl = ((document.getElementById('esc-attachment') || {}).value || '').trim();
+
+        if (!summary || !details) {
+            if (typeof showToast === 'function') showToast('Please enter both an issue summary and detailed notes.', 'warning');
+            return;
+        }
+
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.submitIssueEscalation) {
+            const res = DashboardEngine.submitIssueEscalation({
+                category: cat,
+                severity: sev,
+                studentId: stuId,
+                studentName: stuName,
+                summary: summary,
+                details: details,
+                attachmentUrl: attachmentUrl,
+                tutorId: currentTutor ? currentTutor.id : '',
+                tutorName: currentTutor ? currentTutor.name : 'Tutor',
+                tutorEmail: currentTutor ? currentTutor.email : ''
+            });
+            if (!res || !res.success) {
+                if (typeof showToast === 'function') showToast((res && res.message) || 'Escalation failed.', 'error');
+                return;
+            }
+        }
+
+        const form = document.getElementById('tutor-escalation-form');
+        if (form) form.reset();
+        closeEscalationModal();
+        renderEscalationsList();
+        renderNotifications();
+        if (typeof showToast === 'function') {
+            showToast('Issue escalated to Admin Operations Desk.', 'success');
+        }
+    }
+
+    function renderEscalationsList() {
+        const container = document.getElementById('tutor-escalations-list');
+        if (!container || typeof DashboardEngine === 'undefined' || !DashboardEngine.getIssueEscalations) return;
+        const email = currentTutor ? currentTutor.email : '';
+        const list = DashboardEngine.getIssueEscalations(email) || [];
+        const escHtml = DashboardEngine.escapeHtml || function(s) { return String(s || ''); };
+
+        if (!list.length) {
+            container.innerHTML = '<p class="text-xs text-slate-400 p-3 text-center">No active issue escalations submitted yet.</p>';
+            return;
+        }
+
+        const sevColors = {
+            critical: 'bg-rose-100 text-rose-800 border-rose-200',
+            high: 'bg-amber-100 text-amber-800 border-amber-200',
+            medium: 'bg-blue-100 text-blue-800 border-blue-200',
+            low: 'bg-slate-100 text-slate-700 border-slate-200'
+        };
+        const statusColors = {
+            open: 'bg-amber-50 text-amber-700 border-amber-200',
+            in_progress: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+            resolved: 'bg-emerald-50 text-emerald-700 border-emerald-200'
+        };
+
+        container.innerHTML = list.slice(0, 8).map(item => {
+            const sCls = sevColors[item.severity] || sevColors.medium;
+            const stCls = statusColors[item.status] || statusColors.open;
+            const repliesHtml = (Array.isArray(item.replies) && item.replies.length > 0)
+                ? '<div class="mt-2 pt-2 border-t border-slate-100 space-y-1">' +
+                  item.replies.map(rep => `<div class="text-[11px] text-slate-600 bg-slate-50 px-2.5 py-1.5 rounded-lg"><strong>${escHtml(rep.authorName)}:</strong> ${escHtml(rep.message)}</div>`).join('') +
+                  '</div>'
+                : '';
+            const resHtml = item.status === 'resolved' && item.resolutionNotes
+                ? `<div class="mt-2 text-[11px] text-emerald-800 bg-emerald-50/80 border border-emerald-200 px-2.5 py-1.5 rounded-lg"><strong>Resolution:</strong> ${escHtml(item.resolutionNotes)}</div>`
+                : '';
+            return `
+                <div class="p-3.5 rounded-2xl border border-slate-200 bg-white shadow-xs">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase border ${sCls}">${escHtml(item.severity)}</span>
+                            <span class="text-xs font-bold text-slate-900">${escHtml(item.categoryLabel || item.category)}</span>
+                            <span class="text-[11px] text-slate-500">&bull; ${escHtml(item.studentName)}</span>
+                        </div>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${stCls}">${escHtml(item.status.replace('_', ' '))}</span>
+                    </div>
+                    <p class="text-xs font-semibold text-slate-800">${escHtml(item.summary)}</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">${escHtml(item.details)}</p>
+                    ${item.attachmentUrl ? `<p class="text-[10px] text-indigo-600 mt-1 truncate">Attachment: ${escHtml(item.attachmentUrl)}</p>` : ''}
+                    <div class="text-[10px] text-slate-400 mt-1">Assigned: ${escHtml(item.assignedTo || 'Admin Operations')}</div>
+                    ${repliesHtml}
+                    ${resHtml}
+                </div>
+            `;
+        }).join('');
+    }
+
     return {
+        openEscalationModal,
+        closeEscalationModal,
+        submitEscalationForm,
+        renderEscalationsList,
+        launchMeeting,
         init,
         renderLiveClassPresenceBanner,
         renderMonthlyReportsList,
@@ -1223,6 +1478,8 @@ const TutorEngine = (function() {
         closeMonthlyReportModal,
         editMonthlyReport: openMonthlyReportModal,
         onReportStudentChange,
+        addMonthlyReportProjectRow,
+        prefillMonthlyReportProjects,
         triggerWoohooCrawler,
         saveMonthlyReportForm,
         renderDashboard,

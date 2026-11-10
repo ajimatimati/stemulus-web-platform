@@ -36,7 +36,7 @@ const LeadGenius = (function() {
             name: 'Game Creators & Visual Logic',
             ages: '5–8',
             tagline: 'Turn playtime into algorithmic mastery through Scratch 3.0 & interactive game physics.',
-            deckSlug: 'game_creators_deck_01.html',
+            programPage: 'scratch-programming.html',
             trackKey: 'scratch',
             color: '#f97316'
         },
@@ -44,7 +44,7 @@ const LeadGenius = (function() {
             name: 'Python Power & Arcade Game Engineering',
             ages: '9–17',
             tagline: 'Build real playable 2D games and text RPGs using industry-standard Python 3 & Pygame.',
-            deckSlug: 'python_deck_01.html',
+            programPage: 'python-coding.html',
             trackKey: 'python',
             color: '#3b82f6'
         },
@@ -52,7 +52,7 @@ const LeadGenius = (function() {
             name: 'Web Wizards & Full-Stack Apps',
             ages: '10–17',
             tagline: 'Create live interactive websites, responsive web apps, and integrate cloud APIs.',
-            deckSlug: 'web_wizards_deck_01.html',
+            programPage: 'web-development.html',
             trackKey: 'web',
             color: '#10b981'
         },
@@ -60,15 +60,15 @@ const LeadGenius = (function() {
             name: 'Robotics & Virtual IoT Systems Lab',
             ages: '9–17',
             tagline: 'Simulate microcontrollers, sensors, ultrasonic radar, and automated smart circuits.',
-            deckSlug: 'robotics_deck_01.html',
+            programPage: 'arduino-robotics.html',
             trackKey: 'robotics',
             color: '#8b5cf6'
         },
         ai: {
             name: 'AI Explorers & Machine Learning',
             ages: '10–17',
-            tagline: 'Train machine learning models, build computer vision games, and master AI prompt craft.',
-            deckSlug: 'ai_explorers_deck_01.html',
+            tagline: 'Train machine learning models, build computer vision games, and master AI engineering.',
+            programPage: 'ai-machine-learning.html',
             trackKey: 'ai',
             color: '#ec4899'
         },
@@ -76,7 +76,7 @@ const LeadGenius = (function() {
             name: 'Creative Coding & Digital Arts',
             ages: '7–14',
             tagline: 'Write algorithmic animations, generative fractal art, and interactive music visualizers in p5.js.',
-            deckSlug: 'creative_coding_deck_01.html',
+            programPage: 'creative-coding.html',
             trackKey: 'creative',
             color: '#06b6d4'
         }
@@ -529,7 +529,7 @@ const LeadGenius = (function() {
                     <div class="lg-choice-card ${diagnosticData.interest === 'ai' ? 'selected' : ''}" data-val="ai">
                         <div class="lg-choice-icon">🤖</div>
                         <div class="lg-choice-title">Artificial Intelligence</div>
-                        <div class="lg-choice-desc">Machine learning, vision detection & prompt labs</div>
+                        <div class="lg-choice-desc">Machine learning, computer vision & smart assistants</div>
                     </div>
                     <div class="lg-choice-card ${diagnosticData.interest === 'robotics' ? 'selected' : ''}" data-val="robotics">
                         <div class="lg-choice-icon">⚡</div>
@@ -620,16 +620,16 @@ const LeadGenius = (function() {
                         ${track.tagline}
                     </p>
 
-                    <!-- Interactive Deck Preview Card -->
+                    <!-- Track Program Overview Card -->
                     <div style="background:#f8fafc; border:1.5px dashed #cbd5e1; border-radius:16px; padding:1.25rem; text-align:left; margin-bottom:1.5rem;">
                         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
-                            <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#64748b; letter-spacing:0.05em;">Sample Curriculum Deck</span>
-                            <span style="font-size:0.75rem; background:#dbeafe; color:#1d4ed8; padding:2px 8px; border-radius:100px; font-weight:700;">215 Decks Included</span>
+                            <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#64748b; letter-spacing:0.05em;">Personalized 1-on-1 Roadmap</span>
+                            <span style="font-size:0.75rem; background:#dbeafe; color:#1d4ed8; padding:2px 8px; border-radius:100px; font-weight:700;">Live Mentorship</span>
                         </div>
-                        <h4 style="font-size:1rem; font-weight:700; color:#0f172a; margin:0 0 0.25rem;">Lesson 1: Interactive Mission Kickoff</h4>
-                        <p style="font-size:0.8rem; color:#64748b; margin:0 0 0.75rem;">Your child's first live 1-on-1 build begins with interactive visual slides and guided problem solving.</p>
-                        <a href="curriculum/slides/${track.deckSlug}?role=student" target="_blank" style="display:inline-flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; color:#2563eb; text-decoration:none;">
-                            <span>Preview Lesson 1 Slides Online</span>
+                        <h4 style="font-size:1rem; font-weight:700; color:#0f172a; margin:0 0 0.25rem;">Session 1: Interactive Project Kickoff</h4>
+                        <p style="font-size:0.8rem; color:#64748b; margin:0 0 0.75rem;">Your child's first live 1-on-1 build begins with hands-on project creation and guided problem solving.</p>
+                        <a href="${track.programPage || 'programs.html'}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; color:#2563eb; text-decoration:none;">
+                            <span>Explore Full Track Syllabus & Projects</span>
                             <span>→</span>
                         </a>
                     </div>
@@ -668,7 +668,7 @@ const LeadGenius = (function() {
 
         const track = determineTrack(diagnosticData.childAge, diagnosticData.interest);
         diagnosticData.recommendedTrack = track;
-        diagnosticData.sampleDeckUrl = `https://stemuluskidstech.com/curriculum/slides/${track.deckSlug}`;
+        diagnosticData.sampleDeckUrl = `https://stemuluskidstech.com/${track.programPage || 'programs.html'}`;
 
         const leadId = 'diag-' + Date.now().toString(36) + '-' + Math.random().toString(36).substring(2, 6);
 

@@ -516,6 +516,13 @@ const DashboardEngine = (function() {
     "firstName": "Babalola",
     "lastName": "Oluwadunmininu Pearl",
     "age": 13,
+    "program": "Advanced Web & Python Engineering",
+    "status": "active",
+    "parentName": "Mrs. Babalola",
+    "parentEmail": "babalola.parent@stemuluskidstech.com",
+    "tutorName": "Emmanuel Ojekudo",
+    "tutorEmail": "emmanuel@stemuluskidstech.com",
+    "tutorId": "tut-107-emmanuel",
     "tier": "intermediate",
     "package": "Intermediate Young Engineers",
     "classesAttended": 27,
@@ -553,28 +560,6 @@ const DashboardEngine = (function() {
       "status": "renewal_pending",
       "uncollectedOctober": true,
       "notes": "Intermediate package (Age 13): ₦75,000/month. October bridge (Oct 19-31, 4 sessions): ₦37,500. November cycle: ₦75,000. Realignment total: ₦112,500 (or ₦37,500 bridge now + ₦75,000 on Nov 1)."
-    }
-  },
-  {
-    "id": "std-1012-goke",
-    "firstName": "Gbolade",
-    "lastName": "Okesanjo",
-    "classesAttended": 4,
-    "metrics": {
-      "attended": 4
-    },
-    "classroomLink": "Physical Lab",
-    "meetLink": "Physical Lab",
-    "startDate": "2026-10-04",
-    "billing": {
-      "firstClassDate": "2026-10-04",
-      "anchorDay": 4,
-      "cycleStartDate": "2026-10-04",
-      "nextDueDate": "2026-11-04",
-      "monthlyFee": 48000,
-      "status": "active",
-      "paidThrough": "2026-11-04",
-      "notes": "Physical sessions paid. Next cycle due Nov 4, 2026."
     }
   }
 ],
@@ -1470,8 +1455,8 @@ const DashboardEngine = (function() {
                 "dateFormatted": "8/15/2026",
                 "startTime": "1:00:00 PM",
                 "endTime": "2:00:00 PM",
-                "topic": "•Review of previous assignment (for loop). •Introduction to Functions – definition, syntax, and the parts of a function. •Worked examples: Addition of Two Numbers; Greeting Program. •JavaScript Output Methods – window.alert(), console.log(), textContent, and innerHTML.",
-                "summary": "The session opened with a review of the previous assignment on the for loop, which the student completed correctly. Functions were then introduced for the first time, covering their purpose, basic syntax, and the different parts that make up a function – the function keyword, function name, parentheses, curly braces, function body, and function call.\n\nTwo worked examples reinforced the concept: an Addition of Two Numbers program, which stored values, performed a calculation, and displayed the result; and a Greeting Program triggered by a button click. The greeting program was then rewritten several times to demonstrate four different JavaScript output methods – window.alert(), console.log(), textContent, and innerHTML – helping the student see how the same result can be produced in different ways.\n\nThe student engaged well throughout, followed each example attentively, and was able to distinguish between defining a function and calling it. To reinforce the session, she was given a new assignment:\nAssignment: Rewrite the greeting program to use the textContent and window.alert() output methods to display the message, instead of innerHTML.",
+                "topic": "•Review of previous assignment (for loop). •Introduction to Functions :  definition, syntax, and the parts of a function. •Worked examples: Addition of Two Numbers; Greeting Program. •JavaScript Output Methods :  window.alert(), console.log(), textContent, and innerHTML.",
+                "summary": "The session opened with a review of the previous assignment on the for loop, which the student completed correctly. Functions were then introduced for the first time, covering their purpose, basic syntax, and the different parts that make up a function :  the function keyword, function name, parentheses, curly braces, function body, and function call.\n\nTwo worked examples reinforced the concept: an Addition of Two Numbers program, which stored values, performed a calculation, and displayed the result; and a Greeting Program triggered by a button click. The greeting program was then rewritten several times to demonstrate four different JavaScript output methods :  window.alert(), console.log(), textContent, and innerHTML :  helping the student see how the same result can be produced in different ways.\n\nThe student engaged well throughout, followed each example attentively, and was able to distinguish between defining a function and calling it. To reinforce the session, she was given a new assignment:\nAssignment: Rewrite the greeting program to use the textContent and window.alert() output methods to display the message, instead of innerHTML.",
                 "status": "present",
                 "attendanceStatus": "present",
                 "tutorRemark": "The student had a strong session today, picking up functions quickly and engaging well with each output method. She completed the for loop assignment correctly and followed each example with good attention. I've given her a short assignment on textContent and window.alert() to keep building her confidence.",
@@ -1493,7 +1478,7 @@ const DashboardEngine = (function() {
                 "startTime": "2:00:00 PM",
                 "endTime": "3:00:00 AM",
                 "topic": "•Introduction to the Document Object Model (DOM) and why JavaScript uses it. •Finding HTML elements with document.getElementById(). •Changing content using textContent and innerHTML. •Changing CSS styles using JavaScript (style.color, style.backgroundColor). •Linking an external JavaScript file to an HTML page. •Introduction to JavaScript Events.",
-                "summary": "This session opened a new module covering the DOM, DOM Events, APIs, async/await, and ES6+ (the modern JavaScript standard introduced in 2015 and updated every year since). Today's class focused specifically on the DOM: what it is, and how JavaScript uses it to change text, styles, and images, show or hide elements, create or remove elements, respond to clicks, and read information from forms.\n\nThe student was introduced to document.getElementById() as the standard way to locate an element by its id, and saw how it can be combined with innerHTML and textContent to change what appears on the page. A further example showed how JavaScript can change an element's appearance directly using style.color and style.backgroundColor.\n\nThe class then covered how to move JavaScript out of the HTML file and into a separate external script.js file, linked using <script src=\"script.js\"></script>. To close, JavaScript events were introduced as a lead-in to the next topic – anything that “happens” on a page, such as a click, a keystroke, a form submission, or a page load – which JavaScript can be written to respond to.\n\nTo reinforce the session, the student was given the following assignment:\nAssignment: Research the difference between a website and a web app (web application), and read about page types such as parent/menu pages and child/sub-menu pages.",
+                "summary": "This session opened a new module covering the DOM, DOM Events, APIs, async/await, and ES6+ (the modern JavaScript standard introduced in 2015 and updated every year since). Today's class focused specifically on the DOM: what it is, and how JavaScript uses it to change text, styles, and images, show or hide elements, create or remove elements, respond to clicks, and read information from forms.\n\nThe student was introduced to document.getElementById() as the standard way to locate an element by its id, and saw how it can be combined with innerHTML and textContent to change what appears on the page. A further example showed how JavaScript can change an element's appearance directly using style.color and style.backgroundColor.\n\nThe class then covered how to move JavaScript out of the HTML file and into a separate external script.js file, linked using <script src=\"script.js\"></script>. To close, JavaScript events were introduced as a lead-in to the next topic :  anything that “happens” on a page, such as a click, a keystroke, a form submission, or a page load :  which JavaScript can be written to respond to.\n\nTo reinforce the session, the student was given the following assignment:\nAssignment: Research the difference between a website and a web app (web application), and read about page types such as parent/menu pages and child/sub-menu pages.",
                 "status": "present",
                 "attendanceStatus": "present",
                 "tutorRemark": "Today's class introduced the DOM, a significant step up that opens the door to real interactivity on webpages. We covered the core methods for finding and changing elements, alongside a first look at external JavaScript files and events. I'd encourage continued practice with document.getElementById(), textContent, and innerHTML at home to build fluency before we move further into DOM Events next session.",
@@ -1514,11 +1499,11 @@ const DashboardEngine = (function() {
                 "dateFormatted": "8/20/2026",
                 "startTime": "1:00:00 PM",
                 "endTime": "2:10:00 PM",
-                "topic": "JavaScript Events – addEventListener(), mouseover Event, and mouseout Event",
+                "topic": "JavaScript Events :  addEventListener(), mouseover Event, and mouseout Event",
                 "summary": "The class began with a review of the previous assignment on parent and child pages, which she answered correctly. The lesson then moved into JavaScript events, starting with what an event is (clicks, key presses, mouse movement, form submissions, page loads) and how JavaScript can respond to them. She learned addEventListener(), demonstrated with a button that changes a heading's text on click. This was followed by the mouseover event (triggered when the mouse enters an element) and mouseout event (triggered when it leaves), each shown with a coloured box that updates a message on hover. Two assignments were set: one on 5 selector types, and a second requiring her to build an HTML page where a box changes background colour on mouseover and reverts on mouseout, using HTML, CSS, and JavaScript. The class closed with a preview of the next topic, the keydown Event.",
                 "status": "present",
                 "attendanceStatus": "present",
-                "tutorRemark": "She came into class with a solid grasp of the previous topic — the parent/child pages assignment was correct, which made for a smooth start. She followed the addEventListener, mouseover, and mouseout demonstrations without difficulty. The two new assignments (selector types, and the mouseover/mouseout box exercise) offer good hands-on practice — worth checking both at the start of next class, alongside the keydown Event topic.",
+                "tutorRemark": "She came into class with a solid grasp of the previous topic ,  the parent/child pages assignment was correct, which made for a smooth start. She followed the addEventListener, mouseover, and mouseout demonstrations without difficulty. The two new assignments (selector types, and the mouseover/mouseout box exercise) offer good hands-on practice ,  worth checking both at the start of next class, alongside the keydown Event topic.",
                 "source": "GoogleSheetVerifiedAttendance",
                 "verified": true,
                 "createdAt": "2026-08-20T05:40:04.000Z"
@@ -1536,11 +1521,11 @@ const DashboardEngine = (function() {
                 "dateFormatted": "8/21/2026",
                 "startTime": "1:00:00 PM",
                 "endTime": "2:15:00 PM",
-                "topic": "JavaScript Events – keydown Event | setInterval() (Timer Function)",
-                "summary": "We started by accessing her assignment, which she got correctly.\nToday's class covered the keydown event, triggered when a key is pressed on the keyboard, first demonstrated with a simple input box that displays a confirmation message (\"You just pressed a key. Well done!\") as soon as any key is pressed. \n\nThe lesson then introduced setInterval(), a JavaScript timer function that repeatedly runs a piece of code at a set time interval—noted specifically as a timer function, not an event. Both concepts were combined in a \"JavaScript Typewriter\" demo: pressing a key inside an input box triggers a typewriter effect that types out \"Programming is fun!\" one letter at a time, with a flag (typing) built in to stop the effect from restarting on every keystroke while it's already running. \n\nAn assignment was set requiring her to:\n(1) add a background colour to the \"Programming is fun!\" text, and \n(2) apply border-radius to the input box's border and change the border outline style",
+                "topic": "JavaScript Events :  keydown Event | setInterval() (Timer Function)",
+                "summary": "We started by accessing her assignment, which she got correctly.\nToday's class covered the keydown event, triggered when a key is pressed on the keyboard, first demonstrated with a simple input box that displays a confirmation message (\"You just pressed a key. Well done!\") as soon as any key is pressed. \n\nThe lesson then introduced setInterval(), a JavaScript timer function that repeatedly runs a piece of code at a set time interval, noted specifically as a timer function, not an event. Both concepts were combined in a \"JavaScript Typewriter\" demo: pressing a key inside an input box triggers a typewriter effect that types out \"Programming is fun!\" one letter at a time, with a flag (typing) built in to stop the effect from restarting on every keystroke while it's already running. \n\nAn assignment was set requiring her to:\n(1) add a background colour to the \"Programming is fun!\" text, and \n(2) apply border-radius to the input box's border and change the border outline style",
                 "status": "present",
                 "attendanceStatus": "present",
-                "tutorRemark": "This lesson stepped up in complexity, moving from single-purpose event demos to combining keydown with setInterval() in one working example — a good bridge into more advanced scripting. Worth confirming she understands why the typing flag is needed, since that's the trickiest part of the logic and easy to gloss over. The assignment builds directly on the typewriter demo, so checking it next session should also confirm whether the keydown/setInterval pairing landed.",
+                "tutorRemark": "This lesson stepped up in complexity, moving from single-purpose event demos to combining keydown with setInterval() in one working example ,  a good bridge into more advanced scripting. Worth confirming she understands why the typing flag is needed, since that's the trickiest part of the logic and easy to gloss over. The assignment builds directly on the typewriter demo, so checking it next session should also confirm whether the keydown/setInterval pairing landed.",
                 "source": "GoogleSheetVerifiedAttendance",
                 "verified": true,
                 "createdAt": "2026-08-21T05:33:49.000Z"
@@ -1558,11 +1543,11 @@ const DashboardEngine = (function() {
                 "dateFormatted": "8/22/2026",
                 "startTime": "1:00:00 PM",
                 "endTime": "2:13:00 PM",
-                "topic": "JavaScript Events — input Event and submit Event  The session also included a review of the student's previous assignment and practical application of HTML forms, CSS styling, and JavaScript event handling.",
+                "topic": "JavaScript Events ,  input Event and submit Event  The session also included a review of the student's previous assignment and practical application of HTML forms, CSS styling, and JavaScript event handling.",
                 "summary": "The class began with a review of the assignment from the previous lesson. The student completed the assignment well, demonstrating a good understanding of the concepts previously covered.\n\nThe lesson then progressed to other JavaScript events, particularly the input event and submit event.\n\nThe student was introduced to the input event and learned that it occurs when the value of an input field changes, such as when a user types into an input box.\n\nThe submit event was also introduced. The student learned that the submit event occurs when a user submits an HTML form, usually by clicking a Submit button. Also HTML Marquee was used on the form caption and due to network, the class was extended to 2:13pm",
                 "status": "present",
                 "attendanceStatus": "present",
-                "tutorRemark": "Memory updated  Understood. I’ll use these three sections for the student reports going forward:  Topic Covered Class Summary Tutor Remarks Today 10:26 AM give me three assgnments on this   JavaScript Events — 3 Assignments Assignment 1: keydown Event  Create an HTML page with an input box.  When the student presses any keyboard key, use addEventListener() with the keydown event to change a message on the webpage to:  \"You pressed a key! Well done!\"  Requirement: Use HTML, CSS, and JavaScript.  Assignment 2: Typewriter Effect  Create a simple webpage with an input box.  When the student presses any key, display the following sentence one letter at a time using setInterval():  \"I am learning JavaScript!\"  Requirements:  Use keydown. Use setInterval(). Use textContent. Add a background colour to the displayed sentence. Use CSS to style the input box. Assignment 3: Improve the Design  Using the typewriter project from class, make the webpage more attractive.  The student should:  Change the background colour of the page. Change the text colour of \"Programming is fun!\". Apply border-radius to the input box. Change the input box outline to dotted, dashed, or double. Add a box-shadow to the input box. Change the placeholder text to: \"Press any key to start...\"  Requirement: The student should use HTML, CSS, and JavaScript and write the code independently.  Today 2:25 PM give me report based on the 3 criterials i typed yesterday, today we started with her assignment which she did well, then to other js events which are:  input type event, and submit Event and assignment on 10 input rypes with modern ui/ux and displaying form output on browser frontend was given.   What does submit mean?  The submit event happens when a user submits a form.  For example, clicking a Submit button.  Example:  <!DOCTYPE html> <html>  <head>      <title>Submit Event</title>      <style>          form {             width: 300px;             padding: 20px;             background-color: lightblue;         }          input {             padding: 8px;             margin-bottom: 10px;         }          button {             background-color: blue;             color: white;             padding: 8px 15px;             border: none;         }          #message {             color: green;         }      </style>  </head>  <body>      <h2>Student Form</h2>      <form id=\"myForm\">          <!-- Student enters their name -->         <input type=\"text\" id=\"name\" placeholder=\"Enter your name\">          <br><br>          <button type=\"submit\">Submit</button>      </form>      <p id=\"message\"></p>      <script>          // Find the form         let form = document.getElementById(\"myForm\");          // Run when the form is submitted         form.addEventListener(\"submit\", function(event) {              // Stop the page from refreshing             event.preventDefault();              // Display a message             document.getElementById(\"message\").textContent =                 \"Form submitted successfully!\";          });      </script>  </body> </html STEMulus Kids Tech Academy JavaScript Class Report Topic Covered  JavaScript Events — input Event and submit Event  The session also included a review of the student's previous assignment and practical application of HTML forms, CSS styling, and JavaScript event handling.  Class Summary  The class began with a review of the assignment from the previous lesson. The student completed the assignment well, demonstrating a good understanding of the concepts previously covered.  The lesson then progressed to other JavaScript events, particularly the input event and submit event.  The student was introduced to the input event and learned that it occurs when the value of an input field changes, such as when a user types into an input box.  The submit event was also introduced. The student learned that the submit event occurs when a user submits an HTML form, usually by clicking a Submit button.  A practical HTML, CSS, and JavaScript form example was used to demonstrate how addEventListener() can be used to detect form submission. The student was also introduced to:  event.preventDefault();  and learned that it can be used to prevent the browser from refreshing or performing its normal form-submission action, allowing JavaScript to handle the form.  The lesson further focused on connecting HTML form elements, CSS styling, and JavaScript events to create interactive frontend forms.  Tutor Remarks  The student performed well during the review of the previous assignment and was able to progress into new JavaScript event concepts.  The student was encouraged to continue practising the input and submit events, particularly how JavaScript can collect information entered into a form and display the result directly on the browser frontend.  As a practical assignment, the student was asked to create a form containing 10 different HTML input types, apply a modern UI/UX design, and use JavaScript to display the submitted form information on the browser frontend.  The assignment is intended to strengthen the student's understanding of HTML forms, CSS styling, JavaScript events, DOM manipulation, and frontend interaction.",
+                "tutorRemark": "Memory updated  Understood. I’ll use these three sections for the student reports going forward:  Topic Covered Class Summary Tutor Remarks Today 10:26 AM give me three assgnments on this   JavaScript Events ,  3 Assignments Assignment 1: keydown Event  Create an HTML page with an input box.  When the student presses any keyboard key, use addEventListener() with the keydown event to change a message on the webpage to:  \"You pressed a key! Well done!\"  Requirement: Use HTML, CSS, and JavaScript.  Assignment 2: Typewriter Effect  Create a simple webpage with an input box.  When the student presses any key, display the following sentence one letter at a time using setInterval():  \"I am learning JavaScript!\"  Requirements:  Use keydown. Use setInterval(). Use textContent. Add a background colour to the displayed sentence. Use CSS to style the input box. Assignment 3: Improve the Design  Using the typewriter project from class, make the webpage more attractive.  The student should:  Change the background colour of the page. Change the text colour of \"Programming is fun!\". Apply border-radius to the input box. Change the input box outline to dotted, dashed, or double. Add a box-shadow to the input box. Change the placeholder text to: \"Press any key to start...\"  Requirement: The student should use HTML, CSS, and JavaScript and write the code independently.  Today 2:25 PM give me report based on the 3 criterials i typed yesterday, today we started with her assignment which she did well, then to other js events which are:  input type event, and submit Event and assignment on 10 input rypes with modern ui/ux and displaying form output on browser frontend was given.   What does submit mean?  The submit event happens when a user submits a form.  For example, clicking a Submit button.  Example:  <!DOCTYPE html> <html>  <head>      <title>Submit Event</title>      <style>          form {             width: 300px;             padding: 20px;             background-color: lightblue;         }          input {             padding: 8px;             margin-bottom: 10px;         }          button {             background-color: blue;             color: white;             padding: 8px 15px;             border: none;         }          #message {             color: green;         }      </style>  </head>  <body>      <h2>Student Form</h2>      <form id=\"myForm\">          <!-- Student enters their name -->         <input type=\"text\" id=\"name\" placeholder=\"Enter your name\">          <br><br>          <button type=\"submit\">Submit</button>      </form>      <p id=\"message\"></p>      <script>          // Find the form         let form = document.getElementById(\"myForm\");          // Run when the form is submitted         form.addEventListener(\"submit\", function(event) {              // Stop the page from refreshing             event.preventDefault();              // Display a message             document.getElementById(\"message\").textContent =                 \"Form submitted successfully!\";          });      </script>  </body> </html STEMulus Kids Tech Academy JavaScript Class Report Topic Covered  JavaScript Events ,  input Event and submit Event  The session also included a review of the student's previous assignment and practical application of HTML forms, CSS styling, and JavaScript event handling.  Class Summary  The class began with a review of the assignment from the previous lesson. The student completed the assignment well, demonstrating a good understanding of the concepts previously covered.  The lesson then progressed to other JavaScript events, particularly the input event and submit event.  The student was introduced to the input event and learned that it occurs when the value of an input field changes, such as when a user types into an input box.  The submit event was also introduced. The student learned that the submit event occurs when a user submits an HTML form, usually by clicking a Submit button.  A practical HTML, CSS, and JavaScript form example was used to demonstrate how addEventListener() can be used to detect form submission. The student was also introduced to:  event.preventDefault();  and learned that it can be used to prevent the browser from refreshing or performing its normal form-submission action, allowing JavaScript to handle the form.  The lesson further focused on connecting HTML form elements, CSS styling, and JavaScript events to create interactive frontend forms.  Tutor Remarks  The student performed well during the review of the previous assignment and was able to progress into new JavaScript event concepts.  The student was encouraged to continue practising the input and submit events, particularly how JavaScript can collect information entered into a form and display the result directly on the browser frontend.  As a practical assignment, the student was asked to create a form containing 10 different HTML input types, apply a modern UI/UX design, and use JavaScript to display the submitted form information on the browser frontend.  The assignment is intended to strengthen the student's understanding of HTML forms, CSS styling, JavaScript events, DOM manipulation, and frontend interaction.",
                 "source": "GoogleSheetVerifiedAttendance",
                 "verified": true,
                 "createdAt": "2026-08-22T05:31:44.000Z"
@@ -1603,7 +1588,7 @@ const DashboardEngine = (function() {
                 "startTime": "1:00:00 PM",
                 "endTime": "2:06:00 PM",
                 "topic": "Assignment Review Kiditorial Project Introduction Async and Await Asynchronous JavaScript Practical async/await Examples Introduction to ES6+",
-                "summary": "The class began with a review and assessment of the student's previous assignment. The student completed the assignment correctly, demonstrating a good understanding of the concepts covered in the previous lesson.\n\nThe Kiditorial project documentation and video demonstration were then introduced to the student. The project guide was explained to give the student an understanding of the expected final project, its features, technologies, and overall functionality. The student was also informed that the administrator would provide the project guide and video demonstration so that she could begin working on the project immediately.\n\nThe lesson then progressed to a new JavaScript topic: async and await. The student was introduced to asynchronous JavaScript and why it is useful when JavaScript needs to wait for an operation to complete, such as retrieving information from an API, downloading data, or waiting for a response.\n\nThe student learned that:\n\nasync is used to indicate that a function can perform an asynchronous task.\nawait is used to wait for an asynchronous operation to finish before continuing.\n\nSeveral practical examples were demonstrated using HTML and internal JavaScript, including retrieving information from an API and creating a timed operation that waits before displaying an output.\n\nThe student was also shown how async/await can be used together with the Fetch API to retrieve data and display the result on a webpage.\n\nA simple way of remembering the concepts was provided:\n\nasync — This function can wait for something.\nawait — Wait for this operation to finish.\n\nTowards the end of the lesson, ES6+ (ECMAScript 6 and later JavaScript features) was introduced. The student was given an overview of modern JavaScript features including let, const, arrow functions, template literals, destructuring, default parameters, classes, Promises, and async/await. The ES6+ topic will be continued in the next class.",
+                "summary": "The class began with a review and assessment of the student's previous assignment. The student completed the assignment correctly, demonstrating a good understanding of the concepts covered in the previous lesson.\n\nThe Kiditorial project documentation and video demonstration were then introduced to the student. The project guide was explained to give the student an understanding of the expected final project, its features, technologies, and overall functionality. The student was also informed that the administrator would provide the project guide and video demonstration so that she could begin working on the project immediately.\n\nThe lesson then progressed to a new JavaScript topic: async and await. The student was introduced to asynchronous JavaScript and why it is useful when JavaScript needs to wait for an operation to complete, such as retrieving information from an API, downloading data, or waiting for a response.\n\nThe student learned that:\n\nasync is used to indicate that a function can perform an asynchronous task.\nawait is used to wait for an asynchronous operation to finish before continuing.\n\nSeveral practical examples were demonstrated using HTML and internal JavaScript, including retrieving information from an API and creating a timed operation that waits before displaying an output.\n\nThe student was also shown how async/await can be used together with the Fetch API to retrieve data and display the result on a webpage.\n\nA simple way of remembering the concepts was provided:\n\nasync ,  This function can wait for something.\nawait ,  Wait for this operation to finish.\n\nTowards the end of the lesson, ES6+ (ECMAScript 6 and later JavaScript features) was introduced. The student was given an overview of modern JavaScript features including let, const, arrow functions, template literals, destructuring, default parameters, classes, Promises, and async/await. The ES6+ topic will be continued in the next class.",
                 "status": "present",
                 "attendanceStatus": "present",
                 "tutorRemark": "The student demonstrated good understanding and participation throughout the lesson. She successfully completed the previous assignment and was able to follow the introduction to the new async/await concepts.  The practical examples were used to make asynchronous programming easier to understand, particularly the relationship between async, await, APIs, and waiting for operations to complete.  The introduction of the Kiditorial project also provides the student with a practical project through which she can apply the HTML, CSS, and JavaScript concepts being learned during the training.  The student will continue with ES6+ in the next class, after which the newly learned concepts can progressively be incorporated into the Kiditorial project.",
@@ -1712,7 +1697,7 @@ const DashboardEngine = (function() {
                 "dateFormatted": "9/5/2026",
                 "startTime": "1:01:00 PM",
                 "endTime": "2:19:00 PM",
-                "topic": "Node.js, Express.js and Database (PostgreSQL)  The class introduced the student to the fundamentals of backend web development using Node.js, Express.js, and PostgreSQL.  The following concepts were covered:  Node.js – A JavaScript runtime that allows JavaScript to run outside the web browser and is commonly used for server-side development. Express.js – A Node.js framework used to create web servers, backend applications, and API routes. PostgreSQL – A relational database system used to store, manage, and retrieve application data. Understanding the relationship between the three technologies: Node.js → The engine/runtime Express.js → The server/backend framework PostgreSQL → The database/storage system Installation of the LTS version of Node.js. Understanding npm (Node Package Manager) and its purpose in installing and managing Node.js packages. Checking Node.js and npm installation using: node --version npm --version Introduction to creating a backend project using VS Code. Creating a package.json file using: npm init -y Installing Express.js using: npm install express Checking the installed Express version using: npm list express Understanding the purpose of: node_modules package.json package-lock.json Introduction to PostgreSQL installation and the PostgreSQL VS Code extension. Installing the PostgreSQL Node.js package using: npm install pg Understanding the use of the pg package for connecting Node.js applications to PostgreSQL databases. Checking PostgreSQL installation using: psql --version Understanding how Express and PostgreSQL packages appear under the project's dependencies.",
+                "topic": "Node.js, Express.js and Database (PostgreSQL)  The class introduced the student to the fundamentals of backend web development using Node.js, Express.js, and PostgreSQL.  The following concepts were covered:  Node.js :  A JavaScript runtime that allows JavaScript to run outside the web browser and is commonly used for server-side development. Express.js :  A Node.js framework used to create web servers, backend applications, and API routes. PostgreSQL :  A relational database system used to store, manage, and retrieve application data. Understanding the relationship between the three technologies: Node.js → The engine/runtime Express.js → The server/backend framework PostgreSQL → The database/storage system Installation of the LTS version of Node.js. Understanding npm (Node Package Manager) and its purpose in installing and managing Node.js packages. Checking Node.js and npm installation using: node --version npm --version Introduction to creating a backend project using VS Code. Creating a package.json file using: npm init -y Installing Express.js using: npm install express Checking the installed Express version using: npm list express Understanding the purpose of: node_modules package.json package-lock.json Introduction to PostgreSQL installation and the PostgreSQL VS Code extension. Installing the PostgreSQL Node.js package using: npm install pg Understanding the use of the pg package for connecting Node.js applications to PostgreSQL databases. Checking PostgreSQL installation using: psql --version Understanding how Express and PostgreSQL packages appear under the project's dependencies.",
                 "summary": "The class focused on introducing the student to backend development with Node.js and Express.js, together with database management using PostgreSQL.\n\nThe student learned that Node.js provides the environment for executing JavaScript on the server, while Express.js can be used to build the backend server and API routes. PostgreSQL was introduced as the database where application information can be permanently stored and managed.\n\nThe student was also guided through the initial setup of a backend project in VS Code. This included creating a project folder named backend-project, initializing the project with npm init -y, installing Express.js, and understanding the files and folders automatically created by npm.\n\nThe class further introduced PostgreSQL and the pg Node.js package, which will allow the backend application to communicate with the PostgreSQL database.\n\nBy the end of the lesson, the student had an understanding of the basic backend architecture:\n\nClient/Browser → Express.js → Node.js → PostgreSQL Database",
                 "status": "present",
                 "attendanceStatus": "present",
@@ -2416,11 +2401,11 @@ const DashboardEngine = (function() {
                 "dateFormatted": "10/23/2026",
                 "startTime": "6:00:00 PM",
                 "endTime": "7:00:00 PM",
-                "topic": "MySQL Database Operations and Flask–MySQL Integration.",
+                "topic": "MySQL Database Operations and Flask: MySQL Integration.",
                 "summary": "Assignment was first checked , which she got, later the student learned basic SQL operations and how to connect Flask to MySQL to retrieve student records.",
                 "status": "present",
                 "attendanceStatus": "present",
-                "tutorRemark": "The student practised database operations and Flask–MySQL connectivity",
+                "tutorRemark": "The student practised database operations and Flask: MySQL connectivity",
                 "source": "GoogleSheetVerifiedAttendance",
                 "verified": true,
                 "createdAt": "2026-10-23T10:52:07.000Z"
@@ -2601,7 +2586,7 @@ const DashboardEngine = (function() {
             "type": "welcome",
             "to": "abmsotayo@googlemail.com",
             "recipientName": "Alexandra Sotayo",
-            "subject": "Welcome to STEMulus — Alexandra's coding journey starts!",
+            "subject": "Welcome to STEMulus: Alexandra's coding journey starts!",
             "htmlPreview": "Parent Welcome Kit for Alexandra Sotayo. Student: Alexandra Sotayo. Track: Python Programming. Initial Temp Password: 6U2MXMGTWs",
             "data": {
                 "parentEmail": "abmsotayo@googlemail.com",
@@ -2622,7 +2607,7 @@ const DashboardEngine = (function() {
             "type": "welcome",
             "to": "abiodunadebiyis@gmail.com",
             "recipientName": "Abiodun Shittu",
-            "subject": "Welcome to STEMulus — Abdulsalam's coding journey starts!",
+            "subject": "Welcome to STEMulus: Abdulsalam's coding journey starts!",
             "htmlPreview": "Parent Welcome Kit for Abiodun Shittu. Student: Abdulsalam Modesire Shittu. Track: Python Programming. Initial Temp Password: 2LaZzEqrAa",
             "data": {
                 "parentEmail": "abiodunadebiyis@gmail.com",
@@ -2643,7 +2628,7 @@ const DashboardEngine = (function() {
             "type": "welcome",
             "to": "annakhavkina@gmail.com",
             "recipientName": "Anna Khavkina",
-            "subject": "Welcome to STEMulus — David's coding journey starts!",
+            "subject": "Welcome to STEMulus: David's coding journey starts!",
             "htmlPreview": "Parent Welcome Kit for Anna Khavkina. Student: David Gjoka. Track: Python Programming. Initial Temp Password: mdGa7MaHVv",
             "data": {
                 "parentEmail": "annakhavkina@gmail.com",
@@ -2664,7 +2649,7 @@ const DashboardEngine = (function() {
             "type": "welcome",
             "to": "eoosonaike@gmail.com",
             "recipientName": "Oladipupo Sonaike",
-            "subject": "Welcome to STEMulus — Momooreoluwa's coding journey starts!",
+            "subject": "Welcome to STEMulus: Momooreoluwa's coding journey starts!",
             "htmlPreview": "Parent Welcome Kit for Oladipupo Sonaike. Student: Momooreoluwa Sonaike. Track: Scratch Creators. Initial Temp Password: 299HYm5VvS",
             "data": {
                 "parentEmail": "eoosonaike@gmail.com",
@@ -2685,7 +2670,7 @@ const DashboardEngine = (function() {
             "type": "welcome",
             "to": "carlanouriat.k@gmail.com",
             "recipientName": "Carla KARI",
-            "subject": "Welcome to STEMulus — JUNAYD's coding journey starts!",
+            "subject": "Welcome to STEMulus: JUNAYD's coding journey starts!",
             "htmlPreview": "Parent Welcome Kit for Carla KARI. Student: JUNAYD KARI. Track: Scratch Creators. Initial Temp Password: Ch46FgDWPw",
             "data": {
                 "parentEmail": "carlanouriat.k@gmail.com",
@@ -2706,7 +2691,7 @@ const DashboardEngine = (function() {
             "type": "welcome",
             "to": "diamondsheva@gmail.com",
             "recipientName": "Diamond Sheva Omosuyi",
-            "subject": "Welcome to STEMulus — King's coding journey starts!",
+            "subject": "Welcome to STEMulus: King's coding journey starts!",
             "htmlPreview": "Parent Welcome Kit for Diamond Sheva Omosuyi. Student: King Myles Omosuyi. Track: Scratch Creators. Initial Temp Password: hEFGSx2bXG",
             "data": {
                 "parentEmail": "diamondsheva@gmail.com",
@@ -2727,7 +2712,7 @@ const DashboardEngine = (function() {
             "type": "welcome",
             "to": "Temiladeokesanjo1@gmail.com",
             "recipientName": "Temi Okesanjo",
-            "subject": "Welcome to STEMulus — Gbolade's coding journey starts!",
+            "subject": "Welcome to STEMulus: Gbolade's coding journey starts!",
             "htmlPreview": "Parent Welcome Kit for Temi Okesanjo. Student: Gbolade Okesanjo. Track: Web & App Development. Initial Temp Password: YJFmFHfW2J",
             "data": {
                 "parentEmail": "Temiladeokesanjo1@gmail.com",
@@ -2748,7 +2733,7 @@ const DashboardEngine = (function() {
             "type": "welcome",
             "to": "talk2nike2009@gmail.com",
             "recipientName": "Babalola Olanike",
-            "subject": "Welcome to STEMulus — Babalola's coding journey starts!",
+            "subject": "Welcome to STEMulus: Babalola's coding journey starts!",
             "htmlPreview": "Parent Welcome Kit for Babalola Olanike. Student: Babalola Oluwadunmininu Pearl. Track: Python Programming. Initial Temp Password: PJCA47SAeK",
             "data": {
                 "parentEmail": "talk2nike2009@gmail.com",
@@ -2769,7 +2754,7 @@ const DashboardEngine = (function() {
             "type": "welcome",
             "to": "Chukwumah.maryrose@gmail.com",
             "recipientName": "Maryrose Chukwumah-Mordi",
-            "subject": "Welcome to STEMulus — Brian's coding journey starts!",
+            "subject": "Welcome to STEMulus: Brian's coding journey starts!",
             "htmlPreview": "Parent Welcome Kit for Maryrose Chukwumah-Mordi. Student: Brian Osenedum Chukwuka-Mordi. Track: Scratch Creators. Initial Temp Password: dwHeHA9Ns3",
             "data": {
                 "parentEmail": "Chukwumah.maryrose@gmail.com",
@@ -2790,7 +2775,7 @@ const DashboardEngine = (function() {
             "type": "student-enrolled",
             "to": "abmsotayo@googlemail.com",
             "recipientName": "Matt Sotayo",
-            "subject": "STEMulus Enrollment Update — Annabelle has been enrolled!",
+            "subject": "STEMulus Enrollment Update: Annabelle has been enrolled!",
             "htmlPreview": "Enrollment notice for Annabelle in Python Programming.",
             "data": {
                 "parentEmail": "abmsotayo@googlemail.com",
@@ -2814,6 +2799,9 @@ const DashboardEngine = (function() {
     // Google Classroom & Auto-Record Meet Provisioning Engine
     // ==========================================
     function generateGoogleMeetLink(existingLinks) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Classroom && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Classroom.generateGoogleMeetLink(existingLinks);
+        }
         const chars = 'abcdefghijklmnopqrstuvwxyz';
         let link;
         let attempts = 0;
@@ -3162,6 +3150,9 @@ const DashboardEngine = (function() {
     }
 
     function generateClassroomMetadata(studentName, programName, lessonCount = 8) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Classroom && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Classroom.generateClassroomMetadata(studentName, programName, lessonCount);
+        }
         // Unique 12-digit Google Classroom Course ID
         const classroomId = String(Math.floor(100000000000 + Math.random() * 900000000000));
         // Enrollment Code: 7-character alphanumeric cjc join code
@@ -3205,6 +3196,14 @@ const DashboardEngine = (function() {
     }
 
     function provisionCoderClassroomAndMeet(student, lessonCount = 8) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Classroom && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Classroom.provisionCoderClassroomAndMeet(
+                student,
+                lessonCount,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         if (!student) return student;
 
         // 1. Google Meet Provisioning with Auto-Record & Hostless Mode
@@ -3266,6 +3265,7 @@ const DashboardEngine = (function() {
     }
 
     // Helper to retrieve data from localStorage (Web Crypto Vault Protected)
+    let isInternalGetDBMigration = false;
     function getDB() {
         let parsed = null;
         if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureDB) {
@@ -3274,7 +3274,12 @@ const DashboardEngine = (function() {
         if (!parsed) {
             const dbStr = (typeof localStorage !== 'undefined') ? localStorage.getItem("stemulus_db") : null;
             if (!dbStr) {
-                saveDB(DEFAULT_DATA);
+                try {
+                    if (typeof localStorage !== 'undefined') {
+                        localStorage.setItem("stemulus_db", JSON.stringify(DEFAULT_DATA));
+                    }
+                } catch(e) {}
+                saveDB(DEFAULT_DATA, { silent: true });
                 return JSON.parse(JSON.stringify(DEFAULT_DATA));
             }
             try {
@@ -3288,7 +3293,10 @@ const DashboardEngine = (function() {
             }
         }
         try {
-            const DB_SYNC_VERSION = '2026.10.26.v103_full_operational';
+            if (!isInternalGetDBMigration) {
+                isInternalGetDBMigration = true;
+                try {
+                    const DB_SYNC_VERSION = '2026.10.26.v103_full_operational';
             if (!parsed || parsed._syncVersion !== DB_SYNC_VERSION || !Array.isArray(parsed.schedules) || parsed.schedules.length < 30 || !Array.isArray(parsed.students) || parsed.students.length < 13) {
                 const prevUsers = (parsed && parsed.users) ? parsed.users : {};
                 const prevNotices = (parsed && Array.isArray(parsed.notices)) ? parsed.notices : [];
@@ -4376,7 +4384,9 @@ const DashboardEngine = (function() {
             }
 
             if (studentsAppended) {
-                saveDB(parsed);
+                try {
+                    localStorage.setItem("stemulus_db", JSON.stringify(parsed));
+                } catch(e) {}
             }
 
             // Ensure parent accounts for core enrolled students exist
@@ -4457,7 +4467,7 @@ const DashboardEngine = (function() {
                     "type": "welcome",
                     "to": "abmsotayo@googlemail.com",
                     "recipientName": "Alexandra Sotayo",
-                    "subject": "Welcome to STEMulus — Alexandra's coding journey starts!",
+                    "subject": "Welcome to STEMulus: Alexandra's coding journey starts!",
                     "htmlPreview": "Parent Welcome Kit for Alexandra Sotayo. Student: Alexandra Sotayo. Track: Python Programming. Initial Temp Password: 6U2MXMGTWs",
                     "data": {
                               "parentEmail": "abmsotayo@googlemail.com",
@@ -4477,7 +4487,7 @@ const DashboardEngine = (function() {
                     "type": "welcome",
                     "to": "abiodunadebiyis@gmail.com",
                     "recipientName": "Abiodun Shittu",
-                    "subject": "Welcome to STEMulus — Abdulsalam's coding journey starts!",
+                    "subject": "Welcome to STEMulus: Abdulsalam's coding journey starts!",
                     "htmlPreview": "Parent Welcome Kit for Abiodun Shittu. Student: Abdulsalam Modesire Shittu. Track: Python Programming. Initial Temp Password: 2LaZzEqrAa",
                     "data": {
                               "parentEmail": "abiodunadebiyis@gmail.com",
@@ -4497,7 +4507,7 @@ const DashboardEngine = (function() {
                     "type": "welcome",
                     "to": "annakhavkina@gmail.com",
                     "recipientName": "Anna Khavkina",
-                    "subject": "Welcome to STEMulus — David's coding journey starts!",
+                    "subject": "Welcome to STEMulus: David's coding journey starts!",
                     "htmlPreview": "Parent Welcome Kit for Anna Khavkina. Student: David Gjoka. Track: Python Programming. Initial Temp Password: mdGa7MaHVv",
                     "data": {
                               "parentEmail": "annakhavkina@gmail.com",
@@ -4517,7 +4527,7 @@ const DashboardEngine = (function() {
                     "type": "welcome",
                     "to": "eoosonaike@gmail.com",
                     "recipientName": "Oladipupo Sonaike",
-                    "subject": "Welcome to STEMulus — Momooreoluwa's coding journey starts!",
+                    "subject": "Welcome to STEMulus: Momooreoluwa's coding journey starts!",
                     "htmlPreview": "Parent Welcome Kit for Oladipupo Sonaike. Student: Momooreoluwa Sonaike. Track: Scratch Creators. Initial Temp Password: 299HYm5VvS",
                     "data": {
                               "parentEmail": "eoosonaike@gmail.com",
@@ -4537,7 +4547,7 @@ const DashboardEngine = (function() {
                     "type": "welcome",
                     "to": "carlanouriat.k@gmail.com",
                     "recipientName": "Carla KARI",
-                    "subject": "Welcome to STEMulus — JUNAYD's coding journey starts!",
+                    "subject": "Welcome to STEMulus: JUNAYD's coding journey starts!",
                     "htmlPreview": "Parent Welcome Kit for Carla KARI. Student: JUNAYD KARI. Track: Scratch Creators. Initial Temp Password: Ch46FgDWPw",
                     "data": {
                               "parentEmail": "carlanouriat.k@gmail.com",
@@ -4557,7 +4567,7 @@ const DashboardEngine = (function() {
                     "type": "welcome",
                     "to": "diamondsheva@gmail.com",
                     "recipientName": "Diamond Sheva Omosuyi",
-                    "subject": "Welcome to STEMulus — King's coding journey starts!",
+                    "subject": "Welcome to STEMulus: King's coding journey starts!",
                     "htmlPreview": "Parent Welcome Kit for Diamond Sheva Omosuyi. Student: King Myles Omosuyi. Track: Scratch Creators. Initial Temp Password: hEFGSx2bXG",
                     "data": {
                               "parentEmail": "diamondsheva@gmail.com",
@@ -4577,7 +4587,7 @@ const DashboardEngine = (function() {
                     "type": "welcome",
                     "to": "Temiladeokesanjo1@gmail.com",
                     "recipientName": "Temi Okesanjo",
-                    "subject": "Welcome to STEMulus — Gbolade's coding journey starts!",
+                    "subject": "Welcome to STEMulus: Gbolade's coding journey starts!",
                     "htmlPreview": "Parent Welcome Kit for Temi Okesanjo. Student: Gbolade Okesanjo. Track: Web & App Development. Initial Temp Password: YJFmFHfW2J",
                     "data": {
                               "parentEmail": "Temiladeokesanjo1@gmail.com",
@@ -4597,7 +4607,7 @@ const DashboardEngine = (function() {
                     "type": "welcome",
                     "to": "talk2nike2009@gmail.com",
                     "recipientName": "Babalola Olanike",
-                    "subject": "Welcome to STEMulus — Babalola's coding journey starts!",
+                    "subject": "Welcome to STEMulus: Babalola's coding journey starts!",
                     "htmlPreview": "Parent Welcome Kit for Babalola Olanike. Student: Babalola Oluwadunmininu Pearl. Track: Python Programming. Initial Temp Password: PJCA47SAeK",
                     "data": {
                               "parentEmail": "talk2nike2009@gmail.com",
@@ -4617,7 +4627,7 @@ const DashboardEngine = (function() {
                     "type": "welcome",
                     "to": "Chukwumah.maryrose@gmail.com",
                     "recipientName": "Maryrose Chukwumah-Mordi",
-                    "subject": "Welcome to STEMulus — Brian's coding journey starts!",
+                    "subject": "Welcome to STEMulus: Brian's coding journey starts!",
                     "htmlPreview": "Parent Welcome Kit for Maryrose Chukwumah-Mordi. Student: Brian Osenedum Chukwuka-Mordi. Track: Scratch Creators. Initial Temp Password: dwHeHA9Ns3",
                     "data": {
                               "parentEmail": "Chukwumah.maryrose@gmail.com",
@@ -4637,7 +4647,7 @@ const DashboardEngine = (function() {
                     "type": "student-enrolled",
                     "to": "abmsotayo@googlemail.com",
                     "recipientName": "Matt Sotayo",
-                    "subject": "STEMulus Enrollment Update — Annabelle has been enrolled!",
+                    "subject": "STEMulus Enrollment Update: Annabelle has been enrolled!",
                     "htmlPreview": "Enrollment notice for Annabelle in Python Programming.",
                     "data": {
                               "parentEmail": "abmsotayo@googlemail.com",
@@ -4694,7 +4704,9 @@ const DashboardEngine = (function() {
                     }
                 });
                 if (studentsClassroomUpdated) {
-                    saveDB(parsed);
+                    try {
+                        localStorage.setItem('stemulus_db', JSON.stringify(parsed));
+                    } catch(e) {}
                 }
             }
 
@@ -4713,13 +4725,22 @@ const DashboardEngine = (function() {
                     }
                 });
                 if (schedulesUpdated) {
-                    saveDB(parsed);
+                    try {
+                        localStorage.setItem('stemulus_db', JSON.stringify(parsed));
+                    } catch(e) {}
                 }
             }
+        } finally {
+            isInternalGetDBMigration = false;
+        }
+    }
 
-            return parsed;
-        } catch (e) {
+    return parsed;
+} catch (e) {
             console.error("Local DB corrupt. Re-initializing...", e);
+            try {
+                localStorage.setItem("stemulus_db", JSON.stringify(DEFAULT_DATA));
+            } catch(err) {}
             saveDB(DEFAULT_DATA);
             return DEFAULT_DATA;
         }
@@ -5280,7 +5301,8 @@ const DashboardEngine = (function() {
         return false;
     }
 
-    function saveDB(db) {
+    let isDispatchingDbUpdated = false;
+    function saveDB(db, options = {}) {
         if (!validateDBSchema(db)) {
             console.error('[DashboardEngine] CRITICAL: Attempted to save invalid or corrupted DB state. Overwrite blocked to protect 100% data retention!');
             return false;
@@ -5295,8 +5317,20 @@ const DashboardEngine = (function() {
                 localStorage.setItem('stemulus_db', JSON.stringify(db));
             }
         } catch(e) { console.warn('Storage quota exceeded:', e); }
+
+        if ((options && options.silent === true) || isInternalGetDBMigration) {
+            return true;
+        }
+
         if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function' && typeof CustomEvent !== 'undefined') {
-            window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+            if (!isDispatchingDbUpdated) {
+                isDispatchingDbUpdated = true;
+                try {
+                    window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
+                } finally {
+                    isDispatchingDbUpdated = false;
+                }
+            }
         }
 
         // Modular non-blocking cloud persistence: debounced dual-write mirror to state/current
@@ -5318,6 +5352,9 @@ const DashboardEngine = (function() {
 
     // Get currently logged-in user from cryptographically verified session
     function getSession() {
+        if (shouldUseModularAuth()) {
+            return STEMulus.Auth.getSession();
+        }
         if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession) {
             return StemulusSecurity.getSecureSession();
         }
@@ -5338,6 +5375,14 @@ const DashboardEngine = (function() {
     }
 
     async function login(email, password) {
+        if (shouldUseModularAuth()) {
+            var db = getDB();
+            return await STEMulus.Auth.login(email, password, db, {
+                getDB: getDB,
+                saveDB: saveDB,
+                syncDocument: syncToFirestore
+            });
+        }
         try {
         let db = getDB();
         const key = (email || '').toLowerCase().trim();
@@ -5422,6 +5467,9 @@ const DashboardEngine = (function() {
     }
 
     function logout() {
+        if (shouldUseModularAuth()) {
+            return STEMulus.Auth.logout();
+        }
         if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.clearSecureSession) {
             StemulusSecurity.clearSecureSession();
         }
@@ -5431,6 +5479,9 @@ const DashboardEngine = (function() {
 
     // --- Students Controller ---
     function getStudents(parentEmail = null) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Students && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Students.getStudents(parentEmail, getDB(), getSession());
+        }
         const db = getDB();
         const students = db.students || [];
         let filterEmail = parentEmail;
@@ -5452,6 +5503,9 @@ const DashboardEngine = (function() {
     }
 
     function resolveTutorDetails(tutorInput) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Tutor && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Tutor.resolveTutorDetails(tutorInput, getDB());
+        }
         if (!tutorInput) return null;
         const clean = String(tutorInput).toLowerCase().trim();
         if (!clean || clean === 'unassigned') return null;
@@ -5462,6 +5516,9 @@ const DashboardEngine = (function() {
         let found = allTutors.find(t => (t.email && t.email.toLowerCase().trim() === clean) || (t.altEmail && t.altEmail.toLowerCase().trim() === clean));
         if (found) return found;
 
+        // Never fuzzy-match an email address against tutor names
+        if (clean.includes('@')) return null;
+
         // 2. Exact ID match
         found = allTutors.find(t => t.id && t.id.toLowerCase().trim() === clean);
         if (found) return found;
@@ -5470,12 +5527,13 @@ const DashboardEngine = (function() {
         found = allTutors.find(t => t.name && t.name.toLowerCase().trim() === clean);
         if (found) return found;
 
-        // 4. Token / Substring match (3+ chars)
-        const tokens = clean.split(/\s+/).filter(t => t.length > 2);
+        // 4. Token match (ignore honorifics; require ALL meaningful tokens to match)
+        const HONORIFICS = new Set(['coach', 'mentor', 'teacher', 'tutor', 'instructor', 'prof', 'mr', 'mrs', 'ms', 'dr', 'engr']);
+        const tokens = clean.split(/\s+/).filter(t => t.length > 2 && !HONORIFICS.has(t));
         if (tokens.length > 0) {
             found = allTutors.find(t => {
                 const tName = (t.name || '').toLowerCase().trim();
-                return tokens.some(tok => tName.includes(tok));
+                return tokens.every(tok => tName.includes(tok));
             });
             if (found) return found;
         }
@@ -5484,10 +5542,16 @@ const DashboardEngine = (function() {
     }
 
     function getStudentsByTutor(tutorIdentifier) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Tutor && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Tutor.getTutorStudents(tutorIdentifier, getDB(), getSession());
+        }
         return getTutorStudents(tutorIdentifier);
     }
 
     function getParents() {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Students && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Students.getParents(getDB());
+        }
         var db = getDB();
         var students = db.students || [];
         var users = db.users || {};
@@ -5560,6 +5624,13 @@ const DashboardEngine = (function() {
     }
 
     function addStudent(student) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Students && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Students.addStudent(
+                student,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         student.id = student.id || ("std-" + Date.now());
         if (student.parentEmail) student.parentEmail = String(student.parentEmail).toLowerCase().trim();
@@ -5568,7 +5639,8 @@ const DashboardEngine = (function() {
         if (student.remindersPaused === undefined) student.remindersPaused = false;
         if (student.progress === undefined) student.progress = 0;
         if (!student.skills) student.skills = { logic: 60, loops: 60, variables: 60, syntax: 60, projects: 60 };
-        if (!student.metrics) student.metrics = { attended: 0, total: 8, projects: 0, lines: 0 };
+        const initialMonthlyTarget = student.monthlyTarget || student.sessionsPerMonth || (student.weeklyFrequency ? parseInt(student.weeklyFrequency, 10) * 4 : (Array.isArray(student.scheduleDays) && student.scheduleDays.length > 0 ? student.scheduleDays.length * 4 : 8));
+        if (!student.metrics) student.metrics = { attended: 0, total: initialMonthlyTarget, projects: 0, lines: 0 };
         student.birthday = (student.birthday && typeof student.birthday === 'string' && student.birthday.trim().length >= 10) ? student.birthday.trim() : '';
         student.hasExplicitBirthday = !!(student.birthday);
 
@@ -5583,7 +5655,7 @@ const DashboardEngine = (function() {
         }
 
         // Auto-provision Google Classroom (student & tutor invite links + drafted assignments) and Auto-Record Google Meet (Host not required)
-        provisionCoderClassroomAndMeet(student, student.lessonCount || 8);
+        provisionCoderClassroomAndMeet(student, student.lessonCount || initialMonthlyTarget);
 
         db.students = db.students || [];
         db.students.push(student);
@@ -5593,6 +5665,14 @@ const DashboardEngine = (function() {
     }
 
     function updateStudent(studentDataOrId, optionalUpdates) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Students && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Students.updateStudent(
+                studentDataOrId,
+                optionalUpdates,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         let id, updates;
         if (typeof studentDataOrId === 'string') {
@@ -5649,6 +5729,13 @@ const DashboardEngine = (function() {
     }
 
     function deleteStudent(id) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Students && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Students.deleteStudent(
+                id,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         db.deletedStudentIds = db.deletedStudentIds || [];
         if (!db.deletedStudentIds.includes(id)) {
@@ -5662,6 +5749,13 @@ const DashboardEngine = (function() {
     }
 
     function deleteTutor(tutorIdOrEmail) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Tutor && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Tutor.deleteTutor(
+                tutorIdOrEmail,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         const target = String(tutorIdOrEmail || '').toLowerCase().trim();
         if (!target) return false;
@@ -5747,6 +5841,14 @@ const DashboardEngine = (function() {
     }
 
     function setRemindersPaused(studentId, paused) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Students && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Students.setRemindersPaused(
+                studentId,
+                paused,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         var db = getDB();
         var student = (db.students||[]).find(function(s){ return s.id===studentId; });
         if (!student) return false;
@@ -5756,6 +5858,14 @@ const DashboardEngine = (function() {
     }
 
     function updateStudentStatus(studentId, status) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Students && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Students.updateStudentStatus(
+                studentId,
+                status,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         var db = getDB();
         var student = (db.students||[]).find(function(s){ return s.id===studentId; });
         if (!student) return false;
@@ -5766,6 +5876,14 @@ const DashboardEngine = (function() {
 
     
     function updateTutor(tutorIdOrEmail, updates) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Tutor && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Tutor.updateTutor(
+                tutorIdOrEmail,
+                updates,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         db.tutors = db.tutors || [];
         const target = (tutorIdOrEmail || '').toLowerCase().trim();
@@ -5787,6 +5905,14 @@ const DashboardEngine = (function() {
     }
 
     function updateTutorStatus(tutorEmail, status) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Tutor && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Tutor.updateTutorStatus(
+                tutorEmail,
+                status,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         var db = getDB();
         var key = (tutorEmail||'').toLowerCase().trim();
         var tutor = db.users && db.users[key];
@@ -5798,6 +5924,12 @@ const DashboardEngine = (function() {
 
     // --- Tutors Controller ---
     function getTutors() {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Tutor && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Tutor.getTutors(
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         const tutorMap = {};
         const deletedIds = Array.isArray(db.deletedTutorIds) ? db.deletedTutorIds.map(x => String(x).toLowerCase().trim()) : [];
@@ -6052,6 +6184,12 @@ const DashboardEngine = (function() {
 
     // --- Schedules Controller ---
     function reconcileHeldSchedules() {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.reconcileHeldSchedules(
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         if (!db.schedules || !Array.isArray(db.schedules)) return [];
         const logs = db.attendanceRecords || [];
@@ -6099,6 +6237,13 @@ const DashboardEngine = (function() {
     }
 
     function getSchedules(studentId = null) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.getSchedules(
+                studentId,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         reconcileHeldSchedules();
         const db = getDB();
         const schedules = (db && Array.isArray(db.schedules)) ? db.schedules : [];
@@ -6109,6 +6254,13 @@ const DashboardEngine = (function() {
     }
 
     function addSchedule(session) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.addSchedule(
+                session,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         session.id = "sch-" + Date.now();
         session.duration = String(parseInt(session.duration, 10) || 60);
@@ -6119,6 +6271,14 @@ const DashboardEngine = (function() {
     }
 
     function updateSchedule(id, updatedFields) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.updateSchedule(
+                id,
+                updatedFields,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         const idx = db.schedules.findIndex(s => s.id === id);
         if (idx !== -1) {
@@ -6131,6 +6291,13 @@ const DashboardEngine = (function() {
     }
 
     function deleteSchedule(id) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.deleteSchedule(
+                id,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         db.schedules = db.schedules.filter(s => s.id !== id);
         saveDB(db);
@@ -6141,6 +6308,9 @@ const DashboardEngine = (function() {
 
     // --- Attendance Records Controller ---
     function getAttendanceRecords(tutorEmail = null) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Attendance && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Attendance.getAttendanceRecords(tutorEmail, getDB());
+        }
         const db = getDB();
         db.attendanceRecords = db.attendanceRecords || [];
         if (tutorEmail) {
@@ -6158,6 +6328,9 @@ const DashboardEngine = (function() {
      * Guarantees 1.0 hr per 60-minute session and deduplicates logs/schedules by (student, date, time).
      */
     function calculateTutorMonthlyStats(tutorEmailOrName, monthStr) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Payroll && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Payroll.calculateTutorMonthlyStats(tutorEmailOrName, monthStr, getDB());
+        }
         const db = getDB();
         const records = db.attendanceRecords || [];
         const schedules = db.schedules || [];
@@ -6415,6 +6588,14 @@ const DashboardEngine = (function() {
     }
 
     function addAttendanceRecord(record) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Attendance && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Attendance.addAttendanceRecord(
+                record,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB },
+                getSession()
+            );
+        }
         if (!record || typeof record !== 'object') {
             return { success: false, message: 'Invalid attendance record data.' };
         }
@@ -6519,7 +6700,51 @@ const DashboardEngine = (function() {
         if (record.tutorComment      === undefined) record.tutorComment      = '';
         if (record.homeworkAssigned  === undefined) record.homeworkAssigned  = '';
 
+        // Normalize optional Completed Project Links
+        const rawLinks = record.completedProjectLinks || record.completed_project_links || record.projectLinks || record.projectLink || '';
+        const parsedLinks = Array.isArray(rawLinks)
+            ? rawLinks.map(l => String(l || '').trim()).filter(Boolean)
+            : String(rawLinks || '').split(/[\n,;]+/).map(l => l.trim()).filter(Boolean);
+        record.completedProjectLinks = parsedLinks;
+        record.completed_project_links = parsedLinks.join(', ');
+        if (!record.projectLink && parsedLinks.length > 0) {
+            record.projectLink = parsedLinks[0];
+        }
+
         freshDb.attendanceRecords.push(record);
+
+        // If completed project links were provided, auto-sync into student milestones & active monthly report
+        if (parsedLinks.length > 0 && record.studentId) {
+            freshDb.milestones = freshDb.milestones || [];
+            const primaryLink = parsedLinks[0];
+            const milestoneExists = freshDb.milestones.some(m =>
+                m && m.studentId === record.studentId && (m.projectLink === primaryLink || (m.date === record.classDate && m.title === (record.whatBuilt || record.topic)))
+            );
+            if (!milestoneExists) {
+                freshDb.milestones.push({
+                    id: 'mile-att-' + Date.now(),
+                    studentId: record.studentId,
+                    studentName: record.studentName || 'Student',
+                    title: record.whatBuilt || record.topic || 'Completed Class Project',
+                    category: Array.isArray(record.coursesCovered) && record.coursesCovered[0] ? record.coursesCovered[0] : (record.course || 'Coding Project'),
+                    date: record.classDate || new Date().toISOString().split('T')[0],
+                    description: record.tutorComment || record.notes || ('Completed project during session on ' + (record.topic || 'STEM module')),
+                    badgeIcon: 'fa-code',
+                    color: 'orange',
+                    projectLink: primaryLink,
+                    completedProjectLinks: parsedLinks
+                });
+            }
+            const monthPrefix = String(record.classDate || '').slice(0, 7);
+            if (monthPrefix && Array.isArray(freshDb.monthlyReports)) {
+                freshDb.monthlyReports.forEach(rep => {
+                    if (rep && rep.studentId === record.studentId && (!rep.month || rep.month === monthPrefix)) {
+                        const existingRepLinks = Array.isArray(rep.completedProjectLinks) ? rep.completedProjectLinks : [];
+                        rep.completedProjectLinks = Array.from(new Set(existingRepLinks.concat(parsedLinks)));
+                    }
+                });
+            }
+        }
 
         // Notify Admin of new attendance submission
         freshDb.notifications = freshDb.notifications || [];
@@ -6538,6 +6763,9 @@ const DashboardEngine = (function() {
     }
 
     function getOverdueAttendance(tutorEmail = null) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Attendance && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Attendance.getOverdueAttendance(tutorEmail, getDB(), getSession());
+        }
         const db = getDB();
         const schedules = db.schedules || [];
         const attendanceRecords = db.attendanceRecords || [];
@@ -6571,6 +6799,9 @@ const DashboardEngine = (function() {
     }
 
     function calculateMonthlySessionTarget(studentOrId, targetDate) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Attendance && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Attendance.calculateMonthlySessionTarget(studentOrId, targetDate, getDB());
+        }
         const db = getDB();
         const d = targetDate ? new Date(targetDate) : new Date();
         const year = d.getFullYear();
@@ -6583,28 +6814,36 @@ const DashboardEngine = (function() {
             student = (db.students || []).find(s => s.id === studentOrId);
         }
 
+        if (student && (student.monthlyTarget || student.sessionsPerMonth)) {
+            const explicitMonthly = parseInt(student.monthlyTarget || student.sessionsPerMonth, 10);
+            if (!isNaN(explicitMonthly) && explicitMonthly > 0) return explicitMonthly;
+        }
+
         const studentSchedules = (db.schedules || []).filter(s => {
             if (!student) return false;
             return s.studentId === student.id || 
                 (s.studentName && s.studentName.toLowerCase().trim() === ((student.firstName || '') + ' ' + (student.lastName || '')).toLowerCase().trim());
         });
 
+        const dayNames = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
         const bookedDaysOfWeek = new Set();
         
         // 1. Check explicit scheduleDays on student record (e.g. ['Monday', 'Wednesday'] or [1, 3])
         if (student && Array.isArray(student.scheduleDays) && student.scheduleDays.length > 0) {
-            const dayNames = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
             student.scheduleDays.forEach(day => {
                 if (typeof day === 'number' && day >= 0 && day <= 6) bookedDaysOfWeek.add(day);
-                else if (typeof day === 'string' && dayNames[day.toLowerCase()] !== undefined) {
-                    bookedDaysOfWeek.add(dayNames[day.toLowerCase()]);
+                else if (typeof day === 'string' && dayNames[day.toLowerCase().trim()] !== undefined) {
+                    bookedDaysOfWeek.add(dayNames[day.toLowerCase().trim()]);
                 }
             });
         }
 
         // 2. Check recurring booked days from all student schedules in db.schedules
         studentSchedules.forEach(s => {
-            if (s.date) {
+            if (!s) return;
+            if (s.dayOfWeek && typeof s.dayOfWeek === 'string' && dayNames[s.dayOfWeek.toLowerCase().trim()] !== undefined) {
+                bookedDaysOfWeek.add(dayNames[s.dayOfWeek.toLowerCase().trim()]);
+            } else if (s.date) {
                 const schedDate = new Date(s.date + 'T00:00:00');
                 if (!isNaN(schedDate.getTime())) {
                     bookedDaysOfWeek.add(schedDate.getDay());
@@ -6613,8 +6852,11 @@ const DashboardEngine = (function() {
         });
 
         const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const explicitWeeklyFreq = (student && (student.weeklyFrequency || student.sessionsPerWeek))
+            ? parseInt(student.weeklyFrequency || student.sessionsPerWeek, 10)
+            : 0;
 
-        if (bookedDaysOfWeek.size > 0) {
+        if (bookedDaysOfWeek.size > 0 && bookedDaysOfWeek.size >= explicitWeeklyFreq) {
             let sessionCount = 0;
             for (let day = 1; day <= daysInMonth; day++) {
                 const checkDate = new Date(year, month, day);
@@ -6622,12 +6864,28 @@ const DashboardEngine = (function() {
                     sessionCount++;
                 }
             }
+            if (student && student.metrics && student.metrics.total && student.metrics.total > sessionCount && (!student.scheduleDays || student.scheduleDays.length === 0)) {
+                return parseInt(student.metrics.total, 10);
+            }
             return sessionCount;
         }
 
-        // 3. Fallback to weeklyFrequency (default 2x weekly booked sessions)
-        const weeklyFrequency = (student && student.weeklyFrequency) ? parseInt(student.weeklyFrequency) : 2;
-        const defaultDays = weeklyFrequency === 1 ? [6] : (weeklyFrequency === 2 ? [2, 4] : [1, 3, 5]);
+        if (explicitWeeklyFreq === 0 && student && student.metrics && student.metrics.total && student.metrics.total > 0) {
+            return parseInt(student.metrics.total, 10);
+        }
+
+        // 3. Fallback to weeklyFrequency (supports 1, 2, 3, 4, 5, 6, 7 sessions/week)
+        const weeklyFrequency = explicitWeeklyFreq > 0 ? explicitWeeklyFreq : 2;
+        const freqDayMap = {
+            1: [6],
+            2: [2, 4],
+            3: [1, 3, 5],
+            4: [2, 3, 6, 0],
+            5: [1, 2, 3, 4, 5],
+            6: [1, 2, 3, 4, 5, 6],
+            7: [0, 1, 2, 3, 4, 5, 6]
+        };
+        const defaultDays = freqDayMap[weeklyFrequency] || [2, 4];
         let sessionCount = 0;
         for (let day = 1; day <= daysInMonth; day++) {
             const checkDate = new Date(year, month, day);
@@ -6639,6 +6897,14 @@ const DashboardEngine = (function() {
     }
 
     function updateAttendanceStatus(id, status) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Attendance && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Attendance.updateAttendanceStatus(
+                id,
+                status,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         db.attendanceRecords = db.attendanceRecords || [];
         const idx = db.attendanceRecords.findIndex(r => r.id === id);
@@ -6730,6 +6996,9 @@ const DashboardEngine = (function() {
 
                 // Add progress report
                 db.progressReports = db.progressReports || [];
+                const completedLinksArr = Array.isArray(record.completedProjectLinks)
+                    ? record.completedProjectLinks
+                    : (record.completed_project_links ? String(record.completed_project_links).split(/[\n,;]+/).map(s => s.trim()).filter(Boolean) : []);
                 db.progressReports.push({
                     id: "rep-" + Date.now(),
                     studentId: record.studentId,
@@ -6743,6 +7012,9 @@ const DashboardEngine = (function() {
                     homework: record.homeworkAssigned,
                     homeworkAssigned: record.homeworkAssigned,
                     whatBuilt: record.whatBuilt,
+                    completedProjectLinks: completedLinksArr,
+                    completed_project_links: completedLinksArr.join(', '),
+                    projectLink: record.projectLink || (completedLinksArr[0] || ''),
                     attendanceRecordId: record.id
                 });
 
@@ -6777,6 +7049,9 @@ const DashboardEngine = (function() {
     }
 
     function checkDuplicateAttendance(studentId, date, time, topic, courses) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Attendance && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Attendance.checkDuplicateAttendance(studentId, date, time, topic, courses, getDB());
+        }
         const db = getDB();
         const records = db.attendanceRecords || [];
         const matches = records.filter(r => r.studentId === studentId && r.classDate === date);
@@ -6814,6 +7089,9 @@ const DashboardEngine = (function() {
 
     // --- Reschedule Requests ---
     function getRescheduleRequests(parentEmail = null) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.getRescheduleRequests(parentEmail, getDB());
+        }
         const db = getDB();
         const reqs = (db && Array.isArray(db.rescheduleRequests)) ? db.rescheduleRequests : [];
         if (parentEmail) {
@@ -6823,6 +7101,13 @@ const DashboardEngine = (function() {
     }
 
     function submitReschedule(request) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.submitReschedule(
+                request,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         if (typeof RescheduleConciergeEngine !== 'undefined' && typeof RescheduleConciergeEngine.submitSmartReschedule === 'function') {
             return RescheduleConciergeEngine.submitSmartReschedule(request);
         }
@@ -6854,6 +7139,14 @@ const DashboardEngine = (function() {
     }
 
     function approveReschedule(id, substituteTutorId = null) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.approveReschedule(
+                id,
+                substituteTutorId,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         if (typeof RescheduleConciergeEngine !== 'undefined' && typeof RescheduleConciergeEngine.approveRescheduleWithConcierge === 'function') {
             return RescheduleConciergeEngine.approveRescheduleWithConcierge(id, substituteTutorId);
         }
@@ -6894,6 +7187,13 @@ const DashboardEngine = (function() {
     }
 
     function declineReschedule(id) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.declineReschedule(
+                id,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         const reqIdx = (db.rescheduleRequests || []).findIndex(r => r.id === id);
         if (reqIdx !== -1) {
@@ -6918,6 +7218,9 @@ const DashboardEngine = (function() {
     }
 
     function getCoverageRequests() {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.getCoverageRequests(getDB());
+        }
         if (typeof RescheduleConciergeEngine !== 'undefined' && typeof RescheduleConciergeEngine.getCoverageRequests === 'function') {
             return RescheduleConciergeEngine.getCoverageRequests();
         }
@@ -6926,6 +7229,13 @@ const DashboardEngine = (function() {
     }
 
     function submitCoverageRequest(data) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.submitCoverageRequest(
+                data,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         if (typeof RescheduleConciergeEngine !== 'undefined' && typeof RescheduleConciergeEngine.submitTutorCoverageRequest === 'function') {
             return RescheduleConciergeEngine.submitTutorCoverageRequest(data);
         }
@@ -6941,6 +7251,14 @@ const DashboardEngine = (function() {
     }
 
     function approveCoverageRequest(coverageId, chosenSubstituteId) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.approveCoverageRequest(
+                coverageId,
+                chosenSubstituteId,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         if (typeof RescheduleConciergeEngine !== 'undefined' && typeof RescheduleConciergeEngine.approveCoverageWithConcierge === 'function') {
             return RescheduleConciergeEngine.approveCoverageWithConcierge(coverageId, chosenSubstituteId);
         }
@@ -7002,6 +7320,9 @@ const DashboardEngine = (function() {
 
     // --- Certificates Controller ---
     function getCertificates(studentName = null) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Certificates && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Certificates.getCertificates(studentName, getDB());
+        }
         const db = getDB();
         const certs = (db && Array.isArray(db.certificates)) ? db.certificates : [];
         if (studentName) {
@@ -7011,6 +7332,13 @@ const DashboardEngine = (function() {
     }
 
     function addCertificate(cert) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Certificates && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Certificates.addCertificate(
+                cert,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         cert.id = "cert-" + Date.now();
         db.certificates.push(cert);
@@ -7052,6 +7380,13 @@ const DashboardEngine = (function() {
     }
 
     function deleteCertificate(id) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Certificates && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Certificates.deleteCertificate(
+                id,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         db.certificates = (db && Array.isArray(db.certificates)) ? db.certificates : [];
         // Find the cert before deleting to get its credential_id for Firebase removal
@@ -7077,6 +7412,14 @@ const DashboardEngine = (function() {
     }
 
     function updateCertificate(id, updates) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Certificates && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Certificates.updateCertificate(
+                id,
+                updates,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         const idx = db.certificates.findIndex(c => c.id === id || c.credential_id === id);
         if (idx !== -1) {
@@ -7095,6 +7438,9 @@ const DashboardEngine = (function() {
     }
 
     function verifyCertificate(id) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Certificates && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Certificates.verifyCertificate(id, getDB());
+        }
         if (!id) return null;
         const db = getDB();
         const cleanId = String(id).trim().toUpperCase();
@@ -7111,15 +7457,16 @@ const DashboardEngine = (function() {
 
         const sName = (session.name || '').toLowerCase().trim();
         const sEmail = (session.email || '').toLowerCase().trim();
-        const sTokens = sName.split(/\s+/).filter(t => t.length > 2);
+        const HONORIFICS = new Set(['coach', 'mentor', 'teacher', 'tutor', 'instructor', 'prof', 'mr', 'mrs', 'ms', 'dr', 'engr']);
+        const sTokens = sName.split(/\s+/).filter(t => t.length > 2 && !HONORIFICS.has(t));
 
         const isTutorMatch = (mentor, tutorEmail) => {
             const m = (mentor || '').toLowerCase().trim();
             const e = (tutorEmail || '').toLowerCase().trim();
             if (sEmail && (e === sEmail || m === sEmail)) return true;
             if (e && e.includes('@') && sEmail && e !== sEmail) return false;
-            if (sName.length > 2 && m.length > 2 && (m === sName || m.includes(sName) || sName.includes(m))) return true;
-            if (m.length > 2 && sTokens.length > 0 && sTokens.some(t => m.includes(t))) return true;
+            if (sName.length > 2 && m.length > 2 && m === sName) return true;
+            if (!e && m.length > 2 && sTokens.length > 0 && sTokens.every(t => m.includes(t))) return true;
             return false;
         };
 
@@ -7156,6 +7503,9 @@ const DashboardEngine = (function() {
     }
 
     function getTutorStudents(tutorEmail = null) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Tutor && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Tutor.getTutorStudents(tutorEmail, getDB(), getSession());
+        }
         const session = getSession();
         const db = getDB();
         const students = db.students || [];
@@ -7214,9 +7564,10 @@ const DashboardEngine = (function() {
             }
         }
 
+        const HONORIFICS = new Set(['coach', 'mentor', 'teacher', 'tutor', 'instructor', 'prof', 'mr', 'mrs', 'ms', 'dr', 'engr']);
         tutorNames.forEach(n => {
             n.split(/\s+/).forEach(tok => {
-                if (tok.length > 2) nameTokens.add(tok);
+                if (tok.length > 2 && !HONORIFICS.has(tok)) nameTokens.add(tok);
             });
         });
 
@@ -7229,24 +7580,18 @@ const DashboardEngine = (function() {
 
             if (sTutorId && tutorIds.has(sTutorId)) return true;
             if (sEmail && tutorEmails.has(sEmail)) return true;
-            // If student has an explicit tutorEmail assigned to a DIFFERENT tutor, never claim them via fuzzy name tokens
+            // If student has an explicit tutorEmail or tutorId assigned to a DIFFERENT tutor, never claim them via name tokens
             if (sEmail && sEmail.includes('@') && tutorEmails.size > 0 && !tutorEmails.has(sEmail)) return false;
+            if (sTutorId && tutorIds.size > 0 && !tutorIds.has(sTutorId)) return false;
 
             if (sName && tutorNames.has(sName)) return true;
             if (sName && tutorEmails.has(sName)) return true;
             if (sEmail && tutorNames.has(sEmail)) return true;
 
-            // Resilient token match when tutorEmail is not conflicting
-            if (sName && nameTokens.size > 0) {
-                for (const tok of nameTokens) {
-                    if (sName.includes(tok)) return true;
-                }
-                const sTokens = sName.split(/\s+/).filter(t => t.length > 2);
-                for (const sTok of sTokens) {
-                    for (const n of tutorNames) {
-                        if (n.includes(sTok)) return true;
-                    }
-                }
+            // Resilient token match ONLY when tutorEmail/tutorId is not set and ALL meaningful tokens match
+            if (!sEmail && !sTutorId && sName && nameTokens.size > 0) {
+                const allMatch = Array.from(nameTokens).every(tok => sName.includes(tok));
+                if (allMatch) return true;
             }
 
             return false;
@@ -7262,11 +7607,10 @@ const DashboardEngine = (function() {
             if (schTutorId && tutorIds.has(schTutorId)) return true;
             if (schEmail && tutorEmails.has(schEmail)) return true;
             if (schEmail && schEmail.includes('@') && tutorEmails.size > 0 && !tutorEmails.has(schEmail)) return false;
+            if (schTutorId && tutorIds.size > 0 && !tutorIds.has(schTutorId)) return false;
             if (schMentor && tutorNames.has(schMentor)) return true;
-            if (schMentor && nameTokens.size > 0) {
-                for (const tok of nameTokens) {
-                    if (schMentor.includes(tok)) return true;
-                }
+            if (!schEmail && !schTutorId && schMentor && nameTokens.size > 0) {
+                if (Array.from(nameTokens).every(tok => schMentor.includes(tok))) return true;
             }
             return false;
         });
@@ -7314,6 +7658,9 @@ const DashboardEngine = (function() {
 
     // --- Progress Reports Controller ---
     function getReports(studentId = null) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Reports && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Reports.getReports(studentId, getDB());
+        }
         const db = getDB();
         const reps = (db && Array.isArray(db.progressReports)) ? db.progressReports : [];
         if (studentId) {
@@ -7323,6 +7670,13 @@ const DashboardEngine = (function() {
     }
 
     function addReport(report) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Reports && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Reports.addReport(
+                report,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         report.id = "rep-" + Date.now();
         db.progressReports.push(report);
@@ -7346,11 +7700,21 @@ const DashboardEngine = (function() {
 
     // --- Enrollments (Student Registrations) Controller ---
     function getEnrollments() {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Students && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Students.getEnrollments(getDB());
+        }
         const db = getDB();
         return db.enrollments || [];
     }
 
     function addEnrollment(enrollment) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Students && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Students.addEnrollment(
+                enrollment,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         enrollment.id = "enr-" + Date.now();
         enrollment.status = "pending";
@@ -7362,6 +7726,13 @@ const DashboardEngine = (function() {
     }
 
     async function approveEnrollment(id) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Students && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Students.approveEnrollment(
+                id,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         const idx = db.enrollments.findIndex(e => e.id === id);
         if (idx !== -1) {
@@ -7497,6 +7868,13 @@ const DashboardEngine = (function() {
 
     // --- Birthday Notification / NTFY Alert ---
     async function triggerBirthdayNtfy(student) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Notifications && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Notifications.triggerBirthdayNtfy(
+                student,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         if (!student || !student.birthday || typeof student.birthday !== 'string' || student.birthday.trim().length < 10) {
             console.warn("[Birthday] Skipping birthday alert: Student has no recorded birthday.");
             return { success: false, message: "Student has no recorded birthday." };
@@ -7537,6 +7915,9 @@ const DashboardEngine = (function() {
 
     // --- Notifications Controller ---
     function getNotifications(email) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Notifications && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Notifications.getNotifications(email, getDB(), getSession());
+        }
         const db = getDB();
         const notifs = db.notifications || [];
         if (!email) return notifs;
@@ -7559,6 +7940,7 @@ const DashboardEngine = (function() {
         }
 
         const isAdminUser = clean === 'admin@stemuluskidstech.com' || sessionRole === 'admin';
+        const isTutorUser = sessionRole === 'tutor' || Boolean(matchedTut);
         const allStudents = Array.isArray(db.students) ? db.students : [];
 
         return notifs.filter(n => {
@@ -7575,8 +7957,19 @@ const DashboardEngine = (function() {
             if (!isRecipient) return false;
             if (isAdminUser) return true;
 
+            const textBlob = ((n.title || '') + ' ' + (n.message || '') + ' ' + (n.studentName || '') + ' ' + (n.type || '')).toLowerCase();
+
+            // Tutors must NOT receive alerts of payments/payout calculations or admin-only class waiting alerts
+            if (isTutorUser) {
+                if (
+                    /\b(payment|payout|payroll|remittance|compensation|salary|earnings|hourly rate|invoice|tuition|billing|realignment|overdue fee)\b/i.test(textBlob) ||
+                    /\b(waiting in class|coder waiting|tutor waiting|child is waiting|student is waiting|waiting for tutor|waiting for coder)\b/i.test(textBlob)
+                ) {
+                    return false;
+                }
+            }
+
             // Strict student-ownership guard: if notification references a specific student, ensure that student belongs to this tutor/parent
-            const textBlob = ((n.title || '') + ' ' + (n.message || '') + ' ' + (n.studentName || '')).toLowerCase();
             let refStudent = null;
             if (n.studentId) {
                 refStudent = allStudents.find(s => s && s.id === n.studentId);
@@ -7597,10 +7990,10 @@ const DashboardEngine = (function() {
             if (refStudent) {
                 const stTutorEmail = String(refStudent.tutorEmail || '').toLowerCase().trim();
                 const stParentEmail = String(refStudent.parentEmail || '').toLowerCase().trim();
-                if (sessionRole === 'tutor' || matchedTut) {
-                    if (stTutorEmail && !myEmails.has(stTutorEmail)) return false;
+                if (isTutorUser) {
+                    if (!stTutorEmail || !myEmails.has(stTutorEmail)) return false;
                 } else if (sessionRole === 'parent') {
-                    if (stParentEmail && !myEmails.has(stParentEmail)) return false;
+                    if (!stParentEmail || !myEmails.has(stParentEmail)) return false;
                 }
             }
 
@@ -7609,6 +8002,13 @@ const DashboardEngine = (function() {
     }
 
     function addNotification(notif) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Notifications && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Notifications.addNotification(
+                notif,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         notif.id = "not-" + Date.now();
         notif.timestamp = notif.timestamp || new Date().toISOString();
@@ -7620,6 +8020,13 @@ const DashboardEngine = (function() {
     }
 
     function markNotificationsRead(email) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Notifications && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Notifications.markNotificationsRead(
+                email,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         if (!email) return;
         const db = getDB();
         let changed = false;
@@ -7648,6 +8055,9 @@ const DashboardEngine = (function() {
     }
 
     function getMonthlyReports(filter) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Reports && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Reports.getMonthlyReports(filter, getDB(), getSession());
+        }
         var db = getDB();
         var reports = db.monthlyReports || [];
         if (!filter) return reports;
@@ -7683,6 +8093,13 @@ const DashboardEngine = (function() {
     }
 
     function addMonthlyReport(report) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Reports && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Reports.addMonthlyReport(
+                report,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         var db = getDB();
         if (!db.monthlyReports) db.monthlyReports = [];
         
@@ -7710,6 +8127,36 @@ const DashboardEngine = (function() {
             }
         }
 
+        // Compile attendance logs & completed project links for this student/month
+        var sIdLookup = report.studentId;
+        var monthPrefix = String(report.month || '').slice(0, 7);
+        var attList = (db.attendanceRecords || []).filter(function(a) {
+            if (!a || (sIdLookup && a.studentId !== sIdLookup)) return false;
+            if (!sIdLookup && report.studentName && (a.studentName || '').toLowerCase().trim() !== report.studentName.toLowerCase().trim()) return false;
+            if (monthPrefix && a.classDate && String(a.classDate).slice(0, 7) !== monthPrefix) return false;
+            return true;
+        });
+        var compiledLinks = [];
+        var compiledTopics = [];
+        var compiledBuilds = [];
+        attList.forEach(function(a) {
+            if (a.topic && compiledTopics.indexOf(a.topic) === -1) compiledTopics.push(a.topic);
+            if (a.whatBuilt && compiledBuilds.indexOf(a.whatBuilt) === -1) compiledBuilds.push(a.whatBuilt);
+            var rawL = a.completedProjectLinks || a.completed_project_links || a.projectLink || '';
+            var arrL = Array.isArray(rawL) ? rawL : String(rawL || '').split(/[\n,;]+/);
+            arrL.forEach(function(lnk) {
+                var cleanLnk = String(lnk || '').trim();
+                if (cleanLnk && compiledLinks.indexOf(cleanLnk) === -1) compiledLinks.push(cleanLnk);
+            });
+        });
+        var existingRepLinks = Array.isArray(report.completedProjectLinks)
+            ? report.completedProjectLinks
+            : (report.completed_project_links ? String(report.completed_project_links).split(/[\n,;]+/).map(function(s){ return s.trim(); }).filter(Boolean) : []);
+        report.completedProjectLinks = Array.from(new Set(existingRepLinks.concat(compiledLinks)));
+        report.completed_project_links = report.completedProjectLinks.join(', ');
+        if (!report.topics && compiledTopics.length > 0) report.topics = compiledTopics.join('; ');
+        if (!report.compiledBuilds && compiledBuilds.length > 0) report.compiledBuilds = compiledBuilds;
+
         // If ID exists and is already in db (e.g. resubmitting a rejected report)
         var existingIdx = report.id ? db.monthlyReports.findIndex(function(r){ return r.id === report.id; }) : -1;
         if (existingIdx !== -1) {
@@ -7731,12 +8178,49 @@ const DashboardEngine = (function() {
         report.adminNotes = report.adminNotes || '';
         db.monthlyReports.push(report);
 
+        // Automatically queue STEMulus Standard Report draft in Admin Email Queue using admin@stemuluskidstech.com
+        if (report.parentEmail) {
+            db.emailQueue = db.emailQueue || [];
+            var existingQIdx = db.emailQueue.findIndex(function(eq) {
+                return eq && eq.status === 'draft' && eq.type === 'monthly_report' && eq.data && eq.data.reportId === report.id;
+            });
+            var qItem = {
+                id: existingQIdx !== -1 ? db.emailQueue[existingQIdx].id : ('eq-' + Date.now() + '-' + Math.floor(Math.random() * 1000)),
+                type: 'monthly_report',
+                status: 'draft',
+                from: 'admin@stemuluskidstech.com',
+                senderEmail: 'admin@stemuluskidstech.com',
+                to: report.parentEmail.toLowerCase(),
+                recipientName: report.parentName || 'Parent',
+                subject: 'STEMulus Official Monthly Academic Evaluation - ' + (report.studentName || 'Student') + ' (' + (report.month || '') + ')',
+                htmlPreview: 'Official progress report for ' + (report.studentName || 'Student') + ' - Grade: ' + (report.overallGrade || 'A') + '. Compiled with session attendance and project links. Ready for Admin dispatch from admin@stemuluskidstech.com.',
+                data: {
+                    reportId: report.id,
+                    studentId: report.studentId,
+                    studentName: report.studentName,
+                    grade: report.overallGrade || 'A',
+                    month: report.month,
+                    course: report.course,
+                    tutorName: report.tutorName,
+                    completedProjectLinks: report.completedProjectLinks,
+                    from: 'admin@stemuluskidstech.com'
+                },
+                triggeredBy: 'monthly_report_submission:' + report.id,
+                createdAt: new Date().toISOString(),
+                sentAt: null,
+                editedSubject: null,
+                editedBody: null
+            };
+            if (existingQIdx !== -1) db.emailQueue[existingQIdx] = qItem;
+            else db.emailQueue.push(qItem);
+        }
+
         // Notify Admin of new monthly submission
         db.notifications = db.notifications || [];
         db.notifications.push({
             id: 'not-' + Date.now(),
             title: 'New Monthly Report Submitted',
-            message: (report.tutorName || 'A tutor') + ' submitted a monthly report for ' + (report.studentName || 'a student') + ' (' + (report.month || 'Current Month') + '). Pending review.',
+            message: (report.tutorName || 'A tutor') + ' submitted a monthly report for ' + (report.studentName || 'a student') + ' (' + (report.month || 'Current Month') + '). Compiled PDF queued in Email Queue (admin@stemuluskidstech.com).',
             timestamp: new Date().toISOString(),
             read: false,
             userEmail: 'admin@stemuluskidstech.com'
@@ -7749,6 +8233,14 @@ const DashboardEngine = (function() {
     }
 
     function updateMonthlyReport(id, updates) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Reports && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Reports.updateMonthlyReport(
+                id,
+                updates,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         var db = getDB();
         db.monthlyReports = db.monthlyReports || [];
         var idx = db.monthlyReports.findIndex(function(r){ return r.id === id; });
@@ -7761,6 +8253,14 @@ const DashboardEngine = (function() {
     }
 
     function rejectMonthlyReport(id, reason) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Reports && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Reports.rejectMonthlyReport(
+                id,
+                reason,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         var db = getDB();
         db.monthlyReports = db.monthlyReports || [];
         var idx = db.monthlyReports.findIndex(function(r){ return r.id === id; });
@@ -7805,6 +8305,15 @@ const DashboardEngine = (function() {
     }
 
     function approveAndSendMonthlyReport(id, adminEdits) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Reports && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Reports.approveAndSendMonthlyReport(
+                id,
+                adminEdits,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB },
+                getSession()
+            );
+        }
         var db = getDB();
         db.monthlyReports = db.monthlyReports || [];
         var idx = db.monthlyReports.findIndex(function(r){ return r.id === id; });
@@ -7871,18 +8380,23 @@ const DashboardEngine = (function() {
             // Queue welcome / report delivery email
             addToEmailQueue({
                 type: 'monthly_report',
+                from: 'admin@stemuluskidstech.com',
+                senderEmail: 'admin@stemuluskidstech.com',
                 to: parentEmail.toLowerCase(),
                 recipientName: r.parentName || 'Parent',
                 subject: 'STEMulus Official Monthly Academic Evaluation - ' + (r.studentName || 'Student') + ' (' + (r.month || '') + ')',
                 htmlPreview: 'Official progress report for ' + (r.studentName || 'Student') + ' - Grade: ' + (r.overallGrade || 'A') + '. Available to download and print in your Parent Portal.',
                 data: {
                     reportId: r.id,
+                    studentId: sId,
                     studentName: r.studentName,
                     grade: r.overallGrade,
                     month: r.month,
                     course: r.course,
                     tutorName: r.tutorName,
-                    directorNote: r.approvalTimeline.directorNote
+                    completedProjectLinks: r.completedProjectLinks || [],
+                    directorNote: r.approvalTimeline.directorNote,
+                    from: 'admin@stemuluskidstech.com'
                 },
                 triggeredBy: 'admin_monthly_report_send:' + r.id
             });
@@ -7894,12 +8408,14 @@ const DashboardEngine = (function() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         type: 'monthly_report',
+                        from: 'admin@stemuluskidstech.com',
                         to: parentEmail.toLowerCase(),
                         studentName: r.studentName,
                         grade: r.overallGrade,
                         month: r.month,
                         course: r.course,
                         tutorName: r.tutorName,
+                        completedProjectLinks: r.completedProjectLinks || [],
                         directorNote: r.approvalTimeline.directorNote
                     })
                 }).catch(function(){});
@@ -7926,15 +8442,89 @@ const DashboardEngine = (function() {
         return r;
     }
 
+    function shouldUseModularOnboarding() {
+        if (typeof window !== 'undefined' && window.STEMULUS_USE_LEGACY === true) return false;
+        return typeof STEMulus !== 'undefined' && STEMulus.Onboarding && typeof STEMulus.Onboarding.generateAutoUsername === 'function';
+    }
+
+    function shouldUseModularEmailQueue() {
+        if (typeof window !== 'undefined' && window.STEMULUS_USE_LEGACY === true) return false;
+        return typeof STEMulus !== 'undefined' && STEMulus.EmailQueue && typeof STEMulus.EmailQueue.enqueueEmail === 'function';
+    }
+
+    function shouldUseModularAuth() {
+        if (typeof window !== 'undefined' && window.STEMULUS_USE_LEGACY === true) return false;
+        return typeof STEMulus !== 'undefined' && STEMulus.Auth && typeof STEMulus.Auth.login === 'function';
+    }
+
+    function generateAutoUsername(name, role, existingUsers) {
+        if (shouldUseModularOnboarding()) {
+            return STEMulus.Onboarding.generateAutoUsername(name, role, existingUsers || (getDB() ? getDB().users : {}));
+        }
+        var raw = (name || (role === 'tutor' ? 'tutor' : 'parent')).toLowerCase().trim();
+        raw = raw.replace(/^(mr|mrs|ms|dr|prof)\.?\s+/i, '');
+        var cleaned = raw.replace(/[^a-z0-9]+/g, '.').replace(/^\.+|\.+$/g, '');
+        if (!cleaned) cleaned = role === 'tutor' ? 'tutor' : 'parent';
+
+        var domain = role === 'tutor' ? 'stemuluskidstech.com' : 'parent.stemuluskidstech.com';
+        var candidate = cleaned + '@' + domain;
+
+        if (!existingUsers || !existingUsers[candidate]) {
+            return candidate;
+        }
+
+        for (var i = 0; i < 20; i++) {
+            var suffix = Math.floor(100 + Math.random() * 900);
+            var testCandidate = cleaned + suffix + '@' + domain;
+            if (!existingUsers[testCandidate]) {
+                return testCandidate;
+            }
+        }
+        return cleaned + '.' + Date.now().toString(36) + '@' + domain;
+    }
+
+    function generateAutoPassword() {
+        if (shouldUseModularOnboarding()) {
+            return STEMulus.Onboarding.generateAutoPassword();
+        }
+        var upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        var lower = 'abcdefghjkmnpqrstuvwxyz';
+        var digits = '23456789';
+        var specials = '!@#$%&*';
+        var all = upper + lower + digits + specials;
+
+        var u = upper[Math.floor(Math.random() * upper.length)];
+        var l = lower[Math.floor(Math.random() * lower.length)];
+        var d = digits[Math.floor(Math.random() * digits.length)];
+        var s = specials[Math.floor(Math.random() * specials.length)];
+
+        var randomBytes = new Uint8Array(6);
+        crypto.getRandomValues(randomBytes);
+        var rest = Array.from(randomBytes).map(function(b) { return all[b % all.length]; }).join('');
+
+        return 'STEM-' + u + l + d + s + rest;
+    }
+
     async function quickOnboardUser(params) {
+        if (shouldUseModularOnboarding()) {
+            var db = getDB();
+            return await STEMulus.Onboarding.quickOnboardUser(params, db, {
+                getDB: getDB,
+                saveDB: saveDB,
+                syncDocument: syncToFirestore,
+                provisionCoderClassroomAndMeet: provisionCoderClassroomAndMeet
+            });
+        }
         var db = getDB();
-        var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@';
-        var tempPwd = Array.from(crypto.getRandomValues(new Uint8Array(10))).map(function(b){return chars[b%chars.length];}).join('');
-        var hashed = await hashPassword(tempPwd);
+        var tempPwd = params.password || generateAutoPassword();
+        var hashed = isHashed(tempPwd) ? tempPwd : await hashPassword(tempPwd);
 
         if (params.type === 'tutor') {
             var tutorEmail = (params.email || '').toLowerCase().trim();
-            if (!tutorEmail) return { success: false, message: 'Tutor email is required.' };
+            if (!tutorEmail && params.name) {
+                tutorEmail = generateAutoUsername(params.name, 'tutor', db.users);
+            }
+            if (!tutorEmail) return { success: false, message: 'Tutor name or email is required.' };
             if (db.users && db.users[tutorEmail]) {
                 return { success: false, message: 'A user with email ' + tutorEmail + ' already exists.' };
             }
@@ -7980,11 +8570,22 @@ const DashboardEngine = (function() {
                 id: 'eq-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
                 type: 'tutor-welcome',
                 status: 'draft',
+                from: 'admin@stemuluskidstech.com',
+                senderEmail: 'admin@stemuluskidstech.com',
                 to: tutorEmail,
                 recipientName: params.name || 'Tutor',
-                subject: 'Welcome to STEMulus Faculty - Your Tutor Portal Access',
-                htmlPreview: 'Welcome ' + (params.name || 'Tutor') + '! Your tutor portal credentials: Login: ' + tutorEmail + ' | Temp Password: ' + tempPwd,
-                data: { tutorEmail: tutorEmail, tutorName: params.name || 'Tutor', tempPassword: tempPwd, subjects: params.program || '' },
+                subject: 'Welcome to STEMulus Faculty: Your Tutor Portal Access',
+                htmlPreview: 'Welcome ' + (params.name || 'Tutor') + '! Your tutor portal credentials: Login: ' + tutorEmail + ' | Temp Password: ' + tempPwd + ' | Portal: https://stemuluskidstech.com/tutor-login.html',
+                data: {
+                    tutorEmail: tutorEmail,
+                    tutorName: params.name || 'Tutor',
+                    tempPassword: tempPwd,
+                    curriculum: params.program || 'Python Programming Foundations',
+                    subjects: params.program || 'Python Programming Foundations',
+                    meetLink: 'https://meet.google.com/gyd-fewb-cdh',
+                    classroomLink: 'https://classroom.google.com/c/ODg2NTc4NzE1MTgz?cjc=sfgboast',
+                    scheduleText: 'Agreed weekly sessions (WAT, GMT+1)'
+                },
                 triggeredBy: 'quick_onboard_tutor',
                 createdAt: new Date().toISOString(),
                 sentAt: null,
@@ -7992,12 +8593,18 @@ const DashboardEngine = (function() {
                 editedBody: null
             });
             saveDB(db);
+            syncToFirestore('users', tutorEmail, db.users[tutorEmail]);
+            var tutRecord = (db.tutors || []).find(function(t){ return t.email === tutorEmail; });
+            if (tutRecord) syncToFirestore('tutors', tutRecord.id || tutorEmail, tutRecord);
             if (typeof window !== 'undefined' && window.dispatchEvent) window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
-            return { success: true, type: 'tutor', email: tutorEmail, tempPassword: tempPwd, name: params.name || 'Tutor' };
+            return { success: true, type: 'tutor', email: tutorEmail, username: tutorEmail, tempPassword: tempPwd, name: params.name || 'Tutor' };
         } else {
             // Student + Parent
             var parentEmail = (params.email || '').toLowerCase().trim();
-            if (!parentEmail) return { success: false, message: 'Parent email is required.' };
+            if (!parentEmail && params.name) {
+                parentEmail = generateAutoUsername(params.name, 'parent', db.users);
+            }
+            if (!parentEmail) return { success: false, message: 'Parent name or email is required.' };
             if (!db.users[parentEmail]) {
                 db.users[parentEmail] = {
                     email: parentEmail,
@@ -8023,17 +8630,28 @@ const DashboardEngine = (function() {
                        (s.lastName && s.lastName.toLowerCase() === lName.toLowerCase());
             });
 
+            var requestedTutorName = (params.tutorName || 'Sarah Jane').trim();
+            var matchedQoTutor = resolveTutorDetails(params.tutorEmail || requestedTutorName);
+            var resolvedTutorName = matchedQoTutor ? matchedQoTutor.name : requestedTutorName;
+            var resolvedTutorEmail = matchedQoTutor
+                ? matchedQoTutor.email
+                : (params.tutorEmail || (requestedTutorName.toLowerCase() === 'sarah jane' ? 'tutor@stemuluskidstech.com' : generateAutoUsername(requestedTutorName, 'tutor', {})));
+            var resolvedTutorId = matchedQoTutor
+                ? matchedQoTutor.id
+                : (params.tutorId || (requestedTutorName.toLowerCase() === 'sarah jane' ? 'tut-101' : ('tut-' + requestedTutorName.toLowerCase().replace(/[^a-z0-9]+/g, '-'))));
+
             var newStudent;
             if (existingStudIdx !== -1) {
                 // Reassign existing student without duplicating
-                db.students[existingStudIdx].tutorName = params.tutorName || 'Sarah Jane';
+                db.students[existingStudIdx].tutorName = resolvedTutorName;
+                db.students[existingStudIdx].tutorEmail = resolvedTutorEmail;
+                db.students[existingStudIdx].tutorId = resolvedTutorId;
                 db.students[existingStudIdx].program = params.program || db.students[existingStudIdx].program;
                 db.students[existingStudIdx].age = childAge;
                 if (params.phone) db.students[existingStudIdx].parentPhone = params.phone;
                 provisionCoderClassroomAndMeet(db.students[existingStudIdx]);
                 newStudent = db.students[existingStudIdx];
             } else {
-                const matchedQoTutor = resolveTutorDetails(params.tutorName || 'Sarah Jane');
                 newStudent = {
                     id: 'std-' + Date.now(),
                     firstName: fName,
@@ -8051,9 +8669,9 @@ const DashboardEngine = (function() {
                     hasExplicitBirthday: !!(params.birthday && params.birthday.trim()),
                     progress: 0,
                     avatarColor: ['#4F46E5', '#059669', '#D97706', '#DC2626', '#7C3AED', '#2563EB', '#0891B2'][Math.floor(Math.random() * 7)],
-                    tutorName: matchedQoTutor ? matchedQoTutor.name : (params.tutorName || 'Sarah Jane'),
-                    tutorEmail: matchedQoTutor ? matchedQoTutor.email : 'tutor@stemuluskidstech.com',
-                    tutorId: matchedQoTutor ? matchedQoTutor.id : 'tut-101',
+                    tutorName: resolvedTutorName,
+                    tutorEmail: resolvedTutorEmail,
+                    tutorId: resolvedTutorId,
                     classroomLink: params.classroomLink || ''
                 };
                 provisionCoderClassroomAndMeet(newStudent, params.lessonCount || 8);
@@ -8113,10 +8731,12 @@ const DashboardEngine = (function() {
                 id: 'eq-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
                 type: 'welcome',
                 status: 'draft',
+                from: 'admin@stemuluskidstech.com',
+                senderEmail: 'admin@stemuluskidstech.com',
                 to: parentEmail,
                 recipientName: params.name || 'Parent',
-                subject: 'Welcome to STEMulus - ' + fName + '\'s coding journey starts!',
-                htmlPreview: 'Welcome ' + (params.name || 'Parent') + '! Portal credentials: Email: ' + parentEmail + ' | Temp Password: ' + tempPwd,
+                subject: 'Parents Welcome to STEMulus Kids Tech: Official Onboarding for ' + (fName + ' ' + lName),
+                htmlPreview: 'Welcome ' + (params.name || 'Parent') + '! Portal credentials: Email: ' + parentEmail + ' | Temp Password: ' + tempPwd + ' | Coder: ' + (fName + ' ' + lName) + ' (' + newStudent.program + ') | Portal: https://stemuluskidstech.com/parent-login.html',
                 data: {
                     parentEmail: parentEmail,
                     parentName: params.name || 'Parent',
@@ -8140,6 +8760,8 @@ const DashboardEngine = (function() {
             });
 
             saveDB(db);
+            syncToFirestore('users', parentEmail, db.users[parentEmail]);
+            syncToFirestore('students', newStudent.id, newStudent);
             if (typeof window !== 'undefined' && window.dispatchEvent) window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
             return {
                 success: true,
@@ -8167,17 +8789,28 @@ const DashboardEngine = (function() {
 
     // --- Email Queue Controller ---
     function addToEmailQueue(item) {
+        if (shouldUseModularEmailQueue()) {
+            var db = getDB();
+            return STEMulus.EmailQueue.enqueueEmail(item, db, {
+                getDB: getDB,
+                saveDB: saveDB
+            });
+        }
         // item: { type, to, recipientName, subject, htmlPreview, data, triggeredBy }
         var db = getDB();
         if (!db.emailQueue) db.emailQueue = [];
         var entry = Object.assign({
             id: 'eq-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
             status: 'draft',
+            from: 'admin@stemuluskidstech.com',
+            senderEmail: 'admin@stemuluskidstech.com',
             createdAt: new Date().toISOString(),
             sentAt: null,
             editedSubject: null,
             editedBody: null
         }, item);
+        entry.from = entry.from || 'admin@stemuluskidstech.com';
+        entry.senderEmail = entry.senderEmail || 'admin@stemuluskidstech.com';
         db.emailQueue.push(entry);
         saveDB(db);
         if (typeof window !== 'undefined' && window.dispatchEvent) window.dispatchEvent(new CustomEvent('stemulusDbUpdated'));
@@ -8185,16 +8818,45 @@ const DashboardEngine = (function() {
     }
 
     function getEmailQueue() {
+        if (shouldUseModularEmailQueue()) {
+            var db = getDB();
+            return STEMulus.EmailQueue.getPendingQueue(db, {
+                getDB: getDB,
+                saveDB: saveDB
+            });
+        }
         var db = getDB();
         return (db.emailQueue || []).filter(function(e){ return e.status === 'draft'; });
     }
 
     function getEmailHistory() {
+        if (shouldUseModularEmailQueue()) {
+            var db = getDB();
+            return STEMulus.EmailQueue.getSentHistory(db, {
+                getDB: getDB,
+                saveDB: saveDB
+            });
+        }
         var db = getDB();
-        return (db.emailQueue || []).filter(function(e){ return e.status !== 'draft'; });
+        var fromQueue = (db.emailQueue || []).filter(function(e){ return e.status !== 'draft'; });
+        var fromHistory = db.emailHistory || [];
+        var combined = fromQueue.concat(fromHistory);
+        var seen = {};
+        return combined.filter(function(e) {
+            if (!e.id || seen[e.id]) return false;
+            seen[e.id] = true;
+            return true;
+        });
     }
 
     function updateQueuedEmail(id, fields) {
+        if (shouldUseModularEmailQueue()) {
+            var db = getDB();
+            return STEMulus.EmailQueue.updateQueuedEmail(id, fields, db, {
+                getDB: getDB,
+                saveDB: saveDB
+            });
+        }
         // fields: { editedSubject, editedBody }
         var db = getDB();
         var entry = (db.emailQueue || []).find(function(e){ return e.id === id; });
@@ -8227,11 +8889,19 @@ const DashboardEngine = (function() {
     }
 
     function getPendingPasswordResets() {
+        if (shouldUseModularAuth()) {
+            var db = getDB();
+            return STEMulus.Auth.getPendingPasswordResets(db, { getDB: getDB, saveDB: saveDB });
+        }
         var db = getDB();
         return (db.passwordResetRequests || []).filter(function(r){ return r.status==='pending'; });
     }
 
     function resolvePasswordReset(reqId, newPassword) {
+        if (shouldUseModularAuth()) {
+            var db = getDB();
+            return STEMulus.Auth.resolvePasswordReset(reqId, newPassword, db, { getDB: getDB, saveDB: saveDB });
+        }
         var db = getDB();
         var req = (db.passwordResetRequests || []).find(function(r){ return r.id===reqId; });
         if (!req) return false;
@@ -8258,6 +8928,14 @@ const DashboardEngine = (function() {
     }
 
     async function requestPasswordReset(email, role) {
+        if (shouldUseModularAuth()) {
+            var db = getDB();
+            return await STEMulus.Auth.requestPasswordReset(email, role, db, {
+                getDB: getDB,
+                saveDB: saveDB,
+                syncDocument: syncToFirestore
+            });
+        }
         var db = getDB();
         const cleanEmail = (email || '').toLowerCase().trim();
         const cleanRole = (role || 'parent').toLowerCase().trim();
@@ -8417,6 +9095,14 @@ const DashboardEngine = (function() {
     }
 
     async function changePasswordAfterReset(email, newPassword) {
+        if (shouldUseModularAuth()) {
+            var db = getDB();
+            return await STEMulus.Auth.changePasswordAfterReset(email, newPassword, db, {
+                getDB: getDB,
+                saveDB: saveDB,
+                syncDocument: syncToFirestore
+            });
+        }
         var db = getDB();
         const cleanEmail = (email || '').toLowerCase().trim();
         const user = db.users ? db.users[cleanEmail] : null;
@@ -8460,11 +9146,21 @@ const DashboardEngine = (function() {
 
     // --- Milestones Controller ---
     function getMilestones() {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Certificates && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Certificates.getMilestones(getDB());
+        }
         const db = getDB();
         return db.milestones || [];
     }
 
     function addMilestone(m) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Certificates && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Certificates.addMilestone(
+                m,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         if (!db.milestones) db.milestones = [];
         m.id = "mil-" + Date.now();
@@ -8474,6 +9170,14 @@ const DashboardEngine = (function() {
     }
 
     function updateMilestone(id, updatedFields) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Certificates && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Certificates.updateMilestone(
+                id,
+                updatedFields,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         if (!db.milestones) db.milestones = [];
         const idx = db.milestones.findIndex(m => m.id === id);
@@ -8486,6 +9190,13 @@ const DashboardEngine = (function() {
     }
 
     function deleteMilestone(id) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Certificates && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Certificates.deleteMilestone(
+                id,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         if (!db.milestones) db.milestones = [];
         const idx = db.milestones.findIndex(m => m.id === id);
@@ -8499,6 +9210,9 @@ const DashboardEngine = (function() {
 
     // --- Weekly Report Generator ---
     function generateWeeklyReport(studentId) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Reports && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Reports.generateWeeklyReport(studentId, getDB());
+        }
         var db = getDB();
         var student = (db.students||[]).find(function(s){ return s.id===studentId; });
         if (!student) return null;
@@ -8547,6 +9261,9 @@ const DashboardEngine = (function() {
     }
 
     function generateAllWeeklyReports() {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Reports && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Reports.generateAllWeeklyReports(getDB());
+        }
         var db = getDB();
         var students = db.students||[];
         var reports = [];
@@ -8720,6 +9437,9 @@ const DashboardEngine = (function() {
 
     // ===== FACULTY NOTICES & OPERATIONAL BULLETINS =====
     function getNotices(filterRole = null) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Notices && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Notices.getNotices(filterRole, getDB());
+        }
         const db = getDB();
         const notices = Array.isArray(db.notices) ? db.notices : [];
         if (!filterRole || filterRole === 'admin') return notices;
@@ -8727,6 +9447,13 @@ const DashboardEngine = (function() {
     }
 
     function addNotice(noticeData) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Notices && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Notices.addNotice(
+                noticeData,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         if (!Array.isArray(db.notices)) db.notices = [];
         const notice = {
@@ -8748,6 +9475,14 @@ const DashboardEngine = (function() {
     }
 
     function updateNotice(id, updates) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Notices && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Notices.updateNotice(
+                id,
+                updates,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         if (!Array.isArray(db.notices)) return null;
         const idx = db.notices.findIndex(n => n.id === id);
@@ -8760,6 +9495,13 @@ const DashboardEngine = (function() {
     }
 
     function deleteNotice(id) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Notices && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Notices.deleteNotice(
+                id,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         if (!Array.isArray(db.notices)) return false;
         db.notices = db.notices.filter(n => n.id !== id);
@@ -8770,6 +9512,9 @@ const DashboardEngine = (function() {
     }
 
     function getUnreadNoticesCount(userEmail) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Notices && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Notices.getUnreadNoticesCount(userEmail, 'tutor', getDB());
+        }
         const notices = getNotices('tutor');
         const readKey = 'stemulus_read_notices_' + (userEmail || 'tutor').toLowerCase().trim();
         const readIds = JSON.parse(localStorage.getItem(readKey) || '[]');
@@ -8777,6 +9522,9 @@ const DashboardEngine = (function() {
     }
 
     function markNoticeRead(noticeId, userEmail) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Notices && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Notices.markNoticeRead(noticeId, userEmail);
+        }
         const readKey = 'stemulus_read_notices_' + (userEmail || 'tutor').toLowerCase().trim();
         const readIds = JSON.parse(localStorage.getItem(readKey) || '[]');
         if (!readIds.includes(noticeId)) {
@@ -8788,6 +9536,9 @@ const DashboardEngine = (function() {
 
     // ===== TUTOR AVAILABILITY VALIDATION =====
     function checkTutorAvailability(tutorNameOrEmail, dateOrDay, timeString) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Scheduling && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Scheduling.checkTutorAvailability(tutorNameOrEmail, dateOrDay, timeString, getDB());
+        }
         if (!tutorNameOrEmail) return { available: true, status: 'NO_TUTOR_SELECTED', message: 'No tutor selected.' };
         const db = getDB();
         const tutors = db.tutors || [];
@@ -8924,6 +9675,9 @@ const DashboardEngine = (function() {
 
     // ===== MASTER PAYROLL & REMITTANCE LEDGER =====
     function getPayrollLedger(monthYear = null) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Payroll && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Payroll.getPayrollLedger(monthYear, getDB());
+        }
         const db = getDB();
         const tutors = db.tutors || [];
         const attendances = db.attendanceRecords || [];
@@ -8986,6 +9740,14 @@ const DashboardEngine = (function() {
     }
 
     function markPayrollDisbursed(monthYear, paymentReference = '') {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Payroll && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Payroll.markPayrollDisbursed(
+                monthYear,
+                paymentReference,
+                getDB(),
+                (window.STEMulus && window.STEMulus.Storage) || { save: saveDB }
+            );
+        }
         const db = getDB();
         if (!Array.isArray(db.payrollDisbursements)) db.payrollDisbursements = [];
         const record = {
@@ -9005,6 +9767,9 @@ const DashboardEngine = (function() {
 
     // ===== TUTOR PERFORMANCE & PUNCTUALITY ENGINE =====
     function calculateTutorPerformance(tutorEmail) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Payroll && window.STEMULUS_USE_LEGACY !== true) {
+            return window.STEMulus.Payroll.calculateTutorPerformance(tutorEmail, getDB());
+        }
         const db = getDB();
         const attendances = db.attendanceRecords || [];
         const tLower = (tutorEmail || '').toLowerCase().trim();
@@ -9087,7 +9852,16 @@ const DashboardEngine = (function() {
         };
     }
 
+    function enforceDataIntegrity(dbInstance) {
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.DataIntegrity && typeof window.STEMulus.DataIntegrity.enforceDatabaseIntegrity === 'function') {
+            return window.STEMulus.DataIntegrity.enforceDatabaseIntegrity(dbInstance || getDB());
+        }
+        return { db: dbInstance || getDB(), audit: { fallback: true } };
+    }
+
     return {
+        enforceDataIntegrity: enforceDataIntegrity,
+        deduplicateDatabase: enforceDataIntegrity,
         login,
         logout,
         getSession,
@@ -9108,6 +9882,7 @@ const DashboardEngine = (function() {
         deleteStudent,
         getTutors,
         deleteTutor,
+        resolveTutorDetails,
         getSchedules,
         getCanonicalWeeklySchedules,
         reconcileHeldSchedules,
@@ -9142,6 +9917,7 @@ const DashboardEngine = (function() {
         deleteMilestone,
         getAttendanceRecords,
         addAttendanceRecord,
+        submitAttendance: addAttendanceRecord,
         updateAttendanceStatus,
         checkDuplicateAttendance,
         getOverdueAttendance,
@@ -9158,10 +9934,24 @@ const DashboardEngine = (function() {
         getMonthlyReports,
         addMonthlyReport,
         updateMonthlyReport,
+        updateMonthlyReportStatus: function(id, status) {
+            return updateMonthlyReport(id, { status: status, allowFinalizedEdit: true });
+        },
         rejectMonthlyReport,
         approveAndSendMonthlyReport,
         quickOnboardUser,
         provisionCoderClassroomAndMeet,
+        launchMeetingSession: function(sessionDetails) {
+            if (typeof STEMulus !== 'undefined' && STEMulus.Classroom && typeof STEMulus.Classroom.launchMeetingSession === 'function') {
+                return STEMulus.Classroom.launchMeetingSession(sessionDetails);
+            }
+            if (typeof window !== 'undefined' && typeof window.launchMeetingSession === 'function') {
+                return window.launchMeetingSession(sessionDetails);
+            }
+            const url = (sessionDetails && sessionDetails.meetingUrl) || 'https://meet.google.com';
+            if (typeof window !== 'undefined') window.open(url, '_blank');
+            return { success: true, meetingUrl: url };
+        },
         generateClassroomMetadata,
         generateGoogleMeetLink,
         getCourseAssignments,
@@ -9225,20 +10015,39 @@ const DashboardEngine = (function() {
             }
             return false;
         },
+        generateAutoUsername: function(name, role) {
+            return generateAutoUsername(name, role, getDB().users);
+        },
+        generateAutoPassword: generateAutoPassword,
         addUser: async function(userData) {
+            if (shouldUseModularAuth()) {
+                const db = getDB();
+                return await STEMulus.Auth.addUser(userData, db, {
+                    getDB: getDB,
+                    saveDB: saveDB,
+                    syncDocument: syncToFirestore
+                });
+            }
             const db = getDB();
             if (!db.users) db.users = {};
-            const key = (userData.email || '').toLowerCase().trim();
-            if (!key) return { success: false, message: 'Valid email is required.' };
-            if (!userData.password) return { success: false, message: 'Password is required.' };
-            const plain = String(userData.password).trim();
             const role = (userData.role || 'parent').toLowerCase().trim();
-            const name = (userData.name || 'Parent').trim();
+            const name = (userData.name || (role === 'tutor' ? 'Tutor' : 'Parent')).trim();
             const phone = (userData.phone || '').trim();
+
+            let key = (userData.email || '').toLowerCase().trim();
+            if (!key) {
+                key = generateAutoUsername(name, role, db.users);
+            }
+
+            let plain = userData.password ? String(userData.password).trim() : '';
+            if (!plain) {
+                plain = generateAutoPassword();
+            }
 
             const hashedPassword = isHashed(plain) ? plain : await hashPassword(plain);
 
             db.users[key] = {
+                id: (role === 'tutor' ? 'usr-tut-' : (role === 'admin' ? 'usr-adm-' : 'usr-par-')) + Date.now(),
                 email: key,
                 password: hashedPassword,
                 role: role,
@@ -9274,6 +10083,7 @@ const DashboardEngine = (function() {
                 if (existingTutor) {
                     existingTutor.name = name || existingTutor.name;
                     if (phone) existingTutor.phone = phone;
+                    if (userData.subjects) existingTutor.subjects = userData.subjects;
                 } else {
                     db.tutors.push({
                         id: 'tut-' + Date.now(),
@@ -9298,25 +10108,48 @@ const DashboardEngine = (function() {
                 const tut = (db.tutors || []).find(t => t.email && t.email.toLowerCase().trim() === key);
                 if (tut) syncToFirestore('tutors', tut.id || key, tut);
             }
+            if (typeof window !== 'undefined' && window.dispatchEvent) {
+                window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { source: 'addUser', role: role, email: key } }));
+            }
             return {
-        // Data Retention & Integrity Shield
-        exportDatabaseJSON: exportDatabaseJSON,
-        importDatabaseJSON: importDatabaseJSON,
-        listSnapshots: listSnapshots,
-        restoreSnapshot: restoreSnapshot,
-        validateDBSchema: validateDBSchema,
- success: true, updated: true, user: db.users[key] };
+                success: true,
+                updated: true,
+                email: key,
+                username: key,
+                password: plain,
+                tempPassword: plain,
+                user: db.users[key]
+            };
         },
         updateUserPassword: async function(email, newPassword) {
+            if (shouldUseModularAuth()) {
+                const db = getDB();
+                return await STEMulus.Auth.updateUserPassword(email, newPassword, db, {
+                    getDB: getDB,
+                    saveDB: saveDB,
+                    syncDocument: syncToFirestore
+                });
+            }
             const db = getDB();
             const key = email.toLowerCase().trim();
             if (!db.users[key]) return false;
             db.users[key].password = await hashPassword(newPassword);
+            db.users[key].mustChangePassword = false;
             saveDB(db);
-            syncToFirestore('users', key, { password: db.users[key].password, updatedAt: new Date().toISOString() });
+            syncToFirestore('users', key, { password: db.users[key].password, mustChangePassword: false, updatedAt: new Date().toISOString() });
+            if (typeof StemulusSecurity !== 'undefined' && StemulusSecurity.getSecureSession) {
+                const sess = StemulusSecurity.getSecureSession();
+                if (sess && sess.email && sess.email.toLowerCase().trim() === key) {
+                    sess.mustChangePassword = false;
+                    StemulusSecurity.saveSecureSession(sess);
+                }
+            }
             return true;
         },
         checkAuth: function(requiredRole) {
+            if (shouldUseModularAuth()) {
+                return STEMulus.Auth.checkAuth(requiredRole);
+            }
             var session = this.getSession ? this.getSession() : JSON.parse(sessionStorage.getItem('stemulus_session') || 'null');
             if (!session || !session.role) {
                 if (requiredRole === 'admin') { window.location.href = 'admin-login.html'; return null; }
@@ -9341,6 +10174,190 @@ const DashboardEngine = (function() {
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#39;');
         },
+        submitIssueEscalation: function(rawEscalation) {
+            if (!rawEscalation || typeof rawEscalation !== 'object') {
+                return { success: false, code: 'INVALID_ESCALATION', message: 'Escalation payload is required.' };
+            }
+            const validCategories = ['student_behavior', 'technical_issue', 'scheduling_conflict', 'parent_dispute', 'payment_query'];
+            const category = String(rawEscalation.category || '').toLowerCase().trim();
+            if (!validCategories.includes(category)) {
+                return { success: false, code: 'INVALID_CATEGORY', message: 'Invalid escalation category. Must be one of: ' + validCategories.join(', ') };
+            }
+            const summary = String(rawEscalation.summary || rawEscalation.title || '').trim();
+            const details = String(rawEscalation.details || rawEscalation.notes || '').trim();
+            if (!summary && !details) {
+                return { success: false, code: 'MISSING_DETAILS', message: 'Please provide a summary or description for the escalation.' };
+            }
+            const validSeverities = ['low', 'medium', 'high', 'critical'];
+            const severity = validSeverities.includes(String(rawEscalation.severity || '').toLowerCase().trim())
+                ? String(rawEscalation.severity).toLowerCase().trim()
+                : (category === 'parent_dispute' || category === 'student_behavior' ? 'high' : 'medium');
+
+            const db = getDB();
+            if (!Array.isArray(db.issueEscalations)) db.issueEscalations = [];
+            const session = getSession() || {};
+            const nowIso = new Date().toISOString();
+
+            const escalation = {
+                id: rawEscalation.id || ('esc-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6)),
+                category: category,
+                categoryLabel: {
+                    student_behavior: 'Student Behavior',
+                    technical_issue: 'Technical Issue',
+                    scheduling_conflict: 'Scheduling Conflict',
+                    parent_dispute: 'Parent Dispute',
+                    payment_query: 'Payment / Payout Query'
+                }[category] || category,
+                severity: severity,
+                status: 'open',
+                tutorId: rawEscalation.tutorId || session.id || 'tut-active',
+                tutorName: rawEscalation.tutorName || session.name || 'Assigned Tutor',
+                tutorEmail: (rawEscalation.tutorEmail || session.email || '').toLowerCase().trim(),
+                studentId: rawEscalation.studentId || '',
+                studentName: rawEscalation.studentName || 'General / Faculty',
+                summary: summary || details.slice(0, 80),
+                details: details || summary,
+                attachmentUrl: String(rawEscalation.attachmentUrl || rawEscalation.attachment || '').trim(),
+                assignedTo: rawEscalation.assignedTo || 'Academic Operations Director',
+                replies: [],
+                createdAt: nowIso,
+                updatedAt: nowIso,
+                resolvedAt: null,
+                resolutionNotes: ''
+            };
+
+            db.issueEscalations.unshift(escalation);
+
+            // Trigger real-time notification to Admin dashboard
+            if (!Array.isArray(db.notifications)) db.notifications = [];
+            db.notifications.unshift({
+                id: 'not-esc-' + Date.now(),
+                userEmail: 'admin@stemuluskidstech.com',
+                targetRole: 'admin',
+                title: '[' + severity.toUpperCase() + '] Tutor Issue Escalation: ' + escalation.categoryLabel,
+                message: escalation.tutorName + ' escalated (' + escalation.studentName + '): ' + escalation.summary,
+                escalationId: escalation.id,
+                category: escalation.category,
+                severity: escalation.severity,
+                timestamp: nowIso,
+                read: false
+            });
+
+            saveDB(db);
+            syncToFirestore('issueEscalations', escalation.id, escalation);
+            if (typeof window !== 'undefined' && window.dispatchEvent) {
+                window.dispatchEvent(new CustomEvent('stemulusDbUpdated', { detail: { source: 'submitIssueEscalation', escalationId: escalation.id } }));
+            }
+            return { success: true, escalation: escalation };
+        },
+        getIssueEscalations: function(tutorEmailOrFilter) {
+            const db = getDB();
+            const list = Array.isArray(db.issueEscalations) ? db.issueEscalations : [];
+            if (!tutorEmailOrFilter) return list;
+            if (typeof tutorEmailOrFilter === 'string') {
+                const emailClean = tutorEmailOrFilter.toLowerCase().trim();
+                if (!emailClean || emailClean === 'admin@stemuluskidstech.com' || emailClean === 'all') return list;
+                return list.filter(item => item && item.tutorEmail && item.tutorEmail.toLowerCase().trim() === emailClean);
+            }
+            return list;
+        },
+        replyIssueEscalation: function(escalationId, replyText, authorName, authorRole) {
+            const db = getDB();
+            if (!Array.isArray(db.issueEscalations)) db.issueEscalations = [];
+            const esc = db.issueEscalations.find(e => e && e.id === escalationId);
+            if (!esc) return { success: false, message: 'Escalation not found.' };
+            const text = String(replyText || '').trim();
+            if (!text) return { success: false, message: 'Reply message cannot be empty.' };
+
+            const nowIso = new Date().toISOString();
+            esc.replies = Array.isArray(esc.replies) ? esc.replies : [];
+            const replyObj = {
+                id: 'rep-' + Date.now(),
+                authorName: authorName || 'Admin Operations',
+                authorRole: authorRole || 'admin',
+                message: text,
+                timestamp: nowIso
+            };
+            esc.replies.push(replyObj);
+            if (esc.status === 'open') esc.status = 'in_progress';
+            esc.updatedAt = nowIso;
+
+            if (esc.tutorEmail) {
+                db.notifications = db.notifications || [];
+                db.notifications.unshift({
+                    id: 'not-escreply-' + Date.now(),
+                    userEmail: esc.tutorEmail,
+                    title: 'Admin Replied to Your Escalation (' + esc.categoryLabel + ')',
+                    message: text,
+                    escalationId: esc.id,
+                    timestamp: nowIso,
+                    read: false
+                });
+            }
+            saveDB(db);
+            syncToFirestore('issueEscalations', esc.id, esc);
+            return { success: true, escalation: esc, reply: replyObj };
+        },
+        reassignIssueEscalation: function(escalationId, newAssignee) {
+            const db = getDB();
+            if (!Array.isArray(db.issueEscalations)) db.issueEscalations = [];
+            const esc = db.issueEscalations.find(e => e && e.id === escalationId);
+            if (!esc) return { success: false, message: 'Escalation not found.' };
+            const assignee = String(newAssignee || '').trim();
+            if (!assignee) return { success: false, message: 'Assignee name is required.' };
+            const nowIso = new Date().toISOString();
+            esc.assignedTo = assignee;
+            esc.status = 'in_progress';
+            esc.updatedAt = nowIso;
+            if (esc.tutorEmail) {
+                db.notifications = db.notifications || [];
+                db.notifications.unshift({
+                    id: 'not-escrss-' + Date.now(),
+                    userEmail: esc.tutorEmail,
+                    title: 'Escalation Reassigned: ' + esc.categoryLabel,
+                    message: 'Your escalation "' + esc.summary + '" is now assigned to ' + assignee + '.',
+                    escalationId: esc.id,
+                    timestamp: nowIso,
+                    read: false
+                });
+            }
+            saveDB(db);
+            syncToFirestore('issueEscalations', esc.id, esc);
+            return { success: true, escalation: esc };
+        },
+        resolveIssueEscalation: function(escalationId, resolutionNotes, resolvedBy) {
+            const db = getDB();
+            if (!Array.isArray(db.issueEscalations)) db.issueEscalations = [];
+            const esc = db.issueEscalations.find(e => e && e.id === escalationId);
+            if (!esc) return { success: false, message: 'Escalation not found.' };
+            const nowIso = new Date().toISOString();
+            esc.status = 'resolved';
+            esc.resolvedAt = nowIso;
+            esc.updatedAt = nowIso;
+            esc.resolvedBy = resolvedBy || 'Admin';
+            esc.resolutionNotes = String(resolutionNotes || 'Resolved by Academic Operations.').trim();
+
+            if (esc.tutorEmail) {
+                db.notifications = db.notifications || [];
+                db.notifications.unshift({
+                    id: 'not-escres-' + Date.now(),
+                    userEmail: esc.tutorEmail,
+                    title: 'Escalation Resolved: ' + esc.categoryLabel,
+                    message: 'Admin resolved "' + esc.summary + '": ' + esc.resolutionNotes,
+                    escalationId: esc.id,
+                    timestamp: nowIso,
+                    read: false
+                });
+            }
+            saveDB(db);
+            syncToFirestore('issueEscalations', esc.id, esc);
+            return { success: true, escalation: esc };
+        },
+        exportDatabaseJSON: exportDatabaseJSON,
+        importDatabaseJSON: importDatabaseJSON,
+        listSnapshots: listSnapshots,
+        restoreSnapshot: restoreSnapshot,
+        validateDBSchema: validateDBSchema,
         syncToFirestore,
         firestore: StemulusFirestore,
         initDefaultAccounts

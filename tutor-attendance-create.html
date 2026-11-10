@@ -676,6 +676,14 @@
               <p class="error-msg" id="err-built">Please describe what was built or covered.</p>
             </div>
 
+            <!-- Completed Project Links (Optional) -->
+            <div class="mb-5">
+              <label class="form-label" for="completed_project_links">Completed Project Links <span class="text-xs font-normal text-slate-400">(Optional)</span></label>
+              <input type="text" id="completed_project_links" name="completed_project_links" class="form-input" maxlength="1000"
+                     placeholder="e.g. https://scratch.mit.edu/projects/... or https://github.com/... (optional)">
+              <p class="text-[11px] text-slate-500 mt-1">Share live Scratch, Replit, GitHub, or deployed web links for projects completed today. Automatically compiled into the student's monthly report PDF.</p>
+            </div>
+
             <!-- Assignment Status -->
             <div class="mb-2">
               <label class="form-label">Previous Assignment Status <span style="color:#f87171;">*</span></label>
@@ -844,6 +852,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="assets/js/firebase-config.min.js" defer></script>
   <script src="assets/js/stemulus-firestore.min.js" defer></script>
+  <script src="assets/js/stemulus-portal-features.min.js?v=20261030" defer></script>
   <script src="assets/js/dashboard-engine.min.js" defer></script>
   <script src="assets/js/gemini-config.min.js" defer></script>
   <script src="assets/js/gemini-service.min.js" defer></script>
@@ -1082,6 +1091,8 @@
     var assignStatus = document.querySelector('[name="assignment_status"]:checked');
 
     var courseVal = (document.getElementById('course_covered') && document.getElementById('course_covered').value) || 'STEM Coding';
+    var rawProjectLinks = (document.getElementById('completed_project_links') && document.getElementById('completed_project_links').value) ? document.getElementById('completed_project_links').value.trim() : '';
+    var parsedProjectLinks = rawProjectLinks ? rawProjectLinks.split(/[\n,;]+/).map(function(s){ return s.trim(); }).filter(Boolean) : [];
     var record = {
       studentId: finalStudentId,
       student_id: finalStudentId,
@@ -1096,6 +1107,9 @@
       punctuality: punctuality ? punctuality.value : '',
       topic: document.getElementById('topic').value.trim(),
       whatBuilt: document.getElementById('what_built').value.trim(),
+      completedProjectLinks: parsedProjectLinks,
+      completed_project_links: parsedProjectLinks.join(', '),
+      projectLink: parsedProjectLinks[0] || '',
       assignmentStatus: assignStatus ? assignStatus.value : '',
       conceptGrasp: starRating,
       tutorComment: document.getElementById('tutor_comment').value.trim(),
@@ -1215,7 +1229,7 @@
           </p>
           <div class="p-3 bg-amber-50/80 rounded-xl border border-amber-200 text-left text-[11px] text-amber-800 mb-6 space-y-1.5">
             <p><strong>Status:</strong> <span class="bg-amber-200 px-1.5 py-0.5 rounded font-bold">FLAGGED_FOR_REVIEW</span></p>
-            <p>An instant alert has been transmitted to STEMulus Academic Operations. This record has been frozen and will not be submitted for payroll approval until verified by administration.</p>
+            <p>An instant alert has been transmitted to STEMulus Academic Operations. This record has been frozen and will not be marked as verified until reviewed by administration.</p>
           </div>
           <div class="space-y-2">
             <button type="button" onclick="window.location.href='tutor-attendance.html'" class="w-full py-3 px-4 rounded-xl font-bold text-xs bg-amber-600 hover:bg-amber-700 text-white transition-all shadow-md" style="min-height:40px!important;">
@@ -1309,8 +1323,8 @@
       }
 
       if (paramStudentId && typeof DashboardEngine !== 'undefined' && DashboardEngine.getStudents) {
-        var allStudents = DashboardEngine.getStudents() || [];
-        var matched = allStudents.find(function(st){ return st.id === paramStudentId; });
+        var allowedPool = (session && session.role === 'admin') ? (DashboardEngine.getStudents() || []) : (students || []);
+        var matched = allowedPool.find(function(st){ return st && st.id === paramStudentId; });
         if (matched) {
           var fName = ((matched.firstName || '') + ' ' + (matched.lastName || '')).trim();
           document.getElementById('student_name_display').value = fName;

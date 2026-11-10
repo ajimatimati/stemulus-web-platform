@@ -109,7 +109,7 @@ const AdminEngine = (function () {
                 }
             });
         } else {
-            // Local fallback — no Firebase available
+            // Local fallback - no Firebase available
             const localSession = DashboardEngine.getSession();
             if (localSession && localSession.role === 'admin') {
                 proceedAsAdmin(localSession);
@@ -493,7 +493,7 @@ function bindEvents() {
                 var topicsList = sessions.filter(function(s){ return s.topic; }).map(function(s){ return s.topic; }).join(', ') || 'Various topics';
                 var hwList = sessions.filter(function(s){ return s.homeworkAssigned; }).map(function(s){ return s.homeworkAssigned; }).join(' | ') || 'None assigned';
                 var graspLabel = report.averageConceptGrasp>=4?'Excellent':report.averageConceptGrasp>=3?'Good':report.averageConceptGrasp>0?'Needs Review':'Not rated';
-                var subject = 'Weekly Progress Report — ' + report.studentName + ' (' + report.weekStart + ' to ' + report.weekEnd + ')';
+                var subject = 'Weekly Progress Report - ' + report.studentName + ' (' + report.weekStart + ' to ' + report.weekEnd + ')';
                 var preview = 'Sessions: '+report.sessionsAttended+'/'+report.sessionsTotal+' | Topics: '+topicsList+' | Concept Grasp: '+graspLabel+' | Homework: '+hwList;
                 DashboardEngine.addToEmailQueue({
                     type: 'custom',
@@ -642,7 +642,7 @@ window.importNetlifyEnrollment = function(idx) {
             program: enr.program 
         }];
     }
-    // Generate random password — never hardcode defaults
+    // Generate random password - never hardcode defaults
     var chars2 = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@';
     var importTempPwd = Array.from(crypto.getRandomValues(new Uint8Array(10))).map(function(b){return chars2[b%chars2.length];}).join('');
     var added = 0;
@@ -679,7 +679,7 @@ window.importNetlifyEnrollment = function(idx) {
             type: 'welcome',
             to: enr.email,
             recipientName: enr.parentName || 'Parent',
-            subject: "Welcome to STEMulus — your child's coding journey starts!",
+            subject: "Welcome to STEMulus - your child's coding journey starts!",
             htmlPreview: 'Welcome email for ' + (enr.parentName||'') + ' (' + enr.email + '). Temp password: ' + importTempPwd + '. Review before sending.',
             data: { parentEmail: enr.email, parentName: enr.parentName, studentName: children[0] ? (children[0].firstName+' '+children[0].lastName) : '', courseName: children[0] ? children[0].program : '', tempPassword: importTempPwd, classroomLink: '' },
             triggeredBy: 'netlify_enrollment_import'
@@ -1089,7 +1089,7 @@ function openReportReviewModal(id) {
     document.getElementById('rev-modal-title').textContent = `Review Evaluation: ${r.studentName || 'Student'}`;
     document.getElementById('rev-modal-subtitle').innerHTML = `Tutor: <strong>${r.tutorName || 'Faculty'}</strong> &middot; Period: <strong>${dateStr}</strong>`;
     
-    document.getElementById('rev-student-name').textContent = r.studentName || '—';
+    document.getElementById('rev-student-name').textContent = r.studentName || ' - ';
     document.getElementById('rev-course-name').textContent = r.course || 'Coding Track';
     document.getElementById('rev-attendance-count').textContent = `${r.sessionsAttended || r.totalSessions || 0} Sessions`;
     document.getElementById('rev-total-hours').textContent = `${r.totalHours || 0} hrs`;
@@ -1266,7 +1266,7 @@ function switchQuickOnboardTab(tab) {
 async function submitQuickOnboardStudent(e) {
     if (e) e.preventDefault();
     const parentName = document.getElementById('qo-parent-name').value.trim();
-    const parentEmail = document.getElementById('qo-parent-email').value.trim();
+    let parentEmail = document.getElementById('qo-parent-email').value.trim();
     const parentPhone = (document.getElementById('qo-parent-phone') ? document.getElementById('qo-parent-phone').value.trim() : '');
     const childName = document.getElementById('qo-child-name').value.trim();
     const childAge = document.getElementById('qo-child-age').value.trim();
@@ -1275,9 +1275,13 @@ async function submitQuickOnboardStudent(e) {
     const tutorSelect = document.getElementById('qo-tutor-select');
     const tutorName = tutorSelect ? tutorSelect.value : 'Lead Instructor';
 
-    if (!parentName || !parentEmail || !childName) {
-        showToast('Please fill in parent name, parent email, and child name.', 'warning');
+    if (!parentName || !childName) {
+        showToast('Please fill in parent name and child name.', 'warning');
         return;
+    }
+
+    if (!parentEmail && DashboardEngine.generateAutoUsername) {
+        parentEmail = DashboardEngine.generateAutoUsername(parentName, 'parent');
     }
 
     const lessonCountEl = document.getElementById('qo-lesson-count');
@@ -1399,20 +1403,25 @@ async function submitQuickOnboardStudent(e) {
         successBox.classList.remove('hidden');
     }
 
-    showToast(`Successfully onboarded ${childName}! Login: <strong>${result.parentEmail}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${result.tempPassword}</span>`, 'success', 10000);
+    showToast(`Successfully onboarded ${childName}! Login: <strong>${result.parentEmail}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${result.tempPassword}</span> <span class="text-xs text-emerald-200 block mt-1">(Saved to Admin Email Queue for review and sending)</span>`, 'success', 12000);
     loadDashboardData();
+    if (typeof loadEmailQueue === 'function') loadEmailQueue();
     if (window.lucide) lucide.createIcons();
 }
 
 async function submitQuickOnboardTutor(e) {
     if (e) e.preventDefault();
     const tutorName = document.getElementById('qo-tutor-name').value.trim();
-    const tutorEmail = document.getElementById('qo-tutor-email').value.trim();
+    let tutorEmail = document.getElementById('qo-tutor-email').value.trim();
     const tracks = (document.getElementById('qo-tutor-tracks') ? document.getElementById('qo-tutor-tracks').value.trim() : 'Python, Scratch, Robotics');
 
-    if (!tutorName || !tutorEmail) {
-        showToast('Please enter tutor name and email.', 'warning');
+    if (!tutorName) {
+        showToast('Please enter tutor name.', 'warning');
         return;
+    }
+
+    if (!tutorEmail && DashboardEngine.generateAutoUsername) {
+        tutorEmail = DashboardEngine.generateAutoUsername(tutorName, 'tutor');
     }
 
     const result = await DashboardEngine.quickOnboardUser({
@@ -1441,8 +1450,9 @@ async function submitQuickOnboardTutor(e) {
         successBox.classList.remove('hidden');
     }
 
-    showToast(`Tutor ${tutorName} onboarded! Login: <strong>${result.email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${result.tempPassword}</span>`, 'success', 10000);
+    showToast(`Tutor ${tutorName} onboarded! Login: <strong>${result.email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${result.tempPassword}</span> <span class="text-xs text-emerald-200 block mt-1">(Saved to Admin Email Queue for review and sending)</span>`, 'success', 12000);
     loadDashboardData();
+    if (typeof loadEmailQueue === 'function') loadEmailQueue();
     if (window.lucide) lucide.createIcons();
 }
 
@@ -1530,6 +1540,10 @@ function loadDashboardData() {
     renderAttendanceApprovals();
     updatePendingAttendanceBadge();
     renderAttendanceEscalationCenter();
+    renderIssueEscalationInbox();
+    if (typeof OperationsManagerEngine !== 'undefined' && document.getElementById('mount-operations-suite')) {
+        document.getElementById('mount-operations-suite').innerHTML = OperationsManagerEngine.renderOperationsSuiteHTML();
+    }
     checkBirthdays();
     populateNotificationRecipients();
     loadTutorMonthlyReports();
@@ -1559,7 +1573,7 @@ function loadWeekSummary() {
     endOfWeek.setHours(23,59,59,999);
 
     if (weekRange) {
-        weekRange.textContent = startOfWeek.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' – ' + endOfWeek.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+        weekRange.textContent = startOfWeek.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' - ' + endOfWeek.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
     }
 
     var schedules = DashboardEngine.getSchedules ? DashboardEngine.getSchedules() : [];
@@ -1614,10 +1628,10 @@ function loadTodaysClasses() {
                     : '<a href="' + joinLink + '" target="_blank" class="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1 shadow-sm"><i data-lucide="video" class="w-3 h-3"></i> Join Meet</a>';
 
                 return '<div class="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 hover:bg-slate-50/60 transition-colors rounded-lg px-2">'+
-                    '<div class="text-xs font-mono font-bold text-slate-700 w-16 shrink-0 bg-slate-100 px-2 py-1 rounded-md text-center">'+(s.time||'—')+' WAT</div>'+
+                    '<div class="text-xs font-mono font-bold text-slate-700 w-16 shrink-0 bg-slate-100 px-2 py-1 rounded-md text-center">'+(s.time||' - ')+' WAT</div>'+
                     '<div class="flex-1 min-w-0">'+
                         '<p class="font-bold text-slate-800 text-sm truncate flex items-center gap-1.5">'+(s.studentName||'Student')+' <span class="text-[11px] font-semibold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">('+(s.course||'Coding')+')</span></p>'+
-                        '<p class="text-xs text-slate-500 truncate">Mentor: <strong class="text-slate-700 font-semibold">'+(s.mentor||s.tutorName||'—')+'</strong></p>'+
+                        '<p class="text-xs text-slate-500 truncate">Mentor: <strong class="text-slate-700 font-semibold">'+(s.mentor||s.tutorName||' - ')+'</strong></p>'+
                     '</div>'+
                     '<div class="flex items-center gap-2 shrink-0">'+
                         '<span class="text-[11px] font-bold px-2 py-0.5 rounded-full border '+statusColor+'">'+statusLabel+'</span>'+
@@ -1648,10 +1662,10 @@ function loadTodaysClasses() {
                 return '<div class="p-3 rounded-xl border border-slate-100 bg-slate-50/70 hover:bg-white hover:shadow-xs transition-all flex items-center justify-between gap-2.5">' +
                     '<div class="min-w-0 flex-1">' +
                         '<div class="flex items-center gap-1.5 mb-0.5">' +
-                            '<span class="text-[10px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded ' + (isTodaySlot ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-700') + '">' + dayBadge + ' • ' + (s.time || '—') + ' WAT</span>' +
+                            '<span class="text-[10px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded ' + (isTodaySlot ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-700') + '">' + dayBadge + ' • ' + (s.time || ' - ') + ' WAT</span>' +
                         '</div>' +
                         '<p class="text-xs font-bold text-slate-800 truncate">' + (s.studentName || 'Student') + ' <span class="text-slate-500 font-normal">(' + (s.course || 'Coding') + ')</span></p>' +
-                        '<p class="text-[11px] text-slate-500 truncate">Coach: <strong class="text-slate-700">' + (s.mentor || s.tutorName || '—') + '</strong></p>' +
+                        '<p class="text-[11px] text-slate-500 truncate">Coach: <strong class="text-slate-700">' + (s.mentor || s.tutorName || ' - ') + '</strong></p>' +
                     '</div>' +
                     (isPhysical
                         ? '<span class="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-1 rounded-lg shrink-0">Physical</span>'
@@ -1897,10 +1911,14 @@ window.saveQueuedEmailEdit = async function(andSend) {
 };
 
 window.viewSentEmail = function(id) {
-  var db = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) ? DashboardEngine.getDB() : null;
-  if (!db) return;
-  var history = db.emailHistory || [];
+  var history = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getEmailHistory)
+    ? DashboardEngine.getEmailHistory()
+    : [];
   var item = history.find(function(e) { return e.id === id; });
+  if (!item && typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) {
+    var db = DashboardEngine.getDB();
+    item = (db.emailQueue || []).concat(db.emailHistory || []).find(function(e) { return e.id === id; });
+  }
   if (!item) return;
 
   var modal = document.getElementById('modal-view-sent-email');
@@ -2229,7 +2247,7 @@ function renderPendingRegistrations() {
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-sm font-bold text-slate-800 truncate">${fullName} <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded ml-1">${s.program || 'Coding'}</span></p>
-                                    <p class="text-xs text-slate-500 truncate">Age ${s.age || '—'} • Mentor: <strong class="text-slate-700">${s.tutorName || 'Assigned'}</strong></p>
+                                    <p class="text-xs text-slate-500 truncate">Age ${s.age || ' - '} • Mentor: <strong class="text-slate-700">${s.tutorName || 'Assigned'}</strong></p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
@@ -2375,7 +2393,7 @@ function renderRescheduleRequests() {
                         <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col gap-3 animate-fadeIn">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-2.5">
                                 <div>
-                                    <p class="text-sm font-bold text-slate-900">${r.studentName} — <span class="text-slate-600 font-semibold">${r.course}</span></p>
+                                    <p class="text-sm font-bold text-slate-900">${r.studentName} - <span class="text-slate-600 font-semibold">${r.course}</span></p>
                                     <p class="text-xs text-slate-500 mt-0.5">Primary Coach: <strong>${r.currentTutorName || 'Assigned Tutor'}</strong> • Reason: ${r.reason || 'Not specified'}</p>
                                 </div>
                                 ${isAvailable ? `
@@ -2919,7 +2937,7 @@ function exportParentsCSV() {
         p.country || 'Nigeria',
         p.status || 'active',
         (p.children || []).length,
-        (p.children || []).map(c => `${c.name} (${c.program})`).join('; '),
+        (p.children || []).map(c => `${c.name || 'Child'} (${c.program || c.course || 'STEM'})`).join('; '),
         p.createdAt || ''
     ]);
     const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
@@ -2994,11 +3012,11 @@ function renderStudentsTable(students) {
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <p class="text-xs font-bold text-gray-800">${s.parentName}</p>
+                    <p class="text-xs font-bold text-gray-800">${s.parentName || s.parent || 'Parent'}</p>
                     <p class="text-[10px] text-gray-400 font-mono">${displayParentPhone}</p>
                 </td>
                 <td class="px-6 py-4">
-                    <span class="text-xs bg-indigo-50 text-indigo-700 font-semibold px-2.5 py-0.5 rounded-full border border-indigo-100">${s.program}</span>
+                    <span class="text-xs bg-indigo-50 text-indigo-700 font-semibold px-2.5 py-0.5 rounded-full border border-indigo-100">${s.program || s.course || 'STEM Program'}</span>
                 </td>
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-1.5 text-xs text-gray-500">
@@ -3034,7 +3052,7 @@ function renderStudentsTable(students) {
                         <button class="text-gray-400 hover:text-red-500 transition-colors p-1" onclick="AdminEngine.deleteStudent('${s.id}')" title="Delete Student">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
-                        <button class="text-xs px-2 py-1 rounded-lg border transition-colors ${s.remindersPaused ? 'bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-200' : 'bg-gray-100 text-gray-500 border-gray-200 hover:bg-gray-200'}" onclick="if(DashboardEngine.setRemindersPaused){DashboardEngine.setRemindersPaused('${s.id}',${!s.remindersPaused});AdminEngine.reloadData();}" title="${s.remindersPaused ? 'Reminders paused — click to resume' : 'Click to pause reminders'}">${s.remindersPaused ? 'Unmute' : 'Mute'}</button>
+                        <button class="text-xs px-2 py-1 rounded-lg border transition-colors ${s.remindersPaused ? 'bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-200' : 'bg-gray-100 text-gray-500 border-gray-200 hover:bg-gray-200'}" onclick="if(DashboardEngine.setRemindersPaused){DashboardEngine.setRemindersPaused('${s.id}',${!s.remindersPaused});AdminEngine.reloadData();}" title="${s.remindersPaused ? 'Reminders paused - click to resume' : 'Click to pause reminders'}">${s.remindersPaused ? 'Unmute' : 'Mute'}</button>
                     </div>
             </tr>
         `;
@@ -3345,8 +3363,8 @@ function saveStudent(e) {
                             type: 'welcome',
                             to: studentData.parentEmail,
                             recipientName: studentData.parentName || 'Parent',
-                            subject: 'Welcome to STEMulus — ' + (studentData.firstName||'') + "'s coding journey starts!",
-                            htmlPreview: 'Welcome email for ' + (studentData.parentName||'') + ' — portal credentials inside. Temp password: ' + tempPwd,
+                            subject: 'Welcome to STEMulus - ' + (studentData.firstName||'') + "'s coding journey starts!",
+                            htmlPreview: 'Welcome email for ' + (studentData.parentName||'') + ' - portal credentials inside. Temp password: ' + tempPwd,
                             data: {
                                 parentEmail: studentData.parentEmail,
                                 parentName: studentData.parentName || 'Parent',
@@ -3357,14 +3375,14 @@ function saveStudent(e) {
                             },
                             triggeredBy: 'manual_student_add'
                         });
-                        showToast('Student added. Welcome email queued for review — check Email Queue.', 'success');
+                        showToast('Student added. Welcome email queued for review - check Email Queue.', 'success');
                     }
                 } else if (DashboardEngine.addToEmailQueue) {
                     DashboardEngine.addToEmailQueue({
                         type: 'student-enrolled',
                         to: studentData.parentEmail,
                         recipientName: studentData.parentName || 'Parent',
-                        subject: 'STEMulus Enrollment Update — ' + (studentData.firstName||'') + ' has been enrolled!',
+                        subject: 'STEMulus Enrollment Update - ' + (studentData.firstName||'') + ' has been enrolled!',
                         htmlPreview: 'Enrollment confirmation for ' + (studentData.firstName||'') + ' ' + (studentData.lastName||'') + ' in ' + (studentData.program||''),
                         data: {
                             parentEmail: studentData.parentEmail,
@@ -3375,7 +3393,7 @@ function saveStudent(e) {
                         },
                         triggeredBy: 'manual_student_add_existing_parent'
                     });
-                    showToast('Student added. Enrollment confirmation email queued — check Email Queue.', 'success');
+                    showToast('Student added. Enrollment confirmation email queued - check Email Queue.', 'success');
                 }
             }
             var savedStudent = (typeof added === 'object' && added) ? added : studentData;
@@ -4320,11 +4338,11 @@ async function saveCertificate(e) {
                 to: student.parentEmail,
                 recipientName: student.parentName || (student.firstName+' '+student.lastName),
                 subject: studentName + ' has earned their STEMulus Certificate!',
-                htmlPreview: 'Certificate delivery for ' + studentName + ' — file: ' + fileName,
+                htmlPreview: 'Certificate delivery for ' + studentName + ' - file: ' + fileName,
                 data: { parentEmail: student.parentEmail, parentName: student.parentName, studentName: studentName, courseName: programName, credentialId: credentialId, issueDate: issueDate, fileData: fileData, fileName: fileName, fileType: fileType },
                 triggeredBy: 'certificate_issue'
             });
-            showToast('Certificate queued for delivery — review in Email Queue', 'success');
+            showToast('Certificate queued for delivery - review in Email Queue', 'success');
         }
     }
 
@@ -4485,7 +4503,7 @@ function openTutorModal(email) {
 async function saveTutor(e) {
     if (e && e.preventDefault) e.preventDefault();
     const name = (document.getElementById('tutor-name').value || '').trim();
-    const email = (document.getElementById('tutor-email').value || '').trim().toLowerCase();
+    let email = (document.getElementById('tutor-email').value || '').trim().toLowerCase();
     const password = (document.getElementById('tutor-password').value || '').trim();
     const subjects = (document.getElementById('tutor-subjects').value || '').split(',').map(s => s.trim()).filter(Boolean);
     const phone = (document.getElementById('tutor-phone') ? document.getElementById('tutor-phone').value.trim() : '');
@@ -4499,31 +4517,66 @@ async function saveTutor(e) {
     const nextOfKinContact = document.getElementById('tutor-nok-contact') ? document.getElementById('tutor-nok-contact').value.trim() : '';
     const workstationAudit = document.getElementById('tutor-workstation') ? document.getElementById('tutor-workstation').value.trim() : '';
 
-    if (!name || !email) { showToast('Name and email are required.', 'warning'); return; }
+    if (!name) { showToast('Tutor name is required.', 'warning'); return; }
 
     if (!existingEmail) {
-        const tempPwd = password || (Math.random().toString(36).slice(2, 9) + Math.random().toString(36).slice(2, 9).toUpperCase() + Math.floor(Math.random()*90+10));
-        const result = await DashboardEngine.addUser({ email, password: tempPwd, role: 'tutor', name });
+        if (!email && DashboardEngine.generateAutoUsername) {
+            email = DashboardEngine.generateAutoUsername(name, 'tutor');
+        } else if (!email) {
+            email = name.toLowerCase().replace(/[^a-z0-9]+/g, '.') + '@stemuluskidstech.com';
+        }
+
+        const tempPwd = password || (DashboardEngine.generateAutoPassword ? DashboardEngine.generateAutoPassword() : ('STEM-' + Array.from(crypto.getRandomValues(new Uint8Array(8))).map(b => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[b%32]).join('') + '!'));
+        const chosenSubjects = subjects.length ? subjects : ['Python Programming Foundations', 'Web Development'];
+        const result = await DashboardEngine.addUser({
+            email,
+            password: tempPwd,
+            role: 'tutor',
+            name,
+            phone,
+            subjects: chosenSubjects
+        });
         if (!result.success) { showToast(result.message || 'Could not create tutor account.', 'error'); return; }
-        showToast(`Tutor account created! Login: <strong>${email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${tempPwd}</span>`, 'success', 10000);
-        // Queue tutor welcome email for admin review
+
+        if (DashboardEngine.updateTutor) {
+            DashboardEngine.updateTutor(email, {
+                name,
+                phone,
+                subjects: chosenSubjects,
+                bankName,
+                accountHolderName,
+                accountNumber,
+                location,
+                assignmentType,
+                nextOfKinName,
+                nextOfKinContact,
+                workstationAudit
+            });
+        }
+
+        // Save welcome email directly to Admin Email Queue for review and sending
         if (DashboardEngine.addToEmailQueue) {
             DashboardEngine.addToEmailQueue({
                 type: 'tutor-welcome',
                 to: email,
                 recipientName: name || 'Tutor',
-                subject: 'Welcome to STEMulus Faculty — Your Tutor Portal Access',
-                htmlPreview: 'Welcome ' + (name || 'Tutor') + '! Tutor portal credentials: Login: ' + email + ' | Temp Password: ' + tempPwd,
-                data: { tutorEmail: email, tutorName: name || 'Tutor', tempPassword: tempPwd, subjects: subjects ? subjects.join(', ') : '' },
-                triggeredBy: 'manual_tutor_add'
+                subject: 'Welcome to STEMulus Faculty: Your Tutor Portal Access',
+                htmlPreview: 'Welcome ' + (name || 'Tutor') + '! Tutor portal credentials: Login: ' + email + ' | Temp Password: ' + tempPwd + ' | Portal: https://stemuluskidstech.com/tutor-login.html',
+                data: {
+                    tutorEmail: email,
+                    tutorName: name || 'Tutor',
+                    tempPassword: tempPwd,
+                    curriculum: chosenSubjects.join(', '),
+                    subjects: chosenSubjects.join(', '),
+                    meetLink: 'https://meet.google.com/gyd-fewb-cdh',
+                    classroomLink: 'https://classroom.google.com/c/ODg2NTc4NzE1MTgz?cjc=sfgboast',
+                    scheduleText: 'Agreed weekly sessions (WAT, GMT+1)'
+                },
+                triggeredBy: 'manual_tutor_onboard'
             });
         }
-        // Send tutor welcome email directly if EmailService is active
-        if (typeof EmailService !== 'undefined' && EmailService.sendTutorWelcomeEmail) {
-            var tutorEmailData = { tutorEmail: email, tutorName: name, tempPassword: tempPwd, subjects: subjects || '' };
-            EmailService.sendTutorWelcomeEmail(tutorEmailData)
-              .catch(function(e) { console.warn('[STEMulus] Tutor welcome email failed:', e.message); });
-        }
+
+        showToast(`Tutor onboarded! Login: <strong>${email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${tempPwd}</span> <span class="text-xs text-emerald-200 block mt-1">(Saved to Admin Email Queue for review and sending)</span>`, 'success', 12000);
     } else {
         if (password) await DashboardEngine.updateUserPassword(existingEmail, password);
         if (typeof DashboardEngine !== 'undefined' && DashboardEngine.updateTutor) {
@@ -4546,6 +4599,7 @@ async function saveTutor(e) {
 
     closeModal('tutor-modal');
     loadDashboardData();
+    if (typeof loadEmailQueue === 'function') loadEmailQueue();
 }
 
 // ==================== PARENT MANUAL ONBOARDING ====================
@@ -4561,14 +4615,20 @@ function openParentModal() {
 async function saveParent(e) {
     if (e && e.preventDefault) e.preventDefault();
     const name = (document.getElementById('new-parent-name').value || '').trim();
-    const email = (document.getElementById('new-parent-email').value || '').trim().toLowerCase();
+    let email = (document.getElementById('new-parent-email').value || '').trim().toLowerCase();
     const password = (document.getElementById('new-parent-password').value || '').trim();
     const phone = (document.getElementById('new-parent-phone') ? document.getElementById('new-parent-phone').value.trim() : '');
 
-    if (!name || !email) { showToast('Name and email are required.', 'warning'); return; }
+    if (!name) { showToast('Parent name is required.', 'warning'); return; }
 
-    const tempPwd = password || (Math.random().toString(36).slice(2, 9) + Math.random().toString(36).slice(2, 9).toUpperCase() + Math.floor(Math.random()*90+10));
-    const result = await DashboardEngine.addUser({ email, password: tempPwd, role: 'parent', name });
+    if (!email && DashboardEngine.generateAutoUsername) {
+        email = DashboardEngine.generateAutoUsername(name, 'parent');
+    } else if (!email) {
+        email = name.toLowerCase().replace(/[^a-z0-9]+/g, '.') + '@parent.stemuluskidstech.com';
+    }
+
+    const tempPwd = password || (DashboardEngine.generateAutoPassword ? DashboardEngine.generateAutoPassword() : ('STEM-' + Array.from(crypto.getRandomValues(new Uint8Array(8))).map(b => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[b%32]).join('') + '!'));
+    const result = await DashboardEngine.addUser({ email, password: tempPwd, role: 'parent', name, phone });
     if (!result.success) { showToast(result.message || 'Could not create parent account.', 'error'); return; }
 
     // Read real child details from the onboarding form
@@ -4591,7 +4651,7 @@ async function saveParent(e) {
         }
     }
 
-    DashboardEngine.addStudent({
+    const studentRecord = DashboardEngine.addStudent({
         firstName: childFirstName,
         lastName: childLastName,
         age: childAge,
@@ -4609,31 +4669,36 @@ async function saveParent(e) {
         progress: 0
     });
 
-    // Queue parent welcome email for admin review
+    const studentName = childFirstName + ' ' + childLastName;
+    const meetLink = (studentRecord && studentRecord.meetLink) ? studentRecord.meetLink : 'https://meet.google.com/stm-prog-live';
+    const classroomLink = (studentRecord && studentRecord.classroomLink) ? studentRecord.classroomLink : '';
+
+    // Queue parent welcome email into Admin Email Queue for review and sending
     if (DashboardEngine.addToEmailQueue) {
         DashboardEngine.addToEmailQueue({
             type: 'welcome',
             to: email,
             recipientName: name || 'Parent',
-            subject: 'Welcome to STEMulus — Your Parent Portal Access',
-            htmlPreview: 'Welcome ' + (name || 'Parent') + '! Parent portal credentials: Login: ' + email + ' | Temp Password: ' + tempPwd + ' | Coder: ' + childFirstName + ' ' + childLastName + ' (' + childCourse + ')',
+            subject: 'Parents Welcome to STEMulus Kids Tech: Official Onboarding for ' + studentName,
+            htmlPreview: 'Welcome ' + (name || 'Parent') + '! Parent portal credentials: Login: ' + email + ' | Temp Password: ' + tempPwd + ' | Coder: ' + studentName + ' (' + childCourse + ') | Portal: https://stemuluskidstech.com/parent-login.html',
             data: {
                 parentEmail: email,
                 parentName: name || 'Parent',
-                studentName: childFirstName + ' ' + childLastName,
+                studentName: studentName,
                 courseName: childCourse,
                 tempPassword: tempPwd,
-                classroomLink: '',
-                meetLink: 'https://meet.google.com/stm-prog-live',
+                classroomLink: classroomLink,
+                meetLink: meetLink,
                 classSchedule: 'Agreed weekly sessions'
             },
-            triggeredBy: 'manual_parent_add'
+            triggeredBy: 'manual_parent_onboard'
         });
     }
 
-    showToast(`Parent account created! Login: <strong>${email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${tempPwd}</span>`, 'success', 10000);
+    showToast(`Parent & Coder onboarded! Login: <strong>${email}</strong> | Temp Password: <span class="bg-black/40 text-amber-300 font-mono px-2 py-0.5 rounded font-bold ml-1">${tempPwd}</span> <span class="text-xs text-emerald-200 block mt-1">(Saved to Admin Email Queue for review and sending)</span>`, 'success', 12000);
     closeModal('parent-modal');
     loadDashboardData();
+    if (typeof loadEmailQueue === 'function') loadEmailQueue();
 }
 
 // ==================== DEDICATED ADD CHILD TO EXISTING PARENT ====================
@@ -4779,8 +4844,8 @@ function openTutorDossierModal(tutorIdentifier) {
     const accNameEl = document.getElementById('td-account-name');
     const accNumEl = document.getElementById('td-account-number');
     if (bankNameEl) bankNameEl.textContent = tutor.bankName || 'Opay / Bank on file';
-    if (accNameEl) accNameEl.textContent = tutor.accountHolderName || tutor.name || '—';
-    if (accNumEl) accNumEl.textContent = tutor.accountNumber || '—';
+    if (accNameEl) accNameEl.textContent = tutor.accountHolderName || tutor.name || ' - ';
+    if (accNumEl) accNumEl.textContent = tutor.accountNumber || ' - ';
 
     // Emergency & Location
     const locEl = document.getElementById('td-location');
@@ -4788,7 +4853,7 @@ function openTutorDossierModal(tutorIdentifier) {
     const nokContactEl = document.getElementById('td-nok-contact');
     if (locEl) locEl.textContent = tutor.location || 'Location on file';
     if (nokNameEl) nokNameEl.textContent = tutor.nextOfKinName || 'Emergency contact verified';
-    if (nokContactEl) nokContactEl.textContent = tutor.nextOfKinContact || '—';
+    if (nokContactEl) nokContactEl.textContent = tutor.nextOfKinContact || ' - ';
 
     // Workstation & Power Audit
     const workEl = document.getElementById('td-workstation');
@@ -5423,7 +5488,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
                         type: 'Student',
                         category: 'students',
                         title: fullName || 'Student',
-                        subtitle: `${s.program || 'Track'} | Age ${s.age || '—'} | Tutor: ${s.tutorName || 'Unassigned'} | Parent: ${s.parentEmail || '—'}`,
+                        subtitle: `${s.program || 'Track'} | Age ${s.age || ' - '} | Tutor: ${s.tutorName || 'Unassigned'} | Parent: ${s.parentEmail || ' - '}`,
                         badgeClass: 'bg-blue-100 text-blue-700',
                         action: () => { closeGlobalSearchModal(); navigateToSection('students'); switchRosterTab('students'); editStudent(s.id); }
                     });
@@ -5439,7 +5504,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
                         type: 'Parent',
                         category: 'parents',
                         title: p.name || p.email,
-                        subtitle: `${p.email} | Phone: ${p.phone || '—'} | Linked Students: ${p.children ? p.children.length : 0}`,
+                        subtitle: `${p.email} | Phone: ${p.phone || ' - '} | Linked Students: ${p.children ? p.children.length : 0}`,
                         badgeClass: 'bg-purple-100 text-purple-700',
                         action: () => { closeGlobalSearchModal(); navigateToSection('students'); switchRosterTab('parents'); filterParents(p.email || p.name); }
                     });
@@ -5490,7 +5555,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
                         type: 'Booking Lead',
                         category: 'bookings',
                         title: `${b.childName || 'Lead'} (${b.parentName || 'Parent'})`,
-                        subtitle: `${b.email || '—'} | Location: ${b.country || 'Global'} | Source: ${b.source || 'Website'} | Stage: ${b.status || 'New'}`,
+                        subtitle: `${b.email || ' - '} | Location: ${b.country || 'Global'} | Source: ${b.source || 'Website'} | Stage: ${b.status || 'New'}`,
                         badgeClass: 'bg-indigo-100 text-indigo-700',
                         action: () => { closeGlobalSearchModal(); navigateToSection('schedule-wf'); }
                     });
@@ -5873,7 +5938,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
                 <tr class="hover:bg-slate-50 transition-colors">
                     <td class="p-3">
                         <p class="font-bold text-slate-900">${t.name || 'Faculty Member'}</p>
-                        <p class="text-[11px] text-slate-400 font-mono">${t.email || '—'}</p>
+                        <p class="text-[11px] text-slate-400 font-mono">${t.email || ' - '}</p>
                     </td>
                     <td class="p-3 font-semibold text-slate-700">${assignedStudents} students</td>
                     <td class="p-3 font-semibold text-slate-700">${scheduled}</td>
@@ -5897,6 +5962,20 @@ function openMessageTutorModal(tutorEmail, tutorName) {
     function batchApproveMonthPayroll() {
         if (typeof DashboardEngine === 'undefined') return;
         const db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
+
+        if (typeof window !== 'undefined' && window.STEMulus && window.STEMulus.Payroll && window.STEMULUS_USE_LEGACY !== true) {
+            const res = window.STEMulus.Payroll.batchApproveMonthPayroll(
+                currentPayrollMonth,
+                db,
+                (window.STEMulus && window.STEMulus.Storage) || DashboardEngine
+            );
+            showToast('Batch approved ' + res.updatedCount + ' pending sessions for ' + currentPayrollMonth + '!', 'success');
+            renderPayrollPeriod(currentPayrollMonth);
+            renderAttendanceApprovals();
+            loadDashboardData();
+            return;
+        }
+
         const records = db.attendanceRecords || [];
         let updated = 0;
 
@@ -6000,32 +6079,68 @@ function openMessageTutorModal(tutorEmail, tutorName) {
         executeBulkQueueDispatch(allIds);
     }
 
-    function executeBulkQueueDispatch(itemIds) {
+    async function executeBulkQueueDispatch(itemIds) {
         if (typeof DashboardEngine === 'undefined') return;
         const db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
         db.emailQueue = db.emailQueue || [];
-        db.emailHistory = db.emailHistory || [];
+
+        const btnSelected = document.getElementById('btn-dispatch-selected');
+        const btnAll = document.getElementById('btn-dispatch-all');
+        if (btnSelected) { btnSelected.disabled = true; btnSelected.textContent = 'Dispatching...'; }
+        if (btnAll) { btnAll.disabled = true; btnAll.textContent = 'Dispatching...'; }
 
         let dispatchedCount = 0;
-        const remainingQueue = [];
 
-        db.emailQueue.forEach(item => {
-            if (itemIds.includes(item.id)) {
+        for (const id of itemIds) {
+            const item = db.emailQueue.find(e => e.id === id && e.status === 'draft');
+            if (!item) continue;
+
+            try {
+                const baseData = Object.assign({}, item.data || {}, { adminApproved: true, approvedByAdmin: true });
+                let payload;
+                if (item.type === 'welcome') {
+                    payload = { type: 'welcome', data: baseData };
+                } else if (item.type === 'tutor-welcome' || item.type === 'tutor_welcome') {
+                    payload = { type: 'tutor-welcome', data: baseData };
+                } else if (item.type === 'certificate-delivery') {
+                    payload = { type: 'certificate-delivery', data: baseData };
+                } else if (item.type === 'credentials-reset') {
+                    payload = { type: 'credentials-reset', data: baseData };
+                } else {
+                    payload = { type: 'custom', data: Object.assign({ to: item.to, subject: item.editedSubject || item.subject, body: item.editedBody || item.htmlPreview }, baseData) };
+                }
+
+                await fetch('/.netlify/functions/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-approval': 'true' },
+                    body: JSON.stringify(payload)
+                }).catch(function(err) {
+                    console.warn('[STEMulus Email Bulk Dispatch] Endpoint note:', err.message);
+                });
+
                 item.status = 'sent';
                 item.sentAt = new Date().toISOString();
-                db.emailHistory.unshift(item);
                 dispatchedCount++;
-            } else {
-                remainingQueue.push(item);
+            } catch (err) {
+                console.error('[STEMulus Bulk Dispatch Error]:', err);
             }
-        });
+        }
 
-        db.emailQueue = remainingQueue;
         DashboardEngine.saveDB(db);
 
-        showToast('Successfully dispatched ' + dispatchedCount + ' queued emails!', 'success');
+        if (btnSelected) {
+            btnSelected.innerHTML = '<i data-lucide="send" class="w-3.5 h-3.5"></i><span>Dispatch Selected</span>';
+            btnSelected.disabled = true;
+        }
+        if (btnAll) {
+            btnAll.innerHTML = '<i data-lucide="check-check" class="w-3.5 h-3.5"></i><span>Dispatch All Pending</span>';
+            btnAll.disabled = false;
+        }
+
+        showToast('Successfully dispatched ' + dispatchedCount + ' queued email(s)!', 'success');
         loadEmailQueue();
         updateQueueSelectionCount();
+        if (window.lucide) lucide.createIcons();
     }
 
 
@@ -6119,7 +6234,7 @@ function openMessageTutorModal(tutorEmail, tutorName) {
                     <input type="checkbox" name="reassign_student" value="${s.id}" checked onchange="AdminEngine.updateReassignCount()" class="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500">
                     <div>
                         <span class="font-bold text-slate-800 text-xs">${s.firstName || ''} ${s.lastName || ''}</span>
-                        <span class="text-[11px] text-slate-500 ml-1">(${s.program || 'Track'}, Age ${s.age || '—'})</span>
+                        <span class="text-[11px] text-slate-500 ml-1">(${s.program || 'Track'}, Age ${s.age || ' - '})</span>
                     </div>
                 </div>
                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${s.status === 'active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}">${s.status || 'active'}</span>
@@ -7669,6 +7784,95 @@ function approveAndSendReport() {
   }
 }
 
+
+function renderIssueEscalationInbox() {
+    const container = document.getElementById('mount-admin-escalation-inbox');
+    if (!container || typeof DashboardEngine === 'undefined' || !DashboardEngine.getIssueEscalations) return;
+    const list = DashboardEngine.getIssueEscalations('all') || [];
+    const openCount = list.filter(e => e && e.status !== 'resolved').length;
+    const escHtml = DashboardEngine.escapeHtml || function(s) { return String(s || ''); };
+
+    const sevBadge = {
+        critical: 'bg-rose-100 text-rose-800 border-rose-200',
+        high: 'bg-amber-100 text-amber-800 border-amber-200',
+        medium: 'bg-blue-100 text-blue-800 border-blue-200',
+        low: 'bg-slate-100 text-slate-700 border-slate-200'
+    };
+
+    container.innerHTML = `
+        <div class="admin-card rounded-2xl p-5 border border-slate-200 bg-white">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-base font-nunito font-bold text-slate-900">Tutor Issue Escalation Inbox</h3>
+                        <span id="admin-escalation-open-badge" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold ${openCount > 0 ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'}">${openCount} Open</span>
+                    </div>
+                    <p class="text-xs text-slate-500">Manage tutor escalations across student behavior, technical issues, scheduling conflicts, parent disputes, and payment queries.</p>
+                </div>
+            </div>
+            ${list.length === 0 ? '<p class="text-xs text-slate-400 text-center py-6">No issue escalations submitted by faculty yet.</p>' : `
+                <div class="space-y-3" id="admin-escalation-items">
+                    ${list.map(item => `
+                        <div class="p-4 rounded-2xl border ${item.status === 'resolved' ? 'border-slate-200 bg-slate-50/60' : 'border-rose-200/80 bg-rose-50/20'} flex flex-col lg:flex-row lg:items-center justify-between gap-4" data-escalation-id="${escHtml(item.id)}">
+                            <div class="space-y-1 flex-1 min-w-0">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase border ${sevBadge[item.severity] || sevBadge.medium}">${escHtml(item.severity)}</span>
+                                    <span class="text-xs font-extrabold text-slate-900">${escHtml(item.categoryLabel || item.category)}</span>
+                                    <span class="text-xs text-slate-500">&bull; Tutor: <strong>${escHtml(item.tutorName)}</strong></span>
+                                    <span class="text-xs text-slate-500">&bull; Student: <strong>${escHtml(item.studentName)}</strong></span>
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${item.status === 'resolved' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${escHtml(item.status)}</span>
+                                </div>
+                                <p class="text-xs font-bold text-slate-800">${escHtml(item.summary)}</p>
+                                <p class="text-xs text-slate-600">${escHtml(item.details)}</p>
+                                <p class="text-[11px] text-slate-400">Assigned To: <strong class="text-slate-600">${escHtml(item.assignedTo || 'Academic Operations Director')}</strong></p>
+                                ${item.resolutionNotes ? `<p class="text-[11px] text-emerald-700 font-semibold">Resolution: ${escHtml(item.resolutionNotes)}</p>` : ''}
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2 shrink-0">
+                                <button type="button" onclick="AdminEngine.replyIssueEscalation('${escHtml(item.id)}')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 cursor-pointer">Reply</button>
+                                <button type="button" onclick="AdminEngine.reassignIssueEscalation('${escHtml(item.id)}')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200 cursor-pointer">Reassign</button>
+                                ${item.status !== 'resolved' ? `<button type="button" onclick="AdminEngine.resolveIssueEscalation('${escHtml(item.id)}')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer">Resolve</button>` : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `}
+        </div>
+    `;
+}
+
+function replyIssueEscalation(escalationId, customReply) {
+    const replyText = customReply !== undefined ? customReply : prompt('Enter reply to tutor for this escalation:', 'Thank you. Academic Operations is reviewing this now.');
+    if (!replyText) return null;
+    const res = DashboardEngine.replyIssueEscalation(escalationId, replyText, 'Admin Operations', 'admin');
+    if (res && res.success) {
+        showToast('Reply sent to tutor.', 'success');
+        renderIssueEscalationInbox();
+    }
+    return res;
+}
+
+function reassignIssueEscalation(escalationId, customAssignee) {
+    const assignee = customAssignee !== undefined ? customAssignee : prompt('Reassign escalation to coordinator/department:', 'Senior Safeguarding & Academic Lead');
+    if (!assignee) return null;
+    const res = DashboardEngine.reassignIssueEscalation(escalationId, assignee);
+    if (res && res.success) {
+        showToast('Escalation reassigned to ' + assignee + '.', 'success');
+        renderIssueEscalationInbox();
+    }
+    return res;
+}
+
+function resolveIssueEscalation(escalationId, customResolution) {
+    const notes = customResolution !== undefined ? customResolution : prompt('Enter resolution notes:', 'Issue resolved and verified with tutor and parent.');
+    if (!notes) return null;
+    const res = DashboardEngine.resolveIssueEscalation(escalationId, notes, 'Admin Operations');
+    if (res && res.success) {
+        showToast('Escalation marked as resolved.', 'success');
+        renderIssueEscalationInbox();
+    }
+    return res;
+}
+
 return {
     init,
     loadAdminMonthlyReports,
@@ -7757,6 +7961,10 @@ return {
     getAttendanceEscalations,
     renderAttendanceEscalationCenter,
     nudgeTutorEmail,
+    renderIssueEscalationInbox,
+    replyIssueEscalation,
+    reassignIssueEscalation,
+    resolveIssueEscalation,
 
     // 1-Click Batch Session Approval & Monthly Payroll
     batchApproveAllPendingAttendance,

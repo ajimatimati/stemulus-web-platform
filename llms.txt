@@ -77,11 +77,9 @@ STEMulus pairs students directly with screened senior mentors (top 5% acceptance
 
 ## Interactive Learning Tools & Portals
 
-- **Curriculum Slides Hub:** `curriculum/slides/index.html` — Interactive deck browser featuring 215 lesson slide decks with dual Student Quest mode and Tutor Attendance Cockpit.
-- **Interactive Assessment Runner:** `curriculum/assessments/interactive_assessment_runner.html` — Automated, gamified skill assessments and milestone evaluation.
-- **AI Prompt Lab:** `curriculum/prompt_lab/prompt_tester.html` — Real-time prompt testing and LLM sandboxing for AI Explorers students.
-- **Parent Radar:** `parent-dashboard.html` — Real-time tracking of student attendance, learning hours, project showcases, and dual milestone certificates.
-- **Mentor Cockpit:** `tutor-dashboard.html` — Lesson slides launcher, 1-click attendance logging, and student progress dossiers.
+- **Parent Radar:** `parent-dashboard.html` - Real-time tracking of student attendance, learning hours, project showcases, and dual milestone certificates.
+- **Mentor Cockpit:** `tutor-dashboard.html` - Direct Google Meet launcher, 1-click attendance logging, and student progress dossiers.
+- **Executive Admin Command:** `admin-dashboard.html` - Real-time operational radar, faculty management, and smart email queue.
 
 ---
 

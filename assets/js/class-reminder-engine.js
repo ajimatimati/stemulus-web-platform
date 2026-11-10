@@ -81,7 +81,7 @@
         if (sched) {
           sched[flagKey] = true;
           sched[flagKey + '_at'] = new Date().toISOString();
-          DashboardEngine.saveDB(db);
+          DashboardEngine.saveDB(db, { silent: true });
           return;
         }
       }
@@ -189,34 +189,28 @@
     return 'https://meet.google.com/stm-prog-live';
   }
 
-  // Build exact Portal Classroom Companion launch URL (join-class.html?id=...&role=tutor|student&url=...)
+  // Build exact Portal Classroom Companion launch URL (direct Google Meet link)
   function buildPortalLaunchLink(schedule, role, participantsOverride, rawMeetOverride, forceAbsolute = false) {
     const participants = participantsOverride || resolveScheduleParticipants(schedule);
     const rawMeetUrl = rawMeetOverride || resolveMeetingLink(schedule, participants);
-    const resolvedRole = (role === 'tutor' || role === 'student')
-      ? role
-      : ((typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getSession === 'function' && DashboardEngine.getSession() && DashboardEngine.getSession().role === 'tutor') ? 'tutor' : 'student');
+    return rawMeetUrl || 'https://meet.google.com';
+  }
 
-    const scheduleId = (schedule && schedule.id) || ('ses-' + String(participants.studentName || 'class').toLowerCase().replace(/[^a-z0-9]+/g, '-'));
-    const q = new URLSearchParams();
-    q.set('id', String(scheduleId));
-    q.set('role', resolvedRole);
-    if (participants.studentId) q.set('studentId', String(participants.studentId));
-    if (participants.studentName) q.set('student', String(participants.studentName));
-    if (participants.tutorName) q.set('tutor', String(participants.tutorName));
-    if (participants.tutorEmail) q.set('tutorEmail', String(participants.tutorEmail));
-    if (schedule && schedule.course) q.set('course', String(schedule.course));
-    if (schedule && schedule.date) q.set('date', String(schedule.date));
-    if (schedule && schedule.time) q.set('time', String(schedule.time));
-    q.set('url', rawMeetUrl);
-
-    if (forceAbsolute) {
-      const origin = (typeof window !== 'undefined' && window.location && window.location.origin && !window.location.origin.includes('file:'))
-        ? window.location.origin
-        : 'https://stemuluskidstech.com';
-      return `${origin}/join-class.html?${q.toString()}`;
-    }
-    return `join-class.html?${q.toString()}`;
+  // Build 1-click serverless email join URL (triggers ntfy + Firestore presence + 302 redirect to Google Meet without opening portal)
+  function buildOneClickEmailJoinUrl(schedule, role, participantsOverride, rawMeetOverride) {
+    const participants = participantsOverride || resolveScheduleParticipants(schedule);
+    const rawMeetUrl = rawMeetOverride || resolveMeetingLink(schedule, participants);
+    const qs = [
+      'meet=' + encodeURIComponent(rawMeetUrl),
+      'sid=' + encodeURIComponent((schedule && schedule.id) || ''),
+      'role=' + encodeURIComponent(role || 'tutor'),
+      'tutor=' + encodeURIComponent((participants && participants.tutorName) || (schedule && (schedule.mentor || schedule.tutorName)) || 'Mentor'),
+      'student=' + encodeURIComponent((participants && participants.studentName) || (schedule && (schedule.studentName || schedule.student)) || 'Student'),
+      'course=' + encodeURIComponent((schedule && schedule.course) || 'Coding Session'),
+      'date=' + encodeURIComponent((schedule && schedule.date) || ''),
+      'time=' + encodeURIComponent((schedule && schedule.time) || '')
+    ].join('&');
+    return 'https://stemuluskidstech.com/.netlify/functions/join-session?' + qs;
   }
 
   // Strictly check whether the currently logged-in user owns this schedule
@@ -274,14 +268,18 @@
     const meetingLink = resolveMeetingLink(schedule, participants);
     const portalTutorUrl = buildPortalLaunchLink(schedule, 'tutor', participants, meetingLink, true);
     const portalStudentUrl = buildPortalLaunchLink(schedule, 'student', participants, meetingLink, true);
+    const oneClickTutorUrl = buildOneClickEmailJoinUrl(schedule, 'tutor', participants, meetingLink);
+    const oneClickStudentUrl = buildOneClickEmailJoinUrl(schedule, 'student', participants, meetingLink);
 
-    // Enriched schedule carrying canonical meeting link + portal launch URLs
+    // Enriched schedule carrying canonical meeting link + 1-click serverless email join URLs
     const enrichedSchedule = Object.assign({}, schedule, {
       studentId: participants.studentId || schedule.studentId || '',
       tutorEmail: participants.tutorEmail || schedule.tutorEmail || '',
       rawMeetLink: meetingLink,
       portalTutorUrl: portalTutorUrl,
       portalStudentUrl: portalStudentUrl,
+      oneClickTutorUrl: oneClickTutorUrl,
+      oneClickStudentUrl: oneClickStudentUrl,
       link: meetingLink,
       meetLink: meetingLink,
       zoomLink: meetingLink
@@ -339,9 +337,11 @@
     const meetingLink = resolveMeetingLink(schedule, participants);
     const portalTutorLink = buildPortalLaunchLink(schedule, 'tutor', participants, meetingLink, false);
     const portalStudentLink = buildPortalLaunchLink(schedule, 'student', participants, meetingLink, false);
-    const label = milestone === '24h' ? '24 Hours' : (milestone === '10m' ? '10 Minutes' : '1 Hour');
-    const isUrgent = milestone === '10m';
-    const titleStr = isUrgent ? `Class in 10 Minutes: ${participants.studentName}` : `Class in ${label}: ${participants.studentName}`;
+    const label = milestone === '24h' ? '24 Hours' : (milestone === '5m' ? '5 Minutes' : (milestone === '10m' ? '10 Minutes' : '1 Hour'));
+    const isUrgent = milestone === '10m' || milestone === '5m';
+    const titleStr = milestone === '5m'
+      ? `Class in 5 Minutes: ${participants.studentName}`
+      : (milestone === '10m' ? `Class in 10 Minutes: ${participants.studentName}` : `Class in ${label}: ${participants.studentName}`);
 
     const db = (typeof DashboardEngine.getDB === 'function') ? DashboardEngine.getDB() : null;
     const existingNotifs = (db && Array.isArray(db.notifications)) ? db.notifications : [];
@@ -402,6 +402,31 @@
         setTimeout(() => { if (el) el.remove(); }, 250);
       };
     }
+    if (!window.launchStemulusReminderSession) {
+      window.launchStemulusReminderSession = function(scheduleId, meetingLink, studentName, tutorName, course) {
+        try {
+          const session = (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getSession === 'function')
+            ? DashboardEngine.getSession()
+            : null;
+          const role = (session && session.role === 'parent') ? 'student' : 'tutor';
+          if (typeof window.STEMulus !== 'undefined' && window.STEMulus.Classroom && typeof window.STEMulus.Classroom.launchMeetingSession === 'function') {
+            window.STEMulus.Classroom.launchMeetingSession({
+              scheduleId: scheduleId,
+              role: role,
+              studentName: studentName,
+              tutorName: tutorName,
+              course: course,
+              meetingUrl: meetingLink
+            });
+            return false;
+          }
+          if (typeof window.ClassEscalationEngine !== 'undefined' && typeof window.ClassEscalationEngine.recordHeartbeat === 'function') {
+            window.ClassEscalationEngine.recordHeartbeat(scheduleId, role, role === 'tutor' ? tutorName : studentName);
+          }
+        } catch (e) {}
+        return true;
+      };
+    }
     if (document.getElementById('stemulus-alert-keyframes')) return;
     const style = document.createElement('style');
     style.id = 'stemulus-alert-keyframes';
@@ -423,7 +448,7 @@
     document.head.appendChild(style);
   }
 
-  // Show 24-Hour Preparation Toast Banner
+  // Show 24-Hour Preparation Toast Banner (3D Minimalist Playful Light Theme)
   function show24HourBanner(schedule) {
     if (typeof document === 'undefined') return;
     ensureAlertStyles();
@@ -436,6 +461,11 @@
     const time = schedule.time || 'Upcoming';
     const date = schedule.date || 'Tomorrow';
     const meetingLink = buildPortalLaunchLink(schedule);
+    const safeSid = String(schedule.id || '').replace(/'/g, "\\'");
+    const safeLink = String(meetingLink || '').replace(/'/g, "\\'");
+    const safeStudent = String(studentName || '').replace(/'/g, "\\'");
+    const safeTutor = String(tutorName || '').replace(/'/g, "\\'");
+    const safeCourse = String(course || '').replace(/'/g, "\\'");
 
     const div = document.createElement('div');
     div.id = bannerId;
@@ -446,11 +476,12 @@
       max-width: 420px;
       width: calc(100vw - 48px);
       background: #FFFFFF;
-      border: 1px solid rgba(15, 23, 42, 0.08);
-      border-radius: 18px;
-      padding: 16px 18px;
+      border: 2px solid #E2E8F0;
+      border-bottom: 4px solid #CBD5E1;
+      border-radius: 22px;
+      padding: 18px 20px;
       color: #0F172A;
-      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.14), 0 2px 6px rgba(15, 23, 42, 0.04);
+      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.04);
       z-index: 99999;
       font-family: 'Nunito', sans-serif;
       animation: stemulusAlertTopSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -458,8 +489,8 @@
 
     div.innerHTML = `
       <div style="display:flex; align-items:flex-start; gap:12px;">
-        <div style="width:38px; height:38px; border-radius:10px; background:#F8FAFC; border:1px solid #E2E8F0; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#334155;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <div style="width:42px; height:42px; border-radius:14px; background:#FFF7ED; border:2px solid #FED7AA; border-bottom:3px solid #FDBA74; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#EA580C;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
             <line x1="16" x2="16" y1="2" y2="6"/>
             <line x1="8" x2="8" y1="2" y2="6"/>
@@ -468,19 +499,19 @@
         </div>
         <div style="flex:1; min-width:0;">
           <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px;">
-            <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:#475569; background:#F1F5F9; border:1px solid #E2E8F0; padding:2px 8px; border-radius:6px;">
+            <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:#EA580C; background:#FFF7ED; border:1px solid #FED7AA; padding:2px 8px; border-radius:8px;">
               Class Tomorrow
             </span>
-            <button onclick="window.dismissStemulusCard('${bannerId}', true)" aria-label="Close notification" style="background:none; border:none; color:#94A3B8; font-size:18px; line-height:1; cursor:pointer; padding:2px 6px; border-radius:4px; transition:color 0.15s;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">&times;</button>
+            <button onclick="window.dismissStemulusCard('${bannerId}', true)" aria-label="Close notification" style="background:none; border:none; color:#94A3B8; font-size:18px; line-height:1; cursor:pointer; padding:2px 6px; border-radius:4px; transition:color 0.15s;">&times;</button>
           </div>
-          <h4 style="margin:0 0 3px 0; font-size:14px; font-weight:800; color:#0F172A; line-height:1.35; word-break:break-word; font-family:'Outfit', sans-serif;">
+          <h4 style="margin:0 0 3px 0; font-size:15px; font-weight:800; color:#0F172A; line-height:1.35; word-break:break-word; font-family:'Outfit', sans-serif;">
             ${studentName} &bull; ${course}
           </h4>
-          <p style="margin:0 0 10px 0; font-size:12px; color:#64748B; line-height:1.45;">
+          <p style="margin:0 0 12px 0; font-size:12px; color:#64748B; line-height:1.45;">
             Scheduled for <strong>${date} at ${time}</strong> with <strong>${tutorName}</strong>.
           </p>
           <div style="display:flex; gap:8px; align-items:center;">
-            <a href="${meetingLink}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#0F172A; color:#FFFFFF; text-decoration:none; font-size:12px; font-weight:700; padding:6px 14px; border-radius:8px; transition:background 0.15s ease;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#0F172A'">
+            <a href="${meetingLink}" target="_blank" onclick="window.launchStemulusReminderSession('${safeSid}','${safeLink}','${safeStudent}','${safeTutor}','${safeCourse}')" style="display:inline-flex; align-items:center; gap:6px; background:#F4600C; color:#FFFFFF; text-decoration:none; font-size:12px; font-weight:800; padding:8px 16px; border-radius:12px; border:2px solid #EA580C; border-bottom:3px solid #C2410C;">
               <span>Meeting Link</span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
@@ -498,7 +529,7 @@
     }, 18000);
   }
 
-  // Show 1-Hour Preparation Toast Banner
+  // Show 1-Hour Preparation Toast Banner (3D Minimalist Playful Light Theme)
   function show1HourBanner(schedule) {
     if (typeof document === 'undefined') return;
     ensureAlertStyles();
@@ -509,8 +540,12 @@
     const tutorName = schedule.mentor || schedule.tutorName || 'Your Mentor';
     const course = schedule.course || 'Coding Session';
     const time = schedule.time || 'Upcoming';
-    const date = schedule.date || 'Today';
     const meetingLink = buildPortalLaunchLink(schedule);
+    const safeSid = String(schedule.id || '').replace(/'/g, "\\'");
+    const safeLink = String(meetingLink || '').replace(/'/g, "\\'");
+    const safeStudent = String(studentName || '').replace(/'/g, "\\'");
+    const safeTutor = String(tutorName || '').replace(/'/g, "\\'");
+    const safeCourse = String(course || '').replace(/'/g, "\\'");
 
     const div = document.createElement('div');
     div.id = bannerId;
@@ -521,11 +556,12 @@
       max-width: 420px;
       width: calc(100vw - 48px);
       background: #FFFFFF;
-      border: 1px solid rgba(15, 23, 42, 0.08);
-      border-radius: 18px;
-      padding: 16px 18px;
+      border: 2px solid #E2E8F0;
+      border-bottom: 4px solid #CBD5E1;
+      border-radius: 22px;
+      padding: 18px 20px;
       color: #0F172A;
-      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.14), 0 2px 6px rgba(15, 23, 42, 0.04);
+      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.04);
       z-index: 99999;
       font-family: 'Nunito', sans-serif;
       animation: stemulusAlertTopSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -533,27 +569,27 @@
 
     div.innerHTML = `
       <div style="display:flex; align-items:flex-start; gap:12px;">
-        <div style="width:38px; height:38px; border-radius:10px; background:#EFF6FF; border:1px solid #DBEAFE; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#1D4ED8;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <div style="width:42px; height:42px; border-radius:14px; background:#EFF6FF; border:2px solid #BFDBFE; border-bottom:3px solid #93C5FD; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#1D4ED8;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"/>
             <polyline points="12 6 12 12 16 14"/>
           </svg>
         </div>
         <div style="flex:1; min-width:0;">
           <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px;">
-            <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:#1D4ED8; background:#EFF6FF; border:1px solid #DBEAFE; padding:2px 8px; border-radius:6px;">
+            <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:#1D4ED8; background:#EFF6FF; border:1px solid #BFDBFE; padding:2px 8px; border-radius:8px;">
               Class in 1 Hour
             </span>
-            <button onclick="window.dismissStemulusCard('${bannerId}', true)" aria-label="Close notification" style="background:none; border:none; color:#94A3B8; font-size:18px; line-height:1; cursor:pointer; padding:2px 6px; border-radius:4px; transition:color 0.15s;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">&times;</button>
+            <button onclick="window.dismissStemulusCard('${bannerId}', true)" aria-label="Close notification" style="background:none; border:none; color:#94A3B8; font-size:18px; line-height:1; cursor:pointer; padding:2px 6px; border-radius:4px; transition:color 0.15s;">&times;</button>
           </div>
-          <h4 style="margin:0 0 3px 0; font-size:14px; font-weight:800; color:#0F172A; line-height:1.35; word-break:break-word; font-family:'Outfit', sans-serif;">
+          <h4 style="margin:0 0 3px 0; font-size:15px; font-weight:800; color:#0F172A; line-height:1.35; word-break:break-word; font-family:'Outfit', sans-serif;">
             ${studentName} &bull; ${course}
           </h4>
-          <p style="margin:0 0 10px 0; font-size:12px; color:#64748B; line-height:1.45;">
+          <p style="margin:0 0 12px 0; font-size:12px; color:#64748B; line-height:1.45;">
             Session starts at <strong>${time}</strong> with <strong>${tutorName}</strong>.
           </p>
           <div style="display:flex; gap:8px; align-items:center;">
-            <a href="${meetingLink}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:#0F172A; color:#FFFFFF; text-decoration:none; font-size:12px; font-weight:700; padding:6px 14px; border-radius:8px; transition:background 0.15s ease;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#0F172A'">
+            <a href="${meetingLink}" target="_blank" onclick="window.launchStemulusReminderSession('${safeSid}','${safeLink}','${safeStudent}','${safeTutor}','${safeCourse}')" style="display:inline-flex; align-items:center; gap:6px; background:#2563EB; color:#FFFFFF; text-decoration:none; font-size:12px; font-weight:800; padding:8px 16px; border-radius:12px; border:2px solid #1D4ED8; border-bottom:3px solid #1E40AF;">
               <span>Join Live Classroom</span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
@@ -571,7 +607,7 @@
     }, 18000);
   }
 
-  // Show 10-Minute Urgent Classroom Alert (Non-obstructive floating card, zero AI slop, zero emojis)
+  // Show 10-Minute Urgent Classroom Alert (3D Minimalist Playful Light Theme - Student Name + Class in 10 Mins + Meeting Link)
   function show10MinuteModal(schedule) {
     if (typeof document === 'undefined') return;
     ensureAlertStyles();
@@ -585,6 +621,11 @@
     const course = schedule.course || 'Coding Session';
     const link = buildPortalLaunchLink(schedule);
     const time = schedule.time || '10 minutes';
+    const safeSid = String(schedule.id || '').replace(/'/g, "\\'");
+    const safeLink = String(link || '').replace(/'/g, "\\'");
+    const safeStudent = String(studentName || '').replace(/'/g, "\\'");
+    const safeTutor = String(tutorName || '').replace(/'/g, "\\'");
+    const safeCourse = String(course || '').replace(/'/g, "\\'");
 
     const card = document.createElement('div');
     card.id = modalId;
@@ -595,10 +636,11 @@
       max-width: 440px;
       width: calc(100vw - 48px);
       background: #FFFFFF;
-      border: 1px solid rgba(15, 23, 42, 0.08);
-      border-radius: 20px;
+      border: 2px solid #E2E8F0;
+      border-bottom: 4px solid #CBD5E1;
+      border-radius: 22px;
       padding: 20px 22px;
-      box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.05);
+      box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.14), 0 4px 12px rgba(15, 23, 42, 0.04);
       z-index: 99999;
       font-family: 'Nunito', sans-serif;
       animation: stemulusAlertSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -607,32 +649,35 @@
 
     card.innerHTML = `
       <div style="display:flex; align-items:flex-start; gap:14px;">
-        <div style="width:42px; height:42px; border-radius:12px; background:#F8FAFC; border:1px solid #E2E8F0; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#0F172A;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <div style="width:44px; height:44px; border-radius:14px; background:#FFF7ED; border:2px solid #FED7AA; border-bottom:3px solid #FDBA74; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#EA580C;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m22 8-6 4 6 4V8Z"/>
             <rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>
           </svg>
         </div>
         <div style="flex:1; min-width:0;">
           <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px;">
-            <div style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; color:#047857; background:#ECFDF5; border:1px solid #A7F3D0; padding:2px 8px; border-radius:999px;">
-              <span style="width:6px; height:6px; border-radius:50%; background:#10B981; display:inline-block; animation:stemulusDotPulse 1.8s infinite;"></span>
-              Starting in 10 Minutes
+            <div style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; color:#EA580C; background:#FFF7ED; border:1px solid #FED7AA; padding:3px 10px; border-radius:999px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:#F4600C; display:inline-block; animation:stemulusDotPulse 1.8s infinite;"></span>
+              Class in 10 Minutes
             </div>
-            <button onclick="window.dismissStemulusCard('${modalId}', false)" aria-label="Dismiss alert" style="background:none; border:none; color:#94A3B8; font-size:18px; line-height:1; cursor:pointer; padding:2px 6px; border-radius:4px; transition:color 0.15s;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">&times;</button>
+            <button onclick="window.dismissStemulusCard('${modalId}', false)" aria-label="Dismiss alert" style="background:none; border:none; color:#94A3B8; font-size:18px; line-height:1; cursor:pointer; padding:2px 6px; border-radius:4px; transition:color 0.15s;">&times;</button>
           </div>
-          <h4 style="margin:0 0 3px 0; font-size:15px; font-weight:800; color:#0F172A; font-family:'Outfit', sans-serif; line-height:1.35; word-break:break-word;">
+          <h4 style="margin:0 0 4px 0; font-size:15px; font-weight:800; color:#0F172A; font-family:'Outfit', sans-serif; line-height:1.35; word-break:break-word;">
             ${studentName} &bull; ${course}
           </h4>
-          <p style="margin:0 0 12px 0; font-size:13px; color:#64748B; line-height:1.45;">
-            Class with <strong>${tutorName}</strong> starts at <strong>${time}</strong>. Google Meet room is open.
+          <p style="margin:0 0 8px 0; font-size:13px; color:#64748B; line-height:1.45;">
+            Class with <strong>${tutorName}</strong> starts in <strong>10 minutes</strong> (${time}).
+          </p>
+          <p style="margin:0 0 12px 0; font-size:11px; color:#475569; background:#F8FAFC; border:1px solid #E2E8F0; padding:6px 10px; border-radius:10px; word-break:break-all;">
+            Meeting Link: <a href="${link}" target="_blank" onclick="window.launchStemulusReminderSession('${safeSid}','${safeLink}','${safeStudent}','${safeTutor}','${safeCourse}')" style="color:#2563EB; font-weight:800; text-decoration:underline;">${link}</a>
           </p>
           <div style="display:flex; align-items:center; gap:10px;">
-            <a href="${link}" target="_blank" onclick="window.dismissStemulusCard('${modalId}', false)" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; background:#0F172A; color:#FFFFFF; text-decoration:none; font-weight:700; font-size:13px; padding:9px 18px; border-radius:10px; transition:background 0.15s ease, transform 0.15s ease; box-shadow:0 4px 12px rgba(15,23,42,0.15);" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#0F172A'">
-              <span>Launch Classroom</span>
+            <a href="${link}" target="_blank" onclick="window.dismissStemulusCard('${modalId}', false); return window.launchStemulusReminderSession('${safeSid}','${safeLink}','${safeStudent}','${safeTutor}','${safeCourse}');" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; background:#F4600C; color:#FFFFFF; text-decoration:none; font-weight:800; font-size:13px; padding:9px 18px; border-radius:12px; border:2px solid #EA580C; border-bottom:4px solid #C2410C;">
+              <span>Join Class</span>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
-            <button onclick="window.dismissStemulusCard('${modalId}', false)" style="background:none; border:none; color:#64748B; font-size:12px; font-weight:700; cursor:pointer; padding:8px 10px; border-radius:8px; transition:color 0.15s;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#64748B'">Dismiss</button>
+            <button onclick="window.dismissStemulusCard('${modalId}', false)" style="background:#F8FAFC; border:2px solid #E2E8F0; border-bottom:3px solid #CBD5E1; color:#64748B; font-size:12px; font-weight:800; cursor:pointer; padding:7px 12px; border-radius:10px;">Dismiss</button>
           </div>
         </div>
       </div>
@@ -641,7 +686,83 @@
     document.body.appendChild(card);
   }
 
-  // Periodic Schedule Evaluator (24h, 1h, 10m)
+  // Show 5-Minute Urgent Join-Now Alert (3D Minimalist Playful Light Theme - Student Name + Class in 5 Mins + Join Now Button with Meeting Link)
+  function show5MinuteModal(schedule) {
+    if (typeof document === 'undefined') return;
+    ensureAlertStyles();
+    const modalId = 'urgent-class-5m-modal-' + schedule.id;
+    if (document.getElementById(modalId)) return;
+
+    playReminderChime();
+
+    const studentName = schedule.studentName || schedule.student || 'Your Student';
+    const tutorName = schedule.mentor || schedule.tutorName || 'Your Mentor';
+    const course = schedule.course || 'Coding Session';
+    const link = buildPortalLaunchLink(schedule);
+    const time = schedule.time || '5 minutes';
+    const safeSid = String(schedule.id || '').replace(/'/g, "\\'");
+    const safeLink = String(link || '').replace(/'/g, "\\'");
+    const safeStudent = String(studentName || '').replace(/'/g, "\\'");
+    const safeTutor = String(tutorName || '').replace(/'/g, "\\'");
+    const safeCourse = String(course || '').replace(/'/g, "\\'");
+
+    const card = document.createElement('div');
+    card.id = modalId;
+    card.style.cssText = `
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      max-width: 440px;
+      width: calc(100vw - 48px);
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom: 4px solid #CBD5E1;
+      border-radius: 22px;
+      padding: 20px 22px;
+      box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.14), 0 4px 12px rgba(15, 23, 42, 0.04);
+      z-index: 99999;
+      font-family: 'Nunito', sans-serif;
+      animation: stemulusAlertSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      color: #0F172A;
+    `;
+
+    card.innerHTML = `
+      <div style="display:flex; align-items:flex-start; gap:14px;">
+        <div style="width:44px; height:44px; border-radius:14px; background:#ECFDF5; border:2px solid #A7F3D0; border-bottom:3px solid #6EE7B7; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#047857;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m22 8-6 4 6 4V8Z"/>
+            <rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>
+          </svg>
+        </div>
+        <div style="flex:1; min-width:0;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px;">
+            <div style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; color:#047857; background:#ECFDF5; border:1px solid #A7F3D0; padding:3px 10px; border-radius:999px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:#10B981; display:inline-block; animation:stemulusDotPulse 1.8s infinite;"></span>
+              Class in 5 Minutes
+            </div>
+            <button onclick="window.dismissStemulusCard('${modalId}', false)" aria-label="Dismiss alert" style="background:none; border:none; color:#94A3B8; font-size:18px; line-height:1; cursor:pointer; padding:2px 6px; border-radius:4px; transition:color 0.15s;">&times;</button>
+          </div>
+          <h4 style="margin:0 0 4px 0; font-size:15px; font-weight:800; color:#0F172A; font-family:'Outfit', sans-serif; line-height:1.35; word-break:break-word;">
+            ${studentName} &bull; ${course}
+          </h4>
+          <p style="margin:0 0 12px 0; font-size:13px; color:#64748B; line-height:1.45;">
+            Class with <strong>${tutorName}</strong> starts in <strong>5 minutes</strong> (${time}). Click <strong>Join Now</strong> to launch Google Meet.
+          </p>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <a href="${link}" target="_blank" onclick="window.dismissStemulusCard('${modalId}', false); return window.launchStemulusReminderSession('${safeSid}','${safeLink}','${safeStudent}','${safeTutor}','${safeCourse}');" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; background:#10B981; color:#FFFFFF; text-decoration:none; font-weight:800; font-size:13px; padding:10px 20px; border-radius:12px; border:2px solid #059669; border-bottom:4px solid #047857;">
+              <span>Join Now</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <button onclick="window.dismissStemulusCard('${modalId}', false)" style="background:#F8FAFC; border:2px solid #E2E8F0; border-bottom:3px solid #CBD5E1; color:#64748B; font-size:12px; font-weight:800; cursor:pointer; padding:7px 12px; border-radius:10px;">Dismiss</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(card);
+  }
+
+  // Periodic Schedule Evaluator (24h, 1h, 10m, 5m)
   function evaluateSchedules() {
     const schedules = getSchedules();
     if (!schedules || schedules.length === 0) return;
@@ -650,6 +771,7 @@
     const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
     const ONE_HOUR_MS = 60 * 60 * 1000;
     const TEN_MINUTES_MS = 10 * 60 * 1000;
+    const FIVE_MINUTES_MS = 5 * 60 * 1000;
     const isAdminPage = typeof window !== 'undefined' && window.location && window.location.pathname.includes('admin-dashboard');
     const session = (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getSession === 'function') ? DashboardEngine.getSession() : null;
     const sessionEmail = (session && session.email) ? String(session.email).toLowerCase().trim() : '';
@@ -708,8 +830,8 @@
         }
       }
 
-      // 3. 10-Minute Milestone (between 0 and 10 minutes away)
-      if (diff > 0 && diff <= TEN_MINUTES_MS) {
+      // 3. 10-Minute Milestone (between 5 minutes and 10 minutes away)
+      if (diff > FIVE_MINUTES_MS && diff <= TEN_MINUTES_MS) {
         if (!schedule.reminded10m) {
           markScheduleReminded(schedule.id, '10m');
           dispatchReminderEmails(schedule, '10m');
@@ -719,6 +841,21 @@
         if (belongsToCurrentUser && !hasShownUserBanner(schedule.id, '10m')) {
           markShownUserBanner(schedule.id, '10m');
           show10MinuteModal(schedule);
+        }
+      }
+
+      // 4. 5-Minute Milestone (between 0 and 5 minutes away)
+      if (diff > 0 && diff <= FIVE_MINUTES_MS) {
+        if (!schedule.reminded5m) {
+          markScheduleReminded(schedule.id, '5m');
+          if (!schedule.reminded10m) markScheduleReminded(schedule.id, '10m');
+          dispatchReminderEmails(schedule, '5m');
+          addPortalNotifications(schedule, '5m');
+          console.log(`[ClassReminders] Dispatched 5m Join-Now alert for session #${schedule.id} (${schedule.studentName}) to canonical Tutor and Parent`);
+        }
+        if (belongsToCurrentUser && !hasShownUserBanner(schedule.id, '5m')) {
+          markShownUserBanner(schedule.id, '5m');
+          show5MinuteModal(schedule);
         }
       }
     });
@@ -742,6 +879,8 @@
       show24HourBanner(dummySchedule);
     } else if (milestone === '1h') {
       show1HourBanner(dummySchedule);
+    } else if (milestone === '5m') {
+      show5MinuteModal(dummySchedule);
     } else {
       show10MinuteModal(dummySchedule);
     }
@@ -757,7 +896,7 @@
     if (checkInterval) clearInterval(checkInterval);
     evaluateSchedules();
     checkInterval = setInterval(evaluateSchedules, 30000); // check every 30s
-    console.log('[ClassReminders] Background reminder monitor active (checks 24h, 1h, 10m intervals)');
+    console.log('[ClassReminders] Background reminder monitor active (checks 24h, 1h, 10m, 5m intervals)');
   }
 
   function stop() {
@@ -783,6 +922,7 @@
     simulate,
     playChime: playReminderChime,
     resolveMeetingLink,
-    buildPortalLaunchLink
+    buildPortalLaunchLink,
+    buildOneClickEmailJoinUrl
   };
 });

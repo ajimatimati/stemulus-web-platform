@@ -2212,7 +2212,7 @@
       ageEl.value = String(clamped);
       ageEl.dispatchEvent(new Event('change', { bubbles: true }));
       if (a < 5 || a > 17) {
-        if (typeof showToast === 'function') showToast('Our programs are for ages 5–17. Age set to ' + clamped + '.', 'info');
+        if (typeof showToast === 'function') showToast('Our programs are for ages 5-17. Age set to ' + clamped + '.', 'info');
       }
     });
   })();

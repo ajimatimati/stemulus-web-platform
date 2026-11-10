@@ -14,8 +14,8 @@ const MonthlyReportEngine = (function() {
     // Director Voice Normalizer: Strips em-dashes and enforces plain English
     function sanitizeDirectorVoice(text) {
         if (!text || typeof text !== 'string') return '';
-        // Absolute Constraint: NO EM-DASHES (— or --)
-        let cleaned = text.replace(/—/g, ', ').replace(/--/g, ', ');
+        // Absolute Constraint: No em dashes allowed
+        let cleaned = text.replace(/\u2014/g, ', ').replace(/\u2013/g, ', ').replace(new RegExp('-{2,}', 'g'), ', ');
         // Clean double spaces
         cleaned = cleaned.replace(/\s{2,}/g, ' ').trim();
         return cleaned;
@@ -83,6 +83,81 @@ const MonthlyReportEngine = (function() {
         return breakthroughs.slice(-3);
     }
 
+    // Retrieve all already-submitted projects (whatBuilt + completedProjectLinks) for a student from attendance logs & milestones
+    function getSubmittedProjectsForStudent(studentId, studentName) {
+        if (typeof DashboardEngine === 'undefined') return [];
+        const projects = [];
+        const seenKeys = new Set();
+
+        let targetName = (studentName || '').toLowerCase().trim();
+        if (!targetName && studentId && typeof DashboardEngine.getStudents === 'function') {
+            const std = (DashboardEngine.getStudents() || []).find(s => s && s.id === studentId);
+            if (std) {
+                targetName = ((std.firstName || '') + ' ' + (std.lastName || '')).toLowerCase().trim();
+            }
+        }
+
+        function addProj(title, url, date) {
+            const cleanTitle = String(title || '').trim();
+            const cleanUrl = String(url || '').trim();
+            if (!cleanTitle && !cleanUrl) return;
+            const finalTitle = cleanTitle || 'Completed Session Project';
+            const key = (finalTitle.toLowerCase() + '|' + cleanUrl.toLowerCase());
+            if (seenKeys.has(key)) return;
+            seenKeys.add(key);
+            projects.push({
+                title: finalTitle,
+                url: cleanUrl,
+                date: date || ''
+            });
+        }
+
+        // 1. Attendance records
+        if (typeof DashboardEngine.getAttendanceRecords === 'function') {
+            const allAtt = DashboardEngine.getAttendanceRecords() || [];
+            allAtt.forEach(a => {
+                if (!a) return;
+                const matchId = Boolean(studentId && a.studentId && a.studentId === studentId);
+                const aName = (a.studentName || '').toLowerCase().trim();
+                const matchName = Boolean(targetName && aName && (aName === targetName || aName.includes(targetName) || targetName.includes(aName)));
+                if (!matchId && !matchName) return;
+
+                const rawLinks = a.completedProjectLinks || a.completed_project_links || a.projectLink || '';
+                const links = (Array.isArray(rawLinks) ? rawLinks : String(rawLinks || '').split(/[\n,;]+/))
+                    .map(s => String(s || '').trim())
+                    .filter(Boolean);
+                const builtTitle = a.whatBuilt || a.what_built || a.topic || '';
+
+                if (links.length > 0) {
+                    links.forEach((lnk, idx) => {
+                        const t = links.length > 1 && builtTitle ? `${builtTitle} (${idx + 1})` : (builtTitle || 'Completed Session Project');
+                        addProj(t, lnk, a.classDate || a.date || '');
+                    });
+                } else if (a.whatBuilt || a.what_built) {
+                    addProj(a.whatBuilt || a.what_built, '', a.classDate || a.date || '');
+                }
+            });
+        }
+
+        // 2. Milestones
+        if (typeof DashboardEngine.getMilestones === 'function') {
+            const milestones = DashboardEngine.getMilestones() || [];
+            milestones.forEach(m => {
+                if (!m) return;
+                const matchId = Boolean(studentId && m.studentId && m.studentId === studentId);
+                const mName = (m.studentName || '').toLowerCase().trim();
+                const matchName = Boolean(targetName && mName && (mName === targetName || mName.includes(targetName) || targetName.includes(mName)));
+                if (!matchId && !matchName) return;
+                const lnk = m.projectLink || (Array.isArray(m.completedProjectLinks) && m.completedProjectLinks[0]) || '';
+                if (m.title || lnk) {
+                    addProj(m.title || 'Coding Milestone', lnk, m.date || '');
+                }
+            });
+        }
+
+        return projects;
+    }
+
     // Get all monthly reports from database
     function getReports() {
         if (typeof DashboardEngine === 'undefined') return [];
@@ -90,14 +165,34 @@ const MonthlyReportEngine = (function() {
         return Array.isArray(db.monthlyReports) ? db.monthlyReports : [];
     }
 
+    function escapeHtmlSafe(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     // Save report state
-    function saveReport(report) {
+    function saveReport(report, options) {
         if (typeof DashboardEngine === 'undefined') return false;
         const db = DashboardEngine.getDB ? DashboardEngine.getDB() : {};
         db.monthlyReports = db.monthlyReports || [];
 
-        const idx = db.monthlyReports.findIndex(r => r.id === report.id);
+        const idx = db.monthlyReports.findIndex(r => r && r.id === report.id);
         if (idx >= 0) {
+            const existing = db.monthlyReports[idx];
+            const isAdminAction = options && options.isAdminAction === true;
+            if (!isAdminAction && existing && ['approved', 'sent_to_parent', 'published'].includes(existing.status)) {
+                return {
+                    success: false,
+                    locked: true,
+                    code: 'REPORT_LOCKED_FINALIZED',
+                    message: 'This monthly report has already been approved and finalized. Tutors are locked out of editing finalized reports.'
+                };
+            }
             db.monthlyReports[idx] = report;
         } else {
             db.monthlyReports.unshift(report);
@@ -108,7 +203,76 @@ const MonthlyReportEngine = (function() {
 
     // Submit report by Tutor to Admin
     function submitReport(data) {
-        const id = data.id || ('rep-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4));
+        if (!data || typeof data !== 'object') {
+            return { success: false, code: 'INCOMPLETE_REPORT', message: 'Report data is required.' };
+        }
+        const hasStudent = Boolean((data.studentId && String(data.studentId).trim()) || (data.studentName && String(data.studentName).trim()));
+        const hasMonth = Boolean(data.month && String(data.month).trim());
+        const hasBody = Boolean(
+            (data.shiningHighlights && String(data.shiningHighlights).trim()) ||
+            (data.growthAreas && String(data.growthAreas).trim()) ||
+            (data.journeyNarrative && String(data.journeyNarrative).trim())
+        );
+        if (!hasStudent || !hasMonth || !hasBody) {
+            return {
+                success: false,
+                code: 'INCOMPLETE_REPORT',
+                message: 'Incomplete monthly report: student, month, and evaluation highlights/growth areas are required.'
+            };
+        }
+        const rawLen = [data.shiningHighlights, data.growthAreas, data.journeyNarrative, data.tutorNotes]
+            .map(v => (typeof v === 'string' ? v.length : 0))
+            .reduce((a, b) => a + b, 0);
+        if (rawLen > 10000) {
+            return {
+                success: false,
+                code: 'PAYLOAD_TOO_LARGE',
+                message: 'Monthly report exceeds maximum length of 10,000 characters.'
+            };
+        }
+
+        const existingReports = getReports();
+        const existingMatch = existingReports.find(r =>
+            r && (
+                (data.id && r.id === data.id) ||
+                (!data.id && r.studentId && data.studentId && r.studentId === data.studentId && String(r.month || '').toLowerCase() === String(data.month || '').toLowerCase())
+            )
+        );
+        if (existingMatch && ['approved', 'sent_to_parent', 'published'].includes(existingMatch.status)) {
+            return {
+                success: false,
+                locked: true,
+                code: 'REPORT_LOCKED_FINALIZED',
+                message: 'A finalized monthly report already exists for this student and month. Tutors cannot overwrite approved reports.'
+            };
+        }
+
+        const id = (existingMatch && existingMatch.id) || data.id || ('rep-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4));
+        const projectLinksArr = Array.isArray(data.projectLinks) ? data.projectLinks.slice() : [];
+        const completedProjectLinksArr = Array.isArray(data.completedProjectLinks) ? data.completedProjectLinks.slice() : [];
+
+        if (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getAttendanceRecords === 'function') {
+            const allAtt = DashboardEngine.getAttendanceRecords() || [];
+            allAtt.forEach(a => {
+                if (!a) return;
+                if (data.studentId && a.studentId !== data.studentId) return;
+                if (!data.studentId && data.studentName && (a.studentName || '').toLowerCase().trim() !== data.studentName.toLowerCase().trim()) return;
+                const rawLinks = a.completedProjectLinks || a.completed_project_links || a.projectLink || '';
+                const arrL = Array.isArray(rawLinks) ? rawLinks : String(rawLinks || '').split(/[\n,;]+/);
+                arrL.forEach(lnk => {
+                    const cl = String(lnk || '').trim();
+                    if (!cl) return;
+                    if (!completedProjectLinksArr.includes(cl)) completedProjectLinksArr.push(cl);
+                    if (!projectLinksArr.some(p => p && p.url === cl)) {
+                        projectLinksArr.push({
+                            title: a.whatBuilt || a.topic || 'Completed Session Project',
+                            url: cl
+                        });
+                    }
+                });
+            });
+        }
+
         const report = {
             id: id,
             studentId: data.studentId,
@@ -121,7 +285,9 @@ const MonthlyReportEngine = (function() {
             tutorEmail: data.tutorEmail || '',
             month: data.month || 'October 2026',
             status: 'pending_admin_approval',
-            projectLinks: Array.isArray(data.projectLinks) ? data.projectLinks : [],
+            projectLinks: projectLinksArr,
+            completedProjectLinks: completedProjectLinksArr,
+            completed_project_links: completedProjectLinksArr.join(', '),
             journeyNarrative: sanitizeDirectorVoice(data.journeyNarrative || ''),
             shiningHighlights: sanitizeDirectorVoice(data.shiningHighlights || ''),
             growthAreas: sanitizeDirectorVoice(data.growthAreas || ''),
@@ -146,7 +312,7 @@ const MonthlyReportEngine = (function() {
         report.adminFeedback = sanitizeDirectorVoice(comments || 'Please revise the session project links and expand on the student growth areas.');
         report.reviewedAt = new Date().toISOString();
 
-        saveReport(report);
+        saveReport(report, { isAdminAction: true });
 
         // Notify tutor
         if (report.tutorEmail && typeof DashboardEngine.addNotification === 'function') {
@@ -171,11 +337,13 @@ const MonthlyReportEngine = (function() {
         report.status = 'approved';
         report.approvedAt = new Date().toISOString();
         report.sentAt = new Date().toISOString();
-        saveReport(report);
+        saveReport(report, { isAdminAction: true });
 
         // 1. Prepare Progress Report Email (Zero payment mention)
         const reportEmail = {
             id: 'email-rep-' + Date.now(),
+            from: 'admin@stemuluskidstech.com',
+            senderEmail: 'admin@stemuluskidstech.com',
             to: report.parentEmail,
             recipientName: report.parentName,
             type: 'custom',
@@ -184,7 +352,8 @@ const MonthlyReportEngine = (function() {
             data: {
                 studentName: report.studentName,
                 month: report.month,
-                reportId: report.id
+                reportId: report.id,
+                from: 'admin@stemuluskidstech.com'
             },
             status: 'sent',
             sentAt: new Date().toISOString(),
@@ -195,6 +364,8 @@ const MonthlyReportEngine = (function() {
         // 2. Prepare Follow-up Tuition Invoice Email (Decoupled, polite, references learning cycle)
         const invoiceEmail = {
             id: 'email-inv-' + Date.now(),
+            from: 'admin@stemuluskidstech.com',
+            senderEmail: 'admin@stemuluskidstech.com',
             to: report.parentEmail,
             recipientName: report.parentName,
             type: 'custom',
@@ -202,7 +373,8 @@ const MonthlyReportEngine = (function() {
             htmlPreview: generateInvoiceEmailHTML(report),
             data: {
                 studentName: report.studentName,
-                reportId: report.id
+                reportId: report.id,
+                from: 'admin@stemuluskidstech.com'
             },
             status: 'pending', // Placed into email queue for inspection or send
             createdAt: new Date().toISOString(),
@@ -239,7 +411,7 @@ const MonthlyReportEngine = (function() {
         ).join('');
 
         const momentsItems = (report.woohooMoments || []).map(m =>
-            `<div style="margin-bottom:10px;padding:10px 14px;background:#f8fafc;border-left:3px solid #f97316;border-radius:4px;">
+            `<div style="margin-bottom:10px;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;">
                 <strong style="color:#0f172a;font-size:13px;">${m.date || 'Class Session'} &bull; ${m.topic || 'Breakthrough'}:</strong>
                 <p style="margin:4px 0 0 0;color:#334155;font-size:12px;line-height:1.5;">${m.moment || ''}</p>
             </div>`
@@ -485,6 +657,7 @@ th { background: #f8fafc; font-weight: 700; color: #1e293b; font-size: 9.5px; te
 
     return {
         crawlWoohooMoments: crawlWoohooMoments,
+        getSubmittedProjectsForStudent: getSubmittedProjectsForStudent,
         getReports: getReports,
         saveReport: saveReport,
         submitReport: submitReport,

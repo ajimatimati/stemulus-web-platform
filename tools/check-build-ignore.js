@@ -40,13 +40,13 @@ function run() {
   const siteName = (process.env.SITE_NAME || '').toLowerCase();
 
   // If no role or site indicator is set, safely proceed to prevent blocking until user configures the env var
-  if (!siteRole && !siteName.includes('portal') && !siteName.includes('marketing')) {
+  if (!siteRole && !siteName.includes('portal') && !siteName.includes('marketing') && !siteName.includes('stemulusv1')) {
     console.log('[STEMulus Build Filter] Notice: STEMULUS_SITE_ROLE is not set. Proceeding with standard build.');
     process.exit(1);
   }
 
   const isPortalSite = siteRole === 'portal' || siteName.includes('portal');
-  const isMarketingSite = !isPortalSite;
+  const isMarketingSite = siteRole === 'marketing' || siteName.includes('marketing') || siteName.includes('stemulusv1') || !isPortalSite;
 
   console.log(`[STEMulus Build Filter] Site Role detected: ${isPortalSite ? 'PORTAL' : 'MARKETING'}`);
 
@@ -61,9 +61,18 @@ function run() {
   changedFiles.forEach(f => console.log(`  - ${f}`));
 
   // Check commit message for manual override flags:
-  // e.g. [deploy-all], [skip-build], [force-build]
+  // e.g. [deploy-all], [portal-only], [skip-build], [force-build]
   try {
     const commitMsg = execSync('git log -1 --pretty=%B', { encoding: 'utf8' }).toLowerCase();
+    if (commitMsg.includes('[portal-only]') || commitMsg.includes('[portal]')) {
+      if (isMarketingSite) {
+        console.log('[STEMulus Build Filter] [portal-only] flag detected. SKIPPING Marketing Site deployment to preserve SEO, Google rankings, edge cache, and build credits.');
+        process.exit(0);
+      } else {
+        console.log('[STEMulus Build Filter] [portal-only] flag detected. Proceeding with Portal deployment.');
+        process.exit(1);
+      }
+    }
     if (commitMsg.includes('[deploy-all]') || commitMsg.includes('[force-build]')) {
       console.log('[STEMulus Build Filter] Override keyword detected in commit message. Proceeding with build.');
       process.exit(1);

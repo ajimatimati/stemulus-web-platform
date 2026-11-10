@@ -1,0 +1,257 @@
+{
+  "passed": 41,
+  "failed": 0,
+  "checks": [
+    {
+      "status": "PASS",
+      "suite": "Certificates",
+      "title": "Navigated to issue-certificate.html with valid admin session",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Certificates",
+      "title": "Clean typography on issue-certificate.html",
+      "detail": "0 em-dashes detected"
+    },
+    {
+      "status": "PASS",
+      "suite": "Certificates",
+      "title": "Token hygiene on issue-certificate.html",
+      "detail": "0 NaN/undefined tokens in visible UI"
+    },
+    {
+      "status": "PASS",
+      "suite": "Certificates",
+      "title": "Image integrity on issue-certificate.html",
+      "detail": "All rendered images valid"
+    },
+    {
+      "status": "PASS",
+      "suite": "Certificates",
+      "title": "Faint logo watermark DOM elements present in both Explorers & Vanguard certificate views",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Certificates",
+      "title": "Certificate issuance and approval triggered",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Certificates",
+      "title": "Public certificate verified via search input submission",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Certificates",
+      "title": "Clean typography on verify-certificate.html",
+      "detail": "0 em-dashes detected"
+    },
+    {
+      "status": "PASS",
+      "suite": "Certificates",
+      "title": "Token hygiene on verify-certificate.html",
+      "detail": "0 NaN/undefined tokens in visible UI"
+    },
+    {
+      "status": "PASS",
+      "suite": "Certificates",
+      "title": "Image integrity on verify-certificate.html",
+      "detail": "All rendered images valid"
+    },
+    {
+      "status": "PASS",
+      "suite": "Attendance",
+      "title": "Navigation to tutor-attendance-create.html successful",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Attendance",
+      "title": "Clean typography on tutor-attendance-create.html",
+      "detail": "0 em-dashes detected"
+    },
+    {
+      "status": "PASS",
+      "suite": "Attendance",
+      "title": "Token hygiene on tutor-attendance-create.html",
+      "detail": "0 NaN/undefined tokens in visible UI"
+    },
+    {
+      "status": "PASS",
+      "suite": "Attendance",
+      "title": "Image integrity on tutor-attendance-create.html",
+      "detail": "All rendered images valid"
+    },
+    {
+      "status": "PASS",
+      "suite": "Attendance",
+      "title": "Student selector initialized",
+      "detail": "Native controls active"
+    },
+    {
+      "status": "PASS",
+      "suite": "Attendance",
+      "title": "Attendance 4-step wizard completed and persisted to database",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "ParentProgress",
+      "title": "Navigation to parent-progress.html successful",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "ParentProgress",
+      "title": "Clean typography on parent-progress.html",
+      "detail": "0 em-dashes detected"
+    },
+    {
+      "status": "PASS",
+      "suite": "ParentProgress",
+      "title": "Token hygiene on parent-progress.html",
+      "detail": "0 NaN/undefined tokens in visible UI"
+    },
+    {
+      "status": "PASS",
+      "suite": "ParentProgress",
+      "title": "Image integrity on parent-progress.html",
+      "detail": "All rendered images valid"
+    },
+    {
+      "status": "PASS",
+      "suite": "ParentProgress",
+      "title": "Attendance history table rendered cleanly",
+      "detail": "0 records displayed"
+    },
+    {
+      "status": "PASS",
+      "suite": "ParentProgress",
+      "title": "Official PDF / Print evaluation report button active",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Navigation to admin-dashboard.html successful",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Clean typography on admin-dashboard.html",
+      "detail": "0 em-dashes detected"
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Token hygiene on admin-dashboard.html",
+      "detail": "0 NaN/undefined tokens in visible UI"
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Image integrity on admin-dashboard.html",
+      "detail": "All rendered images valid"
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Switched to students section",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Switched to tutors section",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Switched to schedules section",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Switched to billing section",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Switched to attendance section",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Switched to reports section",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Student registration modal opened and closed cleanly without backdrop collisions",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Admin",
+      "title": "Schedule assignment modal opened and closed cleanly",
+      "detail": ""
+    },
+    {
+      "status": "PASS",
+      "suite": "Mobile",
+      "title": "Mobile viewport 375px on Parent Login",
+      "detail": "No horizontal overflow (375px <= 375px)"
+    },
+    {
+      "status": "PASS",
+      "suite": "Mobile",
+      "title": "Mobile viewport 375px on Tutor Login",
+      "detail": "No horizontal overflow (375px <= 375px)"
+    },
+    {
+      "status": "PASS",
+      "suite": "Mobile",
+      "title": "Mobile viewport 375px on Admin Login",
+      "detail": "No horizontal overflow (375px <= 375px)"
+    },
+    {
+      "status": "PASS",
+      "suite": "Mobile",
+      "title": "Mobile viewport 375px on Parent Dashboard",
+      "detail": "No horizontal overflow (375px <= 375px)"
+    },
+    {
+      "status": "PASS",
+      "suite": "Mobile",
+      "title": "Mobile viewport 375px on Tutor Dashboard",
+      "detail": "No horizontal overflow (375px <= 375px)"
+    },
+    {
+      "status": "PASS",
+      "suite": "Mobile",
+      "title": "Mobile viewport 375px on Admin Dashboard",
+      "detail": "No horizontal overflow (375px <= 375px)"
+    },
+    {
+      "status": "PASS",
+      "suite": "Mobile",
+      "title": "Mobile viewport 375px on Verify Certificate",
+      "detail": "No horizontal overflow (375px <= 375px)"
+    }
+  ],
+  "displayBugs": [],
+  "functionalBugs": [],
+  "contentBugs": [],
+  "mobileOverflowBugs": [],
+  "consoleErrors": []
+}

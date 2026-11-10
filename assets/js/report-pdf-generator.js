@@ -47,6 +47,30 @@
                 ? (raw.id.startsWith('STEM-') ? raw.id : 'STEM-REP-' + raw.id.replace(/[^a-zA-Z0-9]/g, '').slice(-8).toUpperCase())
                 : 'STEM-REP-' + Math.floor(100000 + Math.random() * 900000);
 
+            var rawLinks = raw.completedProjectLinks || raw.completed_project_links || raw.projectLink || '';
+            var compiledLinks = Array.isArray(rawLinks)
+                ? rawLinks.map(function(s){ return String(s || '').trim(); }).filter(Boolean)
+                : String(rawLinks || '').split(/[\n,;]+/).map(function(s){ return s.trim(); }).filter(Boolean);
+
+            if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getAttendanceRecords) {
+                var allAtt = DashboardEngine.getAttendanceRecords() || [];
+                var sId = raw.studentId;
+                var sNameLower = String(raw.studentName || '').toLowerCase().trim();
+                var mPrefix = String(raw.month || '').slice(0, 7);
+                allAtt.forEach(function(a) {
+                    if (!a) return;
+                    var matchStud = (sId && a.studentId === sId) || (sNameLower && String(a.studentName || '').toLowerCase().trim() === sNameLower);
+                    if (!matchStud) return;
+                    if (mPrefix && a.classDate && String(a.classDate).slice(0, 7) !== mPrefix) return;
+                    var aLinks = a.completedProjectLinks || a.completed_project_links || a.projectLink || '';
+                    var aArr = Array.isArray(aLinks) ? aLinks : String(aLinks || '').split(/[\n,;]+/);
+                    aArr.forEach(function(lnk) {
+                        var cl = String(lnk || '').trim();
+                        if (cl && compiledLinks.indexOf(cl) === -1) compiledLinks.push(cl);
+                    });
+                });
+            }
+
             return {
                 id: reportCode,
                 monthName: monthStr,
@@ -65,6 +89,7 @@
                 strengths: raw.strengths || raw.achievements || 'Demonstrates strong analytical thinking, positive enthusiasm during class, and an eagerness to experiment with new programming constructs.',
                 challenges: raw.challenges || raw.supportNeeded || 'Occasional hesitation when debugging multi-step errors independently; continuing to reinforce debugging resilience and systematic testing.',
                 recommendation: raw.recommendation || raw.otherComments || 'Continue advancing through the next module exercises. Reinforce coding practice between weekly classes to cement syntactic fluency.',
+                completedProjectLinks: compiledLinks,
                 adminNotes: raw.adminNotes || raw.directorNote || '',
                 confidence: raw.confidence || 9
             };
@@ -92,9 +117,20 @@
                 topicsHTML = '<p style="margin:0;color:#334155;line-height:1.65;font-size:0.92rem;">' + data.topics + '</p>';
             }
 
+            var projectLinksBlock = (Array.isArray(data.completedProjectLinks) && data.completedProjectLinks.length > 0) ? (
+                '<div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px dashed #e2e8f0;">' +
+                    '<div style="font-size:0.72rem;font-weight:800;color:#4f46e5;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.35rem;">Completed Project Links</div>' +
+                    '<div style="display:flex;flex-wrap:wrap;gap:6px;">' +
+                        data.completedProjectLinks.map(function(lnk) {
+                            return '<a href="' + lnk + '" target="_blank" rel="noopener noreferrer" style="font-size:0.8rem;font-weight:700;color:#4f46e5;background:#eef2ff;border:1px solid #c7d2fe;padding:4px 10px;border-radius:8px;text-decoration:none;">' + lnk + '</a>';
+                        }).join('') +
+                    '</div>' +
+                '</div>'
+            ) : '';
+
             var adminNoteBlock = data.adminNotes ? (
-                '<div style="margin-top:1.5rem;background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #4f46e5;border-radius:10px;padding:1rem 1.25rem;">' +
-                    '<div style="font-size:0.75rem;font-weight:800;color:#4f46e5;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.35rem;">Academic Director Endorsement</div>' +
+                '<div style="margin-top:1.5rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:1rem 1.25rem;">' +
+                    '<div style="font-size:0.75rem;font-weight:800;color:#4f46e5;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.35rem;">Director Endorsement</div>' +
                     '<p style="margin:0;color:#1e293b;font-size:0.9rem;font-style:italic;line-height:1.6;">“' + data.adminNotes + '”</p>' +
                 '</div>'
             ) : '';
@@ -173,6 +209,7 @@
                         '</div>' +
                         '<div style="font-size:0.8rem;font-weight:700;color:#4f46e5;margin-bottom:0.75rem;">' + data.module + '</div>' +
                         topicsHTML +
+                        projectLinksBlock +
                     '</div>' +
 
                     '<!-- Two Column Qualitative Observations -->' +
@@ -205,7 +242,7 @@
             adminNoteBlock +
 
                     '<!-- Governance & Verification Timeline (KidzTech Parity) -->' +
-                    '<div style="margin-top:1.5rem;background:#fafafc;border:1px solid #e2e8f0;border-left:4px solid #4f46e5;border-radius:10px;padding:1rem 1.25rem;">' +
+                    '<div style="margin-top:1.5rem;background:#fafafc;border:1px solid #e2e8f0;border-radius:10px;padding:1rem 1.25rem;">' +
                         '<div style="font-size:0.75rem;font-weight:800;color:#4f46e5;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;">Governance &amp; Verification Timeline</div>' +
                         '<div style="display:grid;grid-template-columns:140px 1fr;row-gap:4px;font-size:0.82rem;">' +
                             '<span style="font-weight:700;color:#64748b;">Tutor Submitted:</span>' +
@@ -213,7 +250,7 @@
                             '<span style="font-weight:700;color:#64748b;">Academic Review:</span>' +
                             '<span style="font-weight:600;color:#1e293b;">Verified &amp; Standardized</span>' +
                             '<span style="font-weight:700;color:#64748b;">Director Approval:</span>' +
-                            '<span style="font-weight:800;color:#059669;">&#10003; Approved by Academic Director</span>' +
+                            '<span style="font-weight:800;color:#059669;">&#10003; Approved by Director, STEMulus Innovations Limited</span>' +
                         '</div>' +
                     '</div>' +
 
@@ -239,17 +276,17 @@
 
                         '<!-- Director Signature -->' +
                         '<div style="text-align:right;">' +
-                            '<div style="font-family:\'Nunito\',cursive,serif;font-style:italic;font-size:1.15rem;font-weight:700;color:#1e293b;margin-bottom:0.25rem;">Academic Oversight Board</div>' +
+                            '<div style="font-family:\'Nunito\',cursive,serif;font-style:italic;font-size:1.15rem;font-weight:700;color:#1e293b;margin-bottom:0.25rem;">Director, STEMulus Innovations Limited</div>' +
                             '<div style="width:180px;height:1px;background:#cbd5e1;margin-left:auto;margin-bottom:0.35rem;"></div>' +
-                            '<div style="font-size:0.75rem;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;">Director of Academics</div>' +
-                            '<div style="font-size:0.72rem;color:#94a3b8;">STEMulus Innovations Ltd</div>' +
+                            '<div style="font-size:0.75rem;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;">Office of the Director</div>' +
+                            '<div style="font-size:0.72rem;color:#94a3b8;">STEMulus Innovations Limited</div>' +
                         '</div>' +
                     '</div>' +
 
                     '<!-- Bottom Micro-Footer -->' +
                     '<div style="margin-top:1.5rem;padding-top:0.75rem;border-top:1px dashed #e2e8f0;display:flex;justify-content:space-between;font-size:0.7rem;color:#94a3b8;">' +
-                        '<div>stemuluskidstech.com &middot; info@stemuluskidstech.com &middot; +234 705 246 6716</div>' +
-                        '<div>This official progress evaluation is issued under the academic authority of STEMulus Innovations LTD.</div>' +
+                        '<div>stemuluskidstech.com &middot; admin@stemuluskidstech.com &middot; 09067521562 / 07052466716</div>' +
+                        '<div>This official progress evaluation is issued under the academic authority of STEMulus Innovations Limited.</div>' +
                     '</div>' +
 
                 '</div>'

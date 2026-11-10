@@ -78,17 +78,17 @@ publicPages.forEach(file => {
   }
 
   // 6. Proprietary SVG Icons Linked Check
-  if (!content.includes('stemulus-icons.js')) {
+  if (!content.includes('stemulus-icons.js') && !content.includes('stemulus-icons.min.js')) {
     errors.push('Missing stemulus-icons.js link');
   }
 
   // 7. Scroll Choreography Linked Check
-  if (!content.includes('scroll-choreography.js')) {
+  if (!content.includes('scroll-choreography.js') && !content.includes('scroll-choreography.min.js')) {
     errors.push('Missing scroll-choreography.js link');
   }
 
   // 8. Interactive Engine Linked Check
-  if (!content.includes('stemulus-interactive.js')) {
+  if (!content.includes('stemulus-interactive.js') && !content.includes('stemulus-interactive.min.js')) {
     errors.push('Missing stemulus-interactive.js link');
   }
 

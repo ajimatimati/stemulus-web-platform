@@ -60,7 +60,7 @@ const SuccessFeedback = (function() {
             position: absolute;
             width: 35px;
             height: 18px;
-            border-left: 4px solid white;
+            border: 1px solid #e2e8f0;
             border-bottom: 4px solid white;
             top: 50%;
             left: 50%;

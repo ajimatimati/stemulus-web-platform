@@ -512,6 +512,38 @@
       position: relative;
       z-index: 3;
     }
+
+    /* ── OFFICIAL LOGO SECURITY WATERMARK ── */
+    .cert-watermark-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      user-select: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .cert-watermark-img {
+      max-width: 320px;
+      max-height: 320px;
+      width: 40%;
+      height: auto;
+      object-fit: contain;
+      transform: translateY(14px);
+      transition: opacity 0.3s ease;
+    }
+    .explorers-watermark {
+      opacity: 0.046;
+      filter: grayscale(100%) brightness(1.06);
+      mix-blend-mode: multiply;
+    }
+    .vanguard-watermark {
+      opacity: 0.04;
+      filter: grayscale(100%) contrast(1.12);
+      mix-blend-mode: multiply;
+    }
     .explorers-head-crest {
       display: flex;
       flex-direction: column;
@@ -860,6 +892,18 @@
       body { background: #fff !important; }
       header, .cert-actions, .cert-meta-strip, .no-print { display: none !important; }
       .cert-paper { box-shadow: none !important; border-radius: 0 !important; }
+      .cert-watermark-wrap {
+        display: flex !important;
+        visibility: visible !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .explorers-watermark {
+        opacity: 0.052 !important;
+      }
+      .vanguard-watermark {
+        opacity: 0.048 !important;
+      }
     }
 
     /* ── RESPONSIVE ── */
@@ -979,14 +1023,14 @@
               <div style="display:flex;align-items:center;gap:6px;font-weight:800;font-size:0.8rem;color:#facc15;">
                 <span>🧒</span> Explorers Track
               </div>
-              <p style="font-size:0.68rem;color:rgba(255,255,255,0.65);margin-top:3px;line-height:1.3;">Ages 5–12 · Wave guilloche, playful doodles, cap &amp; rosette</p>
+              <p style="font-size:0.68rem;color:rgba(255,255,255,0.65);margin-top:3px;line-height:1.3;">Ages 5 to 12 · Wave guilloche, playful doodles, cap &amp; rosette</p>
             </div>
             <div id="btn-tmpl-vanguard" class="template-choice-btn" onclick="setFormTemplate('vanguard')">
               <input type="radio" name="tmpl_choice" id="radio-vanguard" value="vanguard" class="sr-only">
               <div style="display:flex;align-items:center;gap:6px;font-weight:800;font-size:0.8rem;color:#e2e8f0;">
                 <span>🚀</span> Vanguard Track
               </div>
-              <p style="font-size:0.68rem;color:rgba(255,255,255,0.65);margin-top:3px;line-height:1.3;">Ages 12–18 · Sleek tech skyline, black framing &amp; gear seal</p>
+              <p style="font-size:0.68rem;color:rgba(255,255,255,0.65);margin-top:3px;line-height:1.3;">Ages 12 to 18 · Sleek tech skyline, black framing &amp; gear seal</p>
             </div>
           </div>
         </div>
@@ -1127,7 +1171,7 @@
             Live Certificate Canvas
           </p>
           <span id="preview-template-tag" style="font-size:0.68rem;padding:3px 12px;border-radius:20px;background:rgba(234,179,8,0.2);color:#facc15;font-weight:700;border:1px solid rgba(234,179,8,0.3);">
-            Explorers Track (Ages 5–12)
+            Explorers Track (Ages 5 to 12)
           </span>
         </div>
 
@@ -1184,6 +1228,11 @@
                 </g>
               </svg>
 
+              <!-- Faint Official Logo Security Watermark -->
+              <div class="cert-watermark-wrap" aria-hidden="true">
+                <img src="logo.png" alt="" class="cert-watermark-img explorers-watermark">
+              </div>
+
               <div class="explorers-card-inner">
                 <!-- Header: Arched Text & Laurel Crest -->
                 <div class="explorers-head-crest">
@@ -1214,7 +1263,7 @@
                 <div class="explorers-student-name" id="exp-student-name">Student Name</div>
 
                 <p class="explorers-narrative">
-                  has completed all the requirements at <strong>STEMulus Kids Tech</strong> in <strong id="exp-program-name">Program Title</strong> with the distinction grade of <strong id="exp-grade" style="color:#d97706;">Distinction</strong> and is awarded this Certificate of Achievement. Great job! We're so proud of your hard work—keep learning, growing, and shining bright!
+                  has completed all the requirements at <strong>STEMulus Kids Tech</strong> in <strong id="exp-program-name">Program Title</strong> with the distinction grade of <strong id="exp-grade" style="color:#d97706;">Distinction</strong> and is awarded this Certificate of Achievement. Great job! We're so proud of your hard work: keep learning, growing, and shining bright!
                 </p>
 
                 <!-- Footer: Graduation Cap, Signatures, Golden Rosette & QR -->
@@ -1341,6 +1390,11 @@
                 </g>
               </svg>
 
+              <!-- Faint Official Logo Security Watermark -->
+              <div class="cert-watermark-wrap" aria-hidden="true">
+                <img src="logo.png" alt="" class="cert-watermark-img vanguard-watermark">
+              </div>
+
               <div class="vanguard-inner">
                 <!-- Top Row: Open Bracket Header + STEMulus Logo -->
                 <div class="vanguard-header-row">
@@ -1365,7 +1419,7 @@
                 <div class="vanguard-center-wrap">
                   <div class="vanguard-student-name" id="van-student-name">Student Name</div>
                   <div>
-                    <span class="vanguard-date-pill" id="van-date-pill">COMPLETED — SEPTEMBER 22, 2026</span>
+                    <span class="vanguard-date-pill" id="van-date-pill">COMPLETED: SEPTEMBER 22, 2026</span>
                   </div>
                   <p class="vanguard-narrative">
                     A verified credential certifying that the candidate has demonstrated proficiency in <strong id="van-program-name">Program Title</strong> with the distinction grade of <strong id="van-grade" style="color:var(--orange);">Distinction</strong>, fulfilling all rigorous algorithmic benchmarks, code reviews, and capstone production projects under STEMulus Kids Tech.
@@ -1529,8 +1583,8 @@
 <!-- Firebase + Engine + QR -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="assets/js/firebase-config.min.js" defer></script>
-<script src="assets/js/dashboard-engine.min.js" defer></script>
+<script src="assets/js/firebase-config.min.js"></script>
+<script src="assets/js/dashboard-engine.min.js"></script>
 
 <script>
 // ── State ──────────────────────────────────────────────────────────
@@ -1552,12 +1606,12 @@ function setFormTemplate(type, isManual = true) {
     btnExp.classList.add('active');
     btnVan.classList.remove('active');
     radExp.checked = true;
-    if (isManual) badge.textContent = "Manual: Explorers Track (Ages 5–12)";
+    if (isManual) badge.textContent = "Manual: Explorers Track (Ages 5 to 12)";
   } else {
     btnVan.classList.add('active');
     btnExp.classList.remove('active');
     radVan.checked = true;
-    if (isManual) badge.textContent = "Manual: Vanguard Track (Ages 12–18)";
+    if (isManual) badge.textContent = "Manual: Vanguard Track (Ages 12 to 18)";
   }
 }
 
@@ -1574,7 +1628,7 @@ function switchPreviewTemplate(type) {
   if (type === 'explorers') {
     viewExp.style.display = 'block';
     viewVan.style.display = 'none';
-    tag.textContent = 'Explorers Track (Ages 5–12)';
+    tag.textContent = 'Explorers Track (Ages 5 to 12)';
     tag.style.background = 'rgba(234,179,8,0.2)';
     tag.style.color = '#facc15';
     tag.style.borderColor = 'rgba(234,179,8,0.3)';
@@ -1585,7 +1639,7 @@ function switchPreviewTemplate(type) {
   } else {
     viewExp.style.display = 'none';
     viewVan.style.display = 'block';
-    tag.textContent = 'Vanguard Track (Ages 12–18)';
+    tag.textContent = 'Vanguard Track (Ages 12 to 18)';
     tag.style.background = 'rgba(255,255,255,0.15)';
     tag.style.color = '#f8fafc';
     tag.style.borderColor = 'rgba(255,255,255,0.25)';
@@ -1619,10 +1673,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isExplorers) {
       setFormTemplate('explorers', false);
-      badge.textContent = "Auto-detected: Explorers Track (Ages 5–12)";
+      badge.textContent = "Auto-detected: Explorers Track (Ages 5 to 12)";
     } else {
       setFormTemplate('vanguard', false);
-      badge.textContent = "Auto-detected: Vanguard Track (Ages 12–18)";
+      badge.textContent = "Auto-detected: Vanguard Track (Ages 12 to 18)";
     }
   });
 
@@ -1642,7 +1696,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ── Load & Render ──────────────────────────────────────────────────
 function loadLedger() {
-  allCerts = DashboardEngine.getCertificates();
+  if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getCertificates) {
+    allCerts = DashboardEngine.getCertificates();
+  } else {
+    try {
+      const raw = localStorage.getItem('stemulus_db');
+      allCerts = (raw && JSON.parse(raw).certificates) || [];
+    } catch(e) {
+      allCerts = [];
+    }
+  }
   renderLedger(filterCerts(''));
   updateStats();
 }
@@ -1758,7 +1821,7 @@ function handleFormSubmit(e) {
   fitCertificateName(document.getElementById('van-student-name'), studentName, 4.4, 2.1, 14);
   document.getElementById('van-program-name').textContent = programName;
   document.getElementById('van-grade').textContent = grade;
-  document.getElementById('van-date-pill').textContent = ('COMPLETED — ' + formatDate(issueDate)).toUpperCase();
+  document.getElementById('van-date-pill').textContent = ('COMPLETED: ' + formatDate(issueDate)).toUpperCase();
   document.getElementById('van-tutor-name').textContent = tutor;
   document.getElementById('van-tutor-sig').textContent = tutor;
   document.getElementById('van-cred-id').textContent = credId;

@@ -1,5 +1,5 @@
 /**
- * STEMulus Kids Tech — Quiet Luxury & Architectural Design System
+ * STEMulus Kids Tech - Quiet Luxury & Architectural Design System
  * $150k Agency Tier: Apple/Linear/Stripe caliber.
  * Strict Anti-Pattern Eradication: Zero pulsing nodes, zero pill buttons/badges, zero border accents, zero 3D tilt cards, zero big-bezel frames.
  */
@@ -49,7 +49,7 @@
 }
 
 /* Eradicate colored edge border accents */
-.border-l-4,
+.border,
 .border-t-4,
 [style*="border-left:4px"],
 [style*="border-left: 4px"] {

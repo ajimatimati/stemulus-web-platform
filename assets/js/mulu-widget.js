@@ -1007,7 +1007,7 @@
         });
 
         return {
-          text: `🦉 **STEMulus Tuition & Enrollment Guidance:**\n\nBecause our curriculum is uniquely customized for each young creator—varying by **age tier (Ages 4-7, Ages 8-12, or Teens 13-17)**, **personalized learning track (1-on-1 private mentoring vs. collaborative cohort)**, and **geographic region (Nigeria NGN vs. International USD/GBP/EUR)**—I do not quote fixed prices or fee amounts directly.\n\nOur **Admissions & Academic Advisory Desk** provides exact, personalized fee schedules, family discounts, and international card checkout tailored specifically for **${student}**.\n\n📢 *I have notified the Admissions team of your inquiry!* You can connect directly via WhatsApp or review issued invoices in your Billing Vault:`,
+          text: `🦉 **STEMulus Tuition & Enrollment Guidance:**\n\nBecause our curriculum is uniquely customized for each young creator - varying by **age tier (Ages 4-7, Ages 8-12, or Teens 13-17)**, **personalized learning track (1-on-1 private mentoring vs. collaborative cohort)**, and **geographic region (Nigeria NGN vs. International USD/GBP/EUR)** - I do not quote fixed prices or fee amounts directly.\n\nOur **Admissions & Academic Advisory Desk** provides exact, personalized fee schedules, family discounts, and international card checkout tailored specifically for **${student}**.\n\n📢 *I have notified the Admissions team of your inquiry!* You can connect directly via WhatsApp or review issued invoices in your Billing Vault:`,
           actions: [
             { action: 'contact_admissions', label: 'Chat with Admissions on WhatsApp 💬' },
             { action: 'open_billing', label: 'View Issued Invoices in Vault 💳' }
@@ -1040,6 +1040,21 @@
 
     // --- AI REASONING & DUAL BACKBONE ---
     async generateResponse(query) {
+      // 0. Smart Admin Assistant Operational Command Execution (Schedule Mutation, Direct Tutor Messaging, Autonomous Reschedule Negotiation)
+      if (typeof OperationsManagerEngine !== 'undefined' && typeof OperationsManagerEngine.executeSmartAdminCommand === 'function') {
+        const isOperationalPrompt = /\b(move\b.*\bclass|reschedule\b.*\bsession|wants\s+to\s+move|availability\s+matrix|text\s+|message\s+|ask\s+why.*attendance)\b/i.test(query || '');
+        if ((this.role === 'admin' || this.currentPortal === 'admin') && isOperationalPrompt) {
+          const cmdResult = OperationsManagerEngine.executeSmartAdminCommand(query);
+          if (cmdResult && cmdResult.handled) {
+            return {
+              text: cmdResult.responseMarkdown,
+              actions: cmdResult.actions || [],
+              commandResult: cmdResult
+            };
+          }
+        }
+      }
+
       // 1. Situation-Aware Special Intent Classifier (Pricing, Safeguarding, Urgent Ops)
       const specialResponse = this.checkSpecialIntents(query);
       if (specialResponse) {
@@ -1334,7 +1349,9 @@ Hey there! Here is what *${student}* conquered in today's coding session:
         }
 
         case 'open_classroom': {
-          window.location.href = 'join-class.html';
+          var session = (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.getSession === 'function') ? DashboardEngine.getSession() : null;
+          var target = (session && session.role === 'tutor') ? 'tutor-dashboard.html' : 'parent-dashboard.html';
+          window.location.href = target;
           break;
         }
 

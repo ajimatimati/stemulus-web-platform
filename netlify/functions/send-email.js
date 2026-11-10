@@ -21,7 +21,7 @@
 
 const ADMIN_EMAIL = 'admin@stemuluskidstech.com';
 const ADMIN_ALERT_RECIPIENTS = ['admin@stemuluskidstech.com', 'stemuluskidstech@gmail.com'];
-const FROM_ADDRESS = process.env.RESEND_FROM_EMAIL || 'STEMulus Kids Tech <hello@stemuluskidstech.com>';
+const FROM_ADDRESS = process.env.RESEND_FROM_EMAIL || 'STEMulus Innovation Limited <admin@stemuluskidstech.com>';
 const SITE_URL = 'https://stemuluskidstech.com';
 const WHATSAPP_NUMBER = '2347052466716';
 
@@ -135,19 +135,19 @@ function tplEnrollmentAdmin(d) {
   const children = (d.children || []).map((c, i) => `
     <tr>
       <td style="padding:10px 14px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Child #${i + 1}</td>
-      <td style="padding:10px 14px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};"><strong>${c.firstName} ${c.lastName}</strong> &mdash; Age ${c.age}${c.birthday ? ` (DOB: ${c.birthday})` : ''}, Program: ${c.program}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};"><strong>${c.firstName} ${c.lastName}</strong> - Age ${c.age}${c.birthday ? ` (DOB: ${c.birthday})` : ''}, Program: ${c.program}</td>
     </tr>
   `).join('');
 
   const primaryChildRow = (!d.children || !d.children.length) ? `
     <tr>
       <td style="padding:10px 14px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};">Student Details</td>
-      <td style="padding:10px 14px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};"><strong>${d.studentFirstName} ${d.studentLastName}</strong> &mdash; Age ${d.studentAge}${d.studentBirthday ? ` (DOB: ${d.studentBirthday})` : ''}, Program: ${d.program || 'Not specified'}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;color:${C.navy};"><strong>${d.studentFirstName} ${d.studentLastName}</strong> - Age ${d.studentAge}${d.studentBirthday ? ` (DOB: ${d.studentBirthday})` : ''}, Program: ${d.program || 'Not specified'}</td>
     </tr>
   ` : '';
 
   return {
-    subject: `[New Enrollment] ${d.studentFirstName} ${d.studentLastName} &mdash; ${d.enrollmentId}`,
+    subject: `[New Enrollment] ${d.studentFirstName} ${d.studentLastName} - ${d.enrollmentId}`,
     html: shell('New Student Enrollment', `
       <h1>New Student Enrollment Received</h1>
       <p>A new student enrollment has been recorded through the admissions platform.</p>
@@ -244,7 +244,7 @@ function tplEnrollmentParent(d) {
 
 function tplBookingAdmin(d) {
   return {
-    subject: `[Trial Booking] ${d.studentName} &mdash; ${d.bookingId}`,
+    subject: `[Trial Booking] ${d.studentName} - ${d.bookingId}`,
     html: shell('Trial Class Booking', `
       <h1>New Trial Class Booking</h1>
       <p>A new trial lesson request has been submitted.</p>
@@ -666,39 +666,36 @@ function extractRawMeetUrl(d) {
 }
 
 function buildPortalClassroomUrl(d, role) {
-  if (d.portalLaunchUrl && String(d.portalLaunchUrl).includes('join-class.html')) {
-    return String(d.portalLaunchUrl).trim();
-  }
-  if (d.link && String(d.link).includes('join-class.html')) {
-    return String(d.link).trim();
-  }
+  if (d && d.oneClickJoinUrl) return d.oneClickJoinUrl;
   const rawMeetUrl = extractRawMeetUrl(d);
-  const scheduleId = d.scheduleId || d.id || ('ses-' + String(d.studentName || 'class').toLowerCase().replace(/[^a-z0-9]+/g, '-'));
-  const params = new URLSearchParams();
-  params.set('id', String(scheduleId));
-  params.set('role', role === 'tutor' ? 'tutor' : 'student');
-  if (d.studentId) params.set('studentId', String(d.studentId));
-  if (d.studentName) params.set('student', String(d.studentName));
-  if (d.tutorName || d.mentorName) params.set('tutor', String(d.tutorName || d.mentorName));
-  if (d.tutorEmail) params.set('tutorEmail', String(d.tutorEmail));
-  if (d.courseName || d.course) params.set('course', String(d.courseName || d.course));
-  if (d.rawDate) params.set('date', String(d.rawDate));
-  if (d.classTime || d.time) params.set('time', String(d.classTime || d.time));
-  params.set('url', rawMeetUrl);
-  return `${SITE_URL}/join-class.html?${params.toString()}`;
+  const qs = [
+    'meet=' + encodeURIComponent(rawMeetUrl),
+    'sid=' + encodeURIComponent((d && d.scheduleId) || ''),
+    'role=' + encodeURIComponent(role || 'tutor'),
+    'tutor=' + encodeURIComponent((d && (d.tutorName || d.mentorName)) || 'Mentor'),
+    'student=' + encodeURIComponent((d && d.studentName) || 'Student'),
+    'course=' + encodeURIComponent((d && (d.courseName || d.course)) || 'Coding Session'),
+    'date=' + encodeURIComponent((d && (d.rawDate || d.classDate || d.date)) || ''),
+    'time=' + encodeURIComponent((d && (d.classTime || d.time)) || '')
+  ].join('&');
+  return `${SITE_URL}/.netlify/functions/join-session?${qs}`;
 }
 
 function tplReminder(d) {
-  const label = d.reminderType === '24h' ? '24-Hour' : (d.reminderType === '10m' ? '10-Minute' : '1-Hour');
-  const isUrgent = d.reminderType === '10m';
+  const is5m = d.reminderType === '5m';
+  const is10m = d.reminderType === '10m';
+  const isUrgent = is5m || is10m;
+  const label = d.reminderType === '24h' ? '24-Hour' : (is5m ? '5-Minute' : (is10m ? '10-Minute' : '1-Hour'));
   const rawMeetUrl = extractRawMeetUrl(d);
-  const portalLaunchUrl = buildPortalClassroomUrl(d, 'student');
+  const oneClickJoinUrl = buildPortalClassroomUrl(d, 'student');
   const isMeet = rawMeetUrl.includes('meet.google.com');
   const isZoom = rawMeetUrl.includes('zoom.us');
   const platformName = isMeet ? 'Google Meet' : (isZoom ? 'Zoom' : 'Live Classroom');
 
   let subjectTitle;
-  if (isUrgent) {
+  if (is5m) {
+    subjectTitle = `[STARTING IN 5 MINS - JOIN NOW] ${d.studentName} - ${d.courseName || d.course || 'Live Coding Class'}`;
+  } else if (is10m) {
     subjectTitle = `[STARTING IN 10 MINS] Live Coding Class: ${d.studentName} with ${d.mentorName || 'Mentor'}`;
   } else if (d.reminderType === '1h') {
     subjectTitle = `[Class in 1 Hour] ${d.studentName}'s coding session at ${d.classTime || d.time} (WAT)`;
@@ -709,33 +706,32 @@ function tplReminder(d) {
   return {
     subject: subjectTitle,
     html: shell(`${label} Class Reminder`, `
-      <h1>${isUrgent ? 'Class Launching in 10 Minutes' : label + ' Session Reminder'}</h1>
+      <h1>${is5m ? 'Class Starting in 5 Minutes - Join Now' : (is10m ? 'Class Launching in 10 Minutes' : label + ' Session Reminder')}</h1>
       <p>Dear <strong>${d.parentName || 'Parent'}</strong>,</p>
-      <p>${isUrgent ? `The 1-on-1 live coding session for <strong>${d.studentName}</strong> is launching in 10 minutes.` : `This is your automated schedule reminder that <strong>${d.studentName}</strong> has an upcoming 1-on-1 coding class scheduled.`}</p>
+      <p>${is5m ? `The 1-on-1 live coding session for <strong>${d.studentName}</strong> (${d.courseName || d.course || 'Coding Session'}) starts in <strong>5 minutes</strong>.` : (is10m ? `The 1-on-1 live coding session for <strong>${d.studentName}</strong> (${d.courseName || d.course || 'Coding Session'}) is launching in <strong>10 minutes</strong>.` : `This is your automated schedule reminder that <strong>${d.studentName}</strong> has an upcoming 1-on-1 coding class scheduled.`)}</p>
 
-      <!-- Prominent Strategic Meeting Room Card -->
-      <div style="background-color:${C.navy};border-radius:14px;padding:22px;margin:24px 0;text-align:center;box-shadow:0 8px 24px rgba(15,23,42,0.15);">
-        <div style="display:inline-block;background-color:rgba(255,255,255,0.15);color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 12px;border-radius:999px;margin-bottom:12px;">
-          ${platformName} Classroom &bull; Portal Companion Active
+      <!-- Clean Light-Theme 3D Minimalist Playful Meeting Room Card -->
+      <div style="background-color:${C.white};border:2px solid ${C.slate200};border-bottom:4px solid #CBD5E1;border-radius:20px;padding:24px;margin:24px 0;text-align:center;">
+        <div style="display:inline-block;background-color:#ECFDF5;color:#047857;border:1px solid #A7F3D0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:5px 14px;border-radius:999px;margin-bottom:12px;">
+          ${is5m ? 'Class in 5 Mins &bull; Room Open' : (is10m ? 'Class in 10 Mins &bull; Room Ready' : platformName + ' Classroom &bull; 1-Click Direct Join')}
         </div>
-        <h3 style="color:${C.white};font-size:18px;font-weight:800;margin:0 0 14px 0;letter-spacing:-0.01em;">
-          ${isUrgent ? 'The Meeting Room Is Open &bull; Join Now' : '1-Click Portal Classroom Launch'}
+        <h3 style="color:${C.navy};font-size:20px;font-weight:800;margin:0 0 8px 0;letter-spacing:-0.01em;">
+          ${d.studentName} &bull; ${d.courseName || d.course || 'Live Coding Session'}
         </h3>
-        <div style="margin:14px 0;">
-          <a class="btn-primary" href="${portalLaunchUrl}" target="_blank" style="display:inline-block;background-color:${C.orange};color:${C.white};font-size:15px;font-weight:800;padding:14px 34px;border-radius:10px;text-decoration:none;letter-spacing:0.02em;box-shadow:0 4px 14px rgba(244,96,12,0.4);">
-            ${isUrgent ? 'Launch Live Classroom Now &rarr;' : 'Join ' + platformName + ' via Portal &rarr;'}
+        <p style="font-size:13px;color:${C.slate600};margin:0 auto 18px auto;max-width:460px;line-height:1.5;">
+          ${is5m ? 'Click Join Now below to enter the Google Meet classroom immediately in 1 click.' : 'Click the button below to launch straight into the Google Meet session in 1 click.'}
+        </p>
+        <div style="margin:16px 0;">
+          <a class="btn-primary" href="${oneClickJoinUrl}" target="_blank" style="display:inline-block;background-color:${is5m ? C.emerald : C.orange};color:${C.white};font-size:15px;font-weight:800;padding:14px 34px;border-radius:14px;border:2px solid ${is5m ? C.emeraldDark : C.orangeDark};border-bottom:4px solid ${is5m ? '#065F46' : '#9A3412'};text-decoration:none;letter-spacing:0.02em;">
+            ${is5m ? 'Join Now &rarr;' : (is10m ? 'Join Class Now &rarr;' : 'Join ' + platformName + ' Class &rarr;')}
           </a>
         </div>
-        <p style="font-size:12px;color:#CBD5E1;margin:12px 0 4px 0;line-height:1.45;">
-          Portal Session Launch Link (Activates Live Attendance &amp; ${platformName}):<br>
-          <a href="${portalLaunchUrl}" target="_blank" style="color:#60A5FA;font-weight:700;text-decoration:underline;word-break:break-all;">${portalLaunchUrl}</a>
-        </p>
-        <p style="font-size:11px;color:#94A3B8;margin:6px 0 0 0;line-height:1.4;">
-          Direct ${platformName} Room: <a href="${rawMeetUrl}" target="_blank" style="color:#94A3B8;text-decoration:underline;word-break:break-all;">${rawMeetUrl}</a>
+        <p style="font-size:12px;color:${C.slate600};margin:14px 0 4px 0;line-height:1.45;">
+          Meeting Link: <a href="${rawMeetUrl}" target="_blank" style="color:${C.blue};font-weight:700;text-decoration:underline;word-break:break-all;">${rawMeetUrl}</a>
         </p>
       </div>
 
-      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+      <div style="background-color:${C.slate50};border:2px solid ${C.slate200};border-bottom:4px solid #CBD5E1;border-radius:18px;padding:22px;margin:22px 0;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Student</td>
@@ -765,25 +761,29 @@ function tplReminder(d) {
       </div>
 
       <p style="font-size:13px;color:${C.slate500};line-height:1.5;">
-        <strong>Readiness Checklist:</strong> Please ensure the student has their laptop charged, microphone/webcam connected, and clicks the Portal Session Launch Link 5 minutes prior to start time so the automated classroom radar registers their arrival.
+        <strong>Readiness Checklist:</strong> Please ensure the student has their laptop charged, microphone/webcam connected, and clicks the Join button 5 minutes prior to start time.
       </p>
     `)
   };
 }
 
 function tplTutorReminder(d) {
-  const label = d.reminderType === '24h' ? '24-Hour' : (d.reminderType === '10m' ? '10-Minute' : '1-Hour');
-  const isUrgent = d.reminderType === '10m';
+  const is5m = d.reminderType === '5m';
+  const is10m = d.reminderType === '10m';
+  const isUrgent = is5m || is10m;
+  const label = d.reminderType === '24h' ? '24-Hour' : (is5m ? '5-Minute' : (is10m ? '10-Minute' : '1-Hour'));
   const rawMeetUrl = extractRawMeetUrl(d);
-  const portalLaunchUrl = buildPortalClassroomUrl(d, 'tutor');
+  const oneClickJoinUrl = buildPortalClassroomUrl(d, 'tutor');
   const isMeet = rawMeetUrl.includes('meet.google.com');
   const isZoom = rawMeetUrl.includes('zoom.us');
   const platformName = isMeet ? 'Google Meet' : (isZoom ? 'Zoom' : 'Live Classroom');
   const attendanceUrl = `${SITE_URL}/tutor-attendance-create.html?scheduleId=${encodeURIComponent(d.scheduleId || '')}&studentId=${encodeURIComponent(d.studentId || '')}&date=${encodeURIComponent(d.rawDate || '')}&course=${encodeURIComponent(d.courseName || d.course || '')}`;
 
   let subjectTitle;
-  if (isUrgent) {
-    subjectTitle = `[STARTING IN 10 MINS] Faculty Session: ${d.studentName} at ${d.classTime || d.time}`;
+  if (is5m) {
+    subjectTitle = `[CLASS IN 5 MINS - JOIN NOW] ${d.studentName} - ${d.courseName || d.course || 'Coding Class'} (${d.classTime || d.time})`;
+  } else if (is10m) {
+    subjectTitle = `[CLASS IN 10 MINS] ${d.studentName} - ${d.courseName || d.course || 'Coding Class'} (${d.classTime || d.time})`;
   } else if (d.reminderType === '1h') {
     subjectTitle = `[Class in 1 Hour] Faculty Briefing: 1-on-1 with ${d.studentName} at ${d.classTime || d.time}`;
   } else {
@@ -793,36 +793,32 @@ function tplTutorReminder(d) {
   return {
     subject: subjectTitle,
     html: shell(`${label} Faculty Reminder`, `
-      <h1>${isUrgent ? 'Session Launching in 10 Minutes' : label + ' Session Reminder'}</h1>
+      <h1>${is5m ? `${d.studentName} - Class in 5 Mins` : (is10m ? `${d.studentName} - Class in 10 Mins` : label + ' Session Reminder')}</h1>
       <p>Dear <strong>${d.tutorName || d.mentorName || 'Mentor'}</strong>,</p>
-      <p>${isUrgent ? `Your scheduled 1-on-1 teaching session with <strong>${d.studentName}</strong> starts in 10 minutes.` : `This is your automated instructional reminder for your upcoming session with <strong>${d.studentName}</strong>.`}</p>
+      <p>${is5m ? `Your 1-on-1 class with <strong>${d.studentName}</strong> (${d.courseName || d.course || 'Coding Session'}) starts in <strong>5 minutes</strong>. Click <strong>Join Now</strong> below to enter Google Meet immediately.` : (is10m ? `Your 1-on-1 class with <strong>${d.studentName}</strong> (${d.courseName || d.course || 'Coding Session'}) starts in <strong>10 minutes</strong>.` : `This is your automated instructional reminder for your upcoming session with <strong>${d.studentName}</strong>.`)}</p>
 
-      <!-- Prominent Strategic Meeting Room Card for Tutor -->
-      <div style="background-color:${C.navy};border-radius:14px;padding:22px;margin:24px 0;text-align:center;box-shadow:0 8px 24px rgba(15,23,42,0.15);">
-        <div style="display:inline-block;background-color:rgba(255,255,255,0.15);color:${C.white};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:4px 12px;border-radius:999px;margin-bottom:12px;">
-          ${platformName} Faculty Room &bull; Auto-Activates Portal Telemetry
+      <!-- Clean Light-Theme 3D Minimalist Playful Meeting Room Card for Tutor -->
+      <div style="background-color:${C.white};border:2px solid ${C.slate200};border-bottom:4px solid #CBD5E1;border-radius:20px;padding:24px;margin:24px 0;text-align:center;">
+        <div style="display:inline-block;background-color:${is5m ? '#ECFDF5' : '#EFF6FF'};color:${is5m ? '#047857' : '#1D4ED8'};border:1px solid ${is5m ? '#A7F3D0' : '#BFDBFE'};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;padding:5px 14px;border-radius:999px;margin-bottom:12px;">
+          ${is5m ? 'Starting in 5 Minutes &bull; 1-Click Direct Join' : (is10m ? 'Starting in 10 Minutes &bull; Meeting Link Ready' : platformName + ' Faculty Room &bull; 1-Click Direct Join')}
         </div>
-        <h3 style="color:${C.white};font-size:18px;font-weight:800;margin:0 0 10px 0;letter-spacing:-0.01em;">
-          ${isUrgent ? 'Launch Classroom via Portal &bull; Student Waiting' : '1-Click Faculty Portal Classroom Launch'}
+        <h3 style="color:${C.navy};font-size:20px;font-weight:800;margin:0 0 8px 0;letter-spacing:-0.01em;">
+          ${d.studentName} &bull; ${d.courseName || d.course || 'Coding Session'}
         </h3>
-        <p style="font-size:12px;color:#CBD5E1;margin:0 auto 16px auto;max-width:460px;line-height:1.5;">
-          Clicking the button or link below opens your <strong>STEMulus Classroom Companion</strong> (activating live attendance radar, duration tracking &amp; safeguarding) and launches your <strong>${platformName}</strong> session automatically.
+        <p style="font-size:13px;color:${C.slate600};margin:0 auto 18px auto;max-width:460px;line-height:1.5;">
+          ${is5m ? 'Class in 5 mins! Click the Join Now button below to launch straight into Google Meet (automatically logs your arrival without needing to open the portal).' : 'Click below in 1 click to launch straight into Google Meet (automatically logs your arrival without needing to open the portal).'}
         </p>
-        <div style="margin:14px 0;">
-          <a class="btn-primary" href="${portalLaunchUrl}" target="_blank" style="display:inline-block;background-color:${C.blue};color:${C.white};font-size:15px;font-weight:800;padding:14px 34px;border-radius:10px;text-decoration:none;letter-spacing:0.02em;box-shadow:0 4px 14px rgba(37,99,235,0.4);">
-            ${isUrgent ? 'Launch Classroom &amp; Activate Portal Now &rarr;' : 'Open ' + platformName + ' via Portal Companion &rarr;'}
+        <div style="margin:16px 0;">
+          <a class="btn-primary" href="${oneClickJoinUrl}" target="_blank" style="display:inline-block;background-color:${is5m ? C.emerald : C.orange};color:${C.white};font-size:15px;font-weight:800;padding:14px 36px;border-radius:14px;border:2px solid ${is5m ? C.emeraldDark : C.orangeDark};border-bottom:4px solid ${is5m ? '#065F46' : '#9A3412'};text-decoration:none;letter-spacing:0.02em;">
+            ${is5m ? 'Join Now &rarr;' : 'Join Class Now &rarr;'}
           </a>
         </div>
-        <p style="font-size:12px;color:#CBD5E1;margin:14px 0 4px 0;line-height:1.45;">
-          Exact Portal Session Link (Click directly from email &mdash; no portal login required):<br>
-          <a href="${portalLaunchUrl}" target="_blank" style="color:#60A5FA;font-weight:700;text-decoration:underline;word-break:break-all;">${portalLaunchUrl}</a>
-        </p>
-        <p style="font-size:11px;color:#94A3B8;margin:6px 0 0 0;line-height:1.4;">
-          Backup Direct ${platformName} URL: <a href="${rawMeetUrl}" target="_blank" style="color:#94A3B8;text-decoration:underline;word-break:break-all;">${rawMeetUrl}</a>
+        <p style="font-size:12px;color:${C.slate600};margin:14px 0 4px 0;line-height:1.45;">
+          Meeting Link: <a href="${rawMeetUrl}" target="_blank" style="color:${C.blue};font-weight:700;text-decoration:underline;word-break:break-all;">${rawMeetUrl}</a>
         </p>
       </div>
 
-      <div style="background-color:${C.slate50};border:1px solid ${C.slate200};border-radius:14px;padding:22px;margin:22px 0;">
+      <div style="background-color:${C.slate50};border:2px solid ${C.slate200};border-bottom:4px solid #CBD5E1;border-radius:18px;padding:22px;margin:22px 0;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td style="padding:8px 12px;border-bottom:1px solid ${C.slate200};font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:700;color:${C.slate600};width:38%;">Student</td>
@@ -848,7 +844,7 @@ function tplTutorReminder(d) {
       </div>
 
       <p style="font-size:13px;color:${C.slate600};line-height:1.5;">
-        <strong>Faculty Protocol:</strong> Click the Portal Session Link above 5 minutes early and keep the companion tab open while teaching. Submit session attendance immediately upon class completion via the <a href="${attendanceUrl}" style="color:${C.orange};font-weight:700;">1-Click Attendance Log</a> to ensure timely administrative payroll verification.
+        <strong>Faculty Protocol:</strong> Click Join Now above to enter Google Meet directly in 1 click. Submit session attendance upon class completion via the <a href="${attendanceUrl}" style="color:${C.orange};font-weight:700;">1-Click Attendance Log</a>.
       </p>
     `)
   };
@@ -920,7 +916,7 @@ function tplCertificate(d) {
 
 function tplCertificateDelivery(d) {
   return {
-    subject: `Official STEMulus Certificate of Completion &mdash; ${d.studentName}`,
+    subject: `Official STEMulus Certificate of Completion - ${d.studentName}`,
     html: shell('Certificate Delivery', `
       <h1>Congratulations, ${d.studentName}!</h1>
       <p>Dear <strong>${d.parentName}</strong>,</p>
@@ -999,10 +995,21 @@ function tplMonthlyReportParent(d) {
   const course = d.course || 'Coding & Robotics';
   const tutorName = d.tutorName || 'Assigned Instructor';
   const directorNote = d.directorNote || d.adminNotes || 'Student has demonstrated outstanding progress and problem-solving growth this month.';
+  const projectLinks = Array.isArray(d.completedProjectLinks)
+    ? d.completedProjectLinks.filter(Boolean)
+    : (d.completedProjectLinks ? String(d.completedProjectLinks).split(/[\n,]+/).map(s => s.trim()).filter(Boolean) : []);
+  const projectLinksHtml = projectLinks.length > 0
+    ? `<div style="border-top:1px solid #E2E8F0;padding-top:12px;margin-top:12px;font-size:13px;color:#334155;">
+         <strong>Completed Project Links:</strong>
+         <ul style="margin:6px 0 0 18px;padding:0;">
+           ${projectLinks.map(u => `<li style="margin-bottom:4px;"><a href="${u}" target="_blank" style="color:#2563EB;font-weight:600;word-break:break-all;">${u}</a></li>`).join('')}
+         </ul>
+       </div>`
+    : '';
 
   return {
     subject: `Official Academic Progress Report: ${studentName} (${month})`,
-    html: shell(`Official Progress Report — ${studentName}`, `
+    html: shell(`Official Progress Report: ${studentName}`, `
       <div style="margin-bottom:20px;">
         <span class="badge-pill" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;">ACADEMIC BOARD EVALUATION</span>
       </div>
@@ -1010,7 +1017,7 @@ function tplMonthlyReportParent(d) {
       <p>Dear Parent,</p>
       <p>The monthly academic evaluation for <strong>${studentName}</strong> covering <strong>${month}</strong> in <strong>${course}</strong> has been reviewed and officially approved by the Academic Director.</p>
       
-      <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-left:4px solid #059669;border-radius:12px;padding:20px;margin:24px 0;">
+      <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:20px;margin:24px 0;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
           <div>
             <div style="font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:0.05em;">Overall Academic Grade</div>
@@ -1022,15 +1029,16 @@ function tplMonthlyReportParent(d) {
           </div>
         </div>
         <div style="border-top:1px solid #E2E8F0;padding-top:12px;font-size:13px;color:#334155;line-height:1.6;">
-          <strong>Director's Note:</strong> “${directorNote}”
+          <strong>Director's Note:</strong> "${directorNote}"
         </div>
+        ${projectLinksHtml}
       </div>
 
       <p>You can review the full evaluation metrics, mastered programming concepts, and print or download the official verification-stamped PDF report inside your parent portal.</p>
       <div style="margin:28px 0;">
         <a href="${SITE_URL}/parent-progress.html" class="btn-primary">View &amp; Download Official PDF Report</a>
       </div>
-      <p style="font-size:13px;color:#64748B;">If you have any questions regarding your child's curriculum milestone progression, our academic advisors are always available via WhatsApp at <strong>+234 705 246 6716</strong>.</p>
+      <p style="font-size:13px;color:#64748B;">If you have any questions regarding your child's curriculum milestone progression, contact our operations desk at <strong>09067521562</strong>, emergency hotline <strong>07052466716</strong>, or email <strong>admin@stemuluskidstech.com</strong>.</p>
     `)
   };
 }
@@ -1050,9 +1058,9 @@ function tplMonthlyReportRevision(d) {
       <p>Hello,</p>
       <p>Your submitted monthly evaluation report for <strong>${studentName}</strong> (${month}) requires revision prior to director approval and release to the parent.</p>
       
-      <div style="background:#FFF1F2;border:1px solid #FECDD3;border-left:4px solid #E11D48;border-radius:12px;padding:20px;margin:24px 0;">
+      <div style="background:#FFF1F2;border:1px solid #FECDD3;border-radius:12px;padding:20px;margin:24px 0;">
         <div style="font-size:11px;font-weight:800;color:#9F1239;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Admin Feedback &amp; Adjustments Needed:</div>
-        <div style="font-size:14px;color:#881337;font-style:italic;line-height:1.6;">“${reason}”</div>
+        <div style="font-size:14px;color:#881337;font-style:italic;line-height:1.6;">"${reason}"</div>
       </div>
 
       <p>Please log into your Tutor Portal to edit the report entries and resubmit for immediate review.</p>

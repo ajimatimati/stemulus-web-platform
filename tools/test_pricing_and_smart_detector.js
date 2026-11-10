@@ -113,6 +113,12 @@ async function main() {
     removeItem: (k) => { delete mockLocalStorage[k]; }
   };
 
+  const upcomingBdayDate = new Date();
+  upcomingBdayDate.setDate(upcomingBdayDate.getDate() + 3);
+  const upMonth = String(upcomingBdayDate.getMonth() + 1).padStart(2, '0');
+  const upDay = String(upcomingBdayDate.getDate()).padStart(2, '0');
+  const dynamicUpcomingBday = '1995-' + upMonth + '-' + upDay;
+
   const mockDB = {
     students: JSON.parse(JSON.stringify(students)),
     mentors: [
@@ -120,7 +126,7 @@ async function main() {
         id: 'mentor-1',
         name: 'Tola Tosin Ayanleke',
         email: 'tonetbod@gmail.com',
-        dateOfBirth: '1995-10-28',
+        dateOfBirth: dynamicUpcomingBday,
         phone: '+2348123456789'
       }
     ],

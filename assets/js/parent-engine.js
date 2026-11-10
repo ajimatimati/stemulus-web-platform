@@ -189,9 +189,10 @@ const ParentEngine = (function() {
             var allAtt = DashboardEngine.getAttendanceRecords() || [];
             var attList = Array.isArray(allAtt) ? allAtt : [];
             var attRecords = attList.filter(function(r) {
-                if (!r) return false;
+                if (!r || r.status !== 'approved') return false;
+                if (r.studentId && student.id) return r.studentId === student.id;
                 var rName = (r.studentName || '').toLowerCase().trim();
-                return (r.studentId === student.id || rName === fullName || (student.firstName && rName.startsWith(student.firstName.toLowerCase()))) && r.status === 'approved';
+                return rName && rName === fullName;
             }).map(function(r) {
                 return {
                     date: r.classDate || r.date || '',
@@ -199,7 +200,8 @@ const ParentEngine = (function() {
                     conceptGrasp: r.conceptGrasp || 0,
                     tutorComment: r.tutorComment || r.notes || '',
                     homeworkAssigned: r.homeworkAssigned || r.homework || '',
-                    whatBuilt: r.whatBuilt || ''
+                    whatBuilt: r.whatBuilt || '',
+                    completedProjectLinks: Array.isArray(r.completedProjectLinks) ? r.completedProjectLinks : []
                 };
             });
             records = records.concat(attRecords);
@@ -210,8 +212,8 @@ const ParentEngine = (function() {
         var schedList = Array.isArray(schedules) ? schedules : [];
         var schedRecords = schedList.filter(function(s) {
             if (!s) return false;
-            var sName = (s.studentName || '').toLowerCase().trim();
-            return (s.studentId === student.id || sName === fullName || (student.firstName && sName.startsWith(student.firstName.toLowerCase()))) && 
+            var matchStud = (s.studentId && student.id) ? (s.studentId === student.id) : ((s.studentName || '').toLowerCase().trim() === fullName);
+            return matchStud && 
                    (s.attendanceStatus === 'present' || s.status === 'approved') &&
                    (s.tutorComment || s.topic || s.homeworkAssigned || s.homework);
         }).map(function(s) {
@@ -221,7 +223,8 @@ const ParentEngine = (function() {
                 conceptGrasp: s.conceptGrasp || 0,
                 tutorComment: s.tutorComment || '',
                 homeworkAssigned: s.homeworkAssigned || s.homework || '',
-                whatBuilt: s.whatBuilt || ''
+                whatBuilt: s.whatBuilt || '',
+                completedProjectLinks: []
             };
         });
         records = records.concat(schedRecords);
@@ -236,16 +239,17 @@ const ParentEngine = (function() {
             stars += '<span style="color:' + (i <= (latest.conceptGrasp || 0) ? '#f59e0b' : '#d1d5db') + '">&#9733;</span>';
         }
 
-        return '<div style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:14px;padding:1.1rem;margin-top:0.85rem;border:1px solid #e2e8f0;border-left:4px solid #F4600C;box-shadow:0 2px 8px rgba(0,0,0,0.03);">' +
-            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">' +
+        return '<div style="background:#ffffff;border-radius:18px;padding:1.15rem;margin-top:0.85rem;border:2px solid #e2e8f0;border-bottom:4px solid #cbd5e1;box-shadow:0 4px 12px rgba(15,23,42,0.04);">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.45rem;">' +
               '<p style="font-size:0.7rem;font-weight:800;color:#F4600C;text-transform:uppercase;letter-spacing:0.08em;margin:0;">Latest Verified Session &bull; ' + (latest.date || 'Recent') + '</p>' +
-              '<span style="background:#dcfce7;color:#15803d;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:9999px;">Approved</span>' +
+              '<span style="background:#dcfce7;color:#15803d;border:1px solid #bbf7d0;font-size:0.68rem;font-weight:800;padding:2px 10px;border-radius:9999px;">Approved</span>' +
             '</div>' +
-            (latest.topic ? '<p style="font-size:0.88rem;font-weight:700;color:#0f172a;margin:0 0 0.35rem;">Topic: ' + latest.topic + '</p>' : '') +
-            (latest.whatBuilt ? '<p style="font-size:0.8rem;color:#475569;margin:0 0 0.3rem;"><span style="font-weight:600;color:#1e293b;">Built:</span> ' + latest.whatBuilt + '</p>' : '') +
+            (latest.topic ? '<p style="font-size:0.88rem;font-weight:800;color:#0f172a;margin:0 0 0.35rem;">Topic: ' + latest.topic + '</p>' : '') +
+            (latest.whatBuilt ? '<p style="font-size:0.8rem;color:#475569;margin:0 0 0.3rem;"><span style="font-weight:700;color:#1e293b;">Built:</span> ' + latest.whatBuilt + '</p>' : '') +
+            ((latest.completedProjectLinks && latest.completedProjectLinks.length > 0) ? '<div style="margin:0.4rem 0;">' + latest.completedProjectLinks.map(function(lnk){ return '<a href="' + lnk + '" target="_blank" rel="noopener noreferrer" style="display:inline-block;font-size:0.74rem;font-weight:800;color:#4f46e5;background:#eef2ff;border:2px solid #c7d2fe;border-bottom:3px solid #a5b4fc;padding:4px 10px;border-radius:10px;margin-right:6px;text-decoration:none;">Completed Project Link</a>'; }).join('') + '</div>' : '') +
             (latest.conceptGrasp ? '<p style="font-size:0.8rem;color:#475569;margin:0.2rem 0 0.35rem;">Concept Grasp: ' + stars + ' <span style="font-size:0.75rem;color:#64748b;">(' + latest.conceptGrasp + '/5)</span></p>' : '') +
-            (latest.tutorComment ? '<p style="font-size:0.8rem;color:#334155;margin:0.25rem 0 0.4rem;font-style:italic;background:#ffffff;padding:0.5rem 0.75rem;border-radius:8px;border-left:2px solid #cbd5e1;">&ldquo;' + latest.tutorComment + '&rdquo;</p>' : '') +
-            (latest.homeworkAssigned ? '<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:0.6rem 0.85rem;margin-top:0.5rem;"><p style="font-size:0.72rem;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:0.06em;margin:0 0 0.2rem;">Assignment Given</p><p style="font-size:0.82rem;font-weight:600;color:#7c2d12;margin:0;">' + latest.homeworkAssigned + '</p></div>' : '') +
+            (latest.tutorComment ? '<p style="font-size:0.8rem;color:#334155;margin:0.25rem 0 0.4rem;font-style:italic;background:#f8fafc;padding:0.55rem 0.8rem;border-radius:12px;border:2px solid #e2e8f0;">&ldquo;' + latest.tutorComment + '&rdquo;</p>' : '') +
+            (latest.homeworkAssigned ? '<div style="background:#fff7ed;border:2px solid #fed7aa;border-bottom:3px solid #fdba74;border-radius:12px;padding:0.65rem 0.9rem;margin-top:0.5rem;"><p style="font-size:0.72rem;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:0.06em;margin:0 0 0.2rem;">Assignment Given</p><p style="font-size:0.82rem;font-weight:700;color:#7c2d12;margin:0;">' + latest.homeworkAssigned + '</p></div>' : '') +
             '</div>';
     }
 
@@ -332,7 +336,7 @@ const ParentEngine = (function() {
                 const mrList = Array.isArray(allMR) ? allMR : [];
                 const sNameLower = ((s.firstName || '') + ' ' + (s.lastName || '')).toLowerCase().trim();
                 monthlyReports = mrList.filter(mr => {
-                    if (!mr || mr.status !== 'sent_to_parent') return false;
+                    if (!mr || (mr.status !== 'sent_to_parent' && mr.status !== 'approved' && mr.status !== 'published')) return false;
                     if (mr.studentId && mr.studentId === s.id) return true;
                     if (mr.studentName && mr.studentName.toLowerCase().trim() === sNameLower) return true;
                     if (mr.studentName && mr.studentName.toLowerCase().trim() === (s.firstName || '').toLowerCase().trim()) return true;
@@ -532,7 +536,7 @@ const ParentEngine = (function() {
                         </div>
                     </div>
 
-                    <!-- Technology Passport Badge Preview Card -->
+                    <!-- Technology Passport Badge Preview Card (Clean Light-Theme 3D Playful UI) -->
                     ${(function() {
                         if (typeof BadgePassportEngine === 'undefined') return '';
                         const pass = BadgePassportEngine.getStudentPassport(s.id);
@@ -540,35 +544,31 @@ const ParentEngine = (function() {
                         const currBadge = pass.currentBadge || {};
                         const eraCol = (pass.currentEra && pass.currentEra.color) || '#f97316';
                         return `
-                            <div style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%) !important; border: 1px solid #334155 !important; border-radius: 16px; padding: 12px 14px; color: #ffffff !important; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 8px 0; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);">
+                            <div style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; border-bottom: 4px solid #cbd5e1 !important; border-radius: 18px; padding: 12px 14px; color: #0f172a !important; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 8px 0; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);">
                                 <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
-                                    <div style="position: relative; width: 44px; height: 44px; border-radius: 12px; background: rgba(255, 255, 255, 0.12) !important; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, 0.25) !important; flex-shrink: 0; overflow: hidden; cursor: pointer;" onclick="BadgePassportEngine.openBadgeModal(${currBadge.id || 1}, ${s.age || 10})">
-                                        <img src="${currBadge.image || 'assets/images/badges/light-evolution/badge-01-fire-finder.png'}" alt="Medallion" style="width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));" class="hover:scale-110 transition-transform">
+                                    <div style="position: relative; width: 46px; height: 46px; border-radius: 14px; background: #fff7ed !important; display: flex; align-items: center; justify-content: center; border: 2px solid #fed7aa !important; border-bottom: 3px solid #fdba74 !important; flex-shrink: 0; overflow: hidden; cursor: pointer;" onclick="BadgePassportEngine.openBadgeModal(${currBadge.id || 1}, ${s.age || 10})">
+                                        <img src="${currBadge.image || 'assets/images/badges/light-evolution/badge-01-fire-finder.png'}" alt="Medallion" style="width: 36px; height: 36px; object-fit: contain;" class="hover:scale-110 transition-transform">
                                     </div>
                                     <div style="min-width: 0;">
                                         <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
-                                            <span style="background: ${eraCol}33 !important; color: #ffffff !important; border: 1px solid ${eraCol}88 !important; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 9999px;">${(pass.currentEra && pass.currentEra.name) || 'Era I'}</span>
-                                            <span style="font-size: 9px; color: #cbd5e1 !important; font-family: monospace; font-weight: 600;">Badge ${pass.unlockedCount} of 48</span>
+                                            <span style="background: #fff7ed !important; color: ${eraCol} !important; border: 1px solid #fed7aa !important; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 9999px;">${(pass.currentEra && pass.currentEra.name) || 'Era I'}</span>
+                                            <span style="font-size: 9px; color: #64748b !important; font-family: monospace; font-weight: 700;">Badge ${pass.unlockedCount} of 48</span>
                                         </div>
-                                        <h4 style="color: #ffffff !important; font-size: 13px; font-weight: 800; margin: 0; line-height: 1.2; text-shadow: 0 1px 2px rgba(0,0,0,0.5); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${currBadge.title || 'Fire Finder'}</h4>
-                                        <p style="color: #94a3b8 !important; font-size: 10px; margin: 2px 0 0 0; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Technology Passport: ${(pass.currentEra && pass.currentEra.theme) || 'Light Evolution'}</p>
+                                        <h4 style="color: #0f172a !important; font-size: 13px; font-weight: 800; margin: 0; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${currBadge.title || 'Fire Finder'}</h4>
+                                        <p style="color: #64748b !important; font-size: 10px; margin: 2px 0 0 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Technology Passport: ${(pass.currentEra && pass.currentEra.theme) || 'Light Evolution'}</p>
                                     </div>
                                 </div>
-                                <button type="button" onclick="BadgePassportEngine.openBadgeModal(${currBadge.id || 1}, ${s.age || 10})" style="background: #f4600c !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: none; padding: 8px 14px; border-radius: 10px; cursor: pointer; box-shadow: 0 2px 8px rgba(244,96,12,0.4); flex-shrink: 0; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; transition: transform 0.15s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                <button type="button" onclick="BadgePassportEngine.openBadgeModal(${currBadge.id || 1}, ${s.age || 10})" style="background: #f4600c !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: 2px solid #ea580c !important; border-bottom: 3px solid #c2410c !important; padding: 8px 14px; border-radius: 12px; cursor: pointer; flex-shrink: 0; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;">
                                     <span>View Badge</span> &rarr;
                                 </button>
                             </div>
                         `;
                     })()}
 
-                    <div class="pt-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div class="pt-1">
                         <a href="parent-progress.html?studentId=${s.id}" class="btn-3d btn-3d-secondary w-full border border-indigo-100 flex items-center justify-center gap-2 text-indigo-700 font-bold hover:bg-indigo-50 transition-colors">
                             <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i>
                             <span>Track Learning Progress &rarr;</span>
-                        </a>
-                        <a href="curriculum/slides/index.html?role=student&track=${encodeURIComponent((function(p){var c=(p||'').toLowerCase();if(c.includes('scratch')||c.includes('fundamental'))return 'course_fundamentals';if(c.includes('web')||c.includes('html')||c.includes('full-stack'))return 'track_1_web_engineering';if(c.includes('ai')||c.includes('machine'))return 'track_2_ai_automation';if(c.includes('art')||c.includes('game')||c.includes('design'))return 'track_3_product_design';if(c.includes('python')||c.includes('data'))return 'track_4_python_data';if(c.includes('cyber'))return 'track_5_cybersecurity';if(c.includes('robot')||c.includes('arduino'))return 'track_6_robotics';return 'all';})(s.program))}&studentId=${encodeURIComponent(s.id)}" class="btn-3d orange w-full flex items-center justify-center gap-2 font-bold transition-colors no-underline">
-                            <i data-lucide="presentation" class="w-4 h-4"></i>
-                            <span>Lesson Slides &amp; Quests &rarr;</span>
                         </a>
                     </div>
 
@@ -664,27 +664,28 @@ const ParentEngine = (function() {
             } catch(e) {}
 
             return `
-                <div class="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                <div class="p-5 mb-3 bg-white rounded-2xl border-2 border-slate-200 border-b-4 border-b-slate-300 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-orange-200 transition-all shadow-xs">
                     <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-xl ${isPhysical ? 'bg-purple-100' : 'bg-orange-100'} flex items-center justify-center shrink-0">
+                        <div class="w-11 h-11 rounded-2xl ${isPhysical ? 'bg-purple-50 border-2 border-purple-200 border-b-3 border-b-purple-300' : 'bg-orange-50 border-2 border-orange-200 border-b-3 border-b-orange-300'} flex items-center justify-center shrink-0">
                             <i data-lucide="${isPhysical ? 'map-pin' : 'video'}" class="w-5 h-5 ${isPhysical ? 'text-purple-600' : 'text-orange-600'}"></i>
                         </div>
                         <div class="space-y-1">
                             <div class="flex items-center gap-2 flex-wrap">
-                                <p class="text-sm font-bold text-gray-800">${s.course} session for <span class="text-orange-500 font-extrabold">${s.studentName}</span></p>
+                                <p class="text-sm font-extrabold text-slate-900 font-nunito">${s.course} session for <span class="text-orange-600 font-extrabold">${s.studentName}</span></p>
                                 ${countdownBadge}
                             </div>
-                            <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
-                                <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${dateFormatted}</span>
-                                <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${s.time} WAT (${s.duration || 60} min)</span>
-                                <span class="flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> Mentor: ${s.mentor || s.tutorName}</span>
+                            <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500 font-medium">
+                                <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-400"></i> ${dateFormatted}</span>
+                                <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i> ${s.time} WAT (${s.duration || 60} min)</span>
+                                <span class="flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i> Mentor: ${s.mentor || s.tutorName}</span>
                             </div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
                         ${isPhysical ? `<span class="bg-purple-100 text-purple-800 text-[11px] font-bold px-3 py-1.5 rounded-lg border border-purple-200">Physical Hub</span>` : ''}
-                        <a href="join-class.html?id=${encodeURIComponent(s.id)}&role=parent&url=${encodeURIComponent(joinUrl)}" target="_blank" rel="noopener noreferrer" 
-                            class="btn-3d btn-3d-blue px-3.5 py-2 min-h-[38px] text-xs rounded-xl inline-flex items-center justify-center gap-1.5 no-underline">
+                        <a href="${joinUrl}" target="_blank" rel="noopener noreferrer" 
+                            onclick="ParentEngine.launchMeeting(event, '${joinUrl}', '${s.id}', '${(s.studentName || '').replace(/'/g, "\\'")}', '${(s.course || '').replace(/'/g, "\\'")}')"
+                            class="btn-3d btn-3d-blue px-3.5 py-2 min-h-[38px] text-xs rounded-xl inline-flex items-center justify-center gap-1.5 no-underline cursor-pointer" title="Launch Google Meet room (1080p recording &amp; transcript active)">
                             <i data-lucide="video" class="w-3.5 h-3.5"></i> ${isPhysical ? 'Backup Meet' : 'Join Session'}
                         </a>
                         <button onclick="ParentEngine.openRescheduleModal('${s.id}')"
@@ -1221,7 +1222,7 @@ const ParentEngine = (function() {
                         </button>
                     </div>
 
-                    <div id="modal-proj-media-container" class="w-full h-56 rounded-2xl bg-slate-950 overflow-hidden relative flex items-center justify-center shadow-inner">
+                    <div id="modal-proj-media-container" class="w-full h-56 rounded-2xl bg-indigo-50 border-2 border-indigo-100 overflow-hidden relative flex items-center justify-center">
                     </div>
 
                     <div class="space-y-2">
@@ -1257,14 +1258,17 @@ const ParentEngine = (function() {
         if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getMilestones) {
             const milestones = DashboardEngine.getMilestones();
             milestones.forEach(m => {
+                if (!m) return;
+                if (m.studentId && student.id && m.studentId !== student.id) return;
                 const mName = (m.studentName || '').toLowerCase().trim();
-                if (mName === sFull || mName.startsWith(sFirst) || sFirst.startsWith(mName.split(' ')[0])) {
+                if ((m.studentId && m.studentId === student.id) || (mName && mName === sFull)) {
                     projects.push({
                         id: m.id || 'mil-' + Math.random().toString(36).substr(2, 6),
                         title: m.title || 'Coding Milestone',
                         description: m.description || '',
                         category: m.category || student.program || 'Programming',
                         image: m.image || '',
+                        projectLink: m.projectLink || (Array.isArray(m.completedProjectLinks) && m.completedProjectLinks[0]) || '',
                         isVideo: m.image && (m.image.endsWith('.mp4') || m.image.endsWith('.webm')),
                         studentName: student.firstName,
                         studentAge: m.studentAge || student.age || 10,
@@ -1371,20 +1375,20 @@ const ParentEngine = (function() {
             const safeDesc = encodeURIComponent(p.description);
 
             return `
-                <div class="bg-gradient-to-br from-white to-slate-50/60 border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row gap-5 items-start">
+                <div class="bg-white border-2 border-slate-200 border-b-4 border-b-slate-300 rounded-2xl p-5 shadow-xs hover:border-orange-200 transition-all flex flex-col md:flex-row gap-5 items-start">
                     <!-- Media Preview -->
-                    <div class="w-full md:w-44 h-32 rounded-xl bg-slate-900 overflow-hidden relative shrink-0 flex items-center justify-center group shadow-inner">
+                    <div class="w-full md:w-44 h-32 rounded-xl bg-indigo-50 border-2 border-indigo-100 overflow-hidden relative shrink-0 flex items-center justify-center group">
                         ${p.isVideo ? `
-                            <video src="${p.image}" class="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause()"></video>
-                            <div class="absolute inset-0 bg-black/30 flex items-center justify-center pointer-events-none">
-                                <div class="w-9 h-9 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
-                                    <i data-lucide="play" class="w-4 h-4 text-white ml-0.5"></i>
+                            <video src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause()"></video>
+                            <div class="absolute inset-0 bg-slate-900/15 flex items-center justify-center pointer-events-none">
+                                <div class="w-9 h-9 rounded-full bg-white/90 border border-slate-200 flex items-center justify-center shadow-xs">
+                                    <i data-lucide="play" class="w-4 h-4 text-orange-600 ml-0.5"></i>
                                 </div>
                             </div>
                         ` : `
-                            <div class="w-full h-full bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center text-white p-3 text-center">
-                                <i data-lucide="code-2" class="w-8 h-8 text-indigo-400 mb-1"></i>
-                                <span class="text-[10px] font-mono text-indigo-200 uppercase font-bold tracking-wider">${p.category}</span>
+                            <div class="w-full h-full bg-gradient-to-br from-indigo-50 via-orange-50/60 to-slate-50 flex flex-col items-center justify-center text-slate-800 p-3 text-center">
+                                <i data-lucide="code-2" class="w-8 h-8 text-indigo-600 mb-1"></i>
+                                <span class="text-[10px] font-mono text-indigo-700 uppercase font-extrabold tracking-wider">${p.category}</span>
                             </div>
                         `}
                         <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase tracking-wider bg-orange-600 text-white shadow">
@@ -1477,12 +1481,12 @@ const ParentEngine = (function() {
                 mediaContainer.innerHTML = `<video src="${foundProj.image}" controls autoplay muted loop playsinline class="w-full h-full object-cover"></video>`;
             } else {
                 mediaContainer.innerHTML = `
-                    <div class="flex flex-col items-center justify-center text-white p-6 text-center space-y-2">
-                        <div class="w-14 h-14 rounded-2xl bg-indigo-600/30 border border-indigo-400/30 flex items-center justify-center">
-                            <i data-lucide="code-2" class="w-8 h-8 text-indigo-400"></i>
+                    <div class="flex flex-col items-center justify-center text-slate-800 p-6 text-center space-y-2">
+                        <div class="w-14 h-14 rounded-2xl bg-white border-2 border-indigo-200 border-b-4 border-b-indigo-300 flex items-center justify-center">
+                            <i data-lucide="code-2" class="w-8 h-8 text-indigo-600"></i>
                         </div>
-                        <h4 class="text-sm font-bold">${foundProj.title}</h4>
-                        <span class="text-[11px] text-indigo-300 font-mono">${foundProj.category}</span>
+                        <h4 class="text-sm font-extrabold text-slate-900">${foundProj.title}</h4>
+                        <span class="text-[11px] text-indigo-700 font-mono font-bold">${foundProj.category}</span>
                     </div>
                 `;
             }
@@ -1512,13 +1516,19 @@ const ParentEngine = (function() {
     }
 
     function viewMonthlyReport(reportId) {
-        if (typeof StemulusReportPDF !== 'undefined') {
-            const reports = DashboardEngine.getMonthlyReports ? DashboardEngine.getMonthlyReports() : [];
-            const r = reports.find(item => item.id === reportId);
-            if (r) {
-                StemulusReportPDF.open(r);
-                return;
-            }
+        const reports = (typeof DashboardEngine !== 'undefined' && DashboardEngine.getMonthlyReports) ? DashboardEngine.getMonthlyReports() : [];
+        const r = (Array.isArray(reports) ? reports : []).find(item => item && item.id === reportId);
+        if (typeof MonthlyReportEngine !== 'undefined' && typeof MonthlyReportEngine.openReportPDF === 'function' && r && (r.shiningHighlights || r.woohooMoments || r.journeyNarrative)) {
+            MonthlyReportEngine.openReportPDF(reportId);
+            return;
+        }
+        if (typeof StemulusReportPDF !== 'undefined' && r) {
+            StemulusReportPDF.open(r);
+            return;
+        }
+        if (typeof MonthlyReportEngine !== 'undefined' && typeof MonthlyReportEngine.openReportPDF === 'function' && r) {
+            MonthlyReportEngine.openReportPDF(reportId);
+            return;
         }
         alert('Evaluation document is loading or could not be found.');
     }
@@ -1691,45 +1701,45 @@ const ParentEngine = (function() {
                     </button>
                 </div>
 
-                <!-- STEMulus Official Bank Accounts Bento -->
+                <!-- STEMulus Official Bank Accounts Bento (Clean Light-Theme 3D Playful UI) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6">
                     <!-- Nigeria NGN Account -->
-                    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%) !important; border: 1px solid #334155 !important; border-radius: 18px; padding: 18px; color: #ffffff !important; box-shadow: 0 4px 14px rgba(15,23,42,0.15);">
+                    <div style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; border-bottom: 4px solid #cbd5e1 !important; border-radius: 18px; padding: 18px; color: #0f172a !important; box-shadow: 0 4px 12px rgba(15,23,42,0.04);">
                         <div class="flex items-center justify-between gap-2 mb-2">
-                            <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.2) !important; color: #6ee7b7 !important; border: 1px solid rgba(16, 185, 129, 0.4) !important;">Nigeria &amp; Remitly NGN</span>
-                            <span style="font-size: 11px; font-weight: 700; color: #94a3b8 !important;">Local Currency</span>
+                            <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 8px; background: #ecfdf5 !important; color: #047857 !important; border: 1px solid #a7f3d0 !important;">Nigeria &amp; Remitly NGN</span>
+                            <span style="font-size: 11px; font-weight: 700; color: #64748b !important;">Local Currency</span>
                         </div>
-                        <p style="font-size: 11px; color: #cbd5e1 !important; font-weight: 500; margin: 0 0 6px 0;">Bank Name: <strong style="color: #ffffff !important; font-weight: 800;">${settings.bankName || 'Wema Nigeria'}</strong></p>
-                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.1) !important; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.18) !important; margin: 8px 0;">
+                        <p style="font-size: 11px; color: #475569 !important; font-weight: 600; margin: 0 0 6px 0;">Bank Name: <strong style="color: #0f172a !important; font-weight: 800;">${settings.bankName || 'Wema Nigeria'}</strong></p>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc !important; padding: 10px 14px; border-radius: 14px; border: 2px solid #e2e8f0 !important; margin: 8px 0;">
                             <div>
-                                <span style="font-size: 9px; color: #cbd5e1 !important; display: block; text-transform: uppercase; font-family: monospace; font-weight: 600;">Account Number</span>
-                                <span style="font-family: monospace; font-weight: 800; color: #ffffff !important; font-size: 17px; letter-spacing: 0.05em; display: block;">${settings.accountNumber || '0128062292'}</span>
+                                <span style="font-size: 9px; color: #64748b !important; display: block; text-transform: uppercase; font-family: monospace; font-weight: 700;">Account Number</span>
+                                <span style="font-family: monospace; font-weight: 800; color: #0f172a !important; font-size: 17px; letter-spacing: 0.05em; display: block;">${settings.accountNumber || '0128062292'}</span>
                             </div>
-                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.accountNumber || '0128062292'}', this)" style="background: #f4600c !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: none; padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: transform 0.15s ease; min-height: 36px !important; min-width: 56px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.accountNumber || '0128062292'}', this)" style="background: #f4600c !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: 2px solid #ea580c !important; border-bottom: 3px solid #c2410c !important; padding: 7px 14px; border-radius: 10px; cursor: pointer; min-height: 36px !important; min-width: 56px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
                                 Copy
                             </button>
                         </div>
-                        <p style="font-size: 11px; color: #cbd5e1 !important; font-weight: 500; margin: 4px 0 0 0;">Account Name: <strong style="color: #ffffff !important; font-weight: 800;">${settings.accountName || 'STEMulus innovation Limited'}</strong></p>
+                        <p style="font-size: 11px; color: #475569 !important; font-weight: 600; margin: 4px 0 0 0;">Account Name: <strong style="color: #0f172a !important; font-weight: 800;">${settings.accountName || 'STEMulus innovation Limited'}</strong></p>
                     </div>
 
                     <!-- USD Domiciliary Account -->
-                    <div style="background: linear-gradient(135deg, #042f2e 0%, #0f172a 100%) !important; border: 1px solid #115e59 !important; border-radius: 18px; padding: 18px; color: #ffffff !important; box-shadow: 0 4px 14px rgba(4,47,46,0.15);">
+                    <div style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; border-bottom: 4px solid #cbd5e1 !important; border-radius: 18px; padding: 18px; color: #0f172a !important; box-shadow: 0 4px 12px rgba(15,23,42,0.04);">
                         <div class="flex items-center justify-between gap-2 mb-2">
-                            <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 6px; background: rgba(20, 184, 166, 0.2) !important; color: #5eead4 !important; border: 1px solid rgba(20, 184, 166, 0.4) !important;">USD Domiciliary (DOM)</span>
-                            <span style="font-size: 11px; font-weight: 700; color: #5eead4 !important;">International Wire ($)</span>
+                            <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 8px; background: #f0fdfa !important; color: #0f766e !important; border: 1px solid #99f6e4 !important;">USD Domiciliary (DOM)</span>
+                            <span style="font-size: 11px; font-weight: 700; color: #0f766e !important;">International Wire ($)</span>
                         </div>
-                        <p style="font-size: 11px; color: #ccfbf1 !important; font-weight: 500; margin: 0 0 6px 0;">Bank Name: <strong style="color: #ffffff !important; font-weight: 800;">${settings.usdBankName || 'Wema Bank (USD DOM)'}</strong></p>
-                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.1) !important; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.18) !important; margin: 8px 0;">
+                        <p style="font-size: 11px; color: #475569 !important; font-weight: 600; margin: 0 0 6px 0;">Bank Name: <strong style="color: #0f172a !important; font-weight: 800;">${settings.usdBankName || 'Wema Bank (USD DOM)'}</strong></p>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc !important; padding: 10px 14px; border-radius: 14px; border: 2px solid #e2e8f0 !important; margin: 8px 0;">
                             <div>
-                                <span style="font-size: 9px; color: #99f6e4 !important; display: block; text-transform: uppercase; font-family: monospace; font-weight: 600;">USD Account Number</span>
-                                <span style="font-family: monospace; font-weight: 800; color: #ffffff !important; font-size: 17px; letter-spacing: 0.05em; display: block;">${settings.usdAccountNumber || '0622219817'}</span>
+                                <span style="font-size: 9px; color: #0f766e !important; display: block; text-transform: uppercase; font-family: monospace; font-weight: 700;">USD Account Number</span>
+                                <span style="font-family: monospace; font-weight: 800; color: #0f172a !important; font-size: 17px; letter-spacing: 0.05em; display: block;">${settings.usdAccountNumber || '0622219817'}</span>
                             </div>
-                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.usdAccountNumber || '0622219817'}', this)" style="background: #0d9488 !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: none; padding: 7px 14px; border-radius: 8px; cursor: pointer; transition: transform 0.15s ease; min-height: 36px !important; min-width: 56px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            <button type="button" onclick="ParentEngine.copyBankDetail('${settings.usdAccountNumber || '0622219817'}', this)" style="background: #0d9488 !important; color: #ffffff !important; font-weight: 800; font-size: 11px; border: 2px solid #0f766e !important; border-bottom: 3px solid #115e59 !important; padding: 7px 14px; border-radius: 10px; cursor: pointer; min-height: 36px !important; min-width: 56px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
                                 Copy
                             </button>
                         </div>
-                        <p style="font-size: 11px; color: #ccfbf1 !important; font-weight: 500; margin: 4px 0 0 0;">Account Name: <strong style="color: #ffffff !important; font-weight: 800;">${settings.usdAccountName || 'STEMulus innovation Limited'}</strong></p>
-                        <p style="font-size: 10px; color: #5eead4 !important; margin: 4px 0 0 0; font-family: monospace;">SWIFT Code: <strong style="color: #ffffff !important; font-weight: 800;">WEMANGLA</strong></p>
+                        <p style="font-size: 11px; color: #475569 !important; font-weight: 600; margin: 4px 0 0 0;">Account Name: <strong style="color: #0f172a !important; font-weight: 800;">${settings.usdAccountName || 'STEMulus innovation Limited'}</strong></p>
+                        <p style="font-size: 10px; color: #0f766e !important; margin: 4px 0 0 0; font-family: monospace; font-weight: 700;">SWIFT Code: <strong style="color: #0f172a !important; font-weight: 800;">WEMANGLA</strong></p>
                     </div>
                 </div>
 
@@ -1921,7 +1931,30 @@ const ParentEngine = (function() {
         openNoticesModal();
     }
 
+    function launchMeeting(e, url, scheduleId, studentName, courseName) {
+        if (e && typeof e.preventDefault === 'function') e.preventDefault();
+        const targetUrl = url || 'https://meet.google.com';
+        if (typeof STEMulus !== 'undefined' && STEMulus.Classroom && typeof STEMulus.Classroom.launchMeetingSession === 'function') {
+            STEMulus.Classroom.launchMeetingSession({
+                scheduleId: scheduleId || '',
+                role: 'parent',
+                meetingUrl: targetUrl,
+                studentName: studentName || 'Coder',
+                courseName: courseName || 'STEMulus Class'
+            });
+        } else if (typeof DashboardEngine !== 'undefined' && typeof DashboardEngine.launchMeetingSession === 'function') {
+            DashboardEngine.launchMeetingSession({
+                scheduleId: scheduleId || '',
+                role: 'parent',
+                meetingUrl: targetUrl,
+                studentName: studentName || 'Coder',
+                courseName: courseName || 'STEMulus Class'
+            });
+        }
+    }
+
     return {
+        launchMeeting,
         init,
         renderDashboard,
         renderLatestSessionData,

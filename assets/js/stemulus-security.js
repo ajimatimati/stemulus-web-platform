@@ -318,9 +318,9 @@
          * Mask an email address (e.g. j***e@domain.com)
          */
         maskEmail(email) {
-            if (!email || typeof email !== 'string') return '—';
+            if (!email || typeof email !== 'string') return '-';
             const parts = email.split('@');
-            if (parts.length !== 2) return '—';
+            if (parts.length !== 2) return '-';
             const name = parts[0];
             const domain = parts[1];
 
@@ -334,7 +334,7 @@
          * Mask a phone number (e.g. +1 (•••) •••-4921)
          */
         maskPhone(phone) {
-            if (!phone || typeof phone !== 'string') return '—';
+            if (!phone || typeof phone !== 'string') return '-';
             const digits = phone.replace(/\D/g, '');
             if (digits.length < 4) return '••••';
             const last4 = digits.slice(-4);

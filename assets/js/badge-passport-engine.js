@@ -1335,13 +1335,17 @@ const BadgePassportEngine = (function() {
                 timeMonths = Math.max(1, Math.floor(diffDays / 30) + 1);
             }
 
-            // 2. Attendance-based months (every 4 attended sessions = 1 curriculum month)
+            // 2. Attendance-based months (uses student's configured weeklyFrequency / monthlyTarget, defaulting to 4 sessions/month minimum)
             const attendanceSessions = Math.max(
                 attendedCount,
                 (student.metrics && student.metrics.attended) ? parseInt(student.metrics.attended, 10) : 0,
                 student.classesAttended ? parseInt(student.classesAttended, 10) : 0
             );
-            const attendanceMonths = attendanceSessions > 0 ? Math.ceil(attendanceSessions / 4) : 1;
+            const sessionsPerMonth = Math.max(4,
+                parseInt(student.monthlyTarget || student.sessionsPerMonth || (student.metrics && student.metrics.total) || 0, 10) ||
+                ((parseInt(student.weeklyFrequency || student.sessionsPerWeek || 0, 10) || 1) * 4)
+            );
+            const attendanceMonths = attendanceSessions > 0 ? Math.ceil(attendanceSessions / sessionsPerMonth) : 1;
 
             // 3. Explicit month level if designated
             const explicitMonth = parseInt(student.currentMonth || student.badgeMonth || student.monthLevel, 10) || 0;
@@ -1495,20 +1499,20 @@ const BadgePassportEngine = (function() {
                     </button>
                 </div>
 
-                <!-- 3D Badge Visual Hero -->
-                <div class="relative flex items-center justify-center py-6 px-4 bg-gradient-to-b from-slate-950 via-slate-900 to-indigo-950 rounded-2xl overflow-hidden mb-6 shadow-inner border border-slate-800">
-                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.25)_0%,transparent_70%)] pointer-events-none"></div>
-                    <img id="pbm-image" src="" alt="Badge" class="relative z-10 w-48 h-48 sm:w-56 sm:h-56 object-contain drop-shadow-[0_20px_35px_rgba(255,255,255,0.18)] transition-transform duration-500 hover:scale-105">
+                <!-- 3D Badge Visual Hero (Clean Light-Theme 3D Playful UI) -->
+                <div class="relative flex items-center justify-center py-6 px-4 bg-gradient-to-b from-orange-50/70 via-white to-indigo-50/70 rounded-2xl overflow-hidden mb-6 border-2 border-slate-200 border-b-4 border-b-slate-300">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(244,96,12,0.12)_0%,transparent_70%)] pointer-events-none"></div>
+                    <img id="pbm-image" src="" alt="Badge" class="relative z-10 w-48 h-48 sm:w-56 sm:h-56 object-contain drop-shadow-[0_14px_24px_rgba(15,23,42,0.14)] transition-transform duration-500 hover:scale-105">
                 </div>
 
                 <!-- Age-Adaptive Explanation Selector -->
-                <div class="bg-indigo-50/70 border border-indigo-100 rounded-2xl p-4 mb-6">
+                <div class="bg-indigo-50/70 border-2 border-indigo-100 border-b-4 border-b-indigo-200 rounded-2xl p-4 mb-6">
                     <div class="flex items-center justify-between gap-2 mb-3 flex-wrap">
                         <span class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-900">Explanation for Age Group</span>
-                        <div class="flex items-center gap-1 bg-white/80 p-1 rounded-xl border border-indigo-200/60 shadow-sm">
-                            <button type="button" id="pbm-tab-5_7" class="min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center">Ages 5–7</button>
-                            <button type="button" id="pbm-tab-8_11" class="min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center">Ages 8–11</button>
-                            <button type="button" id="pbm-tab-12_17" class="min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center">Ages 12–17</button>
+                        <div class="flex items-center gap-1 bg-white p-1 rounded-xl border border-indigo-200/80 shadow-xs">
+                            <button type="button" id="pbm-tab-5_7" class="min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center">Ages 5-7</button>
+                            <button type="button" id="pbm-tab-8_11" class="min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center">Ages 8-11</button>
+                            <button type="button" id="pbm-tab-12_17" class="min-h-[36px] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center">Ages 12-17</button>
                         </div>
                     </div>
                     <p class="text-sm text-slate-800 font-medium leading-relaxed italic" id="pbm-age-explanation"></p>

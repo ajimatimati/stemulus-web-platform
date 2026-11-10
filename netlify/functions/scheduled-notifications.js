@@ -32,7 +32,7 @@ const RESEND_KEY     = process.env.RESEND_API_KEY;
 const NTFY_TOKEN     = process.env.NTFY_TOKEN;
 const FB_PROJECT     = process.env.FIREBASE_PROJECT_ID || 'stemulus-kidstech';
 const FB_API_KEY     = process.env.FIREBASE_API_KEY || 'AIzaSyBwiBfq11WfgQTPIqvPzxhv3Evz5gN4IUk';
-const FROM_ADDRESS   = process.env.RESEND_FROM_EMAIL || 'STEMulus Kids Tech <hello@stemuluskidstech.com>';
+const FROM_ADDRESS   = process.env.RESEND_FROM_EMAIL || 'STEMulus Innovation Limited <admin@stemuluskidstech.com>';
 
 function unpackFirestoreField(v) {
   if (!v || typeof v !== 'object') return null;

@@ -458,12 +458,6 @@
  </a>
  </li>
  <li>
- <a href="#" data-section="courses" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
- <i data-lucide="book-open" class="w-5 h-5"></i>
- <span>Courses</span>
- </a>
- </li>
- <li>
  <a href="#" data-section="projects" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
  <i data-lucide="folder-kanban" class="w-5 h-5"></i>
  <span>Projects</span>
@@ -592,12 +586,7 @@
  <span class="ml-auto bg-blue-500/20 text-blue-400 text-xs font-bold px-2 py-0.5 rounded-xl">Active</span>
  </a>
  </li>
- <li>
- <a href="curriculum/slides/index.html?role=admin" class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors" style="color:rgba(255,255,255,0.85);">
-  <i data-lucide="presentation" class="w-5 h-5 text-orange-400"></i>
-  <span>Curriculum (215 Decks)</span>
- </a>
- </li>
+ 
  <li>
  <a href="#" data-section="settings" class="nav-link flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-500/15 hover:text-orange-400 transition-colors">
   <i data-lucide="settings" class="w-5 h-5"></i>
@@ -754,6 +743,9 @@
 
  <!-- BIRTHDAY CELEBRATIONS HEADQUARTERS -->
  <div id="mount-birthday-headquarters" class="mt-6"></div>
+
+ <!-- TUTOR ISSUE ESCALATION INBOX -->
+ <div id="mount-admin-escalation-inbox" class="mt-6"></div>
 
  <!-- CLASSROOM & OPERATIONS HEADQUARTERS -->
  <div id="mount-operations-suite" class="mt-6"></div>
@@ -1790,21 +1782,7 @@
    </div>
  </div>
 
- <!-- ===== COURSES SECTION ===== -->
- <section id="section-courses" class="admin-section animate-fadeIn">
- <div class="flex items-center justify-between mb-6">
- <div>
- <h2 class="text-2xl font-nunito font-bold text-slate-800">Course Management</h2>
- <p class="text-slate-500">View and manage available courses</p>
- </div>
- </div>
- 
- <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
- <!-- Courses will be loaded here -->
- </div>
- </section>
-
- <!-- ===== PROJECTS SECTION ===== -->
+  <!-- ===== PROJECTS SECTION ===== -->
  <section id="section-projects" class="admin-section animate-fadeIn">
  <div class="flex items-center justify-between mb-6">
  <div>
@@ -1883,8 +1861,8 @@
  <label class="block text-sm font-medium text-gray-500 mb-1.5">Design Template Track</label>
  <select id="cert-template-type" class="w-full bg-gray-50 border border-admin-border rounded-lg py-2 px-4 text-gray-800 font-semibold focus:outline-none focus:border-admin-accent text-xs">
  <option value="auto">Auto-Detect (Based on Course Curriculum)</option>
- <option value="explorers">Explorers Track (Ages 5–12: Colorful, Waves &amp; Rosette)</option>
- <option value="vanguard">Vanguard Track (Ages 12–18: Modern Architectural Tech)</option>
+ <option value="explorers">Explorers Track (Ages 5 - 12: Colorful, Waves &amp; Rosette)</option>
+ <option value="vanguard">Vanguard Track (Ages 12 - 18: Modern Architectural Tech)</option>
  </select>
  </div>
 
@@ -2267,46 +2245,6 @@
     <div>
       <h2 class="text-2xl font-nunito font-bold text-slate-800">Settings</h2>
       <p class="text-slate-500 mt-1">Manage your profile, change your password, and set notification preferences.</p>
-    </div>
-  </div>
-
-  
-  <!-- 🛡️ STEMULUS DATA RETENTION SHIELD & SNAPSHOT VAULT -->
-  <div class="admin-card rounded-2xl p-6 mb-6 border border-emerald-100 bg-linear-to-br from-white to-emerald-50/20">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold shrink-0">
-          <i data-lucide="shield-check" class="w-6 h-6"></i>
-        </div>
-        <div>
-          <h3 class="text-lg font-nunito font-extrabold text-slate-800 flex items-center gap-2">
-            <span>Database Retention & Snapshot Vault</span>
-            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">100% Protected</span>
-          </h3>
-          <p class="text-xs text-slate-500 mt-0.5">Automated write-ahead integrity guard, rolling hourly snapshot vault, and 1-click restore.</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
-        <button type="button" onclick="exportDatabaseBackup()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-1.5" style="background-color: #047857 !important;">
-          <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Backup JSON
-        </button>
-        <label class="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-bold text-xs rounded-xl transition-colors cursor-pointer flex items-center gap-1.5">
-          <i data-lucide="upload" class="w-3.5 h-3.5 text-slate-500"></i> Restore JSON
-          <input type="file" accept=".json" onchange="importDatabaseBackupFile(this)" class="hidden">
-        </label>
-      </div>
-    </div>
-
-    <div>
-      <div class="flex items-center justify-between mb-2">
-        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Internal Snapshot History (Last 10 Rolling States)</h4>
-        <button type="button" onclick="renderSnapshotVaultList()" class="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1">
-          <i data-lucide="refresh-cw" class="w-3 h-3"></i> Refresh
-        </button>
-      </div>
-      <div id="snapshot-vault-list" class="space-y-2 max-h-56 overflow-y-auto pr-1">
-        <!-- Rendered via renderSnapshotVaultList() -->
-      </div>
     </div>
   </div>
 
@@ -3023,10 +2961,10 @@
 
  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
  <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Email *</label>
- <input type="email" id="tutor-email" required
+ <label class="block text-sm font-medium text-gray-500 mb-2">Email / Username <span class="text-xs text-orange-600 font-semibold">(Auto-generated if blank)</span></label>
+ <input type="email" id="tutor-email"
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="tutor@stemuluskidstech.com">
+ placeholder="Auto-generated from name if left blank">
  </div>
  <div>
  <label class="block text-sm font-medium text-gray-500 mb-2">Phone</label>
@@ -3049,11 +2987,11 @@
  </div>
 
  <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Login Password *</label>
- <input type="password" id="tutor-password" minlength="8"
+ <label class="block text-sm font-medium text-gray-500 mb-2">Login Password <span class="text-xs text-orange-600 font-semibold">(Auto-generated if blank)</span></label>
+ <input type="text" id="tutor-password"
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="Min. 8 characters">
- <p class="text-xs text-slate-500 mt-1">Share this with the tutor so they can log in.</p>
+ placeholder="Leave blank to auto-generate secure password">
+ <p class="text-xs text-slate-500 mt-1">Leave blank to auto-generate password and save to Admin Email Queue.</p>
  </div>
 
  <div class="flex items-center gap-3 pt-2">
@@ -3233,10 +3171,10 @@
  </div>
 
  <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Email *</label>
- <input type="email" id="new-parent-email" required
+ <label class="block text-sm font-medium text-gray-500 mb-2">Email / Username <span class="text-xs text-orange-600 font-semibold">(Auto-generated if blank)</span></label>
+ <input type="email" id="new-parent-email"
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="parent@example.com">
+ placeholder="Auto-generated from name if left blank">
  </div>
 
  <div>
@@ -3247,11 +3185,11 @@
  </div>
 
  <div>
- <label class="block text-sm font-medium text-gray-500 mb-2">Login Password *</label>
- <input type="password" id="new-parent-password" required minlength="6"
+ <label class="block text-sm font-medium text-gray-500 mb-2">Login Password <span class="text-xs text-orange-600 font-semibold">(Auto-generated if blank)</span></label>
+ <input type="text" id="new-parent-password"
  class="w-full bg-gray-50 border border-admin-border rounded-lg py-2.5 px-4 text-gray-800 placeholder-slate-400 font-medium focus:outline-none focus:border-admin-accent transition-colors"
- placeholder="Min. 6 characters">
- <p class="text-xs text-slate-500 mt-1">Share this with the parent so they can access their portal.</p>
+ placeholder="Leave blank to auto-generate secure password">
+ <p class="text-xs text-slate-500 mt-1">Leave blank to auto-generate password and save to Admin Email Queue.</p>
  </div>
 
  <div class="border-t border-admin-border pt-4 mt-4">
@@ -4343,8 +4281,8 @@
          </div>
          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
            <div>
-             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Parent Email</label>
-             <input type="email" id="qo-parent-email" required placeholder="parent@email.com" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Parent Email <span class="text-[10px] text-orange-600 font-semibold normal-case">(Auto-generated if blank)</span></label>
+            <input type="email" id="qo-parent-email" placeholder="Auto-generated if blank" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
            </div>
            <div>
              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Parent Phone (WhatsApp)</label>
@@ -4410,8 +4348,8 @@
          </div>
          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
            <div>
-             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tutor Email *</label>
-             <input type="email" id="qo-tutor-email" required placeholder="tutor@stemuluskidstech.com" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
+             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tutor Email <span class="text-[10px] text-orange-600 font-semibold normal-case">(Auto-generated if blank)</span></label>
+            <input type="email" id="qo-tutor-email" placeholder="Auto-generated if blank" class="w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-orange-500">
            </div>
            <div>
              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Date of Birth *</label>
@@ -4464,7 +4402,8 @@
  <script src="assets/js/report-pdf-generator.min.js" defer></script>
 
  <!-- Dashboard Engine -->
- <script src="assets/js/dashboard-engine.min.js?v=20261017d" defer></script>
+   <script src="assets/js/stemulus-portal-features.min.js?v=20261030" defer></script>
+  <script src="assets/js/dashboard-engine.min.js?v=20261017d" defer></script>
  
  <!-- Tuition & Monthly Billing Automation Engine -->
  <script src="assets/js/billing-engine.min.js" defer></script>
@@ -5224,109 +5163,5 @@ window.addEventListener('load',function(){if(!window.gsap||!window.ScrollTrigger
   </div>
 
 
-  <!-- MODAL: EDIT QUEUED EMAIL -->
-  <div id="modal-edit-queued-email" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center font-bold">
-            <i data-lucide="edit-3" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="text-lg font-nunito font-extrabold text-slate-800">Edit Queued Email</h3>
-            <span id="eqe-type-badge" class="inline-block text-[10px] font-black uppercase px-2 py-0.5 rounded bg-orange-100 text-orange-700">WELCOME</span>
-          </div>
-        </div>
-        <button type="button" onclick="closeEditQueuedEmailModal()" class="text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <input type="hidden" id="eqe-id">
-
-      <div class="space-y-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Recipient Name</label>
-            <input type="text" id="eqe-name" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-orange-500 transition-colors">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Recipient Email Address *</label>
-            <input type="email" id="eqe-to" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-orange-500 transition-colors">
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">Subject Line *</label>
-          <input type="text" id="eqe-subject" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 font-bold focus:outline-none focus:border-orange-500 transition-colors">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">Message Content / HTML *</label>
-          <textarea id="eqe-body" rows="8" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-mono focus:outline-none focus:border-orange-500 transition-colors resize-y leading-relaxed"></textarea>
-        </div>
-      </div>
-
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-slate-100">
-        <button type="button" onclick="closeEditQueuedEmailModal()" class="w-full sm:w-auto px-4 py-2.5 text-slate-500 hover:text-slate-800 font-bold text-xs transition-colors">
-          Cancel
-        </button>
-        <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
-          <button type="button" onclick="saveQueuedEmailEdit(false)" class="flex-1 sm:flex-none px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold text-xs rounded-xl transition-colors">
-            Save Changes
-          </button>
-          <button type="button" onclick="saveQueuedEmailEdit(true)" class="flex-1 sm:flex-none px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5" style="background-color: #047857 !important;">
-            <i data-lucide="send" class="w-3.5 h-3.5"></i> Save & Send Now
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: VIEW SENT EMAIL READER -->
-  <div id="modal-view-sent-email" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-xs">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-3xl w-full border border-slate-100 shadow-2xl space-y-5 animate-fadeIn max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-            <i data-lucide="mail" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="text-lg font-nunito font-extrabold text-slate-800">Dispatched Email Record</h3>
-            <span id="vse-type" class="inline-block text-[10px] font-black uppercase px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">SENT</span>
-          </div>
-        </div>
-        <button type="button" onclick="closeViewSentEmailModal()" class="text-slate-400 hover:text-slate-700 p-2 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 text-xs">
-        <div class="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
-          <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Recipient:</span>
-          <span id="vse-recipient" class="font-bold text-slate-800 truncate"></span>
-        </div>
-        <div class="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
-          <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Dispatched At:</span>
-          <span id="vse-date" class="font-semibold text-slate-700"></span>
-        </div>
-        <div class="flex items-center justify-between gap-2">
-          <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Subject:</span>
-          <span id="vse-subject" class="font-extrabold text-slate-900 text-sm"></span>
-        </div>
-      </div>
-
-      <div class="border border-slate-200 rounded-2xl p-5 bg-white min-h-[220px]">
-        <div id="vse-body" class="text-slate-700 text-sm leading-relaxed overflow-x-auto"></div>
-      </div>
-
-      <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-        <button type="button" onclick="closeViewSentEmailModal()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-colors cursor-pointer">
-          Close Reader
-        </button>
-      </div>
-    </div>
-  </div>
-
-</body>
+  </body>
 </html>

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>Tutor Dashboard | STEMulus Portal</title>
-  <meta name="description" content="Manage your STEMulus tutoring sessions, student notes and earnings from the tutor dashboard.">
+  <meta name="description" content="Manage your STEMulus tutoring sessions, student notes, and progress reports from the tutor dashboard.">
   <link rel="icon" type="image/png" href="favicon.png">
 
   <!-- Fonts & Icons -->
@@ -367,8 +367,8 @@
       <a href="tutor-attendance.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="Attendance History">
         <i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i> <span class="nav-text">Attendance History</span>
       </a>
-      <a href="tutor-attendance-create.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="Class Log">
-        <i data-lucide="clipboard-check" class="w-5 h-5 shrink-0"></i> <span class="nav-text">Class Log</span>
+      <a href="tutor-attendance-create.html" id="sidebar-log-attendance" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="Log Attendance">
+        <i data-lucide="clipboard-check" class="w-5 h-5 shrink-0"></i> <span class="nav-text">Log Attendance</span>
       </a>
       <a href="tutor-monthly-report.html" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="My Reports">
         <i data-lucide="file-bar-chart" class="w-5 h-5 shrink-0"></i> <span class="nav-text">My Reports</span>
@@ -376,15 +376,7 @@
       <a href="#schedule-list" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="My Schedule">
         <i data-lucide="calendar" class="w-5 h-5 shrink-0"></i> <span class="nav-text">My Schedule</span>
       </a>
-      <a href="curriculum/slides/index.html?role=tutor" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="Curriculum &amp; Lesson Slides (215)">
-        <i data-lucide="presentation" class="w-5 h-5 shrink-0" style="color:#f4600c;"></i> <span class="nav-text">Lesson Slides (215)</span>
-      </a>
-      <a href="curriculum/assessments/interactive_assessment_runner.html?role=tutor" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="Assessment Runner">
-        <i data-lucide="award" class="w-5 h-5 shrink-0" style="color:#a855f7;"></i> <span class="nav-text">Assessment Runner</span>
-      </a>
-      <a href="curriculum/prompt_lab/prompt_tester.html?role=tutor" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="AI Prompt Lab">
-        <i data-lucide="sparkles" class="w-5 h-5 shrink-0" style="color:#06b6d4;"></i> <span class="nav-text">AI Prompt Lab</span>
-      </a>
+      
       <a href="javascript:void(0)" onclick="if(typeof FacultyChatEngine!=='undefined'){FacultyChatEngine.openTutorDrawer();}" class="flex items-center gap-3 px-4 py-3 font-medium transition-all hover:bg-white/10 hover:text-white" style="border-radius:16px;color:rgba(255,255,255,0.75);" title="Admin Direct Line">
  <i data-lucide="messages-square" class="w-5 h-5 shrink-0"></i> <span class="nav-text">Admin Direct Line</span>
  <span id="tutor-chat-badge" class="ml-auto bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded-full hidden">0</span>
@@ -439,10 +431,10 @@
       <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
         <div id="mount-tutor-dual-switcher" class="nav-desktop-only"></div>
         <a href="tutor-attendance.html" class="nav-desktop-only btn-3d btn-3d-secondary secondary min-h-[38px] text-xs font-bold items-center gap-1.5 px-3.5 py-2">
-          <i data-lucide="clipboard-check" style="width:16px; height:16px;"></i> <span>Attendance</span>
+          <i data-lucide="clipboard-check" style="width:16px; height:16px;"></i> <span>Attendance History</span>
         </a>
-        <a href="tutor-attendance-create.html" class="nav-desktop-only btn-3d brand min-h-[38px] text-xs font-bold items-center gap-1.5 px-3.5 py-2" style="background:var(--stage-tutor-1);">
-          <i data-lucide="plus-circle" style="width:16px; height:16px;"></i> <span>Log Session</span>
+        <a href="tutor-attendance-create.html" id="btn-log-attendance" class="btn-3d brand min-h-[38px] inline-flex text-xs font-bold items-center gap-1.5 px-3.5 py-2" style="background:var(--stage-tutor-1);">
+          <i data-lucide="plus-circle" style="width:16px; height:16px;"></i> <span>Log Attendance</span>
         </a>
         <button type="button" onclick="TutorEngine.openNoticesModal()" class="btn-3d btn-3d-secondary secondary min-h-[38px] min-w-[38px] inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold cursor-pointer relative" title="Faculty Notices">
           <i data-lucide="bell" style="width:16px; height:16px;"></i>
@@ -602,6 +594,25 @@
         </div>
       </div>
 
+      <!-- ISSUE ESCALATION TO ADMIN CARD -->
+      <div class="dash-card" id="tutor-escalations-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <i data-lucide="shield-alert" class="w-5 h-5 text-rose-600"></i>
+              Issue Escalation &amp; Support Desk
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">Escalate student behavior, technical issues, scheduling conflicts, or parent enquiries directly to Admin.</p>
+          </div>
+          <button type="button" id="btn-open-escalation-modal" onclick="TutorEngine.openEscalationModal()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="alert-triangle" class="w-4 h-4"></i> Escalate Issue
+          </button>
+        </div>
+        <div id="tutor-escalations-list" class="space-y-2.5">
+          <p class="text-xs text-slate-400 p-3 text-center">No active issue escalations.</p>
+        </div>
+      </div>
+
       <!-- Assigned Students Roster Card -->
       <div class="dash-card">
         <div class="card-header">
@@ -652,26 +663,7 @@
           <h2 class="card-title">Mentor Tools</h2>
         </div>
         <div style="display:flex; flex-direction:column; gap:8px;">
-          <a href="curriculum/slides/index.html?role=tutor" class="action-btn-item" style="background:linear-gradient(135deg, #FFF7ED, #FFEDD5); border-color:#FDBA74;">
-            <i data-lucide="presentation" style="color:var(--brand-orange);"></i>
-            Curriculum &amp; Lesson Slides (215)
-          </a>
-          <a href="curriculum/assessments/interactive_assessment_runner.html?role=tutor" class="action-btn-item">
-            <i data-lucide="award" style="color:var(--stage-tutor-1);"></i>
-            Interactive Assessment Runner
-          </a>
-          <a href="curriculum/prompt_lab/prompt_tester.html?role=tutor" class="action-btn-item">
-            <i data-lucide="sparkles" style="color:#0891B2;"></i>
-            AI Prompt Engineering Lab
-          </a>
-          <a href="academy.html" target="_blank" class="action-btn-item">
-            <i data-lucide="globe" style="color:#059669;"></i>
-            Digital Academy Pass Portal
-          </a>
-          <a href="learner-hub.html" target="_blank" class="action-btn-item">
-            <i data-lucide="compass" style="color:#0284C7;"></i>
-            STEMulus Quest LMS Hub
-          </a>
+          
           <a href="tutor-attendance-create.html" class="action-btn-item">
             <i data-lucide="plus-circle" style="color:var(--stage-tutor-1);"></i>
             Log New Session
@@ -731,6 +723,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="assets/js/firebase-config.min.js" defer></script>
   <script src="assets/js/stemulus-firestore.min.js" defer></script>
+    <script src="assets/js/stemulus-portal-features.min.js?v=20261030" defer></script>
   <script src="assets/js/dashboard-engine.min.js?v=20261017d" defer></script>
   <script src="assets/js/badge-passport-engine.min.js" defer></script>
   <script src="assets/js/reschedule-concierge-engine.min.js" defer></script>
@@ -878,7 +871,7 @@
           <div class="border-t border-slate-100 pt-3">
             <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center gap-1.5">
               <i data-lucide="landmark" class="w-4 h-4 text-amber-500"></i>
-              Remuneration & Banking Details (NUBAN)
+              Banking Details (NUBAN)
             </h4>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
@@ -975,7 +968,7 @@
 
       <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
         <span>STEMulus Faculty Standards &amp; Operations</span>
-        <button type="button" onclick="TutorEngine.closeNoticesModal()" class="px-4 py-2 bg-slate-900 text-white rounded-xl font-bold cursor-pointer hover:bg-slate-800 transition-colors">
+        <button type="button" onclick="TutorEngine.closeNoticesModal()" class="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border-2 border-slate-200 border-b-4 border-b-slate-300 rounded-xl font-bold cursor-pointer transition-all">
           Close Notice Board
         </button>
       </div>
@@ -1043,7 +1036,10 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">Project Portfolio Showcase (Links to what student built) *</label>
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+            <label class="block text-xs font-bold text-slate-600">Project Portfolio Showcase (Submitted projects pre-filled, add more if needed) *</label>
+            <span id="tmr-prefilled-projects-badge" class="hidden text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full"></span>
+          </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
             <input type="text" id="tmr-proj1-title" placeholder="Project 1 Title (e.g. Space Shooter Game)" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800">
             <input type="url" id="tmr-proj1-url" placeholder="Project 1 URL (Scratch / Web / GitHub)" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-mono">
@@ -1051,6 +1047,12 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <input type="text" id="tmr-proj2-title" placeholder="Project 2 Title (e.g. Smart Tip Calculator)" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800">
             <input type="url" id="tmr-proj2-url" placeholder="Project 2 URL (Scratch / Web / GitHub)" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-mono">
+          </div>
+          <div id="tmr-extra-projects-container" class="space-y-2 mt-2"></div>
+          <div class="mt-2">
+            <button type="button" onclick="TutorEngine.addMonthlyReportProjectRow()" class="px-3 py-1.5 bg-white hover:bg-orange-50 text-orange-600 border-2 border-orange-200 border-b-4 border-b-orange-300 rounded-xl text-[11px] font-extrabold inline-flex items-center gap-1.5 transition-all cursor-pointer">
+              <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> + Add Another Project
+            </button>
           </div>
         </div>
 

@@ -165,15 +165,16 @@
 
 [[redirects]]
   from = "https://portal.stemuluskidstech.com/academy"
-  to = "/academy.html"
-  status = 200
+  to = "/programs.html"
+  status = 301
+  force = true
 
 [[redirects]]
   from = "https://portal.stemuluskidstech.com/logout"
   to = "/parent-login.html"
   status = 302
 
-# ── Clean Rewrites for Digital Academy & Verification ────────────────────────
+# ── Clean Rewrites for Verification & Retired LMS Routes ────────────────────
 [[redirects]]
   from = "/verify"
   to = "/verify-certificate.html"
@@ -181,38 +182,40 @@
 
 [[redirects]]
   from = "/academy"
-  to = "/academy.html"
-  status = 200
+  to = "/programs.html"
+  status = 301
 
 [[redirects]]
   from = "https://portal.stemuluskidstech.com/hub"
-  to = "/learner-hub.html"
-  status = 200
+  to = "/programs.html"
+  status = 301
+  force = true
 
 [[redirects]]
   from = "https://portal.stemuluskidstech.com/quest"
-  to = "/learner-hub.html"
-  status = 200
+  to = "/programs.html"
+  status = 301
+  force = true
 
 [[redirects]]
   from = "/hub"
-  to = "/learner-hub.html"
-  status = 200
+  to = "/programs.html"
+  status = 301
 
 [[redirects]]
   from = "/quest"
-  to = "/learner-hub.html"
-  status = 200
+  to = "/programs.html"
+  status = 301
 
 [[redirects]]
   from = "/lms"
-  to = "/learner-hub.html"
-  status = 200
+  to = "/programs.html"
+  status = 301
 
 [[redirects]]
   from = "/pass"
-  to = "/academy.html"
-  status = 200
+  to = "/programs.html"
+  status = 301
 
 [[redirects]]
   from = "https://stemulus-portal-web.netlify.app/"
@@ -226,7 +229,7 @@
   status = 200
   force = true
 
-# ── Generative Engine Optimization & Curriculum Portals ─────────────────────
+# ── Generative Engine Optimization ──────────────────────────────────────────
 [[redirects]]
   from = "/.well-known/llms.txt"
   to = "/llms.txt"
@@ -234,8 +237,8 @@
 
 [[redirects]]
   from = "https://portal.stemuluskidstech.com/curriculum/*"
-  to = "/curriculum/:splat"
-  status = 200
+  to = "/programs.html"
+  status = 301
   force = true
 
 # ── Clean URL Rewrites for International & Pathway Hubs ─────────────────────
@@ -430,3 +433,19 @@
   for = "/join-class.html"
   [headers.values]
     Cache-Control = "no-store"
+
+# Retired Academy Pass, Quest LMS, and Curriculum slides
+[[redirects]]
+  from = "/academy.html"
+  to = "/programs.html"
+  status = 301
+
+[[redirects]]
+  from = "/learner-hub.html"
+  to = "/programs.html"
+  status = 301
+
+[[redirects]]
+  from = "/curriculum/*"
+  to = "/programs.html"
+  status = 301

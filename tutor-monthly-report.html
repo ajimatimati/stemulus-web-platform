@@ -535,7 +535,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="assets/js/firebase-config.min.js"></script>
 <script src="assets/js/stemulus-firestore.min.js"></script>
+<script src="assets/js/stemulus-portal-features.min.js?v=20261030"></script>
 <script src="assets/js/dashboard-engine.min.js"></script>
+<script src="assets/js/monthly-report-engine.min.js"></script>
 <script src="assets/js/report-pdf-generator.min.js"></script>
 <script src="assets/js/portal-scene-engine.min.js"></script>
 <script>
@@ -602,18 +604,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var finalHours = hasFilledEntries
       ? Math.round(formSumSessions * 1.0 * 10) / 10
       : (dbStats.totalHours || Math.round(finalSessions * 1.0 * 10) / 10);
-    var tutorObj = null;
-    if (typeof DashboardEngine !== 'undefined' && DashboardEngine.getDB) {
-      var allTutors = DashboardEngine.getDB().tutors || [];
-      tutorObj = allTutors.find(function(t) {
-        return (t.email && t.email.toLowerCase().trim() === (_session.email || '').toLowerCase().trim()) ||
-               (t.name && t.name.toLowerCase().trim() === (tutorFullName || '').toLowerCase().trim());
-      });
-    }
-    var payoutRate = (tutorObj && tutorObj.hourlyRate) ? parseFloat(tutorObj.hourlyRate) : 35.00;
-    var totalPayout = (finalHours * payoutRate).toFixed(2);
-    var bankName = (tutorObj && tutorObj.bankName) ? tutorObj.bankName : '';
-    var accountNumber = (tutorObj && tutorObj.accountNumber) ? tutorObj.accountNumber : '';
     var perf = (typeof DashboardEngine !== 'undefined' && DashboardEngine.calculateTutorPerformance)
       ? DashboardEngine.calculateTutorPerformance(_session.email || tutorFullName)
       : null;
@@ -634,16 +624,11 @@ document.addEventListener('DOMContentLoaded', function() {
         '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-indigo-100 pb-2.5">' +
           '<div class="flex items-center gap-2">' +
             '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>' +
-            '<span class="font-extrabold text-sm text-indigo-900 font-nunito">Verified Compensation & Attendance Audit</span>' +
+            '<span class="font-extrabold text-sm text-indigo-900 font-nunito">Verified Academic Attendance & Session Summary</span>' +
           '</div>' +
           '<div class="flex flex-wrap items-center gap-2">' +
             (perf ? '<span class="text-[11px] font-black text-purple-700 bg-purple-100 px-3 py-1 rounded-xl border border-purple-200 shadow-xs">' + perf.tierName + ' (' + perf.onTimeRateFormatted + ')</span>' : '') +
-            '<span class="text-[11px] font-black text-indigo-700 bg-white px-3 py-1 rounded-xl border border-indigo-200 shadow-sm">' +
-              'Rate: $' + payoutRate.toFixed(2) + '/hr' +
-            '</span>' +
-            '<span class="text-[11px] font-black text-emerald-700 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200 shadow-sm">' +
-              'Estimated Payout: $' + totalPayout +
-            '</span>' +
+            '<span class="text-[11px] font-black text-emerald-700 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200 shadow-sm">Auto-Compiled for STEMulus PDF</span>' +
           '</div>' +
         '</div>' +
         '<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center pt-1 text-slate-700">' +
@@ -664,13 +649,8 @@ document.addEventListener('DOMContentLoaded', function() {
             '<strong class="text-slate-800 text-sm font-black">' + (monthVal || 'Current') + '</strong>' +
           '</div>' +
         '</div>' +
-        (bankName && accountNumber ? 
-          '<div class="flex items-center gap-2 p-2 rounded-xl bg-white/90 border border-indigo-100 text-[11px] text-slate-700 mt-1">' +
-            '<i data-lucide="building" class="w-3.5 h-3.5 text-indigo-600"></i>' +
-            '<span>Verified Remittance Routing: <strong class="text-slate-900">' + bankName + '</strong> (NUBAN: <strong class="text-slate-900 font-mono">' + accountNumber + '</strong>)</span>' +
-          '</div>' : '') +
         '<p class="text-[11px] text-slate-500 italic mt-1 text-center sm:text-left">' +
-          'Note: Tutor payment is officially audited, calculated, and disbursed by Admin Administration based on verified session attendance logs.' +
+          'Session attendance logs and completed project links are automatically compiled into the final STEMulus standard report PDF.' +
         '</p>';
       if (window.lucide) lucide.createIcons();
     }
@@ -831,6 +811,19 @@ document.addEventListener('DOMContentLoaded', function() {
           syncReportTotals();
         }
       }
+      var addProjBtn = e.target.closest('.add-project-row-btn');
+      if (addProjBtn) {
+        var projEntry = addProjBtn.closest('.student-entry');
+        var projContainer = projEntry ? projEntry.querySelector('.student-projects-container') : null;
+        if (projContainer) {
+          projContainer.insertAdjacentHTML('beforeend', buildProjectRowHTML('', ''));
+        }
+      }
+      var removeProjBtn = e.target.closest('.remove-project-row-btn');
+      if (removeProjBtn) {
+        var projRow = removeProjBtn.closest('.student-project-row');
+        if (projRow) projRow.remove();
+      }
     });
 
     // Quick auto-fill selection
@@ -914,6 +907,33 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionsInput.value = calculatedSessions > 0 ? calculatedSessions : (sessionsInput.value !== '' ? sessionsInput.value : 0);
       }
 
+      // Auto-prefill already submitted projects for this student
+      var projContainer = entry.querySelector('.student-projects-container');
+      var projBadge = entry.querySelector('.student-projects-prefill-badge');
+      if (projContainer) {
+        var submittedProjects = [];
+        if (typeof MonthlyReportEngine !== 'undefined' && typeof MonthlyReportEngine.getSubmittedProjectsForStudent === 'function') {
+          submittedProjects = MonthlyReportEngine.getSubmittedProjectsForStudent(sId, sName) || [];
+        }
+        if (submittedProjects.length > 0) {
+          projContainer.innerHTML = submittedProjects.map(function(p) {
+            return buildProjectRowHTML(p.title || '', p.url || '');
+          }).join('');
+          if (projBadge) {
+            projBadge.textContent = submittedProjects.length + ' Submitted Project' + (submittedProjects.length > 1 ? 's' : '') + ' Pre-Filled';
+            projBadge.classList.remove('hidden');
+          }
+        } else {
+          if (projContainer.querySelectorAll('.student-project-row').length === 0) {
+            projContainer.innerHTML = buildProjectRowHTML('', '');
+          }
+          if (projBadge) {
+            projBadge.textContent = '';
+            projBadge.classList.add('hidden');
+          }
+        }
+      }
+
       syncReportTotals();
     }
 
@@ -979,6 +999,20 @@ document.addEventListener('DOMContentLoaded', function() {
       otherComments: (document.getElementById('report-other-comments') || {}).value || ''
     };
 
+    function collectEntryProjectLinks(entry) {
+      var links = [];
+      if (!entry) return links;
+      var rows = entry.querySelectorAll('.student-project-row');
+      rows.forEach(function(r) {
+        var t = ((r.querySelector('.student-proj-title-input') || {}).value || '').trim();
+        var u = ((r.querySelector('.student-proj-url-input') || {}).value || '').trim();
+        if (t || u) {
+          links.push({ title: t || 'Completed Coding Project', url: u });
+        }
+      });
+      return links;
+    }
+
     // If we are editing a single rejected report
     if (editingId) {
       var entry = studentEntries[0];
@@ -991,6 +1025,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionsAttended: parseInt((entry.querySelector('.student-sessions-input') || {}).value) || 0,
         module: (entry.querySelector('.student-module-input') || {}).value || '',
         topics: (entry.querySelector('.student-topics-input') || {}).value || '',
+        projectLinks: collectEntryProjectLinks(entry),
         strengths: (entry.querySelector('.student-strengths-input') || {}).value || '',
         challenges: (entry.querySelector('.student-challenges-input') || {}).value || '',
         recommendation: (entry.querySelector('.student-rec-input') || {}).value || '',
@@ -1000,34 +1035,57 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       if (typeof DashboardEngine !== 'undefined' && DashboardEngine.addMonthlyReport) {
-        DashboardEngine.addMonthlyReport(revisedReport);
+        var revRes = DashboardEngine.addMonthlyReport(revisedReport);
+        if (revRes && revRes.success === false) {
+          alert(revRes.message || 'Unable to submit revised monthly report.');
+          return;
+        }
       }
     } else {
       // Multiple students submission
       var batchId = 'batch-' + Date.now();
+      var blockedError = null;
+      var payloads = [];
       studentEntries.forEach(function(entry, idx) {
         var sIdVal = (entry.querySelector('.student-id-input') || {}).value || (entry.querySelector('.student-quick-picker') || {}).value || '';
         var childReport = Object.assign({}, commonMeta, {
           id: 'mrep-' + Date.now() + '-' + idx + '-' + Math.random().toString(36).substr(2, 4),
           batchId: batchId,
           studentId: sIdVal,
-          studentName: (entry.querySelector('.student-name-input') || {}).value || '',
-          course: (entry.querySelector('.student-course-input') || {}).value || '',
+          studentName: ((entry.querySelector('.student-name-input') || {}).value || '').trim(),
+          course: ((entry.querySelector('.student-course-input') || {}).value || '').trim(),
           sessionsAttended: parseInt((entry.querySelector('.student-sessions-input') || {}).value) || 0,
-          module: (entry.querySelector('.student-module-input') || {}).value || '',
-          topics: (entry.querySelector('.student-topics-input') || {}).value || '',
-          strengths: (entry.querySelector('.student-strengths-input') || {}).value || '',
-          challenges: (entry.querySelector('.student-challenges-input') || {}).value || '',
-          recommendation: (entry.querySelector('.student-rec-input') || {}).value || '',
+          module: ((entry.querySelector('.student-module-input') || {}).value || '').trim(),
+          topics: ((entry.querySelector('.student-topics-input') || {}).value || '').trim(),
+          projectLinks: collectEntryProjectLinks(entry),
+          strengths: ((entry.querySelector('.student-strengths-input') || {}).value || '').trim(),
+          challenges: ((entry.querySelector('.student-challenges-input') || {}).value || '').trim(),
+          recommendation: ((entry.querySelector('.student-rec-input') || {}).value || '').trim(),
           overallGrade: (entry.querySelector('.student-grade-input') || {}).value || 'A',
           engagementLevel: (entry.querySelector('.student-engagement-input') || {}).value || 'engaged',
           status: 'pending_review'
         });
-
-        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.addMonthlyReport) {
-          DashboardEngine.addMonthlyReport(childReport);
+        if (!childReport.studentName || !childReport.topics || !childReport.strengths) {
+          blockedError = 'Incomplete monthly report: Student name, topics covered, and strengths are required.';
         }
+        if ((childReport.topics.length + childReport.strengths.length + childReport.challenges.length + childReport.recommendation.length) > 10000) {
+          blockedError = 'Report payload exceeds the maximum allowed 10,000 characters.';
+        }
+        payloads.push(childReport);
       });
+      if (blockedError) {
+        alert(blockedError);
+        return;
+      }
+      for (var pIdx = 0; pIdx < payloads.length; pIdx++) {
+        if (typeof DashboardEngine !== 'undefined' && DashboardEngine.addMonthlyReport) {
+          var addRes = DashboardEngine.addMonthlyReport(payloads[pIdx]);
+          if (addRes && addRes.success === false) {
+            alert(addRes.message || 'Unable to submit monthly report.');
+            return;
+          }
+        }
+      }
     }
 
     // Reset edit state
@@ -1103,15 +1161,17 @@ document.addEventListener('DOMContentLoaded', function() {
       var statusBadge = '';
       var actions = '';
 
-      if (status === 'pending_review') {
+      var esc = (typeof DashboardEngine !== 'undefined' && DashboardEngine.escapeHtml) ? DashboardEngine.escapeHtml : function(s){ return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
+      if (status === 'pending_review' || status === 'pending_admin_approval') {
         statusBadge = '<span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold px-2.5 py-1 rounded-md"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Pending Admin Review</span>';
-        actions = '<button onclick="previewReportPDF(\'' + r.id + '\')" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5"><i data-lucide="eye" style="width:13px;height:13px;"></i> Preview Draft</button>';
-      } else if (status === 'sent_to_parent') {
-        statusBadge = '<span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold px-2.5 py-1 rounded-md"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Approved &amp; Sent to Parent</span>';
-        actions = '<button onclick="previewReportPDF(\'' + r.id + '\')" class="text-xs font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5"><i data-lucide="file-check" style="width:13px;height:13px;"></i> View Official PDF</button>';
-      } else if (status === 'rejected') {
+        actions = '<button onclick="previewReportPDF(\'' + esc(r.id) + '\')" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5"><i data-lucide="eye" style="width:13px;height:13px;"></i> Preview Draft</button>';
+      } else if (status === 'sent_to_parent' || status === 'approved' || status === 'published') {
+        statusBadge = '<span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold px-2.5 py-1 rounded-md"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Approved &amp; Locked</span>';
+        actions = '<span class="text-[11px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-lg">Edit Locked</span>' +
+                  '<button onclick="previewReportPDF(\'' + esc(r.id) + '\')" class="text-xs font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5"><i data-lucide="file-check" style="width:13px;height:13px;"></i> View Official PDF</button>';
+      } else if (status === 'rejected' || status === 'rejected_needs_revision') {
         statusBadge = '<span class="inline-flex items-center gap-1.5 bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold px-2.5 py-1 rounded-md"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Revision Requested</span>';
-        actions = '<button onclick="startReportRedo(\'' + r.id + '\')" class="text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 px-3.5 py-1.5 rounded-xl transition-all shadow-sm flex items-center gap-1.5"><i data-lucide="edit-3" style="width:13px;height:13px;"></i> Redo &amp; Resubmit</button>';
+        actions = '<button onclick="startReportRedo(\'' + esc(r.id) + '\')" class="text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 px-3.5 py-1.5 rounded-xl transition-all shadow-sm flex items-center gap-1.5"><i data-lucide="edit-3" style="width:13px;height:13px;"></i> Redo &amp; Resubmit</button>';
       }
 
       var monthLabel = r.month || 'Evaluation';
@@ -1134,8 +1194,8 @@ document.addEventListener('DOMContentLoaded', function() {
               (r.overallGrade || 'A') +
             '</div>' +
             '<div>' +
-              '<h4 class="font-nunito font-extrabold text-slate-800 text-base leading-tight">' + (r.studentName || 'Student Evaluation') + '</h4>' +
-              '<p class="text-xs text-slate-500 font-medium">' + (r.course || 'Coding Track') + ' &middot; ' + monthLabel + '</p>' +
+              '<h4 class="font-nunito font-extrabold text-slate-800 text-base leading-tight">' + esc(r.studentName || 'Student Evaluation') + '</h4>' +
+              '<p class="text-xs text-slate-500 font-medium">' + esc(r.course || 'Coding Track') + ' &middot; ' + esc(monthLabel) + '</p>' +
             '</div>' +
           '</div>' +
           '<div class="flex items-center gap-3 flex-wrap">' +
@@ -1149,7 +1209,7 @@ document.addEventListener('DOMContentLoaded', function() {
           '<div><span class="text-slate-600 font-bold uppercase text-[10px]">Engagement:</span> <span class="font-bold text-slate-700 capitalize">' + (r.engagementLevel || 'engaged') + '</span></div>' +
           '<div><span class="text-slate-600 font-bold uppercase text-[10px]">Submitted:</span> <span class="text-slate-500">' + (r.submittedAt ? new Date(r.submittedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '-') + '</span></div>' +
         '</div>' +
-        (r.strengths ? '<div class="text-xs text-slate-600 line-clamp-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100"><strong>Strengths:</strong> ' + r.strengths + '</div>' : '') +
+        (r.strengths ? '<div class="text-xs text-slate-600 line-clamp-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100"><strong>Strengths:</strong> ' + esc(r.strengths) + '</div>' : '') +
         feedbackBox +
       '</div>';
     }).join('');
@@ -1178,6 +1238,10 @@ document.addEventListener('DOMContentLoaded', function() {
       : [];
     var rep = allReports.find(function(r){ return r.id === reportId; });
     if (!rep) { alert('Report not found for redo.'); return; }
+    if (rep.status === 'sent_to_parent' || rep.status === 'approved' || rep.status === 'published') {
+      alert('This monthly report has already been approved and finalized. Tutors are locked out of editing finalized reports.');
+      return;
+    }
 
     showTab('form');
     document.getElementById('editing-report-id').value = rep.id;
@@ -1202,6 +1266,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionsAttended: rep.sessionsAttended,
         module: rep.module,
         topics: rep.topics,
+        projectLinks: rep.projectLinks,
         strengths: rep.strengths,
         challenges: rep.challenges,
         recommendation: rep.recommendation,
@@ -1226,6 +1291,16 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initial load of history badge & alerts
   renderHistory();
 });
+
+function buildProjectRowHTML(title, url) {
+  var safeTitle = String(title || '').replace(/"/g, '&quot;');
+  var safeUrl = String(url || '').replace(/"/g, '&quot;');
+  return '<div class="student-project-row grid grid-cols-1 md:grid-cols-12 gap-2 items-center mb-2 last:mb-0">' +
+    '<input type="text" class="field-input student-proj-title-input md:col-span-5" placeholder="Project Title (e.g. Space Shooter Game)" value="' + safeTitle + '" style="background:#fff;">' +
+    '<input type="url" class="field-input student-proj-url-input md:col-span-6 font-mono text-xs" placeholder="Project Link (https://scratch.mit.edu/... or GitHub)" value="' + safeUrl + '" style="background:#fff;">' +
+    '<button type="button" class="remove-project-row-btn md:col-span-1 px-2 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 rounded-xl text-xs font-bold flex items-center justify-center cursor-pointer" title="Remove Project Row">✕</button>' +
+  '</div>';
+}
 
 function generateStudentEntry(num, data) {
   data = data || {};
@@ -1252,6 +1327,17 @@ function generateStudentEntry(num, data) {
       return '<option value="' + s.id + '"' + selected + ' data-name="' + full + '" data-program="' + (s.program||'') + '">' + full + ' (' + (s.program||'') + ')</option>';
     }).join('');
 
+  var initialProjects = Array.isArray(data.projectLinks) && data.projectLinks.length > 0 ? data.projectLinks : [];
+  if (initialProjects.length === 0 && (data.studentId || data.name) && typeof MonthlyReportEngine !== 'undefined' && typeof MonthlyReportEngine.getSubmittedProjectsForStudent === 'function') {
+    initialProjects = MonthlyReportEngine.getSubmittedProjectsForStudent(data.studentId, data.name) || [];
+  }
+  var projectsHTML = initialProjects.length > 0
+    ? initialProjects.map(function(p) { return buildProjectRowHTML(p.title || '', p.url || ''); }).join('')
+    : buildProjectRowHTML('', '');
+  var prefillBadgeHTML = initialProjects.length > 0
+    ? '<span class="student-projects-prefill-badge text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">' + initialProjects.length + ' Submitted Project' + (initialProjects.length > 1 ? 's' : '') + ' Pre-Filled</span>'
+    : '<span class="student-projects-prefill-badge hidden text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full"></span>';
+
   return '<div class="flex items-center justify-between mb-4">' +
     '<span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Student ' + num + '</span>' +
     (num > 1 ? '<button type="button" class="remove-student-btn text-xs text-red-400 hover:text-red-600 font-semibold">Remove</button>' : '') +
@@ -1266,6 +1352,18 @@ function generateStudentEntry(num, data) {
     '<div><label class="field-label">Program / Course</label><input type="text" class="field-input student-course-input" placeholder="e.g. Python Programming Foundations" value="' + (data.course || '') + '" required></div>' +
     '<div><label class="field-label">Sessions Attended (this month)</label><input type="number" class="field-input student-sessions-input" placeholder="e.g. 8" min="0" value="' + (data.sessionsAttended !== undefined ? data.sessionsAttended : '') + '" required></div>' +
     '<div><label class="field-label">Current Module / Level</label><input type="text" class="field-input student-module-input" placeholder="e.g. Module 4: Loops & Flow Control" value="' + (data.module || '') + '" required></div>' +
+  '</div>' +
+  '<div class="mb-4 p-3.5 bg-white rounded-xl border-2 border-slate-200 border-b-4 border-b-slate-300">' +
+    '<div class="flex flex-wrap items-center justify-between gap-2 mb-2">' +
+      '<label class="field-label mb-0">Submitted Projects &amp; Portfolio Links (Pre-filled from logs, add more if needed)</label>' +
+      prefillBadgeHTML +
+    '</div>' +
+    '<div class="student-projects-container space-y-2">' + projectsHTML + '</div>' +
+    '<div class="mt-2.5">' +
+      '<button type="button" class="add-project-row-btn px-3 py-1.5 bg-white hover:bg-orange-50 text-orange-600 border-2 border-orange-200 border-b-4 border-b-orange-300 rounded-xl text-[11px] font-extrabold inline-flex items-center gap-1.5 transition-all cursor-pointer">' +
+        '+ Add Another Project' +
+      '</button>' +
+    '</div>' +
   '</div>' +
   '<div class="space-y-4">' +
     '<div><label class="field-label">Topics Covered This Month</label><textarea class="field-input student-topics-input" placeholder="List key topics and concepts covered this month..." required>' + (data.topics || '') + '</textarea></div>' +
